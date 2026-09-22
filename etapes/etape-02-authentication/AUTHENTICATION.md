@@ -113,9 +113,9 @@
 | `TURNSTILE_SITE_KEY` | var publique | wrangler.toml (prod+staging) | ✅ |
 | `TURNSTILE_SECRET` | secret | prod + staging | ✅ |
 | `ADMIN_TOKEN` | secret | prod + staging | ✅ |
-| `BREVO_API_KEY`, `EMAIL_FROM` | secrets | prod | ⏳ à créer par le fondateur (voir §5) |
-| `GOOGLE_CLIENT_ID/SECRET` | secrets | prod | ⏳ préparé, à créer (guide §7.2) |
-| `FACEBOOK_APP_ID/SECRET` | secrets | prod + staging | ⏳ préparé, à créer (guide §7.3) |
+| `BREVO_API_KEY`, `EMAIL_FROM` | secrets | prod + staging | ✅ posé 2026-09-23 — expéditeur `wairyu26@gmail.com` validé, test d'envoi réel OK |
+| `GOOGLE_CLIENT_ID/SECRET` | secrets | prod + staging | ✅ posé 2026-09-23 — `/start` 302 validé, Google accepte la config |
+| `FACEBOOK_APP_ID/SECRET` | secrets | prod + staging | ⏳ dernier à créer — bloc C du `docs/GUIDE-ACTIVATION-CLES.md` |
 
 ## 4. Tests de la Gate 2
 
