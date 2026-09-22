@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { Turnstile } from '../lib/turnstile';
+import { SocialButtons } from '../lib/social';
 import type { AuthConfigResponse, OtpRequestResponse } from '@wairyu/shared';
 
 interface Props {
@@ -114,6 +115,14 @@ export function Signup({ config }: Props) {
           {busy ? 'Envoi du code…' : 'Recevoir mon code'}
         </button>
       </form>
+
+      <SocialButtons
+        config={config}
+        requireConsent={!adult || !terms}
+        onConsentBlocked={() =>
+          setError("Coche d'abord les deux cases ci-dessus : 18 ans ou plus et acceptation des CGU.")
+        }
+      />
 
       <p className="switch">
         Déjà un compte ?{' '}

@@ -34,6 +34,7 @@
 | 2026-09-23 | **Étape 0 — Cadrage** | Périmètre MoSCoW, 9 décisions validées (Décision 9 révisée), limites free tier relevées à J0, CGU + Politique de confidentialité + Registre RGPD v1, marque visuelle v1. Gate 0 ☑ |
 | 2026-09-23 | **Étape 1 — Socle technique** | Monorepo TS strict (API Hono + PWA React/Vite + shared), D1 prod/staging provisionnées et migrées (users, sessions, rate_limits, metrics_daily), KV ×2, DO SQLite `ChatRoom`, cron purge, secrets posés, cookies signés HMAC, métriques d'usage (`/admin/usage`), smoke tests verts en prod. Gate 1 ☑ |
 | 2026-09-22 | **Étape 2 — Authentification & comptes** | OTP email 6 chiffres (hashé, TTL 10 min, 3 essais, cooldown 60 s), Turnstile (widget créé, strict en prod), sessions 30 j glissants révocables (logout/logout-all), rate limiting D1 (IP + email), Google OAuth préparé (PKCE + fusion par email), RGPD : export JSON + suppression immédiate + trace anonyme J+30, écrans PWA mobile-first (18+ obligatoire), `/admin/*` protégé par jeton. 18 smoke tests + parcours navigateur réels. Voir `etapes/etape-02-authentication/` |
+| 2026-09-23 | **Étape 2-bis — Connexions sociales Google + Facebook** (demande fondateur) | Boutons « Continuer avec Google / Facebook » sur inscription + connexion (actifs dès pose des secrets, sans redéploiement), OAuth complet Facebook (Graph v21.0, state signé, appsecret_proof), fusion de comptes par email vérifié, table `oauth_identities` (0004, prod+staging), callback Meta « Data Deletion Request » conforme + page `/data-deletion`, consentement 18+/CGU exigé avant inscription sociale, cas Facebook sans email géré. Smoke social 6/6 staging + 6/6 prod, smoke complet 18/18 (zéro régression). Guides d'activation Google §7.2 / Meta §7.3 dans `AUTHENTICATION.md` |
 
 ## Accès & comptes
 
@@ -45,4 +46,5 @@
 | Cloudinary (photos/voice notes) | ✅ Actif — sondé | Cloud `nm7lozr4`, plan Free 25 GB, assets `authenticated` validés ; secrets stockés côté Worker uniquement |
 | Cloudflare Turnstile (widget `wairyu-auth`) | ✅ Actif | Site key publique + secret posés (prod/staging) ; strict en production, sauté en staging |
 | Brevo (emails OTP) | ⏳ À créer par le fondateur | Plan gratuit 300/j sans carte — procédure 10 min dans `etapes/etape-02-authentication/AUTHENTICATION.md` §5. En attendant : staging en mode `dev` (code affiché), prod refuse proprement |
-| Google OAuth | ⏳ Préparé | Code complet en place (PKCE + fusion) ; activation dès pose des secrets, sans redéploiement |
+| Google OAuth | ⏳ Préparé — livré Étape 2-bis | Code complet + boutons front (PKCE + fusion email) ; activation dès pose des secrets, sans redéploiement — guide §7.2 de `AUTHENTICATION.md` |
+| Facebook Login | ⏳ Préparé — livré Étape 2-bis | OAuth complet + callback suppression Meta + page `/data-deletion` ; activation dès pose des secrets — guide §7.3 de `AUTHENTICATION.md` (revue Meta requise pour le mode public) |

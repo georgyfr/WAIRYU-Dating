@@ -60,6 +60,8 @@ TURNSTILE_SITE_KEY = "0x4AAAAAAFAZiokmgNh2Tq9W"
 # EMAIL_FROM              — expéditeur vérifié Brevo (Étape 2, à venir)
 # GOOGLE_CLIENT_ID        — OAuth Google (préparé, à venir)
 # GOOGLE_CLIENT_SECRET    — OAuth Google (préparé, à venir)
+# FACEBOOK_APP_ID         — Facebook Login (préparé, à venir)
+# FACEBOOK_APP_SECRET     — Facebook Login (préparé, à venir)
 
 # =====================================================================
 # STAGING — base D1 et KV séparées, worker wairyu-staging.workers.dev

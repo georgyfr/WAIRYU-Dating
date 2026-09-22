@@ -32,6 +32,9 @@ export interface Env {
   /** Google OAuth (préparé — activation sans redéploiement dès que posé). */
   GOOGLE_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
+  /** Facebook Login (préparé — activation sans redéploiement dès que posé). */
+  FACEBOOK_APP_ID?: string;
+  FACEBOOK_APP_SECRET?: string;
   /** Jeton admin protégeant /admin/* (Étape 2). */
   ADMIN_TOKEN?: string;
 }

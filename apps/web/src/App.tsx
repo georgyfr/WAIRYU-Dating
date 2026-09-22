@@ -12,11 +12,25 @@ import { Account } from './screens/Account';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
 type Route =
-  | { name: 'home' }
+  | { name: 'home'; notice?: string | null }
   | { name: 'signup' }
   | { name: 'login' }
   | { name: 'verify'; email: string; devCode?: string }
   | { name: 'app' };
+
+/** Message de retour après un parcours social (callback ?google= / ?facebook=). */
+function parseNotice(params: URLSearchParams): string | null {
+  if (params.get('google') === 'cancelled' || params.get('facebook') === 'cancelled') {
+    return 'Connexion annulée — réessaie, ou utilise le code email.';
+  }
+  if (params.get('google') === 'unverified') {
+    return "L'email de ce compte Google n'est pas vérifié chez Google — utilise le code email.";
+  }
+  if (params.get('facebook') === 'noemail') {
+    return "Ce compte Facebook n'a pas d'email vérifié — utilise la méthode email.";
+  }
+  return null;
+}
 
 function parseHash(): Route {
   const hash = window.location.hash.replace(/^#\/?/, '');
@@ -36,7 +50,7 @@ function parseHash(): Route {
     case 'app':
       return { name: 'app' };
     default:
-      return { name: 'home' };
+      return { name: 'home', notice: parseNotice(params) };
   }
 }
 
@@ -114,6 +128,8 @@ export default function App() {
         <p className="tagline">
           Rencontres sincères. Photos consenties, messages réels, matching explicable.
         </p>
+
+        {route.name === 'home' && route.notice && <p className="error">{route.notice}</p>}
 
         {checking ? (
           <div className="status">

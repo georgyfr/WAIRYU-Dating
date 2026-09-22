@@ -3,8 +3,9 @@
  * (Le « mot de passe oublié » n'existe pas : la connexion EST le code email.)
  */
 import { useState } from 'react';
-import { api, ApiError } from '../lib/api';
+import { api } from '../lib/api';
 import { Turnstile } from '../lib/turnstile';
+import { SocialButtons } from '../lib/social';
 import type { AuthConfigResponse, OtpRequestResponse } from '@wairyu/shared';
 
 interface Props {
@@ -70,17 +71,9 @@ export function Login({ config }: Props) {
         <button type="submit" className="btn primary" disabled={busy}>
           {busy ? 'Envoi du code…' : 'Recevoir mon code'}
         </button>
-
-        {config?.googleEnabled ? (
-          <a className="btn google" href="/api/auth/google/start">
-            Continuer avec Google
-          </a>
-        ) : (
-          <button type="button" className="btn google disabled" disabled title="Arrive très bientôt">
-            Continuer avec Google — bientôt
-          </button>
-        )}
       </form>
+
+      <SocialButtons config={config} />
 
       <p className="switch">
         Pas encore de compte ?{' '}

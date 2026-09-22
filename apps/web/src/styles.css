@@ -274,6 +274,45 @@ h2 {
 
 .btn.google.disabled { color: var(--c-muted); }
 
+.btn.facebook {
+  background: #1877f2;
+  border: 1.5px solid #1877f2;
+  color: #fff;
+}
+
+.btn.facebook.disabled { opacity: 0.55; }
+
+.btn.google,
+.btn.facebook {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--c-muted);
+  font-size: 13px;
+  margin: 16px 0 10px;
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e6e0ee;
+}
+
+.social-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .cta-row {
   display: flex;
   flex-direction: column;

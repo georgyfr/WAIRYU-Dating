@@ -114,7 +114,8 @@
 | `TURNSTILE_SECRET` | secret | prod + staging | ✅ |
 | `ADMIN_TOKEN` | secret | prod + staging | ✅ |
 | `BREVO_API_KEY`, `EMAIL_FROM` | secrets | prod | ⏳ à créer par le fondateur (voir §5) |
-| `GOOGLE_CLIENT_ID/SECRET` | secrets | prod | ⏳ préparé, à créer |
+| `GOOGLE_CLIENT_ID/SECRET` | secrets | prod | ⏳ préparé, à créer (guide §7.2) |
+| `FACEBOOK_APP_ID/SECRET` | secrets | prod + staging | ⏳ préparé, à créer (guide §7.3) |
 
 ## 4. Tests de la Gate 2
 
@@ -141,11 +142,16 @@
      `npx wrangler secret put BREVO_API_KEY` et
      `npx wrangler secret put EMAIL_FROM` (dans `apps/api`, env production) ;
    - les secrets sont relus à chaque requête — aucun redéploiement obligatoire.
-2. **Google OAuth (optionnel maintenant)** — Google Cloud Console →
-   identifiants OAuth (type « Application Web »), redirect URI
-   `https://wairyu.wairyu.workers.dev/api/auth/google/callback`, puis poser
-   `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`.
-3. **Test mobile final** (Gate 2) sur https://wairyu-staging.wairyu.workers.dev
+2. **Google OAuth (optionnel maintenant)** — guide pas-à-pas §7.2 ; en bref :
+   Google Cloud Console → identifiants OAuth (type « Application Web »),
+   redirect URI `https://wairyu.wairyu.workers.dev/api/auth/google/callback`,
+   puis poser `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`.
+3. **Facebook Login (optionnel maintenant)** — guide pas-à-pas §7.3 ; en bref :
+   app Meta (developers.facebook.com) gratuite, produit « Facebook Login »,
+   redirect URI `https://wairyu.wairyu.workers.dev/api/auth/facebook/callback`,
+   callback de suppression `https://wairyu.wairyu.workers.dev/api/auth/facebook/data-deletion`,
+   puis poser `FACEBOOK_APP_ID` et `FACEBOOK_APP_SECRET`.
+4. **Test mobile final** (Gate 2) sur https://wairyu-staging.wairyu.workers.dev
    puis https://wairyu.wairyu.workers.dev.
 
 ## 6. Découvertes & défauts corrigés pendant la livraison
@@ -162,3 +168,82 @@
   avant de tester.
 - Turnstile : politique différenciée staging (sautée) / production (stricte,
   fail-closed) pour concilier tests automatisés et sécurité réelle.
+
+## 7. Étape 2-bis — Connexions sociales Google + Facebook
+
+À la demande du fondateur (« pourquoi ne pas s'inscrire via un compte Google et
+Facebook comme les sites de rencontre classiques ? »), l'inscription/connexion
+sociale est livrée : boutons sur les écrans inscription **et** connexion,
+actifs dès la pose des secrets (sans redéploiement). L'email OTP reste la
+méthode socle (fonctionne pour tout le monde, aucune dépendance externe).
+
+### 7.1 Fonctionnement livré
+
+- **Backend** : `lib/google.ts` (PKCE S256) + `lib/facebook.ts` (Graph v21.0,
+  `appsecret_proof`, signed_request) ; routes `/api/auth/google/start|callback`,
+  `/api/auth/facebook/start|callback` ; cookie d'état signé HMAC (anti-CSRF,
+  TTL 10 min) par fournisseur.
+- **Fusion de comptes par email vérifié** : une session Google/Facebook dont
+  l'email correspond à un compte créé par OTP ouvre CE compte — jamais de
+duplication. Les identités sont tracées dans `oauth_identities`
+  (`0004_oauth.sql`, migration appliquée prod+staging).
+- **Callback Meta « Data Deletion Request »** (`POST /api/auth/facebook/data-deletion`) :
+  vérifie le `signed_request` (HMAC-SHA256 au secret d'app), supprime le
+  compte correspondant (même code RGPD que `DELETE /api/account`), renvoie le
+  contrat Meta `{url, confirmation_code}`. Page de confirmation publique :
+  `/data-deletion` (assets).
+- **Frontend** : composant `SocialButtons` (Google 4 couleurs + f blanc sur
+  bleu Meta #1877F2), séparateur « ou », intégré sous les formulaires
+  inscription/connexion. À l'inscription, les cases 18+ et CGU doivent être
+  cochées avant de lancer un parcours social (consentement obligatoire).
+- **Cas Facebook sans email** (compte créé par téléphone) : Meta n'expose
+  aucun email vérifié → retour accueil avec message clair invitant à utiliser
+  la méthode email ; jamais de compte sans email.
+- **Sans secrets posés** : boutons affichés en état « bientôt » désactivé ;
+  `/start` renvoie 400 propre ; `/data-deletion` renvoie 404.
+
+### 7.2 Activation Google (gratuit, ~10 min, sans carte bancaire)
+
+1. https://console.cloud.google.com → créer le projet « wairyu ».
+2. APIs & services → Écran de consentement OAuth : type Externe, nom
+   « wairyu », email support, domaine `wairyu.wairyu.workers.dev`.
+3. Identifiants → Créer des identifiants → ID client OAuth → Application Web :
+   - Origines JavaScript autorisées : `https://wairyu.wairyu.workers.dev`
+   - URI de redirection autorisées :
+     `https://wairyu.wairyu.workers.dev/api/auth/google/callback` et
+     `https://wairyu-staging.wairyu.workers.dev/api/auth/google/callback`
+4. Dans `apps/api` : `npx wrangler secret put GOOGLE_CLIENT_ID` puis
+   `npx wrangler secret put GOOGLE_CLIENT_SECRET` (prod ; répéter avec
+   `--env staging` pour le staging).
+5. Les boutons passent automatiquement en actif (`/api/auth/config`).
+
+### 7.3 Activation Facebook (gratuit, ~15 min + revue Meta)
+
+1. https://developers.facebook.com → Créer une app (type « Consommateur »).
+2. Ajouter le produit **Facebook Login for Web** ; paramètres :
+   - URI de redirection OAuth valides :
+     `https://wairyu.wairyu.workers.dev/api/auth/facebook/callback` et
+     `https://wairyu-staging.wairyu.workers.dev/api/auth/facebook/callback`
+   - URL de la politique de confidentialité :
+     `https://wairyu.wairyu.workers.dev/legal/politique.md`
+   - URL de suppression de données :
+     `https://wairyu.wairyu.workers.dev/api/auth/facebook/data-deletion`
+3. Modes : tant que l'app est en « Développement », seuls les rôles de l'app
+   (admin/testeurs) peuvent se connecter. Pour ouvrir au public → passer en
+   « Live » : Meta demande une revue d'app ; les permissions `public_profile`
+   et `email` sont des permissions standard (déjà sélectionnées par défaut).
+4. Dans `apps/api` : `npx wrangler secret put FACEBOOK_APP_ID` puis
+   `npx wrangler secret put FACEBOOK_APP_SECRET` (prod + staging).
+
+### 7.4 Tests de l'Étape 2-bis
+
+- `scripts/smoke_etape2b.sh` : config expose `googleEnabled`/`facebookEnabled`,
+  `/start` 400 sans secrets, `/data-deletion` 404 sans secrets, page de
+  confirmation 200, me anonyme 401 — **6/6 staging, 6/6 production**.
+- Smoke complet Étape 2 relancé après refactorisation du flux OAuth et de la
+  suppression de compte : **18/18 staging** (aucune régression).
+- Parcours navigateur mobile (390×844) : boutons affichés, état « bientôt »
+  avant pose des secrets. Screenshot :
+  `download/wairyu-etape2b-signup-social.png`.
+- ⏳ Test OAuth de bout en bout restant, chez chaque fournisseur, après pose
+  des secrets (parcours réel Google puis Facebook).

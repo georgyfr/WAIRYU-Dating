@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>wairyu — confirmation de suppression des données</title>
+    <style>
+      :root {
+        --c-primary: #5b2d90;
+        --c-text: #2d2340;
+        --c-muted: #7c6f93;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f4fb;
+        color: var(--c-text);
+        font: 16px/1.6 system-ui, -apple-system, 'Segoe UI', sans-serif;
+        padding: 24px;
+      }
+      .card {
+        max-width: 460px;
+        background: #fff;
+        border-radius: 18px;
+        padding: 32px 28px;
+        box-shadow: 0 10px 40px rgba(91, 45, 144, 0.12);
+      }
+      h1 { font-size: 22px; margin: 0 0 12px; color: var(--c-primary); }
+      .code {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        background: #f3eef9;
+        border: 1.5px dashed #d9cbea;
+        border-radius: 12px;
+        padding: 12px 16px;
+        text-align: center;
+        margin: 16px 0;
+        word-break: break-all;
+      }
+      p { margin: 10px 0; }
+      .muted { color: var(--c-muted); font-size: 14px; }
+      a { color: var(--c-primary); }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Suppression des données via Facebook</h1>
+      <p>
+        Si tu as demandé la suppression de ton compte wairyu depuis les paramètres de
+        ton compte Facebook, ta demande a été traitée : ton profil et tes données
+        personnelles ont été effacés de wairyu (une trace anonyme est conservée 30
+        jours pour la modération, puis purgée).
+      </p>
+      <div class="code" id="code">—</div>
+      <p class="muted">
+        Conserve ce code de confirmation. Si aucun compte wairyu ne correspondait à ta
+        demande, aucune action n'a été nécessaire.
+      </p>
+      <p class="muted">
+        Une question ? Écris à <a href="mailto:support@wairyu.app">support@wairyu.app</a>
+        — ou consulte notre <a href="/legal/politique.md">politique de confidentialité</a>.
+      </p>
+    </main>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById('code').textContent = params.get('code') ?? 'code de confirmation absent';
+    </script>
+  </body>
+</html>

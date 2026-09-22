@@ -2,7 +2,8 @@
  * Routes d'authentification & comptes (Étape 2).
  *
  * Parcours : email + OTP 6 chiffres (Turnstile sur la demande) → session cookie
- * signé → /api/me. Google OAuth préparé (actif dès la pose des secrets).
+ * signé → /api/me. Connexions sociales Google + Facebook préparées (actives dès
+ * la pose des secrets, fusion de comptes par email).
  * RGPD dès maintenant : export JSON (droit d'accès) + suppression immédiate
  * (droit à l'effacement) avec trace anonyme purgée à J+30.
  *
@@ -28,6 +29,12 @@ import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { verifyTurnstile } from '../lib/turnstile';
 import { emailProviderConfigured, sendOtpEmail } from '../lib/email';
 import { googleConfigured, buildAuthorizeUrl, exchangeCodeForProfile, generatePkce } from '../lib/google';
+import {
+  facebookConfigured,
+  buildFacebookAuthorizeUrl,
+  exchangeFacebookCodeForProfile,
+  parseFacebookSignedRequest,
+} from '../lib/facebook';
 import {
   createSession,
   clearSessionCookie,
@@ -78,6 +85,7 @@ authRoutes.get('/auth/config', (c) => {
   const body: AuthConfigResponse = {
     turnstileSiteKey: c.env.TURNSTILE_SITE_KEY ?? null,
     googleEnabled: googleConfigured(c.env),
+    facebookEnabled: facebookConfigured(c.env),
     emailProvider: emailProviderConfigured(c.env) ? 'brevo' : 'dev',
   };
   return c.json(body);
@@ -256,19 +264,122 @@ authRoutes.post('/auth/otp/verify', async (c) => {
 });
 
 // ---------------------------------------------------------------------------
-// Google OAuth — préparé, actif dès la pose des secrets (fonctionnement gratuit)
+// Connexions sociales (Google + Facebook) — actives dès la pose des secrets.
+// Fusion de comptes par email vérifié ; identité (provider, id) conservée dans
+// oauth_identities — indispensable au callback de suppression Meta, et base du
+// futur déliage multi-fournisseurs.
 // ---------------------------------------------------------------------------
-const OAUTH_COOKIE = 'wairyu_oauth';
-
 interface OAuthStatePayload {
   state: string;
-  verifier: string;
+  /** PKCE verifier — Google uniquement (Meta ne supporte pas PKCE pour le web). */
+  verifier?: string;
   exp: number;
 }
 
-function signPayload(value: string, key: string): Promise<string> {
-  return signValue(value, key);
+const OAUTH_STATE_TTL_SECONDS = 600;
+
+function oauthCookieName(provider: string): string {
+  return `wairyu_oauth_${provider}`;
 }
+
+function oauthCookiePath(provider: string): string {
+  return `/api/auth/${provider}`;
+}
+
+/** Cookie d'état signé (HMAC) : anti-CSRF + porteur du verifier PKCE (Google). */
+async function setOAuthStateCookie(
+  c: Context<AppEnv>,
+  provider: string,
+  payload: OAuthStatePayload,
+): Promise<void> {
+  const raw = btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_');
+  const sig = await signValue(raw, c.env.SESSION_HMAC_KEY);
+  c.header(
+    'Set-Cookie',
+    `${oauthCookieName(provider)}=${raw}.${sig}; Path=${oauthCookiePath(provider)}; Max-Age=${OAUTH_STATE_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+  );
+}
+
+async function readOAuthStateCookie(
+  c: Context<AppEnv>,
+  provider: string,
+): Promise<OAuthStatePayload | null> {
+  const cookie = c.req.header('cookie') ?? '';
+  const name = oauthCookieName(provider);
+  const match = cookie
+    .split(';')
+    .map((s) => s.trim())
+    .find((s) => s.startsWith(`${name}=`));
+  if (!match) return null;
+  const [raw, sig] = match.slice(name.length + 1).split('.');
+  if (!raw || !sig) return null;
+  if (!(await verifySignature(raw, sig, c.env.SESSION_HMAC_KEY))) return null;
+  try {
+    const payload = JSON.parse(atob(raw.replace(/-/g, '+').replace(/_/g, '/'))) as OAuthStatePayload;
+    if (payload.exp < Date.now() / 1000) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function clearOAuthStateCookie(c: Context<AppEnv>, provider: string): void {
+  c.header(
+    'Set-Cookie',
+    `${oauthCookieName(provider)}=; Path=${oauthCookiePath(provider)}; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+    { append: true },
+  );
+}
+
+/**
+ * Résout l'utilisateur pour un profil social : connexion si l'email existe déjà
+ * (fusion OTP/social — aucune duplication), sinon création ; puis lie
+ * l'identité (provider, provider_user_id) à ce compte.
+ */
+async function resolveOrCreateOAuthUser(
+  db: D1Database,
+  provider: 'google' | 'facebook',
+  profile: { id: string; email: string; name?: string },
+): Promise<{ userId: string; created: boolean }> {
+  const now = Math.floor(Date.now() / 1000);
+  const existing = await db
+    .prepare(`SELECT id, status FROM users WHERE email = ? LIMIT 1`)
+    .bind(profile.email)
+    .first<{ id: string; status: string }>();
+  if (existing?.status === 'banned') {
+    throw errors.forbidden('Ce compte ne peut pas se connecter.');
+  }
+
+  let userId: string;
+  let created = false;
+  if (existing) {
+    userId = existing.id;
+  } else {
+    userId = crypto.randomUUID();
+    await db
+      .prepare(
+        `INSERT INTO users (id, email, email_verified_at, display_name, status, plan, created_at, updated_at)
+         VALUES (?, ?, ?, ?, 'active', 'free', ?, ?)`,
+      )
+      .bind(userId, profile.email, now, profile.name?.slice(0, 40) ?? null, now, now)
+      .run();
+    created = true;
+  }
+
+  await db
+    .prepare(
+      `INSERT INTO oauth_identities (provider, provider_user_id, user_id, email_at_link, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?)
+       ON CONFLICT (provider, provider_user_id) DO UPDATE SET
+         user_id = excluded.user_id, email_at_link = excluded.email_at_link, updated_at = excluded.updated_at`,
+    )
+    .bind(provider, profile.id, userId, profile.email, now, now)
+    .run();
+
+  return { userId, created };
+}
+
+// ---- Google (PKCE S256 + state) ----
 
 authRoutes.get('/auth/google/start', async (c) => {
   const env = c.env;
@@ -278,19 +389,11 @@ authRoutes.get('/auth/google/start', async (c) => {
   const { verifier, challenge } = await generatePkce();
   const state = crypto.randomUUID();
   const redirectUri = new URL(c.req.url).origin + '/api/auth/google/callback';
-
-  // Cookie de état signé : {state.verifier} sous forme JSON base64url + HMAC.
-  const payload: OAuthStatePayload = {
+  await setOAuthStateCookie(c, 'google', {
     state,
     verifier,
-    exp: Math.floor(Date.now() / 1000) + 600,
-  };
-  const raw = btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_');
-  const sig = await signPayload(raw, c.env.SESSION_HMAC_KEY);
-  c.header(
-    'Set-Cookie',
-    `${OAUTH_COOKIE}=${raw}.${sig}; Path=/api/auth/google; Max-Age=600; HttpOnly; Secure; SameSite=Lax`,
-  );
+    exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+  });
   return c.redirect(buildAuthorizeUrl(env, redirectUri, state, challenge), 302);
 });
 
@@ -299,22 +402,11 @@ authRoutes.get('/auth/google/callback', async (c) => {
   if (!googleConfigured(env)) throw errors.notFound();
 
   const url = new URL(c.req.url);
-  const errParam = url.searchParams.get('error');
-  if (errParam) return c.redirect('/#/?google=cancelled', 302);
+  if (url.searchParams.get('error')) return c.redirect('/#/?google=cancelled', 302);
 
-  const cookie = c.req.header('cookie') ?? '';
-  const match = cookie
-    .split(';')
-    .map((s) => s.trim())
-    .find((s) => s.startsWith(`${OAUTH_COOKIE}=`));
-  if (!match) throw errors.badRequest('Session Google expirée. Recommencez.');
-  const [raw, sig] = match.slice(OAUTH_COOKIE.length + 1).split('.');
-  const payload: OAuthStatePayload | null =
-    raw && sig && (await verifySignature(raw, sig, c.env.SESSION_HMAC_KEY))
-      ? (JSON.parse(atob(raw.replace(/-/g, '+').replace(/_/g, '/'))) as OAuthStatePayload)
-      : null;
-  if (!payload || payload.exp < Date.now() / 1000 || url.searchParams.get('state') !== payload.state) {
-    throw errors.badRequest('Session Google invalide. Recommencez.');
+  const state = await readOAuthStateCookie(c, 'google');
+  if (!state || url.searchParams.get('state') !== state.state) {
+    throw errors.badRequest('Session Google invalide ou expirée. Recommencez.');
   }
 
   const redirectUri = url.origin + '/api/auth/google/callback';
@@ -322,38 +414,109 @@ authRoutes.get('/auth/google/callback', async (c) => {
     env,
     url.searchParams.get('code') ?? '',
     redirectUri,
-    payload.verifier,
+    state.verifier ?? '',
   );
-  if (!profile.email_verified) {
-    return c.redirect('/#/?google=unverified', 302);
-  }
+  if (!profile.email_verified) return c.redirect('/#/?google=unverified', 302);
   const email = normalizeEmail(profile.email);
   if (!email) throw errors.badRequest('Email Google invalide.');
 
-  const now = Math.floor(Date.now() / 1000);
-  const existing = await c.env.DB.prepare(`SELECT id FROM users WHERE email = ? LIMIT 1`)
-    .bind(email)
-    .first<{ id: string }>();
-  let userId: string;
-  if (existing) {
-    userId = existing.id; // fusion par email (ex. compte créé par OTP)
-  } else {
-    userId = crypto.randomUUID();
-    await c.env.DB.prepare(
-      `INSERT INTO users (id, email, email_verified_at, display_name, status, plan, created_at, updated_at)
-       VALUES (?, ?, ?, ?, 'active', 'free', ?, ?)`,
-    )
-      .bind(userId, email, now, profile.name?.slice(0, 40) ?? null, now, now)
-      .run();
-    await bumpMetric(c.env.DB, 'signup_completed');
-  }
-  await createSession(c, userId);
-  await bumpMetric(c.env.DB, 'login_google');
-  // Efface le cookie OAuth (Max-Age=0) et retombe sur la SPA.
-  c.header('Set-Cookie', `${OAUTH_COOKIE}=; Path=/api/auth/google; Max-Age=0; HttpOnly; Secure; SameSite=Lax`, {
-    append: true,
+  const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
+    id: profile.sub,
+    email,
+    name: profile.name,
   });
+  await createSession(c, userId);
+  if (created) await bumpMetric(c.env.DB, 'signup_completed');
+  await bumpMetric(c.env.DB, 'login_google');
+  clearOAuthStateCookie(c, 'google');
   return c.redirect('/#/?google=ok', 302);
+});
+
+// ---- Facebook (state signé ; pas de PKCE côté Meta pour le web) ----
+
+authRoutes.get('/auth/facebook/start', async (c) => {
+  const env = c.env;
+  if (!facebookConfigured(env)) {
+    throw errors.badRequest('Connexion Facebook pas encore activée. Utilisez le code email.');
+  }
+  const state = crypto.randomUUID();
+  const redirectUri = new URL(c.req.url).origin + '/api/auth/facebook/callback';
+  await setOAuthStateCookie(c, 'facebook', {
+    state,
+    exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+  });
+  return c.redirect(buildFacebookAuthorizeUrl(env, redirectUri, state), 302);
+});
+
+authRoutes.get('/auth/facebook/callback', async (c) => {
+  const env = c.env;
+  if (!facebookConfigured(env)) throw errors.notFound();
+
+  const url = new URL(c.req.url);
+  if (url.searchParams.get('error')) return c.redirect('/#/?facebook=cancelled', 302);
+
+  const state = await readOAuthStateCookie(c, 'facebook');
+  if (!state || url.searchParams.get('state') !== state.state) {
+    throw errors.badRequest('Session Facebook invalide ou expirée. Recommencez.');
+  }
+
+  const redirectUri = url.origin + '/api/auth/facebook/callback';
+  const profile = await exchangeFacebookCodeForProfile(
+    env,
+    url.searchParams.get('code') ?? '',
+    redirectUri,
+  );
+  // Facebook n'expose un email que s'il est confirmé ; sinon on redirige vers la
+  // méthode email (message explicite côté SPA) — jamais de compte sans email.
+  const email = normalizeEmail(profile.email ?? '');
+  if (!email) return c.redirect('/#/?facebook=noemail', 302);
+
+  const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'facebook', {
+    id: profile.id,
+    email,
+    name: profile.name,
+  });
+  await createSession(c, userId);
+  if (created) await bumpMetric(c.env.DB, 'signup_completed');
+  await bumpMetric(c.env.DB, 'login_facebook');
+  clearOAuthStateCookie(c, 'facebook');
+  return c.redirect('/#/?facebook=ok', 302);
+});
+
+// ---- Callback « Data Deletion Request » (obligatoire pour l'app Meta) ----
+// Meta appelle ce POST (form-urlencoded, signed_request HMAC-SHA256 au secret
+// d'app) quand l'utilisateur demande la suppression de ses données depuis
+// Facebook. Contrat de réponse : 200 + { url, confirmation_code }.
+
+authRoutes.post('/auth/facebook/data-deletion', async (c) => {
+  const env = c.env;
+  if (!facebookConfigured(env)) throw errors.notFound();
+
+  const form = (await c.req.parseBody().catch(() => ({}))) as Record<string, unknown>;
+  const signed = form['signed_request'];
+  if (typeof signed !== 'string') throw errors.badRequest('signed_request manquant.');
+
+  const parsed = await parseFacebookSignedRequest(signed, env.FACEBOOK_APP_SECRET);
+  if (!parsed) throw errors.badRequest('signed_request invalide.');
+
+  const identity = await c.env.DB
+    .prepare(
+      `SELECT user_id FROM oauth_identities WHERE provider = 'facebook' AND provider_user_id = ? LIMIT 1`,
+    )
+    .bind(parsed.user_id)
+    .first<{ user_id: string }>();
+
+  let status = 'no_matching_user';
+  if (identity) {
+    await hardDeleteAccount(c, identity.user_id, 'gdpr_request');
+    await bumpMetric(c.env.DB, 'account_deleted');
+    status = 'user_data_deleted';
+  }
+
+  const confirmationCode = crypto.randomUUID().replace(/-/g, '').slice(0, 16).toUpperCase();
+  // NB : Workers Assets normalise les .html (307) — on sert directement l'URL sans extension.
+  const url = `${new URL(c.req.url).origin}/data-deletion?code=${confirmationCode}`;
+  return c.json({ url, confirmation_code: confirmationCode, status });
 });
 
 // ---------------------------------------------------------------------------
@@ -448,6 +611,31 @@ authRoutes.get('/account/export', async (c) => {
 // ---------------------------------------------------------------------------
 // RGPD — droit à l'effacement : DELETE /api/account (immédiat + trace J+30)
 // ---------------------------------------------------------------------------
+
+/** Suppression immédiate d'un compte : trace anonyme J+30, puis hard delete. */
+async function hardDeleteAccount(
+  c: Context<AppEnv>,
+  userId: string,
+  reason: 'user_request' | 'gdpr_request',
+): Promise<void> {
+  const now = Math.floor(Date.now() / 1000);
+
+  // 1) Traçabilité anonyme (purge automatique à J+30 par le cron).
+  await c.env.DB.prepare(
+    `INSERT INTO account_deletions (user_id_orig, reason, deleted_at, purge_at) VALUES (?, ?, ?, ?)`,
+  )
+    .bind(userId, reason, now, now + 30 * 86400)
+    .run();
+
+  // 2) Sessions révoquées puis supprimées ; identités OAuth déliées ; compte supprimé.
+  await revokeAllSessions(c, userId);
+  await c.env.DB.prepare(`DELETE FROM sessions WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM oauth_identities WHERE user_id = ?`).bind(userId).run();
+  // NOTE Étape 3 : purge Cloudinary des médias du compte avant le DELETE users
+  // (hook StorageService.purgeUser) — aucune donnée média à l'Étape 2.
+  await c.env.DB.prepare(`DELETE FROM users WHERE id = ?`).bind(userId).run();
+}
+
 authRoutes.delete('/account', async (c) => {
   const session = await requireAuth(c);
   const payload = (await c.req.json().catch(() => null)) as { confirm?: unknown } | null;
@@ -456,22 +644,7 @@ authRoutes.delete('/account', async (c) => {
     throw errors.badRequest('Confirmation explicite requise (confirm: true).');
   }
 
-  const now = Math.floor(Date.now() / 1000);
-
-  // 1) Traçabilité anonyme (purge automatique à J+30 par le cron).
-  await c.env.DB.prepare(
-    `INSERT INTO account_deletions (user_id_orig, reason, deleted_at, purge_at) VALUES (?, 'user_request', ?, ?)`,
-  )
-    .bind(session.userId, now, now + 30 * 86400)
-    .run();
-
-  // 2) Sessions révoquées puis supprimées ; compte supprimé (hard delete).
-  await revokeAllSessions(c, session.userId);
-  await c.env.DB.prepare(`DELETE FROM sessions WHERE user_id = ?`).bind(session.userId).run();
-  // NOTE Étape 3 : purge Cloudinary des médias du compte avant le DELETE users
-  // (hook StorageService.purgeUser) — aucune donnée média à l'Étape 2.
-  await c.env.DB.prepare(`DELETE FROM users WHERE id = ?`).bind(session.userId).run();
-
+  await hardDeleteAccount(c, session.userId, 'user_request');
   clearSessionCookie(c);
   await bumpMetric(c.env.DB, 'account_deleted');
   return c.json({ deleted: true });

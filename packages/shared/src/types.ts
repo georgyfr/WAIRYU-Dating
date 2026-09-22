@@ -62,6 +62,8 @@ export interface AuthConfigResponse {
   turnstileSiteKey: string | null;
   /** Google OAuth configuré côté serveur ? */
   googleEnabled: boolean;
+  /** Facebook Login configuré côté serveur ? */
+  facebookEnabled: boolean;
   /** Mode d'envoi des emails OTP : 'brevo' ou 'dev' (staging sans clé Brevo). */
   emailProvider: 'brevo' | 'dev';
 }
