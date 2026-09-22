@@ -1,0 +1,19 @@
+{
+  "name": "wairyu-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "wairyu — application de rencontre dual-mode (Classique & Invisible) 100% gratuite sur Cloudflare",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:web": "npm run build --workspace @wairyu/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "deploy:staging": "bash deploy.sh staging",
+    "deploy:prod": "bash deploy.sh production"
+  }
+}

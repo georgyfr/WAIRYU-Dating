@@ -1,0 +1,25 @@
+# Dépendances
+node_modules/
+
+# Builds
+dist/
+.wrangler/
+*.worker.js
+
+# Environnement & secrets — NE JAMAIS COMMITTER
+.env
+.env.*
+!.env.example
+*.local
+secrets/
+
+# Logs & OS
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+.vscode/
+*.swp

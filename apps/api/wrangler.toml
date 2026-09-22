@@ -1,0 +1,95 @@
+# wairyu API — Worker unique : API Hono + assets statiques du front (PWA)
+# Environnements : default = production (wairyu.workers.dev) · [env.staging]
+
+name = "wairyu"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ---------- Assets du front (React+Vite buildé) ----------
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# Toutes les routes /api/* passent d'abord par le Worker
+run_worker_first = ["/api/*", "/admin/*"]
+
+# ---------- D1 (prod) — IDs remplis par provisioning ----------
+[[d1_databases]]
+binding = "DB"
+database_name = "wairyu-prod"
+database_id = "8ff113a8-a81e-4bab-a1f3-7e2234dfc6d9"
+
+# ---------- KV (config lecture seule) ----------
+[[kv_namespaces]]
+binding = "CONFIG"
+id = "843f3469c6c74fca8da2c2f14a0f0dc7"
+
+# ---------- Durable Objects (1 conversation = 1 DO SQLite) ----------
+[[durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatRoom"]
+
+# ---------- Cron : purge quotidienne des sessions expirées + agrégation métriques ----------
+[triggers]
+crons = ["10 3 * * *"]
+
+# ---------- Observabilité (free tier) ----------
+[observability]
+enabled = true
+
+# ---------- Variables non sensibles (production) ----------
+[vars]
+ENVIRONMENT = "production"
+CLOUDINARY_CLOUD_NAME = "nm7lozr4"
+CLOUDINARY_ROOT_FOLDER = "wairyu/prod"
+USAGE_SAMPLE_RATE = "1"
+
+# ---------- Secrets (à poser via `wrangler secret put`) ----------
+# SESSION_HMAC_KEY        — clé HMAC 64 hex (sessions cookies)
+# CLOUDINARY_API_KEY      — clé API Cloudinary
+# CLOUDINARY_API_SECRET   — secret API Cloudinary (jamais côté client)
+
+# =====================================================================
+# STAGING — base D1 et KV séparées, worker wairyu-staging.workers.dev
+# =====================================================================
+[env.staging]
+name = "wairyu-staging"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.staging.assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/admin/*"]
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "wairyu-staging"
+database_id = "ac8675c1-ad57-4035-b27f-205175a66a55"
+
+[[env.staging.kv_namespaces]]
+binding = "CONFIG"
+id = "ee6f8fb8b72a49f69d754657ffaf3220"
+
+[[env.staging.durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+[env.staging.triggers]
+crons = ["40 3 * * *"]
+
+[env.staging.observability]
+enabled = true
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+CLOUDINARY_CLOUD_NAME = "nm7lozr4"
+CLOUDINARY_ROOT_FOLDER = "wairyu/test"
+USAGE_SAMPLE_RATE = "1"

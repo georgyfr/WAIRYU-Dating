@@ -7,7 +7,26 @@ Wairyu est une application de rencontre hybride avec deux modes complémentaires
 - **Mode Classique** — photos visibles, swipe, rapidité.
 - **Mode Invisible** — photos floutées, questionnaire progressif, conversation avant le visuel, révélation mutuelle et consentie des photos.
 
-**Infrastructure cible : 100 % sur l'offre gratuite de Cloudflare** (Workers, D1, R2, KV, Durable Objects, Workers AI, Cron Triggers, Turnstile, Web Push).
+**Infrastructure : 100 % sur l'offre gratuite** — Cloudflare (Workers, D1, KV, Durable Objects, Cron Triggers, Turnstile) + Cloudinary Free pour les médias (photos & voice notes privés, sans carte bancaire — voir `docs/STOCKAGE-CLOUDINARY.md`).
+
+---
+
+## Application en service
+
+| Environnement | URL |
+|---|---|
+| Production | https://wairyu.wairyu.workers.dev |
+| Staging | https://wairyu-staging.wairyu.workers.dev |
+
+Le monorepo (npm workspaces, TypeScript strict) :
+
+| Dossier | Contenu |
+|---|---|
+| `apps/api/` | Worker Cloudflare — API Hono, migrations D1, Durable Object `ChatRoom`, cron, métriques d'usage |
+| `apps/web/` | PWA React + Vite (marque v1 : Nunito, violet `#6C4AB6`, ambre `#F4A259`) |
+| `packages/shared/` | Types & constantes partagés (contrats API, conditions de révélation, limites free tier) |
+
+Déploiement : `CLOUDFLARE_API_TOKEN=… CLOUDFLARE_ACCOUNT_ID=… bash deploy.sh staging|production` (typecheck → build → migrations D1 → deploy).
 
 ---
 
@@ -19,6 +38,7 @@ Wairyu est une application de rencontre hybride avec deux modes complémentaires
 | `docs/ANALYSE-APPROFONDIE.md` | Analyse du projet, verdict de faisabilité, architecture Cloudflare gratuite corrigée (8 décisions d'architecture clés), budget de requêtes, modèle de données D1, cartographie de l'API |
 | `docs/PLAN-DE-REALISATION-12-ETAPES.md` | Plan de réalisation du début à la fin : 12 étapes détaillées avec sous-étapes, portes de validation, conformité RGPD, stratégie de test & lancement |
 | `etapes/` | Journal et livrables de chaque étape, poussés au fur et à mesure de leur achèvement |
+| `apps/` · `packages/` | Monorepo applicatif (API + PWA + partagé) |
 | `STATUS.md` | Tableau de bord de l'avancement des 12 étapes |
 
 ---
