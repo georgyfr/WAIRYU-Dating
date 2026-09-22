@@ -22,3 +22,14 @@
 | Date | Livraison | Contenu |
 |------|-----------|---------|
 | — | Initialisation du dépôt | Spécification v0.1 + Analyse approfondie + Plan de réalisation 12 étapes |
+| — | Décision d'architecture n°9 : stockage sans carte bancaire | R2 reporté (activation exige une carte) → **Cloudinary plan gratuit** pour photos + voice notes (assets authentifiés, URLs signées TTL ~15 min, module `StorageService` interchangeable) ; docs Analyse + Plan mises à jour |
+
+## Accès & comptes
+
+| Service | État | Note |
+|---|---|---|
+| GitHub (georgyfr/WAIRYU-Dating) | ✅ Actif | Dépôt officiel du projet |
+| Cloudflare — Workers, D1, KV, Durable Objects, Turnstile | ✅ Vérifié par tests réels | Sous-domaine réservé : `wairyu.workers.dev` |
+| Cloudflare — R2 | ⏸️ Reporté | Activation impossible sans carte bancaire → Cloudinary le remplace (Décision 9) |
+| Cloudinary (photos/voice notes) | ⏳ À créer | Inscription gratuite, email uniquement, aucune carte |
+| Brevo ou Resend (emails OTP) | ⏳ À créer | Inscription gratuite, plan gratuit 300/100 emails par jour |

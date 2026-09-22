@@ -60,7 +60,7 @@ En résumé : ne pas être « Tinder plus grand », mais **l'app que Tinder ne p
 | **Workers** (API) | 100 000 req/jour, 10 ms CPU | Toute la logique métier | ✅ Avec design économe (B.3) |
 | **Workers Assets** (front PWA) | Requêtes **gratuites et illimitées** | L'app React servie aux navigateurs | ✅ Excellent |
 | **D1** (SQL) | 5 M lectures/jour, 100 000 écritures/jour, 5 Go total | Profils, réponses, swipes, matches | ✅ Texte seulement ≈ 100 Ko/profil → ~50 000 profils |
-| **R2** (objets) | 10 Go stockage, 1 M écritures/mois, 10 M lectures/mois, egress gratuit | Photos + voice notes | ✅ Avec compression client (B.2, décision n°3) |
+| **R2** (objets) | 10 Go stockage — **mais l'activation du service exige une carte bancaire** | Photos + voice notes — **reporté** : remplacé par Cloudinary tant qu'aucune carte n'est disponible (Décision 9) | ⚠️→✅ contourné |
 | **Durable Objects** | 100 000 req/jour, 5 Go (SQLite) | Chat temps réel + **tâches asynchrones via `alarm()`** | ✅ La clé du temps réel gratuit |
 | **KV** | 100 000 lectures/jour, **1 000 écritures/jour** | Lecture seule uniquement (config, feature flags) | ⚠️ Jamais en écriture chaude |
 | **Workers AI** | 10 000 Neurons/jour | Réservé aux cas critiques post-lancement | ⚠️ Quasi inutilisé au MVP |
@@ -97,6 +97,9 @@ Aucun SMS gratuit n'existe ; l'OTP email via un service d'emails gratuit (Brevo 
 
 **Décision 8 — Monétisation : câblée mais éteinte.**
 Tous les gateways Wairyu+ codés derrière des feature flags désactivés, structure d'entitlements en base, Stripe Checkout en mode test (gratuit) prêt à activer. Zéro euro consommé, activation en une variable.
+
+**Décision 9 — Stockage photos/voice notes : Cloudinary (gratuit, sans carte) tant que R2 ne peut pas être activé.**
+L'activation de R2 sur un compte Cloudflare exige l'ajout d'un moyen de paiement, même pour rester dans le palier gratuit. Pour garantir un lancement à 0 € sans carte bancaire, le stockage des médias démarre sur **Cloudinary plan gratuit** : ~25 Go de stockage + ~25 Go de bande passante/mois (quota exact à revalider à l'inscription), qui héberge **images ET audio** (voice notes), génère les miniatures par transformation à la volée, et propose des **assets authentifiés avec URLs signées à durée limitée** — le même modèle de sécurité que R2 : le Worker autorise chaque requête, l'URL de livraison expire en ~15 minutes, et les photos du Mode Invisible restent inaccessibles sans révélation. Les lectures de médias ne passent pas par le Worker (quota de requêtes préservé). Capacité ≈ 15 000-18 000 utilisateurs avec 6 photos chacun. Le code isole le stockage derrière une interface (`StorageService`) : le jour où une carte est disponible, la bascule vers R2 se fait en changeant un seul module. RGPD : Cloudinary fournit un DPA en ligne ; le service est documenté comme sous-traitant dans le registre des traitements.
 
 ### B.3 Le budget de requêtes — le nerf de la guerre
 

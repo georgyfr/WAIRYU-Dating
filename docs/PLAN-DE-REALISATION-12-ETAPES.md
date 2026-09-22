@@ -22,7 +22,7 @@
 
 **Sous-étapes :**
 1. Initialiser le monorepo (structure C.1 de l'analyse), linter, formateur, TypeScript strict.
-2. Provisionner via wrangler : Worker (API), D1 (une base prod + une staging), R2 (bucket privé), KV (config lecture seule), la classe Durable Object `ChatRoom`, Cron Triggers, secrets (clé HMAC, clés VAPID).
+2. Provisionner via wrangler : Worker (API), D1 (une base prod + une staging), KV (config lecture seule), la classe Durable Object `ChatRoom`, Cron Triggers, secrets (clé HMAC, clés VAPID, secrets Cloudinary). Créer le compte Cloudinary gratuit (photos/voice notes — Décision 9 de l'analyse, aucune carte requise).
 3. Squelette d'API Hono : middleware CORS, gestion d'erreurs unifiée, logging, middleware d'authentification par cookie signé.
 4. Front React+Vite servi par le même Worker (assets statiques), page « Hello Wairyu » déployée sur `*.workers.dev`.
 5. CI simple : script `deploy.sh` (test → migration D1 → deploy staging → deploy prod avec confirmation).
@@ -51,8 +51,8 @@
 
 **Sous-étapes :**
 1. Création de profil guidée : nom, année de naissance, genre, orientation (consentement explicite dédié), ville + géoloc approximative, intention, bio courte, 3 prompts.
-2. **Pipeline photo client** : sélection → recadrage → compression WebP ~1024 px (~150-300 Ko) + vignette 200 px → demande de presigned URL → upload direct R2 → commit en D1. Max 6 photos, 1 obligatoire.
-3. Service de presigned URLs avec contrôle d'autorisation par photo : photos du Mode Classique servibles par tout utilisateur actif authentifié ; photos du Mode Invisible **seulement** après révélation accordée ou visibilité mutuelle.
+2. **Pipeline photo client** : sélection → recadrage → compression WebP ~1024 px (~150-300 Ko) → demande de signature d'upload au Worker → upload direct vers Cloudinary (vignette 200 px générée automatiquement par transformation Cloudinary) → commit en D1. Max 6 photos, 1 obligatoire.
+3. Service d'URLs de livraison signées (Cloudinary assets authentifiés, TTL ~15 min) avec contrôle d'autorisation par photo : photos du Mode Classique servibles par tout utilisateur actif authentifié ; photos du Mode Invisible **seulement** après révélation accordée ou visibilité mutuelle.
 4. Floutage Mode Invisible en CSS/SVG (aucune image floutée stockée).
 5. Préférences de découverte (âge, distance, genres, intention) + choix du mode par défaut avec écran explicatif.
 6. Gestion d'ordre, suppression, photo principale.
@@ -93,7 +93,7 @@
 
 **Sous-étapes :**
 1. Durable Object `ChatRoom` : WebSocket par participant, persistance des messages dans le SQLite du DO, index par conversation, accusés de lecture, présence.
-2. Écran de chat unifié (canvas commun, spécification §4.9) : texte, emojis, réactions, voice notes (MediaRecorder → Opus ~16 kbps → presigned R2 → message audio), indicateur de saisie.
+2. Écran de chat unifié (canvas commun, spécification §4.9) : texte, emojis, réactions, voice notes (MediaRecorder → Opus ~16 kbps → upload signé Cloudinary → message audio), indicateur de saisie.
 3. Chargeur d'historique paginé (au-delà des 200 derniers messages dans le DO, requête à la demande).
 4. **Compteurs de révélation** maintenus dans le DO : messages échangés ≥ 15 ET ancienneté ≥ 7 jours → carte de révélation disponible, visible des deux côtés.
 5. **Flux de révélation** : demande → consentement explicite de l'autre → déverrouillage des photos pour les deux (presigned URLs désormais accordées) → écran de feedback post-révélation (Continuer / Ami / Pas pour moi) qui nourrit les données de matching.
@@ -170,7 +170,7 @@
 | Signal observé | Action payante |
 |---|---|
 | > 70 % des requêtes Workers 3 jours de suite | Workers 5 $/mois |
-| > 2 000 utilisateurs avec photos | R2 payant (~0,015 $/Go) |
+| > 15 000 utilisateurs avec photos OU dépassement des quotas Cloudinary | Activer R2 (carte requise, ~0,015 $/Go) et basculer le module `StorageService` |
 | Base D1 > 3,5 Go | D1 5 $/mois |
 | Besoin de modération IA à l'échelle | Workers AI 5 $/mois |
 | Total facture ~20-30 $/mois | Signale qu'il est temps d'activer Wairyu+ (Étape 8) |
@@ -185,7 +185,7 @@
 |---|---|
 | Base légale par traitement | Contrat (compte), consentement explicite (orientation, photos, notifications), intérêt légitime (sécurité, anti-fraude) — cartographiées dans les CGU |
 | Registre des traitements | Tableau simple rédigé à l'Étape 0 (finalités, données, durée, destinataires) |
-| Sous-traitants | Cloudflare (DPA en ligne), Brevo/Resend (DPA), aucun autre au MVP |
+| Sous-traitants | Cloudflare (DPA en ligne), Cloudinary (DPA en ligne — photos/voice notes), Brevo/Resend (DPA), aucun autre au MVP |
 | Droit d'accès/export | Endpoint « exporter mes données » (JSON téléchargeable) — Étape 2 |
 | Droit à l'effacement | Suppression de compte dur + purge R2/D1 + délai de grâce 30 j |
 | Données sensibles (art. 9) | Orientation et données culturelles/religieuses : cases de consentement séparées et refusables sans perte de fonctionnalités essentielles |
