@@ -10,6 +10,7 @@ import { devCors } from './middleware/cors';
 import { usageMiddleware } from './middleware/usage';
 import { healthRoutes } from './routes/health';
 import { adminRoutes } from './routes/admin';
+import { authRoutes } from './routes/auth';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -34,16 +35,26 @@ app.use('/admin/*', usageMiddleware('1'));
 // ---- Session (cookie signé → D1) ----
 app.use('/api/*', sessionMiddleware);
 
+// ---- Admin : jeton porteur si ADMIN_TOKEN posé (Étape 2) ----
+app.use('/admin/*', async (c, next) => {
+  const expected = c.env.ADMIN_TOKEN;
+  if (expected) {
+    const auth = c.req.header('authorization') ?? '';
+    const provided = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+    if (provided !== expected) {
+      const id = c.get('reqId');
+      return c.json(errorBody('unauthorized', 'Jeton admin requis.', id), 401);
+    }
+  }
+  await next();
+});
+
 // ---- Routes ----
 app.route('/api', healthRoutes);
+app.route('/api', authRoutes);
 app.route('/admin', adminRoutes);
 
-// Démonstration du contrat d'erreur authentifié (remplacé en Étape 2)
-app.get('/api/me', (c) => {
-  const session = c.get('session');
-  if (!session) throw errors.unauthorized();
-  return c.json({ user_id: session.userId });
-});
+// (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)
 
 // ---- Gestion d'erreurs unifiée ----
 app.onError((err, c) => {
@@ -72,23 +83,43 @@ export default {
     return env.ASSETS.fetch(request);
   },
 
-  /** Cron quotidien : purge des sessions expirées (et plus tard, agrégations). */
+  /** Cron quotidien : purges (sessions, codes OTP, fenêtres rate-limit, traces RGPD). */
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
     ctx.waitUntil(
       (async () => {
         const now = Math.floor(Date.now() / 1000);
-        const res = await env.DB.prepare(
-          `DELETE FROM sessions WHERE expires_at < ? OR revoked_at IS NOT NULL AND revoked_at < ?`,
-        )
-          .bind(now - 86400 * 7, now - 86400 * 30)
-          .run();
-        console.log(JSON.stringify({ cron: 'purge-sessions', deleted: res.meta.changes }));
+        const day = new Date().toISOString().slice(0, 10);
+
+        const [sessions, codes, windows, tombstones] = await Promise.all([
+          env.DB.prepare(
+            `DELETE FROM sessions WHERE expires_at < ? OR revoked_at IS NOT NULL AND revoked_at < ?`,
+          )
+            .bind(now - 86400 * 7, now - 86400 * 30)
+            .run(),
+          // Codes OTP : consommés/expirés depuis > 24 h
+          env.DB.prepare(`DELETE FROM auth_codes WHERE expires_at < ?`).bind(now - 86400).run(),
+          // Fenêtres rate-limit clôturées depuis > 2 h
+          env.DB.prepare(`DELETE FROM rate_limits WHERE window_start < ?`).bind(now - 7200).run(),
+          // Traces de suppression > 30 j (RGPD — fin de conservation)
+          env.DB.prepare(`DELETE FROM account_deletions WHERE purge_at < ?`).bind(now).run(),
+        ]);
+        console.log(
+          JSON.stringify({
+            cron: 'purge-daily',
+            deleted: {
+              sessions: sessions.meta.changes,
+              auth_codes: codes.meta.changes,
+              rate_windows: windows.meta.changes,
+              tombstones: tombstones.meta.changes,
+            },
+          }),
+        );
         // Marque la métrique du jour (prouve le cron)
         await env.DB.prepare(
-          `INSERT INTO metrics_daily (day, metric, value) VALUES (?, 'cron_purge_sessions', 1)
+          `INSERT INTO metrics_daily (day, metric, value) VALUES (?, 'cron_purge_daily', 1)
            ON CONFLICT (day, metric) DO UPDATE SET value = value + 1`,
         )
-          .bind(new Date().toISOString().slice(0, 10))
+          .bind(day)
           .run();
       })(),
     );

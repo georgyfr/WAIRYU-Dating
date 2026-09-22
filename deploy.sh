@@ -4,7 +4,7 @@
 set -euo pipefail
 
 TARGET="${1:-staging}"
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 API_DIR="$ROOT/apps/api"
 
 : "${CLOUDFLARE_API_TOKEN:?Variable CLOUDFLARE_API_TOKEN manquante}"
@@ -25,7 +25,7 @@ echo "  2/4 build front (Vite)…"
 # 3. Migrations D1 (base de l'environnement cible)
 DB_NAME=$([ "$TARGET" = "production" ] && echo "wairyu-prod" || echo "wairyu-staging")
 echo "  3/4 migrations D1 ($DB_NAME)…"
-(cd "$API_DIR" && npx wrangler d1 migrations apply "$DB_NAME" --remote)
+(cd "$API_DIR" && npx wrangler d1 migrations apply "$DB_NAME" --remote $([ "$TARGET" = "staging" ] && echo --env staging))
 
 # 4. Déploiement du Worker
 echo "  4/4 deploy Worker ($TARGET)…"

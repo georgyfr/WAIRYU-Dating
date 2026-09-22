@@ -43,6 +43,21 @@ export async function signSessionCookie(sid: string, exp: number, key: string): 
   return `${payload}.${await hmac(payload, key)}`;
 }
 
+/** Signe une valeur opaque (ex. état OAuth) — pas de sémantique d'expiration. */
+export async function signValue(value: string, key: string): Promise<string> {
+  return hmac(value, key);
+}
+
+/** Vérifie la signature d'une valeur signée par signValue (temps constant). */
+export async function verifySignature(
+  value: string,
+  sig: string,
+  key: string,
+): Promise<boolean> {
+  const expected = await hmac(value, key);
+  return timingSafeEqual(sig, expected);
+}
+
 /** Vérifie un cookie signé ; retourne null si invalide ou expiré. */
 export async function verifySessionCookie(
   value: string | undefined,

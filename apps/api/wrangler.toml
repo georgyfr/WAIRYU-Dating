@@ -48,11 +48,18 @@ ENVIRONMENT = "production"
 CLOUDINARY_CLOUD_NAME = "nm7lozr4"
 CLOUDINARY_ROOT_FOLDER = "wairyu/prod"
 USAGE_SAMPLE_RATE = "1"
+TURNSTILE_SITE_KEY = "0x4AAAAAAFAZiokmgNh2Tq9W"
 
 # ---------- Secrets (à poser via `wrangler secret put`) ----------
 # SESSION_HMAC_KEY        — clé HMAC 64 hex (sessions cookies)
 # CLOUDINARY_API_KEY      — clé API Cloudinary
 # CLOUDINARY_API_SECRET   — secret API Cloudinary (jamais côté client)
+# TURNSTILE_SECRET        — secret Turnstile (vérification serveur, Étape 2)
+# ADMIN_TOKEN             — jeton protégeant /admin/* (Étape 2)
+# BREVO_API_KEY           — envoi des emails OTP (Étape 2, à venir)
+# EMAIL_FROM              — expéditeur vérifié Brevo (Étape 2, à venir)
+# GOOGLE_CLIENT_ID        — OAuth Google (préparé, à venir)
+# GOOGLE_CLIENT_SECRET    — OAuth Google (préparé, à venir)
 
 # =====================================================================
 # STAGING — base D1 et KV séparées, worker wairyu-staging.workers.dev
@@ -93,3 +100,4 @@ ENVIRONMENT = "staging"
 CLOUDINARY_CLOUD_NAME = "nm7lozr4"
 CLOUDINARY_ROOT_FOLDER = "wairyu/test"
 USAGE_SAMPLE_RATE = "1"
+TURNSTILE_SITE_KEY = "0x4AAAAAAFAZiokmgNh2Tq9W"
