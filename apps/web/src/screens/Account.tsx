@@ -1,16 +1,26 @@
 /**
  * Écran compte (authentifié, Étape 2) — informations, export RGPD,
  * déconnexions et suppression de compte (droit à l'effacement immédiat).
- * Le profil complet (photos, questionnaire) arrive aux Étapes 3-4.
+ * Étape 6 : section Notifications (Web Push VAPID — nouveau message, match,
+ * demande de révélation) avec désabonnement en 1 clic (respect des réglages).
  */
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
-import type { MeResponse } from '@wairyu/shared';
+import type { MeResponse, PushConfigResponse } from '@wairyu/shared';
 
 interface Props {
   me: MeResponse;
   onLoggedOut: () => void;
+}
+
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = window.atob(base64);
+  const output = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) output[i] = raw.charCodeAt(i);
+  return output;
 }
 
 export function Account({ me, onLoggedOut }: Props) {
@@ -61,6 +71,94 @@ export function Account({ me, onLoggedOut }: Props) {
     // Le serveur renvoie Content-Disposition: attachment.
     window.location.href = '/api/account/export';
     setMessage('Ton export JSON est en cours de téléchargement.');
+  }
+
+  // ------------------------------------------------------------------
+  // Notifications Web Push (Étape 6.8)
+  // ------------------------------------------------------------------
+
+  const [pushEnabled, setPushEnabled] = useState<boolean | null>(null);
+  const [pushSupported] = useState<boolean>(
+    typeof window !== 'undefined' &&
+      'serviceWorker' in navigator &&
+      'PushManager' in window &&
+      'Notification' in window,
+  );
+
+  const refreshPush = useCallback(async () => {
+    try {
+      const cfg = await api<PushConfigResponse>('/api/push/key');
+      if (!cfg.enabled || !cfg.publicKey) {
+        setPushEnabled(false);
+        return;
+      }
+      const reg = await navigator.serviceWorker.getRegistration();
+      const sub = reg ? await reg.pushManager.getSubscription() : null;
+      setPushEnabled(sub !== null);
+    } catch {
+      setPushEnabled(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshPush();
+  }, [refreshPush]);
+
+  async function enablePush() {
+    setBusy(true);
+    setError(null);
+    try {
+      const cfg = await api<PushConfigResponse>('/api/push/key');
+      if (!cfg.enabled || !cfg.publicKey) {
+        setMessage('Les notifications ne sont pas encore activées sur ce serveur.');
+        setBusy(false);
+        return;
+      }
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        setMessage('Permission refusée — tu pourras la réactiver dans ton navigateur.');
+        setBusy(false);
+        return;
+      }
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      const existing = await reg.pushManager.getSubscription();
+      const sub =
+        existing ??
+        (await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(cfg.publicKey) as unknown as BufferSource,
+        }));
+      const j = sub.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } };
+      await api('/api/push/subscribe', {
+        json: { endpoint: j.endpoint, keys: { p256dh: j.keys?.p256dh, auth: j.keys?.auth } },
+      });
+      setPushEnabled(true);
+      setMessage('Notifications activées — messages, matchs et révélations t’attendront ici.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Activation impossible sur ce navigateur.');
+    }
+    setBusy(false);
+  }
+
+  async function disablePush() {
+    setBusy(true);
+    try {
+      const reg = await navigator.serviceWorker.getRegistration();
+      const sub = reg ? await reg.pushManager.getSubscription() : null;
+      if (sub) {
+        const j = sub.toJSON() as { endpoint?: string };
+        if (j.endpoint) {
+          await api('/api/push/unsubscribe', { json: { endpoint: j.endpoint } }).catch(() => undefined);
+        }
+        await sub.unsubscribe();
+      }
+      setPushEnabled(false);
+      setMessage('Notifications désactivées.');
+    } catch {
+      setError('Désactivation impossible — réessaie.');
+    }
+    setBusy(false);
   }
 
   const created = new Date(me.createdAt * 1000).toLocaleDateString('fr-FR', {
@@ -122,6 +220,31 @@ export function Account({ me, onLoggedOut }: Props) {
 
       <PersonalityBadge onOpen={() => setShowPers((v) => !v)} />
       {showPers && <PersonalityProposal refine />}
+
+      {/* ---- Notifications Web Push (Étape 6.8) ---- */}
+      {pushSupported && (
+        <div className="profile-cta">
+          <div>
+            <strong>Notifications</strong>
+            <p className="hint">
+              {pushEnabled
+                ? 'Tu reçois une alerte pour les nouveaux messages (hors conversation ouverte), matchs et demandes de révélation.'
+                : 'Active-les pour être prévenu·e d’un nouveau message, match ou demande de révélation — même app fermée.'}
+            </p>
+          </div>
+          <div className="btn-col">
+            {!pushEnabled ? (
+              <button type="button" className="btn primary" onClick={() => void enablePush()} disabled={busy}>
+                Activer les notifications
+              </button>
+            ) : (
+              <button type="button" className="btn ghost" onClick={() => void disablePush()} disabled={busy}>
+                Désactiver
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {message && <p className="notice">{message}</p>}
 

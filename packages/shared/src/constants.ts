@@ -80,6 +80,34 @@ export const DISCOVERY = {
   swipeThresholdPx: 90,
 } as const;
 
+// ---------------------------------------------------------------------------
+// Étape 6 — Chat temps réel & révélation
+// ---------------------------------------------------------------------------
+
+export const CHAT = {
+  /** Taille de la première page d'historique (le DO garde tout, paginé). */
+  historyPageSize: 200,
+  /** Longueur maximale d'un message texte. */
+  maxTextLength: 2000,
+  /** Durée maximale d'une voice note (secondes). */
+  voiceMaxSeconds: 60,
+  /** Octets max d'une voice note reçue par l'API (~60 s opus mono). */
+  voiceMaxBytes: 512 * 1024,
+  /** Durée du ticket WebSocket (secondes) — auth sans cookie pour WS clients. */
+  wsTicketTtlSeconds: 120,
+  /** Anti-spam en mémoire DO : messages par minute et par utilisateur. */
+  messagesPerMinute: 30,
+  /** Décalage de flou : seuils de révélation (§4.5) — redondants avec REVEAL. */
+  revealMinMessages: REVEAL.minMessages,
+  revealMinDays: REVEAL.minDays,
+} as const;
+
+/** Réactions emoji proposées (canvas commun §4.9 — tap long pour plus). */
+export const CHAT_REACTIONS = ['👍', '❤️', '😂', '😮', '😢', '🙏'] as const;
+
+/** Feedback post-révélation (nourrit les données de matching). */
+export const REVEAL_FEEDBACKS = ['continue', 'friend', 'not_for_me'] as const;
+
 /** Bibliothèque de prompts de personnalité — l'utilisateur en choisit 3. */
 export const PROMPT_LIBRARY: { key: string; label: string }[] = [
   { key: 'ideal_evening', label: 'Mon idée de soirée idéale ?' },

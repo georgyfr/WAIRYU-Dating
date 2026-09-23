@@ -28,6 +28,7 @@ import { errors } from '../lib/errors';
 import { RATE_RULES, hitRateLimit, readWindowCount, rateLimitedError } from '../lib/ratelimit';
 import { signedMediaUrl } from '../lib/cloudinary';
 import { generateFeedPage } from '../lib/discovery';
+import { sendPushToUser } from '../lib/push';
 import { validateEnum } from '../lib/profile';
 import { PHOTO_THUMB_WIDTH, PHOTO_BLUR_WIDTH, DISCOVERY } from '@wairyu/shared';
 import type {
@@ -157,29 +158,40 @@ async function createMatchWithConversation(
   bId: string,
   origin: 'like' | 'super' | 'invisible_request',
   conversationMode: 'classic' | 'invisible',
-): Promise<{ matchId: string; conversationMode: 'classic' | 'invisible' }> {
+): Promise<{ matchId: string; conversationId: string; conversationMode: 'classic' | 'invisible' }> {
   const [userA, userB] = [aId, bId].sort((x, y) => x.localeCompare(y));
   const matchId = crypto.randomUUID();
   await c.env.DB.prepare(
     `INSERT INTO matches (id, user_a_id, user_b_id, origin, created_at)
-     VALUES (?, ?, ?, ?, ?) ON CONFLICT (user_a_id, user_b_id) DO NOTHING`,
+     VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT (user_a_id, user_b_id) DO UPDATE SET
+       unmatched_at = NULL, unmatched_by = NULL,
+       origin = excluded.origin, created_at = excluded.created_at`,
   )
     .bind(matchId, userA, userB, origin, Math.floor(Date.now() / 1000))
     .run();
-  // Le conflit unique (paire déjà matchée) est absorbé : on relit le match réel.
+  // Étape 6 — re-match après unmatch : le CONFLIT de paire réactive le match
+  // (l'historique de la conversation est conservé, §4.8 « jamais de perte ») ;
+  // le DO redevient accessible (le helper chatContext repasse reset:true).
   const match = await c.env.DB.prepare(
     `SELECT id FROM matches WHERE user_a_id = ? AND user_b_id = ? AND unmatched_at IS NULL`,
   )
     .bind(userA, userB)
     .first<{ id: string }>();
   if (!match) throw errors.internal('Création du match impossible.');
+  const conversationId = crypto.randomUUID();
   await c.env.DB.prepare(
     `INSERT INTO conversations (id, match_id, mode, created_at)
      VALUES (?, ?, ?, ?) ON CONFLICT (match_id) DO NOTHING`,
   )
-    .bind(crypto.randomUUID(), match.id, conversationMode, Math.floor(Date.now() / 1000))
+    .bind(conversationId, match.id, conversationMode, Math.floor(Date.now() / 1000))
     .run();
-  return { matchId: match.id, conversationMode };
+  // Re-match : la conversation d'origine est CONSERVÉE (historique §4.8) —
+  // on la relit pour toujours renvoyer la conversation réelle.
+  const conv = await c.env.DB.prepare(`SELECT id FROM conversations WHERE match_id = ?`)
+    .bind(match.id)
+    .first<{ id: string }>();
+  return { matchId: match.id, conversationId: conv?.id ?? conversationId, conversationMode };
 }
 
 // ---------------------------------------------------------------------------
@@ -277,6 +289,14 @@ discoverRoutes.post('/discover/swipe', async (c) => {
       matched = true;
       matchId = res.matchId;
       conversationMode = res.conversationMode;
+      // Étape 6.8 — push « nouveau match » à l'AUTRE (le swipeur voit la
+      // modale in-app ; best-effort, jamais bloquant).
+      void sendPushToUser(c.env, target.id, {
+        title: 'C’est un match !',
+        body: `${target.display_name ?? 'Quelqu’un'} a liké aussi — ouvrez la conversation.`,
+        tag: `match-${res.matchId}`,
+        url: `#/chat/${res.conversationId ?? ''}`,
+      });
     }
   }
 
@@ -400,6 +420,13 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
       )
         .bind(res.matchId, Math.floor(Date.now() / 1000), existing.id)
         .run();
+      // Push « nouveau match » au premier demandeur (existing.from_user).
+      void sendPushToUser(c.env, existing.from_user, {
+        title: 'C’est un match !',
+        body: 'Vous avez demandé à discuter mutuellement — la conversation est ouverte.',
+        tag: `match-${res.matchId}`,
+        url: `#/chat/${res.conversationId}`,
+      });
       const body: InvisibleRequestResponse = {
         ok: true,
         status: 'accepted',
@@ -474,6 +501,14 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
   )
     .bind(res.matchId, Math.floor(Date.now() / 1000), req.id)
     .run();
+
+  // Push « nouveau match » au DEMANDEUR (l'accepteur voit la réponse in-app).
+  void sendPushToUser(c.env, req.from_user, {
+    title: 'C’est un match !',
+    body: 'Ta demande « Discuter » a été acceptée — la conversation est ouverte.',
+    tag: `match-${res.matchId}`,
+    url: `#/chat/${res.conversationId}`,
+  });
 
   const body: InvisibleRespondResponse = {
     ok: true,

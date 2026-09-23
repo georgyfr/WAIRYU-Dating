@@ -58,6 +58,22 @@ export const RATE_RULES = {
   discoverGatewayUser: { scope: 'disc:gate:user', windowSeconds: 3600, max: 30 },
   /** Top Compatibilité : 30 / heure (hors quota feed — matérialisé en D1). */
   discoverTopUser: { scope: 'disc:top:user', windowSeconds: 3600, max: 30 },
+
+  // --- Étape 6 : chat & révélation ---
+  /** Envoi de messages en FALLBACK HTTP (le WS a son anti-spam DO). 240 / h. */
+  chatSendUser: { scope: 'chat:send:user', windowSeconds: 3600, max: 240 },
+  /** Uploads de voice notes : 30 / heure. */
+  chatVoiceUser: { scope: 'chat:voice:user', windowSeconds: 3600, max: 30 },
+  /** Demandes de révélation : 10 / heure (le seuil ≥15 msg / 7 j borne déjà). */
+  chatRevealUser: { scope: 'chat:rev:user', windowSeconds: 3600, max: 10 },
+  /** Réponses (révélation) + feedbacks + passerelles de chat : 60 / heure. */
+  chatRespondUser: { scope: 'chat:resp:user', windowSeconds: 3600, max: 60 },
+  /** Unmatch / blocage : 20 / heure. */
+  chatUnmatchUser: { scope: 'chat:unm:user', windowSeconds: 3600, max: 20 },
+  /** Abonnements push (subscribe/unsubscribe) : 30 / heure. */
+  pushUser: { scope: 'push:sub:user', windowSeconds: 3600, max: 30 },
+  /** Tickets WebSocket : 60 / heure (reconnexions tolérées largement). */
+  chatTicketUser: { scope: 'chat:tk:user', windowSeconds: 3600, max: 60 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

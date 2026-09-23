@@ -14,6 +14,8 @@ import { ARCHETYPES, type MatchListResponse } from '@wairyu/shared';
 
 interface Props {
   onBack: () => void;
+  /** Ouvre le chat temps réel (Étape 6) — conversation par id. */
+  onOpenChat: (conversationId: string) => void;
 }
 
 const ORIGIN_LABELS: Record<string, string> = {
@@ -22,7 +24,7 @@ const ORIGIN_LABELS: Record<string, string> = {
   invisible_request: 'Demande « Discuter » acceptée',
 };
 
-export function Matches({ onBack }: Props) {
+export function Matches({ onBack, onOpenChat }: Props) {
   const [data, setData] = useState<MatchListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
@@ -152,7 +154,7 @@ export function Matches({ onBack }: Props) {
               </p>
               {m.other.photoBlurred && m.conversationMode === 'invisible' && (
                 <p className="hint">
-                  Photos re-floutées jusqu’à la révélation mutuelle (≥ 15 messages et 7 jours — Étape 6).
+                  Photos re-floutées jusqu’à la révélation mutuelle (≥ 15 messages et 7 jours).
                 </p>
               )}
 
@@ -190,26 +192,13 @@ export function Matches({ onBack }: Props) {
                 </div>
               )}
 
-              {/* Détail conversation (chat réel = Étape 6) */}
+              {/* Chat temps réel (Étape 6) */}
               <button
-                type="button" className="btn ghost why-toggle"
-                onClick={() => setOpen((v) => (v === m.matchId ? null : m.matchId))}
+                type="button" className="btn primary why-toggle"
+                onClick={() => onOpenChat(m.conversationId)}
               >
-                {open === m.matchId ? 'Masquer' : 'Voir la conversation'}
+                Ouvrir le chat →
               </button>
-              {open === m.matchId && (
-                <div className="why-box">
-                  <p>
-                    Conversation <strong>{m.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}</strong>{' '}
-                    créée le {new Date(m.createdAt * 1000).toLocaleDateString('fr-FR')}.
-                  </p>
-                  <p className="hint">
-                    Le chat temps réel (messages, voice notes, compteurs de révélation) ouvre à
-                    l’Étape 6 — ton match et son mode sont déjà conservés ici, la bascule de mode
-                    ne touchera jamais à cet historique (§4.8).
-                  </p>
-                </div>
-              )}
             </div>
           </article>
         ))}

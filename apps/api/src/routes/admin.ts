@@ -100,3 +100,33 @@ adminRoutes.post('/run-top', async (c) => {
   const result = await computeDailyTop(c.env, { maxUsers: 200 });
   return c.json({ ok: true, ...result });
 });
+
+/**
+ * Étape 6 — STAGING UNIQUEMENT : recule la date de création d'une conversation
+ * (smoke tests : franchir le seuil « 7 jours » de la révélation §4.5 sans
+ * attendre). La manipulation d'age est bornée à 30 jours et reste sans effet
+ * en production (garde ENVIRONMENT === 'staging').
+ */
+adminRoutes.post('/backdate-conversation', async (c) => {
+  if (c.env.ENVIRONMENT !== 'staging') {
+    return c.json({ error: { code: 'not_found', message: 'Réservé au staging.', req_id: c.get('reqId') } }, 404);
+  }
+  const payload = (await c.req.json().catch(() => null)) as {
+    conversationId?: unknown;
+    days?: unknown;
+  } | null;
+  const conversationId = typeof payload?.conversationId === 'string' ? payload.conversationId : '';
+  const days = Math.max(0, Math.min(30, Number(payload?.days) || 0));
+  if (!conversationId || days <= 0) {
+    return c.json(
+      { error: { code: 'bad_request', message: 'conversationId + days (>0, ≤30) requis.', req_id: c.get('reqId') } },
+      400,
+    );
+  }
+  const res = await c.env.DB.prepare(
+    `UPDATE conversations SET created_at = created_at - ? WHERE id = ?`,
+  )
+    .bind(days * 86400, conversationId)
+    .run();
+  return c.json({ ok: res.meta.changes === 1, daysBack: days });
+});

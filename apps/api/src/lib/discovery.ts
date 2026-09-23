@@ -279,6 +279,12 @@ export async function generateFeedPage(
          SELECT 1 FROM invisible_requests ir2
          WHERE ir2.from_user = u.id AND ir2.to_user = ?1 AND ir2.status = 'accepted'
        )
+       -- Étape 6 : un blocage (dans un sens OU dans l'autre) sort la paire
+       -- du pool pour toujours (unmatch « en 1 clic », plan 6.7).
+       AND NOT EXISTS (
+         SELECT 1 FROM blocks b
+         WHERE (b.user_id = ?1 AND b.blocked_id = u.id) OR (b.user_id = u.id AND b.blocked_id = ?1)
+       )
        ${onlyFilter}
      LIMIT ?5`,
   )

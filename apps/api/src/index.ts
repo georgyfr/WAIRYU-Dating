@@ -17,6 +17,8 @@ import { questionnaireRoutes } from './routes/questionnaire';
 import { personalityRoutes } from './routes/personality';
 import { feedRoutes } from './routes/feed';
 import { discoverRoutes } from './routes/discover';
+import { chatRoutes } from './routes/chat';
+import { pushRoutes } from './routes/push';
 import { computeDailyTop } from './lib/discovery';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
@@ -65,6 +67,8 @@ app.route('/api', questionnaireRoutes);
 app.route('/api', personalityRoutes);
 app.route('/api', feedRoutes);
 app.route('/api', discoverRoutes);
+app.route('/api', chatRoutes);
+app.route('/api', pushRoutes);
 app.route('/admin', adminRoutes);
 
 // (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)

@@ -446,3 +446,107 @@ export interface TopResponse {
   items: FeedProfile[];
   note: string;
 }
+
+// ---------------------------------------------------------------------------
+// Étape 6 — Chat temps réel & révélation
+// ---------------------------------------------------------------------------
+
+export type ChatMessageKind = 'text' | 'voice' | 'system';
+
+/** Un message du chat (DO SQLite, séquence monotone par conversation). */
+export interface ChatMessageDto {
+  /** Séquence monotone dans la conversation (curseur d'historique + accusés). */
+  seq: number;
+  senderId: string;
+  kind: ChatMessageKind;
+  /** Texte du message, public_id Cloudinary (voice) ou clé d'événement système. */
+  body: string;
+  /** Durée en ms d'une voice note (null sinon). */
+  durationMs: number | null;
+  /** URL signée de livraison (voice) — générée côté API à la lecture. */
+  url: string | null;
+  createdAt: number;
+}
+
+export interface ChatHistoryResponse {
+  conversationId: string;
+  conversationMode: 'classic' | 'invisible';
+  /** Messages par ordre croissant de seq (page). */
+  messages: ChatMessageDto[];
+  /** true = des messages plus anciens existent (charger avec ?before=seq). */
+  hasMore: boolean;
+  /** Dernier seq marqué « vu » par l'AUTRE (accusés de lecture). */
+  otherReadSeq: number;
+  /** Mon dernier seq vu (pour reprendre la lecture). */
+  myReadSeq: number;
+}
+
+/** GET /api/chat/:id/state — compteurs de révélation + état du flux (§4.5). */
+export interface ChatStateResponse {
+  conversationId: string;
+  conversationMode: 'classic' | 'invisible';
+  createdAt: number;
+  /** Messages échangés (les deux sens confondus, texte + voice). */
+  messagesCount: number;
+  /** Jours écoulés depuis la création de la conversation. */
+  days: number;
+  /** Seuils atteints ? (≥ 15 messages ET ≥ 7 jours, mode Invisible, pas déjà révélé) */
+  revealEligible: boolean;
+  /** Révélation accordée (photos débloquées pour les deux). */
+  revealed: boolean;
+  revealedAt: number | null;
+  /** Demande en attente (mienne ou de l'autre). */
+  pendingReveal: { id: string; fromMe: boolean } | null;
+  other: {
+    userId: string;
+    displayName: string;
+    photoUrl: string | null;
+    photoBlurred: boolean;
+    personalityType: string | null;
+  };
+  /** Mon feedback post-révélation (null = pas encore donné). */
+  myFeedback: 'continue' | 'friend' | 'not_for_me' | null;
+}
+
+/** POST /api/chat/:id/reveal (+ /respond) — flux de révélation §4.5. */
+export interface RevealResponse {
+  ok: true;
+  status: 'pending' | 'accepted' | 'declined';
+  revealed: boolean;
+  note: string;
+}
+
+/** POST /api/chat/:id/reveal/feedback — écran post-révélation. */
+export interface RevealFeedbackResponse {
+  ok: true;
+  feedback: 'continue' | 'friend' | 'not_for_me';
+  bothDone: boolean;
+  note: string;
+}
+
+/** POST /api/chat/:id/unmatch — unmatch propre (+ blocage optionnel). */
+export interface UnmatchResponse {
+  ok: true;
+  blocked: boolean;
+  note: string;
+}
+
+/** GET /api/chat/:id/ws-ticket — auth WS sans cookie (client mobile/tests). */
+export interface WsTicketResponse {
+  ticket: string;
+  /** URL WebSocket complète prête à l'emploi. */
+  url: string;
+  expiresInSeconds: number;
+}
+
+/** GET /api/push/key — clé publique VAPID (null = push non configuré). */
+export interface PushConfigResponse {
+  enabled: boolean;
+  publicKey: string | null;
+}
+
+/** POST /api/push/subscribe — enregistrement d'un abonnement Web Push. */
+export interface PushSubscribeResponse {
+  ok: true;
+  enabled: boolean;
+}

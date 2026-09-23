@@ -45,6 +45,15 @@ export interface Env {
   FACEBOOK_SCOPES?: string;
   /** Jeton admin protégeant /admin/* (Étape 2). */
   ADMIN_TOKEN?: string;
+  /**
+   * Web Push VAPID (Étape 6) — absents ⇒ push désactivé proprement
+   * (enabled:false, aucune erreur). Clé publique = point brut 65 octets
+   * base64url ; clé privée = point scalaire 32 octets base64url.
+   */
+  VAPID_PUBLIC_KEY?: string;
+  VAPID_PRIVATE_KEY?: string;
+  /** Sujet VAPID (mailto: ou URL) — défaut mailto:admin@wairyu.app. */
+  VAPID_SUBJECT?: string;
 }
 
 /** Contexte de requête enrichi (Hono Variables). */

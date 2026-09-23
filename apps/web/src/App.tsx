@@ -14,6 +14,7 @@ import { Profile } from './screens/Profile';
 import { Questionnaire } from './screens/Questionnaire';
 import { Discover } from './screens/Discover';
 import { Matches } from './screens/Matches';
+import { Chat } from './screens/Chat';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
 type Route =
@@ -26,6 +27,7 @@ type Route =
   | { name: 'questionnaire' }
   | { name: 'discover' }
   | { name: 'matches' }
+  | { name: 'chat'; conversationId: string }
   | { name: 'app' };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -75,8 +77,12 @@ function parseHash(): Route {
       return { name: 'matches' };
     case 'app':
       return { name: 'app' };
-    default:
+    default: {
+      // Étape 6 : #/chat/:conversationId — chat temps réel d'une conversation.
+      const chatMatch = (path ?? '').match(/^chat\/([0-9a-f-]{16,64})$/i);
+      if (chatMatch) return { name: 'chat', conversationId: chatMatch[1]! };
       return { name: 'home', notice: parseNotice(params) };
+    }
   }
 }
 
@@ -132,9 +138,14 @@ export default function App() {
     if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
 
-  // Écrans découverte/matchs : session requise également.
+  // Écrans découverte/matchs/chat : session requise également.
   useEffect(() => {
-    if (!checking && (route.name === 'discover' || route.name === 'matches') && !me) go('#/');
+    if (
+      !checking &&
+      (route.name === 'discover' || route.name === 'matches' || route.name === 'chat') &&
+      !me
+    )
+      go('#/');
   }, [checking, route, me, go]);
 
   // ---- Rendu ----
@@ -162,7 +173,9 @@ export default function App() {
   } else if (route.name === 'discover' && me) {
     content = <Discover onBack={() => go('#/app')} onMatches={() => go('#/matches')} />;
   } else if (route.name === 'matches' && me) {
-    content = <Matches onBack={() => go('#/app')} />;
+    content = <Matches onBack={() => go('#/app')} onOpenChat={(id) => go(`#/chat/${id}`)} />;
+  } else if (route.name === 'chat' && me) {
+    content = <Chat conversationId={route.conversationId} onBack={() => go('#/matches')} />;
   } else {
     // Accueil
     content = (

@@ -185,3 +185,42 @@ export async function destroyAuthenticatedAsset(
   if (data?.result === 'not found') return 'not found';
   return 'error';
 }
+
+/**
+ * Upload d'une VOICE NOTE en type AUTHENTICATED — resource_type « video »
+ * (Cloudinary range l'audio sous video). Le format renvoyé (webm/m4a/ogg…)
+ * sert d'extension pour les URLs signées de lecture.
+ */
+export async function uploadAuthenticatedAudio(
+  env: { CLOUDINARY_CLOUD_NAME: string; CLOUDINARY_API_KEY: string; CLOUDINARY_API_SECRET: string },
+  file: Blob,
+  publicId: string,
+): Promise<{ publicId: string; version: number; format: string; bytes: number }> {
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const params = { public_id: publicId, timestamp, type: 'authenticated' };
+  const signature = await apiSignature(params, env.CLOUDINARY_API_SECRET);
+
+  const form = new FormData();
+  form.append('file', file, 'note.webm');
+  form.append('api_key', env.CLOUDINARY_API_KEY);
+  form.append('timestamp', timestamp);
+  form.append('type', 'authenticated');
+  form.append('public_id', publicId);
+  form.append('signature', signature);
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${env.CLOUDINARY_CLOUD_NAME}/video/upload`,
+    { method: 'POST', body: form },
+  );
+  const data = (await res.json().catch(() => null)) as CloudinaryApiResult | null;
+  if (!res.ok || !data?.public_id) {
+    const detail = data?.error?.message ?? `HTTP ${res.status}`;
+    throw new Error(`cloudinary_voice_upload_failed: ${detail}`);
+  }
+  return {
+    publicId: data.public_id,
+    version: data.version ?? 1,
+    format: data.format ?? 'webm',
+    bytes: data.bytes ?? 0,
+  };
+}
