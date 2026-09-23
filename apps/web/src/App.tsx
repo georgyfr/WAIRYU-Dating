@@ -175,7 +175,7 @@ export default function App() {
         <footer>
           Réservé aux 18 ans et plus.
           <br />
-          Mode Classique &amp; mode Invisible — tes photos restent sous ton contrôle.
+          Modes Classique, Invisible &amp; Interracial — tes photos restent sous ton contrôle.
         </footer>
       </div>
     );

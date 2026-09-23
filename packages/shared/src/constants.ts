@@ -97,10 +97,11 @@ export const PROFILE_LIMITS = {
 export const GENDERS = ['woman', 'man', 'non_binary'] as const;
 /**
  * Intentions de recherche — ordre d'affichage volontaire (progression naturelle).
- * Extension à la demande fondateur : vie de couple, mariage, rencontre interraciale.
+ * Mariage + vie de couple ajoutés à la demande fondateur ; « interracial » en a
+ * été RETIRÉ (clarification : c'est un MODE de découverte, pas une intention).
  * NOTE DB : les CHECK contraintes historiques ont été retirées en migration 0006 —
- * l'API est le seul garde-fou (validateEnum sur INTENTS) ; ajouter une intention
- * ici ne demande AUCUNE migration.
+ * l'API est le seul garde-fou (validateEnum sur INTENTS partagés) ; ajouter une
+ * intention ici ne demande AUCUNE migration.
  */
 export const INTENTS = [
   'serious',
@@ -108,11 +109,14 @@ export const INTENTS = [
   'marriage',
   'open',
   'friends_first',
-  'interracial',
 ] as const;
 export const ORIENTATIONS = ['straight', 'gay', 'bi', 'other'] as const;
 export const PREF_GENDERS = ['women', 'men', 'everyone'] as const;
-export const MODE_DEFAULTS = ['classic', 'invisible'] as const;
+/**
+ * Modes de découverte — le 3e mode « interracial » (rencontres entre
+ * continents, demande fondateur) rejoint Classique et Invisible.
+ */
+export const MODE_DEFAULTS = ['classic', 'invisible', 'interracial'] as const;
 
 /** Libellés d'affichage (front uniquement — jamais envoyés à l'API). */
 export const LABELS = {
@@ -124,8 +128,11 @@ export const LABELS = {
     marriage: 'Mariage',
     open: 'Ouvert·e à voir',
     friends_first: 'D\u2019abord amis',
-    interracial: 'Rencontre interraciale',
   } as Record<string, string>,
   prefGender: { women: 'Femmes', men: 'Hommes', everyone: 'Tout le monde' } as Record<string, string>,
-  mode: { classic: 'Mode Classique', invisible: 'Mode Invisible' } as Record<string, string>,
+  mode: {
+    classic: 'Mode Classique',
+    invisible: 'Mode Invisible',
+    interracial: 'Mode interracial',
+  } as Record<string, string>,
 } as const;

@@ -693,6 +693,17 @@ export function Profile({ onDone }: Props) {
                 l'acceptez.
               </span>
             </button>
+            <button
+              type="button"
+              className={`mode-card ${modeDefault === 'interracial' ? 'on' : ''}`}
+              onClick={() => setModeDefault('interracial')}
+            >
+              <strong>Mode interracial</strong>
+              <span>
+                Tu veux des rencontres au-delà des frontières : ta découverte s'ouvre aux personnes
+                d'autres races, d'autres cultures et d'autres continents — partout dans le monde.
+              </span>
+            </button>
           </div>
           <p className="hint">Tu pourras changer de mode à tout moment.</p>
 

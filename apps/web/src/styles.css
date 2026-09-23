@@ -745,6 +745,11 @@ h2 {
   background: #f4f0fb;
 }
 
+/* 3 modes : la dernière carte impaire (Mode interracial) occupe toute la ligne. */
+.mode-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .wizard-nav {
   display: flex;
   justify-content: space-between;

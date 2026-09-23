@@ -50,10 +50,23 @@ export interface UsageResponse {
 
 export type Gender = 'woman' | 'man' | 'non_binary';
 
-/** Intentions — étendues à la demande fondateur (interraciale, mariage, vie de couple). */
-export type Intent = 'serious' | 'open' | 'friends_first' | 'couple_life' | 'marriage' | 'interracial';
+/**
+ * Intentions de recherche — mariage et vie de couple ajoutés à la demande
+ * fondateur. NOTE : « interracial » n'est PAS une intention mais un MODE de
+ * découverte (clarification fondateur — rencontres entre continents).
+ */
+export type Intent = 'serious' | 'open' | 'friends_first' | 'couple_life' | 'marriage';
 
-export type DiscoveryMode = 'classic' | 'invisible';
+/**
+ * Modes de découverte :
+ * - classic    : photos visibles, swipe.
+ * - invisible  : profil flouté, questionnaire, révélation consentie (15 msgs / 7 jours).
+ * - interracial (demande fondateur) : rencontres entre personnes de races,
+ *   cultures et CONTINENTS différents — portée mondiale (matching Étape 4).
+ *   Comportement photos identique au classic (visibles) tant que le moteur
+ *   de matching inter-continents n'existe pas.
+ */
+export type DiscoveryMode = 'classic' | 'invisible' | 'interracial';
 
 // ---------- Étape 3 : profils & photos protégées ----------
 

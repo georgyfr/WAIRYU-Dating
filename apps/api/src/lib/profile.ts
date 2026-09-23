@@ -7,7 +7,7 @@
  * révolus à aujourd'hui (UTC). L'année seule reste acceptée en écriture
  * (compat anciens clients) → birth_date complétée au 1er janvier.
  */
-import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS, INTENTS } from '@wairyu/shared';
+import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS, INTENTS, MODE_DEFAULTS } from '@wairyu/shared';
 import { errors } from './errors';
 
 type ProfileEnv = { CLOUDINARY_CLOUD_NAME: string; CLOUDINARY_API_KEY: string; CLOUDINARY_API_SECRET: string };
@@ -165,7 +165,7 @@ export function validatePrompts(v: unknown): ValidatedPrompt[] {
 // ---------------------------------------------------------------------------
 
 export interface ValidatedPreferences {
-  modeDefault: 'classic' | 'invisible';
+  modeDefault: (typeof MODE_DEFAULTS)[number];
   prefGender: 'women' | 'men' | 'everyone';
   minAge: number;
   maxAge: number;
@@ -188,7 +188,7 @@ export function validatePreferences(v: unknown): ValidatedPreferences {
   const allowedOrientations: readonly string[] = ORIENTATIONS; // garde le type vivant
   void allowedOrientations;
   return {
-    modeDefault: validateEnum(p.modeDefault, ['classic', 'invisible'] as const, 'Mode'),
+    modeDefault: validateEnum(p.modeDefault, MODE_DEFAULTS, 'Mode'),
     prefGender: validateEnum(p.prefGender, ['women', 'men', 'everyone'] as const, 'Genres recherchés'),
     minAge,
     maxAge,
