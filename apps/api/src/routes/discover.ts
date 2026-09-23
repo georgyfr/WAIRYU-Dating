@@ -52,12 +52,19 @@ export const discoverRoutes = new Hono<AppEnv>();
 async function requireUser(c: Context<AppEnv>) {
   const session = c.get('session');
   if (!session) throw errors.unauthorized();
-  const user = await c.env.DB.prepare(`SELECT id, status FROM users WHERE id = ? LIMIT 1`)
+  const user = await c.env.DB.prepare(`SELECT id, status, paused FROM users WHERE id = ? LIMIT 1`)
     .bind(session.userId)
-    .first<{ id: string; status: string }>();
+    .first<{ id: string; status: string; paused: number | null }>();
   if (!user || user.status === 'deleted') throw errors.unauthorized();
   if (user.status === 'banned') throw errors.forbidden('Compte suspendu.');
   return user;
+}
+
+/** Étape 7 (plan 7.7) : un profil EN PAUSE ne peut pas agir sur la découverte. */
+function requireNotPaused(user: { paused: number | null }): void {
+  if (user.paused === 1) {
+    throw errors.forbidden('Ta pause est active — désactive-la dans Confidentialité pour découvrir à nouveau.');
+  }
 }
 
 const MODES: readonly string[] = ['classic', 'invisible', 'interracial'];
@@ -131,7 +138,7 @@ async function bestPhoto(
   return { url, blurred };
 }
 
-/** Vérifie que la cible existe, est active et n'est pas moi — renvoie prénom. */
+/** Vérifie que la cible existe, est active, n'est pas moi et non bloquée — renvoie prénom. */
 async function validTarget(
   c: Context<AppEnv>,
   me: string,
@@ -148,6 +155,16 @@ async function validTarget(
   if (!target || target.status === 'deleted' || target.status === 'banned') {
     throw errors.notFound('Ce profil n’est plus disponible.');
   }
+  // Étape 7 : un blocage DANS UN SENS OU DANS L'AUTRE (signalement, unmatch
+  // « + bloquer ») rend tout re-liké impossible — le blocage est définitif
+  // tant qu'un admin ne l'a pas levé.
+  const block = await c.env.DB.prepare(
+    `SELECT 1 AS x FROM blocks
+     WHERE (user_id = ? AND blocked_id = ?) OR (user_id = ? AND blocked_id = ?) LIMIT 1`,
+  )
+    .bind(me, targetId, targetId, me)
+    .first<{ x: number }>();
+  if (block) throw errors.forbidden('Cette personne n’est plus disponible pour toi.');
   return target;
 }
 
@@ -208,6 +225,7 @@ discoverRoutes.get('/discover/quota', async (c) => {
 // ---------------------------------------------------------------------------
 discoverRoutes.post('/discover/swipe', async (c) => {
   const user = await requireUser(c);
+  requireNotPaused(user);
   const payload = await c.req.json<Record<string, unknown>>().catch(() => null);
 
   const action = validateEnum<SwipeAction>(
@@ -319,6 +337,7 @@ discoverRoutes.post('/discover/swipe', async (c) => {
 // ---------------------------------------------------------------------------
 discoverRoutes.post('/discover/rewind', async (c) => {
   const user = await requireUser(c);
+  requireNotPaused(user);
   const rlAbuse = await hitRateLimit(c.env.DB, RATE_RULES.discoverActionUser, user.id);
   if (!rlAbuse.allowed) {
     throw rateLimitedError(rlAbuse.retryAfterSeconds, RATE_RULES.discoverActionUser.scope);
@@ -377,6 +396,7 @@ discoverRoutes.post('/discover/rewind', async (c) => {
 // ---------------------------------------------------------------------------
 discoverRoutes.post('/discover/invisible-request', async (c) => {
   const user = await requireUser(c);
+  requireNotPaused(user);
   const payload = await c.req.json<Record<string, unknown>>().catch(() => null);
 
   const rlAbuse = await hitRateLimit(c.env.DB, RATE_RULES.discoverActionUser, user.id);
@@ -607,6 +627,7 @@ discoverRoutes.get('/discover/matches', async (c) => {
     `SELECT m.id AS match_id, m.origin, m.created_at,
             c.id AS conv_id, c.mode AS conv_mode,
             other.id AS other_id, other.display_name, other.city, other.country,
+            other.verified_at AS other_verified,
             pp.type AS personality_type, pp.validated AS personality_validated,
             mr.id AS mr_id, mr.from_user AS mr_from, mr.created_at AS mr_created
      FROM matches m
@@ -630,6 +651,7 @@ discoverRoutes.get('/discover/matches', async (c) => {
       display_name: string | null;
       city: string | null;
       country: string | null;
+      other_verified: number | null;
       personality_type: string | null;
       personality_validated: number | null;
       mr_id: string | null;
@@ -658,6 +680,7 @@ discoverRoutes.get('/discover/matches', async (c) => {
         photoBlurred: photo.blurred,
         personalityType: (r.personality_type as MatchDto['other']['personalityType']) ?? null,
         personalityValidated: r.personality_validated === 1,
+        verified: r.other_verified != null,
       },
       pendingGateway:
         r.mr_id != null

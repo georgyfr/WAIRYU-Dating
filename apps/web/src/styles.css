@@ -2447,3 +2447,122 @@ h2 {
     max-width: 86%;
   }
 }
+
+/* ===========================================================================
+   Étape 7 — Sécurité & modération
+   =========================================================================== */
+
+/* Badge « Identité vérifiée » */
+.chip-verified {
+  background: #e8f7ee;
+  color: #1c7c46;
+  border: 1px solid #bfe8cf;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Bannière de suspension (compte) */
+.suspension-banner {
+  background: #fdf2f4;
+  border: 1px solid #f2d5db;
+  color: #8c3d50;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+
+/* Bandeau sécurité dans le chat */
+.safety-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 0 4px 8px;
+}
+
+.safety-btn {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.safety-panel {
+  background: #fff;
+  border: 1px solid #e7ddf5;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 4px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13.5px;
+}
+
+.safety-panel select,
+.safety-panel textarea,
+.safety-panel input[type='date'] {
+  width: 100%;
+  border: 1px solid #e0d7f0;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font: inherit;
+  background: #fbfaff;
+}
+
+.safety-panel textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* Poses de vérification selfie (compte) */
+.pose-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.pose-list label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pose-list input[type='file'] {
+  font-size: 12px;
+}
+
+/* Toggles de confidentialité (compte) */
+.privacy-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: min(100%, 340px);
+}
+
+.toggle-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.toggle-row input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #7a5cf0;
+}
+
+.toggle-row small {
+  color: #7a7392;
+}
+
+.pill.err {
+  background: #fdf2f4;
+  color: #b0576b;
+  border: 1px solid #f2d5db;
+}

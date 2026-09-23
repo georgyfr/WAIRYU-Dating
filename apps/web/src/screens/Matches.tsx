@@ -134,7 +134,14 @@ export function Matches({ onBack, onOpenChat }: Props) {
             )}
             <div className="match-body">
               <div className="match-head">
-                <strong>{m.other.displayName}</strong>
+                <strong>
+                  {m.other.displayName}
+                  {m.other.verified && (
+                    <span className="chip chip-verified" title="Selfie reviewé par l'équipe wairyu">
+                      {' '}✓
+                    </span>
+                  )}
+                </strong>
                 <span className={`chip chip-conv ${m.conversationMode}`}>
                   {m.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}
                 </span>

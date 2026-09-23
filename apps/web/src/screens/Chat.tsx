@@ -16,13 +16,16 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, apiForm, ApiError } from '../lib/api';
-import { CHAT } from '@wairyu/shared';
+import { CHAT, REPORT_CATEGORIES, REPORT_LABELS } from '@wairyu/shared';
 import type {
   ChatHistoryResponse,
   ChatMessageDto,
   ChatStateResponse,
   RevealFeedbackResponse,
   RevealResponse,
+  ReportResponse,
+  ReportCategory,
+  CheckinCreateResponse,
   UnmatchResponse,
   WsTicketResponse,
 } from '@wairyu/shared';
@@ -58,6 +61,11 @@ export function Chat({ conversationId, onBack }: Props) {
   const [confirmReveal, setConfirmReveal] = useState(false);
   const [confirmUnmatch, setConfirmUnmatch] = useState(false);
   const [blockToo, setBlockToo] = useState(false);
+  // Étape 7 — sécurité : signalement + check-in « je vois X le … »
+  const [showSafety, setShowSafety] = useState<'none' | 'report' | 'checkin'>('none');
+  const [reportCategory, setReportCategory] = useState<ReportCategory>('behavior');
+  const [reportDetails, setReportDetails] = useState('');
+  const [checkinDate, setCheckinDate] = useState('');
   const [recording, setRecording] = useState(false);
   const [recSeconds, setRecSeconds] = useState(0);
   const [connState, setConnState] = useState<'connecting' | 'open' | 'closed'>('connecting');
@@ -432,6 +440,45 @@ export function Chat({ conversationId, onBack }: Props) {
   }, [conversationId, blockToo, onBack, showFlash]);
 
   // ------------------------------------------------------------------
+  // Sécurité (Étape 7) — signalement (blocage + unmatch immédiats) et
+  // check-in « je vois X le [date] » (rappel push après la date, cron).
+  // ------------------------------------------------------------------
+
+  const doReport = useCallback(async () => {
+    try {
+      const r = await api<ReportResponse>('/api/reports', {
+        json: {
+          targetUserId: state?.other.userId,
+          category: reportCategory,
+          details: reportDetails || undefined,
+          conversationId,
+        },
+      });
+      setShowSafety('none');
+      setReportDetails('');
+      showFlash(r.note);
+      window.setTimeout(onBack, 1600);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+    }
+  }, [state?.other.userId, reportCategory, reportDetails, conversationId, showFlash, onBack]);
+
+  const doCheckin = useCallback(async () => {
+    if (!checkinDate) return;
+    try {
+      const whenTs = Math.floor(new Date(`${checkinDate}T20:00:00`).getTime() / 1000);
+      const r = await api<CheckinCreateResponse>('/api/safety/checkins', {
+        json: { conversationId, whenTs },
+      });
+      setShowSafety('none');
+      setCheckinDate('');
+      showFlash(r.note);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+    }
+  }, [checkinDate, conversationId, showFlash]);
+
+  // ------------------------------------------------------------------
   // Rendu
   // ------------------------------------------------------------------
 
@@ -459,7 +506,14 @@ export function Chat({ conversationId, onBack }: Props) {
           <span className="chat-avatar empty">✨</span>
         )}
         <div className="chat-head-body">
-          <strong>{state?.other.displayName ?? '…'}</strong>
+          <strong>
+            {state?.other.displayName ?? '…'}
+            {state?.other.verified && (
+              <span className="chip chip-verified" title="Selfie reviewé par l'équipe wairyu">
+                {' '}✓
+              </span>
+            )}
+          </strong>
           <span className="chat-presence">
             <span className={`dot ${online ? 'ok' : ''}`} />
             {otherTyping ? 'est en train d’écrire…' : online ? 'en ligne' : 'hors ligne'}
@@ -469,6 +523,75 @@ export function Chat({ conversationId, onBack }: Props) {
           {state?.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}
         </span>
       </header>
+
+      {/* ---- Sécurité (Étape 7) : check-in + signalement ---- */}
+      <div className="safety-row">
+        <button
+          type="button"
+          className="btn ghost safety-btn"
+          onClick={() => setShowSafety((v) => (v === 'checkin' ? 'none' : 'checkin'))}
+        >
+          🛡 Check-in sécurité
+        </button>
+        <button
+          type="button"
+          className="btn ghost danger-ghost safety-btn"
+          onClick={() => setShowSafety((v) => (v === 'report' ? 'none' : 'report'))}
+        >
+          ⚠ Signaler
+        </button>
+      </div>
+      {showSafety === 'checkin' && (
+        <div className="safety-panel">
+          <strong>Je vois {state?.other.displayName ?? 'cette personne'} le…</strong>
+          <p className="hint">
+            wairyu te contactera après la date : « ça s’est bien passé ? ». En cas de
+            problème, tu pourras nous le dire en 1 clic.
+          </p>
+          <div className="btn-row">
+            <input
+              type="date"
+              value={checkinDate}
+              min={new Date().toISOString().slice(0, 10)}
+              max={new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10)}
+              onChange={(e) => setCheckinDate(e.target.value)}
+            />
+            <button type="button" className="btn primary" disabled={!checkinDate} onClick={() => void doCheckin()}>
+              Enregistrer
+            </button>
+          </div>
+        </div>
+      )}
+      {showSafety === 'report' && (
+        <div className="safety-panel">
+          <strong>Signaler {state?.other.displayName ?? 'ce profil'}</strong>
+          <p className="hint">
+            Le signalement ferme immédiatement la conversation et bloque le profil
+            dans les deux sens. Notre équipe review sous 24 h.
+          </p>
+          <select value={reportCategory} onChange={(e) => setReportCategory(e.target.value as ReportCategory)}>
+            {REPORT_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {REPORT_LABELS[cat]}
+              </option>
+            ))}
+          </select>
+          <textarea
+            placeholder="Détails (facultatif — 500 caractères max)"
+            maxLength={500}
+            value={reportDetails}
+            onChange={(e) => setReportDetails(e.target.value)}
+          />
+          <div className="btn-row">
+            <button type="button" className="btn danger" onClick={() => void doReport()}>
+              Signaler et bloquer
+            </button>
+            <button type="button" className="btn ghost" onClick={() => setShowSafety('none')}>
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
 
       {error && <p className="error">{error}</p>}
       {flash && <p className="flash-msg">{flash}</p>}

@@ -19,7 +19,10 @@ import { feedRoutes } from './routes/feed';
 import { discoverRoutes } from './routes/discover';
 import { chatRoutes } from './routes/chat';
 import { pushRoutes } from './routes/push';
+import { safetyRoutes } from './routes/safety';
 import { computeDailyTop } from './lib/discovery';
+import { sendPushToUser } from './lib/push';
+import { verifyTotp } from './lib/totp';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -44,7 +47,29 @@ app.use('/admin/*', usageMiddleware('1'));
 // ---- Session (cookie signé → D1) ----
 app.use('/api/*', sessionMiddleware);
 
-// ---- Admin : jeton porteur si ADMIN_TOKEN posé (Étape 2) ----
+// ---- Suspension active (Étape 7) : lecture de son état + logout seulement ----
+app.use('/api/*', async (c, next) => {
+  const until = c.get('suspendedUntil');
+  const now = Math.floor(Date.now() / 1000);
+  if (c.get('session') && until && until > now) {
+    const path = c.req.path;
+    const allowed =
+      path === '/api/me' ||
+      path === '/api/auth/logout' ||
+      path === '/api/auth/logout-all' ||
+      path === '/api/account/export';
+    if (!allowed) {
+      const id = c.get('reqId');
+      return c.json(
+        errorBody('forbidden', `Compte suspendu jusqu’au ${new Date(until * 1000).toLocaleDateString('fr-FR')}.`, id),
+        403,
+      );
+    }
+  }
+  await next();
+});
+
+// ---- Admin : jeton porteur si ADMIN_TOKEN posé (Étape 2) + 2FA TOTP (Étape 7) ----
 app.use('/admin/*', async (c, next) => {
   const expected = c.env.ADMIN_TOKEN;
   if (expected) {
@@ -53,6 +78,17 @@ app.use('/admin/*', async (c, next) => {
     if (provided !== expected) {
       const id = c.get('reqId');
       return c.json(errorBody('unauthorized', 'Jeton admin requis.', id), 401);
+    }
+  }
+  // 2FA TOTP (Étape 7) : activée uniquement après /admin/2fa/activate —
+  // alors TOUT /admin/* exige l'en-tête X-Admin-TOTP (tolérance ±1 pas).
+  const cfg = (await c.env.CONFIG.get('admin:2fa', 'json')) as { secret: string; enabled: boolean } | null;
+  if (cfg?.enabled) {
+    const token = c.req.header('x-admin-totp') ?? '';
+    const ok = await verifyTotp(cfg.secret, token);
+    if (!ok) {
+      const id = c.get('reqId');
+      return c.json(errorBody('unauthorized', 'Code TOTP admin requis (X-Admin-TOTP).', id), 401);
     }
   }
   await next();
@@ -69,6 +105,7 @@ app.route('/api', feedRoutes);
 app.route('/api', discoverRoutes);
 app.route('/api', chatRoutes);
 app.route('/api', pushRoutes);
+app.route('/api', safetyRoutes);
 app.route('/admin', adminRoutes);
 
 // (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)
@@ -153,6 +190,33 @@ export default {
           console.log(JSON.stringify({ cron: 'top-daily', ...top }));
         } catch (err) {
           console.error(JSON.stringify({ cron: 'top-daily', level: 'error', err: String(err) }));
+        }
+
+        // ---- Check-ins sécurité échus (Étape 7, plan 7.5) ----
+        // Rappel push « Ça s’est bien passé ? » après la date du rendez-vous.
+        try {
+          const due = await env.DB.prepare(
+            `SELECT id, user_id FROM safety_checkins
+             WHERE status = 'active' AND when_ts < ? AND reminded_at IS NULL LIMIT 50`,
+          )
+            .bind(now)
+            .all<{ id: string; user_id: string }>();
+          for (const ck of due.results ?? []) {
+            await sendPushToUser(env, ck.user_id, {
+              title: 'Ça s’est bien passé ?',
+              body: 'Ton check-in sécurité arrive à échéance — confirme que tout va bien.',
+              tag: 'checkin',
+              url: '#/app',
+            });
+            await env.DB.prepare(`UPDATE safety_checkins SET reminded_at = ? WHERE id = ?`)
+              .bind(now, ck.id)
+              .run();
+          }
+          if ((due.results ?? []).length > 0) {
+            console.log(JSON.stringify({ cron: 'checkin-reminders', sent: (due.results ?? []).length }));
+          }
+        } catch (err) {
+          console.error(JSON.stringify({ cron: 'checkin-reminders', level: 'error', err: String(err) }));
         }
       })(),
     );

@@ -2,6 +2,94 @@
 
 import type { QItem, QAnswers, LevelInsights } from './matching';
 
+// ---------- Étape 7 : sécurité & modération ----------
+
+/** Verdict de modération d'un message (règles, 0 neuron — lib/moderation.ts). */
+export interface ModerationVerdict {
+  /** 0-100. */
+  risk: number;
+  /** Catégories détectées (clés de RISK_LABELS). */
+  categories: string[];
+  action: 'deliver' | 'flag' | 'block';
+}
+
+/** GET /api/safety/verification — état de la vérification d'identité. */
+export interface VerificationStatusResponse {
+  status: 'none' | 'awaiting' | 'pending' | 'approved' | 'rejected';
+  /** Poses restantes à envoyer (ordre imposé) — si awaiting. */
+  poses: (typeof import('./constants').SELFIE_POSES)[number][];
+  /** Expiration de la demande en cours (epoch s) — si awaiting/pending. */
+  expiresAt: number | null;
+  /** Motif de refus (si rejected). */
+  rejectionReason: string | null;
+  /** true = badge « Identité vérifiée » affiché sur le profil. */
+  verified: boolean;
+}
+
+/** POST /api/safety/verification/start. */
+export interface VerificationStartResponse {
+  ok: true;
+  requestId: string;
+  /** Ordre imposé des 3 poses (mêlangé à chaque demande). */
+  poses: (typeof import('./constants').SELFIE_POSES)[number][];
+  expiresAt: number;
+}
+
+/** POST /api/safety/verification/submit. */
+export interface VerificationSubmitResponse {
+  ok: true;
+  status: 'pending';
+  note: string;
+}
+
+/** Paramètres de confidentialité v1 (plan 7.7). */
+export interface PrivacySettings {
+  /** Profil en pause : masqué de tous les feeds, swipe bloqué. */
+  paused: boolean;
+  /** Incognito : masqué du feed SAUF pour les personnes aimées par moi. */
+  incognito: boolean;
+  /** Étiquette « Mode Invisible » visible sur mes cartes (flou toujours actif). */
+  modeVisible: boolean;
+}
+
+/** GET/PUT /api/settings/privacy. */
+export interface PrivacyResponse extends PrivacySettings {
+  note: string;
+}
+
+/** POST /api/reports — signalement (blocage mutuel + unmatch immédiats). */
+export interface ReportResponse {
+  ok: true;
+  reportId: string;
+  /** true = la conversation a été fermée (unmatch automatique). */
+  conversationClosed: boolean;
+  note: string;
+}
+
+/** Check-in sécurité (plan 7.5). */
+export interface CheckinDto {
+  id: string;
+  conversationId: string;
+  otherName: string;
+  /** Date du rendez-vous (epoch s). */
+  whenTs: number;
+  status: 'active' | 'ok' | 'flagged';
+  createdAt: number;
+}
+
+/** GET /api/safety/checkins. */
+export interface CheckinListResponse {
+  checkins: CheckinDto[];
+  note: string;
+}
+
+/** POST /api/safety/checkins — « Je vois X le [date] ». */
+export interface CheckinCreateResponse {
+  ok: true;
+  checkin: CheckinDto;
+  note: string;
+}
+
 export type ApiErrorCode =
   | 'bad_request'
   | 'unauthorized'
@@ -237,6 +325,10 @@ export interface MeResponse {
   sessionRenewed: boolean;
   /** Profil complet (Étape 3) : basics + ≥1 prompt + ≥1 photo + préférences. */
   profileComplete: boolean;
+  /** true = selfie approuvé — badge « Identité vérifiée » (Étape 7). */
+  verified: boolean;
+  /** Suspension active (backoffice) — epoch de fin (Étape 7). */
+  suspendedUntil: number | null;
 }
 
 /** Réponse de POST /api/auth/otp/request (le code n'est exposé qu'en staging-dev). */
@@ -318,6 +410,10 @@ export interface FeedProfile {
    * « « {question} » — comme toi : {réponse} » pour ≤ 2 réponses identiques.
    */
   highlights: string[];
+  /** true = selfie approuvé — badge « Identité vérifiée » (Étape 7). */
+  verified: boolean;
+  /** true = afficher l'étiquette de mode sur la carte (modeVisible du PROPRIÉTAIRE). */
+  showMode: boolean;
 }
 
 // ---------- Étape 5 : découverte dual-mode ----------
@@ -421,6 +517,8 @@ export interface MatchDto {
     photoBlurred: boolean;
     personalityType: import('./personality').ArchetypeId | null;
     personalityValidated: boolean;
+    /** true = selfie approuvé de l'autre — badge sur la liste (Étape 7). */
+    verified: boolean;
   };
   /** Demande de passerelle en attente sur cette conversation (null sinon). */
   pendingGateway: { id: string; fromMe: boolean; createdAt: number } | null;
@@ -503,9 +601,68 @@ export interface ChatStateResponse {
     photoUrl: string | null;
     photoBlurred: boolean;
     personalityType: string | null;
+    /** Badge « Identité vérifiée » de l'autre (Étape 7). */
+    verified: boolean;
   };
   /** Mon feedback post-révélation (null = pas encore donné). */
   myFeedback: 'continue' | 'friend' | 'not_for_me' | null;
+}
+
+// ---------- Étape 7 : backoffice de modération (routes /admin/*) ----------
+
+/** Item de la file de vérifications selfie. */
+export interface AdminVerificationItem {
+  id: string;
+  userId: string;
+  displayName: string | null;
+  email: string;
+  createdAt: number;
+  status: string;
+  /** URLs signées des 3 selfies (ordre imposé). */
+  poses: { pose: string; url: string }[];
+}
+
+/** Item de la file de signalements. */
+export interface AdminReportItem {
+  id: string;
+  reporterId: string;
+  reportedId: string;
+  category: string;
+  details: string | null;
+  conversationId: string | null;
+  createdAt: number;
+  status: string;
+  resolution: string | null;
+  /** Historique de sanctions du signalé (warned_at/suspended_until/status). */
+  reported: { displayName: string | null; warnedAt: number | null; suspendedUntil: number | null; status: string };
+}
+
+/** Contexte complet d'un signalement (GET /admin/reports/:id). */
+export interface AdminReportDetail extends AdminReportItem {
+  /** Messages de la conversation (contexte DO, ≤ 200). */
+  messages: { seq: number; sender: string; body: string; createdAt: number }[];
+}
+
+/** Item de la file de modération automatique. */
+export interface AdminFlagItem {
+  id: string;
+  conversationId: string;
+  sender: string;
+  seq: number | null;
+  risk: number;
+  categories: string[];
+  excerpt: string;
+  action: 'flag' | 'block';
+  status: string;
+  resolution: string | null;
+  createdAt: number;
+}
+
+/** Réponse générique des actions backoffice. */
+export interface AdminActionResponse {
+  ok: true;
+  action: string;
+  note: string;
 }
 
 /** POST /api/chat/:id/reveal (+ /respond) — flux de révélation §4.5. */

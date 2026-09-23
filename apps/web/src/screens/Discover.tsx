@@ -377,6 +377,11 @@ export function Discover({ onBack, onMatches }: Props) {
         <h3>
           {p.displayName}, {p.age}
         </h3>
+        {p.verified && (
+          <span className="chip chip-verified" title="Selfie reviewé par l'équipe wairyu">
+            ✓ Vérifié·e
+          </span>
+        )}
         {p.score !== null && (
           <span className="score-badge" title="Indicatif — jamais prédictif">
             {p.score}
@@ -386,7 +391,7 @@ export function Discover({ onBack, onMatches }: Props) {
       </div>
       <p className="feed-loc">
         {[p.city, p.country].filter(Boolean).join(', ') || 'Localisation non renseignée'}
-        {p.photoBlurred ? ' · profil Invisible' : ''}
+        {p.photoBlurred && p.showMode ? ' · profil Invisible' : ''}
       </p>
       {p.personalityType && (
         <div className="pers-row">

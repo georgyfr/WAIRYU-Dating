@@ -56,6 +56,8 @@ interface ChatCtx {
   me: string;
   other: string;
   otherName: string;
+  /** Badge « Identité vérifiée » de l'autre (Étape 7). */
+  otherVerified: boolean;
 }
 
 /** Vérifie session + appartenance au match ACTIF porté par la conversation. */
@@ -88,9 +90,11 @@ async function chatContext(c: Context<AppEnv>, conversationId: string): Promise<
   const other = row.user_a_id === me ? row.user_b_id : row.user_a_id;
   if (me !== row.user_a_id && me !== row.user_b_id) throw errors.forbidden();
 
-  const otherRow = await c.env.DB.prepare(`SELECT display_name, status FROM users WHERE id = ?`)
+  const otherRow = await c.env.DB.prepare(
+    `SELECT display_name, status, verified_at FROM users WHERE id = ?`,
+  )
     .bind(other)
-    .first<{ display_name: string | null; status: string }>();
+    .first<{ display_name: string | null; status: string; verified_at: number | null }>();
   if (!otherRow || otherRow.status === 'deleted' || otherRow.status === 'banned') {
     throw errors.notFound('Ce profil n’est plus disponible.');
   }
@@ -104,6 +108,7 @@ async function chatContext(c: Context<AppEnv>, conversationId: string): Promise<
     me,
     other,
     otherName: otherRow.display_name ?? 'Quelqu’un',
+    otherVerified: otherRow.verified_at != null,
   };
 }
 
@@ -270,6 +275,7 @@ chatRoutes.get('/chat/:id/ws', async (c) => {
       me: userId,
       other: row.other,
       otherName: '',
+      otherVerified: false, // rechargé par le client via /state
     };
     chatDo(c, ctx);
   } else {
@@ -329,6 +335,9 @@ chatRoutes.post('/chat/:id/messages', async (c) => {
     }),
   );
   if (res.status === 410) throw errors.notFound('Conversation fermée (unmatch).');
+  if (res.status === 422) {
+    throw errors.badRequest('Message bloqué — il contient des propos ou demandes interdits (arnaque, haine…).');
+  }
   if (res.status === 429) throw errors.rateLimited('Trop de messages — ralentis un peu.');
   if (!res.ok) throw errors.internal('Envoi impossible.');
   const data = (await res.json()) as { ok: true; message: unknown };
@@ -427,6 +436,7 @@ chatRoutes.get('/chat/:id/state', async (c) => {
       photoUrl: photo.url,
       photoBlurred: photo.blurred,
       personalityType: otherMeta?.type ?? null,
+      verified: ctx.otherVerified,
     },
     myFeedback: (fb?.feedback as ChatStateResponse['myFeedback']) ?? null,
   };

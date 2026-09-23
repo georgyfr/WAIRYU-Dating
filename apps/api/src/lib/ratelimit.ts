@@ -74,6 +74,18 @@ export const RATE_RULES = {
   pushUser: { scope: 'push:sub:user', windowSeconds: 3600, max: 30 },
   /** Tickets WebSocket : 60 / heure (reconnexions tolérées largement). */
   chatTicketUser: { scope: 'chat:tk:user', windowSeconds: 3600, max: 60 },
+
+  // --- Étape 7 : sécurité & modération ---
+  /** Démarrages de vérification selfie : 5 / jour (anti-abus de la file). */
+  safetyVerifyUser: { scope: 'safe:ver:user', windowSeconds: 86400, max: 5 },
+  /** Soumissions de selfies : 10 / jour (3 poses par demande + réessais). */
+  safetyVerifySubmit: { scope: 'safe:ver:sub', windowSeconds: 86400, max: 10 },
+  /** Signalements : 10 / jour (le bouton ne doit jamais servir de spam). */
+  safetyReportUser: { scope: 'safe:rep:user', windowSeconds: 86400, max: 10 },
+  /** Check-ins (créations + clôtures) : 20 / jour. */
+  safetyCheckinUser: { scope: 'safe:chk:user', windowSeconds: 86400, max: 20 },
+  /** Toggles de confidentialité : 30 / heure. */
+  safetyPrivacyUser: { scope: 'safe:priv:user', windowSeconds: 3600, max: 30 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

@@ -21,8 +21,9 @@
 import { DurableObject } from 'cloudflare:workers';
 import { signedMediaUrl } from '../lib/cloudinary';
 import { sendPushToUser } from '../lib/push';
+import { moderateText } from '../lib/moderation';
 import { CHAT } from '@wairyu/shared';
-import type { ChatMessageDto, ChatMessageKind } from '@wairyu/shared';
+import type { ChatMessageDto, ChatMessageKind, ModerationVerdict } from '@wairyu/shared';
 import type { Env } from '../env';
 
 /** Schéma interne du DO (SQLite embarqué, par conversation). */
@@ -136,6 +137,62 @@ export class ChatRoom extends DurableObject {
     arr.push(now);
     this.sent.set(user, arr);
     return true;
+  }
+
+  // ------------------------------------------------------------------
+  // Modération automatique (Étape 7, plan 7.2) — 0 neuron
+  // ------------------------------------------------------------------
+
+  /**
+   * Écrit un flag de modération en D1 (file backoffice) — best effort via
+   * waitUntil : jamais bloquant pour la conversation.
+   */
+  private flagToD1(
+    env: Env,
+    input: { sender: string; seq: number | null; verdict: ModerationVerdict; excerpt: string; action: 'flag' | 'block' },
+  ): void {
+    this.ctx.waitUntil(
+      (async () => {
+        try {
+          await env.DB.prepare(
+            `INSERT INTO moderation_flags
+             (id, conversation_id, sender, seq, risk, categories_json, excerpt, action, status, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'open', ?)`,
+          )
+            .bind(
+              crypto.randomUUID(),
+              this.getMeta('cid') ?? '',
+              input.sender,
+              input.seq,
+              input.verdict.risk,
+              JSON.stringify(input.verdict.categories),
+              input.excerpt.slice(0, 120),
+              input.action,
+              Math.floor(Date.now() / 1000),
+            )
+            .run();
+        } catch (err) {
+          console.error(JSON.stringify({ do: 'ChatRoom', flag: 'insert_failed', err: String(err) }));
+        }
+      })(),
+    );
+  }
+
+  /**
+   * Verdict AVANT livraison. 'block' → le message est REFUSÉ (ni persisté ni
+   * diffusé) ; 'flag' → livré MAIS remonté à la file ; 'deliver' → rien.
+   */
+  private moderateBeforeDelivery(env: Env, senderId: string, text: string): { blocked: boolean; verdict: ModerationVerdict } {
+    const verdict = moderateText(text);
+    if (verdict.action === 'block') {
+      this.flagToD1(env, { sender: senderId, seq: null, verdict, excerpt: text, action: 'block' });
+      return { blocked: true, verdict };
+    }
+    if (verdict.action === 'flag') {
+      // La seq sera attachée après insertion (flagToD1 repartira du DTO).
+      return { blocked: false, verdict };
+    }
+    return { blocked: false, verdict };
   }
 
   // ------------------------------------------------------------------
@@ -278,6 +335,15 @@ export class ChatRoom extends DurableObject {
       return Response.json({ error: { code: 'rate_limited' } }, { status: 429 });
     }
 
+    // Modération avant livraison (texte uniquement) — Étape 7.
+    const verdict = kind === 'text' ? this.moderateBeforeDelivery(env, userId, text) : null;
+    if (verdict?.blocked) {
+      return Response.json(
+        { error: { code: 'moderated', message: 'Message bloqué — il contient des propos ou demandes interdits (arnaque, haine…).' } },
+        { status: 422 },
+      );
+    }
+
     const message = await this.persistAndBroadcast(env, {
       senderId: userId,
       kind,
@@ -288,6 +354,7 @@ export class ChatRoom extends DurableObject {
           ? JSON.stringify({ version: Number(body.version) || 1, ext: body.ext })
           : null,
       clientRef: body.clientRef,
+      flagVerdict: verdict?.verdict,
     });
     return Response.json({ ok: true, message });
   }
@@ -463,12 +530,26 @@ export class ChatRoom extends DurableObject {
           ws.send(JSON.stringify({ type: 'error', message: 'Message invalide (vide ou trop long).' }));
           return;
         }
+        // Modération avant livraison — Étape 7 : un message « block » est
+        // refusé à l'expéditeur, ni persisté ni diffusé au destinataire.
+        const { blocked, verdict } = this.moderateBeforeDelivery(env, userId, text);
+        if (blocked) {
+          ws.send(
+            JSON.stringify({
+              type: 'error',
+              message: 'Message bloqué — il contient des propos ou demandes interdits (arnaque, haine…).',
+              clientRef: typeof data.clientRef === 'string' ? data.clientRef : null,
+            }),
+          );
+          return;
+        }
         await this.persistAndBroadcast(env, {
           senderId: userId,
           kind: 'text',
           body: text,
           durationMs: null,
           clientRef: typeof data.clientRef === 'string' ? data.clientRef : undefined,
+          flagVerdict: verdict,
         });
         return;
       }
@@ -520,7 +601,16 @@ export class ChatRoom extends DurableObject {
   /** Insert D1-independent (SQLite DO) puis broadcast à TOUT LE MONDE. */
   private async persistAndBroadcast(
     env: Env,
-    input: { senderId: string; kind: ChatMessageKind; body: string; durationMs: number | null; meta?: string | null; clientRef?: string },
+    input: {
+      senderId: string;
+      kind: ChatMessageKind;
+      body: string;
+      durationMs: number | null;
+      meta?: string | null;
+      clientRef?: string;
+      /** Verdict de modération pré-calculé (flag → file D1 après insertion). */
+      flagVerdict?: ModerationVerdict;
+    },
   ): Promise<ChatMessageDto> {
     const now = Math.floor(Date.now() / 1000);
     const res = this.db().exec(
@@ -534,6 +624,17 @@ export class ChatRoom extends DurableObject {
     );
     const row = res.toArray()[0] as unknown as MsgRow;
     const dto = await this.toDto(env, row);
+
+    // Flag de modération APRES insertion (on connaît la seq) — Étape 7.
+    if (input.flagVerdict && input.flagVerdict.action === 'flag') {
+      this.flagToD1(env, {
+        sender: input.senderId,
+        seq: dto.seq,
+        verdict: input.flagVerdict,
+        excerpt: input.kind === 'text' ? input.body : '[voice]',
+        action: 'flag',
+      });
+    }
 
     const payload = JSON.stringify({ type: 'msg', message: dto, clientRef: input.clientRef ?? null });
     for (const ws of this.ctx.getWebSockets()) {

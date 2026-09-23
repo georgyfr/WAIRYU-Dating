@@ -660,6 +660,7 @@ authRoutes.get('/me', async (c) => {
   const user = await c.env.DB.prepare(
     `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
             u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
+            u.verified_at, u.suspended_until,
             (SELECT COUNT(*) FROM photos p
               WHERE p.user_id = u.id AND p.status = 'active' AND p.deleted_at IS NULL) AS photo_count,
             (SELECT COUNT(*) FROM profile_prompts pp WHERE pp.user_id = u.id) AS prompt_count,
@@ -685,6 +686,8 @@ authRoutes.get('/me', async (c) => {
       city: string | null;
       bio: string | null;
       profile_consent_at: number | null;
+      verified_at: number | null;
+      suspended_until: number | null;
       photo_count: number;
       prompt_count: number;
       has_prefs: number;
@@ -718,6 +721,11 @@ authRoutes.get('/me', async (c) => {
         hasPreferences: user.has_prefs === 1,
       },
     ),
+    verified: user.verified_at != null,
+    suspendedUntil:
+      user.suspended_until && user.suspended_until > Math.floor(Date.now() / 1000)
+        ? user.suspended_until
+        : null,
   };
   return c.json(body);
 });

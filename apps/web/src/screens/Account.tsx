@@ -3,11 +3,21 @@
  * déconnexions et suppression de compte (droit à l'effacement immédiat).
  * Étape 6 : section Notifications (Web Push VAPID — nouveau message, match,
  * demande de révélation) avec désabonnement en 1 clic (respect des réglages).
+ * Étape 7 : badge « Identité vérifiée » (selfie semi-manuel), paramètres de
+ * confidentialité (pause / incognito / visibilité du mode), bannière de suspension.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { api } from '../lib/api';
+import { api, apiForm } from '../lib/api';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
-import type { MeResponse, PushConfigResponse } from '@wairyu/shared';
+import {
+  SELFIE_POSE_LABELS,
+  VERIFICATION,
+  type MeResponse,
+  type PushConfigResponse,
+  type PrivacyResponse,
+  type VerificationStartResponse,
+  type VerificationStatusResponse,
+} from '@wairyu/shared';
 
 interface Props {
   me: MeResponse;
@@ -29,6 +39,77 @@ export function Account({ me, onLoggedOut }: Props) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // ---- Étape 7 : confidentialité + vérification selfie ----
+  const [privacy, setPrivacy] = useState<PrivacyResponse | null>(null);
+  const [verif, setVerif] = useState<VerificationStatusResponse | null>(null);
+  const [verifFiles, setVerifFiles] = useState<(File | null)[]>([null, null, null]);
+  const [verifBusy, setVerifBusy] = useState(false);
+
+  const refreshSafety = useCallback(async () => {
+    try {
+      const [p, v] = await Promise.all([
+        api<PrivacyResponse>('/api/settings/privacy'),
+        api<VerificationStatusResponse>('/api/safety/verification'),
+      ]);
+      setPrivacy(p);
+      setVerif(v);
+    } catch {
+      /* silencieux — sections non critiques */
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshSafety();
+  }, [refreshSafety]);
+
+  async function putPrivacy(patch: Partial<Pick<PrivacyResponse, 'paused' | 'incognito' | 'modeVisible'>>) {
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await api<PrivacyResponse>('/api/settings/privacy', { method: 'PUT', json: patch });
+      setPrivacy((prev) => ({ ...(prev ?? { paused: false, incognito: false, modeVisible: true, note: '' }), ...patch, note: r.note }));
+      setMessage(r.note);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setBusy(false);
+  }
+
+  async function startVerification() {
+    setVerifBusy(true);
+    setError(null);
+    try {
+      await api<VerificationStartResponse>('/api/safety/verification/start', { json: {} });
+      await refreshSafety();
+      setMessage('Vérification démarrée — envoie tes 3 selfies dans l’ordre demandé.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setVerifBusy(false);
+  }
+
+  async function submitVerification() {
+    if (verifFiles.some((f) => !f)) {
+      setError('Envoie les 3 selfies (une photo par pose).');
+      return;
+    }
+    setVerifBusy(true);
+    setError(null);
+    try {
+      const form = new FormData();
+      verifFiles.forEach((f, i) => {
+        if (f) form.append(`pose${i}`, f, `pose${i}.jpg`);
+      });
+      const r = await apiForm<{ ok: true; note: string }>('/api/safety/verification/submit', form);
+      setVerifFiles([null, null, null]);
+      await refreshSafety();
+      setMessage(r.note);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setVerifBusy(false);
+  }
 
   async function logout() {
     setBusy(true);
@@ -172,10 +253,25 @@ export function Account({ me, onLoggedOut }: Props) {
       <div className="me-head">
         <div className="avatar">{(me.displayName ?? me.email)[0]?.toUpperCase()}</div>
         <div>
-          <h2>{me.displayName ?? 'Bienvenue !'}</h2>
+          <h2>
+            {me.displayName ?? 'Bienvenue !'}
+            {me.verified && (
+              <span className="chip chip-verified" title="Selfie reviewé par l'équipe wairyu">
+                {' '}✓ Vérifié·e
+              </span>
+            )}
+          </h2>
           <p className="hint">{me.email}</p>
         </div>
       </div>
+
+      {me.suspendedUntil && (
+        <div className="suspension-banner">
+          ⛔ Ton compte est suspendu jusqu’au{' '}
+          {new Date(me.suspendedUntil * 1000).toLocaleDateString('fr-FR')} — contacte le support
+          si tu penses que c’est une erreur.
+        </div>
+      )}
 
       <div className="pill-row">
         <span className="pill ok">{me.emailVerified ? 'Email vérifié' : 'Email non vérifié'}</span>
@@ -220,6 +316,116 @@ export function Account({ me, onLoggedOut }: Props) {
 
       <PersonalityBadge onOpen={() => setShowPers((v) => !v)} />
       {showPers && <PersonalityProposal refine />}
+
+      {/* ---- Vérification d'identité (Étape 7, plan 7.1) ---- */}
+      <div className="profile-cta">
+        <div>
+          <strong>Vérification d’identité</strong>
+          <p className="hint">
+            3 selfies dans un ordre aléatoire, review humaine — le badge
+            « Vérifié·e » rassure les autres membres et booste ta crédibilité.
+          </p>
+        </div>
+        <div className="btn-col">
+          {verif?.verified ? (
+            <span className="pill ok">✓ Identité vérifiée</span>
+          ) : verif?.status === 'awaiting' && verif.poses.length > 0 ? (
+            <>
+              <ol className="pose-list">
+                {verif.poses.map((pose, i) => (
+                  <li key={pose}>
+                    <label>
+                      <strong>Pose {i + 1} :</strong> {SELFIE_POSE_LABELS[pose]}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="user"
+                        onChange={(e) =>
+                          setVerifFiles((prev) => {
+                            const next = [...prev];
+                            next[i] = e.target.files?.[0] ?? null;
+                            return next;
+                          })
+                        }
+                      />
+                      {verifFiles[i] && <span className="hint"> ✓ photo prête</span>}
+                    </label>
+                  </li>
+                ))}
+              </ol>
+              <button type="button" className="btn primary" disabled={verifBusy} onClick={() => void submitVerification()}>
+                {verifBusy ? 'Envoi…' : 'Envoyer mes 3 selfies'}
+              </button>
+              <p className="hint">Max {Math.round(VERIFICATION.photoMaxBytes / (1024 * 1024))} Mo par photo.</p>
+            </>
+          ) : verif?.status === 'pending' ? (
+            <span className="pill">Review en cours — sous 24 h</span>
+          ) : verif?.status === 'rejected' ? (
+            <>
+              <span className="pill err">Refusée : {verif.rejectionReason ?? 'photos non conformes'}</span>
+              <button type="button" className="btn ghost" disabled={verifBusy} onClick={() => void startVerification()}>
+                Réessayer
+              </button>
+            </>
+          ) : (
+            <button type="button" className="btn primary" disabled={verifBusy} onClick={() => void startVerification()}>
+              Vérifier mon identité
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ---- Confidentialité v1 (Étape 7, plan 7.7) ---- */}
+      <div className="profile-cta">
+        <div>
+          <strong>Confidentialité</strong>
+          <p className="hint">
+            {privacy?.note ??
+              'Pause, incognito et visibilité du mode — tes photos restent sous ton contrôle.'}
+          </p>
+        </div>
+        <div className="privacy-toggles">
+          <label className="toggle-row">
+            <input
+              type="checkbox"
+              checked={privacy?.paused ?? false}
+              disabled={busy}
+              onChange={(e) => void putPrivacy({ paused: e.target.checked })}
+            />
+            <span>
+              <strong>Mettre mon profil en pause</strong>
+              <br />
+              <small>Masqué de tous les feeds — matchs et conversations intacts.</small>
+            </span>
+          </label>
+          <label className="toggle-row">
+            <input
+              type="checkbox"
+              checked={privacy?.incognito ?? false}
+              disabled={busy}
+              onChange={(e) => void putPrivacy({ incognito: e.target.checked })}
+            />
+            <span>
+              <strong>Mode incognito</strong>
+              <br />
+              <small>Masqué du feed — seules les personnes que TU likes te voient.</small>
+            </span>
+          </label>
+          <label className="toggle-row">
+            <input
+              type="checkbox"
+              checked={privacy?.modeVisible ?? true}
+              disabled={busy}
+              onChange={(e) => void putPrivacy({ modeVisible: e.target.checked })}
+            />
+            <span>
+              <strong>Afficher l’étiquette « Mode Invisible »</strong>
+              <br />
+              <small>Le flou de tes photos reste actif dans tous les cas.</small>
+            </span>
+          </label>
+        </div>
+      </div>
 
       {/* ---- Notifications Web Push (Étape 6.8) ---- */}
       {pushSupported && (

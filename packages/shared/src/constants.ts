@@ -147,6 +147,86 @@ export const PROFILE_LIMITS = {
   photoWebpQuality: 0.82,
 } as const;
 
+// ---------------------------------------------------------------------------
+// Étape 7 — Sécurité & modération
+// ---------------------------------------------------------------------------
+
+/** Motifs de signalement (plan 7.3) — validés par l'API, évolutifs. */
+export const REPORT_CATEGORIES = [
+  'content',
+  'behavior',
+  'fake',
+  'minor',
+  'scam',
+  'harassment',
+  'other',
+] as const;
+export type ReportCategory = (typeof REPORT_CATEGORIES)[number];
+
+/** Libellés d'affichage des motifs (front uniquement). */
+export const REPORT_LABELS: Record<ReportCategory, string> = {
+  content: 'Contenu inapproprié (photos, messages)',
+  behavior: 'Comportement inacceptable',
+  fake: 'Faux profil / usurpation',
+  minor: 'Mineur·e (moins de 18 ans)',
+  scam: 'Arnaque / demande d\u2019argent',
+  harassment: 'Harcèlement',
+  other: 'Autre',
+};
+
+/** Poses imposées pour la vérification selfie (plan 7.1 — anti photo papier). */
+export const SELFIE_POSES = ['front', 'left', 'right'] as const;
+export type SelfiePose = (typeof SELFIE_POSES)[number];
+
+export const SELFIE_POSE_LABELS: Record<SelfiePose, string> = {
+  front: 'Regarde la caméra, visage centré',
+  left: 'Tourne le visage vers TA gauche',
+  right: 'Tourne le visage vers TA droite',
+};
+
+/** Vérification selfie — garde-fous. */
+export const VERIFICATION = {
+  /** Nombre de poses imposées. */
+  poses: 3,
+  /** Durée pour envoyer les 3 selfies (heures). */
+  validHours: 48,
+  /** Octets max par selfie reçu par l'API. */
+  photoMaxBytes: 2 * 1024 * 1024,
+  /** Vérifications simultanées : 1 seule demande active à la fois. */
+  oneActivePerUser: true,
+} as const;
+
+/** Sécurité & modération — seuils et quotas. */
+export const SAFETY = {
+  /**
+   * Score de risque d'un message (0-100, calculé par règles — 0 neuron).
+   * ≥ flag : le message EST livré mais remonte à la file de modération.
+   * ≥ block : le message est REFUSÉ (ni livré ni persisté).
+   */
+  flagRisk: 35,
+  blockRisk: 70,
+  /** Signalements par utilisateur : 10 / jour (anti-abus du bouton). */
+  reportsPerDay: 10,
+  /** Demandes de vérification : 5 / jour. */
+  verificationsPerDay: 5,
+  /** Check-ins sécurité actifs simultanés max. */
+  checkinsActiveMax: 5,
+  /** Toggles de confidentialité : 30 / heure (large). */
+  privacyPerHour: 30,
+} as const;
+
+/** Libellés d'affichage des catégories de risque (backoffice + front). */
+export const RISK_LABELS: Record<string, string> = {
+  hate: 'Haine / insultes',
+  harassment: 'Harcèlement',
+  drugs: 'Drogues',
+  scam_link: 'Lien externe (scam potentiel)',
+  scam_crypto: 'Crypto / trading',
+  scam_money: 'Demande d\u2019argent',
+  scam_contact: 'Contact externe (WhatsApp/Telegram)',
+  scam_phone: 'Numéro de téléphone',
+};
+
 export const GENDERS = ['woman', 'man', 'non_binary'] as const;
 /**
  * Intentions de recherche — ordre d'affichage volontaire (progression naturelle).

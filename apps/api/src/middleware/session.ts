@@ -12,17 +12,25 @@ import { renewSessionSliding } from '../lib/auth';
 export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
   c.set('session', null);
   c.set('sessionRenewed', false);
+  c.set('suspendedUntil', null);
 
   const raw = getCookie(c, SESSION_COOKIE_NAME);
   const signed = await verifySessionCookie(raw, c.env.SESSION_HMAC_KEY);
   if (signed) {
     const row = await c.env.DB.prepare(
-      `SELECT s.user_id, s.revoked_at, s.expires_at, u.status AS user_status
+      `SELECT s.user_id, s.revoked_at, s.expires_at, u.status AS user_status,
+              u.suspended_until AS user_suspended_until
        FROM sessions s JOIN users u ON u.id = s.user_id
        WHERE s.id = ? LIMIT 1`,
     )
       .bind(signed.sid)
-      .first<{ user_id: string; revoked_at: number | null; expires_at: number; user_status: string }>();
+      .first<{
+        user_id: string;
+        revoked_at: number | null;
+        expires_at: number;
+        user_status: string;
+        user_suspended_until: number | null;
+      }>();
 
     if (row && !row.revoked_at && row.expires_at > Date.now() / 1000) {
       // Compte supprimé/banni → session morte immédiatement.
@@ -30,6 +38,12 @@ export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
         c.set('session', null);
       } else {
         c.set('session', { sessionId: signed.sid, userId: row.user_id });
+        // Suspension active (Étape 7) : la session reste VALIDE (l'utilisateur
+        // peut lire /api/me et se déconnecter) mais le middleware d'index.ts
+        // refuse tout le reste avec un 403 explicite.
+        if (row.user_suspended_until && row.user_suspended_until > Date.now() / 1000) {
+          c.set('suspendedUntil', row.user_suspended_until);
+        }
         // TTL glissant : prolongation d'1 jour plafonnée à 1 écriture/h (best effort).
         try {
           const renewed = await renewSessionSliding(c, signed.sid, row.expires_at);

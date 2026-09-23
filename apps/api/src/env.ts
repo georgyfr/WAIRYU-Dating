@@ -66,6 +66,8 @@ export interface AppVars {
   } | null;
   /** true si la session a été prolongée lors de cette requête (TTL glissant). */
   sessionRenewed: boolean;
+  /** Suspension backoffice active (Étape 7) — epoch de fin (null sinon). */
+  suspendedUntil: number | null;
 }
 
 export type AppEnv = Env & { Bindings: Env; Variables: AppVars };

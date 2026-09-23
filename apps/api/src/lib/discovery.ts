@@ -77,6 +77,8 @@ interface PoolRow {
   bio: string | null;
   geo_region: string | null;
   owner_mode: string | null;
+  owner_mode_visible: number | null;
+  verified_at: number | null;
   personality_type: string | null;
   personality_validated: number | null;
   qa_item: string | null;
@@ -257,7 +259,8 @@ export async function generateFeedPage(
 
   const { results: poolRows } = await env.DB.prepare(
     `SELECT u.id, u.display_name, u.birth_year, u.birth_date, u.city, u.neighborhood, u.country,
-            u.intent, u.bio, u.geo_region, up.mode_default AS owner_mode,
+            u.intent, u.bio, u.geo_region, u.verified_at, u.mode_visible,
+            up.mode_default AS owner_mode,
             pp.type AS personality_type, pp.validated AS personality_validated,
             qa.item_id AS qa_item, qa.value_json AS qa_value
      FROM users u
@@ -270,6 +273,17 @@ export async function generateFeedPage(
        AND COALESCE(u.birth_date, CAST(u.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
        ${genderFilter}
        AND (?6 IS NULL OR u.intent = ?6)
+       -- Étape 7 (plan 7.7) : un profil EN PAUSE n'apparaît nulle part.
+       AND COALESCE(u.paused, 0) = 0
+       -- Étape 7 (plan 7.7) : INCOGNITO — masqué du feed SAUF pour les
+       -- personnes à qui il a envoyé un like (« likes reçus »).
+       AND (
+         COALESCE(u.incognito, 0) = 0
+         OR EXISTS (
+           SELECT 1 FROM swipes s3
+           WHERE s3.user_id = u.id AND s3.target_id = ?1 AND s3.action IN ('like','super')
+         )
+       )
        -- Étape 5 : jamais reproposer quelqu'un de déjà traité…
        AND NOT EXISTS (SELECT 1 FROM swipes sw WHERE sw.user_id = ?1 AND sw.target_id = u.id)
        -- …ni mes propres demandes « Discuter » (en attente, acceptée, déclinée),
@@ -412,6 +426,10 @@ export async function generateFeedPage(
       personalityAffinity,
       personalitySought,
       highlights,
+      // Étape 7 : badge « Identité vérifiée » + visibilité de l'étiquette de
+      // mode (le FLU lui-même reste piloté par le mode du propriétaire — §4.6).
+      verified: row.verified_at != null,
+      showMode: row.owner_mode_visible !== 0,
     });
   }
 
