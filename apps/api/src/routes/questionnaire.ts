@@ -59,7 +59,7 @@ async function requireUser(c: Context<AppEnv>) {
 }
 
 /** Charge la banque ACTIVE et la mappe en QItem partagé (options parsées). */
-async function loadActiveItems(db: D1Database): Promise<QItem[]> {
+export async function loadActiveItems(db: D1Database): Promise<QItem[]> {
   const { results } = await db
     .prepare(
       `SELECT id, version, level, position, dimension, kind, prompt, options_json, max_select, is_deal_breaker
@@ -79,7 +79,7 @@ async function loadActiveItems(db: D1Database): Promise<QItem[]> {
   }));
 }
 
-async function loadMyAnswers(db: D1Database, userId: string): Promise<QAnswers> {
+export async function loadMyAnswers(db: D1Database, userId: string): Promise<QAnswers> {
   const { results } = await db
     .prepare(`SELECT item_id, value_json FROM q_answers WHERE user_id = ?`)
     .bind(userId)

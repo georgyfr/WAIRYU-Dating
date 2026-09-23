@@ -27,11 +27,18 @@ import {
   haversineKm,
   PHOTO_THUMB_WIDTH,
   PHOTO_BLUR_WIDTH,
+  affinityBetween,
+  AFFINITY_SCORE,
+  AFFINITY_LABELS,
+  ARCHETYPES,
+  ARCHETYPE_IDS,
   type QItem,
   type QAnswers,
   type Intent,
   type FeedProfile,
   type FeedResponse,
+  type ArchetypeId,
+  type PersonalityAffinity,
 } from '@wairyu/shared';
 
 export const feedRoutes = new Hono<AppEnv>();
@@ -53,6 +60,8 @@ interface PoolRow {
   bio: string;
   geo_region: string | null;
   owner_mode: string | null;
+  personality_type: string | null;
+  personality_validated: number | null;
   qa_item: string | null;
   qa_value: string | null;
 }
@@ -119,6 +128,17 @@ feedRoutes.get('/feed', async (c) => {
   /** Mode interracial : portée MONDIALE (rencontres entre continents). */
   const worldwide = myMode === 'interracial';
 
+  // --- Mon archétype (pour l'affinité et la 6e dimension du score) ---
+  const myPersRow = await c.env.DB.prepare(
+    `SELECT type, validated FROM personality_profiles WHERE user_id = ?`,
+  )
+    .bind(user.id)
+    .first<{ type: string; validated: number }>();
+  const myArchetype =
+    myPersRow && (ARCHETYPE_IDS as readonly string[]).includes(myPersRow.type)
+      ? (myPersRow.type as ArchetypeId)
+      : null;
+
   // --- Banque active + mes réponses ---
   const { results: itemRows } = await c.env.DB.prepare(
     `SELECT id, level, position, dimension, kind, prompt, options_json, max_select, is_deal_breaker
@@ -159,9 +179,11 @@ feedRoutes.get('/feed', async (c) => {
   const { results: poolRows } = await c.env.DB.prepare(
     `SELECT u.id, u.display_name, u.birth_year, u.birth_date, u.city, u.neighborhood, u.country,
             u.intent, u.bio, u.geo_region, up.mode_default AS owner_mode,
+            pp.type AS personality_type, pp.validated AS personality_validated,
             qa.item_id AS qa_item, qa.value_json AS qa_value
      FROM users u
      LEFT JOIN user_preferences up ON up.user_id = u.id
+     LEFT JOIN personality_profiles pp ON pp.user_id = u.id
      LEFT JOIN q_answers qa ON qa.user_id = u.id
      WHERE u.id != ?1 AND u.status = 'active'
        AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
@@ -206,6 +228,7 @@ feedRoutes.get('/feed', async (c) => {
 
     let score: number | null = null;
     let reasons: FeedProfile['matchReasons'] = null;
+    let personalityAffinity: PersonalityAffinity | null = null;
     const bothAnswered = qItems.some(
       (i) => myAnswers[i.id] !== undefined && theirAnswers[i.id] !== undefined,
     );
@@ -214,13 +237,36 @@ feedRoutes.get('/feed', async (c) => {
       // Dimension « Préférences déclarées » : chevauchement des intentions.
       const theirIntent = row.intent as Intent | null;
       const prefScore = prefIntent == null ? 70 : theirIntent === prefIntent ? 100 : 40;
-      const result = compatibility(qItems, myAnswers, theirAnswers, user.id, row.id, prefScore);
+      // Dimension « Affinité d'archétypes » (Étape 4-bis) : n'existe que si les
+      // DEUX membres ont un type — sinon neutre (poids simplement non compté).
+      const theirArchetype =
+        row.personality_type && (ARCHETYPE_IDS as readonly string[]).includes(row.personality_type)
+          ? (row.personality_type as ArchetypeId)
+          : null;
+      const affinity: PersonalityAffinity | null =
+        myArchetype && theirArchetype ? affinityBetween(myArchetype, theirArchetype) : null;
+      const result = compatibility(
+        qItems,
+        myAnswers,
+        theirAnswers,
+        user.id,
+        row.id,
+        prefScore,
+        affinity === null ? null : AFFINITY_SCORE[affinity],
+      );
       if (result.dealBreakerConflict) {
         excludedDealBreaker++;
         continue; // Exclusif : la paire n'est jamais proposée.
       }
       score = result.score;
       reasons = result.reasons;
+      if (affinity === 'strong' && myArchetype && theirArchetype) {
+        reasons.forces = [
+          `Vos personnalités se répondent : ${ARCHETYPES[theirArchetype].name} × ${ARCHETYPES[myArchetype].name} — ${AFFINITY_LABELS.strong}.`,
+          ...reasons.forces,
+        ].slice(0, 3);
+      }
+      personalityAffinity = affinity;
     }
 
     const age = row.birth_year ? Math.max(18, new Date().getUTCFullYear() - row.birth_year) : 18;
@@ -239,6 +285,9 @@ feedRoutes.get('/feed', async (c) => {
       photoBlurred: false,
       matchReasons: reasons,
       score,
+      personalityType: (row.personality_type as FeedProfile['personalityType']) ?? null,
+      personalityValidated: row.personality_validated === 1,
+      personalityAffinity,
     });
   }
 

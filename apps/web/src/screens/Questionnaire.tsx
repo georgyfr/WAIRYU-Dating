@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { PersonalityProposal } from './PersonalityProposal';
 import {
   type QuestionnaireState,
   type QItem,
@@ -143,6 +144,7 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
         {insights.map((block) => (
           <InsightsCard key={block.level} block={block} />
         ))}
+        <PersonalityProposal refine />
         <button type="button" className="btn primary" onClick={onDiscover}>
           Découvrir les profils
         </button>
@@ -166,6 +168,7 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
           </p>
         </div>
         <InsightsCard block={phase.insights} />
+        <PersonalityProposal refine={phase.level === 2} />
         <p className="hint">Le score est indicatif : il t&apos;aide à prioriser, il ne décide pas à ta place.</p>
         <button
           type="button"
@@ -177,7 +180,11 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
         >
           {phase.level === 1 ? 'Continuer le niveau 2' : 'Découvrir les profils'}
         </button>
-        {phase.level === 2 && (
+        {phase.level === 1 ? (
+          <button type="button" className="btn ghost" onClick={onDiscover}>
+            Voir les profils membres
+          </button>
+        ) : (
           <button type="button" className="btn ghost" onClick={onDone}>
             Plus tard
           </button>

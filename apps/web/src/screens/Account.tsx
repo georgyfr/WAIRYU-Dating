@@ -5,6 +5,7 @@
  */
 import { useState } from 'react';
 import { api } from '../lib/api';
+import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
 import type { MeResponse } from '@wairyu/shared';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 
 export function Account({ me, onLoggedOut }: Props) {
   const [confirming, setConfirming] = useState(false);
+  const [showPers, setShowPers] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -114,6 +116,9 @@ export function Account({ me, onLoggedOut }: Props) {
           </button>
         </div>
       </div>
+
+      <PersonalityBadge onOpen={() => setShowPers((v) => !v)} />
+      {showPers && <PersonalityProposal refine />}
 
       {message && <p className="notice">{message}</p>}
 

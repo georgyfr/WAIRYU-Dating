@@ -68,16 +68,22 @@ export interface CompatibilityResult {
   reasons: MatchReasons;
 }
 
-/** Poids MVP (renormalisés, cf. en-tête). Somme = 1.00 avec PREF_WEIGHT. */
+/**
+ * Poids MVP (renormalisés, cf. en-tête). Somme = 1.00 avec PREF_WEIGHT +
+ * ARCH_WEIGHT (Étape 4-bis : affinité d'archétypes — demande fondateur).
+ * Écart max vs poids initiaux : ±0.02 — le score reste proportionnel.
+ */
 export const DIM_WEIGHTS: Record<QDimension, number> = {
-  values: 0.26,
-  goals: 0.21,
-  communication: 0.16,
-  personality: 0.16,
-  attachment: 0.11,
+  values: 0.24,
+  goals: 0.19,
+  communication: 0.15,
+  personality: 0.15,
+  attachment: 0.10,
 };
 /** Dimension « Préférences déclarées » (hors banque de questions). */
-export const PREF_WEIGHT = 0.10;
+export const PREF_WEIGHT = 0.09;
+/** Dimension « Affinité d'archétypes » (null tant que l'un des deux n'a pas de type). */
+export const ARCH_WEIGHT = 0.08;
 
 export const DIM_LABELS: Record<QDimension, string> = {
   values: 'les valeurs fondamentales',
@@ -223,6 +229,8 @@ export function compatibility(
   userIdA: string,
   userIdB: string,
   prefScore: number,
+  /** Affinité d'archétypes 0-100 — null si l'un des deux n'a pas de type validé/proposé. */
+  archetypeScore: number | null = null,
 ): CompatibilityResult {
   const conflict = dealBreakerConflict(items, answersA, answersB);
 
@@ -251,6 +259,10 @@ export function compatibility(
   // --- Total : pondération renormalisée sur les dimensions présentes ---
   let wsum = PREF_WEIGHT; // la dimension « préférences » compte toujours
   let total = PREF_WEIGHT * Math.max(0, Math.min(100, prefScore));
+  if (archetypeScore !== null) {
+    wsum += ARCH_WEIGHT;
+    total += ARCH_WEIGHT * Math.max(0, Math.min(100, archetypeScore));
+  }
   for (const d of dims) {
     wsum += DIM_WEIGHTS[d.dimension];
     total += DIM_WEIGHTS[d.dimension] * d.score;

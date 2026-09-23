@@ -305,4 +305,10 @@ export interface FeedProfile {
     conversationStarters: string[];
   } | null;
   score: number | null;
+  /** Archétype du membre (proposé ou validé) — Étape 4-bis. */
+  personalityType: import('./personality').ArchetypeId | null;
+  /** true = l'archétype a été confirmé par son auteur (« C'est moi ✓ »). */
+  personalityValidated: boolean;
+  /** Affinité avec MON archétype (null si l'un des deux n'a pas de type). */
+  personalityAffinity: import('./personality').PersonalityAffinity | null;
 }

@@ -1066,3 +1066,170 @@ h2 {
 .q-disclaimer {
   text-align: center;
 }
+
+/* ═══════════════ Étape 4-bis — Archétypes de personnalité ═══════════════ */
+
+.pers-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.pers-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pers-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.pers-star {
+  font-size: 1.2rem;
+}
+
+.pers-card {
+  background: #fff;
+  border: 1px solid rgba(108, 74, 182, 0.22);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: left;
+  box-shadow: 0 6px 18px rgba(108, 74, 182, 0.08);
+}
+
+.pers-card.main {
+  border-width: 2px;
+}
+
+.pers-card.pending {
+  text-align: center;
+}
+
+.pers-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pers-name {
+  color: var(--c-primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.pers-tagline {
+  font-style: italic;
+  color: var(--c-primary-dark);
+  margin: 8px 0 6px;
+}
+
+.pers-desc {
+  font-size: 0.95rem;
+  color: var(--c-text);
+}
+
+.pers-signals {
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  background: rgba(108, 74, 182, 0.06);
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-top: 10px;
+}
+
+.pers-card .btn {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.pers-alts {
+  display: grid;
+  gap: 10px;
+}
+
+.pers-alts > p {
+  text-align: center;
+  margin: 0;
+}
+
+.pers-alt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(108, 74, 182, 0.25);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.pers-alt:hover:not(:disabled) {
+  border-color: var(--c-primary);
+  transform: translateY(-1px);
+}
+
+.pers-alt strong {
+  color: var(--c-primary-dark);
+}
+
+.pers-alt span {
+  font-size: 0.85rem;
+  color: var(--c-text);
+}
+
+.pers-alt em {
+  font-size: 0.8rem;
+  color: var(--c-primary);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.pers-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+
+.chip.chip-pers {
+  background: rgba(108, 74, 182, 0.1);
+  color: var(--c-primary-dark);
+  border: 1px solid transparent;
+}
+
+.chip.chip-pers.ok {
+  border-color: rgba(108, 74, 182, 0.45);
+  background: rgba(108, 74, 182, 0.16);
+  font-weight: 700;
+}
+
+.chip.chip-aff {
+  font-weight: 700;
+}
+
+.chip.chip-aff.strong {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.chip.chip-aff.good {
+  background: rgba(108, 74, 182, 0.12);
+  color: var(--c-primary-dark);
+}
+
+.chip.chip-aff.discover {
+  background: rgba(125, 114, 136, 0.14);
+  color: var(--c-muted);
+}

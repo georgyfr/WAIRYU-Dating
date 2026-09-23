@@ -38,6 +38,8 @@ export const RATE_RULES = {
   qAnswerUser: { scope: 'q:ans:user', windowSeconds: 3600, max: 240 },
   /** Appels feed par utilisateur : 60 / heure (pagination incluse — budget global 70/jour). */
   feedUser: { scope: 'feed:user', windowSeconds: 3600, max: 60 },
+  /** Consultations/choix de personnalité : 60 / heure (lecture + validations, large). */
+  personalityUser: { scope: 'pers:user', windowSeconds: 3600, max: 60 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

@@ -14,6 +14,7 @@ import { authRoutes } from './routes/auth';
 import { profileRoutes } from './routes/profiles';
 import { geoRoutes } from './routes/geo';
 import { questionnaireRoutes } from './routes/questionnaire';
+import { personalityRoutes } from './routes/personality';
 import { feedRoutes } from './routes/feed';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
@@ -59,6 +60,7 @@ app.route('/api', authRoutes);
 app.route('/api', profileRoutes);
 app.route('/api', geoRoutes);
 app.route('/api', questionnaireRoutes);
+app.route('/api', personalityRoutes);
 app.route('/api', feedRoutes);
 app.route('/admin', adminRoutes);
 

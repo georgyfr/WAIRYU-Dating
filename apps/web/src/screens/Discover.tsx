@@ -6,7 +6,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '../lib/api';
-import { LABELS, type FeedResponse } from '@wairyu/shared';
+import { ARCHETYPES, AFFINITY_LABELS, LABELS, type FeedResponse } from '@wairyu/shared';
 
 interface Props {
   onBack: () => void;
@@ -80,6 +80,25 @@ export function Discover({ onBack }: Props) {
                 {[p.city, p.country].filter(Boolean).join(', ') || 'Localisation non renseignée'}
                 {p.photoBlurred ? ' · profil Invisible' : ''}
               </p>
+              {p.personalityType && (
+                <div className="pers-row">
+                  <span
+                    className={`chip chip-pers ${p.personalityValidated ? 'ok' : ''}`}
+                    title={p.personalityValidated ? 'Personnalité validée par son auteur' : 'Personnalité proposée — pas encore validée'}
+                  >
+                    ✨ {ARCHETYPES[p.personalityType].name}
+                    {p.personalityValidated ? ' ✓' : ''}
+                  </span>
+                  {p.personalityAffinity && (
+                    <span
+                      className={`chip chip-aff ${p.personalityAffinity}`}
+                      title="Affinité de personnalité — indicatif, jamais prédictif"
+                    >
+                      {AFFINITY_LABELS[p.personalityAffinity]}
+                    </span>
+                  )}
+                </div>
+              )}
               {p.bio && <p className="feed-bio">{p.bio}</p>}
               <span className="chip">{LABELS.intent[p.intent] ?? 'Rencontres'}</span>
 
