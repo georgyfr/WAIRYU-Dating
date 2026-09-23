@@ -313,4 +313,136 @@ export interface FeedProfile {
   personalityAffinity: import('./personality').PersonalityAffinity | null;
   /** true = son type fait partie des types de profils que J'AI SÉLECTIONNÉS (mis en avant). */
   personalitySought: boolean;
+  /**
+   * Extraits de questionnaire partagés (Étape 5 — cartes Invisible) :
+   * « « {question} » — comme toi : {réponse} » pour ≤ 2 réponses identiques.
+   */
+  highlights: string[];
+}
+
+// ---------- Étape 5 : découverte dual-mode ----------
+
+/** Action de swipe (Classique / Interracial). */
+export type SwipeAction = 'like' | 'pass' | 'super';
+
+/** Compteurs quotidiens de découverte (fenêtre UTC, purge par le cron). */
+export interface QuotaState {
+  likesUsed: number;
+  likesLeft: number;
+  supersUsed: number;
+  supersLeft: number;
+  invisibleUsed: number;
+  invisibleLeft: number;
+  rewindsUsed: number;
+  rewindsLeft: number;
+}
+
+/** POST /api/discover/swipe. */
+export interface SwipeResponse {
+  ok: true;
+  /** true = réciprocité détectée : un match vient d'être créé. */
+  matched: boolean;
+  matchId: string | null;
+  /** Mode de la conversation créée ('classic' | 'invisible'). */
+  conversationMode: 'classic' | 'invisible' | null;
+  /** Prénom de la personne (écran « C'est un match ! »). */
+  matchedName: string | null;
+  quota: QuotaState;
+}
+
+/** POST /api/discover/rewind — annule MA dernière action (1/jour). */
+export interface RewindResponse {
+  ok: true;
+  /** false = rien à annuler (quota non consommé). */
+  undone: boolean;
+  targetId: string | null;
+  quota: QuotaState;
+}
+
+/** Demande « Discuter » (handshake du Mode Invisible). */
+export interface InvisibleRequestDto {
+  id: string;
+  fromUser: string;
+  fromName: string;
+  toUser: string;
+  toName: string;
+  status: 'pending' | 'accepted' | 'declined';
+  createdAt: number;
+  /** Photo principale du DEMANDEUR (floue si le demandeur est Invisible). */
+  photoUrl: string | null;
+  photoBlurred: boolean;
+  personalityType: import('./personality').ArchetypeId | null;
+  personalityValidated: boolean;
+}
+
+/** GET /api/discover/inbox — demandes reçues + envoyées. */
+export interface InboxResponse {
+  /** Demandes reçues en attente de MA réponse. */
+  received: InvisibleRequestDto[];
+  /** Mes demandes envoyées (je vois accepté / décliné). */
+  sent: InvisibleRequestDto[];
+  quota: QuotaState;
+}
+
+/** POST /api/discover/invisible-request/:id/respond. */
+export interface InvisibleRespondResponse {
+  ok: true;
+  status: 'accepted' | 'declined';
+  /** true = l'acceptation a créé un match (+ conversation Invisible). */
+  matched: boolean;
+  matchId: string | null;
+}
+
+/** POST /api/discover/invisible-request — envoi d'une demande. */
+export interface InvisibleRequestResponse {
+  ok: true;
+  status: 'pending' | 'accepted';
+  /** true = la personne m'avait déjà demandé → match immédiat (double « Discuter »). */
+  matched: boolean;
+  matchId: string | null;
+  quota: QuotaState;
+}
+
+/** Un match + sa conversation (GET /api/discover/matches). */
+export interface MatchDto {
+  matchId: string;
+  conversationId: string;
+  /** Mode de la CONVERSATION — passerelle acceptée ⇒ 'invisible' (photos re-floutées). */
+  conversationMode: 'classic' | 'invisible';
+  origin: 'like' | 'super' | 'invisible_request';
+  createdAt: number;
+  other: {
+    userId: string;
+    displayName: string;
+    city: string | null;
+    country: string | null;
+    photoUrl: string | null;
+    /** true = photo servie floue (conversation Invisible, pas encore révélée). */
+    photoBlurred: boolean;
+    personalityType: import('./personality').ArchetypeId | null;
+    personalityValidated: boolean;
+  };
+  /** Demande de passerelle en attente sur cette conversation (null sinon). */
+  pendingGateway: { id: string; fromMe: boolean; createdAt: number } | null;
+}
+
+/** GET /api/discover/matches. */
+export interface MatchListResponse {
+  matches: MatchDto[];
+  /** Rappel produit (§4.8) : changer de mode ne détruit jamais un match. */
+  note: string;
+}
+
+/** POST /api/discover/matches/:id/gateway (+ /respond). */
+export interface GatewayResponse {
+  ok: true;
+  status: 'pending' | 'accepted' | 'declined';
+  conversationMode: 'classic' | 'invisible';
+}
+
+/** GET /api/discover/top — Top Compatibilité du jour (cron, hors quota feed). */
+export interface TopResponse {
+  day: string;
+  items: FeedProfile[];
+  note: string;
 }

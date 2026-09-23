@@ -13,6 +13,7 @@ import { Account } from './screens/Account';
 import { Profile } from './screens/Profile';
 import { Questionnaire } from './screens/Questionnaire';
 import { Discover } from './screens/Discover';
+import { Matches } from './screens/Matches';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
 type Route =
@@ -24,6 +25,7 @@ type Route =
   | { name: 'profile' }
   | { name: 'questionnaire' }
   | { name: 'discover' }
+  | { name: 'matches' }
   | { name: 'app' };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -66,8 +68,11 @@ function parseHash(): Route {
       // Étape 4 : questionnaire progressif.
       return { name: 'questionnaire' };
     case 'discover':
-      // Étape 4 : candidats scorés (liste — le swipe dual-mode arrive en 5).
+      // Étape 5 : découverte dual-mode (pile Classique + Invisible + Top du jour).
       return { name: 'discover' };
+    case 'matches':
+      // Étape 5 : matchs + conversations + passerelle Classique → Invisible.
+      return { name: 'matches' };
     case 'app':
       return { name: 'app' };
     default:
@@ -127,6 +132,11 @@ export default function App() {
     if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
 
+  // Écrans découverte/matchs : session requise également.
+  useEffect(() => {
+    if (!checking && (route.name === 'discover' || route.name === 'matches') && !me) go('#/');
+  }, [checking, route, me, go]);
+
   // ---- Rendu ----
   let content: JSX.Element;
 
@@ -150,7 +160,9 @@ export default function App() {
       />
     );
   } else if (route.name === 'discover' && me) {
-    content = <Discover onBack={() => go('#/app')} />;
+    content = <Discover onBack={() => go('#/app')} onMatches={() => go('#/matches')} />;
+  } else if (route.name === 'matches' && me) {
+    content = <Matches onBack={() => go('#/app')} />;
   } else {
     // Accueil
     content = (

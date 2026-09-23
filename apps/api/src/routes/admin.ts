@@ -89,3 +89,14 @@ adminRoutes.post('/test-session', async (c) => {
   await createSession(c, userId);
   return c.json({ userId, email, stagingOnly: true });
 });
+
+/**
+ * Étape 5 — déclencheur manuel du Top Compatibilité (même fonction que le
+ * cron quotidien). Protégé par ADMIN_TOKEN comme tout /admin/* — permet de
+ * valider la chaîne complète (calcul → matérialisation) sans attendre 03:xx.
+ */
+adminRoutes.post('/run-top', async (c) => {
+  const { computeDailyTop } = await import('../lib/discovery');
+  const result = await computeDailyTop(c.env, { maxUsers: 200 });
+  return c.json({ ok: true, ...result });
+});

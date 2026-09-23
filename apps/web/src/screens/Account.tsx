@@ -108,11 +108,14 @@ export function Account({ me, onLoggedOut }: Props) {
           </p>
         </div>
         <div className="btn-col">
-          <button type="button" className="btn primary" onClick={() => window.location.assign('#/questionnaire')}>
-            Mon questionnaire
-          </button>
-          <button type="button" className="btn ghost" onClick={() => window.location.assign('#/discover')}>
+          <button type="button" className="btn primary" onClick={() => window.location.assign('#/discover')}>
             Découvrir
+          </button>
+          <button type="button" className="btn ghost" onClick={() => window.location.assign('#/matches')}>
+            Mes matchs
+          </button>
+          <button type="button" className="btn ghost" onClick={() => window.location.assign('#/questionnaire')}>
+            Mon questionnaire
           </button>
         </div>
       </div>

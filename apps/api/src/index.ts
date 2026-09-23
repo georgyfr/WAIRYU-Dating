@@ -16,6 +16,8 @@ import { geoRoutes } from './routes/geo';
 import { questionnaireRoutes } from './routes/questionnaire';
 import { personalityRoutes } from './routes/personality';
 import { feedRoutes } from './routes/feed';
+import { discoverRoutes } from './routes/discover';
+import { computeDailyTop } from './lib/discovery';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -62,6 +64,7 @@ app.route('/api', geoRoutes);
 app.route('/api', questionnaireRoutes);
 app.route('/api', personalityRoutes);
 app.route('/api', feedRoutes);
+app.route('/api', discoverRoutes);
 app.route('/admin', adminRoutes);
 
 // (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)
@@ -131,6 +134,22 @@ export default {
         )
           .bind(day)
           .run();
+
+        // ---- Top Compatibilité quotidien (Étape 5.6) ----
+        // 5 suggestions scorées par utilisateur actif, matérialisées dans
+        // top_matches — HORS quota utilisateur (lues via /api/discover/top).
+        try {
+          const top = await computeDailyTop(env, { maxUsers: 200 });
+          await env.DB.prepare(
+            `INSERT INTO metrics_daily (day, metric, value) VALUES (?, 'cron_top_daily', ?)
+             ON CONFLICT (day, metric) DO UPDATE SET value = excluded.value`,
+          )
+            .bind(day, top.stored)
+            .run();
+          console.log(JSON.stringify({ cron: 'top-daily', ...top }));
+        } catch (err) {
+          console.error(JSON.stringify({ cron: 'top-daily', level: 'error', err: String(err) }));
+        }
       })(),
     );
   },

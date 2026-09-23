@@ -1411,3 +1411,612 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===========================================================================
+   Étape 5 — Découverte dual-mode
+   Onglets de mode · quotas · filtres · pile de swipe Classique ·
+   cartes Invisible + handshake · Top du jour · inbox · matchs · passerelle
+=========================================================================== */
+
+.discover {
+  justify-content: flex-start;
+  max-width: 560px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+/* ---- Onglets de mode (bascule libre, réversible — §4.3.4) ---- */
+.mode-tabs {
+  display: flex;
+  gap: 6px;
+  background: #efe9f8;
+  border-radius: 999px;
+  padding: 4px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.mode-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 9px 6px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-tab.active {
+  background: #fff;
+  color: var(--c-primary-dark);
+  box-shadow: 0 1px 4px rgba(86, 58, 148, 0.18);
+}
+
+.mode-tab:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.mode-hint {
+  font-size: 12.5px;
+  color: var(--c-muted);
+  margin: 6px 2px 2px;
+  text-align: center;
+}
+
+/* ---- Quotas quotidiens ---- */
+.quota-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.quota-chip {
+  border: 1px solid #e5ddf2;
+  background: #fff;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-text);
+  padding: 4px 10px;
+}
+
+/* ---- Filtres de base ---- */
+.filter-panel {
+  width: 100%;
+  border: 1px solid #e5ddf2;
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.filter-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+
+.filter-grid input,
+.filter-grid select {
+  font: inherit;
+  font-size: 14px;
+  color: var(--c-text);
+  border: 1px solid #e5ddf2;
+  border-radius: 10px;
+  padding: 7px 9px;
+  background: var(--c-bg);
+}
+
+.flash-msg {
+  background: #e8f7ee;
+  color: #1c7a43;
+  border-radius: 10px;
+  font-size: 13.5px;
+  padding: 8px 12px;
+  margin-top: 8px;
+}
+
+/* ---- Sections titrées (Top, inbox, envoyées) ---- */
+.section-title {
+  font-size: 15px;
+  color: var(--c-primary-dark);
+  margin: 18px 0 8px;
+}
+
+.top-section {
+  width: 100%;
+}
+
+.top-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.top-card {
+  min-width: 128px;
+  max-width: 128px;
+  border: 1px solid #e5ddf2;
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.top-card img {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.top-card img.blurred {
+  filter: blur(10px) saturate(0.9);
+  transform: scale(1.12);
+}
+
+.top-card strong {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.top-card em {
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-primary);
+}
+
+.top-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: #efe9f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+/* ---- Boîte de réception (demandes « Discuter ») ---- */
+.inbox-section,
+.sent-section {
+  width: 100%;
+}
+
+.inbox-card {
+  display: flex;
+  gap: 12px;
+  border: 1px solid #e5ddf2;
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.inbox-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.inbox-photo.blurred {
+  filter: blur(10px) saturate(0.9);
+  transform: scale(1.12);
+}
+
+.inbox-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.inbox-body p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* ---- Pile de cartes (Classique / Interracial) ---- */
+.deck-zone {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 14px;
+  min-height: 480px;
+}
+
+.deck-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid #e5ddf2;
+  border-radius: 20px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(45, 36, 56, 0.12);
+  touch-action: pan-y;
+  cursor: grab;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  will-change: transform;
+}
+
+.deck-card.behind {
+  position: absolute;
+  top: 10px;
+  transform: scale(0.94);
+  opacity: 0.6;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.deck-card:not(.behind) {
+  z-index: 1;
+}
+
+.deck-card.exit-left {
+  transform: translateX(-140%) rotate(-14deg);
+  opacity: 0;
+}
+
+.deck-card.exit-right {
+  transform: translateX(140%) rotate(14deg);
+  opacity: 0;
+}
+
+.deck-card .feed-photo {
+  aspect-ratio: 4 / 5;
+  cursor: grab;
+}
+
+.deck-card .feed-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Tampons visibles pendant le drag */
+.stamp {
+  position: absolute;
+  top: 18px;
+  z-index: 2;
+  font-size: 34px;
+  font-weight: 800;
+  border: 3px solid;
+  border-radius: 12px;
+  padding: 2px 12px;
+  opacity: 0;
+  transform: rotate(-12deg);
+  pointer-events: none;
+  transition: opacity 0.1s;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.stamp-like {
+  left: 16px;
+  color: #1c9a56;
+  border-color: #1c9a56;
+}
+
+.stamp-pass {
+  right: 16px;
+  color: #d64545;
+  border-color: #d64545;
+  transform: rotate(12deg);
+}
+
+.stamp.on {
+  opacity: 0.95;
+}
+
+.deck-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.deck-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid #e5ddf2;
+  background: #fff;
+  font-size: 21px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+  box-shadow: 0 3px 10px rgba(45, 36, 56, 0.10);
+}
+
+.deck-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.deck-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.deck-btn.like {
+  color: #1c9a56;
+  border-color: #9ed8b6;
+  font-size: 24px;
+}
+
+.deck-btn.super {
+  color: #1d8fd1;
+  border-color: #9ccfec;
+}
+
+.deck-btn.pass {
+  color: #d64545;
+  border-color: #eeb0b0;
+}
+
+.deck-btn.rewind {
+  color: var(--c-muted);
+  font-size: 19px;
+}
+
+.deck-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 30px 10px;
+  text-align: center;
+}
+
+/* ---- Liste Invisible (Explorer / Discuter) ---- */
+.inv-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.inv-card .feed-photo {
+  aspect-ratio: 4 / 5;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-row .hint {
+  width: 100%;
+  margin: 0;
+}
+
+/* Extraits de questionnaire + prompts */
+.feed-prompt {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--c-text);
+  border-left: 3px solid #e5ddf2;
+  padding-left: 10px;
+}
+
+.feed-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-highlight {
+  background: #e8f7ee;
+  border-color: #bfe6cd;
+  color: #1c7a43;
+  font-size: 12px;
+}
+
+/* Statuts (demandes envoyées, passerelle) */
+.chip-status {
+  font-size: 12px;
+}
+
+.chip-status.pending {
+  background: #fff4e2;
+  border-color: #f2d5a8;
+  color: #96601a;
+}
+
+.chip-status.accepted {
+  background: #e8f7ee;
+  border-color: #bfe6cd;
+  color: #1c7a43;
+}
+
+.chip-status.declined {
+  background: #f8ecec;
+  border-color: #e7c3c3;
+  color: #a03c3c;
+}
+
+/* ---- Écran « C'est un match ! » ---- */
+.match-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 36, 56, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 24px;
+}
+
+.match-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 24px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: match-pop 0.25s ease;
+}
+
+@keyframes match-pop {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.match-emoji {
+  font-size: 44px;
+}
+
+.match-card h2 {
+  color: var(--c-primary-dark);
+}
+
+.match-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-text);
+}
+
+/* ---- Écran Mes matchs + passerelle ---- */
+.matches {
+  justify-content: flex-start;
+  max-width: 560px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.mode-note {
+  width: 100%;
+}
+
+.match-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.match-row {
+  display: flex;
+  gap: 12px;
+  border: 1px solid #e5ddf2;
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 12px;
+}
+
+.match-photo {
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #efe9f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-photo.blurred {
+  filter: blur(10px) saturate(0.9);
+  transform: scale(1.14);
+}
+
+.match-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.match-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.match-sub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--c-muted);
+}
+
+.chip-conv.classic {
+  background: #efe9f8;
+  color: var(--c-primary-dark);
+}
+
+.chip-conv.invisible {
+  background: #2d2438;
+  color: #f4f0fa;
+}
+
+.matches-link {
+  margin-left: auto;
+}
+
+.btn.small {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 420px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .deck-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .deck-card .feed-body {
+    max-height: 260px;
+  }
+}

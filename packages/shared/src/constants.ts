@@ -55,6 +55,31 @@ export const PHOTO_THUMB_WIDTH = 200;
 /** Largeur de la variante « floue » (petite + flou CSS côté front). */
 export const PHOTO_BLUR_WIDTH = 400;
 
+// ---------------------------------------------------------------------------
+// Étape 5 — Découverte dual-mode
+// ---------------------------------------------------------------------------
+
+/**
+ * Limites quotidiennes gratuites (spécification §6, plan Étape 5.3).
+ * Compteurs en D1 (table rate_limits, fenêtre fixe 24 h alignée UTC),
+ * incrémentés par UPSERT atomique, anciennes fenêtres purgées par le cron
+ * quotidien existant — zéro nouvelle table de compteurs.
+ */
+export const DISCOVERY = {
+  /** Likes (like + super consomment ce quota) par jour. */
+  likesPerDay: 50,
+  /** Demandes « Discuter » (handshake Mode Invisible) par jour. */
+  invisibleRequestsPerDay: 10,
+  /** Super Likes par jour (gratuit). */
+  superLikesPerDay: 1,
+  /** Rewinds (annulation du dernier swipe) par jour (gratuit). */
+  rewindsPerDay: 1,
+  /** Suggestions Top Compatibilité calculées par le cron quotidien. */
+  topPerDay: 5,
+  /** Seuil de drag (px) pour valider un swipe tactile. */
+  swipeThresholdPx: 90,
+} as const;
+
 /** Bibliothèque de prompts de personnalité — l'utilisateur en choisit 3. */
 export const PROMPT_LIBRARY: { key: string; label: string }[] = [
   { key: 'ideal_evening', label: 'Mon idée de soirée idéale ?' },

@@ -40,6 +40,24 @@ export const RATE_RULES = {
   feedUser: { scope: 'feed:user', windowSeconds: 3600, max: 60 },
   /** Consultations/choix de personnalité : 60 / heure (lecture + validations, large). */
   personalityUser: { scope: 'pers:user', windowSeconds: 3600, max: 60 },
+
+  // --- Étape 5 : découverte dual-mode ---
+  /** Actions de swipe (toutes) : 400 / heure — anti-abus mécanique large. */
+  discoverActionUser: { scope: 'disc:act:user', windowSeconds: 3600, max: 400 },
+  /** QUOTA gratuit : 50 likes/jour (like et super consomment ce compteur). */
+  discoverLikeUser: { scope: 'disc:like:user', windowSeconds: 86400, max: 50 },
+  /** QUOTA gratuit : 1 Super Like/jour. */
+  discoverSuperUser: { scope: 'disc:super:user', windowSeconds: 86400, max: 1 },
+  /** QUOTA gratuit : 10 demandes « Discuter » (Invisible)/jour. */
+  discoverInvisibleUser: { scope: 'disc:inv:user', windowSeconds: 86400, max: 10 },
+  /** QUOTA gratuit : 1 Rewind/jour. */
+  discoverRewindUser: { scope: 'disc:rew:user', windowSeconds: 86400, max: 1 },
+  /** Réponses aux demandes/handshakes : 60 / heure. */
+  discoverRespondUser: { scope: 'disc:resp:user', windowSeconds: 3600, max: 60 },
+  /** Passerelle (proposition + réponse) : 30 / heure. */
+  discoverGatewayUser: { scope: 'disc:gate:user', windowSeconds: 3600, max: 30 },
+  /** Top Compatibilité : 30 / heure (hors quota feed — matérialisé en D1). */
+  discoverTopUser: { scope: 'disc:top:user', windowSeconds: 3600, max: 30 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {
@@ -89,4 +107,22 @@ export function rateLimitedError(retryAfterSeconds: number, scope: string): AppE
       : 'Trop de tentatives. Réessayez plus tard.';
   const e = errors.rateLimited(msg);
   return e;
+}
+
+/**
+ * Lit le compteur courant SANS incrémenter (affichage des quotas Étape 5).
+ * Même fenêtre fixe que hitRateLimit — lecture seule, zéro écriture.
+ */
+export async function readWindowCount(
+  db: D1Database,
+  rule: RateRule,
+  identifier: string,
+): Promise<number> {
+  const now = Math.floor(Date.now() / 1000);
+  const windowStart = Math.floor(now / rule.windowSeconds) * rule.windowSeconds;
+  const row = await db
+    .prepare(`SELECT count FROM rate_limits WHERE key = ? AND window_start = ?`)
+    .bind(`${rule.scope}:${identifier}`, windowStart)
+    .first<{ count: number }>();
+  return row?.count ?? 0;
 }
