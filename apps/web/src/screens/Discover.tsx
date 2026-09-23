@@ -97,6 +97,11 @@ export function Discover({ onBack }: Props) {
                       {AFFINITY_LABELS[p.personalityAffinity]}
                     </span>
                   )}
+                  {p.personalitySought && (
+                    <span className="chip chip-sought" title="Type de personnalité que tu as sélectionné — mis en avant dans tes découvertes">
+                      Type recherché ✓
+                    </span>
+                  )}
                 </div>
               )}
               {p.bio && <p className="feed-bio">{p.bio}</p>}

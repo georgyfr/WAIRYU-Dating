@@ -13,8 +13,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import {
   ARCHETYPES,
+  AFFINITY_LABELS,
+  MAX_PREF_TYPES,
+  compatibleTypes,
   type PersonalityState,
   type PersonalityUpdateResponse,
+  type PersonalityPrefsResponse,
   type ArchetypeId,
 } from '@wairyu/shared';
 
@@ -162,6 +166,120 @@ export function PersonalityProposal({ refine = false }: { refine?: boolean }) {
       )}
 
       <p className="hint">{state.disclaimer}</p>
+      {error && <p className="error">{error}</p>}
+      {current?.validated && <PartnerTypesPicker key={current.type} selfType={current.type} initial={state.prefTypes} />}
+    </div>
+  );
+}
+
+/**
+ * Sélection des TYPES DE PROFILS compatibles (demande fondateur : une fois sa
+ * personnalité validée, la personne voit les types qui correspondent et VALIDE
+ * sa sélection → ces types sont mis en avant dans ses matchs, avec tous les
+ * autres critères exigeants qui restent inchangés).
+ *
+ * Suggestion pré-cochée = les affinités FORTES (dont le sien) — ajustable,
+ * plafonnée à MAX_PREF_TYPES, et modifiable à tout moment.
+ */
+function PartnerTypesPicker({
+  selfType,
+  initial,
+}: {
+  selfType: ArchetypeId;
+  initial: ArchetypeId[];
+}) {
+  const compat = compatibleTypes(selfType);
+  // Sélection affichée : la sauvegarde existante si elle n'est pas vide,
+  // sinon les affinités fortes en tête de liste (suggestion douce).
+  const defaults = () =>
+    initial.length > 0
+      ? initial
+      : compat
+          .filter((ct) => ct.affinity === 'strong')
+          .slice(0, MAX_PREF_TYPES)
+          .map((ct) => ct.id);
+  const [picked, setPicked] = useState<ArchetypeId[]>(defaults);
+  const [dirty, setDirty] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function toggle(id: ArchetypeId) {
+    setSaved(false);
+    setDirty(true);
+    setError(null);
+    setPicked((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= MAX_PREF_TYPES) return prev; // plafond — bouton désactivé de toute façon
+      return [...prev, id];
+    });
+  }
+
+  async function save() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await api<PersonalityPrefsResponse>('/api/personality/preferences', {
+        method: 'PUT',
+        json: { types: picked },
+      });
+      setPicked(res.prefTypes);
+      setDirty(false);
+      setSaved(true);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+    }
+    setBusy(false);
+  }
+
+  return (
+    <div className="pers-pick">
+      <div className="pers-head">
+        <span className="pers-star">🤝</span>
+        <h3>Les personnalités qui te correspondent</h3>
+      </div>
+      <p className="hint">
+        Sélectionne les types de profils que tu aimerais rencontrer — ils seront mis en
+        avant dans tes découvertes, avec tous les autres critères (valeurs, objectifs,
+        deal-breakers…). Jusqu&apos;à {MAX_PREF_TYPES} types.
+      </p>
+      <div className="pers-pick-grid">
+        {compat.map((ct) => {
+          const on = picked.includes(ct.id);
+          const full = !on && picked.length >= MAX_PREF_TYPES;
+          return (
+            <button
+              key={ct.id}
+              type="button"
+              className={`pers-pick-card ${on ? 'on' : ''}`}
+              disabled={busy || full}
+              onClick={() => toggle(ct.id)}
+            >
+              <span className="pers-pick-check">{on ? '✓' : ''}</span>
+              <strong>{ARCHETYPES[ct.id].name}</strong>
+              <span className="pers-pick-tag">{ARCHETYPES[ct.id].tagline}</span>
+              <em className={`pers-pick-aff ${ct.affinity}`}>{AFFINITY_LABELS[ct.affinity]}</em>
+            </button>
+          );
+        })}
+      </div>
+      {picked.length >= MAX_PREF_TYPES && (
+        <p className="hint">{MAX_PREF_TYPES} types maximum — décoche-en un pour en changer.</p>
+      )}
+      <button
+        type="button"
+        className="btn primary"
+        disabled={busy || !dirty}
+        onClick={save}
+      >
+        {busy ? 'Enregistrement…' : 'Valider mes choix ✓'}
+      </button>
+      {saved && (
+        <p className="pers-pick-saved">
+          Enregistré ✓ — ces types seront mis en avant dans tes découvertes (modifiable à tout
+          moment).
+        </p>
+      )}
       {error && <p className="error">{error}</p>}
     </div>
   );

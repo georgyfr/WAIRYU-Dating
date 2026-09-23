@@ -311,4 +311,6 @@ export interface FeedProfile {
   personalityValidated: boolean;
   /** Affinité avec MON archétype (null si l'un des deux n'a pas de type). */
   personalityAffinity: import('./personality').PersonalityAffinity | null;
+  /** true = son type fait partie des types de profils que J'AI SÉLECTIONNÉS (mis en avant). */
+  personalitySought: boolean;
 }

@@ -3,9 +3,14 @@
  *
  *  - GET /api/personality  → dérivation à partir des réponses réelles du
  *    questionnaire (règles partagées, zéro IA) + état courant (validé ou
- *    « proposé ») + 2 alternatives pour « plutôt ça ? » ;
+ *    « proposé ») + 2 alternatives pour « plutôt ça ? » + les types de
+ *    profils SÉLECTIONNÉS (mis en avant dans le feed) ;
  *  - PUT /api/personality  → la personne CHOISIT son archétype — le type n'est
- *    jamais imposé : c'est un auto-label confirmé par son auteur.
+ *    jamais imposé : c'est un auto-label confirmé par son auteur ;
+ *  - PUT /api/personality/preferences → après validation, la personne
+ *    SÉLECTIONNE les types de profils qu'elle veut rencontrer (≤ 4) : le feed
+ *    les met en AVANT (boost de classement, jamais un filtre exclusif — les
+ *    autres critères exigeants restent inchangés).
  *
  * Éthique : le type reste indicatif, explicable (signaux = réponses qui ont
  * pesé), modifiable à tout moment. Aucun « incompatible » n'existe.
@@ -20,9 +25,12 @@ import {
   derivePersonality,
   ARCHETYPES,
   ARCHETYPE_IDS,
+  MAX_PREF_TYPES,
   type PersonalityState,
   type PersonalityUpdateResponse,
+  type PersonalityPrefsResponse,
   type PersonalityCurrent,
+  type ArchetypeId,
   type QItem,
   type QAnswers,
 } from '@wairyu/shared';
@@ -35,6 +43,20 @@ interface PersonalityRow {
   validated: number;
   suggested: string;
   derived_from: string;
+  pref_types: string;
+}
+
+/** Parse pref_types en ArchetypeId[] SÛR (ids inconnus filtrés, dédoublonné). */
+function parsePrefTypes(raw: string | null | undefined): ArchetypeId[] {
+  try {
+    const arr = JSON.parse(raw || '[]');
+    if (!Array.isArray(arr)) return [];
+    const seen = new Set<string>();
+    for (const v of arr) if (typeof v === 'string') seen.add(v);
+    return [...seen].filter((v): v is ArchetypeId => (ARCHETYPE_IDS as readonly string[]).includes(v));
+  } catch {
+    return [];
+  }
 }
 
 async function requireUser(c: Context<AppEnv>) {
@@ -60,7 +82,7 @@ async function derive(
 
 async function loadCurrent(db: D1Database, userId: string): Promise<PersonalityRow | null> {
   return db
-    .prepare(`SELECT type, validated, suggested, derived_from FROM personality_profiles WHERE user_id = ?`)
+    .prepare(`SELECT type, validated, suggested, derived_from, pref_types FROM personality_profiles WHERE user_id = ?`)
     .bind(userId)
     .first<PersonalityRow>();
 }
@@ -96,6 +118,7 @@ personalityRoutes.get('/personality', async (c) => {
           }
         : null,
     suggestions,
+    prefTypes: row ? parsePrefTypes(row.pref_types) : [],
     disclaimer:
       'Déduit de tes réponses, jamais imposé : valide-le si tu te reconnais, change-le quand tu veux.',
   };
@@ -135,5 +158,53 @@ personalityRoutes.put('/personality', async (c) => {
     .run();
 
   const body: PersonalityUpdateResponse = { saved: true, current };
+  return c.json(body);
+});
+
+/**
+ * Sélection des TYPES DE PROFILS recherchés (demande fondateur : après la
+ * validation de sa propre personnalité, la personne choisit les types qu'elle
+ * veut rencontrer → le feed les met en avant, avec tous les autres critères).
+ * Priorité, PAS un filtre exclusif : les profils hors sélection restent visibles.
+ */
+personalityRoutes.put('/personality/preferences', async (c) => {
+  const user = await requireUser(c);
+
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.personalityUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.personalityUser.scope);
+
+  const payload = (await c.req.json().catch(() => null)) as { types?: unknown } | null;
+  if (!Array.isArray(payload?.types)) {
+    throw errors.badRequest('Liste de types attendue.');
+  }
+
+  // Validation stricte de CHAQUE id + déduplication (l'ordre de la sélection
+  // est conservé pour un affichage stable).
+  const seen = new Set<string>();
+  const types: ArchetypeId[] = [];
+  for (const v of payload!.types) {
+    const id = validateEnum(v, ARCHETYPE_IDS, 'Archétype');
+    if (!seen.has(id)) {
+      seen.add(id);
+      types.push(id);
+    }
+  }
+  if (types.length > MAX_PREF_TYPES) {
+    throw errors.badRequest(`Jusqu'à ${MAX_PREF_TYPES} types de profils — garde les plus importants.`);
+  }
+
+  // La sélection suppose une personnalité VALIDÉE (le parcours produit va du
+  // « C'est moi ✓ » vers ce choix) — la ligne existe donc déjà ; défensif :
+  // 400 explicite si elle manque.
+  const res = await c.env.DB.prepare(
+    `UPDATE personality_profiles SET pref_types = ?, updated_at = ? WHERE user_id = ?`,
+  )
+    .bind(JSON.stringify(types), Date.now(), user.id)
+    .run();
+  if (!res.meta.changes) {
+    throw errors.badRequest('Valide d\u2019abord ta personnalité, puis choisis les types qui te correspondent.');
+  }
+
+  const body: PersonalityPrefsResponse = { saved: true, prefTypes: types };
   return c.json(body);
 });

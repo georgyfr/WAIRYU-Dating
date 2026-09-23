@@ -167,6 +167,32 @@ export function affinityBetween(a: ArchetypeId, b: ArchetypeId): PersonalityAffi
 }
 
 // ---------------------------------------------------------------------------
+// Types de profils COMPATIBLES proposés à la sélection (demande fondateur :
+// « quand il valide, on lui montre les types de profils qui correspondent à
+// cette personnalité et il valide aussi »).
+// ---------------------------------------------------------------------------
+
+export interface CompatibleType {
+  id: ArchetypeId;
+  affinity: PersonalityAffinity;
+}
+
+/**
+ * Les 8 archétypes (le sien inclus — l'affinité avec soi-même est « forte »),
+ * triés : affinité FORTE d'abord, puis bonne, puis à découvrir — ordre stable
+ * dans chaque groupe (ordre du catalogue). JAMAIS « incompatible ».
+ */
+export function compatibleTypes(self: ArchetypeId): CompatibleType[] {
+  const rank: Record<PersonalityAffinity, number> = { strong: 0, good: 1, discover: 2 };
+  return ARCHETYPE_IDS.map((id) => ({ id, affinity: affinityBetween(self, id) })).sort(
+    (x, y) => rank[x.affinity] - rank[y.affinity] || ARCHETYPE_IDS.indexOf(x.id) - ARCHETYPE_IDS.indexOf(y.id),
+  );
+}
+
+/** Plafond de la sélection (signal de priorité, PAS un filtre exclusif). */
+export const MAX_PREF_TYPES = 4;
+
+// ---------------------------------------------------------------------------
 // Dérivation par règles (chaque réponse alimente 0..n archétypes)
 // ---------------------------------------------------------------------------
 
@@ -402,10 +428,17 @@ export interface PersonalityState {
   current: PersonalityCurrent | null;
   /** [primaire, alternative 1, alternative 2] — vide si !ready. */
   suggestions: PersonalitySuggestionView[];
+  /** Types de profils QUE LA PERSONNE A SÉLECTIONNÉS (mis en avant dans le feed). */
+  prefTypes: ArchetypeId[];
   disclaimer: string;
 }
 
 export interface PersonalityUpdateResponse {
   saved: true;
   current: PersonalityCurrent;
+}
+
+export interface PersonalityPrefsResponse {
+  saved: true;
+  prefTypes: ArchetypeId[];
 }

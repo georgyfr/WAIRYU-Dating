@@ -1233,3 +1233,181 @@ h2 {
   background: rgba(125, 114, 136, 0.14);
   color: var(--c-muted);
 }
+
+/* ===========================================================================
+   Étape 4-ter — navigation questionnaire + sélection des types compatibles
+   =========================================================================== */
+
+/* En-tête du questionnaire en LIGNE : ‹ (précédent/quitter) · titre · Sortir */
+.q-head {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.q-head h1 {
+  margin: 0;
+  font-size: 1.02rem;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.q-head .back {
+  align-self: auto;
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(108, 74, 182, 0.08);
+}
+
+/* Bouton « Sortir » — quitter à tout moment (tout est déjà enregistré). */
+.q-exit {
+  flex: 0 0 auto;
+  border: none;
+  background: none;
+  color: var(--c-muted);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.q-exit:hover {
+  color: var(--c-primary);
+  background: rgba(108, 74, 182, 0.08);
+}
+
+/* Sélecteur des types de profils compatibles (après validation du type). */
+.pers-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(108, 74, 182, 0.05);
+  border: 1px dashed rgba(108, 74, 182, 0.35);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.pers-pick .pers-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.pers-pick .hint {
+  margin: 0;
+  text-align: center;
+}
+
+.pers-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pers-pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid rgba(108, 74, 182, 0.22);
+  border-radius: var(--radius);
+  padding: 12px 12px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.pers-pick-card:hover:not(:disabled) {
+  border-color: var(--c-primary);
+  transform: translateY(-1px);
+}
+
+.pers-pick-card.on {
+  border-color: var(--c-primary);
+  box-shadow: 0 4px 14px rgba(108, 74, 182, 0.16);
+}
+
+.pers-pick-card:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pers-pick-check {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: rgba(108, 74, 182, 0.1);
+  color: var(--c-primary);
+}
+
+.pers-pick-card.on .pers-pick-check {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.pers-pick-card strong {
+  color: var(--c-primary-dark);
+  padding-right: 26px;
+}
+
+.pers-pick-tag {
+  font-size: 0.8rem;
+  color: var(--c-muted);
+}
+
+.pers-pick-aff {
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.pers-pick-aff.strong {
+  color: var(--c-primary);
+}
+
+.pers-pick-aff.good {
+  color: var(--c-primary-dark);
+  opacity: 0.85;
+}
+
+.pers-pick-aff.discover {
+  color: var(--c-muted);
+}
+
+.pers-pick-saved {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1c7c46;
+}
+
+/* Chip « Type recherché ✓ » — le type du membre fait partie de ma sélection. */
+.chip.chip-sought {
+  background: rgba(28, 124, 70, 0.1);
+  color: #1c7c46;
+  font-weight: 700;
+}
+
+@media (max-width: 420px) {
+  .pers-pick-grid {
+    grid-template-columns: 1fr;
+  }
+}

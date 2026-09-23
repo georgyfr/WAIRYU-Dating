@@ -128,16 +128,28 @@ feedRoutes.get('/feed', async (c) => {
   /** Mode interracial : portée MONDIALE (rencontres entre continents). */
   const worldwide = myMode === 'interracial';
 
-  // --- Mon archétype (pour l'affinité et la 6e dimension du score) ---
+  // --- Mon archétype + mes TYPES DE PROFILS recherchés (pour l'affinité, la
+  //     6e dimension du score et la mise en avant demandée par le fondateur) ---
   const myPersRow = await c.env.DB.prepare(
-    `SELECT type, validated FROM personality_profiles WHERE user_id = ?`,
+    `SELECT type, validated, pref_types FROM personality_profiles WHERE user_id = ?`,
   )
     .bind(user.id)
-    .first<{ type: string; validated: number }>();
+    .first<{ type: string; validated: number; pref_types: string | null }>();
   const myArchetype =
     myPersRow && (ARCHETYPE_IDS as readonly string[]).includes(myPersRow.type)
       ? (myPersRow.type as ArchetypeId)
       : null;
+  const myPrefTypes: ArchetypeId[] = (() => {
+    try {
+      const arr = JSON.parse(myPersRow?.pref_types || '[]');
+      if (!Array.isArray(arr)) return [];
+      const seen = new Set<string>();
+      for (const v of arr) if (typeof v === 'string') seen.add(v);
+      return [...seen].filter((v): v is ArchetypeId => (ARCHETYPE_IDS as readonly string[]).includes(v));
+    } catch {
+      return [];
+    }
+  })();
 
   // --- Banque active + mes réponses ---
   const { results: itemRows } = await c.env.DB.prepare(
@@ -229,6 +241,7 @@ feedRoutes.get('/feed', async (c) => {
     let score: number | null = null;
     let reasons: FeedProfile['matchReasons'] = null;
     let personalityAffinity: PersonalityAffinity | null = null;
+    let personalitySought = false;
     const bothAnswered = qItems.some(
       (i) => myAnswers[i.id] !== undefined && theirAnswers[i.id] !== undefined,
     );
@@ -243,8 +256,18 @@ feedRoutes.get('/feed', async (c) => {
         row.personality_type && (ARCHETYPE_IDS as readonly string[]).includes(row.personality_type)
           ? (row.personality_type as ArchetypeId)
           : null;
+      // Types SÉLECTIONNÉS par la personne (Étape 4-ter) : leur type est mis
+      // en avant — affinité FORTE garantie, même si la matrice dirait « bonne »
+      // ou « à découvrir ». Priorité, jamais un filtre : les autres profils
+      // restent visibles avec tous les critères exigeants habituels.
+      const sought =
+        theirArchetype !== null && myPrefTypes.length > 0 && myPrefTypes.includes(theirArchetype);
       const affinity: PersonalityAffinity | null =
-        myArchetype && theirArchetype ? affinityBetween(myArchetype, theirArchetype) : null;
+        myArchetype && theirArchetype
+          ? sought
+            ? 'strong'
+            : affinityBetween(myArchetype, theirArchetype)
+          : null;
       const result = compatibility(
         qItems,
         myAnswers,
@@ -260,13 +283,19 @@ feedRoutes.get('/feed', async (c) => {
       }
       score = result.score;
       reasons = result.reasons;
-      if (affinity === 'strong' && myArchetype && theirArchetype) {
+      if (sought && theirArchetype) {
+        reasons.forces = [
+          `Son type de personnalité (${ARCHETYPES[theirArchetype].name}) fait partie de ceux que tu cherches — mis en avant pour toi.`,
+          ...reasons.forces,
+        ].slice(0, 3);
+      } else if (affinity === 'strong' && myArchetype && theirArchetype) {
         reasons.forces = [
           `Vos personnalités se répondent : ${ARCHETYPES[theirArchetype].name} × ${ARCHETYPES[myArchetype].name} — ${AFFINITY_LABELS.strong}.`,
           ...reasons.forces,
         ].slice(0, 3);
       }
       personalityAffinity = affinity;
+      personalitySought = sought;
     }
 
     const age = row.birth_year ? Math.max(18, new Date().getUTCFullYear() - row.birth_year) : 18;
@@ -288,6 +317,7 @@ feedRoutes.get('/feed', async (c) => {
       personalityType: (row.personality_type as FeedProfile['personalityType']) ?? null,
       personalityValidated: row.personality_validated === 1,
       personalityAffinity,
+      personalitySought,
     });
   }
 
