@@ -35,6 +35,14 @@ export interface Env {
   /** Facebook Login (préparé — activation sans redéploiement dès que posé). */
   FACEBOOK_APP_ID?: string;
   FACEBOOK_APP_SECRET?: string;
+  /**
+   * Scopes demandés au dialogue Facebook (séparés par espaces).
+   * Défaut : « public_profile » — Meta refuse le scope « email » sur les apps
+   * récentes (Invalid Scopes) ; l'email est alors obtenu par rattrapage OTP.
+   * Si la permission email est accordée à l'app (dashboard Meta), poser ce
+   * secret à « public_profile email » suffit (sans redéploiement).
+   */
+  FACEBOOK_SCOPES?: string;
   /** Jeton admin protégeant /admin/* (Étape 2). */
   ADMIN_TOKEN?: string;
 }

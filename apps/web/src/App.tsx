@@ -8,6 +8,7 @@ import { api } from './lib/api';
 import { Signup } from './screens/Signup';
 import { Login } from './screens/Login';
 import { Verify } from './screens/Verify';
+import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
@@ -16,6 +17,7 @@ type Route =
   | { name: 'signup' }
   | { name: 'login' }
   | { name: 'verify'; email: string; devCode?: string }
+  | { name: 'fb-complete' }
   | { name: 'app' };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -47,6 +49,10 @@ function parseHash(): Route {
       const devCode = params.get('d') ?? undefined;
       return { name: 'verify', email, devCode };
     }
+    case 'fb-complete':
+      // Retour OAuth Facebook sans email exposé (callback → #/fb-complete) :
+      // complétion email + rattachement de l'identité (FacebookComplete).
+      return { name: 'fb-complete' };
     case 'app':
       return { name: 'app' };
     default:
@@ -115,6 +121,8 @@ export default function App() {
     content = <Login config={config} />;
   } else if (route.name === 'verify') {
     content = <Verify email={route.email} devCode={route.devCode} onAuthenticated={onAuthenticated} />;
+  } else if (route.name === 'fb-complete') {
+    content = <FacebookComplete config={config} onAuthenticated={onAuthenticated} />;
   } else if (route.name === 'app' && me) {
     content = <Account me={me} onLoggedOut={onLoggedOut} />;
   } else {

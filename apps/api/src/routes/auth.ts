@@ -13,7 +13,7 @@
 import { Hono } from 'hono';
 import type { Context } from 'hono';
 import type { AppEnv } from '../env';
-import { errors } from '../lib/errors';
+import { errors, AppError } from '../lib/errors';
 import {
   OTP,
   AppErrorOtpExpired,
@@ -45,6 +45,7 @@ import { signValue, verifySignature } from '../lib/session';
 import type {
   AccountExport,
   AuthConfigResponse,
+  FacebookLinkResponse,
   MeResponse,
   OtpRequestResponse,
   OtpVerifyResponse,
@@ -331,6 +332,58 @@ function clearOAuthStateCookie(c: Context<AppEnv>, provider: string): void {
   );
 }
 
+// ---- Facebook : rattachement après complétion email ----
+// Meta refuse le scope « email » sur les apps récentes (et certains comptes
+// Facebook n'ont pas d'email confirmé). Quand le profil /me n'expose pas
+// d'email, le callback pose un cookie signé court-lived (15 min) porteur de
+// l'identité Facebook en attente ; l'utilisateur complète son email via l'OTP
+// habituel, puis POST /api/auth/facebook/link relie l'identité à son compte.
+
+const FB_LINK_COOKIE = 'wairyu_fblink';
+const FB_LINK_TTL_SECONDS = 900;
+
+interface FacebookLinkPayload {
+  id: string;
+  exp: number;
+}
+
+async function setFacebookLinkCookie(c: Context<AppEnv>, payload: FacebookLinkPayload): Promise<void> {
+  const raw = btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_');
+  const sig = await signValue(raw, c.env.SESSION_HMAC_KEY);
+  c.header(
+    'Set-Cookie',
+    `${FB_LINK_COOKIE}=${raw}.${sig}; Path=/api/auth/facebook; Max-Age=${FB_LINK_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+    { append: true },
+  );
+}
+
+async function readFacebookLinkCookie(c: Context<AppEnv>): Promise<FacebookLinkPayload | null> {
+  const cookie = c.req.header('cookie') ?? '';
+  const match = cookie
+    .split(';')
+    .map((s) => s.trim())
+    .find((s) => s.startsWith(`${FB_LINK_COOKIE}=`));
+  if (!match) return null;
+  const [raw, sig] = match.slice(FB_LINK_COOKIE.length + 1).split('.');
+  if (!raw || !sig) return null;
+  if (!(await verifySignature(raw, sig, c.env.SESSION_HMAC_KEY))) return null;
+  try {
+    const payload = JSON.parse(atob(raw.replace(/-/g, '+').replace(/_/g, '/'))) as FacebookLinkPayload;
+    if (!payload.id || payload.exp < Date.now() / 1000) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function clearFacebookLinkCookie(c: Context<AppEnv>): void {
+  c.header(
+    'Set-Cookie',
+    `${FB_LINK_COOKIE}=; Path=/api/auth/facebook; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+    { append: true },
+  );
+}
+
 /**
  * Résout l'utilisateur pour un profil social : connexion si l'email existe déjà
  * (fusion OTP/social — aucune duplication), sinon création ; puis lie
@@ -466,10 +519,19 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
     url.searchParams.get('code') ?? '',
     redirectUri,
   );
-  // Facebook n'expose un email que s'il est confirmé ; sinon on redirige vers la
-  // méthode email (message explicite côté SPA) — jamais de compte sans email.
+  // Facebook n'expose un email que si la permission est accordée ET confirmée
+  // sur le compte ; sinon rattrapage : profil mis en attente (cookie signé)
+  // puis écran #/fb-complete (email + code OTP) et rattachement via
+  // POST /api/auth/facebook/link — jamais de compte sans email vérifié.
   const email = normalizeEmail(profile.email ?? '');
-  if (!email) return c.redirect('/#/?facebook=noemail', 302);
+  if (!email) {
+    await setFacebookLinkCookie(c, {
+      id: profile.id,
+      exp: Math.floor(Date.now() / 1000) + FB_LINK_TTL_SECONDS,
+    });
+    await bumpMetric(c.env.DB, 'facebook_link_started');
+    return c.redirect('/#/fb-complete', 302);
+  }
 
   const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'facebook', {
     id: profile.id,
@@ -481,6 +543,54 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
   await bumpMetric(c.env.DB, 'login_facebook');
   clearOAuthStateCookie(c, 'facebook');
   return c.redirect('/#/?facebook=ok', 302);
+});
+
+// ---- Rattachement d'une identité Facebook en attente (complétion email) ----
+// Session requise : la vérification OTP (écran #/fb-complete) a créé/ouvert le
+// compte ; cet endpoint relie l'identité Facebook du cookie signé à ce compte.
+// Garde-fou : refus 409 si l'identité est déjà reliée à un autre compte (pas de
+// détournement d'identité). Le contrat Data Deletion Meta reste satisfait :
+// l'identité finit toujours dans oauth_identities.
+authRoutes.post('/auth/facebook/link', async (c) => {
+  const session = await requireAuth(c);
+  const pending = await readFacebookLinkCookie(c);
+  if (!pending) {
+    throw errors.badRequest(
+      'Aucune connexion Facebook en attente. Recommence depuis le bouton Facebook.',
+    );
+  }
+
+  const existing = await c.env.DB
+    .prepare(
+      `SELECT user_id FROM oauth_identities WHERE provider = 'facebook' AND provider_user_id = ? LIMIT 1`,
+    )
+    .bind(pending.id)
+    .first<{ user_id: string }>();
+  if (existing && existing.user_id !== session.userId) {
+    clearFacebookLinkCookie(c);
+    throw new AppError(409, 'conflict', 'Ce compte Facebook est déjà relié à un autre compte wairyu.');
+  }
+
+  const me = await c.env.DB
+    .prepare(`SELECT email FROM users WHERE id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ email: string }>();
+  if (!me) throw errors.unauthorized();
+
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(
+    `INSERT INTO oauth_identities (provider, provider_user_id, user_id, email_at_link, created_at, updated_at)
+     VALUES ('facebook', ?, ?, ?, ?, ?)
+     ON CONFLICT (provider, provider_user_id) DO UPDATE SET
+       user_id = excluded.user_id, email_at_link = excluded.email_at_link, updated_at = excluded.updated_at`,
+  )
+    .bind(pending.id, session.userId, me.email, now, now)
+    .run();
+
+  clearFacebookLinkCookie(c);
+  await bumpMetric(c.env.DB, 'facebook_linked');
+  const body: FacebookLinkResponse = { linked: true };
+  return c.json(body);
 });
 
 // ---- Callback « Data Deletion Request » (obligatoire pour l'app Meta) ----

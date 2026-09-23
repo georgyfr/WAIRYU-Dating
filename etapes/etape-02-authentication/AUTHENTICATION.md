@@ -196,9 +196,19 @@ duplication. Les identités sont tracées dans `oauth_identities`
   bleu Meta #1877F2), séparateur « ou », intégré sous les formulaires
   inscription/connexion. À l'inscription, les cases 18+ et CGU doivent être
   cochées avant de lancer un parcours social (consentement obligatoire).
-- **Cas Facebook sans email** (compte créé par téléphone) : Meta n'expose
-  aucun email vérifié → retour accueil avec message clair invitant à utiliser
-  la méthode email ; jamais de compte sans email.
+- **Cas Facebook sans email** (compte créé par téléphone, ou permission
+  « email » non accordée à l'app — Meta refuse ce scope sur les apps récentes :
+  « Invalid Scopes: email », constaté 2026-09) : **rattrapage OTP** — le
+  callback pose un cookie signé 15 min avec l'identité Facebook en attente et
+  redirige vers `#/fb-complete` : l'utilisateur saisit son email (18+/CGU
+  inclus), reçoit le code à 6 chiffres habituel, et `POST
+  /api/auth/facebook/link` relie l'identité au compte (garde-fou 409 si
+  l'identité est déjà reliée à un autre compte). Jamais de compte sans email
+  vérifié ; si la session existe déjà, le rattachement est direct.
+  Option « voie transparente » : si la permission `email` est accordée à
+  l'app dans le dashboard Meta (Cas d'utilisation → Personnaliser → Ajouter
+  des autorisations), poser le secret `FACEBOOK_SCOPES="public_profile email"`
+  suffit (sans redéploiement) pour retrouver l'inscription en un seul écran.
 - **Sans secrets posés** : boutons affichés en état « bientôt » désactivé ;
   `/start` renvoie 400 propre ; `/data-deletion` renvoie 404.
 

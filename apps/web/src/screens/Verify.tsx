@@ -14,9 +14,17 @@ interface Props {
   devCode?: string;
   /** Appelé quand la session est créée — le parent recharge /api/me puis navigue. */
   onAuthenticated: () => void;
+  /**
+   * Hook optionnel exécuté après la vérification OTP, avant la navigation
+   * (ex : rattachement d'une identité Facebook en attente). S'il échoue,
+   * l'erreur est affichée dans ce même écran et la navigation est bloquée.
+   */
+  onBeforeAuthenticated?: () => Promise<void>;
+  /** Cible du bouton retour (défaut : #/login). */
+  backTo?: string;
 }
 
-export function Verify({ email, devCode, onAuthenticated }: Props) {
+export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated, backTo = '#/login' }: Props) {
   const [code, setCode] = useState(devCode ?? '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +48,7 @@ export function Verify({ email, devCode, onAuthenticated }: Props) {
       await api<OtpVerifyResponse>('/api/auth/otp/verify', {
         json: { email, code: value },
       });
+      if (onBeforeAuthenticated) await onBeforeAuthenticated();
       onAuthenticated();
     } catch (err) {
       if (err instanceof ApiError && (err.code === 'otp_invalid' || err.code === 'otp_expired' || err.code === 'otp_locked')) {
@@ -75,7 +84,7 @@ export function Verify({ email, devCode, onAuthenticated }: Props) {
 
   return (
     <section className="card">
-      <button type="button" className="back" onClick={() => (window.location.hash = '#/login')}>
+      <button type="button" className="back" onClick={() => (window.location.hash = backTo)}>
         ← Retour
       </button>
       <h2>Ton code à 6 chiffres</h2>

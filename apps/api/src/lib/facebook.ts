@@ -2,9 +2,14 @@
  * Facebook Login (OAuth 2.0, Graph API v21.0) — Étape 2-bis.
  * Même modèle que Google : inactif tant que FACEBOOK_APP_ID / FACEBOOK_APP_SECRET
  * ne sont pas posés en secrets, actif ensuite sans redéploiement (signalé au front
- * via /api/auth/config). Fusion de comptes par email vérifié ; l'identité
- * (provider, id) est conservée dans oauth_identities — indispensable au callback
- * de suppression de données Meta.
+ * via /api/auth/config). L'identité (provider, id) est conservée dans
+ * oauth_identities — indispensable au callback de suppression de données Meta.
+ *
+ * Email : Meta refuse le scope « email » sur les apps récentes (Invalid Scopes,
+ * constaté en production 2026-09). Le dialogue ne demande donc que
+ * public_profile (secret FACEBOOK_SCOPES pour surcharger) ; si le profil /me
+ * n'expose pas d'email, le callback bascule sur le rattrapage OTP
+ * (cookie signé + POST /api/auth/facebook/link — voir routes/auth.ts).
  * Particularités Meta :
  *  - pas de PKCE pour le web → protection CSRF par `state` en cookie httpOnly signé ;
  *  - `appsecret_proof` (HMAC du token avec le secret d'app) sur les appels Graph ;
@@ -42,7 +47,12 @@ export function buildFacebookAuthorizeUrl(
   url.searchParams.set('redirect_uri', redirectUri);
   url.searchParams.set('state', state);
   url.searchParams.set('response_type', 'code');
-  url.searchParams.set('scope', 'email public_profile');
+  // Défaut public_profile : le scope « email » est refusé par Meta sur les apps
+  // récentes et bloquait le dialogue (« Invalid Scopes »). Surchargable via le
+  // secret FACEBOOK_SCOPES (ex. « public_profile email ») si Meta accorde la
+  // permission à l'app — sans redéploiement.
+  const scopes = (env.FACEBOOK_SCOPES ?? 'public_profile').trim() || 'public_profile';
+  url.searchParams.set('scope', scopes);
   return url.toString();
 }
 

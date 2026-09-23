@@ -98,6 +98,11 @@ export interface OtpVerifyResponse {
   created: boolean;
 }
 
+/** Réponse de POST /api/auth/facebook/link (rattachement après complétion email). */
+export interface FacebookLinkResponse {
+  linked: boolean;
+}
+
 /** Export RGPD — GET /api/account/export (droit d'accès, art. 15/20). */
 export interface AccountExport {
   exportedAt: string;
