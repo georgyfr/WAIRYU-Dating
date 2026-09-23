@@ -11,6 +11,7 @@ import { usageMiddleware } from './middleware/usage';
 import { healthRoutes } from './routes/health';
 import { adminRoutes } from './routes/admin';
 import { authRoutes } from './routes/auth';
+import { profileRoutes } from './routes/profiles';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -52,6 +53,7 @@ app.use('/admin/*', async (c, next) => {
 // ---- Routes ----
 app.route('/api', healthRoutes);
 app.route('/api', authRoutes);
+app.route('/api', profileRoutes);
 app.route('/admin', adminRoutes);
 
 // (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)

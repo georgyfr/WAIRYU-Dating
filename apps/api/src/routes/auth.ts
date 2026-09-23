@@ -42,6 +42,8 @@ import {
   revokeCurrentSession,
 } from '../lib/auth';
 import { signValue, verifySignature } from '../lib/session';
+import { isProfileComplete } from '../lib/profile';
+import { destroyAuthenticatedAsset } from '../lib/cloudinary';
 import type {
   AccountExport,
   AuthConfigResponse,
@@ -656,7 +658,15 @@ authRoutes.post('/auth/logout-all', async (c) => {
 authRoutes.get('/me', async (c) => {
   const session = await requireAuth(c);
   const user = await c.env.DB.prepare(
-    `SELECT id, email, display_name, email_verified_at, status, plan, created_at FROM users WHERE id = ? LIMIT 1`,
+    `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
+            u.birth_year, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
+            (SELECT COUNT(*) FROM photos p
+              WHERE p.user_id = u.id AND p.status = 'active' AND p.deleted_at IS NULL) AS photo_count,
+            (SELECT COUNT(*) FROM profile_prompts pp WHERE pp.user_id = u.id) AS prompt_count,
+            (up.user_id IS NOT NULL) AS has_prefs
+     FROM users u
+     LEFT JOIN user_preferences up ON up.user_id = u.id
+     WHERE u.id = ? LIMIT 1`,
   )
     .bind(session.userId)
     .first<{
@@ -667,6 +677,16 @@ authRoutes.get('/me', async (c) => {
       status: string;
       plan: string;
       created_at: number;
+      birth_year: number | null;
+      gender: string | null;
+      orientation: string | null;
+      intent: string | null;
+      city: string | null;
+      bio: string | null;
+      profile_consent_at: number | null;
+      photo_count: number;
+      prompt_count: number;
+      has_prefs: number;
     }>();
   if (!user) throw errors.unauthorized();
 
@@ -679,6 +699,23 @@ authRoutes.get('/me', async (c) => {
     plan: user.plan as MeResponse['plan'],
     createdAt: user.created_at,
     sessionRenewed: c.get('sessionRenewed') ?? false,
+    profileComplete: isProfileComplete(
+      {
+        display_name: user.display_name,
+        birth_year: user.birth_year,
+        gender: user.gender,
+        orientation: user.orientation,
+        intent: user.intent,
+        city: user.city,
+        bio: user.bio,
+        profile_consent_at: user.profile_consent_at,
+      },
+      {
+        photoCount: user.photo_count,
+        promptCount: user.prompt_count,
+        hasPreferences: user.has_prefs === 1,
+      },
+    ),
   };
   return c.json(body);
 });
@@ -693,7 +730,7 @@ authRoutes.get('/account/export', async (c) => {
     .first<Record<string, unknown>>();
   if (!user) throw errors.unauthorized();
 
-  const [sessions] = await Promise.all([
+  const [sessions, prompts, photos, prefs] = await Promise.all([
     c.env.DB.prepare(
       `SELECT
          COUNT(*) FILTER (WHERE revoked_at IS NULL AND expires_at > ?) AS active,
@@ -702,6 +739,23 @@ authRoutes.get('/account/export', async (c) => {
     )
       .bind(Math.floor(Date.now() / 1000), session.userId)
       .first<{ active: number; total: number }>(),
+    c.env.DB.prepare(
+      `SELECT position, prompt_key, answer, updated_at FROM profile_prompts WHERE user_id = ? ORDER BY position`,
+    )
+      .bind(session.userId)
+      .all(),
+    c.env.DB.prepare(
+      `SELECT id, format, width, height, bytes, position, status, created_at, deleted_at
+       FROM photos WHERE user_id = ? ORDER BY created_at`,
+    )
+      .bind(session.userId)
+      .all(),
+    c.env.DB.prepare(
+      `SELECT mode_default, pref_gender, min_age, max_age, distance_km, pref_intent, updated_at
+       FROM user_preferences WHERE user_id = ? LIMIT 1`,
+    )
+      .bind(session.userId)
+      .first(),
   ]);
 
   const body: AccountExport = {
@@ -709,8 +763,14 @@ authRoutes.get('/account/export', async (c) => {
     format: 'wairyu-export-v1',
     user: user ?? {},
     sessions: { active: sessions?.active ?? 0, revoked_total: sessions?.total ?? 0 },
+    profile: {
+      prompts: prompts?.results ?? [],
+      photos: photos?.results ?? [],
+      preferences: prefs ?? null,
+      note: 'Les photos elles-mêmes sont hébergées chez Cloudinary (assets privés) ; leurs métadonnées sont ci-dessus.',
+    },
     audit: {
-      note: "Export RGPD (art. 15/20). Les tables profil/questionnaire/messages s'ajouteront ici aux étapes 3-6.",
+      note: 'Export RGPD (art. 15/20). Les réponses questionnaire/messages s\u2019ajouteront ici aux étapes 4-6.',
     },
   };
   await bumpMetric(c.env.DB, 'gdpr_export');
@@ -737,12 +797,27 @@ async function hardDeleteAccount(
     .bind(userId, reason, now, now + 30 * 86400)
     .run();
 
-  // 2) Sessions révoquées puis supprimées ; identités OAuth déliées ; compte supprimé.
+  // 2) Purge Cloudinary des médias du compte (hook StorageService.purgeUser —
+  //    noté en Étape 2, implémenté ici en Étape 3) : destroy best-effort.
+  const photoRows = await c.env.DB.prepare(
+    `SELECT id FROM photos WHERE user_id = ? AND deleted_at IS NULL`,
+  )
+    .bind(userId)
+    .all<{ id: string }>();
+  await Promise.allSettled(
+    (photoRows.results ?? []).map((p) =>
+      destroyAuthenticatedAsset(c.env, `${c.env.CLOUDINARY_ROOT_FOLDER}/photos/${userId}/${p.id}`),
+    ),
+  );
+
+  // 3) Sessions révoquées puis supprimées ; identités OAuth déliées ; données
+  //    profil supprimées ; compte supprimé.
   await revokeAllSessions(c, userId);
   await c.env.DB.prepare(`DELETE FROM sessions WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM oauth_identities WHERE user_id = ?`).bind(userId).run();
-  // NOTE Étape 3 : purge Cloudinary des médias du compte avant le DELETE users
-  // (hook StorageService.purgeUser) — aucune donnée média à l'Étape 2.
+  await c.env.DB.prepare(`DELETE FROM photos WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM profile_prompts WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM user_preferences WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM users WHERE id = ?`).bind(userId).run();
 }
 

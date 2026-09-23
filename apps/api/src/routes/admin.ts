@@ -6,6 +6,7 @@
 import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import { isolateUptimeSeconds, snapshotCounters, currentStartedAt } from '../middleware/usage';
+import { createSession } from '../lib/auth';
 import type { UsageResponse } from '@wairyu/shared';
 
 export const adminRoutes = new Hono<AppEnv>();
@@ -42,4 +43,49 @@ adminRoutes.get('/do-check', async (c) => {
   const res = await doStub.fetch(new URL('https://do/health').toString());
   const payload = (await res.json()) as { ok: boolean; storage: string };
   return c.json({ ok: payload.ok, durable_object: payload.storage });
+});
+
+/**
+ * STAGING UNIQUEMENT — session de test pour les smoke tests automatisés.
+ * Depuis l'activation de Brevo sur staging, les codes OTP partent par email
+ * (aucun devCode retourné) : cette porte admin (jeton requis, garde
+ * ENVIRONMENT === 'staging' + refus des domaines réels) permet de créer un
+ * compte de test authentifié sans lire de boîte mail. Inopérante en production.
+ */
+adminRoutes.post('/test-session', async (c) => {
+  if (c.env.ENVIRONMENT !== 'staging') {
+    return c.json({ error: { code: 'not_found', message: 'Réservé au staging.', req_id: c.get('reqId') } }, 404);
+  }
+  const payload = (await c.req.json().catch(() => null)) as { email?: unknown } | null;
+  const email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return c.json({ error: { code: 'bad_request', message: 'Email invalide.', req_id: c.get('reqId') } }, 400);
+  }
+  if (/\@(gmail|googlemail|hotmail|outlook|live|yahoo|icloud|proton)\./.test(email)) {
+    return c.json(
+      { error: { code: 'bad_request', message: 'Domaine réel interdit pour les tests.', req_id: c.get('reqId') } },
+      400,
+    );
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const existing = await c.env.DB.prepare(`SELECT id, status FROM users WHERE email = ? LIMIT 1`)
+    .bind(email)
+    .first<{ id: string; status: string }>();
+
+  let userId: string;
+  if (existing && existing.status !== 'deleted') {
+    userId = existing.id;
+  } else {
+    userId = crypto.randomUUID();
+    await c.env.DB.prepare(
+      `INSERT INTO users (id, email, email_verified_at, status, plan, created_at, updated_at)
+       VALUES (?, ?, ?, 'active', 'free', ?, ?)`,
+    )
+      .bind(userId, email, now, now, now)
+      .run();
+  }
+
+  await createSession(c, userId);
+  return c.json({ userId, email, stagingOnly: true });
 });

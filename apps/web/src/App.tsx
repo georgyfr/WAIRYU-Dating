@@ -10,6 +10,7 @@ import { Login } from './screens/Login';
 import { Verify } from './screens/Verify';
 import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
+import { Profile } from './screens/Profile';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
 type Route =
@@ -18,6 +19,7 @@ type Route =
   | { name: 'login' }
   | { name: 'verify'; email: string; devCode?: string }
   | { name: 'fb-complete' }
+  | { name: 'profile' }
   | { name: 'app' };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -53,6 +55,9 @@ function parseHash(): Route {
       // Retour OAuth Facebook sans email exposé (callback → #/fb-complete) :
       // complétion email + rattachement de l'identité (FacebookComplete).
       return { name: 'fb-complete' };
+    case 'profile':
+      // Étape 3 : assistant profil & photos protégées.
+      return { name: 'profile' };
     case 'app':
       return { name: 'app' };
     default:
@@ -97,19 +102,19 @@ export default function App() {
     go('#/');
   }, [go]);
 
-  // Session créée (OTP vérifié) : on recharge le profil puis on entre.
+  // Session créée (OTP vérifié) : profil incomplet → assistant ; sinon espace compte.
   const onAuthenticated = useCallback(() => {
     api<MeResponse>('/api/me')
       .then((user) => {
         setMe(user);
-        go('#/app');
+        go(user.profileComplete ? '#/app' : '#/profile');
       })
       .catch(() => go('#/'));
   }, [go]);
 
-  // L'écran compte exige une session ; si /api/me échoue → retour accueil.
+  // Les écrans compte ET profil exigent une session ; si /api/me échoue → accueil.
   useEffect(() => {
-    if (!checking && route.name === 'app' && !me) go('#/');
+    if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
 
   // ---- Rendu ----
@@ -125,6 +130,8 @@ export default function App() {
     content = <FacebookComplete config={config} onAuthenticated={onAuthenticated} />;
   } else if (route.name === 'app' && me) {
     content = <Account me={me} onLoggedOut={onLoggedOut} />;
+  } else if (route.name === 'profile' && me) {
+    content = <Profile onDone={() => go('#/app')} />;
   } else {
     // Accueil
     content = (

@@ -16,7 +16,7 @@ export class ApiError extends Error {
 
 export async function api<T>(
   path: string,
-  options?: { method?: 'GET' | 'POST' | 'DELETE'; json?: unknown },
+  options?: { method?: 'GET' | 'POST' | 'PUT' | 'DELETE'; json?: unknown },
 ): Promise<T> {
   const res = await fetch(path, {
     method: options?.method ?? (options?.json !== undefined ? 'POST' : 'GET'),
@@ -24,6 +24,21 @@ export async function api<T>(
     body: options?.json !== undefined ? JSON.stringify(options.json) : undefined,
     credentials: 'same-origin',
   });
+  const data: unknown = await res.json().catch(() => null);
+  if (!res.ok) {
+    const err = (data as ApiErrorBody | null)?.error;
+    throw new ApiError(
+      err?.code ?? 'internal',
+      err?.message ?? 'Une erreur est survenue. Réessaie.',
+      res.status,
+    );
+  }
+  return data as T;
+}
+
+/** Upload multipart (Étape 3 : photo → Worker → Cloudinary). */
+export async function apiForm<T>(path: string, form: FormData): Promise<T> {
+  const res = await fetch(path, { method: 'POST', body: form, credentials: 'same-origin' });
   const data: unknown = await res.json().catch(() => null);
   if (!res.ok) {
     const err = (data as ApiErrorBody | null)?.error;

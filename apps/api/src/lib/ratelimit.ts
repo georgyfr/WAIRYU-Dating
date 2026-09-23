@@ -30,6 +30,8 @@ export const RATE_RULES = {
   otpVerifyEmail: { scope: 'otp:ver:email', windowSeconds: 3600, max: 10 },
   /** Échecs Turnstile par IP : 20 / heure (rebond doux). */
   turnstileFail: { scope: 'cf:ts:fail', windowSeconds: 3600, max: 20 },
+  /** Uploads de photos par utilisateur : 20 / heure (Étape 3, anti-abus stockage). */
+  photoUploadUser: { scope: 'photo:up:user', windowSeconds: 3600, max: 20 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

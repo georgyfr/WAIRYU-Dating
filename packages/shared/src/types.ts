@@ -54,6 +54,98 @@ export type Intent = 'serious' | 'open' | 'friends_first';
 
 export type DiscoveryMode = 'classic' | 'invisible';
 
+// ---------- Étape 3 : profils & photos protégées ----------
+
+export type Orientation = 'straight' | 'gay' | 'bi' | 'other';
+
+export type PrefGender = 'women' | 'men' | 'everyone';
+
+/** Un prompt rempli (clé de la bibliothèque + réponse personnelle). */
+export interface PromptInput {
+  key: string;
+  answer: string;
+}
+
+/** Photo telle que vue par son PROPRIÉTAIRE (URLs signées nettes autorisées). */
+export interface PhotoDto {
+  id: string;
+  position: number; // 0 = photo principale
+  width: number;
+  height: number;
+  bytes: number;
+  format: string;
+  createdAt: number;
+  /** URL signée pleine résolution (autorisée uniquement si la règle le permet). */
+  urlFull: string | null;
+  /** URL signée vignette 200 px. */
+  urlThumb: string | null;
+}
+
+/** Profil complet de l'utilisateur authentifié (GET /api/profile). */
+export interface ProfileResponse {
+  displayName: string | null;
+  birthYear: number | null;
+  gender: Gender | null;
+  orientation: Orientation | null;
+  intent: Intent | null;
+  city: string | null;
+  /** Région grossière : « geo:lat,lon » (≈11 km) ou libellé libre. Jamais de GPS précis. */
+  geoRegion: string | null;
+  bio: string | null;
+  /** Horodatage du consentement explicite profil/découverte (null = pas donné). */
+  profileConsentAt: number | null;
+  prompts: PromptInput[];
+  photos: PhotoDto[];
+  preferences: PreferencesDto | null;
+  /** Tous les champs requis sont-ils remplis (basics + ≥1 prompt + ≥1 photo + préférences) ? */
+  profileComplete: boolean;
+}
+
+/** Préférences de découverte (GET/PUT /api/profile/preferences). */
+export interface PreferencesDto {
+  modeDefault: DiscoveryMode;
+  prefGender: PrefGender;
+  minAge: number;
+  maxAge: number;
+  distanceKm: number;
+  prefIntent: Intent | null;
+}
+
+/** Corps de PUT /api/profile — tous les champs optionnels (mise à jour partielle). */
+export interface ProfileUpdate {
+  displayName?: string;
+  birthYear?: number;
+  gender?: Gender;
+  orientation?: Orientation;
+  intent?: Intent;
+  city?: string;
+  geoRegion?: string | null;
+  bio?: string;
+  /** Consentement explicite dédié — requis (true) au moins une fois. */
+  consentAccepted?: boolean;
+  /** Remplace la liste des prompts (max 3). */
+  prompts?: PromptInput[];
+}
+
+/** Corps de PUT /api/profile/preferences. */
+export interface PreferencesUpdate {
+  modeDefault: DiscoveryMode;
+  prefGender: PrefGender;
+  minAge: number;
+  maxAge: number;
+  distanceKm: number;
+  prefIntent?: Intent | null;
+}
+
+/** Réponse de GET /api/photos/:photoId/url?variant=sharp|blur. */
+export interface PhotoUrlResponse {
+  photoId: string;
+  variant: 'sharp' | 'blur';
+  url: string;
+  width: number;
+  height: number;
+}
+
 // ---------- Étape 2 : authentification ----------
 
 /** Configuration publique d'authentification (GET /api/auth/config). */
@@ -79,6 +171,8 @@ export interface MeResponse {
   createdAt: number;
   /** true si la session a été prolongée lors de cette requête (TTL glissant). */
   sessionRenewed: boolean;
+  /** Profil complet (Étape 3) : basics + ≥1 prompt + ≥1 photo + préférences. */
+  profileComplete: boolean;
 }
 
 /** Réponse de POST /api/auth/otp/request (le code n'est exposé qu'en staging-dev). */
@@ -109,6 +203,8 @@ export interface AccountExport {
   format: 'wairyu-export-v1';
   user: Record<string, unknown>;
   sessions: { active: number; revoked_total: number };
+  /** Étape 3 : prompts, métadonnées photos, préférences de découverte. */
+  profile?: Record<string, unknown>;
   audit: Record<string, unknown>;
 }
 

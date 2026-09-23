@@ -7,7 +7,7 @@
 | 0 | Cadrage & décisions fondatrices | ✅ Terminée | 2026-09-23 | ☑ |
 | 1 | Socle technique & infrastructure Cloudflare | ✅ Terminée | 2026-09-23 | ☑ |
 | 2 | Authentification & comptes | ✅ Terminée | 2026-09-22 | ☑ (test mobile fondateur restant) |
-| 3 | Profils & photos protégées | ⏳ En attente | — | ☐ |
+| 3 | Profils & photos protégées | ✅ Terminée | 2026-09-23 | ☑ (test mobile fondateur restant) |
 | 4 | Questionnaire progressif & moteur de matching | ⏳ En attente | — | ☐ |
 | 5 | Découverte dual-mode (Classique & Invisible) | ⏳ En attente | — | ☐ |
 | 6 | Chat temps réel & révélation | ⏳ En attente | — | ☐ |
@@ -39,6 +39,7 @@
 | 2026-09-23 | **Incident redirect_uri_mismatch réglé — Google validé de bout en bout** | Premier clic fondateur : Erreur 400 redirect_uri_mismatch (URI de redirection absente du client OAuth Google ; faux négatif du test curl initial — ne suivait pas les redirections). Test technique reproductible mis au point (curl -L + cookies + UA). Correction fondateur dans la console (2 URIs enregistrées) ; test technique : plus d'erreur, écran de connexion servi avec nom « wairyu » ; capture fondateur : écran compte connecté via Google (`wairyu26@gmail.com`, badge Email vérifié). Connexion Google **validée de bout en bout** ✅ |
 | 2026-09-23 | **Activation Facebook (Bloc C) — les 3 méthodes de connexion sont opérationnelles** | Récap config fondateur vérifié (App ID 3696…, Lifestyle, privacy policy, data deletion, 2 URIs) ; secrets posés prod+staging ; `facebookEnabled: true` ; `/start` 302 validé ; callback Data Deletion testé avec signed_request conforme à la spec Meta (signature sur la partie encodée, ex. PHP officiel) → contrat respecté. Reste : clic réel fondateur + test mobile Gate 2 |
 | 2026-09-23 | **Incident « Invalid Scopes: email » réglé — parcours Facebook complet déployé** | Premier clic fondateur : le dialogue Meta refuse le scope `email` (permission non accordable aux apps récentes, écran bloquant pour les développeurs). Correctif : le dialogue ne demande plus que `public_profile` (secret `FACEBOOK_SCOPES` pour surcharger sans redéploiement) ; quand l'email n'est pas exposé, nouveau parcours **rattrapage OTP** : cookie signé 15 min + écran `#/fb-complete` (email + code à 6 chiffres, 18+/CGU) + `POST /api/auth/facebook/link` (garde-fou 409 si identité déjà reliée). Déployé prod+staging ; config/start/link/data-deletion re-testés verts ; contrat Meta Data Deletion inchangé. Reste : clic réel fondateur |
+| 2026-09-23 | **Étape 3 — Profils & photos protégées** | Assistant profil 6 étapes (identité, orientation + consentement explicite dédié, ville + géoloc ≈11 km, bio 150, 3 prompts sur bibliothèque, photos, préférences + mode avec écran explicatif) ; pipeline photo client→Worker→Cloudinary (recadrage 4:5, WebP ~1024 px, upload signé serveur, max 6) ; URLs de livraison signées à la volée avec autorisation par photo (Invisible : nette refusée 403 tant que pas de révélation) ; flou CSS, rien de stocké de flouté ; RGPD étendu (export section profil, suppression = purge Cloudinary + D1) ; bug corrigé : transformation Cloudinary absente du chemin des URLs signées (401) ; outil `POST /admin/test-session` staging-only pour les smoke tests ; smoke étape 3 **35/35** vertes staging + vérifs prod. Voir `etapes/etape-03-profils/` |
 
 ## Accès & comptes
 
@@ -48,7 +49,7 @@
 | Cloudflare — Workers, D1, KV, Durable Objects, Turnstile | ✅ Vérifié | Sous-domaine `wairyu` ; URLs : `wairyu.wairyu.workers.dev` (prod), `wairyu-staging.…` (staging) |
 | Cloudflare — R2 | ⏸️ Reporté | Activation impossible sans carte bancaire → Cloudinary le remplace (Décision 9) |
 | Facebook Login | ✅ **Actif** (2026-09-23) | Secrets posés prod+staging ; `/start` 302 validé (dialogue v21.0, scope `public_profile` — Meta refuse `email` sur les apps récentes) ; parcours sans email exposé = rattrapage OTP (`#/fb-complete` + `/auth/facebook/link`) ; callback Data Deletion testé avec signed_request conforme Meta : contrat respecté (200 + url + confirmation_code) |
-| Cloudinary (photos/voice notes) | ✅ Actif — sondé | Cloud `nm7lozr4`, plan Free 25 GB, assets `authenticated` validés ; secrets stockés côté Worker uniquement |
+| Cloudinary (photos/voice notes) | ✅ Actif — **photos réelles Étape 3** | Cloud `nm7lozr4`, plan Free 25 GB, assets `authenticated` ; upload signé Worker-side (client→Worker→CDN), URLs de livraison signées à la volée, transformations vignette 200/flou 400 validées en production ; destroy testé (photo supprimée / compte supprimé → 404) |
 | Cloudflare Turnstile (widget `wairyu-auth`) | ✅ Actif | Site key publique + secret posés (prod/staging) ; strict en production, sauté en staging |
 | Brevo (emails OTP) | ✅ **Actif** (2026-09-23) | Clé API + expéditeur `wairyu26@gmail.com` validé chez Brevo ; test d'envoi réel OK ; `emailProvider: "brevo"` en prod et staging. Guide : `docs/GUIDE-ACTIVATION-CLES.md` bloc A |
 | Google OAuth | ✅ **Actif** (2026-09-23) | Secrets posés prod+staging ; `/start` → 302 validé ; Google accepte client_id + redirect_uri (aucune erreur) ; bouton actif dans le front. Guide : `docs/GUIDE-ACTIVATION-CLES.md` bloc B |

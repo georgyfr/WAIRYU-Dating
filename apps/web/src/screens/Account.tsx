@@ -83,9 +83,19 @@ export function Account({ me, onLoggedOut }: Props) {
         <span className="pill">Membre depuis le {created}</span>
       </div>
 
-      <p className="hint next">
-        Prochaine étape : ton profil (photos protégées, questionnaire, préférences) — Étape 3.
-      </p>
+      <div className="profile-cta">
+        <div>
+          <strong>{me.profileComplete ? 'Ton profil est complet' : 'Ton profil est à compléter'}</strong>
+          <p className="hint">
+            {me.profileComplete
+              ? 'Photos protégées, prompts et préférences sont prêts pour la découverte.'
+              : 'Photos, prompts, préférences — 5 minutes suffisent pour entrer en découverte.'}
+          </p>
+        </div>
+        <button type="button" className="btn primary" onClick={() => window.location.assign('#/profile')}>
+          {me.profileComplete ? 'Modifier mon profil' : 'Compléter mon profil'}
+        </button>
+      </div>
 
       {message && <p className="notice">{message}</p>}
 
