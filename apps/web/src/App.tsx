@@ -11,6 +11,8 @@ import { Verify } from './screens/Verify';
 import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
 import { Profile } from './screens/Profile';
+import { Questionnaire } from './screens/Questionnaire';
+import { Discover } from './screens/Discover';
 import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
 
 type Route =
@@ -20,6 +22,8 @@ type Route =
   | { name: 'verify'; email: string; devCode?: string }
   | { name: 'fb-complete' }
   | { name: 'profile' }
+  | { name: 'questionnaire' }
+  | { name: 'discover' }
   | { name: 'app' };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -58,6 +62,12 @@ function parseHash(): Route {
     case 'profile':
       // Étape 3 : assistant profil & photos protégées.
       return { name: 'profile' };
+    case 'questionnaire':
+      // Étape 4 : questionnaire progressif.
+      return { name: 'questionnaire' };
+    case 'discover':
+      // Étape 4 : candidats scorés (liste — le swipe dual-mode arrive en 5).
+      return { name: 'discover' };
     case 'app':
       return { name: 'app' };
     default:
@@ -132,6 +142,15 @@ export default function App() {
     content = <Account me={me} onLoggedOut={onLoggedOut} />;
   } else if (route.name === 'profile' && me) {
     content = <Profile onDone={() => go('#/app')} />;
+  } else if (route.name === 'questionnaire' && me) {
+    content = (
+      <Questionnaire
+        onDone={() => go('#/app')}
+        onDiscover={() => go('#/discover')}
+      />
+    );
+  } else if (route.name === 'discover' && me) {
+    content = <Discover onBack={() => go('#/app')} />;
   } else {
     // Accueil
     content = (

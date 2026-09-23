@@ -97,6 +97,24 @@ export function Account({ me, onLoggedOut }: Props) {
         </button>
       </div>
 
+      <div className="profile-cta">
+        <div>
+          <strong>Questionnaire &amp; découverte</strong>
+          <p className="hint">
+            Réponds au questionnaire progressif (2 niveaux, sauvegarde automatique) pour affiner
+            ton score de compatibilité — puis découvre les profils « Pourquoi ce match ? ».
+          </p>
+        </div>
+        <div className="btn-col">
+          <button type="button" className="btn primary" onClick={() => window.location.assign('#/questionnaire')}>
+            Mon questionnaire
+          </button>
+          <button type="button" className="btn ghost" onClick={() => window.location.assign('#/discover')}>
+            Découvrir
+          </button>
+        </div>
+      </div>
+
       {message && <p className="notice">{message}</p>}
 
       <div className="actions">

@@ -34,6 +34,10 @@ export const RATE_RULES = {
   photoUploadUser: { scope: 'photo:up:user', windowSeconds: 3600, max: 20 },
   /** Géocodages inverses par utilisateur : 30 / heure (politique Nominatim + anti-abus). */
   geoReverseUser: { scope: 'geo:rev:user', windowSeconds: 3600, max: 30 },
+  /** Réponses au questionnaire par utilisateur : 240 / heure (30 questions + révisions, large). */
+  qAnswerUser: { scope: 'q:ans:user', windowSeconds: 3600, max: 240 },
+  /** Appels feed par utilisateur : 60 / heure (pagination incluse — budget global 70/jour). */
+  feedUser: { scope: 'feed:user', windowSeconds: 3600, max: 60 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

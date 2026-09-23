@@ -785,3 +785,255 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Étape 4 — Questionnaire progressif & découverte scorée
+   ========================================================================== */
+
+.q-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+
+.q-progress-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e9e2f5;
+  overflow: hidden;
+}
+
+.q-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--c-primary);
+  transition: width 0.25s ease;
+}
+
+.q-progress-label {
+  font-size: 12.5px;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+.q-card {
+  border: 1px solid #e5ddf2;
+  border-radius: 16px;
+  background: #fff;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.q-dim {
+  font-size: 12px;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.q-prompt {
+  font-size: 18px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.q-option {
+  text-align: left;
+  font: inherit;
+  font-size: 14.5px;
+  padding: 12px 14px;
+  border: 2px solid #e5ddf2;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--c-text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.q-option.on {
+  border-color: var(--c-primary);
+  background: #f4f0fb;
+}
+
+.q-option:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.q-reward {
+  text-align: center;
+  padding: 18px 0 6px;
+}
+
+.q-reward-star {
+  font-size: 34px;
+  color: var(--c-primary);
+}
+
+.q-reward h1 {
+  margin: 6px 0 4px;
+}
+
+.q-reward-note {
+  color: var(--c-muted);
+  font-size: 14px;
+}
+
+.q-insights {
+  border: 1px solid #e5ddf2;
+  border-radius: 16px;
+  background: #fbf9ff;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.q-insights h3 {
+  margin: 0 0 8px;
+  font-size: 15.5px;
+}
+
+.q-insights ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.q-done-note {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--c-text);
+  margin-bottom: 14px;
+}
+
+.btn-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- Découverte (feed scoré) ---- */
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.feed-card {
+  border: 1px solid #e5ddf2;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.feed-photo {
+  aspect-ratio: 4 / 3;
+  background: #efe9f8;
+  overflow: hidden;
+}
+
+.feed-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Flou produit (Mode Invisible) : la photo est déjà en variante 400 px,
+   le flou visuel reste côté CSS — rien de net n'est jamais transmis. */
+.feed-photo.blurred img {
+  filter: blur(18px) saturate(0.9);
+  transform: scale(1.08); /* évite les bords translucides du flou */
+}
+
+.feed-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feed-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.feed-top h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.score-badge {
+  border: 2px solid var(--c-primary);
+  color: var(--c-primary);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.score-badge small {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+.feed-loc {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--c-muted);
+}
+
+.feed-bio {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.why-toggle {
+  align-self: flex-start;
+}
+
+.why-box {
+  border-top: 1px dashed #e5ddf2;
+  padding-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.why-box strong {
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--c-muted);
+}
+
+.why-box ul {
+  margin: 0 0 4px;
+  padding-left: 18px;
+}
+
+.q-disclaimer {
+  text-align: center;
+}

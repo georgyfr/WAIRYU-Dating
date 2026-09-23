@@ -1,5 +1,7 @@
 /** Types partagés API ↔ Front. */
 
+import type { QItem, QAnswers, LevelInsights } from './matching';
+
 export type ApiErrorCode =
   | 'bad_request'
   | 'unauthorized'
@@ -170,7 +172,45 @@ export interface PhotoUrlResponse {
   height: number;
 }
 
-// ---------- Étape 2 : authentification ----------
+// ---------- Étape 4 : questionnaire progressif & matching ----------
+
+/** Progression d'un niveau de questionnaire. */
+export interface QProgress {
+  level: 1 | 2;
+  /** Questions répondues (peu importe la version). */
+  done: number;
+  total: number;
+}
+
+/** GET /api/q — état complet du questionnaire pour l'utilisateur courant. */
+export interface QuestionnaireState {
+  /** Banque active (N1+N2), triée par niveau puis position. */
+  items: QItem[];
+  answers: QAnswers;
+  progress: { n1: QProgress; n2: QProgress };
+  /** « Ma personnalité » — un bloc par niveau complété. */
+  insights: LevelInsights[];
+}
+
+/** PUT /api/q/answers/:itemId — sauvegarde d'UNE réponse (1 écriture). */
+export interface QAnswerResponse {
+  saved: true;
+  progress: { n1: QProgress; n2: QProgress };
+  /** Niveau franchi par CETTE réponse (null sinon). */
+  levelCompleted: 1 | 2 | null;
+  /** Insights du niveau fraîchement complété (null sinon). */
+  insights: LevelInsights | null;
+}
+
+export interface FeedResponse {
+  page: number;
+  pageSize: number;
+  hasMore: boolean;
+  items: FeedProfile[];
+  /** Rappel produit : le score est indicatif (affiché sous le score). */
+  disclaimer: string;
+}
+
 
 /** Configuration publique d'authentification (GET /api/auth/config). */
 export interface AuthConfigResponse {
@@ -256,6 +296,8 @@ export interface FeedProfile {
   prompts: { question: string; answer: string }[];
   /** URL signée (floue si mode Invisible sans révélation). */
   photoUrl: string | null;
+  /** true = la photo est servie en variante floue (le front applique le flou CSS). */
+  photoBlurred: boolean;
   /** Pourquoi ce match ? — 2 forces + 1 vigilance (Étape 4). */
   matchReasons: {
     forces: string[];
