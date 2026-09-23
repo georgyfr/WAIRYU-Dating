@@ -32,6 +32,8 @@ export const RATE_RULES = {
   turnstileFail: { scope: 'cf:ts:fail', windowSeconds: 3600, max: 20 },
   /** Uploads de photos par utilisateur : 20 / heure (Étape 3, anti-abus stockage). */
   photoUploadUser: { scope: 'photo:up:user', windowSeconds: 3600, max: 20 },
+  /** Géocodages inverses par utilisateur : 30 / heure (politique Nominatim + anti-abus). */
+  geoReverseUser: { scope: 'geo:rev:user', windowSeconds: 3600, max: 30 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

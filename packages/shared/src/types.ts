@@ -50,7 +50,8 @@ export interface UsageResponse {
 
 export type Gender = 'woman' | 'man' | 'non_binary';
 
-export type Intent = 'serious' | 'open' | 'friends_first';
+/** Intentions — étendues à la demande fondateur (interraciale, mariage, vie de couple). */
+export type Intent = 'serious' | 'open' | 'friends_first' | 'couple_life' | 'marriage' | 'interracial';
 
 export type DiscoveryMode = 'classic' | 'invisible';
 
@@ -85,10 +86,16 @@ export interface PhotoDto {
 export interface ProfileResponse {
   displayName: string | null;
   birthYear: number | null;
+  /** Date de naissance ISO « YYYY-MM-DD » (jour/mois/année — âge exact). */
+  birthDate: string | null;
   gender: Gender | null;
   orientation: Orientation | null;
   intent: Intent | null;
   city: string | null;
+  /** Pays détecté (géocodage inverse) ou saisi — libellé libre. */
+  country: string | null;
+  /** Quartier (géocodage inverse) ou saisi — optionnel, libellé libre. */
+  neighborhood: string | null;
   /** Région grossière : « geo:lat,lon » (≈11 km) ou libellé libre. Jamais de GPS précis. */
   geoRegion: string | null;
   bio: string | null;
@@ -115,10 +122,14 @@ export interface PreferencesDto {
 export interface ProfileUpdate {
   displayName?: string;
   birthYear?: number;
+  /** Date de naissance ISO « YYYY-MM-DD » — met aussi à jour birthYear (année dérivée). */
+  birthDate?: string;
   gender?: Gender;
   orientation?: Orientation;
   intent?: Intent;
   city?: string;
+  country?: string | null;
+  neighborhood?: string | null;
   geoRegion?: string | null;
   bio?: string;
   /** Consentement explicite dédié — requis (true) au moins une fois. */
@@ -197,6 +208,16 @@ export interface FacebookLinkResponse {
   linked: boolean;
 }
 
+/** Réponse de GET /api/geo/reverse — géocodage inverse (Nominatim via Worker). */
+export interface GeoReverseResponse {
+  country: string | null;
+  city: string | null;
+  /** Quartier / suburb — peut être null (zones peu denses). */
+  neighborhood: string | null;
+  /** Libellé complet OSM (contexte, debug front). */
+  label: string | null;
+}
+
 /** Export RGPD — GET /api/account/export (droit d'accès, art. 15/20). */
 export interface AccountExport {
   exportedAt: string;
@@ -214,6 +235,9 @@ export interface FeedProfile {
   displayName: string;
   age: number;
   city: string;
+  /** Quartier — affichage optionnel côté front (produit : jamais de rue). */
+  neighborhood: string | null;
+  country: string | null;
   intent: Intent;
   bio: string;
   prompts: { question: string; answer: string }[];

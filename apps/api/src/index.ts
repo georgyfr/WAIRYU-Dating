@@ -12,6 +12,7 @@ import { healthRoutes } from './routes/health';
 import { adminRoutes } from './routes/admin';
 import { authRoutes } from './routes/auth';
 import { profileRoutes } from './routes/profiles';
+import { geoRoutes } from './routes/geo';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -54,6 +55,7 @@ app.use('/admin/*', async (c, next) => {
 app.route('/api', healthRoutes);
 app.route('/api', authRoutes);
 app.route('/api', profileRoutes);
+app.route('/api', geoRoutes);
 app.route('/admin', adminRoutes);
 
 // (L'ancien /api/me de démonstration a été remplacé par routes/auth.ts — Étape 2)

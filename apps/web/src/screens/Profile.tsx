@@ -1,8 +1,10 @@
 /**
- * Assistant de création/édition de profil (Étape 3) — 6 étapes guidées :
- *  1. Identité (prénom, année de naissance, genre)
- *  2. Orientation + intention + CONSENTEMENT EXPLICITE dédié
- *  3. Ville + géolocalisation approximative (≈11 km, jamais de GPS précis) + bio
+ * Assistant de création/édition de profil (Étape 3 + évolutions fondateur) :
+ *  1. Identité (prénom, date de naissance jour/mois/année — âge exact, genre)
+ *  2. Orientation + intention (dont mariage, vie de couple, rencontre
+ *     interraciale) + CONSENTEMENT EXPLICITE dédié
+ *  3. Localisation : détection auto pays/ville/quartier (GPS navigateur →
+ *     géocodage inverse Nominatim côté Worker) ou saisie manuelle + bio
  *  4. 3 prompts de personnalité (bibliothèque partagée)
  *  5. Photos — pipeline client (recadrage 4:5 + WebP) → Worker → Cloudinary
  *  6. Préférences de découverte + choix du mode (écran explicatif)
@@ -14,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, apiForm, ApiError } from '../lib/api';
 import { processPhoto, PhotoError } from '../lib/photo';
 import {
+  INTENTS,
   LABELS,
   ORIENTATIONS,
   PROFILE_LIMITS,
@@ -23,6 +26,7 @@ import {
 import type {
   DiscoveryMode,
   Gender,
+  GeoReverseResponse,
   Intent,
   Orientation as OrientationType,
   PreferencesDto,
@@ -35,11 +39,38 @@ interface Props {
 }
 
 const CURRENT_YEAR = new Date().getFullYear();
-const MIN_BIRTH_YEAR = CURRENT_YEAR - 99;
+/** Années proposées : de la plus jeune (18 ans) à la plus ancienne (1930, borne DB). */
+const MIN_BIRTH_YEAR = 1930;
 const MAX_BIRTH_YEAR = CURRENT_YEAR - 18;
+const BIRTH_YEARS: number[] = [];
+for (let y = MAX_BIRTH_YEAR; y >= MIN_BIRTH_YEAR; y--) BIRTH_YEARS.push(y);
+const MONTHS_FR = [
+  'janvier',
+  'février',
+  'mars',
+  'avril',
+  'mai',
+  'juin',
+  'juillet',
+  'août',
+  'septembre',
+  'octobre',
+  'novembre',
+  'décembre',
+];
 
-function ageFrom(year: number): number {
-  return CURRENT_YEAR - year;
+function daysInMonth(year: number, month: number): number {
+  return new Date(year, month, 0).getDate();
+}
+
+/** Âge exact en années révolues (anniversaire passé). */
+function exactAge(year: number, month: number, day: number): number {
+  const now = new Date();
+  let age = now.getFullYear() - year;
+  if (now.getMonth() + 1 < month || (now.getMonth() + 1 === month && now.getDate() < day)) {
+    age -= 1;
+  }
+  return age;
 }
 
 export function Profile({ onDone }: Props) {
@@ -50,6 +81,10 @@ export function Profile({ onDone }: Props) {
 
   // --- Étapes 1-3 : basics
   const [displayName, setDisplayName] = useState('');
+  // Date de naissance — 3 listes (jour/mois/année) : l'année reste facile à
+  // retrouver (picker natif, années récentes en premier).
+  const [birthDay, setBirthDay] = useState('');
+  const [birthMonth, setBirthMonth] = useState('');
   const [birthYear, setBirthYear] = useState('');
   const [gender, setGender] = useState<Gender | ''>('');
   const [orientation, setOrientation] = useState<OrientationType | ''>('');
@@ -57,6 +92,8 @@ export function Profile({ onDone }: Props) {
   const [consent, setConsent] = useState(false);
   const [consentAlreadyGiven, setConsentAlreadyGiven] = useState(false);
   const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
   const [geoRegion, setGeoRegion] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
   const [bio, setBio] = useState('');
@@ -85,13 +122,23 @@ export function Profile({ onDone }: Props) {
     const p = await api<ProfileResponse>('/api/profile').catch(() => null);
     if (p) {
       setDisplayName(p.displayName ?? '');
-      setBirthYear(p.birthYear ? String(p.birthYear) : '');
+      // Date de naissance : ISO stocké, sinon repli sur l'année seule (comptes anciens).
+      if (p.birthDate) {
+        const [y, m, d] = p.birthDate.split('-');
+        setBirthYear(y ?? '');
+        setBirthMonth(m ? String(Number(m)) : '');
+        setBirthDay(d ? String(Number(d)) : '');
+      } else if (p.birthYear) {
+        setBirthYear(String(p.birthYear));
+      }
       setGender((p.gender as Gender) ?? '');
       setOrientation((p.orientation as OrientationType) ?? '');
       setIntent((p.intent as Intent) ?? '');
       setConsentAlreadyGiven(p.profileConsentAt !== null);
       setConsent(p.profileConsentAt !== null);
       setCity(p.city ?? '');
+      setCountry(p.country ?? '');
+      setNeighborhood(p.neighborhood ?? '');
       setGeoRegion(p.geoRegion);
       setBio(p.bio ?? '');
       if (p.prompts.length > 0) {
@@ -132,16 +179,11 @@ export function Profile({ onDone }: Props) {
     let ok = false;
 
     if (step === 1) {
-      const year = Number(birthYear);
-      ok = await save({
-        displayName,
-        birthYear: year,
-        gender,
-      });
+      ok = await save({ displayName, birthDate: composeBirthDate(), gender });
     } else if (step === 2) {
       ok = await save({ orientation, intent, consentAccepted: consent });
     } else if (step === 3) {
-      ok = await save({ city, geoRegion, bio });
+      ok = await save({ city, country, neighborhood, geoRegion, bio });
     } else if (step === 4) {
       const filled = prompts.filter((p) => p.key && p.answer.trim());
       ok = await save({ prompts: filled });
@@ -171,31 +213,58 @@ export function Profile({ onDone }: Props) {
       });
       onDone();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+      setError(err instanceof Error ? err.message : 'Erreur inattendue.');
       setBusy(false);
     }
   }
 
-  function useMyLocation() {
+  /** Compose la date ISO « YYYY-MM-DD » (les 3 listes valides garantissent le format). */
+  function composeBirthDate(): string | undefined {
+    if (!birthYear || !birthMonth || !birthDay) return undefined;
+    return `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
+  }
+
+  /**
+   * Détection automatique de la localisation (demande fondateur) : GPS navigateur
+   * → géocodage inverse côté Worker (Nominatim) → pays/ville/quartier remplis.
+   * La position exacte ne transite qu'au millième de degré (~110 m) et rien de
+   * précis n'est stocké : la base garde libellés + zone grossière ≈11 km.
+   */
+  function detectLocation() {
     if (!navigator.geolocation) {
-      setError('Géolocalisation indisponible — indique ta ville manuellement.');
+      setError('Géolocalisation indisponible — renseigne ta ville manuellement.');
       return;
     }
     setLocating(true);
     setError(null);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        // Arrondi au dixième de degré ≈ 11 km — JAMAIS de position précise.
-        const lat = Math.round(pos.coords.latitude * 10) / 10;
-        const lon = Math.round(pos.coords.longitude * 10) / 10;
-        setGeoRegion(`geo:${lat.toFixed(1)},${lon.toFixed(1)}`);
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        // Zone grossière stockée en base (≈11 km — JAMAIS de position précise).
+        const latR = Math.round(lat * 10) / 10;
+        const lonR = Math.round(lon * 10) / 10;
+        setGeoRegion(`geo:${latR.toFixed(1)},${lonR.toFixed(1)}`);
+        try {
+          const geo = await api<GeoReverseResponse>(
+            `/api/geo/reverse?lat=${(Math.round(lat * 1000) / 1000).toFixed(3)}&lon=${(Math.round(lon * 1000) / 1000).toFixed(3)}`,
+          );
+          if (geo.country) setCountry(geo.country);
+          if (geo.city) setCity(geo.city);
+          if (geo.neighborhood) setNeighborhood(geo.neighborhood);
+          if (!geo.city && !geo.country) {
+            setError('Position trouvée, mais ville non reconnue — renseigne-la manuellement.');
+          }
+        } catch {
+          setError('Ville introuvable depuis ta position — renseigne-la manuellement.');
+        }
         setLocating(false);
       },
       () => {
-        setError('Position refusée — indique ta ville manuellement.');
+        setError('Position refusée — renseigne ta ville manuellement.');
         setLocating(false);
       },
-      { timeout: 8000 },
+      { timeout: 10000, enableHighAccuracy: false },
     );
   }
 
@@ -249,9 +318,12 @@ export function Profile({ onDone }: Props) {
   }
 
   // ---------- Validations locales ----------
-  const year = Number(birthYear);
-  const ageOk = Number.isInteger(year) && year >= MIN_BIRTH_YEAR && year <= MAX_BIRTH_YEAR;
-  const step1Ok = displayName.trim().length >= PROFILE_LIMITS.displayNameMin && ageOk && gender !== '';
+  const dobComplete = birthYear !== '' && birthMonth !== '' && birthDay !== '';
+  const dayMax = birthYear && birthMonth ? daysInMonth(Number(birthYear), Number(birthMonth)) : 31;
+  const dobValid = dobComplete && Number(birthDay) >= 1 && Number(birthDay) <= dayMax;
+  const ageOk = dobValid && exactAge(Number(birthYear), Number(birthMonth), Number(birthDay)) >= 18;
+  const step1Ok =
+    displayName.trim().length >= PROFILE_LIMITS.displayNameMin && dobComplete && dobValid && ageOk && gender !== '';
   const step2Ok = orientation !== '' && intent !== '' && (consent || consentAlreadyGiven);
   const step3Ok = city.trim().length >= PROFILE_LIMITS.cityMin && bio.trim().length > 0 && bio.length <= PROFILE_LIMITS.bioMax;
   const usedKeys = prompts.map((p) => p.key);
@@ -303,18 +375,63 @@ export function Profile({ onDone }: Props) {
               autoComplete="given-name"
             />
           </label>
-          <label className="field">
-            <span>Année de naissance (18 ans minimum)</span>
-            <input
-              value={birthYear}
-              onChange={(e) => setBirthYear(e.target.value.replace(/\D/g, '').slice(0, 4))}
-              placeholder={`Ex. ${MAX_BIRTH_YEAR - 10}`}
-              inputMode="numeric"
-            />
-            {birthYear.length === 4 && !ageOk && (
+          <div className="field">
+            <span>Date de naissance (18 ans minimum)</span>
+            <div className="dob-row">
+              <select
+                aria-label="Jour de naissance"
+                value={birthDay}
+                onChange={(e) => setBirthDay(e.target.value)}
+              >
+                <option value="">Jour</option>
+                {Array.from({ length: dayMax }, (_, i) => i + 1).map((d) => (
+                  <option key={d} value={String(d)}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Mois de naissance"
+                value={birthMonth}
+                onChange={(e) => {
+                  setBirthMonth(e.target.value);
+                  // Le jour choisi peut ne plus exister (ex. 31 → février).
+                  if (birthDay !== '' && Number(birthDay) > daysInMonth(Number(birthYear || MAX_BIRTH_YEAR), Number(e.target.value))) {
+                    setBirthDay('');
+                  }
+                }}
+              >
+                <option value="">Mois</option>
+                {MONTHS_FR.map((label, i) => (
+                  <option key={i + 1} value={String(i + 1)}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Année de naissance"
+                className="dob-year"
+                value={birthYear}
+                onChange={(e) => {
+                  setBirthYear(e.target.value);
+                  if (birthDay !== '' && birthMonth !== '') {
+                    const max = daysInMonth(Number(e.target.value), Number(birthMonth));
+                    if (Number(birthDay) > max) setBirthDay('');
+                  }
+                }}
+              >
+                <option value="">Année</option>
+                {BIRTH_YEARS.map((y) => (
+                  <option key={y} value={String(y)}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {dobComplete && dobValid && !ageOk && (
               <small className="hint">Tu dois avoir 18 ans révolus.</small>
             )}
-          </label>
+          </div>
           <div className="field">
             <span>Genre</span>
             <div className="choice-row">
@@ -354,7 +471,7 @@ export function Profile({ onDone }: Props) {
           <div className="field">
             <span>Tu cherches…</span>
             <div className="choice-row">
-              {(['serious', 'open', 'friends_first'] as const).map((i) => (
+              {INTENTS.map((i) => (
                 <button
                   key={i}
                   type="button"
@@ -374,8 +491,9 @@ export function Profile({ onDone }: Props) {
               disabled={consentAlreadyGiven}
             />
             <span>
-              J'accepte que mon orientation, mon intention, ma ville et ma position approximative
-              soient utilisées pour la découverte et le matching, conformément à la{' '}
+              J'accepte que mon orientation, mon intention, mon pays, ma ville, mon quartier et ma
+              position approximative soient utilisés pour la découverte et le matching, conformément
+              à la{' '}
               <a href="/legal/politique.md" target="_blank" rel="noreferrer">
                 politique de confidentialité
               </a>
@@ -385,28 +503,55 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 3 : ville + bio ---------------- */}
+      {/* ---------------- Étape 3 : localisation + bio ---------------- */}
       {step === 3 && (
         <div className="wizard-body">
+          <div className="field">
+            <span>Détection automatique</span>
+            <p className="hint">
+              Pays, ville et quartier remplis depuis ta position — ta position précise n'est jamais
+              stockée, uniquement une zone d'environ 10 km. Tout reste modifiable à la main.
+            </p>
+            <button type="button" className="btn ghost" onClick={detectLocation} disabled={locating}>
+              {locating ? 'Détection en cours…' : 'Détecter ma position'}
+            </button>
+          </div>
+          <label className="field">
+            <span>Pays</span>
+            <input
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              placeholder="Ex. Cameroun, France…"
+              maxLength={PROFILE_LIMITS.countryMax}
+            />
+          </label>
           <label className="field">
             <span>Ville</span>
             <input
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              placeholder="Ex. Lyon, Bruxelles, Genève…"
+              placeholder="Ex. Douala, Lyon, Bruxelles…"
               maxLength={PROFILE_LIMITS.cityMax}
+            />
+          </label>
+          <label className="field">
+            <span>Quartier (optionnel)</span>
+            <input
+              value={neighborhood}
+              onChange={(e) => setNeighborhood(e.target.value)}
+              placeholder="Ex. Bonapriso, Akwa…"
+              maxLength={PROFILE_LIMITS.neighborhoodMax}
             />
           </label>
           <div className="field">
             <span>Position approximative (optionnel — arrondie à ~10 km)</span>
-            <button type="button" className="btn ghost" onClick={useMyLocation} disabled={locating}>
-              {locating ? 'Localisation…' : 'Utiliser ma position'}
-            </button>
-            {geoRegion && (
+            {geoRegion ? (
               <p className="hint">
-                Zone enregistrée : {geoRegion.replace('geo:', '')} (≈11 km autour de toi — ta position
-                précise n'est jamais stockée).
+                Zone enregistrée : {geoRegion.replace('geo:', '')} (≈11 km autour de toi — ta
+                position précise n'est jamais stockée).
               </p>
+            ) : (
+              <p className="hint">Utilise « Détecter ma position » ci-dessus pour la remplir.</p>
             )}
           </div>
           <label className="field">
@@ -608,7 +753,7 @@ export function Profile({ onDone }: Props) {
               >
                 Toutes
               </button>
-              {(['serious', 'open', 'friends_first'] as const).map((i) => (
+              {INTENTS.map((i) => (
                 <button
                   key={i}
                   type="button"
@@ -658,3 +803,4 @@ export function Profile({ onDone }: Props) {
 
 // Garde le type vivant pour d'éventuels imports de PROMPT_KEYS (lint friendly).
 void PROMPT_KEYS;
+void MIN_BIRTH_YEAR;

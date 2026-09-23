@@ -659,7 +659,7 @@ authRoutes.get('/me', async (c) => {
   const session = await requireAuth(c);
   const user = await c.env.DB.prepare(
     `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
-            u.birth_year, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
+            u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
             (SELECT COUNT(*) FROM photos p
               WHERE p.user_id = u.id AND p.status = 'active' AND p.deleted_at IS NULL) AS photo_count,
             (SELECT COUNT(*) FROM profile_prompts pp WHERE pp.user_id = u.id) AS prompt_count,
@@ -678,6 +678,7 @@ authRoutes.get('/me', async (c) => {
       plan: string;
       created_at: number;
       birth_year: number | null;
+      birth_date: string | null;
       gender: string | null;
       orientation: string | null;
       intent: string | null;
@@ -703,6 +704,7 @@ authRoutes.get('/me', async (c) => {
       {
         display_name: user.display_name,
         birth_year: user.birth_year,
+        birth_date: user.birth_date,
         gender: user.gender,
         orientation: user.orientation,
         intent: user.intent,

@@ -26,9 +26,12 @@ import {
 import {
   validateDisplayName,
   validateBirthYear,
+  validateBirthDate,
   validateEnum,
   validateCity,
   validateGeoRegion,
+  validateCountry,
+  validateNeighborhood,
   validateBio,
   validatePrompts,
   validatePreferences,
@@ -160,17 +163,20 @@ profileRoutes.get('/profile', async (c) => {
 
   const [basics, prompts, photos, prefs] = await Promise.all([
     c.env.DB.prepare(
-      `SELECT display_name, birth_year, gender, orientation, intent, city, geo_region, bio,
-              profile_consent_at FROM users WHERE id = ? LIMIT 1`,
+      `SELECT display_name, birth_year, birth_date, gender, orientation, intent, city, country,
+              neighborhood, geo_region, bio, profile_consent_at FROM users WHERE id = ? LIMIT 1`,
     )
       .bind(user.id)
       .first<{
         display_name: string | null;
         birth_year: number | null;
+        birth_date: string | null;
         gender: string | null;
         orientation: string | null;
         intent: string | null;
         city: string | null;
+        country: string | null;
+        neighborhood: string | null;
         geo_region: string | null;
         bio: string | null;
         profile_consent_at: number | null;
@@ -212,10 +218,13 @@ profileRoutes.get('/profile', async (c) => {
   const body: ProfileResponse = {
     displayName: basics.display_name,
     birthYear: basics.birth_year,
+    birthDate: basics.birth_date,
     gender: (basics.gender as Gender | null) ?? null,
     orientation: (basics.orientation as Orientation | null) ?? null,
     intent: (basics.intent as Intent | null) ?? null,
     city: basics.city,
+    country: basics.country,
+    neighborhood: basics.neighborhood,
     geoRegion: basics.geo_region,
     bio: basics.bio,
     profileConsentAt: basics.profile_consent_at,
@@ -226,6 +235,7 @@ profileRoutes.get('/profile', async (c) => {
       {
         display_name: basics.display_name,
         birth_year: basics.birth_year,
+        birth_date: basics.birth_date,
         gender: basics.gender,
         orientation: basics.orientation,
         intent: basics.intent,
@@ -248,26 +258,34 @@ profileRoutes.put('/profile', async (c) => {
   if (!payload) throw errors.badRequest();
 
   const current = await c.env.DB.prepare(
-    `SELECT display_name, birth_year, gender, orientation, intent, city, geo_region, bio,
-            profile_consent_at FROM users WHERE id = ? LIMIT 1`,
+    `SELECT display_name, birth_year, birth_date, gender, orientation, intent, city, country,
+            neighborhood, geo_region, bio, profile_consent_at FROM users WHERE id = ? LIMIT 1`,
   )
     .bind(user.id)
     .first<{
       display_name: string | null;
       birth_year: number | null;
+      birth_date: string | null;
       gender: string | null;
       orientation: string | null;
       intent: string | null;
       city: string | null;
+      country: string | null;
+      neighborhood: string | null;
       geo_region: string | null;
       bio: string | null;
       profile_consent_at: number | null;
     }>();
   if (!current) throw errors.unauthorized();
 
-  // --- Consentement explicite dédié : requis pour écrire orientation/intent/ville.
+  // --- Consentement explicite dédié : requis pour écrire orientation/intent/localisation.
   const touchesSensitive =
-    'orientation' in payload || 'intent' in payload || 'city' in payload || 'geoRegion' in payload;
+    'orientation' in payload ||
+    'intent' in payload ||
+    'city' in payload ||
+    'country' in payload ||
+    'neighborhood' in payload ||
+    'geoRegion' in payload;
   const consentGiven = current.profile_consent_at !== null || payload.consentAccepted === true;
   if (touchesSensitive && !consentGiven) {
     throw errors.badRequest('Consentement explicite requis pour ces informations (découverte/matching).');
@@ -282,8 +300,25 @@ profileRoutes.put('/profile', async (c) => {
     values.push(validateDisplayName(payload.displayName));
   }
   if ('birthYear' in payload) {
+    const year = validateBirthYear(payload.birthYear);
     sets.push('birth_year = ?');
-    values.push(validateBirthYear(payload.birthYear));
+    values.push(year);
+    // Invariant : birth_year et birth_date restent TOUJOURS cohérents —
+    // l'écriture « année seule » (compat anciens clients) cale la date au 1er janvier.
+    if (!('birthDate' in payload)) {
+      sets.push('birth_date = ?');
+      values.push(`${year}-01-01`);
+    }
+  }
+  if ('birthDate' in payload) {
+    const iso = validateBirthDate(payload.birthDate);
+    sets.push('birth_date = ?');
+    values.push(iso);
+    // birth_year reste synchronisé (compat matching/export/anciens écrans).
+    if (!('birthYear' in payload)) {
+      sets.push('birth_year = ?');
+      values.push(Number(iso.slice(0, 4)));
+    }
   }
   if ('gender' in payload) {
     sets.push('gender = ?');
@@ -300,6 +335,14 @@ profileRoutes.put('/profile', async (c) => {
   if ('city' in payload) {
     sets.push('city = ?');
     values.push(validateCity(payload.city));
+  }
+  if ('country' in payload) {
+    sets.push('country = ?');
+    values.push(validateCountry(payload.country));
+  }
+  if ('neighborhood' in payload) {
+    sets.push('neighborhood = ?');
+    values.push(validateNeighborhood(payload.neighborhood));
   }
   if ('geoRegion' in payload) {
     sets.push('geo_region = ?');

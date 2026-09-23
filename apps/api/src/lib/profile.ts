@@ -1,11 +1,13 @@
 /**
- * Validation du profil (Étape 3) — un seul endroit, miroir de PROFILE_LIMITS
- * (@wairyu/shared). Toute écriture profil passe par ces garde-fous.
+ * Validation du profil (Étape 3 + évolutions fondateur) — un seul endroit,
+ * miroir de PROFILE_LIMITS (@wairyu/shared). Toute écriture profil passe par
+ * ces garde-fous.
  *
- * Règle 18+ : l'année de naissance doit donner un âge ≥ 18 ans à aujourd'hui
- * (la contrainte D1 historique 1930-2010 reste plus large côté base).
+ * Règle 18+ : date de naissance complète (YYYY-MM-DD) → âge EXACT ≥ 18 ans
+ * révolus à aujourd'hui (UTC). L'année seule reste acceptée en écriture
+ * (compat anciens clients) → birth_date complétée au 1er janvier.
  */
-import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS } from '@wairyu/shared';
+import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS, INTENTS } from '@wairyu/shared';
 import { errors } from './errors';
 
 type ProfileEnv = { CLOUDINARY_CLOUD_NAME: string; CLOUDINARY_API_KEY: string; CLOUDINARY_API_SECRET: string };
@@ -44,6 +46,34 @@ export function validateBirthYear(v: unknown): number {
   return year;
 }
 
+/**
+ * Date de naissance ISO « YYYY-MM-DD » — calendrier réel (pas de 31/02, les
+ * années bissextiles sont vérifiées) et âge EXACT ≥ 18 ans révolus (UTC).
+ * Retourne la chaîne normalisée ; l'année dérivée est extraite par le route.
+ */
+export function validateBirthDate(v: unknown): string {
+  const s = asString(v);
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s ?? '');
+  if (!m) bad('Date de naissance invalide (format attendu AAAA-MM-JJ).');
+  const year = Number(m![1]);
+  const month = Number(m![2]);
+  const day = Number(m![3]);
+  const minYear = 1930;
+  const maxYear = new Date().getUTCFullYear() - 18;
+  if (year < minYear || year > maxYear) {
+    bad(`Année de naissance invalide (${minYear}-${maxYear}).`);
+  }
+  if (month < 1 || month > 12) bad('Mois de naissance invalide.');
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  if (day < 1 || day > daysInMonth) bad('Jour de naissance invalide pour ce mois.');
+  // Âge exact : 18 ans révolus = anniversaire passé il y a ≥ 18 ans (UTC).
+  const birth = Date.UTC(year, month - 1, day);
+  const now = new Date();
+  const cutoff = Date.UTC(now.getUTCFullYear() - 18, now.getUTCMonth(), now.getUTCDate());
+  if (birth > cutoff) bad('Tu dois avoir 18 ans révolus pour créer un compte wairyu.');
+  return s!;
+}
+
 export function validateEnum<T extends string>(v: unknown, allowed: readonly T[], label: string): T {
   if (typeof v !== 'string' || !allowed.includes(v as T)) {
     bad(`${label} invalide.`);
@@ -78,6 +108,26 @@ export function validateBio(v: unknown): string | null {
   if (v === null || v === undefined || v === '') return null;
   const s = asString(v)!;
   if (s.length > PROFILE_LIMITS.bioMax) bad(`La bio est limitée à ${PROFILE_LIMITS.bioMax} caractères.`);
+  return s;
+}
+
+/** Pays — libellé libre court (géocodage inverse ou saisie manuelle), optionnel. */
+export function validateCountry(v: unknown): string | null {
+  if (v === null || v === undefined || v === '') return null;
+  const s = asString(v)!;
+  if (s.length > PROFILE_LIMITS.countryMax) {
+    bad(`Le pays est limité à ${PROFILE_LIMITS.countryMax} caractères.`);
+  }
+  return s;
+}
+
+/** Quartier — libellé libre court (optionnel ; JAMAIS de rue ni de GPS précis). */
+export function validateNeighborhood(v: unknown): string | null {
+  if (v === null || v === undefined || v === '') return null;
+  const s = asString(v)!;
+  if (s.length > PROFILE_LIMITS.neighborhoodMax) {
+    bad(`Le quartier est limité à ${PROFILE_LIMITS.neighborhoodMax} caractères.`);
+  }
   return s;
 }
 
@@ -120,7 +170,7 @@ export interface ValidatedPreferences {
   minAge: number;
   maxAge: number;
   distanceKm: number;
-  prefIntent: 'serious' | 'open' | 'friends_first' | null;
+  prefIntent: (typeof INTENTS)[number] | null;
 }
 
 export function validatePreferences(v: unknown): ValidatedPreferences {
@@ -146,7 +196,7 @@ export function validatePreferences(v: unknown): ValidatedPreferences {
     prefIntent:
       p.prefIntent === null || p.prefIntent === undefined || p.prefIntent === ''
         ? null
-        : validateEnum(p.prefIntent, ['serious', 'open', 'friends_first'] as const, 'Intention recherchée'),
+        : validateEnum(p.prefIntent, INTENTS, 'Intention recherchée'),
   };
 }
 
@@ -157,6 +207,7 @@ export function validatePreferences(v: unknown): ValidatedPreferences {
 export interface ProfileBasics {
   display_name: string | null;
   birth_year: number | null;
+  birth_date: string | null;
   gender: string | null;
   orientation: string | null;
   intent: string | null;
@@ -175,7 +226,7 @@ export interface ProfileCounters {
 export function isProfileComplete(b: ProfileBasics, c: ProfileCounters): boolean {
   return Boolean(
     b.display_name &&
-      b.birth_year &&
+      (b.birth_date || b.birth_year) &&
       b.gender &&
       b.orientation &&
       b.intent &&

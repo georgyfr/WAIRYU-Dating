@@ -81,6 +81,10 @@ export const PROFILE_LIMITS = {
   promptAnswerMax: 150,
   promptsRequired: 3,
   geoRegionMax: 80,
+  /** Pays (libellé — géocodage inverse ou saisie manuelle). */
+  countryMax: 60,
+  /** Quartier (libellé — géocodage inverse ou saisie manuelle). */
+  neighborhoodMax: 60,
   /** Octets max d'une photo reçue par l'API (le client compresse à ~300 Ko). */
   photoMaxBytes: 2 * 1024 * 1024,
   photoMaxDim: 4096,
@@ -91,7 +95,21 @@ export const PROFILE_LIMITS = {
 } as const;
 
 export const GENDERS = ['woman', 'man', 'non_binary'] as const;
-export const INTENTS = ['serious', 'open', 'friends_first'] as const;
+/**
+ * Intentions de recherche — ordre d'affichage volontaire (progression naturelle).
+ * Extension à la demande fondateur : vie de couple, mariage, rencontre interraciale.
+ * NOTE DB : les CHECK contraintes historiques ont été retirées en migration 0006 —
+ * l'API est le seul garde-fou (validateEnum sur INTENTS) ; ajouter une intention
+ * ici ne demande AUCUNE migration.
+ */
+export const INTENTS = [
+  'serious',
+  'couple_life',
+  'marriage',
+  'open',
+  'friends_first',
+  'interracial',
+] as const;
 export const ORIENTATIONS = ['straight', 'gay', 'bi', 'other'] as const;
 export const PREF_GENDERS = ['women', 'men', 'everyone'] as const;
 export const MODE_DEFAULTS = ['classic', 'invisible'] as const;
@@ -100,7 +118,14 @@ export const MODE_DEFAULTS = ['classic', 'invisible'] as const;
 export const LABELS = {
   gender: { woman: 'Femme', man: 'Homme', non_binary: 'Non binaire' } as Record<string, string>,
   orientation: { straight: 'Hétéro', gay: 'Gay / Lesbienne', bi: 'Bisexuel·le', other: 'Autre' } as Record<string, string>,
-  intent: { serious: 'Relation sérieuse', open: 'Ouvert·e à voir', friends_first: 'D\u2019abord amis' } as Record<string, string>,
+  intent: {
+    serious: 'Relation sérieuse',
+    couple_life: 'Vie de couple',
+    marriage: 'Mariage',
+    open: 'Ouvert·e à voir',
+    friends_first: 'D\u2019abord amis',
+    interracial: 'Rencontre interraciale',
+  } as Record<string, string>,
   prefGender: { women: 'Femmes', men: 'Hommes', everyone: 'Tout le monde' } as Record<string, string>,
   mode: { classic: 'Mode Classique', invisible: 'Mode Invisible' } as Record<string, string>,
 } as const;
