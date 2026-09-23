@@ -1,0 +1,9 @@
+# wairyu — règles de cache des assets statiques (Workers Assets).
+# /assets/* : fichiers Vite avec hash de contenu dans le nom → cache 1 an.
+# /fonts/*  : suffixe de version dans le nom (nunito-*-v1.woff2) → cache 1 an.
+# L'HTML reste en revalidation (max-age=0) : il référence les noms hashés.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
