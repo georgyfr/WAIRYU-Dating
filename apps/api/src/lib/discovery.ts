@@ -250,57 +250,65 @@ export async function generateFeedPage(
   const now = Math.floor(Date.now() / 1000);
   const genderFilter =
     prefGender === 'women'
-      ? `AND u.gender = 'woman'`
+      ? `AND u0.gender = 'woman'`
       : prefGender === 'men'
-        ? `AND u.gender = 'man'`
+        ? `AND u0.gender = 'man'`
         : '';
   const onlyIds = opts?.onlyIds;
-  const onlyFilter = onlyIds && onlyIds.length > 0 ? `AND u.id IN (${onlyIds.map(() => '?').join(',')})` : '';
+  // NB : injecté DANS la sous-requête candidats → alias u0 (fix pool LIMIT/jointure).
+  const onlyFilter = onlyIds && onlyIds.length > 0 ? `AND u0.id IN (${onlyIds.map(() => '?').join(',')})` : '';
 
+  // ⚠️ FIX pool (découvert par les profils virtuels) : le LIMIT s'applique aux
+  // CANDIDATS (sous-requête) et non aux lignes jointes — sinon un candidat qui
+  // a répondu au questionnaire duplique sa ligne ~30 fois (1 par q_answer) et
+  // tronque silencieusement les derniers candidats du pool (300 lignes jointes
+  // ≈ 10 candidats seulement). Même bug latent pour le cron Top et /discover/top.
   const { results: poolRows } = await env.DB.prepare(
     `SELECT u.id, u.display_name, u.birth_year, u.birth_date, u.city, u.neighborhood, u.country,
             u.intent, u.bio, u.geo_region, u.verified_at, u.mode_visible,
             up.mode_default AS owner_mode,
             pp.type AS personality_type, pp.validated AS personality_validated,
             qa.item_id AS qa_item, qa.value_json AS qa_value
-     FROM users u
+     FROM (
+       SELECT u0.* FROM users u0
+       WHERE u0.id != ?1 AND u0.status = 'active'
+         AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u0.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
+         AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u0.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2)
+         AND COALESCE(u0.birth_date, CAST(u0.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
+         ${genderFilter}
+         AND (?6 IS NULL OR u0.intent = ?6)
+         -- Étape 7 (plan 7.7) : un profil EN PAUSE n'apparaît nulle part.
+         AND COALESCE(u0.paused, 0) = 0
+         -- Étape 7 (plan 7.7) : INCOGNITO — masqué du feed SAUF pour les
+         -- personnes à qui il a envoyé un like (« likes reçus »).
+         AND (
+           COALESCE(u0.incognito, 0) = 0
+           OR EXISTS (
+             SELECT 1 FROM swipes s3
+             WHERE s3.user_id = u0.id AND s3.target_id = ?1 AND s3.action IN ('like','super')
+           )
+         )
+         -- Étape 5 : jamais reproposer quelqu'un de déjà traité…
+         AND NOT EXISTS (SELECT 1 FROM swipes sw WHERE sw.user_id = ?1 AND sw.target_id = u0.id)
+         -- …ni mes propres demandes « Discuter » (en attente, acceptée, déclinée),
+         -- ni les paires déjà en conversation (handshake accepté).
+         AND NOT EXISTS (SELECT 1 FROM invisible_requests ir WHERE ir.from_user = ?1 AND ir.to_user = u0.id)
+         AND NOT EXISTS (
+           SELECT 1 FROM invisible_requests ir2
+           WHERE ir2.from_user = u0.id AND ir2.to_user = ?1 AND ir2.status = 'accepted'
+         )
+         -- Étape 6 : un blocage (dans un sens OU dans l'autre) sort la paire
+         -- du pool pour toujours (unmatch « en 1 clic », plan 6.7).
+         AND NOT EXISTS (
+           SELECT 1 FROM blocks b
+           WHERE (b.user_id = ?1 AND b.blocked_id = u0.id) OR (b.user_id = u0.id AND b.blocked_id = ?1)
+         )
+         ${onlyFilter}
+       LIMIT ?5
+     ) u
      LEFT JOIN user_preferences up ON up.user_id = u.id
      LEFT JOIN personality_profiles pp ON pp.user_id = u.id
-     LEFT JOIN q_answers qa ON qa.user_id = u.id
-     WHERE u.id != ?1 AND u.status = 'active'
-       AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
-       AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2)
-       AND COALESCE(u.birth_date, CAST(u.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
-       ${genderFilter}
-       AND (?6 IS NULL OR u.intent = ?6)
-       -- Étape 7 (plan 7.7) : un profil EN PAUSE n'apparaît nulle part.
-       AND COALESCE(u.paused, 0) = 0
-       -- Étape 7 (plan 7.7) : INCOGNITO — masqué du feed SAUF pour les
-       -- personnes à qui il a envoyé un like (« likes reçus »).
-       AND (
-         COALESCE(u.incognito, 0) = 0
-         OR EXISTS (
-           SELECT 1 FROM swipes s3
-           WHERE s3.user_id = u.id AND s3.target_id = ?1 AND s3.action IN ('like','super')
-         )
-       )
-       -- Étape 5 : jamais reproposer quelqu'un de déjà traité…
-       AND NOT EXISTS (SELECT 1 FROM swipes sw WHERE sw.user_id = ?1 AND sw.target_id = u.id)
-       -- …ni mes propres demandes « Discuter » (en attente, acceptée, déclinée),
-       -- ni les paires déjà en conversation (handshake accepté).
-       AND NOT EXISTS (SELECT 1 FROM invisible_requests ir WHERE ir.from_user = ?1 AND ir.to_user = u.id)
-       AND NOT EXISTS (
-         SELECT 1 FROM invisible_requests ir2
-         WHERE ir2.from_user = u.id AND ir2.to_user = ?1 AND ir2.status = 'accepted'
-       )
-       -- Étape 6 : un blocage (dans un sens OU dans l'autre) sort la paire
-       -- du pool pour toujours (unmatch « en 1 clic », plan 6.7).
-       AND NOT EXISTS (
-         SELECT 1 FROM blocks b
-         WHERE (b.user_id = ?1 AND b.blocked_id = u.id) OR (b.user_id = u.id AND b.blocked_id = ?1)
-       )
-       ${onlyFilter}
-     LIMIT ?5`,
+     LEFT JOIN q_answers qa ON qa.user_id = u.id`,
   )
     .bind(
       userId,
