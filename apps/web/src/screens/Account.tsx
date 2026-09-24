@@ -249,7 +249,17 @@ export function Account({ me, onLoggedOut }: Props) {
   });
 
   return (
-    <section className="card wide">
+    <div className="app page-settings">
+      <header className="wizard-head">
+        <button
+          type="button" className="back" aria-label="Retour à mon profil"
+          onClick={() => window.location.assign('#/myprofile')}
+        >
+          ‹
+        </button>
+        <h1>Paramètres &amp; compte</h1>
+      </header>
+      <section className="card wide">
       <div className="me-head">
         <div className="avatar">{(me.displayName ?? me.email)[0]?.toUpperCase()}</div>
         <div>
@@ -307,6 +317,9 @@ export function Account({ me, onLoggedOut }: Props) {
           </button>
           <button type="button" className="btn ghost" onClick={() => window.location.assign('#/matches')}>
             Mes matchs
+          </button>
+          <button type="button" className="btn ghost" onClick={() => window.location.assign('#/messages')}>
+            Ma messagerie
           </button>
           <button type="button" className="btn ghost" onClick={() => window.location.assign('#/questionnaire')}>
             Mon questionnaire
@@ -487,6 +500,7 @@ export function Account({ me, onLoggedOut }: Props) {
         )}
         {error && <p className="error">{error}</p>}
       </div>
-    </section>
+      </section>
+    </div>
   );
 }

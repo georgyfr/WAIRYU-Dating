@@ -608,6 +608,53 @@ export interface ChatStateResponse {
   myFeedback: 'continue' | 'friend' | 'not_for_me' | null;
 }
 
+// ---------------------------------------------------------------------------
+// Page Messages — boîte de réception (expérience dating classique)
+// ---------------------------------------------------------------------------
+
+/** Aperçu du dernier message d'une conversation (page Messages). */
+export interface ConversationLastMessage {
+  seq: number;
+  /** true = le message a été envoyé par moi. */
+  fromMe: boolean;
+  kind: ChatMessageKind;
+  /** Extrait texte (voice → chaîne vide, le front affiche « 🎤 Message vocal »). */
+  excerpt: string;
+  /** Epoch secondes. */
+  createdAt: number;
+}
+
+/** Une conversation active (GET /api/chat/conversations). */
+export interface ConversationDto {
+  conversationId: string;
+  matchId: string;
+  /** Mode de la CONVERSATION (régit le flou des photos — §4.8). */
+  conversationMode: 'classic' | 'invisible';
+  /** Création de la conversation (epoch s). */
+  createdAt: number;
+  /** Dernière activité réelle = dernier message (ou création). */
+  lastActivityAt: number;
+  /** Messages reçus non lus. */
+  unread: number;
+  other: {
+    userId: string;
+    displayName: string;
+    photoUrl: string | null;
+    /** true = photo servie floue (conversation Invisible, pas encore révélée). */
+    photoBlurred: boolean;
+    /** Badge « Identité vérifiée » de l'autre (Étape 7). */
+    verified: boolean;
+    personalityType: string | null;
+  };
+  lastMessage: ConversationLastMessage | null;
+}
+
+/** GET /api/chat/conversations — boîte de réception + badge de l'onglet. */
+export interface ConversationListResponse {
+  conversations: ConversationDto[];
+  note: string;
+}
+
 // ---------- Étape 7 : backoffice de modération (routes /admin/*) ----------
 
 /** Item de la file de vérifications selfie. */

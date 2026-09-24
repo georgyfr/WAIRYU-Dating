@@ -13,7 +13,6 @@ import { api, ApiError } from '../lib/api';
 import { ARCHETYPES, type MatchListResponse } from '@wairyu/shared';
 
 interface Props {
-  onBack: () => void;
   /** Ouvre le chat temps réel (Étape 6) — conversation par id. */
   onOpenChat: (conversationId: string) => void;
 }
@@ -24,7 +23,7 @@ const ORIGIN_LABELS: Record<string, string> = {
   invisible_request: 'Demande « Discuter » acceptée',
 };
 
-export function Matches({ onBack, onOpenChat }: Props) {
+export function Matches({ onOpenChat }: Props) {
   const [data, setData] = useState<MatchListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
@@ -99,8 +98,7 @@ export function Matches({ onBack, onOpenChat }: Props) {
 
   return (
     <div className="app matches">
-      <header className="wizard-head">
-        <button type="button" className="back" onClick={onBack} aria-label="Retour">‹</button>
+      <header className="wizard-head plain">
         <h1>Mes matchs</h1>
       </header>
 

@@ -1,6 +1,9 @@
 /**
- * wairyu — routeur SPA minimal (Étape 2).
- * Routes hash : #/ (accueil) · #/signup · #/login · #/verify?e=… · #/app (compte).
+ * wairyu — routeur SPA (Étape 2, étendu après l'Étape 7).
+ * Routes hash : #/ (accueil) · #/signup · #/login · #/verify?e=… ·
+ * #/discover · #/matches · #/messages · #/myprofile (pages principales,
+ * barre d'onglets permanente — expérience dating classique) ·
+ * #/profile (assistant) · #/questionnaire · #/chat/:id · #/app (paramètres).
  * La session est détectée au chargement via /api/me (cookie httpOnly signé).
  */
 import { useCallback, useEffect, useState } from 'react';
@@ -14,8 +17,16 @@ import { Profile } from './screens/Profile';
 import { Questionnaire } from './screens/Questionnaire';
 import { Discover } from './screens/Discover';
 import { Matches } from './screens/Matches';
+import { Messages } from './screens/Messages';
+import { MyProfile } from './screens/MyProfile';
 import { Chat } from './screens/Chat';
-import type { AuthConfigResponse, HealthResponse, MeResponse } from '@wairyu/shared';
+import { TabBar, type TabId } from './components/TabBar';
+import type {
+  AuthConfigResponse,
+  ConversationListResponse,
+  HealthResponse,
+  MeResponse,
+} from '@wairyu/shared';
 
 type Route =
   | { name: 'home'; notice?: string | null }
@@ -27,8 +38,18 @@ type Route =
   | { name: 'questionnaire' }
   | { name: 'discover' }
   | { name: 'matches' }
+  | { name: 'messages' }
+  | { name: 'myprofile' }
   | { name: 'chat'; conversationId: string }
   | { name: 'app' };
+
+/** Pages principales = onglets de la barre permanente. */
+const TAB_ROUTES: Record<string, TabId> = {
+  discover: 'discover',
+  matches: 'matches',
+  messages: 'messages',
+  myprofile: 'profile',
+};
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
 function parseNotice(params: URLSearchParams): string | null {
@@ -73,8 +94,14 @@ function parseHash(): Route {
       // Étape 5 : découverte dual-mode (pile Classique + Invisible + Top du jour).
       return { name: 'discover' };
     case 'matches':
-      // Étape 5 : matchs + conversations + passerelle Classique → Invisible.
+      // Étape 5 : matchs + passerelle Classique → Invisible (onglet).
       return { name: 'matches' };
+    case 'messages':
+      // Boîte de réception (page Messages — expérience dating classique).
+      return { name: 'messages' };
+    case 'myprofile':
+      // Mon profil consultable + accès modification/paramètres (onglet).
+      return { name: 'myprofile' };
     case 'app':
       return { name: 'app' };
     default: {
@@ -92,6 +119,7 @@ export default function App() {
   const [me, setMe] = useState<MeResponse | null>(null);
   const [checking, setChecking] = useState(true);
   const [apiOk, setApiOk] = useState<boolean | null>(null);
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash());
@@ -123,12 +151,13 @@ export default function App() {
     go('#/');
   }, [go]);
 
-  // Session créée (OTP vérifié) : profil incomplet → assistant ; sinon espace compte.
+  // Session créée (OTP vérifié) : profil incomplet → assistant ; sinon découverte
+  // (l'accueil d'une app de rencontre, c'est la découverte — jamais les réglages).
   const onAuthenticated = useCallback(() => {
     api<MeResponse>('/api/me')
       .then((user) => {
         setMe(user);
-        go(user.profileComplete ? '#/app' : '#/profile');
+        go(user.profileComplete ? '#/discover' : '#/profile');
       })
       .catch(() => go('#/'));
   }, [go]);
@@ -138,15 +167,44 @@ export default function App() {
     if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
 
-  // Écrans découverte/matchs/chat : session requise également.
+  // Pages principales + chat : session requise également.
   useEffect(() => {
     if (
       !checking &&
-      (route.name === 'discover' || route.name === 'matches' || route.name === 'chat') &&
+      (route.name === 'discover' ||
+        route.name === 'matches' ||
+        route.name === 'messages' ||
+        route.name === 'myprofile' ||
+        route.name === 'chat') &&
       !me
     )
       go('#/');
   }, [checking, route, me, go]);
+
+  // Badge de l'onglet Messages : polling léger (30 s, onglet visible) +
+  // rafraîchissement à chaque changement de page (retour de chat notamment).
+  useEffect(() => {
+    if (!me) {
+      setUnread(0);
+      return;
+    }
+    let alive = true;
+    const refresh = () => {
+      api<ConversationListResponse>('/api/chat/conversations')
+        .then((r) => {
+          if (alive) setUnread(r.conversations.reduce((n, cv) => n + cv.unread, 0));
+        })
+        .catch(() => undefined); // silencieux — le badge n'est pas critique
+    };
+    refresh();
+    const id = window.setInterval(() => {
+      if (document.visibilityState === 'visible') refresh();
+    }, 30_000);
+    return () => {
+      alive = false;
+      window.clearInterval(id);
+    };
+  }, [me, route.name]);
 
   // ---- Rendu ----
   let content: JSX.Element;
@@ -162,20 +220,32 @@ export default function App() {
   } else if (route.name === 'app' && me) {
     content = <Account me={me} onLoggedOut={onLoggedOut} />;
   } else if (route.name === 'profile' && me) {
-    content = <Profile onDone={() => go('#/app')} />;
+    content = <Profile onDone={() => go('#/myprofile')} />;
   } else if (route.name === 'questionnaire' && me) {
     content = (
       <Questionnaire
-        onDone={() => go('#/app')}
+        onDone={() => go('#/myprofile')}
         onDiscover={() => go('#/discover')}
       />
     );
   } else if (route.name === 'discover' && me) {
-    content = <Discover onBack={() => go('#/app')} onMatches={() => go('#/matches')} />;
+    content = <Discover onMatches={() => go('#/matches')} />;
   } else if (route.name === 'matches' && me) {
-    content = <Matches onBack={() => go('#/app')} onOpenChat={(id) => go(`#/chat/${id}`)} />;
+    content = <Matches onOpenChat={(id) => go(`#/chat/${id}`)} />;
+  } else if (route.name === 'messages' && me) {
+    content = (
+      <Messages onOpenChat={(id) => go(`#/chat/${id}`)} onDiscover={() => go('#/discover')} />
+    );
+  } else if (route.name === 'myprofile' && me) {
+    content = (
+      <MyProfile
+        onEdit={() => go('#/profile')}
+        onSettings={() => go('#/app')}
+        onQuestionnaire={() => go('#/questionnaire')}
+      />
+    );
   } else if (route.name === 'chat' && me) {
-    content = <Chat conversationId={route.conversationId} onBack={() => go('#/matches')} />;
+    content = <Chat conversationId={route.conversationId} onBack={() => go('#/messages')} />;
   } else {
     // Accueil
     content = (
@@ -195,7 +265,7 @@ export default function App() {
             <span className="dot" /> Chargement…
           </div>
         ) : me ? (
-          <button type="button" className="btn primary" onClick={() => go('#/app')}>
+          <button type="button" className="btn primary" onClick={() => go('#/discover')}>
             Continuer en tant que {me.displayName ?? me.email.split('@')[0]}
           </button>
         ) : (
@@ -225,7 +295,14 @@ export default function App() {
     );
   }
 
-  return <main className="app-shell">{content}</main>;
+  // Barre d'onglets permanente sur les 4 pages principales (session requise).
+  const activeTab = TAB_ROUTES[route.name];
+  return (
+    <main className={`app-shell ${activeTab && me ? 'tabpage' : ''}`}>
+      {content}
+      {activeTab && me && <TabBar active={activeTab} unread={unread} onGo={go} />}
+    </main>
+  );
 }
 
 // Type utilitaire pour le DOM de santé (comme avant, conservé)

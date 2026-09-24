@@ -31,7 +31,7 @@ import {
 } from '@wairyu/shared';
 
 interface Props {
-  onBack: () => void;
+  /** Ouvre l'onglet Matchs (barre d'onglets — plus de bouton retour). */
   onMatches: () => void;
 }
 
@@ -43,7 +43,7 @@ const MODE_TABS: { id: DiscoveryMode; label: string; hint: string }[] = [
 
 type Exit = 'left' | 'right' | null;
 
-export function Discover({ onBack, onMatches }: Props) {
+export function Discover({ onMatches }: Props) {
   const [prefs, setPrefs] = useState<PreferencesDto | null>(null);
   const [mode, setMode] = useState<DiscoveryMode>('classic');
   const [items, setItems] = useState<FeedProfile[]>([]);
@@ -477,8 +477,7 @@ export function Discover({ onBack, onMatches }: Props) {
 
   return (
     <div className="app discover">
-      <header className="wizard-head">
-        <button type="button" className="back" onClick={onBack} aria-label="Retour">‹</button>
+      <header className="wizard-head plain">
         <h1>Découvrir</h1>
         <button type="button" className="btn ghost matches-link" onClick={onMatches}>
           Mes matchs

@@ -24,6 +24,9 @@ import { CHAT, REVEAL_FEEDBACKS } from '@wairyu/shared';
 import type {
   ChatHistoryResponse,
   ChatStateResponse,
+  ConversationDto,
+  ConversationLastMessage,
+  ConversationListResponse,
   RevealFeedbackResponse,
   RevealResponse,
   UnmatchResponse,
@@ -165,6 +168,130 @@ async function doStats(c: Context<AppEnv>, ctx: ChatCtx): Promise<DoStats> {
   if (!res.ok) throw errors.internal('État du chat indisponible.');
   return (await res.json()) as DoStats;
 }
+
+// ---------------------------------------------------------------------------
+// GET /api/chat/conversations — boîte de réception (page Messages + badge
+// de l'onglet « Messages »). Une entrée par match actif : dernier message
+// en aperçu (DO /summary), non-lus, photo floutée selon le MODE DE LA
+// CONVERSATION (§4.8) — jamais selon le mode de découverte des membres.
+// ---------------------------------------------------------------------------
+
+interface DoSummary {
+  ok: boolean;
+  count: number;
+  unread: number;
+  closed: boolean;
+  last: { seq: number; senderId: string; kind: string; excerpt: string; createdAt: number } | null;
+}
+
+chatRoutes.get('/chat/conversations', async (c) => {
+  const user = await requireUser(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.chatListUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.chatListUser.scope);
+
+  const { results: rows } = await c.env.DB.prepare(
+    `SELECT c.id AS conv_id, c.mode AS conv_mode, c.created_at, c.revealed_at,
+            m.id AS match_id,
+            other.id AS other_id, other.display_name,
+            other.verified_at AS other_verified,
+            pp.type AS personality_type
+     FROM conversations c
+     JOIN matches m ON m.id = c.match_id
+     JOIN users other
+       ON other.id = CASE WHEN m.user_a_id = ?1 THEN m.user_b_id ELSE m.user_a_id END
+     LEFT JOIN personality_profiles pp ON pp.user_id = other.id
+     WHERE (m.user_a_id = ?1 OR m.user_b_id = ?1) AND m.unmatched_at IS NULL
+       AND other.status != 'deleted' AND other.status != 'banned'
+     ORDER BY m.created_at DESC
+     LIMIT 50`,
+  )
+    .bind(user.id)
+    .all<{
+      conv_id: string;
+      conv_mode: string;
+      created_at: number;
+      revealed_at: number | null;
+      match_id: string;
+      other_id: string;
+      display_name: string | null;
+      other_verified: number | null;
+      personality_type: string | null;
+    }>();
+
+  const conversations: ConversationDto[] = [];
+  for (const r of rows ?? []) {
+    const convMode = r.conv_mode === 'invisible' ? 'invisible' : 'classic';
+    const blurred = convMode === 'invisible' && r.revealed_at == null;
+
+    // Résumé DO : dernier message + non-lus (le DO se (re)construit à
+    // l'usage — même contrat que le chat ; échec = entrée sans aperçu).
+    let s: DoSummary | null = null;
+    try {
+      const stub = c.env.CHAT_ROOM.get(c.env.CHAT_ROOM.idFromName(r.conv_id));
+      void stub
+        .fetch(
+          new Request('https://do/init', {
+            method: 'POST',
+            body: JSON.stringify({
+              conversationId: r.conv_id,
+              members: [user.id, r.other_id],
+              mode: convMode,
+              createdAt: r.created_at,
+              reset: true,
+            }),
+            headers: { 'content-type': 'application/json' },
+          }),
+        )
+        .catch(() => undefined);
+      const res = await stub.fetch(
+        new Request(`https://do/summary?userId=${encodeURIComponent(user.id)}`),
+      );
+      if (res.ok) s = (await res.json()) as DoSummary;
+    } catch {
+      s = null; // jamais une conversation indisponible ne casse la liste
+    }
+
+    const photo = await otherPhoto(c, r.other_id, blurred);
+    const lastActivityAt = s?.last?.createdAt ?? r.created_at;
+
+    const lastMessage: ConversationLastMessage | null = s?.last
+      ? {
+          seq: s.last.seq,
+          fromMe: s.last.senderId === user.id,
+          kind: s.last.kind === 'voice' ? 'voice' : s.last.kind === 'system' ? 'system' : 'text',
+          excerpt: s.last.excerpt,
+          createdAt: s.last.createdAt,
+        }
+      : null;
+
+    conversations.push({
+      conversationId: r.conv_id,
+      matchId: r.match_id,
+      conversationMode: convMode,
+      createdAt: r.created_at,
+      lastActivityAt,
+      unread: Math.max(0, s?.unread ?? 0),
+      other: {
+        userId: r.other_id,
+        displayName: r.display_name ?? 'Quelqu’un',
+        photoUrl: photo.url,
+        photoBlurred: photo.blurred,
+        verified: r.other_verified != null,
+        personalityType: r.personality_type,
+      },
+      lastMessage,
+    });
+  }
+
+  // Activité récente d'abord — la boîte de réception se lit de haut en bas.
+  conversations.sort((a, b) => b.lastActivityAt - a.lastActivityAt);
+
+  const body: ConversationListResponse = {
+    conversations,
+    note: 'Les conversations naissent d’un match — continue la découverte pour agrandir ta boîte de réception.',
+  };
+  return c.json(body);
+});
 
 // ---------------------------------------------------------------------------
 // WS — ticket sans cookie (client mobile, tests) + upgrade

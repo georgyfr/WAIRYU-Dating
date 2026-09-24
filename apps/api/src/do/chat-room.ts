@@ -228,6 +228,9 @@ export class ChatRoom extends DurableObject {
         case '/stats':
           return this.stats();
 
+        case '/summary':
+          return this.summary(url);
+
         case '/system':
           return await this.systemEvent(env, await request.json());
 
@@ -434,6 +437,45 @@ export class ChatRoom extends DurableObject {
       lastSeq: last,
       closed: this.getMeta('closed') === '1',
       online: this.members().map((u) => ({ userId: u, sockets: this.ctx.getWebSockets(u).length })),
+    });
+  }
+
+  /**
+   * GET /summary?userId= — aperçu boîte de réception (page Messages).
+   * UNE requête DO par conversation renvoie le dernier message (extrait
+   * texte sans URL signée) + le nombre de messages non lus de l'utilisateur.
+   */
+  private summary(url: URL): Response {
+    const userId = url.searchParams.get('userId') ?? '';
+    if (!userId) return Response.json({ error: { code: 'bad_request' } }, { status: 400 });
+
+    const count = (this.db().exec('SELECT COUNT(*) AS n FROM messages').toArray()[0] as { n: number }).n;
+    const lastRow = (this.db()
+      .exec('SELECT * FROM messages ORDER BY seq DESC LIMIT 1')
+      .toArray()[0] ?? null) as unknown as MsgRow | null;
+    const lastRead = this.lastReadOf(userId);
+    const unread = (
+      this.db()
+        .exec('SELECT COUNT(*) AS n FROM messages WHERE sender != ? AND seq > ?', userId, lastRead)
+        .toArray()[0] as { n: number }
+    ).n;
+
+    return Response.json({
+      ok: true,
+      count,
+      unread,
+      closed: this.getMeta('closed') === '1',
+      last: lastRow
+        ? {
+            seq: lastRow.seq,
+            senderId: lastRow.sender,
+            kind: lastRow.kind,
+            // Voice : le body est un publicId Cloudinary — JAMAIS exposé ici,
+            // le front affiche un libellé dédié.
+            excerpt: lastRow.kind === 'text' ? lastRow.body.slice(0, 160) : '',
+            createdAt: lastRow.created_at,
+          }
+        : null,
     });
   }
 

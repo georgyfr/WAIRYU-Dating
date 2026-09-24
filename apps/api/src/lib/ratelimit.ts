@@ -74,6 +74,8 @@ export const RATE_RULES = {
   pushUser: { scope: 'push:sub:user', windowSeconds: 3600, max: 30 },
   /** Tickets WebSocket : 60 / heure (reconnexions tolérées largement). */
   chatTicketUser: { scope: 'chat:tk:user', windowSeconds: 3600, max: 60 },
+  /** Boîte de réception (page Messages + badge d'onglet) — polling léger autorisé : 240 / h. */
+  chatListUser: { scope: 'chat:list:user', windowSeconds: 3600, max: 240 },
 
   // --- Étape 7 : sécurité & modération ---
   /** Démarrages de vérification selfie : 5 / jour (anti-abus de la file). */
