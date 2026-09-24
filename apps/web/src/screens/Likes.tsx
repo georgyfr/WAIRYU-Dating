@@ -10,9 +10,10 @@
  * « Discuter » (handshake) — les photos restent régies par le mode du
  * PROPRIÉTAIRE (§4.6).
  */
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
+import { toast } from '../lib/toast';
 import { countryMeta } from '../lib/geo';
 import { ARCHETYPES, type LikesMeDto, type LikesMeResponse, type ProfileResponse, type QuotaState, type SwipeResponse } from '@wairyu/shared';
 
@@ -27,6 +28,8 @@ export function Likes({ onOpenChat: _onOpenChat }: Props) {
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Filtres horizontaux (Task 31 — codes de la référence) : Tout / Likes / Super.
+  const [filter, setFilter] = useState<'all' | 'like' | 'super'>('all');
 
   // Cache partagé : la même requête sert le badge de l'onglet (App), la
   // page Découvrir (strip) et cette page — Task 28/30.
@@ -38,8 +41,8 @@ export function Likes({ onOpenChat: _onOpenChat }: Props) {
   const myPhoto = profile?.photos.find((x) => x.position === 0)?.urlThumb ?? profile?.photos[0]?.urlThumb ?? null;
 
   const showFlash = (msg: string) => {
-    setFlash(msg);
-    window.setTimeout(() => setFlash(null), 2600);
+    // Toast global (Task 31) — le flash-msg historique reste rendu si posé.
+    toast(msg, 'success');
   };
 
   const reveal = (userId: string) => {
@@ -80,6 +83,12 @@ export function Likes({ onOpenChat: _onOpenChat }: Props) {
   );
 
   const items = data?.items ?? [];
+  const superCount = items.filter((l) => l.action === 'super').length;
+  const likeCount = Math.max(0, (data?.count ?? 0) - superCount);
+  const shown = useMemo(
+    () => (filter === 'all' ? items : items.filter((l) => l.action === filter)),
+    [items, filter],
+  );
 
   return (
     <div className="app likes-page">
@@ -98,19 +107,50 @@ export function Likes({ onOpenChat: _onOpenChat }: Props) {
       {flash && <p className="flash-msg">{flash}</p>}
       {loading && <p className="status"><span className="dot" /> Chargement de tes admirateurs…</p>}
 
-      {!loading && items.length === 0 && !error && (
+      {/* Onglets de filtre (Task 31) : Tout / Likes / Super Likes —
+          filtrage local instantané, comme la référence. */}
+      {data && data.count > 0 && (
+        <div className="likes-tabs" role="tablist" aria-label="Filtrer les likes reçus">
+          <button
+            type="button" role="tab" aria-selected={filter === 'all'}
+            className={`likes-tab ${filter === 'all' ? 'on' : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            Tout<span className="n">{data.count}</span>
+          </button>
+          <button
+            type="button" role="tab" aria-selected={filter === 'like'}
+            className={`likes-tab ${filter === 'like' ? 'on' : ''}`}
+            onClick={() => setFilter('like')}
+          >
+            ♥ Likes<span className="n">{likeCount}</span>
+          </button>
+          <button
+            type="button" role="tab" aria-selected={filter === 'super'}
+            className={`likes-tab ${filter === 'super' ? 'on' : ''}`}
+            onClick={() => setFilter('super')}
+          >
+            ✶ Super Likes<span className="n">{superCount}</span>
+          </button>
+        </div>
+      )}
+
+      {!loading && shown.length === 0 && !error && (
         <div className="deck-empty">
-          <span className="deck-empty-emoji" aria-hidden="true">🌷</span>
+          <span className="deck-empty-emoji" aria-hidden="true">{filter === 'super' ? '⭐' : '🌷'}</span>
           <p className="q-done-note">
-            Pas encore de like en attente. Continue à découvrir et sois toi-même —
-            chaque profil que tu visites peut retomber amoureux de ton profil.
+            {filter === 'all'
+              ? 'Pas encore de like en attente. Continue à découvrir et sois toi-même — chaque profil que tu visites peut retomber amoureux de ton profil.'
+              : filter === 'super'
+                ? 'Aucun Super Like en attente — un ✶, c\u2019est la personne qui a voulu se démarquer pour toi.'
+                : 'Aucun like simple en attente — regarde l\u2019onglet ✶ pour les Super Likes.'}
           </p>
           <a className="btn primary" href="#/discover">🔥 Aller découvrir</a>
         </div>
       )}
 
       <div className="likes-grid">
-        {items.map((l) => {
+        {shown.map((l) => {
           const isRevealed = revealed.has(l.userId);
           const geo = countryMeta(l.country);
           return (

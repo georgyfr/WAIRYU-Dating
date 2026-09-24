@@ -9,10 +9,10 @@
  * La page ne duplique AUCUNE donnée : tout vient de GET /api/profile
  * (URLs signées côté Worker — le propriétaire voit ses photos nettes).
  */
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { useSwr } from '../lib/swr';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
-import { LABELS, PROMPT_LIBRARY, type ProfileResponse } from '@wairyu/shared';
+import { LABELS, PROMPT_LIBRARY, type LikesMeResponse, type MatchListResponse, type ProfileResponse } from '@wairyu/shared';
 
 interface Props {
   onEdit: () => void;
@@ -42,6 +42,11 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
   const [photoIdx, setPhotoIdx] = useState(0);
   const [showPers, setShowPers] = useState(false);
 
+  // Stats réelles (Task 31 — référence §4.7) : mêmes caches SWR que les
+  // pages Likes / Matchs — aucune requête supplémentaire (dédup du cache).
+  const { data: likesData } = useSwr<LikesMeResponse>('likes-me', true, { ttlMs: 30_000 });
+  const { data: matchesData } = useSwr<MatchListResponse>('matches', true, { ttlMs: 60_000 });
+
   if (error) {
     return (
       <div className="app page-profile">
@@ -66,6 +71,18 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
   const promptLabel = (key: string) => PROMPT_LIBRARY.find((p) => p.key === key)?.label ?? key;
   const prefs = prof.preferences;
 
+  // Complétion du profil (%, calcul local honnête sur les champs réels) :
+  // photo 30 · bio 20 · prompts 20 · date de naissance 10 · lieu 10 · intention 10.
+  const completion =
+    (photos.length > 0 ? 30 : 0) +
+    (prof.bio ? 20 : 0) +
+    (prof.prompts.length > 0 ? 20 : 0) +
+    (prof.birthDate ? 10 : 0) +
+    (prof.city || prof.country ? 10 : 0) +
+    (prof.intent ? 10 : 0);
+  const likesReceived = likesData?.count ?? 0;
+  const matchCount = matchesData?.matches.length ?? 0;
+
   return (
     <div className="app page-profile">
       <header className="wizard-head plain"><h1>Mon profil</h1></header>
@@ -76,6 +93,41 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
           dans la découverte.
         </p>
       )}
+
+      {/* Complétion + stats (Task 31) — données réelles, jamais gonflées */}
+      <div className="prof-complete">
+        <div
+          className="prof-ring"
+          style={{ '--p': completion } as CSSProperties}
+          role="img"
+          aria-label={`Profil complété à ${completion} %`}
+        >
+          <span>{completion}%</span>
+        </div>
+        <div className="prof-complete-txt">
+          <strong>Profil complété à {completion} %</strong>
+          <span>
+            {completion >= 100
+              ? 'Parfait — tu apparaisses dans les meilleures conditions.'
+              : 'Ajoute photos, bio et prompts pour briller dans la Découverte.'}
+          </span>
+        </div>
+      </div>
+
+      <div className="prof-stats">
+        <div className="prof-stat">
+          <strong>{likesReceived}</strong>
+          <span>♥ Likes reçus</span>
+        </div>
+        <div className="prof-stat">
+          <strong>{matchCount}</strong>
+          <span>⚡ Matchs</span>
+        </div>
+        <div className="prof-stat">
+          <strong>{photos.length}</strong>
+          <span>📸 Photos</span>
+        </div>
+      </div>
 
       {/* La carte telle que l'autre la voit */}
       <article className="profile-card">

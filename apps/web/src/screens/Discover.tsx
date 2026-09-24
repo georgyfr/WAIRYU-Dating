@@ -19,6 +19,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
+import { toast } from '../lib/toast';
 import { countryMeta, formatKm } from '../lib/geo';
 import {
   ARCHETYPES,
@@ -249,9 +250,11 @@ export function Discover({ onMatches }: Props) {
 
   const isInvisible = mode === 'invisible';
 
+  // Feedback utilisateur : toast en haut de l'écran (Task 31 — toujours
+  // visible, même en bas de la pile) ; l'ancien flash-msg reste rendu si
+  // `flash` est posé (compatibilité — rien n'est supprimé).
   const showFlash = useCallback((msg: string) => {
-    setFlash(msg);
-    window.setTimeout(() => setFlash(null), 2600);
+    toast(msg, 'success');
   }, []);
 
   /** Retire une personne de la liste « Tu plais ! » (traitée ou likée). */
@@ -859,6 +862,20 @@ export function Discover({ onMatches }: Props) {
           <h1>Découvrir</h1>
         </div>
         <div className="head-actions">
+          <button
+            type="button"
+            className="head-bell head-filter"
+            aria-label="Filtres de découverte"
+            title="Filtres — âge, distance, intentions"
+            onClick={() => setShowFilters(true)}
+          >
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+              <circle cx="9" cy="7" r="2.4" fill="currentColor" />
+              <circle cx="15" cy="12" r="2.4" fill="currentColor" />
+              <circle cx="7" cy="17" r="2.4" fill="currentColor" />
+            </svg>
+          </button>
           <button
             type="button"
             className="head-bell"

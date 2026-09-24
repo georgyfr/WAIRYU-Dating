@@ -24,6 +24,7 @@ import { Likes } from './screens/Likes';
 import { Moments } from './screens/Moments';
 import { Chat } from './screens/Chat';
 import { TabBar, type TabId } from './components/TabBar';
+import { ToastHost } from './lib/toast';
 import type {
   AuthConfigResponse,
   ConversationListResponse,
@@ -203,6 +204,23 @@ export default function App() {
     if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
 
+  // Thème « dark premium » (Task 31 — référence fondateur) : les pages de
+  // l'expérience dating (onglets + chat) basculent le body en thème sombre ;
+  // les écrans utilitaires (accueil, inscription, questionnaire, paramètres)
+  // conservent le thème clair historique.
+  useEffect(() => {
+    const dark =
+      route.name === 'discover' ||
+      route.name === 'likes' ||
+      route.name === 'matches' ||
+      route.name === 'messages' ||
+      route.name === 'moments' ||
+      route.name === 'myprofile' ||
+      route.name === 'chat';
+    document.body.classList.toggle('theme-dark', dark);
+    return () => document.body.classList.remove('theme-dark');
+  }, [route.name]);
+
   // Pages principales + chat : session requise également.
   useEffect(() => {
     if (
@@ -334,6 +352,7 @@ export default function App() {
       {activeTab && me && (
         <TabBar active={activeTab} unread={unread} likes={likesCount} onGo={go} />
       )}
+      <ToastHost />
     </main>
   );
 }

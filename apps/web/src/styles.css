@@ -4919,3 +4919,1065 @@ kbd {
   color: #fff;
   text-shadow: 0 1px 2px rgba(30, 20, 44, 0.25);
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   THÈME « DARK PREMIUM » (Task 31 — référence interface fondateur)
+   ════════════════════════════════════════════════════════════════════
+   Les pages de l'expérience dating (Découvrir, Likes, Matchs, Messages,
+   Moments, Profil, Chat) basculent body en .theme-dark : fond radial
+   profond, surfaces #16151F/#1F1D2E, dégradé violet→rose (#A855F7→#EC4899),
+   verre dépoli sur la barre d'onglets et les tampons, badges rouges.
+   Les écrans utilitaires (accueil, inscription, questionnaire, paramètres)
+   restent sur le thème clair historique — aucune régression ailleurs.
+   Design tokens de la référence :
+   bg #0A0A0F · surfaces #16151F/#1F1D2E/#2A2740 · bordures rgba(255,255,255,.08)
+   texte #FFF/#9CA3AF/#6B7280 · rose #EC4899 · violet #A855F7 · or #FBBF24
+   vert #10B981 · rouge #EF4444 · bleu #3B82F6. */
+
+body.theme-dark {
+  --c-bg: #0a0a0f;
+  --c-text: #ffffff;
+  --c-muted: #9ca3af;
+  --w-bg: #0a0a0f;
+  --w-surface: #16151f;
+  --w-surface-2: #1f1d2e;
+  --w-surface-3: #2a2740;
+  --w-border: rgba(255, 255, 255, 0.08);
+  --w-text-dim: #6b7280;
+  --w-pink: #ec4899;
+  --w-violet: #a855f7;
+  --w-gold: #fbbf24;
+  --w-green: #10b981;
+  --w-red: #ef4444;
+  --w-blue: #3b82f6;
+  --w-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  background:
+    radial-gradient(1200px 800px at 50% -10%, #1a0f2e 0%, rgba(5, 5, 8, 0) 60%),
+    radial-gradient(900px 600px at 108% 110%, rgba(236, 72, 153, 0.07) 0%, rgba(5, 5, 8, 0) 55%),
+    #050508;
+  background-attachment: fixed;
+  color: #ffffff;
+}
+
+/* Les écrans passés en dark n'ont plus besoin du dégradé clair historique */
+body.theme-dark ::selection {
+  background: rgba(236, 72, 153, 0.45);
+  color: #fff;
+}
+
+/* Scrollbars invisibles ( feeling application native — référence §2) */
+body.theme-dark * {
+  scrollbar-width: none;
+}
+body.theme-dark *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Correctif Task 31 : avec 3 boutons d'en-tête (filtres + cloche + matchs),
+   le titre reste lisible sans troncature sur 360-430 px. */
+.wizard-head.plain .head-brand h1 {
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.wizard-head.plain .head-actions {
+  gap: 7px;
+}
+
+@media (max-width: 430px) {
+  .wizard-head.plain .head-brand h1 {
+    font-size: 16px;
+  }
+
+  .wizard-head.plain .head-actions .matches-link {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  .wizard-head.plain .head-brand {
+    gap: 8px;
+  }
+
+  .wizard-head.plain .head-logo {
+    width: 30px;
+    height: 30px;
+    font-size: 17px;
+  }
+}
+
+/* ---- Surfaces génériques ---- */
+body.theme-dark .app,
+body.theme-dark .app-shell {
+  background: transparent;
+}
+
+body.theme-dark .card,
+body.theme-dark .q-card,
+body.theme-dark .feed-card,
+body.theme-dark .top-card,
+body.theme-dark .inbox-card,
+body.theme-dark .empty-state,
+body.theme-dark .deck-empty,
+body.theme-dark .profile-card,
+body.theme-dark .prompt-card,
+body.theme-dark .profile-prefs,
+body.theme-dark .likes-tile,
+body.theme-dark .moment-card,
+body.theme-dark .match-row,
+body.theme-dark .deck-card,
+body.theme-dark .filter-panel {
+  background: var(--w-surface);
+  border-color: var(--w-border);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .prompt-card {
+  background: var(--w-surface-2);
+}
+
+body.theme-dark .card h2,
+body.theme-dark .card h3,
+body.theme-dark .profile-id h2,
+body.theme-dark .prompt-q,
+body.theme-dark .prompt-a,
+body.theme-dark .conv-name,
+body.theme-dark .match-head strong,
+body.theme-dark .moment-card h3,
+body.theme-dark .likes-tile-body strong,
+body.theme-dark .deck-card h3,
+body.theme-dark .q-done-note,
+body.theme-dark .hint,
+body.theme-dark .page-note,
+body.theme-dark .head-count {
+  color: inherit;
+}
+
+body.theme-dark .hint,
+body.theme-dark .page-note,
+body.theme-dark .status,
+body.theme-dark .q-done-note,
+body.theme-dark .bubble-meta,
+body.theme-dark .conv-preview {
+  color: var(--c-muted);
+}
+
+body.theme-dark .wizard-head.plain h1,
+body.theme-dark .match-head strong,
+body.theme-dark .conv-name,
+body.theme-dark .likes-tile-body strong,
+body.theme-dark .deck-card h3,
+body.theme-dark .moment-card h3,
+body.theme-dark .prompt-a,
+body.theme-dark .card,
+body.theme-dark .profile-id h2 {
+  color: #ffffff;
+}
+
+/* Boutons : primaire = dégradé violet→rose, fantôme = verre sombre */
+body.theme-dark .btn.primary {
+  background: var(--w-gradient);
+  border: 0;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(168, 85, 247, 0.35);
+}
+
+body.theme-dark .btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(236, 72, 153, 0.4);
+}
+
+body.theme-dark .btn.ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+body.theme-dark .btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+body.theme-dark .btn.ghost:disabled {
+  opacity: 0.4;
+}
+
+/* Chips & pastilles */
+body.theme-dark .chip,
+body.theme-dark .quota-chip,
+body.theme-dark .chip-pers,
+body.theme-dark .chip-conv,
+body.theme-dark .chip-verified,
+body.theme-dark .chip-status {
+  background: var(--w-surface-2);
+  border: 1px solid var(--w-border);
+  color: #e5e7eb;
+}
+
+body.theme-dark .chip-verified {
+  color: var(--w-blue);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+body.theme-dark .quota-chip {
+  color: var(--c-muted);
+}
+
+body.theme-dark .chip.filter-chip.on,
+body.theme-dark .chip.chip-hero,
+body.theme-dark .intl-toggle.on {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(236, 72, 153, 0.5);
+  color: #fff;
+}
+
+/* Champs & sliders (modale Filtres) */
+body.theme-dark input[type='text'],
+body.theme-dark input[type='email'],
+body.theme-dark input[type='password'],
+body.theme-dark input[type='range'],
+body.theme-dark textarea,
+body.theme-dark select {
+  background: var(--w-surface-2);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+body.theme-dark input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--w-violet), var(--w-pink));
+  border: 0;
+}
+
+body.theme-dark input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--w-pink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+body.theme-dark input[type='range']::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--w-pink);
+  cursor: pointer;
+}
+
+body.theme-dark input[type='range']:disabled {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Barre d'onglets : verre dépoli + trait dégradé sur l'actif ---- */
+body.theme-dark .tabbar {
+  background: rgba(22, 21, 31, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .tabbar-item {
+  color: var(--w-text-dim);
+  position: relative;
+}
+
+body.theme-dark .tabbar-item.active {
+  color: var(--w-pink);
+}
+
+/* Trait dégradé EN HAUT de l'onglet actif (référence §4.8) */
+body.theme-dark .tabbar-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--w-gradient);
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.6);
+}
+
+body.theme-dark .tabbar-label {
+  font-size: 10px;
+}
+
+body.theme-dark .tabbar-badge {
+  background: var(--w-red);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5);
+}
+
+body.theme-dark .tabbar-badge.likes {
+  background: var(--w-gradient);
+}
+
+/* ---- En-tête : marque en dégradé (référence §4.1) ---- */
+body.theme-dark .head-logo {
+  background: var(--w-gradient);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.45);
+}
+
+body.theme-dark .wizard-head.plain .head-brand h1 {
+  color: #fff;
+}
+
+body.theme-dark .head-bell {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-dark .head-bell:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55);
+}
+
+body.theme-dark .head-bell .tabbar-badge {
+  background: var(--w-red);
+  animation: bell-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes bell-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+body.theme-dark .wizard-head.plain .head-actions .matches-link {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* Onglets de mode — verre sombre, actif = dégradé */
+body.theme-dark .mode-tabs {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--w-border);
+}
+
+body.theme-dark .mode-tab {
+  color: var(--w-text-dim);
+  background: transparent;
+}
+
+body.theme-dark .mode-tab:hover {
+  color: #e5e7eb;
+}
+
+body.theme-dark .mode-tab.active {
+  background: var(--w-gradient);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(168, 85, 247, 0.35);
+}
+
+body.theme-dark .mode-tab.active.mode-invisible {
+  background: linear-gradient(135deg, #312e81 0%, #6d28d9 100%);
+}
+
+body.theme-dark .mode-tab.active.mode-interracial {
+  background: linear-gradient(135deg, #d97706 0%, #ec4899 100%);
+}
+
+/* ---- Cartes de la pile : pleine photo + corps sombre ---- */
+body.theme-dark .deck-card {
+  background: var(--w-surface);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+body.theme-dark .deck-card.behind {
+  background: var(--w-surface-2);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .deck-card .feed-body {
+  background: var(--w-surface);
+  color: #fff;
+  border-top: 1px solid var(--w-border);
+}
+
+body.theme-dark .feed-photo.empty {
+  background: var(--w-surface-2);
+  color: var(--w-text-dim);
+}
+
+body.theme-dark .why-box {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+  color: var(--c-muted);
+}
+
+body.theme-dark .why-box strong,
+body.theme-dark .why-box li {
+  color: #e5e7eb;
+}
+
+/* Tampons : verre dépoli coloré (référence §9 — stamps en verre) */
+body.theme-dark .stamp {
+  background: rgba(10, 10, 15, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-dark .stamp-like {
+  color: var(--w-green);
+  border-color: var(--w-green);
+}
+
+body.theme-dark .stamp-pass {
+  color: var(--w-red);
+  border-color: var(--w-red);
+}
+
+body.theme-dark .stamp-super {
+  color: var(--w-blue);
+  border-color: var(--w-blue);
+}
+
+/* ---- Barre d'actions : couleurs & tailles exactes de la référence §4.3 ----
+   ↺ Rewind (or, petit) · ✕ Passer (rouge) · ✶ Super (bleu, grand)
+   ♥ Liker (vert, le plus grand) · ⚡ Boost (rose, petit) */
+body.theme-dark .deck-btn {
+  border: 0;
+  background: var(--w-surface-2);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .deck-btn.rewind {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  background: var(--w-gold);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.35);
+}
+
+body.theme-dark .deck-btn.pass {
+  background: var(--w-red);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+}
+
+body.theme-dark .deck-btn.super {
+  width: 58px;
+  height: 58px;
+  font-size: 23px;
+  background: var(--w-blue);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+}
+
+body.theme-dark .deck-btn.like {
+  width: 64px;
+  height: 64px;
+  font-size: 26px;
+  background: var(--w-green);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.45);
+}
+
+body.theme-dark .deck-btn.boost {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  background: var(--w-pink);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+}
+
+body.theme-dark .deck-btn.boost.active {
+  background: var(--w-gradient);
+  animation: boost-pulse 1.6s ease-in-out infinite;
+}
+
+body.theme-dark .deck-btn:disabled {
+  background: var(--w-surface-2);
+  color: var(--w-text-dim);
+  box-shadow: none;
+}
+
+body.theme-dark .deck-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+/* Barres Stories : plus visibles sur fond sombre */
+body.theme-dark .car-bar {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+body.theme-dark .car-bar.on {
+  background: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+body.theme-dark .car-count,
+body.theme-dark .car-more,
+body.theme-dark .car-badge {
+  background: rgba(10, 10, 15, 0.6);
+  backdrop-filter: blur(8px);
+  color: #fff;
+}
+
+/* Overlay photo : lisibilité renforcée sur le dégradé sombre */
+body.theme-dark .car-overlay {
+  background: linear-gradient(180deg, rgba(5, 5, 8, 0) 0%, rgba(5, 5, 8, 0.55) 55%, rgba(5, 5, 8, 0.92) 100%);
+}
+
+body.theme-dark .car-overlay h3 {
+  color: #fff;
+}
+
+/* ---- Modales : verre sombre ---- */
+body.theme-dark .modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.theme-dark .modal-card {
+  background: var(--w-surface);
+  border: 1px solid var(--w-border);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+body.theme-dark .modal-card h2 {
+  color: #fff;
+}
+
+body.theme-dark .modal-close {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+body.theme-dark .filter-slider span,
+body.theme-dark .filter-label {
+  color: var(--c-muted);
+}
+
+body.theme-dark .filter-slider strong {
+  color: #fff;
+}
+
+body.theme-dark .filter-slider em {
+  color: var(--w-gold);
+}
+
+/* Rangée « Profils vérifiés uniquement » (modale Filtres) */
+body.theme-dark .filter-switch-row {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+}
+
+body.theme-dark .filter-switch-row .filter-label {
+  color: #e5e7eb;
+}
+
+/* Switch (vérifiés uniquement) */
+body.theme-dark .switch {
+  background: var(--w-surface-3);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .switch.on {
+  background: var(--w-gradient);
+  border-color: transparent;
+}
+
+/* Rangée de notifications */
+body.theme-dark .notif-row {
+  background: var(--w-surface-2);
+  border: 1px solid var(--w-border);
+  color: #e5e7eb;
+}
+
+body.theme-dark .notif-row:hover {
+  background: var(--w-surface-3);
+}
+
+body.theme-dark .notif-ico.like {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--w-green);
+}
+
+body.theme-dark .notif-ico.super {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--w-blue);
+}
+
+body.theme-dark .notif-ico.match {
+  background: rgba(236, 72, 153, 0.15);
+  color: var(--w-pink);
+}
+
+body.theme-dark .notif-ico.req {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--w-violet);
+}
+
+/* Modale Boost */
+body.theme-dark .boost-modal {
+  background:
+    radial-gradient(400px 240px at 50% -20%, rgba(236, 72, 153, 0.25), transparent 70%),
+    var(--w-surface);
+}
+
+body.theme-dark .boost-status {
+  color: var(--c-muted);
+}
+
+body.theme-dark .boost-status strong {
+  color: #fff;
+}
+
+/* ---- Page Likes : grille + chips de filtre ---- */
+body.theme-dark .likes-page .wizard-head.plain h1,
+body.theme-dark .moments-page .wizard-head.plain h1 {
+  color: #fff;
+}
+
+body.theme-dark .likes-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px;
+  margin-bottom: 14px;
+}
+
+body.theme-dark .likes-tab {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--w-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--w-text-dim);
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+body.theme-dark .likes-tab:hover {
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+body.theme-dark .likes-tab.on {
+  background: var(--w-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+}
+
+body.theme-dark .likes-tab .n {
+  opacity: 0.75;
+  font-weight: 800;
+  margin-left: 3px;
+}
+
+body.theme-dark .likes-tile {
+  background: var(--w-surface);
+}
+
+body.theme-dark .likes-tile-empty {
+  background: var(--w-surface-2);
+}
+
+body.theme-dark .tile-lock {
+  background: rgba(10, 10, 15, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+body.theme-dark .tile-lock strong {
+  color: #fff;
+}
+
+body.theme-dark .tile-lock em {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+body.theme-dark .tile-super {
+  background: var(--w-blue);
+  color: #fff;
+}
+
+/* ---- Moments ---- */
+body.theme-dark .moments-hero {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(236, 72, 153, 0.3) 100%);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .moments-hero p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+body.theme-dark .moment-card {
+  color: #fff;
+}
+
+body.theme-dark .moment-card .moment-desc {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+body.theme-dark .moment-card .moment-when {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ---- Messages & Matchs : listes sombres ---- */
+body.theme-dark .conv,
+body.theme-dark .match-item {
+  background: var(--w-surface);
+  border-color: var(--w-border);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-dark .conv:hover,
+body.theme-dark .match-item:hover {
+  background: var(--w-surface-2);
+}
+
+body.theme-dark .conv-you {
+  color: var(--c-muted);
+}
+
+body.theme-dark .conv-badge,
+body.theme-dark .match-item .conv-badge {
+  background: var(--w-red);
+}
+
+body.theme-dark .mode-note,
+body.theme-dark .flash-msg {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(236, 72, 153, 0.3);
+  color: #e9d5ff;
+}
+
+body.theme-dark .error {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fecaca;
+}
+
+body.theme-dark .match-sub {
+  color: var(--c-muted);
+}
+
+body.theme-dark .why-toggle {
+  color: var(--w-violet);
+}
+
+/* ---- Mon profil : anneau de complétion + stats (référence §4.7) ---- */
+body.theme-dark .prof-complete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  background: var(--w-surface);
+  border: 1px solid var(--w-border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-dark .prof-ring {
+  --p: 0;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--w-pink) calc(var(--p) * 1%),
+    rgba(255, 255, 255, 0.1) 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.theme-dark .prof-ring::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--w-surface);
+}
+
+body.theme-dark .prof-ring span {
+  position: relative;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+body.theme-dark .prof-complete-txt {
+  min-width: 0;
+}
+
+body.theme-dark .prof-complete-txt strong {
+  display: block;
+  color: #fff;
+  font-size: 15px;
+}
+
+body.theme-dark .prof-complete-txt span {
+  color: var(--c-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body.theme-dark .prof-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+body.theme-dark .prof-stat {
+  background: var(--w-surface);
+  border: 1px solid var(--w-border);
+  border-radius: var(--radius);
+  padding: 14px 8px;
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-dark .prof-stat strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  background: var(--w-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+body.theme-dark .prof-stat span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--w-text-dim);
+  font-weight: 700;
+}
+
+/* ---- Chat : fenêtre sombre, bulles dégradées ---- */
+body.theme-dark .chat {
+  background: rgba(22, 21, 31, 0.92);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--w-border);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+body.theme-dark .chat-head {
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--w-border);
+  color: #fff;
+}
+
+body.theme-dark .chat-head-body strong {
+  color: #fff;
+}
+
+body.theme-dark .chat-scroll {
+  background: transparent;
+}
+
+body.theme-dark .bubble.out .bubble-text {
+  background: var(--w-gradient);
+  color: #fff;
+}
+
+body.theme-dark .bubble.in .bubble-text {
+  background: var(--w-surface-2);
+  border: 1px solid var(--w-border);
+  color: #f3f4f6;
+}
+
+body.theme-dark .chat-system {
+  color: var(--w-text-dim);
+}
+
+body.theme-dark .composer {
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid var(--w-border);
+}
+
+body.theme-dark .composer input {
+  background: var(--w-surface-2);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+body.theme-dark .composer .send {
+  background: var(--w-gradient);
+  border: 0;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+}
+
+body.theme-dark .chat-avatar {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .emoji-row {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+}
+
+/* Écran « C'est un match ! » */
+body.theme-dark .match-overlay {
+  background: rgba(5, 5, 8, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.theme-dark .match-card {
+  background:
+    radial-gradient(420px 260px at 50% -10%, rgba(168, 85, 247, 0.35), transparent 70%),
+    var(--w-surface);
+  border: 1px solid rgba(236, 72, 153, 0.35);
+}
+
+body.theme-dark .match-card h2 {
+  background: var(--w-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.theme-dark .match-card p {
+  color: var(--c-muted);
+}
+
+/* ---- Toasts (référence §6) : haut centré, icônes colorées ---- */
+.toast-container {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+  width: min(92vw, 420px);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  background: rgba(22, 21, 31, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--w-border, rgba(255, 255, 255, 0.08));
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+  animation: toast-in 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+  max-width: 100%;
+}
+
+.toast-ico {
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.toast.success {
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.toast.success .toast-ico {
+  color: var(--w-green, #10b981);
+}
+
+.toast.error {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.toast.error .toast-ico {
+  color: var(--w-red, #ef4444);
+}
+
+.toast.info {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.toast.info .toast-ico {
+  color: var(--w-blue, #3b82f6);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Indice clavier PC : verre sombre */
+body.theme-dark kbd {
+  background: var(--w-surface-2);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #e5e7eb;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ---- Sidebar PC (≥1024) : même verre dépoli ---- */
+@media (min-width: 1024px) {
+  body.theme-dark .tabbar {
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: 236px;
+    flex-direction: column;
+    border-top: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+  }
+
+  body.theme-dark .tabbar-item.active::before {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 26px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  body.theme-dark .tabbar-item.active {
+    background: rgba(168, 85, 247, 0.14);
+  }
+
+  body.theme-dark .tabbar-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  body.theme-dark .tabbar-brand .tabbar-word {
+    background: var(--w-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

@@ -8,6 +8,7 @@
  * réglage local en attendant l'activation serveur.
  */
 import { useEffect, useState } from 'react';
+import { toast } from '../lib/toast';
 
 const LS_KEY = 'wairyu.moments.notify';
 
@@ -84,8 +85,9 @@ export function Moments() {
         /* idem */
       }
       if (next[id]) {
-        setFlash('✓ Rappel activé — tu seras prévenu·e dès l’ouverture des inscriptions.');
-        window.setTimeout(() => setFlash(null), 2800);
+        // Toast global (Task 31) — le flash historique reste déclarable/rendu
+        // mais n'est plus alimenté (évite le double affichage).
+        toast('✓ Rappel activé — tu seras prévenu·e dès l’ouverture des inscriptions.', 'success');
       }
       return next;
     });
