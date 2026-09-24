@@ -97,7 +97,7 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
       {/* Complétion + stats (Task 31) — données réelles, jamais gonflées */}
       <div className="prof-complete">
         <div
-          className="prof-ring"
+          className={`prof-ring ${prefs?.modeDefault === 'invisible' ? 'inv' : ''}`}
           style={{ '--p': completion } as CSSProperties}
           role="img"
           aria-label={`Profil complété à ${completion} %`}
@@ -106,6 +106,13 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
         </div>
         <div className="prof-complete-txt">
           <strong>Profil complété à {completion} %</strong>
+          {/* Task 32 (réf. Invisible §4.6) : badge « Mode Invisible actif »
+              quand le mode par défaut est Invisible — anneau violet assorti. */}
+          {prefs?.modeDefault === 'invisible' && (
+            <span className="chip-inv-active" title="Tes photos sont servies floutées aux autres membres — toi, tu vois tout.">
+              🕯️ Mode Invisible actif
+            </span>
+          )}
           <span>
             {completion >= 100
               ? 'Parfait — tu apparaisses dans les meilleures conditions.'

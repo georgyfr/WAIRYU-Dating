@@ -91,6 +91,8 @@ const BOOST_LS_KEY = 'wairyu.boost.until';
 const BOOST_MS = 30 * 60 * 1000;
 /** Filtre local « vérifiés uniquement » — appliqué à la pile chargée. */
 const VERIFIED_LS_KEY = 'wairyu.filter.verified';
+/** Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL (pile chargée). */
+const MIN_SCORE_LS_KEY = 'wairyu.filter.minscore';
 
 /* ─────────────────────────── Carrousel de photos ─────────────────────────── */
 
@@ -192,6 +194,21 @@ function RitualRow() {
   );
 }
 
+/** Task 32 (réf. Invisible §4.2) : un extrait partagé → chip « valeur » court.
+ *  Les highlights serveur ont la forme « « question » — comme toi : réponse » ;
+ *  on affiche la partie partagée, tronquée proprement. Rien n'est inventé. */
+function highlightChip(h: string): string {
+  const tail = h.includes('comme toi :') ? (h.split('comme toi :')[1] ?? '') : h;
+  const t = tail.trim();
+  return t.length > 34 ? `${t.slice(0, 33).trimEnd()}…` : t;
+}
+
+/** Task 32 (réf. Invisible §4.3) : « jour N » du rituel 7 jours depuis un
+ *  match (epoch secondes) — minimum 1, aucune donnée inventée au-delà. */
+function ritualDay(createdAt: number): number {
+  return Math.max(1, Math.floor((Date.now() - createdAt * 1000) / 86_400_000) + 1);
+}
+
 /** Les 3 étapes du Mode Invisible (encart pédagogique). */
 function InvisibleSteps() {
   return (
@@ -245,10 +262,21 @@ export function Discover({ onMatches }: Props) {
   const [now, setNow] = useState(() => Date.now());
   const [detail, setDetail] = useState<FeedProfile | null>(null);
   const [verifiedOnly, setVerifiedOnly] = useState<boolean>(() => localStorage.getItem(VERIFIED_LS_KEY) === '1');
+  // Task 32 (réf. Invisible §5.6) : filtre local « score minimum » — 0 = désactivé.
+  const [minScore, setMinScore] = useState<number>(() => Number(localStorage.getItem(MIN_SCORE_LS_KEY)) || 0);
   // Matchs récents (cloche) — le cache est PARTAGÉ avec la page Matchs.
   const { data: matchesData, refresh: refreshMatches } = useSwr<MatchListResponse>('matches', true, { ttlMs: 60_000 });
 
   const isInvisible = mode === 'invisible';
+
+  // Task 32 (réf. Invisible §3) : identité VIOLETTE du Mode Invisible —
+  // `body.mode-invisible` retinte fond radial + --w-gradient (#8B5CF6→#EC4899)
+  // pendant que le mode est actif ; nettoyage au démontage / bascule.
+  // Couche 100 % additive : App.tsx (theme-dark par route) reste inchangé.
+  useEffect(() => {
+    document.body.classList.toggle('mode-invisible', isInvisible);
+    return () => document.body.classList.remove('mode-invisible');
+  }, [isInvisible]);
 
   // Feedback utilisateur : toast en haut de l'écran (Task 31 — toujours
   // visible, même en bas de la pile) ; l'ancien flash-msg reste rendu si
@@ -335,10 +363,13 @@ export function Discover({ onMatches }: Props) {
   }, [idx, items.length]);
 
   /** Pile affichée — le filtre « vérifiés uniquement » est local (Task 30). */
-  const deck = useMemo(
-    () => (verifiedOnly ? items.filter((p) => p.verified) : items),
-    [items, verifiedOnly],
-  );
+  const deck = useMemo(() => {
+    let d = verifiedOnly ? items.filter((p) => p.verified) : items;
+    // Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL instantané.
+    // Un profil sans score (null) reste visible : on ne punit pas l'absence.
+    if (minScore > 0) d = d.filter((p) => p.score === null || p.score >= minScore);
+    return d;
+  }, [items, verifiedOnly, minScore]);
 
   /** Retire une personne du deck (actionnée ailleurs — Top du jour, inbox). */
   const removeFromDeck = useCallback((userId: string) => {
@@ -710,6 +741,25 @@ export function Discover({ onMatches }: Props) {
   const notifCount =
     (likes?.count ?? 0) + newMatches.length + (isInvisible ? inbox?.received.length ?? 0 : 0);
 
+  /* ── Task 32 — Révélations & Coach (réf. Invisible §4.3/§4.4) ──
+     Conversations Invisible depuis le cache matchs (déjà chargé pour la
+     cloche) : photoBlurred=false ⟺ photos révélées (doc MatchDto). */
+  const invConversations = useMemo(
+    () => (matchesData?.matches ?? []).filter((m) => m.conversationMode === 'invisible'),
+    [matchesData],
+  );
+  const invRevealed = invConversations.filter((m) => !m.other.photoBlurred).length;
+  const invPendingRequests = inbox?.sent.filter((s) => s.status === 'pending').length ?? 0;
+  /** Icebreaker du Coach — RÉEL : premier sujet de conversation du feed. */
+  const coachIcebreaker = useMemo(() => {
+    const withStarters = items.find((p) => p.matchReasons?.conversationStarters.length);
+    if (withStarters) return withStarters.matchReasons!.conversationStarters[0]!;
+    const withHl = items.find((p) => p.highlights.length > 0);
+    if (withHl) return withHl.highlights[0]!;
+    return 'Repère un détail de son profil et pose une question précise — les questions précises obtiennent deux fois plus de réponses.';
+  }, [items]);
+  const coachSay = useCallback((msg: string) => toast(msg, 'info'), []);
+
   /** Chips géo intercontinentales (mode Interracial). */
   const renderGeoChips = (p: FeedProfile) => {
     if (mode !== 'interracial') return null;
@@ -999,6 +1049,35 @@ export function Discover({ onMatches }: Props) {
                   />
                 </label>
               </div>
+
+              {/* Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL
+                  instantané (comme « vérifiés uniquement »), Invisible only. */}
+              {isInvisible && (
+                <div className="filter-chips inv-filter-score">
+                  <p className="filter-label">Score minimum</p>
+                  <label className="filter-slider">
+                    <span>
+                      <strong>{minScore === 0 ? 'Désactivé' : `${minScore}/100`}</strong>
+                      {minScore === 0 ? ' — tous les profils' : ' — au-dessus du seuil seulement'}
+                    </span>
+                    <input
+                      type="range" min={0} max={100} step={5} value={minScore}
+                      onChange={(e) => {
+                        const v = Number(e.target.value) || 0;
+                        setMinScore(v);
+                        try {
+                          localStorage.setItem(MIN_SCORE_LS_KEY, String(v));
+                        } catch {
+                          /* stockage indisponible — l'état reste en mémoire */
+                        }
+                      }}
+                    />
+                  </label>
+                  <p className="hint">
+                    Filtre local — instantané sur la pile chargée. Les profils sans score restent visibles.
+                  </p>
+                </div>
+              )}
 
               <div className="filter-chips">
                 <p className="filter-label">Montre-moi</p>
@@ -1352,20 +1431,66 @@ export function Discover({ onMatches }: Props) {
           {items.map((p) => (
             <article key={p.userId} className="feed-card inv-card">
               <CardCarousel p={p} />
+              {/* Task 32 (réf. Invisible §4.2) : badge Score flottant sur la
+                  photo floutée — clic → « Pourquoi ce match ? ». Aucun drag
+                  ici (liste), pas de filtre d'exclusion nécessaire. */}
+              {p.score !== null && (
+                <button
+                  type="button" className="inv-score"
+                  onClick={() => setOpenWhy((v) => (v === p.userId ? null : p.userId))}
+                  title="Pourquoi ce score ? — indicatif, jamais prédictif"
+                >
+                  <strong>{p.score}</strong>
+                  <small>Score</small>
+                </button>
+              )}
               <div className="feed-body">
                 {renderCardBody(p, !!p.photoUrl && !p.photoBlurred)}
+                {/* Task 32 (réf. Invisible §4.2/§10) : VALEURS en chips
+                    violettes avec coche — tirées des extraits partagés RÉELS
+                    (highlights du questionnaire commun). */}
+                {p.highlights.length > 0 && (
+                  <div className="inv-values">
+                    {p.highlights.slice(0, 3).map((h, i) => (
+                      <span key={i} className="inv-value">
+                        ✓ {highlightChip(h)}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <RitualRow />
-                <div className="btn-row">
+                {/* Task 32 (réf. Invisible §4.2) : barre d'actions à 3 boutons —
+                    Passer (rouge) / Demander à discuter (large, violet) /
+                    Liker (vert — like mutuel = match, §6.2.4). Les deux
+                    boutons latéraux sont un AJOUT ; le bouton central et sa
+                    logique de handshake existants sont inchangés. */}
+                <div className="btn-row inv-actions">
                   <button
-                    type="button" className="btn primary"
+                    type="button" className="inv-mini pass" aria-label="Passer"
+                    disabled={busy}
+                    onClick={() => void doSwipe('pass', { id: p.userId, photo: p.photoUrl, name: p.displayName })}
+                    title="Passer — discret, elle ne sera jamais notifiée"
+                  >
+                    ✕
+                  </button>
+                  <button
+                    type="button" className="btn primary discuss"
                     disabled={busy || (quota?.invisibleLeft ?? 0) < 1}
                     onClick={() => void doRequest({ id: p.userId, photo: p.photoUrl, name: p.displayName })}
                     title="La personne recevra ta demande et pourra accepter ou passer"
                   >
                     ✉ Demander à discuter
                   </button>
-                  <span className="hint">Explorer est libre — aucune décision forcée.</span>
+                  <button
+                    type="button" className="inv-mini like" aria-label="Liker"
+                    disabled={busy || (quota?.likesLeft ?? 0) < 1}
+                    onClick={() => void doSwipe('like', { id: p.userId, photo: p.photoUrl, name: p.displayName })}
+                    title="Liker — si elle like aussi, match immédiat"
+                  >
+                    ♥
+                  </button>
                 </div>
+                <span className="hint">Explorer est libre — aucune décision forcée.</span>
               </div>
             </article>
           ))}
@@ -1383,6 +1508,111 @@ export function Discover({ onMatches }: Props) {
             </section>
           )}
         </div>
+      )}
+
+      {/* ── RÉVÉLATIONS (INVISIBLE — Task 32, réf. §4.3) ──
+          Suivi du dévoilement avec les données RÉELLES du cache matchs :
+          une conversation Invisible « révélée » = photo servie nette
+          (photoBlurred false, doc MatchDto). Le rituel complet (15 messages,
+          consentement) se vit dans le chat — ici, la vue d'ensemble. */}
+      {isInvisible && invConversations.length > 0 && (
+        <section className="reveal-section">
+          <h2 className="section-title">🔓 Révélations</h2>
+          <p className="hint">Le rituel : 15 messages · 7 jours · accord mutuel — suis tes dévoilements ici.</p>
+          <div className="reveal-stats">
+            <div className="reveal-stat">
+              <strong>{invRevealed}</strong>
+              <span>🔓 Révélées</span>
+            </div>
+            <div className="reveal-stat">
+              <strong>{invConversations.length - invRevealed}</strong>
+              <span>🕯️ En cours</span>
+            </div>
+            <div className="reveal-stat">
+              <strong>{invPendingRequests}</strong>
+              <span>✉ En attente</span>
+            </div>
+          </div>
+          <div className="reveal-list">
+            {invConversations.map((m) => {
+              const day = ritualDay(m.createdAt);
+              const pct = Math.min(100, Math.round((day / 7) * 100));
+              return (
+                <article key={m.matchId} className={`reveal-item ${m.other.photoBlurred ? '' : 'revealed'}`}>
+                  {m.other.photoUrl ? (
+                    <img
+                      src={m.other.photoUrl}
+                      alt={m.other.displayName}
+                      className={m.other.photoBlurred ? 'blurred' : ''}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="reveal-avatar" aria-hidden="true">✨</span>
+                  )}
+                  <div className="reveal-body">
+                    <strong>
+                      {m.other.displayName}
+                      {m.other.verified && <span className="rv-check" title="Identité vérifiée"> ✓</span>}
+                    </strong>
+                    <em>
+                      {m.other.photoBlurred
+                        ? `Jour ${day} du rituel`
+                        : `Révélé · jour ${day}`}
+                    </em>
+                    <span className="reveal-bar" aria-hidden="true">
+                      <i style={{ width: `${pct}%` }} />
+                    </span>
+                  </div>
+                  <span className={`rv-badge ${m.other.photoBlurred ? '' : 'on'}`}>
+                    {m.other.photoBlurred ? '🕯️ Flouté' : '🔓 Révélé'}
+                  </span>
+                  <a className="btn ghost small" href={`#/chat/${m.conversationId}`}>
+                    Ouvrir
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+          <p className="hint">La barre suit les 7 jours — les 15 messages et le consentement se suivent dans chaque conversation.</p>
+        </section>
+      )}
+
+      {/* ── COACH WAIRYU (INVISIBLE — Task 32, réf. §4.4) ──
+          Suggestions de conversation : l'icebreaker vient des VRAIS sujets
+          calculés par le serveur (matchReasons / highlights) ; les autres
+          cartes sont la pédagogie produit (voice notes, défi). */}
+      {isInvisible && (
+        <section className="coach-section">
+          <h2 className="section-title">🧭 Coach Wairyu</h2>
+          <p className="hint">Des idées sincères pour des conversations qui vont plus loin.</p>
+          <div className="coach-grid">
+            <button type="button" className="coach-card icebreaker" onClick={() => coachSay(coachIcebreaker)}>
+              <em>💬 Icebreaker suggéré</em>
+              <p>{coachIcebreaker}</p>
+            </button>
+            <button
+              type="button" className="coach-card depth"
+              onClick={() => coachSay('« Quelle est la dernière fois où tu as défendu quelque chose qui te tenait vraiment à cœur ? »')}
+            >
+              <em>🫀 Question de profondeur</em>
+              <p>« Quelle est la dernière fois où tu as défendu quelque chose qui te tenait vraiment à cœur ? »</p>
+            </button>
+            <button
+              type="button" className="coach-card voice"
+              onClick={() => coachSay('Les voice notes créent 3× plus de connexion émotionnelle — envoie un 🎤 de 10 secondes, c\'est souvent là que tout débloque.')}
+            >
+              <em>🎤 Propose un voice note</em>
+              <p>Les voice notes créent 3× plus de connexion émotionnelle — ose un 🎤 de 10 secondes.</p>
+            </button>
+            <button
+              type="button" className="coach-card gold"
+              onClick={() => coachSay('Défi du jour : raconte ta chanson d\'enfance — celle que tu chantais à fond.')}
+            >
+              <em>🏆 Défi du jour</em>
+              <p>Raconte ta chanson d'enfance — celle que tu chantais à fond.</p>
+            </button>
+          </div>
+        </section>
       )}
 
       {items.length > 0 && <p className="hint q-disclaimer">Ce score est un indice basé sur vos réponses déclarées — indicatif, jamais prédictif.</p>}

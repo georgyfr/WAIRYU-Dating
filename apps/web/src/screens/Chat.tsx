@@ -14,7 +14,7 @@
  *  - unmatch propre (+ blocage optionnel) : sortie des DEUX côtés, re-floutage
  *    immédiat côté API (§4.5.4), la conversation disparaît pour chacun.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { api, apiForm, ApiError } from '../lib/api';
 import { invalidateSwr } from '../lib/swr';
 import { CHAT, REPORT_CATEGORIES, REPORT_LABELS } from '@wairyu/shared';
@@ -70,6 +70,9 @@ export function Chat({ conversationId, onBack }: Props) {
   const [recording, setRecording] = useState(false);
   const [recSeconds, setRecSeconds] = useState(0);
   const [connState, setConnState] = useState<'connecting' | 'open' | 'closed'>('connecting');
+  // Task 32 (réf. Invisible §10) : nudge voice notes — masquable, Invisible
+  // uniquement, en dessous du seuil de révélation.
+  const [nudgeOff, setNudgeOff] = useState(false);
 
   const seen = useRef<Set<number>>(new Set());
   const wsRef = useRef<WebSocket | null>(null);
@@ -510,6 +513,15 @@ export function Chat({ conversationId, onBack }: Props) {
 
   const sorted = useMemo(() => [...messages].sort((a, b) => a.seq - b.seq), [messages]);
 
+  // Task 32 (réf. Invisible §5.4) : progression du rituel de révélation —
+  // données RÉELLES. L'anneau suit les MESSAGES (le seul levier d'action
+  // direct — min(messages, jours) resterait à 0 % pendant 7 jours, aussi
+  // honnête que démotivant) ; les labels listent les DEUX conditions + le
+  // consentement, l'éligibilité serveur reste le seul verdict réel.
+  const msgPct = state ? Math.min(100, Math.round((state.messagesCount / CHAT.revealMinMessages) * 100)) : 0;
+  const dayPct = state ? Math.min(100, Math.round((state.days / CHAT.revealMinDays) * 100)) : 0;
+  const revealPct = msgPct;
+
   return (
     <div className="app chat">
       <header className="chat-head">
@@ -674,10 +686,26 @@ export function Chat({ conversationId, onBack }: Props) {
               </div>
             ) : (
               <>
-                <p className="reveal-progress">
-                  {state.messagesCount}/{CHAT.revealMinMessages} messages · {state.days}/
-                  {CHAT.revealMinDays} jours
-                </p>
+                {/* Task 32 (réf. Invisible §5.4) : anneau de rituel — violet,
+                    progression réelle min(messages, jours). */}
+                <div className="reveal-ring-wrap">
+                  <div
+                    className="reveal-ring"
+                    style={{ '--p': revealPct } as CSSProperties}
+                    role="img"
+                    aria-label={`Rituel complété à ${revealPct} %`}
+                  >
+                    <span>{revealPct}%</span>
+                  </div>
+                  <div className="reveal-ring-labels">
+                    <em className={msgPct >= 100 ? 'done' : ''}>
+                      {msgPct >= 100 ? '✓' : '·'} {state.messagesCount}/{CHAT.revealMinMessages} messages
+                    </em>
+                    <em className={dayPct >= 100 ? 'done' : ''}>
+                      {dayPct >= 100 ? '✓' : '·'} {state.days}/{CHAT.revealMinDays} jours
+                    </em>
+                  </div>
+                </div>
                 <button
                   type="button"
                   className="btn primary"
@@ -688,10 +716,33 @@ export function Chat({ conversationId, onBack }: Props) {
               </>
             )
           ) : (
-            <p className="hint reveal-progress">
-              Révélation à {state.messagesCount}/{CHAT.revealMinMessages} messages et {state.days}/
-              {CHAT.revealMinDays} jours — prenez le temps de faire connaissance.
-            </p>
+            <>
+              {/* Task 32 : anneau violet — même progression honnête avant
+                  l'éligibilité (le consentement reste le verrou final). */}
+              <div className="reveal-ring-wrap">
+                <div
+                  className="reveal-ring"
+                  style={{ '--p': revealPct } as CSSProperties}
+                  role="img"
+                  aria-label={`Rituel complété à ${revealPct} %`}
+                >
+                  <span>{revealPct}%</span>
+                </div>
+                <div className="reveal-ring-labels">
+                  <em className={msgPct >= 100 ? 'done' : ''}>
+                    {msgPct >= 100 ? '✓' : '·'} {state.messagesCount}/{CHAT.revealMinMessages} messages
+                  </em>
+                  <em className={dayPct >= 100 ? 'done' : ''}>
+                    {dayPct >= 100 ? '✓' : '·'} {state.days}/{CHAT.revealMinDays} jours
+                  </em>
+                  <em>· Accord mutuel</em>
+                </div>
+              </div>
+              <p className="hint reveal-progress">
+                Révélation à {state.messagesCount}/{CHAT.revealMinMessages} messages et {state.days}/
+                {CHAT.revealMinDays} jours — prenez le temps de faire connaissance.
+              </p>
+            </>
           )}
         </div>
       )}
@@ -784,6 +835,17 @@ export function Chat({ conversationId, onBack }: Props) {
           </div>
         )}
       </div>
+
+      {/* Task 32 (réf. Invisible §10) : nudge voice notes — Invisible,
+          non révélé, sous le seuil ; masquable en un clic. */}
+      {state?.conversationMode === 'invisible' && !state.revealed && !nudgeOff && sorted.length > 0 && sorted.length < CHAT.revealMinMessages && (
+        <p className="voice-nudge">
+          <span>🎤 Les voice notes créent 3× plus de connexion — essaie avec le micro ci-dessous.</span>
+          <button type="button" aria-label="Masquer l’astuce" onClick={() => setNudgeOff(true)}>
+            ×
+          </button>
+        </p>
+      )}
 
       {/* ---- Composer ---- */}
       {recording ? (
