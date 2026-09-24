@@ -6585,3 +6585,114 @@ body.theme-dark .hl-quote {
   border-left-color: #8b5cf6;
   color: rgba(255, 255, 255, 0.85);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TASK 35 — SIDEBAR DIFFÉRENCIÉE PAR MODE (demande fondateur : « la barre
+   latérale gauche du mode classique doit être différente du mode invisible »)
+   100 % ADDITIF : aucune règle existante n'est modifiée ou supprimée.
+   · Classique / Interracial : habillage sombre historique + ACCENT ROSE
+     (bord et logo) — l'identité « photos, flamme » du bassin public.
+   · Invisible : habillage VIOLET PROFOND (verre #1E103A, bord violet,
+     logo dégradé #8B5CF6→#EC4899, lueur radiale) — posé par le store
+     partagé lib/mode.ts, donc valable sur TOUS les onglets, pas seulement
+     Découvrir. Le chip sous la marque affiche le mode courant.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ---- Chip « mode courant » sous la marque — sidebar uniquement ---- */
+.tabbar-mode-chip {
+  display: none; /* masqué mobile/tablette comme .tabbar-brand */
+}
+
+@media (min-width: 1024px) {
+  .tabbar-mode-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 10px 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(236, 72, 153, 0.4);
+    background: rgba(236, 72, 153, 0.12);
+    color: #f9a8d4;
+  }
+
+  .tabbar-mode-chip .tabbar-mode-ico {
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  /* Variantes par mode — mêmes teintes que les onglets de mode Découvrir */
+  .tabbar-mode-chip.mode-invisible {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(139, 92, 246, 0.16);
+    color: #ddd6fe;
+  }
+
+  .tabbar-mode-chip.mode-interracial {
+    border-color: rgba(244, 162, 89, 0.45);
+    background: rgba(244, 162, 89, 0.12);
+    color: #fcd9a8;
+  }
+}
+
+/* ---- Identité rose du Classique/Interracial (≠ violette) ---- */
+/* Barre mobile : bord haut rosé pour la même cohérence de mode */
+body.theme-dark:not(.mode-invisible) .tabbar {
+  border-top-color: rgba(236, 72, 153, 0.2);
+}
+
+@media (min-width: 1024px) {
+  body.theme-dark:not(.mode-invisible) .tabbar {
+    border-right: 1px solid rgba(236, 72, 153, 0.26);
+    box-shadow: 8px 0 36px rgba(120, 20, 70, 0.3);
+  }
+
+  body.theme-dark:not(.mode-invisible) .tabbar-logo {
+    background: var(--w-gradient);
+    box-shadow: 0 6px 16px rgba(236, 72, 153, 0.35);
+  }
+}
+
+/* ---- Identité VIOLETTE PROFONDE du Mode Invisible ---- */
+/* Barre mobile : verre violet (cohérence avec le fond radial Task 32) */
+body.theme-dark.mode-invisible .tabbar {
+  background: linear-gradient(180deg, rgba(30, 16, 58, 0.92), rgba(22, 21, 31, 0.92));
+  border-top-color: rgba(139, 92, 246, 0.28);
+}
+
+@media (min-width: 1024px) {
+  body.theme-dark.mode-invisible .tabbar {
+    background: linear-gradient(180deg, rgba(30, 16, 58, 0.94) 0%, rgba(12, 8, 24, 0.96) 100%);
+    border-right: 1px solid rgba(139, 92, 246, 0.32);
+    box-shadow: 8px 0 44px rgba(88, 28, 135, 0.45);
+  }
+
+  /* Lueur d'arête : dégradé violet courant le bord droit de la sidebar */
+  body.theme-dark.mode-invisible .tabbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.7), rgba(236, 72, 153, 0.15) 60%, rgba(139, 92, 246, 0.5));
+    pointer-events: none;
+  }
+
+  body.theme-dark.mode-invisible .tabbar-logo {
+    background: var(--w-gradient);
+    box-shadow: 0 6px 18px rgba(139, 92, 246, 0.5);
+  }
+
+  body.theme-dark.mode-invisible .tabbar-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+  }
+
+  body.theme-dark.mode-invisible .tabbar-item.active {
+    background: rgba(139, 92, 246, 0.22);
+    box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.28);
+  }
+}

@@ -25,6 +25,7 @@ import { Moments } from './screens/Moments';
 import { Chat } from './screens/Chat';
 import { TabBar, type TabId } from './components/TabBar';
 import { ToastHost } from './lib/toast';
+import { getSharedMode, setSharedMode, resetSharedMode } from './lib/mode';
 import type {
   AuthConfigResponse,
   ConversationListResponse,
@@ -184,6 +185,7 @@ export default function App() {
 
   const onLoggedOut = useCallback(() => {
     clearSwr(); // aucune donnée de l'ancien compte ne doit survivre (Task 28)
+    resetSharedMode(); // ni son mode — la sidebar repart neutre (Task 35)
     setMe(null);
     go('#/');
   }, [go]);
@@ -236,6 +238,21 @@ export default function App() {
     )
       go('#/');
   }, [checking, route, me, go]);
+
+  // Task 35 (demande fondateur — sidebar différenciée par mode) : le mode
+  // est une propriété du PROFIL, pas de la page Discover. À l'ouverture de
+  // session, si aucun écran ne l'a déjà posé (Discover monte en parallèle
+  // et appelle aussi setSharedMode — premier arrivé gagne, mêmes données),
+  // on le charge ici pour que la barre latérale porte la bonne identité
+  // sur TOUS les onglets (Likes, Matchs, Messages, Moments, Profil, Chat).
+  useEffect(() => {
+    if (!me || getSharedMode() !== null) return;
+    api<{ preferences: { modeDefault: 'classic' | 'invisible' | 'interracial' } | null }>(
+      '/api/profile',
+    )
+      .then((prof) => setSharedMode(prof.preferences?.modeDefault ?? 'classic'))
+      .catch(() => null); // échec réseau : Discover/Profil reposeront le mode
+  }, [me]);
 
   // Badge : polling léger 30 s (onglet visible) — conversations ET likes.
   // Les refresh sont dédupliqués et bridés côté cache — plus de requête à

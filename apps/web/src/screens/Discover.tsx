@@ -20,6 +20,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
 import { toast } from '../lib/toast';
+import { setSharedMode } from '../lib/mode';
 import { countryMeta, formatKm } from '../lib/geo';
 import {
   ARCHETYPES,
@@ -270,13 +271,16 @@ export function Discover({ onMatches }: Props) {
   const isInvisible = mode === 'invisible';
 
   // Task 32 (réf. Invisible §3) : identité VIOLETTE du Mode Invisible —
-  // `body.mode-invisible` retinte fond radial + --w-gradient (#8B5CF6→#EC4899)
-  // pendant que le mode est actif ; nettoyage au démontage / bascule.
-  // Couche 100 % additive : App.tsx (theme-dark par route) reste inchangé.
+  // `body.mode-invisible` retinte fond radial + --w-gradient (#8B5CF6→#EC4899).
+  // Task 35 (demande fondateur — « la barre latérale du Classique doit être
+  // différente de l'Invisible ») : la classe est posée par le store partagé
+  // lib/mode.ts (un seul écrivain pour tout le SPA) et NE s'efface PLUS au
+  // démontage — le mode est une propriété du profil : la barre latérale PC
+  // garde l'identité violette sur Likes/Matchs/Messages/Profil, exactement
+  // comme le serveur continue de servir le bassin Invisible (Task 34).
   useEffect(() => {
-    document.body.classList.toggle('mode-invisible', isInvisible);
-    return () => document.body.classList.remove('mode-invisible');
-  }, [isInvisible]);
+    setSharedMode(mode);
+  }, [mode]);
 
   // Feedback utilisateur : toast en haut de l'écran (Task 31 — toujours
   // visible, même en bas de la pile) ; l'ancien flash-msg reste rendu si
