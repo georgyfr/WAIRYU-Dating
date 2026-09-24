@@ -536,22 +536,81 @@ export function Discover({ onMatches }: Props) {
     [deck, idx, busy, removeFromDeck, removeLike, showFlash],
   );
 
-  /** Bascule de mode (libre, réversible — §4.3.4) : ne touche pas aux matchs. */
+  /**
+   * (Re)charge les préférences à la volée — rattrapage si elles manquent en
+   * mémoire au moment d'une bascule de mode (échec réseau du chargement
+   * initial, compte sans ligne user_preferences, préférences créées depuis
+   * un autre appareil…). Retourne les préférences à jour, ou null.
+   */
+  const loadPrefs = useCallback(async (): Promise<PreferencesDto | null> => {
+    try {
+      const prof = await api<ProfileResponse>('/api/profile');
+      setPrefs(prof.preferences);
+      setDraftFilters(prof.preferences);
+      if (prof.preferences) setMode(prof.preferences.modeDefault);
+      setMyCountry((prev) => prev ?? prof.country);
+      return prof.preferences;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  /**
+   * Bascule de mode (libre, réversible — §4.3.4) : ne touche pas aux matchs.
+   * CORRECTIF « le clic sur un mode ne fait rien » : l'ancien garde-fou
+   * `if (!prefs) return;` quittait SILENCIEUSEMENT quand les préférences
+   * n'étaient pas chargées (échec réseau au montage, compte sans ligne
+   * user_preferences, cookie expiré entre-temps) — l'onglet paraissait mort.
+   * Désormais : tentative de (re)chargement, création par défaut en dernier
+   * recours (le PUT est un upsert), et feedback toast GARANTI en cas d'échec.
+   */
   const switchMode = useCallback(
     async (next: DiscoveryMode) => {
-      if (!prefs || busy || next === mode) return;
+      if (busy || next === mode) return;
       setBusy(true);
       setError(null);
       try {
+        let current = prefs;
+        if (!current) current = await loadPrefs();
+        if (current && current.modeDefault === next) {
+          // Le serveur est déjà sur ce mode (autre appareil / reload) —
+          // on s'aligne sans requête inutile.
+          setMode(current.modeDefault);
+          setIdx(0);
+          setInbox(
+            current.modeDefault === 'invisible'
+              ? await api<InboxResponse>('/api/discover/inbox')
+              : null,
+          );
+          setBusy(false);
+          return;
+        }
+        const effective =
+          current ?? {
+            // Préférences vraiment absentes : valeurs neutres par défaut
+            // (le PUT /api/profile/preferences est un upsert — la ligne est
+            // créée). L'utilisateur pourra affiner dans Filtres.
+            modeDefault: next,
+            prefGender: 'everyone' as const,
+            minAge: 18,
+            maxAge: 99,
+            distanceKm: 500,
+            prefIntent: null,
+          };
+        if (!current) {
+          setPrefs(effective);
+          setDraftFilters(effective);
+          toast('Préférences initialisées avec des valeurs neutres — ajuste-les dans Filtres.', 'info');
+        }
         await api('/api/profile/preferences', {
           method: 'PUT',
           json: {
             modeDefault: next,
-            prefGender: prefs.prefGender,
-            minAge: prefs.minAge,
-            maxAge: prefs.maxAge,
-            distanceKm: prefs.distanceKm,
-            prefIntent: prefs.prefIntent ?? null,
+            prefGender: effective.prefGender,
+            minAge: effective.minAge,
+            maxAge: effective.maxAge,
+            distanceKm: effective.distanceKm,
+            prefIntent: effective.prefIntent ?? null,
           },
         });
         setMode(next);
@@ -559,11 +618,13 @@ export function Discover({ onMatches }: Props) {
         setInbox(next === 'invisible' ? await api<InboxResponse>('/api/discover/inbox') : null);
         await loadDeck(1, true);
       } catch (err) {
-        setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+        const msg = err instanceof ApiError ? err.message : 'Erreur inattendue.';
+        setError(msg);
+        toast(msg, 'error'); // feedback garanti (l'erreur historique reste rendue)
       }
       setBusy(false);
     },
-    [prefs, mode, busy, loadDeck],
+    [prefs, mode, busy, loadDeck, loadPrefs],
   );
 
   /** Filtres de base (âge, distance, genres, intention). */
