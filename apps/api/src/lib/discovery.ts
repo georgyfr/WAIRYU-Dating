@@ -277,6 +277,24 @@ export async function generateFeedPage(
   const onlyIds = opts?.onlyIds;
   // NB : injecté DANS la sous-requête candidats → alias u0 (fix pool LIMIT/jointure).
   const onlyFilter = onlyIds && onlyIds.length > 0 ? `AND u0.id IN (${onlyIds.map(() => '?').join(',')})` : '';
+  // Règle FONDATEUR (Task 34) — bassins de découverte ÉTANCHES entre modes :
+  // « si tu es en Classique, tu n'es plus en Invisible, et vice versa ». Un
+  // profil n'apparaît que dans le feed de SON mode : bassin Invisible = les
+  // membres Invisible (tous floutés), bassin Classique/Interracial = les
+  // membres à photos publiques (Classique + Interracial, jamais Invisible).
+  // Migrer de mode = changer de bassin (le profil disparaît de l'ancien) ;
+  // les matchs, conversations et messages EXISTANTS ne sont pas touchés.
+  // Sans ligne user_preferences → mode Classique par défaut (photos publiques).
+  const poolFilter =
+    myMode === 'invisible'
+      ? `AND EXISTS (
+             SELECT 1 FROM user_preferences upf
+             WHERE upf.user_id = u0.id AND upf.mode_default = 'invisible'
+           )`
+      : `AND NOT EXISTS (
+             SELECT 1 FROM user_preferences upf
+             WHERE upf.user_id = u0.id AND upf.mode_default = 'invisible'
+           )`;
 
   // ⚠️ FIX pool (découvert par les profils virtuels) : le LIMIT s'applique aux
   // CANDIDATS (sous-requête) et non aux lignes jointes — sinon un candidat qui
@@ -302,6 +320,9 @@ export async function generateFeedPage(
          AND (?6 IS NULL OR u0.intent = ?6)
          -- Étape 7 (plan 7.7) : un profil EN PAUSE n'apparaît nulle part.
          AND COALESCE(u0.paused, 0) = 0
+         -- Task 34 (règle fondateur) : bassins étanches — je ne vois que les
+         -- profils de MON mode (Invisible ⟷ Classique/Interracial séparés).
+         ${poolFilter}
          -- Étape 7 (plan 7.7) : INCOGNITO — masqué du feed SAUF pour les
          -- personnes à qui il a envoyé un like (« likes reçus »).
          AND (
