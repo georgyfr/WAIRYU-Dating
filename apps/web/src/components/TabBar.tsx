@@ -27,6 +27,12 @@ const TABS: { id: TabId; hash: string; icon: string; label: string }[] = [
 export function TabBar({ active, unread, onGo }: Props) {
   return (
     <nav className="tabbar" aria-label="Navigation principale">
+      {/* Marque — affichée uniquement en navigation latérale (≥ 1024 px,
+          voir section « Design responsive » de styles.css). */}
+      <div className="tabbar-brand" aria-hidden="true">
+        <span className="tabbar-logo">w</span>
+        <span className="tabbar-word">wairyu</span>
+      </div>
       {TABS.map((t) => (
         <button
           key={t.id}

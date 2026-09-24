@@ -1420,6 +1420,7 @@ h2 {
 
 .discover {
   justify-content: flex-start;
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   padding-bottom: 48px;
@@ -1922,6 +1923,7 @@ h2 {
 /* ---- Écran Mes matchs + passerelle ---- */
 .matches {
   justify-content: flex-start;
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   padding-bottom: 48px;
@@ -2028,8 +2030,16 @@ h2 {
 .chat {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  max-height: 100dvh;
+  /* Hérite sinon align-items:center de .app → l'en-tête et le composer
+     rétréciraient au contenu au lieu de remplir la fenêtre (bug visible
+     aussi sur mobile). stretch = plein largeur comme conçu. */
+  align-items: stretch;
+  justify-content: flex-start;
+  /* Ajustement exact : app-shell ajoute 24 px en haut + 48 px en bas →
+     le chat remplissait 100 dvh et provoquait un micro-scroll de 72 px. */
+  height: calc(100dvh - 72px);
+  max-height: calc(100dvh - 72px);
+  min-height: 0;
   padding: 0;
   gap: 0;
 }
@@ -2642,19 +2652,28 @@ h2 {
   box-shadow: 0 1px 4px rgba(45, 36, 56, 0.2);
 }
 
-/* En-têtes de page principale : titre centré, action éventuelle à droite */
+/* En-têtes de page principale : titre centré, action éventuelle à droite.
+   Flex en ligne (plus d'absolu) : sur 360-420 px le bouton recouvrait le titre. */
 .wizard-head.plain {
-  position: relative;
+  display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   width: 100%;
   margin-bottom: 8px;
 }
 
+.wizard-head.plain h1 {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
 .wizard-head.plain .matches-link {
-  position: absolute;
-  right: 0;
-  top: 2px;
+  position: static;
   margin-left: 0;
+  flex: 0 0 auto;
 }
 
 /* ---- Pages full-width cohérentes (comme .discover / .matches) ---- */
@@ -2662,6 +2681,7 @@ h2 {
 .page-profile,
 .page-settings {
   justify-content: flex-start;
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   padding-bottom: 48px;
@@ -2920,4 +2940,397 @@ h2 {
 .profile-actions {
   width: 100%;
   margin-bottom: 12px;
+}
+
+/* ===========================================================================
+   Design responsive — mobile · tablette · PC
+   ---------------------------------------------------------------------------
+   L'app reste pensée mobile-first (expérience de référence, geste de swipe,
+   barre d'onglets en bas). Deux paliers l'étendent sans jamais casser le
+   mobile, uniquement avec des @media min-width (aucune régression possible
+   en dessous des seuils) :
+
+   · Tablette  ≥ 640 px  — contenus élargis et centrés, CTA horizontaux,
+     chat présenté comme une fenêtre arrondie, tabbar toujours en bas.
+   · PC        ≥ 1024 px — la barre d'onglets devient une SIDEBAR verticale
+     permanente (repère des apps de rencontre sur web), fonds décoratifs,
+     largeurs de lecture généreuses, grilles 2 colonnes (profils Invisible,
+     page Mon profil en 2 volets), chat en fenêtre centrée.
+
+   Accessibilité : focus-visible homogène, respect de prefers-reduced-motion.
+=========================================================================== */
+
+/* Masque de la marque sidebar (div ajoutée dans TabBar) — mobile/tablette */
+.tabbar-brand {
+  display: none;
+}
+
+/* Focus clavier homogène (tous écrans) */
+.btn:focus-visible,
+.tabbar-item:focus-visible,
+.back:focus-visible,
+.q-exit:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+/* Respect des préférences de mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .match-card {
+    animation: none;
+  }
+  .deck-card {
+    transition: none;
+  }
+}
+
+/* ===========================================================================
+   TABLETTE — ≥ 640 px
+=========================================================================== */
+@media (min-width: 640px) {
+  /* :not(.chat) — le chat fenêtré gère son propre padding (règle .chat) */
+  .app:not(.chat) {
+    padding: 32px 24px;
+  }
+
+  .app-shell {
+    padding: 32px 24px 48px;
+  }
+
+  /* Cartes d'authentification / formulaires plus à l'aise */
+  .card {
+    max-width: 480px;
+    padding: 32px 28px;
+  }
+
+  .card.wide {
+    max-width: 600px;
+  }
+
+  /* CTA et connexions sociales côte à côte */
+  .cta-row {
+    flex-direction: row;
+    max-width: 430px;
+  }
+
+  .social-row {
+    flex-direction: row;
+  }
+
+  /* Contenus principaux élargis — width:100% pour remplir la largeur
+     disponible (sinon shrink-to-fit sur contenu clairsemé, ex. 1 seule
+     conversation = page réduite à ~400 px). */
+  .discover,
+  .matches,
+  .page-messages,
+  .page-profile,
+  .page-settings {
+    width: 100%;
+    max-width: 680px;
+  }
+
+  /* Pile de swipe plus présente, boutons plus généreux */
+  .deck-card {
+    max-width: 420px;
+  }
+
+  .deck-btn {
+    width: 58px;
+    height: 58px;
+    font-size: 23px;
+  }
+
+  /* Chat présenté comme une fenêtre arrondie (fini l'edge-to-edge) */
+  .chat {
+    width: 100%;
+    height: calc(100dvh - 80px);
+    max-height: calc(100dvh - 80px);
+    max-width: 760px;
+    margin: 0 auto;
+    border: 1px solid #e7e1ee;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(45, 36, 56, 0.1);
+  }
+
+  .chat-scroll {
+    padding: 16px 20px 8px;
+  }
+
+  .bubble {
+    max-width: 68%;
+  }
+}
+
+/* ===========================================================================
+   PC — ≥ 1024 px
+=========================================================================== */
+@media (min-width: 1024px) {
+  :root {
+    --sbw: 236px; /* largeur de la sidebar */
+  }
+
+  /* Fond doux et décoratif — les cartes blanches ressortent */
+  body {
+    background:
+      radial-gradient(1100px 700px at 12% -8%, rgba(108, 74, 182, 0.08), transparent 60%),
+      radial-gradient(900px 640px at 108% 16%, rgba(244, 162, 89, 0.1), transparent 55%),
+      var(--c-bg);
+    background-attachment: fixed;
+  }
+
+  /* ------------------------------------------------------------------
+     Sidebar : la tabbar (mêmes boutons, mêmes badges) passe à la verticale
+  ------------------------------------------------------------------ */
+  .app-shell.tabpage {
+    padding: 32px 40px 56px calc(var(--sbw) + 40px);
+  }
+
+  .tabbar {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: var(--sbw);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 24px 14px;
+    border-top: none;
+    border-right: 1px solid #e7e1ee;
+    box-shadow: 1px 0 16px rgba(45, 36, 56, 0.04);
+  }
+
+  .tabbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 10px 20px;
+  }
+
+  .tabbar-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--c-primary);
+    color: #fff;
+    font-weight: 800;
+    font-size: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tabbar-word {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--c-primary-dark);
+    letter-spacing: -0.3px;
+  }
+
+  .tabbar-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 14px;
+  }
+
+  .tabbar-item.active {
+    background: #f4f0fb;
+  }
+
+  .tabbar-icon {
+    font-size: 22px;
+  }
+
+  .tabbar-label {
+    font-size: 14.5px;
+  }
+
+  .tabbar-badge {
+    top: -6px;
+    right: -10px;
+  }
+
+  /* ------------------------------------------------------------------
+     Typographie — titres plus posés sur grand écran
+  ------------------------------------------------------------------ */
+  h1 {
+    font-size: clamp(34px, 3vw, 42px);
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .wizard-head.plain h1 {
+    font-size: 26px;
+  }
+
+  .section-title {
+    font-size: 17px;
+  }
+
+  .tagline {
+    max-width: 430px;
+    font-size: 17px;
+  }
+
+  /* ------------------------------------------------------------------
+     Largeurs de contenu
+  ------------------------------------------------------------------ */
+  .card {
+    max-width: 520px;
+  }
+
+  .card.wide {
+    max-width: 660px;
+  }
+
+  .discover {
+    max-width: 800px;
+  }
+
+  .matches {
+    max-width: 780px;
+  }
+
+  .page-messages {
+    max-width: 740px;
+  }
+
+  .page-settings {
+    max-width: 760px;
+  }
+
+  /* Contrôles de la découverte : colonne de pilotage centrée */
+  .discover .mode-tabs,
+  .discover .mode-hint,
+  .discover .filter-panel {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .discover .quota-row {
+    justify-content: center;
+  }
+
+  /* ------------------------------------------------------------------
+     Découverte — pile plus grande, Top du jour plus visible
+  ------------------------------------------------------------------ */
+  .deck-card {
+    max-width: 440px;
+  }
+
+  .deck-card .feed-body {
+    max-height: 320px;
+  }
+
+  .top-card {
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  .top-card img,
+  .top-avatar {
+    width: 86px;
+    height: 86px;
+  }
+
+  /* Profils Invisible : grille 2 colonnes (photos floutées côte à côte) */
+  .inv-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ------------------------------------------------------------------
+     Mon profil — 2 volets : carte photo à gauche (collante),
+     personnalité + préférences + actions à droite.
+     Grille explicite (la carte occupe la colonne 1 sur toutes les rangées
+     suivantes — span 6 = nb max d'enfants après l'en-tête ; les rangées
+     vides éventuelles ne mesurent que 12 px de gap).
+     :has() garantit que les états vides (chargement/erreur) restent
+     centrés en une colonne ; sans :has(), dégradation = colonne simple.
+  ------------------------------------------------------------------ */
+  .page-profile:has(> .profile-card) {
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 32px;
+    row-gap: 12px;
+  }
+
+  .page-profile:has(> .profile-card) > .wizard-head {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .page-profile:has(> .profile-card) > .profile-card {
+    grid-column: 1;
+    grid-row: 2 / span 6;
+    position: sticky;
+    top: 32px;
+  }
+
+  .page-profile:has(> .profile-card) > :not(.profile-card):not(.wizard-head) {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .page-profile .profile-actions {
+    flex-direction: row;
+  }
+
+  .page-profile .profile-actions .btn {
+    flex: 1;
+  }
+
+  /* ------------------------------------------------------------------
+     Chat — fenêtre large centrée, bulles contenues
+  ------------------------------------------------------------------ */
+  .chat {
+    max-width: 880px;
+  }
+
+  .chat-scroll {
+    padding: 18px 24px 8px;
+  }
+
+  .bubble {
+    max-width: 58%;
+  }
+
+  /* Listes plus aérées */
+  .conv-row,
+  .match-row {
+    padding: 14px 16px;
+  }
+
+  /* Écran « C'est un match ! » — carte déjà dimensionnée, ok tel quel */
+}
+
+/* ===========================================================================
+   GRANDS ÉCRANS — ≥ 1440 px : on borne la respiration
+=========================================================================== */
+@media (min-width: 1440px) {
+  .discover,
+  .matches {
+    max-width: 880px;
+  }
+
+  .page-messages,
+  .page-settings {
+    max-width: 800px;
+  }
+
+  .page-profile:has(> .profile-card) {
+    max-width: 1160px;
+  }
 }
