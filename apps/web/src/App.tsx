@@ -20,12 +20,15 @@ import { Discover } from './screens/Discover';
 import { Matches } from './screens/Matches';
 import { Messages } from './screens/Messages';
 import { MyProfile } from './screens/MyProfile';
+import { Likes } from './screens/Likes';
+import { Moments } from './screens/Moments';
 import { Chat } from './screens/Chat';
 import { TabBar, type TabId } from './components/TabBar';
 import type {
   AuthConfigResponse,
   ConversationListResponse,
   HealthResponse,
+  LikesMeResponse,
   MeResponse,
 } from '@wairyu/shared';
 
@@ -38,8 +41,10 @@ type Route =
   | { name: 'profile' }
   | { name: 'questionnaire' }
   | { name: 'discover' }
+  | { name: 'likes' }
   | { name: 'matches' }
   | { name: 'messages' }
+  | { name: 'moments' }
   | { name: 'myprofile' }
   | { name: 'chat'; conversationId: string }
   | { name: 'app' };
@@ -47,8 +52,10 @@ type Route =
 /** Pages principales = onglets de la barre permanente. */
 const TAB_ROUTES: Record<string, TabId> = {
   discover: 'discover',
+  likes: 'likes',
   matches: 'matches',
   messages: 'messages',
+  moments: 'moments',
   myprofile: 'profile',
 };
 
@@ -94,9 +101,15 @@ function parseHash(): Route {
     case 'discover':
       // Étape 5 : découverte dual-mode (pile Classique + Invisible + Top du jour).
       return { name: 'discover' };
+    case 'likes':
+      // « Tu plais ! » — grille des likes reçus (onglet, enrichissement).
+      return { name: 'likes' };
     case 'matches':
       // Étape 5 : matchs + passerelle Classique → Invisible (onglet).
       return { name: 'matches' };
+    case 'moments':
+      // Wairyu Moments — aperçu des événements (onglet, teaser).
+      return { name: 'moments' };
     case 'messages':
       // Boîte de réception (page Messages — expérience dating classique).
       return { name: 'messages' };
@@ -133,6 +146,15 @@ export default function App() {
     () => convData?.conversations.reduce((n, cv) => n + cv.unread, 0) ?? 0,
     [convData],
   );
+
+  // Badge de l'onglet Likes : même mécanique que Messages — le cache est
+  // PARTAGÉ avec la page Likes et la page Découvrir (une seule requête).
+  const { data: likesData, refresh: refreshLikes } = useSwr<LikesMeResponse>(
+    'likes-me',
+    !!me,
+    { ttlMs: 60_000 },
+  );
+  const likesCount = likesData?.count ?? 0;
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash());
@@ -186,8 +208,10 @@ export default function App() {
     if (
       !checking &&
       (route.name === 'discover' ||
+        route.name === 'likes' ||
         route.name === 'matches' ||
         route.name === 'messages' ||
+        route.name === 'moments' ||
         route.name === 'myprofile' ||
         route.name === 'chat') &&
       !me
@@ -195,15 +219,19 @@ export default function App() {
       go('#/');
   }, [checking, route, me, go]);
 
-  // Badge : polling léger 30 s (onglet visible). Le refresh est dédupliqué
-  // et bridé côté cache — plus de requête à chaque changement de page.
+  // Badge : polling léger 30 s (onglet visible) — conversations ET likes.
+  // Les refresh sont dédupliqués et bridés côté cache — plus de requête à
+  // chaque changement de page.
   useEffect(() => {
     if (!me) return;
     const id = window.setInterval(() => {
-      if (document.visibilityState === 'visible') refreshConv();
+      if (document.visibilityState === 'visible') {
+        refreshConv();
+        refreshLikes();
+      }
     }, 30_000);
     return () => window.clearInterval(id);
-  }, [me, refreshConv]);
+  }, [me, refreshConv, refreshLikes]);
 
   // ---- Rendu ----
   let content: JSX.Element;
@@ -229,8 +257,12 @@ export default function App() {
     );
   } else if (route.name === 'discover' && me) {
     content = <Discover onMatches={() => go('#/matches')} />;
+  } else if (route.name === 'likes' && me) {
+    content = <Likes onOpenChat={(id) => go(`#/chat/${id}`)} />;
   } else if (route.name === 'matches' && me) {
     content = <Matches onOpenChat={(id) => go(`#/chat/${id}`)} />;
+  } else if (route.name === 'moments' && me) {
+    content = <Moments />;
   } else if (route.name === 'messages' && me) {
     content = (
       <Messages onOpenChat={(id) => go(`#/chat/${id}`)} onDiscover={() => go('#/discover')} />
@@ -294,12 +326,14 @@ export default function App() {
     );
   }
 
-  // Barre d'onglets permanente sur les 4 pages principales (session requise).
+  // Barre d'onglets permanente sur les pages principales (session requise).
   const activeTab = TAB_ROUTES[route.name];
   return (
     <main className={`app-shell ${activeTab && me ? 'tabpage' : ''}`}>
       {content}
-      {activeTab && me && <TabBar active={activeTab} unread={unread} onGo={go} />}
+      {activeTab && me && (
+        <TabBar active={activeTab} unread={unread} likes={likesCount} onGo={go} />
+      )}
     </main>
   );
 }

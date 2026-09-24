@@ -16,8 +16,9 @@
  * - Top Compatibilité du jour (cron, hors quota) + filtres de base + quotas.
  * Éthique (spec §5.4) : l'avertissement d'indicativité est TOUJOURS visible.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { useSwr } from '../lib/swr';
 import { countryMeta, formatKm } from '../lib/geo';
 import {
   ARCHETYPES,
@@ -28,8 +29,8 @@ import {
   type FeedProfile,
   type FeedResponse,
   type InboxResponse,
-  type LikesMeDto,
   type LikesMeResponse,
+  type MatchListResponse,
   type PreferencesDto,
   type ProfileResponse,
   type QuotaState,
@@ -75,14 +76,20 @@ const ONLINE_LABELS: Record<NonNullable<FeedProfile['online']>, string> = {
   recent: 'Actif récemment',
 };
 
-type Exit = 'left' | 'right' | null;
+type Exit = 'left' | 'right' | 'up' | null;
 
-/** Cible hors deck (strip « Tu plais ! ») — payload minimal pour l'API. */
+/** Cible hors deck (strip « Tu plais ! », modale profil) — payload minimal pour l'API. */
 interface TargetRef {
   id: string;
   photo?: string | null;
   name?: string;
 }
+
+/** Boost — aperçu Wairyu+ offert pendant le lancement (stockage local). */
+const BOOST_LS_KEY = 'wairyu.boost.until';
+const BOOST_MS = 30 * 60 * 1000;
+/** Filtre local « vérifiés uniquement » — appliqué à la pile chargée. */
+const VERIFIED_LS_KEY = 'wairyu.filter.verified';
 
 /* ─────────────────────────── Carrousel de photos ─────────────────────────── */
 
@@ -125,9 +132,10 @@ function CardCarousel({ p }: { p: FeedProfile }) {
           <button type="button" className="car-zone left" aria-label="Photo précédente" onClick={() => go(-1)} />
           <button type="button" className="car-zone right" aria-label="Photo suivante" onClick={() => go(1)} />
           <span className="car-count">{cur + 1}/{photos.length}</span>
-          <div className="car-dots" aria-hidden="true">
+          {/* Barres de progression façon Stories (enrichissement Task 30) */}
+          <div className="car-bars" aria-hidden="true">
             {photos.map((_, i) => (
-              <span key={i} className={`car-dot ${i === cur ? 'on' : ''}`} />
+              <span key={i} className={`car-bar ${i <= cur ? 'on' : ''}`} />
             ))}
           </div>
           <button type="button" className="car-arrow left" aria-label="Photo précédente" onClick={() => go(-1)}>
@@ -226,8 +234,18 @@ export function Discover({ onMatches }: Props) {
   const [openWhy, setOpenWhy] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [draftFilters, setDraftFilters] = useState<PreferencesDto | null>(null);
-  const [drag, setDrag] = useState(0);
-  const dragRef = useRef<{ startX: number; active: boolean }>({ startX: 0, active: false });
+  const [drag, setDrag] = useState<{ x: number; y: number } | null>(null);
+  const dragRef = useRef<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false });
+  // Enrichissement Task 30 : cloche notifications, Boost (aperçu), modale
+  // détail profil et filtre local « vérifiés uniquement ».
+  const [showNotif, setShowNotif] = useState(false);
+  const [showBoost, setShowBoost] = useState(false);
+  const [boostUntil, setBoostUntil] = useState<number>(() => Number(localStorage.getItem(BOOST_LS_KEY)) || 0);
+  const [now, setNow] = useState(() => Date.now());
+  const [detail, setDetail] = useState<FeedProfile | null>(null);
+  const [verifiedOnly, setVerifiedOnly] = useState<boolean>(() => localStorage.getItem(VERIFIED_LS_KEY) === '1');
+  // Matchs récents (cloche) — le cache est PARTAGÉ avec la page Matchs.
+  const { data: matchesData, refresh: refreshMatches } = useSwr<MatchListResponse>('matches', true, { ttlMs: 60_000 });
 
   const isInvisible = mode === 'invisible';
 
@@ -311,7 +329,13 @@ export function Discover({ onMatches }: Props) {
     if (!hasMore || loading) return;
     if (idx >= items.length - 3) void loadDeck(page + 1, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idx]);
+  }, [idx, items.length]);
+
+  /** Pile affichée — le filtre « vérifiés uniquement » est local (Task 30). */
+  const deck = useMemo(
+    () => (verifiedOnly ? items.filter((p) => p.verified) : items),
+    [items, verifiedOnly],
+  );
 
   /** Retire une personne du deck (actionnée ailleurs — Top du jour, inbox). */
   const removeFromDeck = useCallback((userId: string) => {
@@ -323,37 +347,44 @@ export function Discover({ onMatches }: Props) {
     });
   }, []);
 
-  /** Avance d'une carte avec micro-animation de sortie. */
-  const advance = useCallback((dir: Exit) => {
-    setExit(dir);
-    window.setTimeout(() => {
-      setExit(null);
-      setIdx((i) => i + 1);
-      setDrag(0);
-    }, 180);
-  }, []);
-
   /**
    * Swipe Classique/Interracial (like / pass / super).
-   * `target` permet d'agir hors deck (strip « Tu plais ! ») : la carte n'est
-   * pas forcément dans la pile courante — payload minimal vers l'API.
+   * `target` permet d'agir hors deck (strip « Tu plais ! », modale profil).
+   *
+   * Correction Task 30 (bug préexistant) : l'ancien flux retirait la carte du
+   * tableau (décalage vers la gauche) PUIS incrémentait idx — chaque swipe
+   * SAUTAIT donc le profil suivant (action sur la mauvaise carte, profil
+   * réapparissant au reload). Désormais : l'ancienne carte reste à idx
+   * pendant l'animation de sortie, PUIS removeFromDeck décale le tableau —
+   * le profil suivant prend naturellement la même place.
    */
   const doSwipe = useCallback(
     async (action: SwipeAction, target?: TargetRef) => {
-      const card = target ? items.find((x) => x.userId === target.id) : items[idx];
+      const card = target ? deck.find((x) => x.userId === target.id) : deck[idx];
       const id = card?.userId ?? target?.id;
       if (!id || busy) return;
       setBusy(true);
       setError(null);
       const photo = card?.photos[0]?.url ?? card?.photoUrl ?? target?.photo ?? null;
+      const dir: Exit = action === 'pass' ? 'left' : action === 'super' ? 'up' : 'right';
+      const flyOut = () => {
+        setExit(dir);
+        window.setTimeout(() => {
+          setExit(null);
+          setDrag(null);
+          if (id) removeFromDeck(id);
+          setBusy(false);
+        }, 180);
+      };
       try {
         const res = await api<SwipeResponse>('/api/discover/swipe', {
           json: { targetId: id, action, mode },
         });
         setQuota(res.quota);
-        if (card) removeFromDeck(id);
         removeLike(id);
         if (res.matched) {
+          refreshMatches(true); // la cloche Notifications voit le match immédiatement
+          if (card) removeFromDeck(id);
           setMatchModal({
             name: res.matchedName ?? card?.displayName ?? target?.name ?? 'Quelqu’un',
             photo,
@@ -361,18 +392,27 @@ export function Discover({ onMatches }: Props) {
           setBusy(false);
           return;
         }
-        if (!target) advance(action === 'pass' ? 'left' : 'right');
+        if (!target && card) {
+          flyOut();
+          return;
+        }
+        if (card) removeFromDeck(id);
+        setBusy(false);
       } catch (err) {
         if (err instanceof ApiError && err.status === 429) {
           setError(err.message);
+          setBusy(false);
         } else {
           setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
-          if (!target) advance(action === 'pass' ? 'left' : 'right');
+          if (!target && card) {
+            flyOut(); // échec non-429 : on sort quand même la carte (comportement établi)
+            return;
+          }
+          setBusy(false);
         }
       }
-      setBusy(false);
     },
-    [items, idx, busy, mode, advance, removeFromDeck, removeLike],
+    [deck, idx, busy, mode, removeFromDeck, removeLike, refreshMatches],
   );
 
   /** Rewind : annule ma dernière action et revient sur la carte. */
@@ -389,7 +429,7 @@ export function Discover({ onMatches }: Props) {
       if (res.undone) {
         showFlash('Dernière action annulée.');
         const prevIdx = idx - 1;
-        if (prevIdx >= 0 && items[prevIdx]?.userId === res.targetId) {
+        if (prevIdx >= 0 && deck[prevIdx]?.userId === res.targetId) {
           setIdx(prevIdx);
         } else {
           await loadDeck(1, true);
@@ -402,12 +442,12 @@ export function Discover({ onMatches }: Props) {
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
     }
     setBusy(false);
-  }, [busy, idx, items, loadDeck, showFlash]);
+  }, [busy, idx, deck, loadDeck, showFlash]);
 
   /** Handshake « Discuter » (Invisible) — deck ou strip « Tu plais ! ». */
   const doRequest = useCallback(
     async (target?: TargetRef) => {
-      const card = target ? items.find((x) => x.userId === target.id) : items[idx];
+      const card = target ? deck.find((x) => x.userId === target.id) : deck[idx];
       const id = card?.userId ?? target?.id;
       if (!id || busy) return;
       setBusy(true);
@@ -450,18 +490,16 @@ export function Discover({ onMatches }: Props) {
         }
         if (card) removeFromDeck(id);
         else removeLike(id);
-        if (!target) advance('right');
       } catch (err) {
         if (err instanceof ApiError && err.status === 409) {
           showFlash(err.message);
-          if (!target) advance('right');
         } else {
           setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
         }
       }
       setBusy(false);
     },
-    [items, idx, busy, advance, removeFromDeck, removeLike, showFlash],
+    [deck, idx, busy, removeFromDeck, removeLike, showFlash],
   );
 
   /** Bascule de mode (libre, réversible — §4.3.4) : ne touche pas aux matchs. */
@@ -562,22 +600,23 @@ export function Discover({ onMatches }: Props) {
     setIdx(0);
   }, [myCountry]);
 
-  /* ── Raccourcis clavier (PC) : ← passe · → like · ↑ super · R rewind ── */
+  /* ── Raccourcis clavier (PC) : ← passe · → like · ↑ super · R rewind · Esc ferme ── */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) {
         return;
       }
-      if (matchModal) {
-        if (e.key === 'Escape') setMatchModal(null);
-        return;
-      }
       if (e.key === 'Escape') {
-        if (showFilters) setShowFilters(false);
+        if (detail) setDetail(null);
+        else if (showNotif) setShowNotif(false);
+        else if (showBoost) setShowBoost(false);
+        else if (matchModal) setMatchModal(null);
+        else if (showFilters) setShowFilters(false);
         return;
       }
-      if (isInvisible || !items[idx]) return;
+      if (detail || showNotif || showBoost || matchModal || showFilters) return;
+      if (isInvisible || !deck[idx]) return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         void doSwipe('pass');
@@ -593,29 +632,80 @@ export function Discover({ onMatches }: Props) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isInvisible, items, idx, matchModal, showFilters, doSwipe, doRewind]);
+  }, [isInvisible, deck, idx, matchModal, showFilters, showNotif, showBoost, detail, doSwipe, doRewind]);
 
-  // --- Gestes tactiles (pointer events : touch + souris) ---
+  // --- Gestes tactiles (pointer events : touch + souris) — swipe X + Y ---
   const onPointerDown = (e: React.PointerEvent) => {
-    if (isInvisible || busy || !items[idx]) return;
-    dragRef.current = { startX: e.clientX, active: true };
+    if (isInvisible || busy || !deck[idx]) return;
+    // Les clics (carrousel, boutons internes) restent des clics — pas de drag.
+    if ((e.target as HTMLElement).closest('button, a')) return;
+    dragRef.current = { x: e.clientX, y: e.clientY, active: true };
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (!dragRef.current.active) return;
-    setDrag(e.clientX - dragRef.current.startX);
+    setDrag({ x: e.clientX - dragRef.current.x, y: e.clientY - dragRef.current.y });
   };
   const onPointerUp = () => {
     if (!dragRef.current.active) return;
     dragRef.current.active = false;
-    if (drag > DISCOVERY.swipeThresholdPx) void doSwipe('like');
-    else if (drag < -DISCOVERY.swipeThresholdPx) void doSwipe('pass');
-    else setDrag(0);
+    const d = drag;
+    if (!d) return;
+    // Seuil dépassé : le drag RESTE appliqué (pas de retour élastique) — la
+    // carte s'envole depuis sa position actuelle via flyOut(), qui remettra
+    // drag à zéro après l'animation.
+    if (d.x > DISCOVERY.swipeThresholdPx) void doSwipe('like');
+    else if (d.x < -DISCOVERY.swipeThresholdPx) void doSwipe('pass');
+    else if (d.y < -DISCOVERY.swipeThresholdPx * 1.15) void doSwipe('super');
+    else setDrag(null); // sous le seuil : retour élastique
   };
 
-  const card = items[idx] as FeedProfile | undefined;
-  const nextCard = items[idx + 1] as FeedProfile | undefined;
+  const card = deck[idx] as FeedProfile | undefined;
+  const nextCard = deck[idx + 1] as FeedProfile | undefined;
+  const nextCard2 = deck[idx + 2] as FeedProfile | undefined;
   const hero = MODE_HEROES[mode];
   const myCode = myCountry ? (countryMeta(myCountry)?.code ?? null) : null;
+
+  /* ── Boost (aperçu Wairyu+, offert) : compte à rebours local ── */
+  const boostActive = boostUntil > now;
+  const boostLeft = boostActive ? Math.max(1, Math.ceil((boostUntil - now) / 60_000)) : 0;
+  const activateBoost = useCallback(() => {
+    const until = Date.now() + BOOST_MS;
+    try {
+      localStorage.setItem(BOOST_LS_KEY, String(until));
+    } catch {
+      /* stockage indisponible — l'état reste en mémoire pour la session */
+    }
+    setBoostUntil(until);
+    setNow(Date.now());
+    setShowBoost(false);
+    showFlash('⚡ Boost activé — ton profil est mis en avant pendant 30 minutes.');
+  }, [showFlash]);
+
+  useEffect(() => {
+    if (boostUntil <= Date.now()) return;
+    const id = window.setInterval(() => {
+      setNow(Date.now());
+      if (Date.now() >= boostUntil) {
+        setBoostUntil(0);
+        try {
+          localStorage.removeItem(BOOST_LS_KEY);
+        } catch {
+          /* idem */
+        }
+        showFlash('⚡ Boost terminé — ton profil est de retour à la normale.');
+      }
+    }, 30_000);
+    return () => window.clearInterval(id);
+  }, [boostUntil, showFlash]);
+
+  /* ── Cloche Notifications : likes/supers reçus, matchs récents, demandes ── */
+  const newMatches = useMemo(
+    () => (matchesData?.matches ?? []).filter((m) => m.createdAt * 1000 > Date.now() - 7 * 86_400_000),
+    [matchesData],
+  );
+  const supersReceived = useMemo(() => (likes?.items ?? []).filter((l) => l.action === 'super'), [likes]);
+  const notifCount =
+    (likes?.count ?? 0) + newMatches.length + (isInvisible ? inbox?.received.length ?? 0 : 0);
 
   /** Chips géo intercontinentales (mode Interracial). */
   const renderGeoChips = (p: FeedProfile) => {
@@ -731,12 +821,15 @@ export function Discover({ onMatches }: Props) {
           <button
             type="button"
             className="btn ghost why-toggle"
-            onClick={() => setOpenWhy((v) => (v === p.userId ? null : p.userId))}
+            onClick={(e) => {
+              e.stopPropagation(); // le corps de carte ouvre le détail — pas ce bouton
+              setOpenWhy((v) => (v === p.userId ? null : p.userId));
+            }}
           >
             {openWhy === p.userId ? 'Masquer' : 'Pourquoi ce match ?'}
           </button>
           {openWhy === p.userId && (
-            <div className="why-box">
+            <div className="why-box" onClick={(e) => e.stopPropagation()}>
               <strong>Points forts</strong>
               <ul>
                 {p.matchReasons.forces.map((f, i) => (
@@ -761,10 +854,25 @@ export function Discover({ onMatches }: Props) {
   return (
     <div className="app discover">
       <header className="wizard-head plain">
-        <h1>Découvrir</h1>
-        <button type="button" className="btn ghost matches-link" onClick={onMatches}>
-          Mes matchs
-        </button>
+        <div className="head-brand">
+          <span className="head-logo" aria-hidden="true">w</span>
+          <h1>Découvrir</h1>
+        </div>
+        <div className="head-actions">
+          <button
+            type="button"
+            className="head-bell"
+            aria-label={`Notifications${notifCount > 0 ? ` (${notifCount})` : ''}`}
+            title={notifCount > 0 ? `${notifCount} nouveauté${notifCount > 1 ? 's' : ''}` : 'Aucune nouveauté'}
+            onClick={() => setShowNotif(true)}
+          >
+            🔔
+            {notifCount > 0 && <span className="tabbar-badge">{notifCount > 9 ? '9+' : notifCount}</span>}
+          </button>
+          <button type="button" className="btn ghost matches-link" onClick={onMatches}>
+            Mes matchs
+          </button>
+        </div>
       </header>
 
       {/* Onglets de mode — libre, réversible, transparent (§4.3.4) */}
@@ -825,64 +933,258 @@ export function Discover({ onMatches }: Props) {
       </div>
 
       {showFilters && draftFilters && (
-        <div className="filter-panel">
-          <div className="filter-grid">
-            <label>
-              Âge min
-              <input
-                type="number" min={18} max={99} value={draftFilters.minAge}
-                onChange={(e) => setDraftFilters({ ...draftFilters, minAge: Number(e.target.value) || 18 })}
-              />
-            </label>
-            <label>
-              Âge max
-              <input
-                type="number" min={18} max={99} value={draftFilters.maxAge}
-                onChange={(e) => setDraftFilters({ ...draftFilters, maxAge: Number(e.target.value) || 99 })}
-              />
-            </label>
-            <label>
-              Distance : {draftFilters.distanceKm} km
-              <input
-                type="range" min={1} max={500} value={draftFilters.distanceKm}
-                onChange={(e) => setDraftFilters({ ...draftFilters, distanceKm: Number(e.target.value) })}
-              />
-              {mode === 'interracial' && <small>Non appliqué en Interracial — portée mondiale.</small>}
-            </label>
-            <label>
-              Montre-moi
-              <select
-                value={draftFilters.prefGender}
-                onChange={(e) => setDraftFilters({ ...draftFilters, prefGender: e.target.value as PreferencesDto['prefGender'] })}
-              >
-                <option value="everyone">Tout le monde</option>
-                <option value="women">Des femmes</option>
-                <option value="men">Des hommes</option>
-              </select>
-            </label>
-            <label>
-              Intention
-              <select
-                value={draftFilters.prefIntent ?? ''}
-                onChange={(e) =>
-                  setDraftFilters({ ...draftFilters, prefIntent: (e.target.value || null) as PreferencesDto['prefIntent'] })
-                }
-              >
-                <option value="">Toutes les intentions</option>
-                {Object.entries(LABELS.intent).map(([k, v]) => (
-                  <option key={k} value={k}>{v}</option>
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowFilters(false);
+          }}
+        >
+          <div className="modal-card" role="dialog" aria-modal="true" aria-label="Filtres de découverte">
+            <div className="modal-head">
+              <h2>Filtres</h2>
+              <button type="button" className="modal-close" aria-label="Fermer" onClick={() => setShowFilters(false)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="filter-grid">
+                <label className="filter-slider">
+                  <span>
+                    Âge min : <strong>{draftFilters.minAge} ans</strong>
+                  </span>
+                  <input
+                    type="range" min={18} max={98} value={draftFilters.minAge}
+                    onChange={(e) =>
+                      setDraftFilters({ ...draftFilters, minAge: Math.min(Number(e.target.value) || 18, draftFilters.maxAge - 1) })
+                    }
+                  />
+                </label>
+                <label className="filter-slider">
+                  <span>
+                    Âge max : <strong>{draftFilters.maxAge} ans</strong>
+                  </span>
+                  <input
+                    type="range" min={19} max={99} value={draftFilters.maxAge}
+                    onChange={(e) =>
+                      setDraftFilters({ ...draftFilters, maxAge: Math.max(Number(e.target.value) || 99, draftFilters.minAge + 1) })
+                    }
+                  />
+                </label>
+                <label className="filter-slider">
+                  <span>
+                    Distance : <strong>{draftFilters.distanceKm} km</strong>
+                    {mode === 'interracial' && <em> — non appliquée en Interracial (portée mondiale)</em>}
+                  </span>
+                  <input
+                    type="range" min={1} max={500} value={draftFilters.distanceKm}
+                    disabled={mode === 'interracial'}
+                    onChange={(e) => setDraftFilters({ ...draftFilters, distanceKm: Number(e.target.value) })}
+                  />
+                </label>
+              </div>
+
+              <div className="filter-chips">
+                <p className="filter-label">Montre-moi</p>
+                {([['everyone', 'Tout le monde'], ['women', 'Des femmes'], ['men', 'Des hommes']] as const).map(([v, l]) => (
+                  <button
+                    key={v}
+                    type="button"
+                    className={`chip filter-chip ${draftFilters.prefGender === v ? 'on' : ''}`}
+                    onClick={() => setDraftFilters({ ...draftFilters, prefGender: v })}
+                  >
+                    {l}
+                  </button>
                 ))}
-              </select>
-            </label>
+              </div>
+
+              <div className="filter-chips">
+                <p className="filter-label">Intention</p>
+                <button
+                  type="button"
+                  className={`chip filter-chip ${!draftFilters.prefIntent ? 'on' : ''}`}
+                  onClick={() => setDraftFilters({ ...draftFilters, prefIntent: null })}
+                >
+                  Toutes
+                </button>
+                {Object.entries(LABELS.intent).map(([k, v]) => (
+                  <button
+                    key={k}
+                    type="button"
+                    className={`chip filter-chip ${draftFilters.prefIntent === k ? 'on' : ''}`}
+                    onClick={() => setDraftFilters({ ...draftFilters, prefIntent: k as PreferencesDto['prefIntent'] })}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+
+              <div className="filter-switch-row">
+                <div>
+                  <p className="filter-label">✓ Profils vérifiés uniquement</p>
+                  <p className="hint">S'applique instantanément à la pile chargée.</p>
+                </div>
+                <button
+                  type="button"
+                  className={`switch ${verifiedOnly ? 'on' : ''}`}
+                  role="switch"
+                  aria-checked={verifiedOnly}
+                  onClick={() => {
+                    const nv = !verifiedOnly;
+                    setVerifiedOnly(nv);
+                    try {
+                      localStorage.setItem(VERIFIED_LS_KEY, nv ? '1' : '0');
+                    } catch {
+                      /* idem */
+                    }
+                    setIdx(0);
+                  }}
+                >
+                  <span className="knob" />
+                </button>
+              </div>
+            </div>
+            <div className="modal-foot">
+              <button type="button" className="btn ghost" onClick={() => setShowFilters(false)}>
+                Annuler
+              </button>
+              <button type="button" className="btn primary" disabled={busy} onClick={() => void applyFilters()}>
+                Appliquer
+              </button>
+            </div>
           </div>
-          <button type="button" className="btn primary" disabled={busy} onClick={() => void applyFilters()}>
-            Appliquer
-          </button>
         </div>
       )}
 
       {error && <p className="error">{error}</p>}
       {flash && <p className="flash-msg">{flash}</p>}
+
+      {/* ── PILE CLASSIQUE / INTERRACIAL ── */}
+      {!isInvisible && (
+        <div className="deck-zone">
+          {loading && items.length === 0 && (
+            <p className="status"><span className="dot" /> Recherche de profils compatibles…</p>
+          )}
+          {!loading && !card && (
+            <div className="deck-empty">
+              <span className="deck-empty-emoji" aria-hidden="true">🌙</span>
+              <p className="q-done-note">
+                Plus personne dans ta pile pour l’instant. Élargis tes filtres — ou reviens demain :
+                de nouvelles personnes rejoignent wairyu chaque jour.
+              </p>
+              <div className="btn-row">
+                <button type="button" className="btn ghost" onClick={() => void loadAround()}>
+                  Recharger
+                </button>
+                <button type="button" className="btn primary" onClick={() => setShowFilters(true)}>
+                  Élargir mes filtres
+                </button>
+              </div>
+            </div>
+          )}
+          {nextCard2 && (
+            <div className="deck-card behind behind-2" aria-hidden="true">
+              {nextCard2.photoUrl ? (
+                <div className={`feed-photo ${nextCard2.photoBlurred ? 'blurred' : ''}`}>
+                  <img src={nextCard2.photoUrl} alt="" loading="lazy" draggable={false} />
+                </div>
+              ) : (
+                <div className="feed-photo empty"><span>✨</span></div>
+              )}
+              <div className="feed-body">
+                <h3>{nextCard2.displayName}</h3>
+              </div>
+            </div>
+          )}
+          {nextCard && (
+            <div className="deck-card behind behind-1" aria-hidden="true">
+              {nextCard.photoUrl ? (
+                <div className={`feed-photo ${nextCard.photoBlurred ? 'blurred' : ''}`}>
+                  <img src={nextCard.photoUrl} alt="" loading="lazy" draggable={false} />
+                </div>
+              ) : (
+                <div className="feed-photo empty"><span>✨</span></div>
+              )}
+              <div className="feed-body">
+                <h3>{nextCard.displayName}</h3>
+              </div>
+            </div>
+          )}
+          {card && (
+            <article
+              className={`deck-card ${exit ? `exit-${exit}` : ''}`}
+              style={
+                drag && !exit
+                  ? {
+                      transform: `translate(${drag.x}px, ${drag.y}px) rotate(${drag.x * 0.06}deg)`,
+                      transition: 'none',
+                    }
+                  : undefined
+              }
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerLeave={onPointerUp}
+            >
+              <span className={`stamp stamp-like ${drag && drag.x > 40 ? 'on' : ''}`}>LIKE</span>
+              <span className={`stamp stamp-pass ${drag && drag.x < -40 ? 'on' : ''}`}>NOPE</span>
+              <span className={`stamp stamp-super ${drag && drag.y < -60 ? 'on' : ''}`}>SUPER</span>
+              <CardCarousel p={card} />
+              <div className="feed-body clickable" onClick={() => setDetail(card)} title="Voir le profil complet">
+                {renderCardBody(card, !!card.photoUrl && !card.photoBlurred)}
+              </div>
+            </article>
+          )}
+          {card && (
+            <>
+              <div className="deck-actions">
+                <button
+                  type="button" className="deck-btn rewind" aria-label="Annuler la dernière action"
+                  disabled={busy || (quota?.rewindsLeft ?? 0) < 1}
+                  onClick={() => void doRewind()}
+                  title={(quota?.rewindsLeft ?? 0) < 1 ? 'Rewind déjà utilisé aujourd’hui' : 'Annuler la dernière action'}
+                >
+                  ↺
+                </button>
+                <button
+                  type="button" className="deck-btn pass" aria-label="Passer"
+                  disabled={busy} onClick={() => void doSwipe('pass')}
+                >
+                  ✕
+                </button>
+                <button
+                  type="button" className="deck-btn super" aria-label="Super Like"
+                  disabled={busy || (quota?.supersLeft ?? 0) < 1}
+                  onClick={() => void doSwipe('super')}
+                  title="Super Like — 1 par jour, il le saura immédiatement"
+                >
+                  ✶
+                </button>
+                <button
+                  type="button" className="deck-btn like" aria-label="Liker"
+                  disabled={busy || (quota?.likesLeft ?? 0) < 1}
+                  onClick={() => void doSwipe('like')}
+                >
+                  ♥
+                </button>
+                <button
+                  type="button" className={`deck-btn boost ${boostActive ? 'active' : ''}`} aria-label="Boost"
+                  onClick={() => setShowBoost(true)}
+                  title={boostActive ? `Boost actif — ${boostLeft} min restantes` : 'Boost — mets ton profil en avant (offert)'}
+                >
+                  ⚡
+                </button>
+              </div>
+              <div className="kbd-hints" aria-hidden="true">
+                <span><kbd>←</kbd> passer</span>
+                <span><kbd>→</kbd> liker</span>
+                <span><kbd>↑</kbd> super</span>
+                <span><kbd>R</kbd> annuler</span>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
 
       {/* « Tu plais ! » — likes reçus en attente (gratuit, éthique : la
           personne ne sait pas que tu vois cette liste tant que tu réponds) */}
@@ -890,6 +1192,9 @@ export function Discover({ onMatches }: Props) {
         <section className="likes-section">
           <h2 className="section-title">
             🔥 Tu plais ! <span className="likes-count">{likes.count}</span>
+            <a className="see-all" href="#/likes" title="Tous tes likes reçus">
+              Voir tout →
+            </a>
           </h2>
           <div className="likes-strip">
             {likes.items.map((l) => (
@@ -1015,108 +1320,6 @@ export function Discover({ onMatches }: Props) {
         </section>
       )}
 
-      {/* ── PILE CLASSIQUE / INTERRACIAL ── */}
-      {!isInvisible && (
-        <div className="deck-zone">
-          {loading && items.length === 0 && (
-            <p className="status"><span className="dot" /> Recherche de profils compatibles…</p>
-          )}
-          {!loading && !card && (
-            <div className="deck-empty">
-              <span className="deck-empty-emoji" aria-hidden="true">🌙</span>
-              <p className="q-done-note">
-                Plus personne dans ta pile pour l’instant. Élargis tes filtres — ou reviens demain :
-                de nouvelles personnes rejoignent wairyu chaque jour.
-              </p>
-              <div className="btn-row">
-                <button type="button" className="btn ghost" onClick={() => void loadAround()}>
-                  Recharger
-                </button>
-                <button type="button" className="btn primary" onClick={() => setShowFilters(true)}>
-                  Élargir mes filtres
-                </button>
-              </div>
-            </div>
-          )}
-          {nextCard && (
-            <div className="deck-card behind" aria-hidden="true">
-              {nextCard.photoUrl ? (
-                <div className={`feed-photo ${nextCard.photoBlurred ? 'blurred' : ''}`}>
-                  <img src={nextCard.photoUrl} alt="" loading="lazy" draggable={false} />
-                </div>
-              ) : (
-                <div className="feed-photo empty"><span>✨</span></div>
-              )}
-              <div className="feed-body">
-                <h3>{nextCard.displayName}</h3>
-              </div>
-            </div>
-          )}
-          {card && (
-            <article
-              className={`deck-card ${exit ? `exit-${exit}` : ''}`}
-              style={
-                drag !== 0
-                  ? { transform: `translateX(${drag}px) rotate(${drag * 0.04}deg)` }
-                  : undefined
-              }
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={onPointerUp}
-              onPointerLeave={onPointerUp}
-            >
-              <span className={`stamp stamp-like ${drag > 40 ? 'on' : ''}`}>♥</span>
-              <span className={`stamp stamp-pass ${drag < -40 ? 'on' : ''}`}>✕</span>
-              <CardCarousel p={card} />
-              <div className="feed-body">
-                {renderCardBody(card, !!card.photoUrl && !card.photoBlurred)}
-              </div>
-            </article>
-          )}
-          {card && (
-            <>
-              <div className="deck-actions">
-                <button
-                  type="button" className="deck-btn rewind" aria-label="Annuler la dernière action"
-                  disabled={busy || (quota?.rewindsLeft ?? 0) < 1}
-                  onClick={() => void doRewind()}
-                  title={(quota?.rewindsLeft ?? 0) < 1 ? 'Rewind déjà utilisé aujourd’hui' : 'Annuler la dernière action'}
-                >
-                  ↺
-                </button>
-                <button
-                  type="button" className="deck-btn pass" aria-label="Passer"
-                  disabled={busy} onClick={() => void doSwipe('pass')}
-                >
-                  ✕
-                </button>
-                <button
-                  type="button" className="deck-btn super" aria-label="Super Like"
-                  disabled={busy || (quota?.supersLeft ?? 0) < 1}
-                  onClick={() => void doSwipe('super')}
-                  title="Super Like — 1 par jour, il le saura immédiatement"
-                >
-                  ✶
-                </button>
-                <button
-                  type="button" className="deck-btn like" aria-label="Liker"
-                  disabled={busy || (quota?.likesLeft ?? 0) < 1}
-                  onClick={() => void doSwipe('like')}
-                >
-                  ♥
-                </button>
-              </div>
-              <div className="kbd-hints" aria-hidden="true">
-                <span><kbd>←</kbd> passer</span>
-                <span><kbd>→</kbd> liker</span>
-                <span><kbd>↑</kbd> super</span>
-                <span><kbd>R</kbd> annuler</span>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
       {/* ── EXPLORER / DISCUTER (INVISIBLE) ── */}
       {isInvisible && (
         <div className="inv-list">
@@ -1200,6 +1403,242 @@ export function Discover({ onMatches }: Props) {
               <button type="button" className="btn ghost" onClick={() => setMatchModal(null)}>
                 Continuer à découvrir
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modale Notifications — likes, supers, matchs, demandes (Task 30) */}
+      {showNotif && (
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowNotif(false);
+          }}
+        >
+          <div className="modal-card" role="dialog" aria-modal="true" aria-label="Notifications">
+            <div className="modal-head">
+              <h2>🔔 Notifications</h2>
+              <button type="button" className="modal-close" aria-label="Fermer" onClick={() => setShowNotif(false)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body notif-list">
+              {notifCount === 0 && (
+                <p className="q-done-note">
+                  Aucune nouveauté pour l’instant — continue à découvrir, ça bouge vite ici !
+                </p>
+              )}
+              {isInvisible &&
+                inbox?.received.map((r) => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    className="notif-row"
+                    onClick={() => {
+                      setShowNotif(false);
+                      showFlash('La demande t’attend dans la section « Demandes de discussion ».');
+                    }}
+                  >
+                    <span className="notif-ico req" aria-hidden="true">✉</span>
+                    <span>
+                      <strong>{r.fromName}</strong> voudrait discuter avec toi
+                    </span>
+                  </button>
+                ))}
+              {supersReceived.map((l) => (
+                <button
+                  key={`s-${l.userId}`}
+                  type="button"
+                  className="notif-row"
+                  onClick={() => {
+                    setShowNotif(false);
+                    window.location.hash = '#/likes';
+                  }}
+                >
+                  <span className="notif-ico super" aria-hidden="true">✶</span>
+                  <span>
+                    <strong>{l.displayName}</strong> t’a envoyé un Super Like
+                  </span>
+                </button>
+              ))}
+              {likes && likes.count > 0 && (
+                <button
+                  type="button"
+                  className="notif-row"
+                  onClick={() => {
+                    setShowNotif(false);
+                    window.location.hash = '#/likes';
+                  }}
+                >
+                  <span className="notif-ico like" aria-hidden="true">♥</span>
+                  <span>
+                    <strong>{likes.count}</strong> personne{likes.count > 1 ? 's' : ''} t’a
+                    liké{likes.count > 1 ? 'y' : ''} — appuie pour révéler
+                  </span>
+                </button>
+              )}
+              {newMatches.slice(0, 3).map((m) => (
+                <button
+                  key={m.matchId}
+                  type="button"
+                  className="notif-row"
+                  onClick={() => {
+                    setShowNotif(false);
+                    onMatches();
+                  }}
+                >
+                  <span className="notif-ico match" aria-hidden="true">⚡</span>
+                  <span>
+                    Nouveau match avec <strong>{m.other.displayName}</strong>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modale Boost — aperçu Wairyu+ offert pendant le lancement */}
+      {showBoost && (
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowBoost(false);
+          }}
+        >
+          <div className="modal-card boost-modal" role="dialog" aria-modal="true" aria-label="Boost">
+            <div className="modal-head">
+              <h2>⚡ Boost</h2>
+              <button type="button" className="modal-close" aria-label="Fermer" onClick={() => setShowBoost(false)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              {boostActive ? (
+                <p className="boost-status">
+                  Ton profil est mis en avant — <strong>{boostLeft} min restantes</strong>.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    Pendant <strong>30 minutes</strong>, ton profil passe en tête des découvertes
+                    de ta zone : plus de vues, plus de likes, zéro effort.
+                  </p>
+                  <p className="hint">Offert pendant la phase de lancement — aperçu de Wairyu+.</p>
+                </>
+              )}
+            </div>
+            <div className="modal-foot">
+              {boostActive ? (
+                <button type="button" className="btn ghost" onClick={() => setShowBoost(false)}>
+                  Fermer
+                </button>
+              ) : (
+                <>
+                  <button type="button" className="btn ghost" onClick={() => setShowBoost(false)}>
+                    Plus tard
+                  </button>
+                  <button type="button" className="btn primary" onClick={activateBoost}>
+                    ⚡ Activer mon Boost
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modale Détail profil — grand carrousel + toutes les infos + actions */}
+      {detail && (
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setDetail(null);
+          }}
+        >
+          <div className="modal-card profile-modal" role="dialog" aria-modal="true" aria-label={`Profil de ${detail.displayName}`}>
+            <div className="profile-modal-photo">
+              <CardCarousel p={detail} />
+              <button
+                type="button"
+                className="modal-close on-photo"
+                aria-label="Fermer"
+                onClick={() => setDetail(null)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="profile-modal-head">
+                <h2>
+                  {detail.displayName}, {detail.age}
+                  {detail.verified && (
+                    <span className="ov-verified" title="Selfie reviewé par l'équipe wairyu">
+                      ✓
+                    </span>
+                  )}
+                </h2>
+                {detail.online && (
+                  <span className={`chip-ov ov-online ${detail.online}`}>
+                    <span className="dot-on" />
+                    {ONLINE_LABELS[detail.online]}
+                  </span>
+                )}
+              </div>
+              {renderCardBody(detail, true)}
+            </div>
+            <div className="modal-foot">
+              {isInvisible ? (
+                <button
+                  type="button"
+                  className="btn primary"
+                  disabled={busy || (quota?.invisibleLeft ?? 0) < 1}
+                  onClick={() => {
+                    const d = detail;
+                    setDetail(null);
+                    void doRequest({ id: d.userId, photo: d.photoUrl, name: d.displayName });
+                  }}
+                >
+                  ✉ Demander à discuter
+                </button>
+              ) : (
+                <div className="deck-actions modal-actions">
+                  <button
+                    type="button" className="deck-btn pass" aria-label="Passer"
+                    disabled={busy}
+                    onClick={() => {
+                      const d = detail;
+                      setDetail(null);
+                      void doSwipe('pass', { id: d.userId, photo: d.photoUrl, name: d.displayName });
+                    }}
+                  >
+                    ✕
+                  </button>
+                  <button
+                    type="button" className="deck-btn super" aria-label="Super Like"
+                    disabled={busy || (quota?.supersLeft ?? 0) < 1}
+                    onClick={() => {
+                      const d = detail;
+                      setDetail(null);
+                      void doSwipe('super', { id: d.userId, photo: d.photoUrl, name: d.displayName });
+                    }}
+                  >
+                    ✶
+                  </button>
+                  <button
+                    type="button" className="deck-btn like" aria-label="Liker"
+                    disabled={busy || (quota?.likesLeft ?? 0) < 1}
+                    onClick={() => {
+                      const d = detail;
+                      setDetail(null);
+                      void doSwipe('like', { id: d.userId, photo: d.photoUrl, name: d.displayName });
+                    }}
+                  >
+                    ♥
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

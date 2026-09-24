@@ -34,6 +34,8 @@ export const SWR_PATHS = {
   conversations: '/api/chat/conversations',
   matches: '/api/discover/matches',
   profile: '/api/profile',
+  /** Likes reçus en attente (« Tu plais ! ») — badge onglet Likes + page. */
+  'likes-me': '/api/discover/likes',
 } as const;
 
 export type SwrKey = keyof typeof SWR_PATHS;
