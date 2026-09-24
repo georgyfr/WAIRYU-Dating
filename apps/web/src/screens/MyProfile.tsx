@@ -9,8 +9,8 @@
  * La page ne duplique AUCUNE donnée : tout vient de GET /api/profile
  * (URLs signées côté Worker — le propriétaire voit ses photos nettes).
  */
-import { useEffect, useState } from 'react';
-import { api, ApiError } from '../lib/api';
+import { useState } from 'react';
+import { useSwr } from '../lib/swr';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
 import { LABELS, PROMPT_LIBRARY, type ProfileResponse } from '@wairyu/shared';
 
@@ -33,16 +33,14 @@ function ageOf(birthDate: string | null): number | null {
 }
 
 export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
-  const [prof, setProf] = useState<ProfileResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  // Cache SWR : le profil s'affiche instantanément au retour sur l'onglet,
+  // revalidé en arrière-plan (TTL 30 s — les modifications passent par
+  // l'assistant qui invalide la clé « profile » après sauvegarde).
+  const { data: prof, loading, error } = useSwr<ProfileResponse>('profile', true, {
+    ttlMs: 30_000,
+  });
   const [photoIdx, setPhotoIdx] = useState(0);
   const [showPers, setShowPers] = useState(false);
-
-  useEffect(() => {
-    api<ProfileResponse>('/api/profile')
-      .then(setProf)
-      .catch((err) => setError(err instanceof ApiError ? err.message : 'Erreur inattendue.'));
-  }, []);
 
   if (error) {
     return (
@@ -53,7 +51,7 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
     );
   }
 
-  if (!prof) {
+  if (!prof || loading) {
     return (
       <div className="app page-profile">
         <header className="wizard-head plain"><h1>Mon profil</h1></header>

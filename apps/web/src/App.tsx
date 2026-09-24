@@ -6,8 +6,9 @@
  * #/profile (assistant) · #/questionnaire · #/chat/:id · #/app (paramètres).
  * La session est détectée au chargement via /api/me (cookie httpOnly signé).
  */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from './lib/api';
+import { useSwr, clearSwr } from './lib/swr';
 import { Signup } from './screens/Signup';
 import { Login } from './screens/Login';
 import { Verify } from './screens/Verify';
@@ -119,7 +120,19 @@ export default function App() {
   const [me, setMe] = useState<MeResponse | null>(null);
   const [checking, setChecking] = useState(true);
   const [apiOk, setApiOk] = useState<boolean | null>(null);
-  const [unread, setUnread] = useState(0);
+
+  // Badge de l'onglet Messages : le cache SWR est PARTAGÉ avec la page
+  // Messages — une seule requête réseau sert le badge ET la page, et les
+  // revalidations de l'une mettent à jour l'autre instantanément (Task 28).
+  const { data: convData, refresh: refreshConv } = useSwr<ConversationListResponse>(
+    'conversations',
+    !!me,
+    { ttlMs: 30_000 },
+  );
+  const unread = useMemo(
+    () => convData?.conversations.reduce((n, cv) => n + cv.unread, 0) ?? 0,
+    [convData],
+  );
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash());
@@ -147,6 +160,7 @@ export default function App() {
   }, []);
 
   const onLoggedOut = useCallback(() => {
+    clearSwr(); // aucune donnée de l'ancien compte ne doit survivre (Task 28)
     setMe(null);
     go('#/');
   }, [go]);
@@ -181,30 +195,15 @@ export default function App() {
       go('#/');
   }, [checking, route, me, go]);
 
-  // Badge de l'onglet Messages : polling léger (30 s, onglet visible) +
-  // rafraîchissement à chaque changement de page (retour de chat notamment).
+  // Badge : polling léger 30 s (onglet visible). Le refresh est dédupliqué
+  // et bridé côté cache — plus de requête à chaque changement de page.
   useEffect(() => {
-    if (!me) {
-      setUnread(0);
-      return;
-    }
-    let alive = true;
-    const refresh = () => {
-      api<ConversationListResponse>('/api/chat/conversations')
-        .then((r) => {
-          if (alive) setUnread(r.conversations.reduce((n, cv) => n + cv.unread, 0));
-        })
-        .catch(() => undefined); // silencieux — le badge n'est pas critique
-    };
-    refresh();
+    if (!me) return;
     const id = window.setInterval(() => {
-      if (document.visibilityState === 'visible') refresh();
+      if (document.visibilityState === 'visible') refreshConv();
     }, 30_000);
-    return () => {
-      alive = false;
-      window.clearInterval(id);
-    };
-  }, [me, route.name]);
+    return () => window.clearInterval(id);
+  }, [me, refreshConv]);
 
   // ---- Rendu ----
   let content: JSX.Element;

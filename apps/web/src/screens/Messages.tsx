@@ -10,8 +10,8 @@
  * le match (passerelle Classique → Invisible, modes), cette page est la
  * messagerie au quotidien — ce qu'on ouvre des dizaines de fois par jour.
  */
-import { useCallback, useEffect, useState } from 'react';
-import { api, ApiError } from '../lib/api';
+import { useEffect } from 'react';
+import { useSwr } from '../lib/swr';
 import type { ConversationLastMessage, ConversationListResponse } from '@wairyu/shared';
 
 interface Props {
@@ -38,33 +38,25 @@ function previewText(m: ConversationLastMessage): string {
 }
 
 export function Messages({ onOpenChat, onDiscover }: Props) {
-  const [data, setData] = useState<ConversationListResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const load = useCallback(async () => {
-    setError(null);
-    try {
-      setData(await api<ConversationListResponse>('/api/chat/conversations'));
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
-    }
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    void load();
-  }, [load]);
+  // Cache SWR partagé avec le badge de l'onglet (App) : au retour sur cette
+  // page, la liste s'affiche INSTANTANÉMENT depuis le cache puis se
+  // revalide en arrière-plan (Task 28 — plus de spinner à chaque clic).
+  const { data, loading, error, refresh } = useSwr<ConversationListResponse>(
+    'conversations',
+    true,
+    { ttlMs: 10_000 },
+  );
 
   // Au retour du chat (ou du fond), la liste se rafraîchit — les non-lus
-  // viennent d'être marqués lus par la conversation ouverte.
+  // viennent d'être marqués lus par la conversation ouverte (revalidation
+  // forcée : l'utilisateur revient JUSTE pour voir ça).
   useEffect(() => {
     const onVis = () => {
-      if (document.visibilityState === 'visible') void load();
+      if (document.visibilityState === 'visible') refresh(true);
     };
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);
-  }, [load]);
+  }, [refresh]);
 
   return (
     <div className="app page-messages">

@@ -15,6 +15,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, apiForm, ApiError } from '../lib/api';
 import { processPhoto, PhotoError } from '../lib/photo';
+import { invalidateSwr } from '../lib/swr';
 import {
   INTENTS,
   LABELS,
@@ -211,6 +212,9 @@ export function Profile({ onDone }: Props) {
           prefIntent: prefIntent || null,
         },
       });
+      // Le profil vient de changer : la page « Mon profil » doit re-fetch,
+      // pas resservir le cache (Task 28).
+      invalidateSwr('profile');
       onDone();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inattendue.');

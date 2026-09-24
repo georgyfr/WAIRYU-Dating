@@ -575,37 +575,41 @@ discoverRoutes.get('/discover/inbox', async (c) => {
 
   const received: InvisibleRequestDto[] = [];
   const sent: InvisibleRequestDto[] = [];
-  for (const r of rows ?? []) {
-    const mine = r.from_user === user.id;
-    const base = {
-      id: r.id,
-      fromUser: r.from_user,
-      fromName: '',
-      toUser: r.to_user,
-      toName: r.display_name ?? 'Quelqu’un',
-      status: r.status as InvisibleRequestDto['status'],
-      createdAt: r.created_at,
-      photoUrl: null as string | null,
-      photoBlurred: r.owner_mode === 'invisible',
-      personalityType: (r.personality_type as InvisibleRequestDto['personalityType']) ?? null,
-      personalityValidated: r.personality_validated === 1,
-    };
-    if (mine) {
-      // Ma demande : je vois le profil de la personne sollicitée.
-      const photo = await bestPhoto(c, r.to_user, base.photoBlurred);
-      base.toName = r.display_name ?? 'Quelqu’un';
-      base.photoUrl = photo.url;
-      base.photoBlurred = photo.blurred;
-      sent.push(base);
-    } else {
-      // Demande reçue : le demandeur se présente.
-      base.fromName = r.display_name ?? 'Quelqu’un';
-      const photo = await bestPhoto(c, r.from_user, base.photoBlurred);
-      base.photoUrl = photo.url;
-      base.photoBlurred = photo.blurred;
-      received.push(base);
-    }
-  }
+  // Performance (Task 28) : photos calculées en PARALLÈLE (boucle séquentielle
+  // N×D1 supprimée — même correctif que /discover/matches).
+  await Promise.all(
+    (rows ?? []).map(async (r) => {
+      const mine = r.from_user === user.id;
+      const base = {
+        id: r.id,
+        fromUser: r.from_user,
+        fromName: '',
+        toUser: r.to_user,
+        toName: r.display_name ?? 'Quelqu’un',
+        status: r.status as InvisibleRequestDto['status'],
+        createdAt: r.created_at,
+        photoUrl: null as string | null,
+        photoBlurred: r.owner_mode === 'invisible',
+        personalityType: (r.personality_type as InvisibleRequestDto['personalityType']) ?? null,
+        personalityValidated: r.personality_validated === 1,
+      };
+      if (mine) {
+        // Ma demande : je vois le profil de la personne sollicitée.
+        const photo = await bestPhoto(c, r.to_user, base.photoBlurred);
+        base.toName = r.display_name ?? 'Quelqu’un';
+        base.photoUrl = photo.url;
+        base.photoBlurred = photo.blurred;
+        sent.push(base);
+      } else {
+        // Demande reçue : le demandeur se présente.
+        base.fromName = r.display_name ?? 'Quelqu’un';
+        const photo = await bestPhoto(c, r.from_user, base.photoBlurred);
+        base.photoUrl = photo.url;
+        base.photoBlurred = photo.blurred;
+        received.push(base);
+      }
+    }),
+  );
 
   const body: InboxResponse = {
     received,
@@ -659,35 +663,71 @@ discoverRoutes.get('/discover/matches', async (c) => {
       mr_created: number | null;
     }>();
 
-  const matches: MatchDto[] = [];
-  for (const r of rows ?? []) {
-    const convMode = r.conv_mode === 'invisible' ? 'invisible' : 'classic';
-    // Flou de conversation (§4.8) : piloté par le MODE DE LA CONVERSATION,
-    // pas par le mode de découverte des membres.
-    const photo = await bestPhoto(c, r.other_id, convMode === 'invisible');
-    matches.push({
-      matchId: r.match_id,
-      conversationId: r.conv_id,
-      conversationMode: convMode,
-      origin: (r.origin as MatchDto['origin']) ?? 'like',
-      createdAt: r.created_at,
-      other: {
-        userId: r.other_id,
-        displayName: r.display_name ?? 'Quelqu’un',
-        city: r.city,
-        country: r.country,
-        photoUrl: photo.url,
-        photoBlurred: photo.blurred,
-        personalityType: (r.personality_type as MatchDto['other']['personalityType']) ?? null,
-        personalityValidated: r.personality_validated === 1,
-        verified: r.other_verified != null,
-      },
-      pendingGateway:
-        r.mr_id != null
-          ? { id: r.mr_id, fromMe: r.mr_from === user.id, createdAt: r.mr_created ?? 0 }
-          : null,
-    });
+  const matchRows = rows ?? [];
+
+  // Performance (Task 28) : UNE seule requête pour les photos de TOUS les
+  // matchs (au lieu d'une requête D1 par match dans une boucle séquentielle),
+  // puis signatures en parallèle.
+  const photoMap = new Map<string, PhotoMeta>();
+  if (matchRows.length > 0) {
+    const mPlaceholders = matchRows.map(() => '?').join(',');
+    const { results: photoRows } = await c.env.DB.prepare(
+      `SELECT user_id, id, cloudinary_version FROM photos
+       WHERE status = 'active' AND deleted_at IS NULL AND user_id IN (${mPlaceholders})
+       ORDER BY position ASC, created_at ASC`,
+    )
+      .bind(...matchRows.map((r) => r.other_id))
+      .all<PhotoMeta>();
+    for (const p of photoRows ?? []) if (!photoMap.has(p.user_id)) photoMap.set(p.user_id, p);
   }
+
+  const matches: MatchDto[] = await Promise.all(
+    matchRows.map(async (r) => {
+      const convMode = r.conv_mode === 'invisible' ? 'invisible' : 'classic';
+      // Flou de conversation (§4.8) : piloté par le MODE DE LA CONVERSATION,
+      // pas par le mode de découverte des membres.
+      const blurred = convMode === 'invisible';
+      const photoMeta = photoMap.get(r.other_id);
+      let photo: { url: string | null; blurred: boolean } = { url: null, blurred };
+      if (photoMeta) {
+        const publicId = `${c.env.CLOUDINARY_ROOT_FOLDER}/photos/${r.other_id}/${photoMeta.id}`;
+        photo = {
+          url: await signedMediaUrl(
+            c.env.CLOUDINARY_CLOUD_NAME,
+            c.env.CLOUDINARY_API_SECRET,
+            publicId,
+            {
+              version: photoMeta.cloudinary_version,
+              transformation: `c_limit,w_${blurred ? PHOTO_BLUR_WIDTH : PHOTO_THUMB_WIDTH}`,
+            },
+          ),
+          blurred,
+        };
+      }
+      return {
+        matchId: r.match_id,
+        conversationId: r.conv_id,
+        conversationMode: convMode,
+        origin: (r.origin as MatchDto['origin']) ?? 'like',
+        createdAt: r.created_at,
+        other: {
+          userId: r.other_id,
+          displayName: r.display_name ?? 'Quelqu’un',
+          city: r.city,
+          country: r.country,
+          photoUrl: photo.url,
+          photoBlurred: photo.blurred,
+          personalityType: (r.personality_type as MatchDto['other']['personalityType']) ?? null,
+          personalityValidated: r.personality_validated === 1,
+          verified: r.other_verified != null,
+        },
+        pendingGateway:
+          r.mr_id != null
+            ? { id: r.mr_id, fromMe: r.mr_from === user.id, createdAt: r.mr_created ?? 0 }
+            : null,
+      } satisfies MatchDto;
+    }),
+  );
 
   const body: MatchListResponse = {
     matches,

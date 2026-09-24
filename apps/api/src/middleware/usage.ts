@@ -66,10 +66,16 @@ export function usageMiddleware(sampleRateRaw: string) {
     incrCounter('requests_total');
     incrCounter(bucket);
 
+    // Performance (Task 28) : la métrique n'est PLUS awaitée avant le handler —
+    // elle part en waitUntil (après la réponse) : chaque requête API économise
+    // un aller-retour D1 en série. Les métriques ne doivent jamais coûter de
+    // latence à une requête utile.
     try {
-      await recordMetric(c.env.DB, 'api_requests', sampleRate);
+      c.executionCtx.waitUntil(
+        recordMetric(c.env.DB, 'api_requests', sampleRate).catch(() => undefined),
+      );
     } catch {
-      // Les métriques ne doivent jamais faire échouer une requête utile.
+      // Pas de contexte d'exécution (tests) → best effort silencieux.
     }
 
     await next();
@@ -77,7 +83,9 @@ export function usageMiddleware(sampleRateRaw: string) {
     if (c.res.status >= 500) {
       incrCounter('errors_5xx');
       try {
-        await recordMetric(c.env.DB, 'api_errors', sampleRate);
+        c.executionCtx.waitUntil(
+          recordMetric(c.env.DB, 'api_errors', sampleRate).catch(() => undefined),
+        );
       } catch {
         /* silencieux */
       }

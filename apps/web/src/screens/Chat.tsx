@@ -16,6 +16,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, apiForm, ApiError } from '../lib/api';
+import { invalidateSwr } from '../lib/swr';
 import { CHAT, REPORT_CATEGORIES, REPORT_LABELS } from '@wairyu/shared';
 import type {
   ChatHistoryResponse,
@@ -73,6 +74,11 @@ export function Chat({ conversationId, onBack }: Props) {
   const seen = useRef<Set<number>>(new Set());
   const wsRef = useRef<WebSocket | null>(null);
   const meRef = useRef<string>('');
+  /** Miroir de messages pour les callbacks WS (évite les closures périmées). */
+  const messagesRef = useRef<ChatMessageDto[]>([]);
+  messagesRef.current = messages;
+  /** Dernier seq dont l'accusé « vu » est effectivement parti (anti-doublon). */
+  const readSentRef = useRef(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -130,6 +136,10 @@ export function Chat({ conversationId, onBack }: Props) {
   useEffect(() => {
     void loadState();
     void loadHistory();
+    // Au départ du chat, les non-lus viennent d'être marqués lus : le cache
+    // SWR des conversations est invalidé pour que Messages + le badge
+    // re-fetch immédiatement (Task 28).
+    return () => invalidateSwr('conversations');
   }, [loadState, loadHistory]);
 
   // ------------------------------------------------------------------
@@ -186,6 +196,9 @@ export function Chat({ conversationId, onBack }: Props) {
         case 'ready': {
           setOnline(data.otherOnline === true);
           setOtherReadSeq(Number(data.otherReadSeq) || 0);
+          // Rattrapage « vu » : si l'historique s'est chargé avant le WS,
+          // l'accusé part maintenant (flushRead gère les deux ordres).
+          flushRead();
           return;
         }
         case 'msg': {
@@ -247,13 +260,26 @@ export function Chat({ conversationId, onBack }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
-  // Marque lu au chargement d'une nouvelle page d'historique.
-  useEffect(() => {
-    const last = messages.at(-1);
-    if (last) {
-      wsRef.current?.send(JSON.stringify({ type: 'read', upto: last.seq }));
+  /**
+   * Accusé « vu » robuste (Task 28) : l'historique ET le WebSocket s'ouvrent
+   * en parallèle — quel que soit l'ordre d'arrivée, le rattrapage part dès
+   * que les DEUX sont prêts. ⚠️ messages[] est stocké NOUVEAU→ANCIEN
+   * (préfixage) : le seq à marquer est le MAX, pas at(-1) (l'ancien code
+   * marquait « lu jusqu'au plus vieux » — les non-lus ne se vidaient jamais).
+   */
+  const flushRead = useCallback(() => {
+    const ws = wsRef.current;
+    const lastSeq = messagesRef.current.reduce((mx, m) => (m.seq > mx ? m.seq : mx), 0);
+    if (ws && ws.readyState === WebSocket.OPEN && lastSeq > readSentRef.current) {
+      ws.send(JSON.stringify({ type: 'read', upto: lastSeq }));
+      readSentRef.current = lastSeq;
     }
-  }, [messages.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Marque lu dès qu'une nouvelle page d'historique / un nouveau message arrive.
+  useEffect(() => {
+    flushRead();
+  }, [messages.length, flushRead]);
 
   // Auto-scroll en bas.
   useEffect(() => {

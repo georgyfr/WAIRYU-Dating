@@ -189,7 +189,7 @@ chatRoutes.get('/chat/conversations', async (c) => {
   const rl = await hitRateLimit(c.env.DB, RATE_RULES.chatListUser, user.id);
   if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.chatListUser.scope);
 
-  const { results: rows } = await c.env.DB.prepare(
+  const rowsResult = await c.env.DB.prepare(
     `SELECT c.id AS conv_id, c.mode AS conv_mode, c.created_at, c.revealed_at,
             m.id AS match_id,
             other.id AS other_id, other.display_name,
@@ -218,70 +218,103 @@ chatRoutes.get('/chat/conversations', async (c) => {
       personality_type: string | null;
     }>();
 
-  const conversations: ConversationDto[] = [];
-  for (const r of rows ?? []) {
-    const convMode = r.conv_mode === 'invisible' ? 'invisible' : 'classic';
-    const blurred = convMode === 'invisible' && r.revealed_at == null;
+  const rows = rowsResult.results ?? [];
 
-    // Résumé DO : dernier message + non-lus (le DO se (re)construit à
-    // l'usage — même contrat que le chat ; échec = entrée sans aperçu).
-    let s: DoSummary | null = null;
-    try {
-      const stub = c.env.CHAT_ROOM.get(c.env.CHAT_ROOM.idFromName(r.conv_id));
-      void stub
-        .fetch(
-          new Request('https://do/init', {
-            method: 'POST',
-            body: JSON.stringify({
-              conversationId: r.conv_id,
-              members: [user.id, r.other_id],
-              mode: convMode,
-              createdAt: r.created_at,
-              reset: true,
-            }),
-            headers: { 'content-type': 'application/json' },
-          }),
-        )
-        .catch(() => undefined);
-      const res = await stub.fetch(
-        new Request(`https://do/summary?userId=${encodeURIComponent(user.id)}`),
-      );
-      if (res.ok) s = (await res.json()) as DoSummary;
-    } catch {
-      s = null; // jamais une conversation indisponible ne casse la liste
-    }
-
-    const photo = await otherPhoto(c, r.other_id, blurred);
-    const lastActivityAt = s?.last?.createdAt ?? r.created_at;
-
-    const lastMessage: ConversationLastMessage | null = s?.last
-      ? {
-          seq: s.last.seq,
-          fromMe: s.last.senderId === user.id,
-          kind: s.last.kind === 'voice' ? 'voice' : s.last.kind === 'system' ? 'system' : 'text',
-          excerpt: s.last.excerpt,
-          createdAt: s.last.createdAt,
-        }
-      : null;
-
-    conversations.push({
-      conversationId: r.conv_id,
-      matchId: r.match_id,
-      conversationMode: convMode,
-      createdAt: r.created_at,
-      lastActivityAt,
-      unread: Math.max(0, s?.unread ?? 0),
-      other: {
-        userId: r.other_id,
-        displayName: r.display_name ?? 'Quelqu’un',
-        photoUrl: photo.url,
-        photoBlurred: photo.blurred,
-        verified: r.other_verified != null,
-        personalityType: r.personality_type,
-      },
-      lastMessage,
-    });
+  // Performance (Task 28) : UNE seule requête pour les photos de TOUS les
+  // correspondants (au lieu d'une requête par conversation), puis résumés DO
+  // en PARALLÈLE (Promise.all) — la boucle séquentielle N×(DO+D1) était le
+  // principal goulot de la boîte de réception et du badge d'onglet.
+  const placeholders = rows.map(() => '?').join(',');
+  const photoMap = new Map<string, { id: string; cloudinary_version: number }>();
+  if (rows.length > 0) {
+    const { results: photoRows } = await c.env.DB.prepare(
+      `SELECT user_id, id, cloudinary_version FROM photos
+       WHERE status = 'active' AND deleted_at IS NULL AND user_id IN (${placeholders})
+       ORDER BY position ASC, created_at ASC`,
+    )
+      .bind(...rows.map((r) => r.other_id))
+      .all<{ user_id: string; id: string; cloudinary_version: number }>();
+    for (const p of photoRows ?? []) if (!photoMap.has(p.user_id)) photoMap.set(p.user_id, p);
   }
+
+  const conversations: ConversationDto[] = await Promise.all(
+    rows.map(async (r) => {
+      const convMode = r.conv_mode === 'invisible' ? 'invisible' : 'classic';
+      const blurred = convMode === 'invisible' && r.revealed_at == null;
+
+      // Résumé DO : dernier message + non-lus (le DO se (re)construit à
+      // l'usage — même contrat que le chat ; échec = entrée sans aperçu).
+      let s: DoSummary | null = null;
+      try {
+        const stub = c.env.CHAT_ROOM.get(c.env.CHAT_ROOM.idFromName(r.conv_id));
+        void stub
+          .fetch(
+            new Request('https://do/init', {
+              method: 'POST',
+              body: JSON.stringify({
+                conversationId: r.conv_id,
+                members: [user.id, r.other_id],
+                mode: convMode,
+                createdAt: r.created_at,
+                reset: true,
+              }),
+              headers: { 'content-type': 'application/json' },
+            }),
+          )
+          .catch(() => undefined);
+        const res = await stub.fetch(
+          new Request(`https://do/summary?userId=${encodeURIComponent(user.id)}`),
+        );
+        if (res.ok) s = (await res.json()) as DoSummary;
+      } catch {
+        s = null; // jamais une conversation indisponible ne casse la liste
+      }
+
+      const photoRow = photoMap.get(r.other_id);
+      let photo: { url: string | null; blurred: boolean } = { url: null, blurred };
+      if (photoRow) {
+        const publicId = `${c.env.CLOUDINARY_ROOT_FOLDER}/photos/${r.other_id}/${photoRow.id}`;
+        photo = {
+          url: await signedMediaUrl(
+            c.env.CLOUDINARY_CLOUD_NAME,
+            c.env.CLOUDINARY_API_SECRET,
+            publicId,
+            { version: photoRow.cloudinary_version, transformation: `c_limit,w_${blurred ? 400 : 200}` },
+          ),
+          blurred,
+        };
+      }
+      const lastActivityAt = s?.last?.createdAt ?? r.created_at;
+
+      const lastMessage: ConversationLastMessage | null = s?.last
+        ? {
+            seq: s.last.seq,
+            fromMe: s.last.senderId === user.id,
+            kind: s.last.kind === 'voice' ? 'voice' : s.last.kind === 'system' ? 'system' : 'text',
+            excerpt: s.last.excerpt,
+            createdAt: s.last.createdAt,
+          }
+        : null;
+
+      return {
+        conversationId: r.conv_id,
+        matchId: r.match_id,
+        conversationMode: convMode,
+        createdAt: r.created_at,
+        lastActivityAt,
+        unread: Math.max(0, s?.unread ?? 0),
+        other: {
+          userId: r.other_id,
+          displayName: r.display_name ?? 'Quelqu’un',
+          photoUrl: photo.url,
+          photoBlurred: photo.blurred,
+          verified: r.other_verified != null,
+          personalityType: r.personality_type,
+        },
+        lastMessage,
+      } satisfies ConversationDto;
+    }),
+  );
 
   // Activité récente d'abord — la boîte de réception se lit de haut en bas.
   conversations.sort((a, b) => b.lastActivityAt - a.lastActivityAt);

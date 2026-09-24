@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { invalidateSwr } from '../lib/swr';
 import {
   ARCHETYPES,
   AFFINITY_LABELS,
@@ -48,6 +49,9 @@ export function PersonalityProposal({ refine = false }: { refine?: boolean }) {
         json: { type: id },
       });
       setState((prev) => (prev ? { ...prev, current: res.current } : prev));
+      // La personnalité figure dans /api/profile : la page Mon profil doit
+      // re-fetch (Task 28 — invalidation post-mutation).
+      invalidateSwr('profile');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
     }

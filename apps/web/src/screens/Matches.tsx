@@ -10,6 +10,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { useSwr } from '../lib/swr';
 import { ARCHETYPES, type MatchListResponse } from '@wairyu/shared';
 
 interface Props {
@@ -24,26 +25,24 @@ const ORIGIN_LABELS: Record<string, string> = {
 };
 
 export function Matches({ onOpenChat }: Props) {
-  const [data, setData] = useState<MatchListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setBusy(true);
-    setError(null);
-    try {
-      setData(await api<MatchListResponse>('/api/discover/matches'));
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
-    }
-    setBusy(false);
-  }, []);
+  // Cache SWR : retour sur l'onglet = rendu instantané + revalidation en
+  // arrière-plan (Task 28). La clé est propre à cette page — la passerelle
+  // modifie l'état des matchs, donc on force un refresh après action.
+  const { data, loading, error: swrError, refresh } = useSwr<MatchListResponse>(
+    'matches',
+    true,
+    { ttlMs: 10_000 },
+  );
+  const load = refresh;
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    if (swrError) setError(swrError);
+  }, [swrError]);
 
   const showFlash = (msg: string) => {
     setFlash(msg);
@@ -62,7 +61,7 @@ export function Matches({ onOpenChat }: Props) {
         );
         if (res.status === 'pending') {
           showFlash('Proposition envoyée — l’autre personne peut accepter ou refuser.');
-          await load();
+          load(true); // l'état des matchs vient de changer — revalidation forcée
         }
       } catch (err) {
         setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
@@ -87,7 +86,7 @@ export function Matches({ onOpenChat }: Props) {
         } else {
           showFlash('Passerelle refusée — la conversation continue en Classique, rien n’a changé.');
         }
-        await load();
+        await load(true); // accepté/refusé : l'état du match change forcément
       } catch (err) {
         setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
       }

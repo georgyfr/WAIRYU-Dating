@@ -90,6 +90,12 @@ export function Discover({ onMatches }: Props) {
   const loadAround = useCallback(async () => {
     setLoading(true);
     try {
+      // Task 28 (performance) : le FEED est le contenu critique — il part
+      // IMMÉDIATEMENT, en parallèle de profile/quota/top. Avant : cascade de
+      // 2 allers-retours (profile+quota+top PUIS feed) = double latence.
+      // Le payload du feed ne dépend d'aucun de ces trois appels (le serveur
+      // lit la session) — la parallélisation est sans risque.
+      const feedP = api<FeedResponse>('/api/feed?page=1');
       const [prof, q, t] = await Promise.all([
         api<ProfileResponse>('/api/profile'),
         api<QuotaState>('/api/discover/quota'),
@@ -100,16 +106,21 @@ export function Discover({ onMatches }: Props) {
       if (prof.preferences) setMode(prof.preferences.modeDefault);
       setQuota(q);
       setTop(t);
-      if (prof.preferences?.modeDefault === 'invisible') {
-        setInbox(await api<InboxResponse>('/api/discover/inbox').catch(() => null));
-      }
-      await loadDeck(1, true);
+      const inboxP =
+        prof.preferences?.modeDefault === 'invisible'
+          ? api<InboxResponse>('/api/discover/inbox').catch(() => null)
+          : Promise.resolve(null);
+      const [feedRes, inboxRes] = await Promise.all([feedP, inboxP]);
+      setItems(feedRes.items);
+      setHasMore(feedRes.hasMore);
+      setPage(1);
+      setInbox(inboxRes);
       setIdx(0);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
-      setLoading(false);
     }
-  }, [loadDeck]);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     void loadAround();
