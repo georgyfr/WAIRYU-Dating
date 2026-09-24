@@ -38,6 +38,7 @@ import {
   type QItem,
   type QAnswers,
   type Intent,
+  type FeedPhoto,
   type FeedProfile,
   type FeedResponse,
   type ArchetypeId,
@@ -83,6 +84,8 @@ interface PoolRow {
   personality_validated: number | null;
   qa_item: string | null;
   qa_value: string | null;
+  /** Dernière activité réelle (MAX sessions.last_seen_at) — présence front. */
+  last_seen: number | null;
 }
 
 interface FeedPhotoRow {
@@ -112,6 +115,23 @@ const HIGHLIGHT_DIM_ORDER: QItem['dimension'][] = [
   'communication',
   'attachment',
 ];
+
+/** Photos signées maximum par carte (carrousel — le reste compte dans photoCount). */
+const CARD_PHOTOS_MAX = 3;
+
+/**
+ * Présence dérivée des sessions (aucune donnée nouvelle : last_seen existe déjà
+ * pour le filtre d'activité 30 jours). Buckets volontairement vagues — produire
+ * de la proximité sans jamais exposer une heure exacte de connexion.
+ */
+function onlineBucket(lastSeen: number | null, now: number): FeedProfile['online'] {
+  if (!lastSeen) return null;
+  const d = now - lastSeen;
+  if (d < 15 * 60) return 'online';
+  if (d < 24 * 3600) return 'today';
+  if (d < 72 * 3600) return 'recent';
+  return null;
+}
 
 /**
  * Extrait ≤ 2 réponses IDENTIQUES « single » (valeurs d'abord) — donnée
@@ -174,7 +194,7 @@ export async function generateFeedPage(
   const maxAge = prefs?.max_age ?? 99;
   const prefGender = prefs?.pref_gender ?? 'everyone';
   const prefIntent = prefs?.pref_intent ?? null;
-  const distanceKm = prefs?.distance_km ?? 100;
+  const distanceKmPref = prefs?.distance_km ?? 100;
   const myMode = prefs?.mode_default ?? 'classic';
   const myGeo = parseGeo(me.geo_region);
   /** Mode interracial : portée MONDIALE (rencontres entre continents). */
@@ -265,12 +285,15 @@ export async function generateFeedPage(
   // ≈ 10 candidats seulement). Même bug latent pour le cron Top et /discover/top.
   const { results: poolRows } = await env.DB.prepare(
     `SELECT u.id, u.display_name, u.birth_year, u.birth_date, u.city, u.neighborhood, u.country,
-            u.intent, u.bio, u.geo_region, u.verified_at, u.mode_visible,
+            u.intent, u.bio, u.geo_region, u.verified_at, u.mode_visible, u.last_seen,
             up.mode_default AS owner_mode,
             pp.type AS personality_type, pp.validated AS personality_validated,
             qa.item_id AS qa_item, qa.value_json AS qa_value
      FROM (
-       SELECT u0.* FROM users u0
+       SELECT u0.*,
+              (SELECT MAX(s2.last_seen_at) FROM sessions s2
+                WHERE s2.user_id = u0.id AND s2.revoked_at IS NULL) AS last_seen
+       FROM users u0
        WHERE u0.id != ?1 AND u0.status = 'active'
          AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u0.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
          AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u0.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2)
@@ -346,7 +369,10 @@ export async function generateFeedPage(
 
   for (const { row, answers: theirAnswers } of candidates.values()) {
     const theirGeo = parseGeo(row.geo_region);
-    if (!worldwide && myGeo && theirGeo && haversineKm(myGeo, theirGeo) > distanceKm) {
+    // Distance calculée AVANT le filtre : affichée sur la carte (« à X km »)
+    // même en mode interracial (portée mondiale — la distance y est informative).
+    const distanceKm = myGeo && theirGeo ? Math.round(haversineKm(myGeo, theirGeo)) : null;
+    if (!worldwide && myGeo && theirGeo && distanceKm !== null && distanceKm > distanceKmPref) {
       excludedDistance++;
       continue;
     }
@@ -438,6 +464,11 @@ export async function generateFeedPage(
       // mode (le FLU lui-même reste piloté par le mode du propriétaire — §4.6).
       verified: row.verified_at != null,
       showMode: row.owner_mode_visible !== 0,
+      // Enrichissement « dating » : carrousel, présence, distance.
+      photos: [], // Rempli plus bas pour la page courante uniquement.
+      photoCount: 0,
+      online: onlineBucket(row.last_seen, now),
+      distanceKm,
     });
   }
 
@@ -469,8 +500,12 @@ export async function generateFeedPage(
         .all<{ user_id: string; prompt_key: string; answer: string }>(),
     ]);
 
-    const best = new Map<string, FeedPhotoRow>();
-    for (const r of photoRes.results ?? []) if (!best.has(r.user_id)) best.set(r.user_id, r);
+    const allPhotos = new Map<string, FeedPhotoRow[]>();
+    for (const r of photoRes.results ?? []) {
+      const list = allPhotos.get(r.user_id) ?? [];
+      list.push(r);
+      allPhotos.set(r.user_id, list);
+    }
 
     const promptLabel = new Map<string, string>(
       PROMPT_LIBRARY.map((p) => [p.key, p.label] as const),
@@ -484,17 +519,24 @@ export async function generateFeedPage(
 
     await Promise.all(
       pageItems.map(async (item) => {
-        const photo = best.get(item.userId);
-        if (photo) {
+        const photos = allPhotos.get(item.userId) ?? [];
+        if (photos.length > 0) {
           const blurred = candidates.get(item.userId)?.row.owner_mode === 'invisible';
-          const publicId = `${env.CLOUDINARY_ROOT_FOLDER}/photos/${item.userId}/${photo.id}`;
           item.photoBlurred = blurred;
-          item.photoUrl = await signedUrl(
-            env,
-            publicId,
-            photo.cloudinary_version,
-            blurred ? PHOTO_BLUR_WIDTH : PHOTO_THUMB_WIDTH,
+          item.photoCount = photos.length;
+          // Carrousel : les ≤ 3 premières photos signées (triées par position).
+          item.photos = await Promise.all(
+            photos.slice(0, CARD_PHOTOS_MAX).map(async (photo) => ({
+              url: await signedUrl(
+                env,
+                `${env.CLOUDINARY_ROOT_FOLDER}/photos/${item.userId}/${photo.id}`,
+                photo.cloudinary_version,
+                blurred ? PHOTO_BLUR_WIDTH : PHOTO_THUMB_WIDTH,
+              ),
+              blurred,
+            })),
           );
+          item.photoUrl = item.photos[0]?.url ?? null;
         }
         item.prompts = promptsByUser.get(item.userId) ?? [];
       }),

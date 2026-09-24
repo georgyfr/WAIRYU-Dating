@@ -374,6 +374,14 @@ export interface AccountExport {
   audit: Record<string, unknown>;
 }
 
+/** Une photo de carte signée (carrousel — page courante uniquement). */
+export interface FeedPhoto {
+  /** URL signée (variante floue si le propriétaire est Invisible). */
+  url: string;
+  /** true = variante 400 px floue (le flou CSS reste côté front). */
+  blurred: boolean;
+}
+
 /** Profil vu dans le feed — la photo n'est JAMAIS une URL brute : toujours signée, court-lived. */
 export interface FeedProfile {
   userId: string;
@@ -414,6 +422,43 @@ export interface FeedProfile {
   verified: boolean;
   /** true = afficher l'étiquette de mode sur la carte (modeVisible du PROPRIÉTAIRE). */
   showMode: boolean;
+  /** Carrousel : jusqu'à 3 photos signées (page courante uniquement). */
+  photos: FeedPhoto[];
+  /** Nombre total de photos actives (au-delà des 3 signées — « +N photos »). */
+  photoCount: number;
+  /** Présence dérivée des sessions : < 15 min « online », < 24 h « today », < 72 h « recent ». */
+  online: 'online' | 'today' | 'recent' | null;
+  /** Distance haversine entre moi et le profil (km, arrondie) — null si géo inconnue. */
+  distanceKm: number | null;
+}
+
+// ---------- Enrichissement « dating » : likes reçus (tu plais !) ----------
+
+/** Un profil qui m'a liké et que je n'ai PAS encore traité (GET /api/discover/likes). */
+export interface LikesMeDto {
+  userId: string;
+  displayName: string;
+  age: number;
+  city: string | null;
+  country: string | null;
+  /** Photo principale signée — floue si le PROPRIÉTAIRE est Invisible (§4.6). */
+  photoUrl: string | null;
+  photoBlurred: boolean;
+  personalityType: import('./personality').ArchetypeId | null;
+  personalityValidated: boolean;
+  /** like | super. */
+  action: 'like' | 'super';
+  /** Epoch s du like reçu. */
+  likedAt: number;
+}
+
+/** GET /api/discover/likes — « Tu plais ! » : likes en attente de MA réponse. */
+export interface LikesMeResponse {
+  /** Nombre TOTAL de likes en attente (les items sont plafonnés). */
+  count: number;
+  /** ≤ 12, plus récents d'abord. */
+  items: LikesMeDto[];
+  note: string;
 }
 
 // ---------- Étape 5 : découverte dual-mode ----------

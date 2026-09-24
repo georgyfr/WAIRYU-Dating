@@ -58,6 +58,8 @@ export const RATE_RULES = {
   discoverGatewayUser: { scope: 'disc:gate:user', windowSeconds: 3600, max: 30 },
   /** Top Compatibilité : 30 / heure (hors quota feed — matérialisé en D1). */
   discoverTopUser: { scope: 'disc:top:user', windowSeconds: 3600, max: 30 },
+  /** « Tu plais ! » (likes reçus en attente) : lecture légère, 60 / heure. */
+  discoverLikesMeUser: { scope: 'disc:likesme:user', windowSeconds: 3600, max: 60 },
 
   // --- Étape 6 : chat & révélation ---
   /** Envoi de messages en FALLBACK HTTP (le WS a son anti-spam DO). 240 / h. */

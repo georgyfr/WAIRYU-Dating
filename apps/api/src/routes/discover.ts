@@ -45,6 +45,8 @@ import type {
   GatewayResponse,
   TopResponse,
   DiscoveryMode,
+  LikesMeDto,
+  LikesMeResponse,
 } from '@wairyu/shared';
 
 export const discoverRoutes = new Hono<AppEnv>();
@@ -892,6 +894,134 @@ discoverRoutes.get('/discover/top', async (c) => {
     day,
     items: rendered.items,
     note: 'Suggestions du jour, calculées chaque nuit à partir de ton questionnaire — hors de tes quotas.',
+  };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/discover/likes — « Tu plais ! » (likes reçus en attente de MA
+// réponse). Fonctionnalité dating classique rendue GRATUITE (100 % gratuit,
+// spec §6) : les personnes qui m'ont liké/super-liké et que je n'ai pas encore
+// traitées. Liker en retour = match immédiat (réciprocité déjà en D1).
+// Privacy : mêmes règles que le feed — le flou suit le mode du PROPRIÉTAIRE
+// (§4.6), incognito inclus (exception « likes reçus » déjà en place), blocages
+// et comptes traités exclus.
+// ---------------------------------------------------------------------------
+discoverRoutes.get('/discover/likes', async (c) => {
+  const user = await requireUser(c);
+  requireNotPaused(user);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.discoverLikesMeUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.discoverLikesMeUser.scope);
+
+  const now = Math.floor(Date.now() / 1000);
+  const LIMIT = 12;
+
+  // Les likes en attente : cible = moi, action like/super, et je n'ai PAS
+  // encore swipé la personne (sinon la réciprocité a déjà été tranchée —
+  // match ou passe définitive). Blocages des deux sens exclus.
+  const where = `
+    FROM swipes sw
+    JOIN users u ON u.id = sw.user_id
+      AND u.status = 'active' AND COALESCE(u.paused, 0) = 0
+    LEFT JOIN user_preferences up ON up.user_id = u.id
+    LEFT JOIN personality_profiles pp ON pp.user_id = u.id
+    WHERE sw.target_id = ?1 AND sw.action IN ('like','super')
+      AND NOT EXISTS (
+        SELECT 1 FROM swipes s2 WHERE s2.user_id = ?1 AND s2.target_id = sw.user_id
+      )
+      AND NOT EXISTS (
+        SELECT 1 FROM blocks b
+        WHERE (b.user_id = ?1 AND b.blocked_id = sw.user_id)
+           OR (b.user_id = sw.user_id AND b.blocked_id = ?1)
+      )`;
+
+  interface LikesRow {
+    user_id: string;
+    display_name: string | null;
+    birth_date: string | null;
+    birth_year: number | null;
+    city: string | null;
+    country: string | null;
+    action: string;
+    created_at: number;
+    owner_mode: string | null;
+    personality_type: string | null;
+    personality_validated: number | null;
+  }
+
+  const [rowsRes, countRes] = await Promise.all([
+    c.env.DB.prepare(`SELECT sw.user_id, u.display_name, u.birth_date, u.birth_year,
+                             u.city, u.country, sw.action, sw.created_at,
+                             up.mode_default AS owner_mode,
+                             pp.type AS personality_type, pp.validated AS personality_validated
+                      ${where} ORDER BY sw.created_at DESC LIMIT ${LIMIT}`)
+      .bind(user.id)
+      .all<LikesRow>(),
+    c.env.DB.prepare(`SELECT COUNT(*) AS n ${where}`).bind(user.id).first<{ n: number }>(),
+  ]);
+
+  const rows = rowsRes.results ?? [];
+  let items: LikesMeDto[] = [];
+
+  if (rows.length > 0) {
+    // Photos principales de TOUS les likers en 1 requête (fix N+1 — Task 28).
+    const ids = rows.map((r) => r.user_id);
+    const photoRes = await c.env.DB.prepare(
+      `SELECT id, user_id, cloudinary_version FROM photos
+       WHERE status = 'active' AND deleted_at IS NULL AND user_id IN (${ids.map(() => '?').join(',')})
+       ORDER BY position ASC, created_at ASC`,
+    )
+      .bind(...ids)
+      .all<{ id: string; user_id: string; cloudinary_version: number }>();
+    const bestPhoto = new Map<string, { id: string; version: number }>();
+    for (const p of photoRes.results ?? []) {
+      if (!bestPhoto.has(p.user_id)) {
+        bestPhoto.set(p.user_id, { id: p.id, version: p.cloudinary_version });
+      }
+    }
+
+    items = await Promise.all(
+      rows.map(async (r) => {
+        const blurred = r.owner_mode === 'invisible';
+        let photoUrl: string | null = null;
+        const photo = bestPhoto.get(r.user_id);
+        if (photo) {
+          photoUrl = await signedMediaUrl(
+            c.env.CLOUDINARY_CLOUD_NAME,
+            c.env.CLOUDINARY_API_SECRET,
+            `${c.env.CLOUDINARY_ROOT_FOLDER}/photos/${r.user_id}/${photo.id}`,
+            {
+              version: photo.version,
+              transformation: `c_limit,w_${blurred ? PHOTO_BLUR_WIDTH : PHOTO_THUMB_WIDTH}`,
+            },
+          );
+        }
+        const age = r.birth_date
+          ? Math.max(18, Math.floor((now - Date.parse(`${r.birth_date}T00:00:00Z`) / 1000) / (365.2425 * 86400)))
+          : r.birth_year
+            ? Math.max(18, new Date().getUTCFullYear() - r.birth_year)
+            : 18;
+        return {
+          userId: r.user_id,
+          displayName: r.display_name ?? 'Quelqu’un',
+          age,
+          city: r.city,
+          country: r.country,
+          photoUrl,
+          photoBlurred: blurred,
+          personalityType: (r.personality_type as LikesMeDto['personalityType']) ?? null,
+          personalityValidated: r.personality_validated === 1,
+          action: (r.action === 'super' ? 'super' : 'like') as 'like' | 'super',
+          likedAt: r.created_at,
+        };
+      }),
+    );
+  }
+
+  const body: LikesMeResponse = {
+    count: countRes?.n ?? items.length,
+    items,
+    note: 'Liker en retour = match immédiat. Elles ne savent pas que tu vois cette liste tant que tu ne réponds pas.',
   };
   return c.json(body);
 });

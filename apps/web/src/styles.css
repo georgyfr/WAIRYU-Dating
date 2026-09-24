@@ -3334,3 +3334,688 @@ h2 {
     max-width: 1160px;
   }
 }
+
+/* ===========================================================================
+   ENRICHISSEMENT « DATING » — pages de découverte par mode
+   (Classique façon Tinder/Badoo · Invisible slow-dating · Interracial mondial)
+=========================================================================== */
+
+/* ---- Onglets : icônes + accent de couleur par mode ---- */
+.mode-tab-icon {
+  margin-right: 4px;
+}
+
+.mode-tabs.mode-classic .mode-tab.active {
+  color: #c22e4b;
+}
+
+.mode-tabs.mode-invisible .mode-tab.active {
+  color: var(--c-primary-dark);
+}
+
+.mode-tabs.mode-interracial .mode-tab.active {
+  color: #c05a12;
+}
+
+/* ---- Bannières d'ambiance (une identité par mode) ---- */
+.mode-hero {
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  text-align: left;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 8px 22px rgba(45, 36, 56, 0.14);
+}
+
+.mode-hero h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.mode-hero p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  opacity: 0.94;
+}
+
+.hero-classic {
+  background: linear-gradient(120deg, #6c4ab6 0%, #b34a8f 100%);
+}
+
+.hero-invisible {
+  background: linear-gradient(120deg, #3d2b63 0%, #6c4ab6 55%, #8d6fd1 100%);
+}
+
+.hero-interracial {
+  background: linear-gradient(120deg, #d97706 0%, #e0667e 60%, #a44ac2 100%);
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-hero {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ---- Carrousel de photos (façon Tinder) ---- */
+.carousel {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #efe9f8;
+  overflow: hidden;
+}
+
+.deck-card .carousel {
+  aspect-ratio: 4 / 5;
+  cursor: grab;
+}
+
+.inv-card .carousel {
+  aspect-ratio: 4 / 5;
+}
+
+.car-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.25s ease;
+}
+
+.car-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.car-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}
+
+/* Flou produit (Invisible) — la variante 400 px + flou CSS, rien de net. */
+.carousel.blurred .car-slide img {
+  filter: blur(18px) saturate(0.9);
+  transform: scale(1.08);
+}
+
+/* Zones de tap invisibles (gauche / droite) — comme Tinder */
+.car-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+}
+
+.car-zone.left {
+  left: 0;
+}
+
+.car-zone.right {
+  right: 0;
+}
+
+.car-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(20, 14, 34, 0.62);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 9px;
+  pointer-events: none;
+}
+
+.car-dots {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.car-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+}
+
+.car-dot.on {
+  background: #fff;
+}
+
+.car-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.86);
+  color: #2d2438;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(45, 36, 56, 0.25);
+}
+
+.car-arrow.left {
+  left: 8px;
+}
+
+.car-arrow.right {
+  right: 8px;
+}
+
+.car-more {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(20, 14, 34, 0.62);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 8px;
+  pointer-events: none;
+}
+
+/* Overlay nom / présence / distance sur la photo (dégradé façon Tinder) */
+.car-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 34px 12px 10px;
+  background: linear-gradient(180deg, rgba(20, 14, 34, 0) 0%, rgba(20, 14, 34, 0.72) 78%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  text-align: left;
+}
+
+.ov-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ov-main h3 {
+  margin: 0;
+  font-size: 19px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.ov-verified {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #31b3ec;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ov-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.chip-ov {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot-on {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9aa2ad;
+  flex-shrink: 0;
+}
+
+.chip-ov.ov-online.online .dot-on {
+  background: #35d07f;
+  animation: pulse-on 1.6s ease infinite;
+}
+
+.chip-ov.ov-online.today .dot-on {
+  background: #f4c95d;
+}
+
+@keyframes pulse-on {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(53, 208, 127, 0.55); }
+  55% { box-shadow: 0 0 0 5px rgba(53, 208, 127, 0); }
+}
+
+/* Présence dans le corps de carte (cartes floutées : pas d'overlay) */
+.chip-ov.body-online {
+  background: #e8f7ee;
+  color: #1c7a43;
+}
+
+.chip-ov.body-online.online .dot-on {
+  background: #1c9a56;
+  animation: pulse-on 1.6s ease infinite;
+}
+
+.chip-ov.body-online.today .dot-on {
+  background: #c79a17;
+}
+
+/* Badge « photo floutée par choix » (cartes Invisible) */
+.car-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  background: rgba(20, 14, 34, 0.72);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  pointer-events: none;
+}
+
+/* ---- « Tu plais ! » — likes reçus en attente ---- */
+.likes-section {
+  width: 100%;
+}
+
+.likes-count {
+  display: inline-block;
+  background: var(--c-primary);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 1px 9px;
+  vertical-align: 2px;
+}
+
+.likes-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.likes-card {
+  position: relative;
+  min-width: 152px;
+  max-width: 152px;
+  border: 1px solid #e5ddf2;
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.likes-card img {
+  width: 92px;
+  height: 92px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.likes-card img.blurred {
+  filter: blur(10px) saturate(0.9);
+  transform: scale(1.12);
+}
+
+.likes-card strong {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.likes-card em {
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--c-muted);
+}
+
+.likes-super {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1d8fd1;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(29, 143, 209, 0.4);
+}
+
+/* ---- Chips géo (Interracial) ---- */
+.geo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip.chip-continent {
+  background: #efe9f8;
+  color: var(--c-primary-dark);
+  border-color: #e0d4f5;
+}
+
+.chip.chip-intl {
+  background: #fff4e5;
+  color: #b26a00;
+  border-color: #ffd9a8;
+  font-weight: 700;
+}
+
+.chip.chip-samecountry {
+  background: #eef1f6;
+  color: #5a6474;
+  border-color: #dde3ec;
+}
+
+.chip.chip-dist {
+  background: #fff;
+  color: var(--c-text);
+}
+
+.intl-toggle {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.intl-toggle.on {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: #fff;
+}
+
+/* ---- Rituel Invisible (rappel sur chaque carte) ---- */
+.ritual-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ritual-chip {
+  background: #f3eefc;
+  color: #563a94;
+  border: 1px solid #e0d4f5;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ---- Encart « comment ça marche » (Invisible) ---- */
+.inv-steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inv-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e5ddf2;
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.inv-step em {
+  font-style: normal;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--c-primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inv-step p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--c-text);
+}
+
+/* ---- Extraits partagés en citations (personnalité d'abord) ---- */
+.hl-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hl-quote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  font-style: italic;
+  background: #fbf9ff;
+  border-left: 3px solid var(--c-accent);
+  border-radius: 0 10px 10px 0;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+/* ---- Pile : vide, raccourcis clavier PC ---- */
+.deck-empty-emoji {
+  font-size: 46px;
+}
+
+.kbd-hints {
+  display: none;
+}
+
+kbd {
+  font-family: inherit;
+  font-size: 11px;
+  background: #fff;
+  border: 1px solid #e5ddf2;
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: var(--c-muted);
+}
+
+/* ---- Note sécurité (Interracial) ---- */
+.safe-hint {
+  width: 100%;
+  background: #fff7ed;
+  color: #8a5200;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* ---- Écran de match à deux photos ---- */
+.match-duo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.match-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.match-photo img,
+.match-photo > span {
+  width: 104px;
+  height: 104px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 3px solid var(--c-primary);
+  box-shadow: 0 6px 18px rgba(108, 74, 182, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  background: #efe9f8;
+}
+
+.match-photo em {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--c-primary-dark);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-x {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--c-accent);
+}
+
+.filter-grid small {
+  color: var(--c-muted);
+  font-weight: 500;
+}
+
+/* ---- Tablette ≥ 640 px : héros et étapes plus aérés, flèches carrousel ---- */
+@media (min-width: 640px) {
+  .mode-hero {
+    padding: 18px 22px;
+  }
+
+  .mode-hero h2 {
+    font-size: 20px;
+  }
+
+  .inv-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .car-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .likes-card {
+    min-width: 168px;
+    max-width: 168px;
+  }
+
+  .likes-card img {
+    width: 104px;
+    height: 104px;
+  }
+
+  .match-photo img,
+  .match-photo > span {
+    width: 118px;
+    height: 118px;
+  }
+}
+
+/* ---- PC ≥ 1024 px : contrôles découverte centrés + raccourcis clavier ---- */
+@media (min-width: 1024px) {
+  .discover .mode-hero,
+  .discover .inv-steps,
+  .discover .likes-section,
+  .discover .top-section,
+  .discover .inbox-section,
+  .discover .sent-section,
+  .discover .kbd-hints,
+  .discover .safe-hint {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .kbd-hints {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--c-muted);
+  }
+
+  .kbd-hints span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .mode-hero {
+    text-align: center;
+    align-items: center;
+  }
+}
