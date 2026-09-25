@@ -21,6 +21,16 @@
  * bascule (même logique qu'un clic — Task 33 : PUT persistant, deck du bon
  * bassin, feedback garanti) ; #/discover sans slug garde son comportement
  * historique (mode des préférences serveur). Rien n'est supprimé.
+ * Task 38 (réf. PROMPT « Wairyu Cultures ») : le mode Interracial devient
+ * « Wairyu Cultures » — palette ambre/terre (body.mode-interracial, lib/
+ * mode.ts), bandeau de DRAPEAUX sur chaque carte (countryMeta — données
+ * réelles), SCORE CULTUREL cliquable sur la photo → modale « Pourquoi ce
+ * match culturel ? » (forces / vigilance / sujets cliquables), chips
+ * VALEURS ambre (highlights réels), bio en italique à guillemets, action
+ * LIKER en pilule dégradée chaude, filtres CULTURELS (score min + continents,
+ * locaux), sections COACH CULTUREL / DÉFIS DE CONNEXION / SALONS (aperçu
+ * honnête « Bientôt »), drapeaux face à face dans la modale Match. Toutes
+ * les données affichées sont RÉELLES — rien n'est inventé.
  * Éthique (spec §5.4) : l'avertissement d'indicativité est TOUJOURS visible.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -76,9 +86,9 @@ const MODE_HEROES: Record<DiscoveryMode, { title: string; sub: string; chips: st
     chips: ['💬 15 messages', '⏳ 7 jours', '🔓 Révélation consentie'],
   },
   interracial: {
-    title: '🌍 L’amour sans frontières',
-    sub: 'D’un continent à l’autre : la portée est mondiale et la distance n’est plus un filtre.',
-    chips: ['✈️ Portée mondiale', '🗺️ Tous continents', '🛡️ Visio avant de voyager'],
+    title: '🌍 Wairyu Cultures',
+    sub: 'Découvre la richesse des différences : drapeaux, cultures du monde et score culturel explicable.',
+    chips: ['✈️ Portée mondiale', '🗺️ Tous continents', '🧭 Score culturel explicable', '🛡️ Visio avant de voyager'],
   },
 };
 
@@ -96,6 +106,8 @@ interface TargetRef {
   id: string;
   photo?: string | null;
   name?: string;
+  /** Task 38 : pays de la cible — drapeaux face à face dans la modale Match (Cultures). */
+  country?: string | null;
 }
 
 /** Boost — aperçu Wairyu+ offert pendant le lancement (stockage local). */
@@ -105,11 +117,70 @@ const BOOST_MS = 30 * 60 * 1000;
 const VERIFIED_LS_KEY = 'wairyu.filter.verified';
 /** Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL (pile chargée). */
 const MIN_SCORE_LS_KEY = 'wairyu.filter.minscore';
+/**
+ * Task 38 (réf. Cultures §5.7) : filtre culturel CONTINENTS — local,
+ * multi-sélection, interracial uniquement. La liste reprend les valeurs
+ * RÉELLES de lib/geo.ts (aucune invention). Un profil sans pays connu
+ * reste toujours visible : on ne punit pas l'absence de données.
+ */
+const CONTINENTS_LS_KEY = 'wairyu.filter.continents';
+const INTL_CONTINENTS = ['Afrique', 'Europe', 'Asie', 'Amérique du Nord', 'Amérique du Sud', 'Océanie'] as const;
+
+/**
+ * Task 38 (réf. Cultures §4.6) : défis de connexion — activités guidées à
+ * faire à deux. Pédagogie produit (comme les cartes Coach) : aucun chiffre
+ * ni donnée utilisateur inventée — ce sont des SUGGESTIONS de conversation.
+ */
+const INTL_DEFIS: { icon: string; title: string; desc: string; level: 'easy' | 'med' | 'hard' }[] = [
+  { icon: '🎵', title: 'Chanson d’enfance', desc: 'Partage la chanson que tu chantais à fond quand tu étais petit·e.', level: 'easy' },
+  { icon: '🎉', title: 'Fêtes comparées', desc: 'Racontez-vous votre fête préférée — celle qui rassemble toute la famille.', level: 'easy' },
+  { icon: '🍳', title: 'Recette de famille', desc: 'Échangez une recette transmise dans vos familles — et cuisinez-la chacun chez soi.', level: 'med' },
+  { icon: '🗣️', title: 'Apprends 5 mots', desc: 'Apprends 5 mots dans SA langue maternelle, puis utilise-les dans la conversation.', level: 'med' },
+  { icon: '👨‍👩‍👧', title: 'Famille biculturelle', desc: 'Imaginez vos fêtes, plats et langues dans un futur foyer biculturel.', level: 'hard' },
+  { icon: '❤️', title: 'Vision de la famille', desc: 'Chacun décrit sa vision d’une famille unie — sans juger celle de l’autre.', level: 'hard' },
+];
+
+/**
+ * Task 38 (réf. Cultures §4.4) : salons culturels — APERÇU honnête de la
+ * prochaine phase. AUCUN faux chiffre (ni membres, ni « en ligne ») : la
+ * carte porte un badge « Bientôt » explicite.
+ */
+const INTL_SALONS: { emoji: string; name: string }[] = [
+  { emoji: '🍲', name: 'Cuisine du monde' },
+  { emoji: '🎵', name: 'Musique africaine' },
+  { emoji: '🌍', name: 'Relations interculturelles' },
+  { emoji: '🗣️', name: 'Apprendre les langues' },
+  { emoji: '📚', name: 'Littérature du monde' },
+  { emoji: '💃', name: 'Danses du monde' },
+];
+
+/** Task 38 (réf. Cultures §4.6) : libellés de difficulté des défis. */
+const DEFIS_LEVELS: Record<'easy' | 'med' | 'hard', string> = {
+  easy: 'Facile',
+  med: 'Moyen',
+  hard: 'Difficile',
+};
 
 /* ─────────────────────────── Carrousel de photos ─────────────────────────── */
 
-/** Carrousel façon Tinder : glisser-tap gauche/droite, points, compteur. */
-function CardCarousel({ p }: { p: FeedProfile }) {
+/**
+ * Carrousel façon Tinder : glisser-tap gauche/droite, points, compteur.
+ * Task 38 (réf. Cultures §4.2) : en mode Cultures (`culture`), la photo
+ * porte le BANDEAU DE DRAPEAUX en haut à gauche (pays réel du profil —
+ * countryMeta) et le BADGE SCORE CULTUREL en haut à droite, cliquable
+ * (onScore → modale « Pourquoi ce match culturel ? »).
+ */
+function CardCarousel({
+  p,
+  culture = false,
+  onScore,
+}: {
+  p: FeedProfile;
+  /** Task 38 : habillage Cultures (drapeaux + score culturel sur la photo). */
+  culture?: boolean;
+  /** Task 38 : clic sur le score culturel (mode Cultures uniquement). */
+  onScore?: (p: FeedProfile) => void;
+}) {
   const [slide, setSlide] = useState(0);
   const photos =
     p.photos.length > 0
@@ -166,7 +237,36 @@ function CardCarousel({ p }: { p: FeedProfile }) {
       {p.photoBlurred ? (
         <span className="car-badge">🕯️ Photo floutée par choix</span>
       ) : (
-        <div className="car-overlay">
+        <>
+          {/* Task 38 (réf. Cultures §4.2) : bandeau de drapeaux en haut à
+              gauche — pays RÉEL du profil + continent (countryMeta). */}
+          {culture && geo && (
+            <span className="flag-banner" title={`Origine déclarée : ${[p.city, p.country].filter(Boolean).join(', ') || geo.continent}`}>
+              <span className="flag-banner-flag" aria-hidden="true">{geo.flag}</span>
+              <span className="flag-banner-txt">
+                <strong>{p.country || geo.continent}</strong>
+                <em>{geo.continent}</em>
+              </span>
+            </span>
+          )}
+          {/* Task 38 (réf. Cultures §4.2) : badge SCORE CULTUREL en haut à
+              droite de la photo — cliquable → « Pourquoi ce match culturel ? ».
+              Le score reste le score RÉEL du questionnaire (indicatif). */}
+          {culture && p.score !== null && onScore && (
+            <button
+              type="button"
+              className="intl-score"
+              onClick={(e) => {
+                e.stopPropagation();
+                onScore(p);
+              }}
+              title="Pourquoi ce score culturel ? — indicatif, jamais prédictif"
+            >
+              <strong>{p.score}</strong>
+              <small>🌍 Score culturel</small>
+            </button>
+          )}
+          <div className="car-overlay">
           <div className="ov-main">
             <h3>
               {p.displayName}, {p.age}
@@ -188,6 +288,7 @@ function CardCarousel({ p }: { p: FeedProfile }) {
             {geo && <span className="chip-ov">{geo.flag} {[p.city, p.country].filter(Boolean).join(', ')}</span>}
           </div>
         </div>
+        </>
       )}
     </div>
   );
@@ -258,7 +359,8 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
   const [myPhoto, setMyPhoto] = useState<string | null>(null);
   const [myCountry, setMyCountry] = useState<string | null>(null);
   const [intlFirst, setIntlFirst] = useState(false);
-  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null } | null>(null);
+  // Task 38 : le pays accompagne le match — drapeaux face à face en Cultures.
+  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null; country?: string | null } | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -280,6 +382,25 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
   // Task 32 (réf. Invisible §5.6) : filtre local « score minimum » — 0 = désactivé.
   const [minScore, setMinScore] = useState<number>(() => Number(localStorage.getItem(MIN_SCORE_LS_KEY)) || 0);
   /**
+   * Task 38 (réf. Cultures §4.2/§5.4) : modale « Pourquoi ce match culturel ? »
+   * — ouverte depuis le badge score culturel SUR LA PHOTO (mode Cultures).
+   * Contenu 100 % réel : matchReasons du serveur (forces, vigilance, sujets).
+   */
+  const [whyCulture, setWhyCulture] = useState<FeedProfile | null>(null);
+  /**
+   * Task 38 (réf. Cultures §5.7) : filtre culturel CONTINENTS — local,
+   * multi-sélection (tableau vide = tous). Persisté en localStorage.
+   */
+  const [intlContinents, setIntlContinents] = useState<string[]>(() => {
+    try {
+      const raw = localStorage.getItem(CONTINENTS_LS_KEY);
+      const parsed: unknown = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed.filter((x): x is string => typeof x === 'string') : [];
+    } catch {
+      return [];
+    }
+  });
+  /**
    * Task 36 — références du deep-linking des onglets de mode :
    * - deepLinkHandled : l'alignement « URL ≠ serveur » au premier chargement
    *   des préférences ne doit déclencher qu'UNE bascule (les PUT rapprochés
@@ -297,6 +418,8 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
   const { data: matchesData, refresh: refreshMatches } = useSwr<MatchListResponse>('matches', true, { ttlMs: 60_000 });
 
   const isInvisible = mode === 'invisible';
+  // Task 38 (réf. Cultures) : raccourci lisible — tout l'habillage Cultures.
+  const isIntl = mode === 'interracial';
 
   // Task 32 (réf. Invisible §3) : identité VIOLETTE du Mode Invisible —
   // `body.mode-invisible` retinte fond radial + --w-gradient (#8B5CF6→#EC4899).
@@ -403,8 +526,17 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
     // Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL instantané.
     // Un profil sans score (null) reste visible : on ne punit pas l'absence.
     if (minScore > 0) d = d.filter((p) => p.score === null || p.score >= minScore);
+    // Task 38 (réf. Cultures §5.7) : filtre CONTINENTS — local, interracial
+    // uniquement. Multi-sélection ; un profil sans pays connu reste visible.
+    if (isIntl && intlContinents.length > 0) {
+      const set = new Set(intlContinents);
+      d = d.filter((p) => {
+        const cont = p.country ? (countryMeta(p.country)?.continent ?? null) : null;
+        return cont === null || set.has(cont);
+      });
+    }
     return d;
-  }, [items, verifiedOnly, minScore]);
+  }, [items, verifiedOnly, minScore, isIntl, intlContinents]);
 
   /** Retire une personne du deck (actionnée ailleurs — Top du jour, inbox). */
   const removeFromDeck = useCallback((userId: string) => {
@@ -457,6 +589,7 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
           setMatchModal({
             name: res.matchedName ?? card?.displayName ?? target?.name ?? 'Quelqu’un',
             photo,
+            country: card?.country ?? target?.country ?? null, // Task 38
           });
           setBusy(false);
           return;
@@ -553,7 +686,7 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
             : prev,
         );
         if (res.matched) {
-          setMatchModal({ name, photo });
+          setMatchModal({ name, photo, country: card?.country ?? target?.country ?? null }); // Task 38 : drapeaux
         } else {
           showFlash(`Demande envoyée à ${name} — à ${LABELS.intent[card?.intent ?? 'open'] ?? 'faire connaissance'} quand elle accepte.`);
         }
@@ -753,7 +886,7 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
             }
           : prev,
       );
-      if (res.matched) setMatchModal({ name: 'Une personne qui t’avait demandé de discuter', photo: null });
+      if (res.matched) setMatchModal({ name: 'Une personne qui t’avait demandé de discuter', photo: null, country: null });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
     }
@@ -786,9 +919,10 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
         else if (showBoost) setShowBoost(false);
         else if (matchModal) setMatchModal(null);
         else if (showFilters) setShowFilters(false);
+        else if (whyCulture) setWhyCulture(null); // Task 38 : modale Cultures
         return;
       }
-      if (detail || showNotif || showBoost || matchModal || showFilters) return;
+      if (detail || showNotif || showBoost || matchModal || showFilters || whyCulture) return;
       if (isInvisible || !deck[idx]) return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -805,7 +939,7 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isInvisible, deck, idx, matchModal, showFilters, showNotif, showBoost, detail, doSwipe, doRewind]);
+  }, [isInvisible, deck, idx, matchModal, showFilters, showNotif, showBoost, detail, whyCulture, doSwipe, doRewind]);
 
   // --- Gestes tactiles (pointer events : touch + souris) — swipe X + Y ---
   const onPointerDown = (e: React.PointerEvent) => {
@@ -899,6 +1033,22 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
   }, [items]);
   const coachSay = useCallback((msg: string) => toast(msg, 'info'), []);
 
+  /**
+   * Task 38 (réf. Cultures §5.4) : ouvre la modale « Pourquoi ce match
+   * culturel ? » — le contenu vient de matchReasons (serveur, réel).
+   */
+  const openWhyCulture = useCallback((p: FeedProfile) => setWhyCulture(p), []);
+
+  /** Task 38 : sujet suggéré cliquable — copié dans le presse-papiers. */
+  const copySujet = useCallback((s: string) => {
+    try {
+      void navigator.clipboard?.writeText(s);
+    } catch {
+      /* presse-papiers indisponible — le toast reste utile tel quel */
+    }
+    toast('Sujet copié — lance la conversation avec ça !', 'info');
+  }, []);
+
   /** Chips géo intercontinentales (mode Interracial). */
   const renderGeoChips = (p: FeedProfile) => {
     if (mode !== 'interracial') return null;
@@ -990,6 +1140,18 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
         </div>
       )}
       {renderGeoChips(p)}
+      {/* Task 38 (réf. Cultures §4.2) : chips VALEURS ambre — tirées des
+          extraits partagés RÉELS (highlights du questionnaire commun),
+          même mécanique que les chips violettes du mode Invisible. */}
+      {isIntl && p.highlights.length > 0 && (
+        <div className="intl-values">
+          {p.highlights.slice(0, 3).map((h, i) => (
+            <span key={i} className="intl-value">
+              ✓ {highlightChip(h)}
+            </span>
+          ))}
+        </div>
+      )}
       {p.bio && <p className="feed-bio">{p.bio}</p>}
       <span className="chip">{LABELS.intent[p.intent] ?? 'Rencontres'}</span>
       {p.prompts.map((pr, i) => (
@@ -1189,11 +1351,13 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
                 </label>
               </div>
 
-              {/* Task 32 (réf. Invisible §5.6) : score minimum — filtre LOCAL
-                  instantané (comme « vérifiés uniquement »), Invisible only. */}
-              {isInvisible && (
+              {/* Task 32 (réf. Invisible §5.6) + Task 38 (réf. Cultures §5.7) :
+                  score minimum — filtre LOCAL instantané (comme « vérifiés
+                  uniquement »). Invisible ET Cultures (score culturel), le
+                  libellé s'adapte au mode. */}
+              {(isInvisible || isIntl) && (
                 <div className="filter-chips inv-filter-score">
-                  <p className="filter-label">Score minimum</p>
+                  <p className="filter-label">{isIntl ? '🌍 Score culturel minimum' : 'Score minimum'}</p>
                   <label className="filter-slider">
                     <span>
                       <strong>{minScore === 0 ? 'Désactivé' : `${minScore}/100`}</strong>
@@ -1214,6 +1378,40 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
                   </label>
                   <p className="hint">
                     Filtre local — instantané sur la pile chargée. Les profils sans score restent visibles.
+                  </p>
+                </div>
+              )}
+
+              {/* Task 38 (réf. Cultures §5.7) : filtre CONTINENTS — chips
+                  multi-sélection, local et instantané, interracial only. */}
+              {isIntl && (
+                <div className="filter-chips intl-conts">
+                  <p className="filter-label">Continents</p>
+                  {INTL_CONTINENTS.map((c) => {
+                    const on = intlContinents.includes(c);
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        className={`chip filter-chip ${on ? 'on' : ''}`}
+                        onClick={() => {
+                          const nv = on ? intlContinents.filter((x) => x !== c) : [...intlContinents, c];
+                          setIntlContinents(nv);
+                          try {
+                            localStorage.setItem(CONTINENTS_LS_KEY, JSON.stringify(nv));
+                          } catch {
+                            /* stockage indisponible — l'état reste en mémoire */
+                          }
+                          setIdx(0);
+                        }}
+                      >
+                        {c} {on ? '✓' : ''}
+                      </button>
+                    );
+                  })}
+                  <p className="hint">
+                    Filtre local — instantané sur la pile chargée. Aucune sélection = tous les continents.
+                    Les profils sans pays connu restent visibles.
                   </p>
                 </div>
               )}
@@ -1363,7 +1561,8 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
               <span className={`stamp stamp-like ${drag && drag.x > 40 ? 'on' : ''}`}>LIKE</span>
               <span className={`stamp stamp-pass ${drag && drag.x < -40 ? 'on' : ''}`}>NOPE</span>
               <span className={`stamp stamp-super ${drag && drag.y < -60 ? 'on' : ''}`}>SUPER</span>
-              <CardCarousel p={card} />
+              {/* Task 38 : en Cultures, la photo porte drapeaux + score culturel cliquable. */}
+              <CardCarousel p={card} culture={isIntl} onScore={isIntl ? openWhyCulture : undefined} />
               <div className="feed-body clickable" onClick={() => setDetail(card)} title="Voir le profil complet">
                 {renderCardBody(card, !!card.photoUrl && !card.photoBlurred)}
               </div>
@@ -1400,6 +1599,11 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
                   onClick={() => void doSwipe('like')}
                 >
                   ♥
+                  {/* Task 38 (réf. Cultures §4.2) : le like mène à la discussion —
+                      en Cultures, le bouton central devient la grande pilule
+                      dégradée chaude avec son étiquette (comme « Discuter »
+                      de la référence). */}
+                  {isIntl && <span className="deck-btn-label">Liker</span>}
                 </button>
                 <button
                   type="button" className={`deck-btn boost ${boostActive ? 'active' : ''}`} aria-label="Boost"
@@ -1464,7 +1668,7 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
                   ) : (
                     <button
                       type="button" className="btn primary small" disabled={busy}
-                      onClick={() => void doSwipe('like', { id: l.userId, photo: l.photoUrl, name: l.displayName })}
+                      onClick={() => void doSwipe('like', { id: l.userId, photo: l.photoUrl, name: l.displayName, country: l.country })}
                       title="Elle t'a déjà liké — match immédiat"
                     >
                       ♥ En retour
@@ -1762,10 +1966,116 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
         </p>
       )}
 
+      {/* ── CULTURES — COACH CULTUREL (Task 38, réf. §4.5) ──
+          Cartes pédagogiques interculturelles (aucune donnée inventée :
+          ce sont des conseils produit, comme le Coach du mode Invisible). */}
+      {isIntl && (
+        <section className="coach-section intl-coach">
+          <h2 className="section-title">🧭 Coach culturel</h2>
+          <p className="hint">Des repères sincères pour que la différence devienne une force — pas un obstacle.</p>
+          <div className="coach-grid">
+            <button
+              type="button" className="coach-card warm featured"
+              onClick={() => coachSay('Respect des aînés : dans beaucoup de cultures, saluer d’abord les aînés n’est pas une formalité — c’est une marque de considération. Renseigne-toi sur ses codes avant le premier appel.')}
+            >
+              <em>🌏 Fiche : les codes qui comptent</em>
+              <p>Saluer d’abord les aînés, demander des nouvelles de la famille, goûter ce qui est offert — les petits gestes ouvrent grands les cœurs.</p>
+            </button>
+            <button
+              type="button" className="coach-card warm"
+              onClick={() => coachSay('Avant un premier rendez-vous : propose une visio courte d’abord — elle rassure des deux côtés quand la distance est grande.')}
+            >
+              <em>🛫 Avant un premier rendez-vous</em>
+              <p>Visio courte d’abord, puis rencontre — la prudence n’enlève rien à la romance.</p>
+            </button>
+            <button
+              type="button" className="coach-card warm"
+              onClick={() => coachSay('« Quelle tradition de ta culture aimerais-tu transmettre ? »')}
+            >
+              <em>💬 Question interculturelle</em>
+              <p>« Quelle tradition de ta culture aimerais-tu transmettre ? »</p>
+            </button>
+            <button
+              type="button" className="coach-card warm ethic"
+              onClick={() => coachSay('Ne réduis pas ton match à sa culture — demande-lui ce qui la rend unique AU-DELÀ de ses origines.')}
+            >
+              <em>🚫 À éviter</em>
+              <p>Ne réduis pas ton match à sa culture — demande-lui ce qui la rend unique au-delà de ses origines.</p>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* ── CULTURES — DÉFIS DE CONNEXION (Task 38, réf. §4.6) ── */}
+      {isIntl && (
+        <section className="defi-section">
+          <h2 className="section-title">🏆 Défis de connexion</h2>
+          <p className="hint">Des activités guidées à faire à deux — même à des milliers de kilomètres.</p>
+          <div className="defi-grid">
+            {INTL_DEFIS.map((d) => (
+              <button
+                key={d.title}
+                type="button"
+                className={`defi-card ${d.level}`}
+                onClick={() => coachSay(`Défi lancé : ${d.title} — raconte-le dans ta prochaine conversation !`)}
+                title="Lance le défi — à raconter ensuite dans la conversation"
+              >
+                <span className="defi-ico" aria-hidden="true">{d.icon}</span>
+                <span className="defi-head">
+                  <strong>{d.title}</strong>
+                  <span className={`defi-lvl ${d.level}`}>{DEFIS_LEVELS[d.level]}</span>
+                </span>
+                <span className="defi-desc">{d.desc}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── CULTURES — SALONS CULTURELS (Task 38, réf. §4.4) ──
+          Aperçu honnête de la prochaine phase : badge « Bientôt », AUCUN
+          faux compteur de membres ni d'en ligne. */}
+      {isIntl && (
+        <section className="salon-section">
+          <h2 className="section-title">
+            💬 Salons culturels <span className="salon-soon-title">Bientôt</span>
+          </h2>
+          <p className="hint">Des communautés thématiques pour parler cuisine, musique et langues — en préparation pour la prochaine phase.</p>
+          <div className="salon-grid">
+            {INTL_SALONS.map((s) => (
+              <button
+                key={s.name}
+                type="button"
+                className="salon-card"
+                onClick={() => coachSay('Les salons culturels arrivent bientôt — en attendant, lance un défi ou rejoins une conversation !')}
+                title="Bientôt — en préparation"
+              >
+                <span className="salon-emoji" aria-hidden="true">{s.emoji}</span>
+                <strong>{s.name}</strong>
+                <span className="salon-soon">Bientôt</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Écran « C'est un match ! » — à deux photos, façon dating */}
       {matchModal && (
         <div className="match-overlay" role="dialog" aria-modal="true">
           <div className="match-card">
+            {/* Task 38 (réf. Cultures §5.3) : drapeaux face à face — VRAIS
+                pays (le mien via /api/profile, le sien via le swipe). */}
+            {mode === 'interracial' &&
+              myCountry &&
+              matchModal.country &&
+              countryMeta(myCountry) &&
+              countryMeta(matchModal.country) && (
+                <div className="match-flags" aria-hidden="true">
+                  {countryMeta(myCountry)!.flag}
+                  <span className="match-heart">❤</span>
+                  {countryMeta(matchModal.country)!.flag}
+                </div>
+              )}
             <div className="match-duo">
               <div className="match-photo">
                 {myPhoto ? <img src={myPhoto} alt="Moi" /> : <span>✨</span>}
@@ -1880,6 +2190,73 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
                   </span>
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Task 38 (réf. Cultures §5.4) : modale « Pourquoi ce match culturel ? » —
+          3 sections colorées (forces / vigilance / sujets cliquables) tirées
+          des matchReasons RÉELS du serveur + rappel éthique ambré. */}
+      {whyCulture && (
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setWhyCulture(null);
+          }}
+        >
+          <div className="modal-card why-cult-modal" role="dialog" aria-modal="true" aria-label="Pourquoi ce match culturel ?">
+            <div className="modal-head">
+              <h2>🌍 Pourquoi ce match culturel ?</h2>
+              <button type="button" className="modal-close" aria-label="Fermer" onClick={() => setWhyCulture(null)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <p className="wc-lead">
+                Score culturel de <strong>{whyCulture.displayName}</strong> :{' '}
+                <strong>{whyCulture.score ?? '–'}/100</strong> — un indice basé sur vos réponses
+                déclarées, indicatif et jamais prédictif.
+              </p>
+              {whyCulture.matchReasons ? (
+                <>
+                  <div className="wc-sec forces">
+                    <strong>Points forts</strong>
+                    <ul>
+                      {whyCulture.matchReasons.forces.map((f, i) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="wc-sec vigilance">
+                    <strong>Points de vigilance</strong>
+                    <p>{whyCulture.matchReasons.vigilance}</p>
+                  </div>
+                  <div className="wc-sec sujets">
+                    <strong>Sujets suggérés — clic pour copier</strong>
+                    <div className="wc-sujets">
+                      {whyCulture.matchReasons.conversationStarters.map((s, i) => (
+                        <button key={i} type="button" className="wc-sujet" onClick={() => copySujet(s)}>
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <p className="hint">
+                  Le détail se débloque quand vous avez tous les deux complété le questionnaire de
+                  personnalité — en attendant, les drapeaux et la distance restent de vraies informations.
+                </p>
+              )}
+              <div className="wc-ethic">
+                🌍 La culture est une richesse, pas une case : le score t’explique, il ne décide pas à ta place.
+              </div>
+            </div>
+            <div className="modal-foot">
+              <button type="button" className="btn ghost" onClick={() => setWhyCulture(null)}>
+                Fermer
+              </button>
             </div>
           </div>
         </div>

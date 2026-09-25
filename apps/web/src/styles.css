@@ -6890,3 +6890,684 @@ body.theme-dark .rev-state.done {
     border-color: rgba(139, 92, 246, 0.24);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TASK 38 — « WAIRYU CULTURES » (MODE INTERRACIAL — réf. PROMPT fondateur)
+   100 % ADDITIF : aucune règle existante n'est modifiée ou supprimée
+   (les overrides ciblés passent par la cascade — blocs postérieurs).
+   Identité AMBRE/TERRE (chaleur culturelle) : #F59E0B → #F97316 → #F43F5E,
+   posée par body.mode-interracial (lib/mode.ts, un seul écrivain — suit le
+   profil sur tous les onglets, comme le violet Invisible Task 32/35).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ---- §3 Identité ambre : fond radial terre + dégradé signature ---- */
+body.theme-dark.mode-interracial {
+  --w-gradient: linear-gradient(135deg, #f59e0b 0%, #f97316 55%, #f43f5e 100%);
+  background:
+    radial-gradient(1200px 800px at 50% -10%, #2a1808 0%, rgba(5, 5, 8, 0) 60%),
+    radial-gradient(900px 600px at 108% 110%, rgba(245, 158, 11, 0.1) 0%, rgba(5, 5, 8, 0) 55%),
+    #050508;
+  background-attachment: fixed;
+}
+
+body.theme-dark.mode-interracial ::selection {
+  background: rgba(245, 158, 11, 0.5);
+  color: #fff;
+}
+
+/* Onglet de mode actif : pilule dégradée chaude (même trait que l'Invisible) */
+body.theme-dark.mode-interracial .mode-tab.active {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+/* Héro Cultures : profondeur chaude adaptée au dark premium */
+body.theme-dark .hero-interracial {
+  background:
+    radial-gradient(600px 300px at 85% -30%, rgba(251, 191, 36, 0.28) 0%, rgba(251, 191, 36, 0) 60%),
+    linear-gradient(120deg, #92400e 0%, #c2410c 45%, #be185d 110%);
+}
+
+/* ---- §4.2 Bandeau de drapeaux sur la photo (données réelles countryMeta) ---- */
+.flag-banner {
+  position: absolute;
+  top: 34px;
+  left: 10px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: calc(100% - 20px);
+  padding: 5px 11px 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  background: rgba(10, 8, 4, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  pointer-events: none;
+}
+
+.flag-banner-flag {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.flag-banner-txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.flag-banner-txt strong {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flag-banner-txt em {
+  font-style: normal;
+  font-size: 10.5px;
+  color: #fcd9a8;
+}
+
+/* ---- §4.2 Voile chaud sur les photos (chaleur culturelle) ---- */
+body.mode-interracial .car-slide {
+  position: relative;
+}
+
+body.mode-interracial .car-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0) 38%);
+  pointer-events: none;
+}
+
+/* ---- §4.2 Badge SCORE CULTUREL cliquable sur la photo (top-right) ---- */
+.intl-score {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  background: rgba(10, 8, 4, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.intl-score:hover {
+  border-color: rgba(251, 191, 36, 0.95);
+}
+
+.intl-score:active {
+  transform: scale(0.94);
+}
+
+.intl-score strong {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intl-score small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fcd9a8;
+  white-space: nowrap;
+}
+
+/* ---- §4.2 Chips VALEURS ambre (highlights réels du questionnaire) ---- */
+.intl-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 4px;
+}
+
+.intl-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.theme-dark .intl-value {
+  color: #fcd9a8;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+/* ---- §4.2 Bio en italique à guillemets décoratifs ambrés ---- */
+body.mode-interracial .feed-bio {
+  font-style: italic;
+}
+
+body.mode-interracial .feed-bio::before {
+  content: '« ';
+  color: #fbbf24;
+  font-style: normal;
+  font-weight: 800;
+}
+
+body.mode-interracial .feed-bio::after {
+  content: ' »';
+  color: #fbbf24;
+  font-style: normal;
+  font-weight: 800;
+}
+
+/* ---- Chips géo : verres ambrés sous le dark premium ---- */
+body.theme-dark.mode-interracial .chip.chip-continent {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fcd9a8;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+body.theme-dark.mode-interracial .chip.chip-intl {
+  background: rgba(249, 115, 22, 0.16);
+  color: #fdba74;
+  border-color: rgba(249, 115, 22, 0.45);
+}
+
+body.theme-dark.mode-interracial .chip.chip-samecountry {
+  background: rgba(255, 255, 255, 0.06);
+  color: #d6d3d1;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark.mode-interracial .chip.chip-dist {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e7e5e4;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- §4.2 Barre d'actions : le LIKER devient la grande pilule chaude ---- */
+.deck-btn-label {
+  margin-left: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
+
+body.mode-interracial .deck-btn.like {
+  width: auto;
+  min-width: 74px;
+  height: 62px;
+  border-radius: 999px;
+  padding: 0 22px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  border-color: #f59e0b;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.35);
+}
+
+body.mode-interracial .deck-btn.like:disabled {
+  opacity: 0.45;
+}
+
+/* Les boutons satellites passent en verre sombre bordé ambre */
+body.theme-dark.mode-interracial .deck-btn.pass,
+body.theme-dark.mode-interracial .deck-btn.super,
+body.theme-dark.mode-interracial .deck-btn.rewind,
+body.theme-dark.mode-interracial .deck-btn.boost {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.theme-dark.mode-interracial .deck-btn.pass {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+body.theme-dark.mode-interracial .deck-btn.super {
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+body.theme-dark.mode-interracial .deck-btn.rewind,
+body.theme-dark.mode-interracial .deck-btn.boost {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* ---- §5.3 Modale Match : drapeaux face à face (VRAIS pays) ---- */
+.match-flags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 42px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.match-flags .match-heart {
+  font-size: 26px;
+  color: #f59e0b;
+  animation: match-heart-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes match-heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+}
+
+/* ---- §5.4 Modale « Pourquoi ce match culturel ? » ---- */
+.why-cult-modal {
+  max-width: 480px;
+}
+
+.wc-lead {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-text);
+}
+
+.wc-sec {
+  border-radius: 14px;
+  padding: 11px 13px;
+  margin-bottom: 9px;
+  border: 1px solid transparent;
+}
+
+.wc-sec strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.wc-sec.forces {
+  background: rgba(16, 185, 129, 0.09);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.wc-sec.forces strong {
+  color: #10b981;
+}
+
+.wc-sec.vigilance {
+  background: rgba(249, 115, 22, 0.09);
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.wc-sec.vigilance strong {
+  color: #f97316;
+}
+
+.wc-sec.vigilance p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.wc-sec.sujets {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.wc-sec.sujets strong {
+  color: #3b82f6;
+}
+
+.wc-sec ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.wc-sujets {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wc-sujet {
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--c-text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.wc-sujet:hover {
+  border-color: rgba(59, 130, 246, 0.7);
+  background: rgba(59, 130, 246, 0.14);
+}
+
+.wc-sujet:active {
+  transform: scale(0.985);
+}
+
+.wc-ethic {
+  margin-top: 12px;
+  padding: 10px 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.14), rgba(249, 115, 22, 0.1));
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fbbf24;
+}
+
+body:not(.theme-dark) .wc-ethic {
+  color: #92400e;
+}
+
+/* ---- §5.7 Filtres culturels : continents (chips ambre) ---- */
+.intl-conts .filter-chip.on {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  border-color: #f59e0b;
+  color: #fff;
+}
+
+/* ---- §4.6 Défis de connexion ---- */
+.defi-section {
+  margin-top: 26px;
+}
+
+.defi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+@media (max-width: 560px) {
+  .defi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.defi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  padding: 13px 15px;
+  border-radius: 16px;
+  color: var(--c-text);
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.07));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.defi-card:hover {
+  border-color: rgba(251, 191, 36, 0.8);
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.18);
+}
+
+.defi-card:active {
+  transform: scale(0.985);
+}
+
+.defi-ico {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.defi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.defi-head strong {
+  font-size: 14px;
+}
+
+.defi-lvl {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.defi-lvl.easy {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.defi-lvl.med {
+  background: rgba(251, 191, 36, 0.14);
+  color: #d97706;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+}
+
+body.theme-dark .defi-lvl.med {
+  color: #fbbf24;
+}
+
+.defi-lvl.hard {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.defi-desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+/* ---- §4.4 Salons culturels — aperçu honnête « Bientôt » ---- */
+.salon-section {
+  margin-top: 26px;
+}
+
+.salon-soon-title {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+
+body.theme-dark .salon-soon-title {
+  color: #fcd9a8;
+}
+
+.salon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+@media (max-width: 560px) {
+  .salon-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.salon-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+  padding: 14px 15px;
+  border-radius: 16px;
+  color: var(--c-text);
+  cursor: pointer;
+  background: var(--c-surface, #fff);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  overflow: hidden;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Halo radial ambré au survol (réf. §4.4 — ::before) */
+.salon-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(220px 160px at 85% 15%, rgba(251, 191, 36, 0.16) 0%, rgba(251, 191, 36, 0) 65%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.salon-card:hover {
+  border-color: rgba(251, 191, 36, 0.75);
+  box-shadow: 0 10px 26px rgba(245, 158, 11, 0.2);
+  transform: translateY(-2px);
+}
+
+.salon-card:hover::before {
+  opacity: 1;
+}
+
+.salon-card:active {
+  transform: scale(0.985);
+}
+
+.salon-emoji {
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.salon-card strong {
+  font-size: 14px;
+}
+
+.salon-soon {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #d97706;
+}
+
+body.theme-dark .salon-soon {
+  color: #fcd9a8;
+}
+
+body.theme-dark .salon-card {
+  background: var(--w-surface, #16151f);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+/* ---- §4.5 Coach culturel : variante ambre des cartes coach ---- */
+.coach-card.warm {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(249, 115, 22, 0.09));
+  border-color: rgba(245, 158, 11, 0.42);
+}
+
+.coach-card.warm:hover {
+  border-color: rgba(251, 191, 36, 0.85);
+}
+
+.coach-card.warm em {
+  color: #d97706;
+}
+
+body.theme-dark .coach-card.warm em {
+  color: #fbbf24;
+}
+
+.coach-card.warm.featured {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(249, 115, 22, 0.12));
+}
+
+.intl-coach {
+  margin-top: 26px;
+}
+
+/* ---- Sidebar : identité AMBRE du mode Cultures (complète le rose/violet
+       Task 35 — les overrides suivent la cascade, rien n'est réécrit) ---- */
+body.theme-dark.mode-interracial .tabbar {
+  border-top-color: rgba(245, 158, 11, 0.24);
+}
+
+@media (min-width: 1024px) {
+  body.theme-dark.mode-interracial .tabbar {
+    border-right: 1px solid rgba(245, 158, 11, 0.3);
+    box-shadow: 8px 0 36px rgba(120, 70, 8, 0.28);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-logo {
+    background: var(--w-gradient);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-item.active {
+    background: rgba(245, 158, 11, 0.14);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-item.active::before {
+    background: linear-gradient(90deg, #f59e0b, #f97316);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-item:hover {
+    background: rgba(245, 158, 11, 0.08);
+  }
+
+  /* Pill pleine du menu Task 37 : variante ambre (même mécanique que le
+     violet Invisible — le dégradé signature suit --w-gradient) */
+  body.theme-dark.mode-interracial .tabbar-nav .tabbar-item.active {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(234, 88, 12, 0.95));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-nav .tabbar-item.active .tabbar-icon {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  body.theme-dark.mode-interracial .tabbar-nav .tabbar-item:hover .tabbar-icon {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.24);
+  }
+}

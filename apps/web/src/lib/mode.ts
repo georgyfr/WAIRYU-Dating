@@ -16,6 +16,11 @@
  * dépendance supplémentaire — juste un store minimal et abonnable.
  * Couche 100 % additive : aucun écran existant n'est modifié dans son
  * comportement fonctionnel.
+ *
+ * Task 38 (réf. PROMPT « Wairyu Cultures ») : le mode Interracial a aussi
+ * son identité — AMBRE/TERRE (chaleur culturelle, drapeaux, score culturel).
+ * Même mécanisme que l'Invisible : `body.mode-interracial` posé ici, un seul
+ * écrivain, suit le profil sur tous les onglets (cohérence Task 35).
  */
 import { useEffect, useState } from 'react';
 import type { DiscoveryMode } from '@wairyu/shared';
@@ -36,6 +41,8 @@ export function getSharedMode(): DiscoveryMode | null {
 export function setSharedMode(mode: DiscoveryMode): void {
   current = mode;
   document.body.classList.toggle('mode-invisible', mode === 'invisible');
+  // Task 38 : identité ambre/terre du mode Cultures (même mécanique).
+  document.body.classList.toggle('mode-interracial', mode === 'interracial');
   subscribers.forEach((fn) => fn(current));
 }
 
@@ -46,6 +53,7 @@ export function setSharedMode(mode: DiscoveryMode): void {
 export function resetSharedMode(): void {
   current = null;
   document.body.classList.remove('mode-invisible');
+  document.body.classList.remove('mode-interracial'); // Task 38 : idem Cultures
   subscribers.forEach((fn) => fn(current));
 }
 
