@@ -9946,3 +9946,43 @@ body.theme-dark .sk-line {
     font-size: 52px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Task 43 bis — Le survol du corps de carte ne masque plus les textes
+   ════════════════════════════════════════════════════════════════════
+   Rapport fondateur : « le survol masque le contenu du profil, les
+   textes sont tout blancs » (#/discover/classique).
+
+   Cause (règles historiques laissées telles quelles) :
+   • ligne ~4439  .deck-card .feed-body.clickable:hover { background:#fdfcfe }
+     → feedback « zone cliquable » pensé pour le thème clair ;
+   • ligne ~5308  body.theme-dark .deck-card .feed-body { color:#fff }
+     → en thème sombre TOUS les textes du corps (nom, âge, bio, tags,
+       accroche) sont blancs.
+   Au survol desktop en thème sombre : fond blanc cassé + textes blancs
+   = le contenu du profil disparaît sous le curseur.
+
+   Fix 100 % append-only (aucune règle ci-dessus n'est touchée — on
+   ré-écrit le survol APRÈS elles, gain par ordre de cascade) :
+   • thème sombre : éclaircissement subtil du verre (rgba blanc 5 %)
+     → le feedback « cliquable » est conservé, les textes restent blancs
+       et lisibles ;
+   • écrans tactiles (hover:none) : le survol ne s'y applique pas
+     correctement (sticky hover après un tap → corps resté blanc jusqu'au
+     prochain tap) → on ré-affirme le fond de repos des deux thèmes.
+   Le thème clair garde son survol #fdfcfe historique : ses textes sont
+   sombres, le contraste y est correct. */
+
+body.theme-dark .deck-card .feed-body.clickable:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (hover: none) {
+  .deck-card .feed-body.clickable:hover {
+    background: transparent;
+  }
+
+  body.theme-dark .deck-card .feed-body.clickable:hover {
+    background: var(--w-surface);
+  }
+}
