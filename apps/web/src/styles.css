@@ -9630,3 +9630,48 @@ body.events-mode .app > * {
   min-width: 0;
   max-width: 100%;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TASK 42 — Libellés de la barre du bas LISIBLES en mobile (tous modes)
+   Demande fondateur : « les textes "découvrir", "Mes events" etc. sont
+   minuscules en mode mobile. Corrige cela et fais aussi pareil pour les
+   autres modes. »
+   Cause : .tabbar-label tombait à 10px (bloc « TabBar — 6 onglets »,
+   Task 30) + 10px en theme-dark + libellés CACHÉS sous 375px — la barre
+   du bas est PARTAGÉE par les 4 univers (Classique 6 onglets · Invisible
+   5 essentiels · Cultures = onglets Classique · Moments 4 + « + »), donc
+   CE BLOC UNIQUE corrige tous les modes d'un coup.
+   Portée : ≤1023px uniquement (la barre du bas) — le MENU latéral PC
+   (≥1024, look Task 37) garde sa typographie. Append-only : les règles
+   historiques ne sont pas touchées, celles-ci gagnent par l'ordre.
+   Taille : clamp(11px → 12.5px) = plafond sûr pour « Découvrir » sur
+   6 onglets à 390px (63px/onglet) ; icônes 19→20px pour l'équilibre ;
+   sous 375px les libellés sont RÉAFFICHÉS (11px resserré au lieu du
+   display:none historique) — lisibilité demandée partout. */
+@media (max-width: 1023px) {
+  .tabbar-label {
+    font-size: clamp(11px, 3.2vw, 12.5px);
+    letter-spacing: -0.1px;
+    white-space: nowrap;
+  }
+
+  body.theme-dark .tabbar-label {
+    font-size: clamp(11px, 3.2vw, 12.5px);
+  }
+
+  .tabbar-icon {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 374px) {
+  .tabbar-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: -0.3px;
+  }
+
+  body.theme-dark .tabbar-label {
+    font-size: 11px;
+  }
+}
