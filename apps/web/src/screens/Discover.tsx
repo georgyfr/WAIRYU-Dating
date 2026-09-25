@@ -32,6 +32,16 @@
  * honnête « Bientôt »), drapeaux face à face dans la modale Match. Toutes
  * les données affichées sont RÉELLES — rien n'est inventé.
  * Éthique (spec §5.4) : l'avertissement d'indicativité est TOUJOURS visible.
+ * Task 43 (demande fondateur — « des fonctionnalités plus intelligentes,
+ * plus fluides et ergonomiques, plus interactives » sur #/discover/classique) :
+ * enrichissements 100 % données réelles, TOUT ADDITIFS —
+ * · ACCROCHE SUGGÉRÉE copiable sur chaque carte (matchReasons — serveur) ;
+ * · tri local « ⏱️ En ligne d'abord » (buckets présence réels) ;
+ * · barre de PROGRESSION de la pile (vues / à découvrir) ;
+ * · mini-jauge sur le quota de likes ;
+ * · BURST visuel à l'envol (♥ / ✶) + barres photos CLIQUABLES (saut direct)
+ *   + squelettes shimmer au premier chargement.
+ * Rien d'inventé, rien de supprimé : le serveur ne change pas.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
@@ -128,6 +138,8 @@ const MIN_SCORE_LS_KEY = 'wairyu.filter.minscore';
  * reste toujours visible : on ne punit pas l'absence de données.
  */
 const CONTINENTS_LS_KEY = 'wairyu.filter.continents';
+/** Task 43 : tri local « En ligne d'abord » — classique uniquement (LS). */
+const ONLINE_FIRST_LS_KEY = 'wairyu.sort.online';
 const INTL_CONTINENTS = ['Afrique', 'Europe', 'Asie', 'Amérique du Nord', 'Amérique du Sud', 'Océanie'] as const;
 
 /**
@@ -164,6 +176,11 @@ const DEFIS_LEVELS: Record<'easy' | 'med' | 'hard', string> = {
   med: 'Moyen',
   hard: 'Difficile',
 };
+
+/** Task 43 : troncature propre (accroches longues) — aucun texte inventé. */
+function truncateTxt(s: string, max: number): string {
+  return s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s;
+}
 
 /* ─────────────────────────── Carrousel de photos ─────────────────────────── */
 
@@ -222,10 +239,20 @@ function CardCarousel({
           <button type="button" className="car-zone left" aria-label="Photo précédente" onClick={() => go(-1)} />
           <button type="button" className="car-zone right" aria-label="Photo suivante" onClick={() => go(1)} />
           <span className="car-count">{cur + 1}/{photos.length}</span>
-          {/* Barres de progression façon Stories (enrichissement Task 30) */}
-          <div className="car-bars" aria-hidden="true">
+          {/* Barres de progression façon Stories (enrichissement Task 30).
+              Task 43 : barres CLIQUABLES — saut direct à une photo. */}
+          <div className="car-bars">
             {photos.map((_, i) => (
-              <span key={i} className={`car-bar ${i <= cur ? 'on' : ''}`} />
+              <button
+                key={i}
+                type="button"
+                className={`car-bar ${i <= cur ? 'on' : ''}`}
+                aria-label={`Aller à la photo ${i + 1}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSlide(i);
+                }}
+              />
             ))}
           </div>
           <button type="button" className="car-arrow left" aria-label="Photo précédente" onClick={() => go(-1)}>
@@ -405,6 +432,19 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     }
   });
   /**
+   * Task 43 : tri local « En ligne d'abord » — classique uniquement. Les
+   * buckets de présence sont RÉELS (online > today > recent > inconnu) ;
+   * le tri est stable, local, réversible, persisté en localStorage.
+   */
+  const [onlineFirst, setOnlineFirst] = useState<boolean>(() => localStorage.getItem(ONLINE_FIRST_LS_KEY) === '1');
+  /**
+   * Task 43 : compteur de session « profils vus » — la pile fonctionne par
+   * RETRAIT (fix Task 30 : idx n'augmente plus), donc la progression se
+   * base sur ce compteur RÉEL : incrémenté à chaque carte de la pile
+   * consommée, décrémenté au rewind (annulation = carte de retour).
+   */
+  const [seen, setSeen] = useState(0);
+  /**
    * Task 36 — références du deep-linking des onglets de mode :
    * - deepLinkHandled : l'alignement « URL ≠ serveur » au premier chargement
    *   des préférences ne doit déclencher qu'UNE bascule (les PUT rapprochés
@@ -539,8 +579,14 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         return cont === null || set.has(cont);
       });
     }
+    // Task 43 : tri « En ligne d'abord » — LOCAL, classique uniquement. Le
+    // sort ES est stable : l'ordre serveur est conservé DANS chaque bucket.
+    if (onlineFirst && mode === 'classic') {
+      const rank = (p: FeedProfile) => (p.online === 'online' ? 0 : p.online === 'today' ? 1 : p.online === 'recent' ? 2 : 3);
+      d = [...d].sort((a, b) => rank(a) - rank(b));
+    }
     return d;
-  }, [items, verifiedOnly, minScore, isIntl, intlContinents]);
+  }, [items, verifiedOnly, minScore, isIntl, intlContinents, onlineFirst, mode]);
 
   /** Retire une personne du deck (actionnée ailleurs — Top du jour, inbox). */
   const removeFromDeck = useCallback((userId: string) => {
@@ -578,6 +624,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
           setExit(null);
           setDrag(null);
           if (id) removeFromDeck(id);
+          setSeen((s) => s + 1); // Task 43 : la carte est consommée
           setBusy(false);
         }, 180);
       };
@@ -589,7 +636,10 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         removeLike(id);
         if (res.matched) {
           refreshMatches(true); // la cloche Notifications voit le match immédiatement
-          if (card) removeFromDeck(id);
+          if (card) {
+            removeFromDeck(id);
+            if (!target) setSeen((s) => s + 1); // Task 43 : carte de pile consommée
+          }
           setMatchModal({
             name: res.matchedName ?? card?.displayName ?? target?.name ?? 'Quelqu’un',
             photo,
@@ -634,6 +684,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       setQuota(res.quota);
       if (res.undone) {
         showFlash('Dernière action annulée.');
+        setSeen((s) => Math.max(0, s - 1)); // Task 43 : la carte revient dans la pile
         const prevIdx = idx - 1;
         if (prevIdx >= 0 && deck[prevIdx]?.userId === res.targetId) {
           setIdx(prevIdx);
@@ -910,6 +961,20 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     setIdx(0);
   }, [myCountry]);
 
+  /** Task 43 : tri « En ligne d'abord » — toggle local (LS) + retour en tête. */
+  const toggleOnlineFirst = useCallback(() => {
+    setOnlineFirst((v) => {
+      const nv = !v;
+      try {
+        localStorage.setItem(ONLINE_FIRST_LS_KEY, nv ? '1' : '0');
+      } catch {
+        /* stockage indisponible — l'état reste en mémoire */
+      }
+      return nv;
+    });
+    setIdx(0);
+  }, []);
+
   /* ── Raccourcis clavier (PC) : ← passe · → like · ↑ super · R rewind · Esc ferme ── */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -1158,6 +1223,25 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       )}
       {p.bio && <p className="feed-bio">{p.bio}</p>}
       <span className="chip">{LABELS.intent[p.intent] ?? 'Rencontres'}</span>
+      {/* Task 43 : ACCROCHE SUGGÉRÉE — premier sujet de conversation RÉEL du
+          serveur (matchReasons.conversationStarters) ; un clic le copie dans
+          le presse-papiers. Classique/Interracial (l'Invisible a ses extraits
+          violets). stopPropagation : le corps de carte ouvre le détail. */}
+      {!isInvisible && p.matchReasons && p.matchReasons.conversationStarters.length > 0 && (
+        <button
+          type="button"
+          className="icebreaker-chip"
+          onClick={(e) => {
+            e.stopPropagation();
+            copySujet(p.matchReasons!.conversationStarters[0]!);
+          }}
+          title="Copier cette accroche — tirée de vos points communs réels"
+        >
+          <em aria-hidden="true">💬</em>
+          <span>« {truncateTxt(p.matchReasons.conversationStarters[0]!, 74)} »</span>
+          <small>copier</small>
+        </button>
+      )}
       {p.prompts.map((pr, i) => (
         <p key={i} className="feed-prompt">
           <strong>{pr.question}</strong>
@@ -1301,13 +1385,31 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
 
       {/* Barre de quotas + filtres */}
       <div className="quota-row">
-        <span className="quota-chip" title="Likes restants aujourd'hui">♥ {quota?.likesLeft ?? '–'}/{DISCOVERY.likesPerDay}</span>
+        <span className="quota-chip" title="Likes restants aujourd'hui">
+          ♥ {quota?.likesLeft ?? '–'}/{DISCOVERY.likesPerDay}
+          {/* Task 43 : mini-jauge de quota — reste/jour, données réelles. */}
+          <i className="quota-bar" aria-hidden="true">
+            <b style={{ width: `${Math.max(0, Math.min(100, ((quota?.likesLeft ?? 0) / DISCOVERY.likesPerDay) * 100))}%` }} />
+          </i>
+        </span>
         <span className="quota-chip" title="Super Likes restants">✶ {quota?.supersLeft ?? '–'}/{DISCOVERY.superLikesPerDay}</span>
         <span className="quota-chip" title="Demandes « Discuter » restantes">✉ {quota?.invisibleLeft ?? '–'}/{DISCOVERY.invisibleRequestsPerDay}</span>
         <span className="quota-chip" title="Rewinds restants">↺ {quota?.rewindsLeft ?? '–'}/{DISCOVERY.rewindsPerDay}</span>
         <button type="button" className="btn ghost small" onClick={() => setShowFilters((v) => !v)}>
           Filtres
         </button>
+        {/* Task 43 : tri local « En ligne d'abord » — classique uniquement
+            (buckets présence réels ; même esprit que le tri Cultures). */}
+        {mode === 'classic' && (
+          <button
+            type="button"
+            className={`chip intl-toggle online-toggle ${onlineFirst ? 'on' : ''}`}
+            onClick={toggleOnlineFirst}
+            title="Tri local : les profils actifs récemment remontent dans ta pile"
+          >
+            ⏱️ En ligne d’abord {onlineFirst ? '✓' : ''}
+          </button>
+        )}
         {mode === 'interracial' && (
           <button
             type="button"
@@ -1514,8 +1616,37 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       {/* ── PILE CLASSIQUE / INTERRACIAL ── */}
       {!isInvisible && (
         <div className="deck-zone">
+          {/* Task 43 : progression de la pile — compteurs RÉELS (vues de
+              session / restants), sous la jauge, sans aucune invention. */}
+          {!loading && deck.length > 0 && (
+            <div className="deck-progress">
+              <div className="dp-track">
+                <b style={{ width: `${Math.min(100, Math.round((seen / Math.max(1, seen + deck.length)) * 100))}%` }} />
+              </div>
+              <span className="dp-caption">
+                {seen > 0 ? `${seen} vue${seen > 1 ? 's' : ''} · ` : ''}
+                {deck.length} profil{deck.length > 1 ? 's' : ''} à découvrir
+              </span>
+            </div>
+          )}
           {loading && items.length === 0 && (
-            <p className="status"><span className="dot" /> Recherche de profils compatibles…</p>
+            <>
+              <p className="status">
+                <span className="dot" /> Recherche de profils compatibles…
+              </p>
+              {/* Task 43 : squelettes shimmer — le chargement se VOIT. */}
+              <div className="deck-skeleton" aria-hidden="true">
+                <div className="sk-card sk-back" />
+                <div className="sk-card sk-front">
+                  <div className="sk-media" />
+                  <div className="sk-lines">
+                    <span className="sk-line w70" />
+                    <span className="sk-line w45" />
+                    <span className="sk-line w60" />
+                  </div>
+                </div>
+              </div>
+            </>
           )}
           {!loading && !card && (
             <div className="deck-empty">
@@ -1581,6 +1712,10 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               <span className={`stamp stamp-like ${drag && drag.x > 40 ? 'on' : ''}`}>LIKE</span>
               <span className={`stamp stamp-pass ${drag && drag.x < -40 ? 'on' : ''}`}>NOPE</span>
               <span className={`stamp stamp-super ${drag && drag.y < -60 ? 'on' : ''}`}>SUPER</span>
+              {/* Task 43 : burst à l'envol — confirmation visuelle du geste
+                  (like / super) au moment où la carte quitte la pile. */}
+              {exit === 'right' && <span className="swipe-burst like" aria-hidden="true">♥</span>}
+              {exit === 'up' && <span className="swipe-burst super" aria-hidden="true">✶</span>}
               {/* Task 38 : en Cultures, la photo porte drapeaux + score culturel cliquable. */}
               <CardCarousel p={card} culture={isIntl} onScore={isIntl ? openWhyCulture : undefined} />
               <div className="feed-body clickable" onClick={() => setDetail(card)} title="Voir le profil complet">

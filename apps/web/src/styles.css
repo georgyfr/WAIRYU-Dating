@@ -9675,3 +9675,274 @@ body.events-mode .app > * {
     font-size: 11px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TASK 43 — Découvrir Classique : plus intelligent, plus fluide, plus
+   interactif (demande fondateur). 100 % données réelles, TOUT ADDITIF :
+   aucune règle existante n'est réécrite — ce bloc ne porte que des
+   classes nouvelles (icebreaker-chip, deck-progress, swipe-burst,
+   quota-bar, deck-skeleton, online-toggle) + 2 micro-retouches de
+   curseur. Le serveur ne change pas.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ---- §1 Accroche suggérée copiable (matchReasons — serveur) ----
+   Sur la carte, sous la chip d'intention : un clic copie le sujet. */
+.icebreaker-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  border: 1px dashed rgba(236, 72, 153, 0.45);
+  background: rgba(236, 72, 153, 0.07);
+  color: var(--c-text);
+  border-radius: 12px;
+  padding: 8px 11px;
+  font-family: inherit;
+  font-size: 12.8px;
+  font-weight: 600;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.icebreaker-chip em {
+  font-style: normal;
+  font-size: 15px;
+  flex: none;
+}
+
+.icebreaker-chip small {
+  margin-left: auto;
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #db2777;
+  opacity: 0.75;
+}
+
+.icebreaker-chip:hover {
+  background: rgba(236, 72, 153, 0.13);
+  border-color: #db2777;
+}
+
+.icebreaker-chip:active {
+  transform: scale(0.985);
+}
+
+/* ---- §2 Progression de la pile (vues / à découvrir) ---- */
+.deck-progress {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 0 10px;
+}
+
+.dp-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(45, 36, 56, 0.1);
+  overflow: hidden;
+}
+
+.dp-track b {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--w-gradient, linear-gradient(135deg, #EC4899, #8B5CF6));
+  transition: width 0.3s ease;
+}
+
+.dp-caption {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+
+/* ---- §3 Mini-jauge sur le quota de likes ---- */
+.quota-bar {
+  display: inline-block;
+  width: 26px;
+  height: 4px;
+  margin-left: 7px;
+  border-radius: 999px;
+  background: rgba(45, 36, 56, 0.12);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.quota-bar b {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--c-primary);
+  transition: width 0.3s ease;
+}
+
+/* ---- §4 Burst à l'envol (like / super) ---- */
+.swipe-burst {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  z-index: 3;
+  font-size: 64px;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.swipe-burst.like {
+  color: #fff;
+  text-shadow: 0 6px 30px rgba(236, 72, 153, 0.85);
+}
+
+.swipe-burst.super {
+  color: #38bdf8;
+  text-shadow: 0 6px 30px rgba(56, 189, 248, 0.9);
+}
+
+.deck-card.exit-right .swipe-burst.like,
+.deck-card.exit-up .swipe-burst.super {
+  animation: burst-pop 0.5s ease-out forwards;
+}
+
+@keyframes burst-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -90%) scale(1.35);
+  }
+}
+
+/* Micro-ergonomie : le drag se voit dans le curseur. */
+.deck-card:not(.behind):active {
+  cursor: grabbing;
+}
+
+/* ---- §5 Squelettes shimmer du premier chargement ---- */
+.deck-skeleton {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+}
+
+.sk-card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5ddf2;
+}
+
+.sk-front {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(45, 36, 56, 0.1);
+}
+
+.sk-back {
+  position: absolute;
+  inset: 0 0 -10px 0;
+  transform: scale(0.94);
+  opacity: 0.5;
+}
+
+.sk-media {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(100deg, #efe9f7 40%, #f8f5fc 50%, #efe9f7 60%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.3s linear infinite;
+}
+
+.sk-lines {
+  padding: 14px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.sk-line {
+  height: 11px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #efe9f7 40%, #f8f5fc 50%, #efe9f7 60%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.3s linear infinite;
+}
+
+.sk-line.w70 { width: 70%; }
+.sk-line.w45 { width: 45%; }
+.sk-line.w60 { width: 60%; }
+
+@keyframes sk-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---- §6 Theme dark (les 4 univers passent tous par ici) ---- */
+body.theme-dark .icebreaker-chip {
+  border-color: rgba(236, 72, 153, 0.4);
+  background: rgba(236, 72, 153, 0.1);
+  color: #e5e7eb;
+}
+
+body.theme-dark .icebreaker-chip:hover {
+  background: rgba(236, 72, 153, 0.18);
+}
+
+body.theme-dark .icebreaker-chip small {
+  color: #f9a8d4;
+}
+
+body.theme-dark .dp-track {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .dp-track b {
+  background: var(--w-gradient, linear-gradient(135deg, #EC4899, #8B5CF6));
+}
+
+body.theme-dark .quota-bar {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+body.theme-dark .quota-bar b {
+  background: var(--w-gradient, linear-gradient(135deg, #EC4899, #8B5CF6));
+}
+
+body.theme-dark .sk-card {
+  background: #15101d;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .sk-media,
+body.theme-dark .sk-line {
+  background: linear-gradient(100deg, #1d1626 40%, #282033 50%, #1d1626 60%);
+  background-size: 200% 100%;
+}
+
+/* ---- §7 Mobile : respiration sur petits écrans ---- */
+@media (max-width: 480px) {
+  .icebreaker-chip {
+    font-size: 12.2px;
+    padding: 8px 10px;
+  }
+
+  .deck-progress {
+    max-width: 100%;
+    padding: 0 4px;
+  }
+
+  .swipe-burst {
+    font-size: 52px;
+  }
+}
