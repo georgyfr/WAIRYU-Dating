@@ -14,6 +14,13 @@
  * - Interracial : drapeaux & continents, badge intercontinental, distance
  *   mondiale formatée, priorité « autres continents ».
  * - Top Compatibilité du jour (cron, hors quota) + filtres de base + quotas.
+ * Task 36 (demande fondateur — URLs spécifiques) : chaque onglet de mode a
+ * son URL — #/discover/classique · #/discover/interracial · #/discover/
+ * invisible — et basculer un mode met l'URL à jour (replaceState, via
+ * onModeChange). Un deep link d'un mode ≠ serveur déclenche la VRAIE
+ * bascule (même logique qu'un clic — Task 33 : PUT persistant, deck du bon
+ * bassin, feedback garanti) ; #/discover sans slug garde son comportement
+ * historique (mode des préférences serveur). Rien n'est supprimé.
  * Éthique (spec §5.4) : l'avertissement d'indicativité est TOUJOURS visible.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -44,6 +51,10 @@ import {
 interface Props {
   /** Ouvre l'onglet Matchs (barre d'onglets — plus de bouton retour). */
   onMatches: () => void;
+  /** Task 36 : mode demandé par l'URL (#/discover/:mode) — sinon undefined. */
+  initialMode?: DiscoveryMode;
+  /** Task 36 : notifie App après une bascule réussie — l'URL suit le mode. */
+  onModeChange?: (mode: DiscoveryMode) => void;
 }
 
 const MODE_TABS: { id: DiscoveryMode; label: string; icon: string; hint: string }[] = [
@@ -230,9 +241,12 @@ function InvisibleSteps() {
   );
 }
 
-export function Discover({ onMatches }: Props) {
+export function Discover({ onMatches, initialMode, onModeChange }: Props) {
   const [prefs, setPrefs] = useState<PreferencesDto | null>(null);
-  const [mode, setMode] = useState<DiscoveryMode>('classic');
+  // Task 36 : le mode initial vient de l'URL quand elle en porte un
+  // (#/discover/:mode) — sinon comportement historique (classic d'abord,
+  // puis alignement sur les préférences serveur dans loadAround).
+  const [mode, setMode] = useState<DiscoveryMode>(initialMode ?? 'classic');
   const [items, setItems] = useState<FeedProfile[]>([]);
   const [idx, setIdx] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -265,6 +279,20 @@ export function Discover({ onMatches }: Props) {
   const [verifiedOnly, setVerifiedOnly] = useState<boolean>(() => localStorage.getItem(VERIFIED_LS_KEY) === '1');
   // Task 32 (réf. Invisible §5.6) : filtre local « score minimum » — 0 = désactivé.
   const [minScore, setMinScore] = useState<number>(() => Number(localStorage.getItem(MIN_SCORE_LS_KEY)) || 0);
+  /**
+   * Task 36 — références du deep-linking des onglets de mode :
+   * - deepLinkHandled : l'alignement « URL ≠ serveur » au premier chargement
+   *   des préférences ne doit déclencher qu'UNE bascule (les PUT rapprochés
+   *   sont rate-limités — piège de recette Task 35) ;
+   * - ownUrlUpdate : la bascule vient de NOTRE propre onModeChange (l'URL
+   *   a changé parce qu'on vient de basculer) — l'effet d'écoute d'URL ne
+   *   doit pas re-basculer en boucle ;
+   * - prevUrlMode : détecte les changements EXTERNES de l'URL (édition
+   *   manuelle de la barre d'adresse pendant que l'écran est monté).
+   */
+  const deepLinkHandled = useRef(false);
+  const ownUrlUpdate = useRef<DiscoveryMode | null>(null);
+  const prevUrlMode = useRef<DiscoveryMode | undefined>(initialMode);
   // Matchs récents (cloche) — le cache est PARTAGÉ avec la page Matchs.
   const { data: matchesData, refresh: refreshMatches } = useSwr<MatchListResponse>('matches', true, { ttlMs: 60_000 });
 
@@ -331,7 +359,10 @@ export function Discover({ onMatches }: Props) {
       ]);
       setPrefs(prof.preferences);
       setDraftFilters(prof.preferences);
-      if (prof.preferences) setMode(prof.preferences.modeDefault);
+      // Task 36 : sans slug d'URL, comportement historique (le serveur fait
+      // foi) ; AVEC un slug, l'URL prime — l'alignement éventuel au serveur
+      // est géré par l'effet deep-link (plus bas, après switchMode).
+      if (prof.preferences && !initialMode) setMode(prof.preferences.modeDefault);
       setQuota(q);
       setTop(t);
       setMyCountry(prof.country);
@@ -569,8 +600,11 @@ export function Discover({ onMatches }: Props) {
    * recours (le PUT est un upsert), et feedback toast GARANTI en cas d'échec.
    */
   const switchMode = useCallback(
-    async (next: DiscoveryMode) => {
-      if (busy || next === mode) return;
+    async (next: DiscoveryMode, force = false) => {
+      // Task 36 : force=true (deep-link d'un mode ≠ serveur) outrepasse le
+      // garde « déjà sur ce mode » — l'état UI peut déjà y être (il est
+      // initialisé depuis l'URL), pas le serveur.
+      if (busy || (next === mode && !force)) return;
       setBusy(true);
       setError(null);
       try {
@@ -580,6 +614,8 @@ export function Discover({ onMatches }: Props) {
           // Le serveur est déjà sur ce mode (autre appareil / reload) —
           // on s'aligne sans requête inutile.
           setMode(current.modeDefault);
+          ownUrlUpdate.current = next; // le changement d'URL qui suit vient de nous
+          onModeChange?.(next); // Task 36 : l'URL reflète le mode courant
           setIdx(0);
           setInbox(
             current.modeDefault === 'invisible'
@@ -617,7 +653,15 @@ export function Discover({ onMatches }: Props) {
             prefIntent: effective.prefIntent ?? null,
           },
         });
+        // Task 36 : l'état local reflète CE qui vient d'être persisté —
+        // sans ça, prefs local reste sur l'ancien mode (cas deep-link :
+        // l'auto-bascule PUT ne rechargait pas prefs) et un clic suivant
+        // sur l'ancien mode passait par la branche « aligné » SANS PUT —
+        // désalignement UI/serveur persistant (trouvé en recette E2E).
+        setPrefs({ ...effective, modeDefault: next });
         setMode(next);
+        ownUrlUpdate.current = next; // le changement d'URL qui suit vient de nous
+        onModeChange?.(next); // Task 36 : l'URL reflète le mode courant
         setIdx(0);
         setInbox(next === 'invisible' ? await api<InboxResponse>('/api/discover/inbox') : null);
         await loadDeck(1, true);
@@ -628,8 +672,38 @@ export function Discover({ onMatches }: Props) {
       }
       setBusy(false);
     },
-    [prefs, mode, busy, loadDeck, loadPrefs],
+    [prefs, mode, busy, loadDeck, loadPrefs, onModeChange],
   );
+
+  // Task 36 (deep link #/discover/:mode) : au premier chargement des
+  // préférences, si le serveur est sur un AUTRE mode que celui de l'URL,
+  // on bascule réellement (PUT persistant + deck du bon bassin + inbox) —
+  // exactement comme un clic sur l'onglet (logique Task 33, feedback
+  // garanti). UNE SEULE fois : les PUT rapprochés sont rate-limités
+  // (piège de recette Task 35) et ensuite c'est l'utilisateur qui décide.
+  useEffect(() => {
+    if (!initialMode || !prefs || deepLinkHandled.current) return;
+    if (prefs.modeDefault !== initialMode) {
+      deepLinkHandled.current = true;
+      void switchMode(initialMode, true);
+    }
+  }, [prefs, initialMode, switchMode]);
+
+  // Task 36 : édition MANUELLE de l'URL pendant que l'écran est monté
+  // (ex. #/discover/invisible → #/discover/interracial dans la barre
+  // d'adresse) → bascule réelle. Les changements d'URL déclenchés par
+  // NOUS (onModeChange → replaceState) sont marqués ownUrlUpdate et
+  // ignorés ici — pas de boucle, pas de double PUT.
+  useEffect(() => {
+    if (initialMode === prevUrlMode.current) return;
+    prevUrlMode.current = initialMode;
+    if (ownUrlUpdate.current) {
+      const own = initialMode === ownUrlUpdate.current;
+      ownUrlUpdate.current = null;
+      if (own) return;
+    }
+    if (initialMode) void switchMode(initialMode, true);
+  }, [initialMode, switchMode]);
 
   /** Filtres de base (âge, distance, genres, intention). */
   const applyFilters = useCallback(async () => {

@@ -9,8 +9,13 @@
  * En Mode Invisible, les likes reçus se répondent par une demande
  * « Discuter » (handshake) — les photos restent régies par le mode du
  * PROPRIÉTAIRE (§4.6).
+ * Task 36 (demande fondateur — URLs spécifiques) : chaque filtre a son
+ * URL — #/likes/tous · #/likes/likes · #/likes/supers — et changer de
+ * filtre met l'URL à jour (replaceState via onFilterChange). #/likes sans
+ * slug garde son comportement historique (filtre « Tout »). Le filtrage
+ * reste LOCAL et instantané — aucun appel API ajouté.
  */
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
 import { toast } from '../lib/toast';
@@ -20,16 +25,36 @@ import { ARCHETYPES, type LikesMeDto, type LikesMeResponse, type ProfileResponse
 interface Props {
   /** Réservé : ouvrir directement le chat après un match (page Matchs pour l'instant). */
   onOpenChat?: (conversationId: string) => void;
+  /** Task 36 : filtre demandé par l'URL (#/likes/:filtre) — sinon undefined. */
+  initialFilter?: 'all' | 'like' | 'super';
+  /** Task 36 : notifie App à chaque changement de filtre — l'URL suit. */
+  onFilterChange?: (filter: 'all' | 'like' | 'super') => void;
 }
 
-export function Likes({ onOpenChat: _onOpenChat }: Props) {
+export function Likes({ onOpenChat: _onOpenChat, initialFilter, onFilterChange }: Props) {
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null } | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   // Filtres horizontaux (Task 31 — codes de la référence) : Tout / Likes / Super.
-  const [filter, setFilter] = useState<'all' | 'like' | 'super'>('all');
+  // Task 36 : l'état initial peut venir de l'URL (#/likes/:filtre) et chaque
+  // changement est reflété dans l'URL (replaceState via onFilterChange) —
+  // le wrapper setFilter conserve la signature utilisée par les chips.
+  const [filter, setFilterState] = useState<'all' | 'like' | 'super'>(initialFilter ?? 'all');
+  const setFilter = useCallback(
+    (f: 'all' | 'like' | 'super') => {
+      setFilterState(f);
+      onFilterChange?.(f);
+    },
+    [onFilterChange],
+  );
+  // Task 36 : édition manuelle de l'URL pendant que l'écran est monté —
+  // le filtre suit (filtrage local, aucun appel API, pas de notification
+  // en retour : l'URL est déjà à jour).
+  useEffect(() => {
+    if (initialFilter) setFilterState(initialFilter);
+  }, [initialFilter]);
 
   // Cache partagé : la même requête sert le badge de l'onglet (App), la
   // page Découvrir (strip) et cette page — Task 28/30.

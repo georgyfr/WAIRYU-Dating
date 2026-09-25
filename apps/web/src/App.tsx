@@ -5,6 +5,17 @@
  * barre d'onglets permanente — expérience dating classique) ·
  * #/profile (assistant) · #/questionnaire · #/chat/:id · #/app (paramètres).
  * La session est détectée au chargement via /api/me (cookie httpOnly signé).
+ *
+ * Task 36 (demande fondateur — « des URLs spécifiques pour toutes les
+ * pages ou onglets ») : CHAQUE page ET chaque onglet interne est désormais
+ * adressable individuellement (deep link partageable) —
+ *   #/discover/classique · #/discover/interracial · #/discover/invisible
+ *   #/likes/tous · #/likes/likes · #/likes/supers
+ * Les slugs historiques (#/discover, #/likes) restent canoniques et valables :
+ * ils ouvrent la page dans son état par défaut, RIEN n'est supprimé.
+ * Basculer un onglet interne met l'URL à jour via history.replaceState
+ * (pas d'entrée d'historique — le bouton retour reste réservé aux pages).
+ * Carte complète : docs/URLS.md.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from './lib/api';
@@ -24,6 +35,7 @@ import { Likes } from './screens/Likes';
 import { Moments } from './screens/Moments';
 import { Chat } from './screens/Chat';
 import { TabBar, type TabId } from './components/TabBar';
+import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
 import { getSharedMode, setSharedMode, resetSharedMode } from './lib/mode';
 import type {
@@ -42,8 +54,8 @@ type Route =
   | { name: 'fb-complete' }
   | { name: 'profile' }
   | { name: 'questionnaire' }
-  | { name: 'discover' }
-  | { name: 'likes' }
+  | { name: 'discover'; mode?: DiscoveryMode }
+  | { name: 'likes'; filter?: 'all' | 'like' | 'super' }
   | { name: 'matches' }
   | { name: 'messages' }
   | { name: 'moments' }
@@ -59,6 +71,36 @@ const TAB_ROUTES: Record<string, TabId> = {
   messages: 'messages',
   moments: 'moments',
   myprofile: 'profile',
+};
+
+/**
+ * Task 36 — slugs d'onglets internes. Entrée : slugs français CANONIQUES
+ * (classique · interracial · invisible / tous · likes · supers) + alias
+ * anglais tolérés (classic, all, like, super) pour robustesse de partage.
+ */
+const DISCOVER_MODE_SLUGS: Record<string, DiscoveryMode> = {
+  classique: 'classic',
+  classic: 'classic',
+  interracial: 'interracial',
+  invisible: 'invisible',
+};
+const DISCOVER_MODE_TO_SLUG: Record<DiscoveryMode, string> = {
+  classic: 'classique',
+  interracial: 'interracial',
+  invisible: 'invisible',
+};
+const LIKES_FILTER_SLUGS: Record<string, 'all' | 'like' | 'super'> = {
+  tous: 'all',
+  all: 'all',
+  like: 'like',
+  likes: 'like',
+  super: 'super',
+  supers: 'super',
+};
+const LIKES_FILTER_TO_SLUG: Record<'all' | 'like' | 'super', string> = {
+  all: 'tous',
+  like: 'likes',
+  super: 'supers',
 };
 
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
@@ -79,7 +121,14 @@ function parseHash(): Route {
   const hash = window.location.hash.replace(/^#\/?/, '');
   const [path, query] = hash.split('?');
   const params = new URLSearchParams(query ?? '');
-  switch (path) {
+  // Task 36 : le switch porte sur le PREMIER segment du chemin — les deep
+  // links à sous-segment (#/discover/invisible, #/likes/supers) arrivent ici
+  // comme « discover/invisible » ; l'ancien switch sur le chemin complet les
+  // envoyait au default (accueil). Comportement des routes historiques
+  // inchangé (elles sont mono-segment) ; #/chat/:id reste géré par le
+  // default avec sa regex de validation.
+  const [seg0, seg1] = (path ?? '').split('/');
+  switch (seg0) {
     case 'signup':
       return { name: 'signup' };
     case 'login':
@@ -100,12 +149,19 @@ function parseHash(): Route {
     case 'questionnaire':
       // Étape 4 : questionnaire progressif.
       return { name: 'questionnaire' };
-    case 'discover':
+    case 'discover': {
       // Étape 5 : découverte dual-mode (pile Classique + Invisible + Top du jour).
-      return { name: 'discover' };
-    case 'likes':
+      // Task 36 : #/discover/:mode — deep link direct d'un onglet de mode.
+      // Slug inconnu → découverte neutre (dégradation gracieuse, jamais 404).
+      const mode = seg1 ? DISCOVER_MODE_SLUGS[seg1] : undefined;
+      return { name: 'discover', mode: seg1 && !mode ? undefined : mode };
+    }
+    case 'likes': {
       // « Tu plais ! » — grille des likes reçus (onglet, enrichissement).
-      return { name: 'likes' };
+      // Task 36 : #/likes/:filtre — deep link direct d'un filtre (tous/likes/supers).
+      const filter = seg1 ? LIKES_FILTER_SLUGS[seg1] : undefined;
+      return { name: 'likes', filter: seg1 && !filter ? undefined : filter };
+    }
     case 'matches':
       // Étape 5 : matchs + passerelle Classique → Invisible (onglet).
       return { name: 'matches' };
@@ -180,6 +236,15 @@ export default function App() {
 
   const go = useCallback((hash: string) => {
     window.location.hash = hash;
+    setRoute(parseHash());
+  }, []);
+
+  // Task 36 : synchronise l'URL avec un onglet INTERNE (mode de Découvrir,
+  // filtre de Likes) via history.replaceState — l'URL reste partageable mais
+  // n'empile PAS l'historique : le bouton retour continue de revenir à la
+  // PAGE précédente, pas au mode/filtre d'avant (comportement tab-like).
+  const syncHash = useCallback((hash: string) => {
+    history.replaceState(null, '', hash);
     setRoute(parseHash());
   }, []);
 
@@ -291,9 +356,21 @@ export default function App() {
       />
     );
   } else if (route.name === 'discover' && me) {
-    content = <Discover onMatches={() => go('#/matches')} />;
+    content = (
+      <Discover
+        onMatches={() => go('#/matches')}
+        initialMode={route.mode}
+        onModeChange={(m) => syncHash(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`)}
+      />
+    );
   } else if (route.name === 'likes' && me) {
-    content = <Likes onOpenChat={(id) => go(`#/chat/${id}`)} />;
+    content = (
+      <Likes
+        onOpenChat={(id) => go(`#/chat/${id}`)}
+        initialFilter={route.filter}
+        onFilterChange={(f) => syncHash(`#/likes/${LIKES_FILTER_TO_SLUG[f]}`)}
+      />
+    );
   } else if (route.name === 'matches' && me) {
     content = <Matches onOpenChat={(id) => go(`#/chat/${id}`)} />;
   } else if (route.name === 'moments' && me) {
