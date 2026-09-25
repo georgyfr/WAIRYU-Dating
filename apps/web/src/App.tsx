@@ -34,6 +34,8 @@ import { MyProfile } from './screens/MyProfile';
 import { Likes } from './screens/Likes';
 import { Moments } from './screens/Moments';
 import { Chat } from './screens/Chat';
+import { Revelation } from './screens/Revelation';
+import { Coach } from './screens/Coach';
 import { TabBar, type TabId } from './components/TabBar';
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
@@ -60,6 +62,8 @@ type Route =
   | { name: 'messages' }
   | { name: 'moments' }
   | { name: 'myprofile' }
+  | { name: 'revelation' }
+  | { name: 'coach' }
   | { name: 'chat'; conversationId: string }
   | { name: 'app' };
 
@@ -71,6 +75,9 @@ const TAB_ROUTES: Record<string, TabId> = {
   messages: 'messages',
   moments: 'moments',
   myprofile: 'profile',
+  // Task 37 (menu Invisible) : centre de révélation + coach de conversation.
+  revelation: 'revelation',
+  coach: 'coach',
 };
 
 /**
@@ -174,6 +181,13 @@ function parseHash(): Route {
     case 'myprofile':
       // Mon profil consultable + accès modification/paramètres (onglet).
       return { name: 'myprofile' };
+    case 'revelation':
+      // Task 37 (menu Invisible) : centre du rituel de révélation consentie
+      // (15 messages / 7 jours / accord des deux — spec §4.6).
+      return { name: 'revelation' };
+    case 'coach':
+      // Task 37 (menu Invisible) : coach de conversation (aperçu — Phase 2).
+      return { name: 'coach' };
     case 'app':
       return { name: 'app' };
     default: {
@@ -283,6 +297,8 @@ export default function App() {
       route.name === 'messages' ||
       route.name === 'moments' ||
       route.name === 'myprofile' ||
+      route.name === 'revelation' ||
+      route.name === 'coach' ||
       route.name === 'chat';
     document.body.classList.toggle('theme-dark', dark);
     return () => document.body.classList.remove('theme-dark');
@@ -298,6 +314,8 @@ export default function App() {
         route.name === 'messages' ||
         route.name === 'moments' ||
         route.name === 'myprofile' ||
+        route.name === 'revelation' ||
+        route.name === 'coach' ||
         route.name === 'chat') &&
       !me
     )
@@ -387,6 +405,17 @@ export default function App() {
         onQuestionnaire={() => go('#/questionnaire')}
       />
     );
+  } else if (route.name === 'revelation' && me) {
+    // Task 37 (menu Invisible) : centre du rituel de révélation consentie.
+    content = (
+      <Revelation
+        onOpenChat={(id) => go(`#/chat/${id}`)}
+        onExplore={() => go('#/discover/invisible')}
+      />
+    );
+  } else if (route.name === 'coach' && me) {
+    // Task 37 (menu Invisible) : coach de conversation (aperçu).
+    content = <Coach onExplore={() => go('#/discover/invisible')} onMessages={() => go('#/messages')} />;
   } else if (route.name === 'chat' && me) {
     content = <Chat conversationId={route.conversationId} onBack={() => go('#/messages')} />;
   } else {

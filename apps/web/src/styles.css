@@ -6696,3 +6696,197 @@ body.theme-dark.mode-invisible .tabbar {
     box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.28);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TASK 37 — SIDEBAR « MENU » (demande fondateur : « je ne veux plus
+   d'onglet au niveau de la barre latérale ») + MENU INVISIBLE
+   (explorer · révélation · chat · coach · profil) + écrans Révélation/Coach.
+   100 % ADDITIF : aucune règle existante n'est modifiée ou supprimée —
+   en mobile la barre du bas fonctionne EXACTEMENT comme avant (le wrapper
+   .tabbar-nav est display:contents), seul le look PC ≥ 1024 évolue.
+   · Le trait dégradé « onglet actif » (::before) disparaît au profit
+     d'un ITEM DE MENU plein (pill arrondie) — on navigue, on ne tabe plus.
+   · Les entrées dépendent du mode (TabBar.tsx) : Classique/Interracial
+     gardent l'historique, Invisible affiche les 5 essentiels.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ---- Wrapper du menu : transparent en mobile/tablette ---- */
+.tabbar-nav {
+  display: contents;
+}
+
+/* Libellé de section du menu — sidebar uniquement */
+.tabbar-section {
+  display: none;
+}
+
+/* ---- Pages Révélation & Coach (Task 37) — gabarit des pages pleine largeur ---- */
+.page-revelation,
+.coach-page {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+/* Liste des conversations du rituel */
+.rev-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.rev-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e7e1ee;
+  box-shadow: 0 2px 10px rgba(45, 36, 56, 0.05);
+  text-align: left;
+}
+
+.rev-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rev-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rev-state {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-muted);
+}
+
+.rev-state.done {
+  color: #0f8a5f;
+}
+
+.rev-row .btn.small {
+  flex: 0 0 auto;
+}
+
+.rev-hero strong {
+  color: inherit;
+}
+
+.coach-cta {
+  margin-top: 18px;
+}
+
+/* Dark premium (pages à thème sombre — sidebar + Révélation + Coach) */
+body.theme-dark .rev-row {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-dark .rev-state {
+  color: var(--w-text-dim);
+}
+
+body.theme-dark .rev-state.done {
+  color: #6ee7b7;
+}
+
+/* ---- MENU PC ≥ 1024 : le look « onglet » devient « item de menu » ---- */
+@media (min-width: 1024px) {
+  .tabbar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .tabbar-section {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.34);
+    margin: 14px 12px 8px;
+  }
+
+  /* Item de menu : tuile d'icône + libellé, plus de barre d'onglet */
+  body.theme-dark .tabbar-nav .tabbar-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 13px;
+    padding: 8px 10px;
+    border-radius: 15px;
+  }
+
+  body.theme-dark .tabbar-nav .tabbar-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    flex: 0 0 auto;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  body.theme-dark .tabbar-nav .tabbar-label {
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  /* Plus de trait dégradé d'onglet (::before) ni d'encart translucide :
+     l'item actif devient un MENU ITEM plein, dégradé de la marque. */
+  body.theme-dark .tabbar-nav .tabbar-item.active::before {
+    display: none;
+  }
+
+  body.theme-dark:not(.mode-invisible) .tabbar-nav .tabbar-item.active {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(168, 85, 247, 0.9));
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(190, 24, 93, 0.35);
+  }
+
+  body.theme-dark:not(.mode-invisible) .tabbar-nav .tabbar-item.active .tabbar-icon {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  body.theme-dark:not(.mode-invisible) .tabbar-nav .tabbar-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Variante INVISIBLE : pill violet profond (identité Task 32/35) */
+  body.theme-dark.mode-invisible .tabbar-nav .tabbar-item.active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(109, 40, 217, 0.95));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+  }
+
+  body.theme-dark.mode-invisible .tabbar-nav .tabbar-item.active .tabbar-icon {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  body.theme-dark.mode-invisible .tabbar-nav .tabbar-item:hover .tabbar-icon {
+    background: rgba(139, 92, 246, 0.12);
+    border-color: rgba(139, 92, 246, 0.24);
+  }
+}
