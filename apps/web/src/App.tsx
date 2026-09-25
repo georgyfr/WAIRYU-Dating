@@ -33,6 +33,9 @@ import { Messages } from './screens/Messages';
 import { MyProfile } from './screens/MyProfile';
 import { Likes } from './screens/Likes';
 import { Moments } from './screens/Moments';
+import { Events } from './screens/Events';
+import { MyEvents, type EvMineTab } from './screens/MyEvents';
+import { CreateEvent } from './screens/CreateEvent';
 import { Chat } from './screens/Chat';
 import { Revelation } from './screens/Revelation';
 import { Coach } from './screens/Coach';
@@ -40,6 +43,7 @@ import { TabBar, type TabId } from './components/TabBar';
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
 import { getSharedMode, setSharedMode, resetSharedMode } from './lib/mode';
+import { useEventsNav, setEventsNav, resetEventsNav } from './lib/events-mode';
 import type {
   AuthConfigResponse,
   ConversationListResponse,
@@ -64,6 +68,10 @@ type Route =
   | { name: 'myprofile' }
   | { name: 'revelation' }
   | { name: 'coach' }
+  // Task 39 — univers événementiel « Wairyu Moments » (deep-linkable).
+  | { name: 'events' }
+  | { name: 'events-mine'; tab?: EvMineTab }
+  | { name: 'events-create' }
   | { name: 'chat'; conversationId: string }
   | { name: 'app' };
 
@@ -78,6 +86,10 @@ const TAB_ROUTES: Record<string, TabId> = {
   // Task 37 (menu Invisible) : centre de révélation + coach de conversation.
   revelation: 'revelation',
   coach: 'coach',
+  // Task 39 (mode événementiel) : feed, billetterie, création.
+  events: 'events',
+  'events-mine': 'events-mine',
+  'events-create': 'events-create',
 };
 
 /**
@@ -110,6 +122,30 @@ const LIKES_FILTER_TO_SLUG: Record<'all' | 'like' | 'super', string> = {
   super: 'supers',
 };
 
+/**
+ * Task 39 — slugs des onglets internes de Mes événements (#/events/mes/:tab).
+ * Canonique français (a-venir · organises · passes · billets) + alias
+ * anglais (upcoming · organized · past · tickets) pour partage robuste.
+ */
+const EV_MINE_SLUGS: Record<string, EvMineTab> = {
+  'a-venir': 'upcoming',
+  avenir: 'upcoming',
+  upcoming: 'upcoming',
+  organises: 'organized',
+  organised: 'organized',
+  organized: 'organized',
+  passes: 'past',
+  past: 'past',
+  billets: 'tickets',
+  tickets: 'tickets',
+};
+const EV_MINE_TO_SLUG: Record<EvMineTab, string> = {
+  upcoming: 'a-venir',
+  organized: 'organises',
+  past: 'passes',
+  tickets: 'billets',
+};
+
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
 function parseNotice(params: URLSearchParams): string | null {
   if (params.get('google') === 'cancelled' || params.get('facebook') === 'cancelled') {
@@ -134,7 +170,7 @@ function parseHash(): Route {
   // envoyait au default (accueil). Comportement des routes historiques
   // inchangé (elles sont mono-segment) ; #/chat/:id reste géré par le
   // default avec sa regex de validation.
-  const [seg0, seg1] = (path ?? '').split('/');
+  const [seg0, seg1, seg2] = (path ?? '').split('/');
   switch (seg0) {
     case 'signup':
       return { name: 'signup' };
@@ -188,6 +224,20 @@ function parseHash(): Route {
     case 'coach':
       // Task 37 (menu Invisible) : coach de conversation (aperçu — Phase 2).
       return { name: 'coach' };
+    case 'events': {
+      // Task 39 — univers événementiel « Wairyu Moments » :
+      //   #/events · #/events/mes/:tab · #/events/creer
+      // (alias : mine → mes, create/nouveau → creer). Slug inconnu → feed
+      // d'événements (dégradation gracieuse, jamais 404).
+      if (seg1 === 'mes' || seg1 === 'mine') {
+        const tab = seg2 ? EV_MINE_SLUGS[seg2] : undefined;
+        return { name: 'events-mine', tab: seg2 && !tab ? undefined : tab };
+      }
+      if (seg1 === 'creer' || seg1 === 'create' || seg1 === 'nouveau') {
+        return { name: 'events-create' };
+      }
+      return { name: 'events' };
+    }
     case 'app':
       return { name: 'app' };
     default: {
@@ -205,6 +255,8 @@ export default function App() {
   const [me, setMe] = useState<MeResponse | null>(null);
   const [checking, setChecking] = useState(true);
   const [apiOk, setApiOk] = useState<boolean | null>(null);
+  // Task 39 : contexte événementiel (hook inconditionnel — règles des hooks).
+  const eventsNav = useEventsNav();
 
   // Badge de l'onglet Messages : le cache SWR est PARTAGÉ avec la page
   // Messages — une seule requête réseau sert le badge ET la page, et les
@@ -265,6 +317,7 @@ export default function App() {
   const onLoggedOut = useCallback(() => {
     clearSwr(); // aucune donnée de l'ancien compte ne doit survivre (Task 28)
     resetSharedMode(); // ni son mode — la sidebar repart neutre (Task 35)
+    resetEventsNav(); // ni le contexte événementiel (Task 39)
     setMe(null);
     go('#/');
   }, [go]);
@@ -299,7 +352,10 @@ export default function App() {
       route.name === 'myprofile' ||
       route.name === 'revelation' ||
       route.name === 'coach' ||
-      route.name === 'chat';
+      route.name === 'chat' ||
+      route.name === 'events' ||
+      route.name === 'events-mine' ||
+      route.name === 'events-create';
     document.body.classList.toggle('theme-dark', dark);
     return () => document.body.classList.remove('theme-dark');
   }, [route.name]);
@@ -316,11 +372,25 @@ export default function App() {
         route.name === 'myprofile' ||
         route.name === 'revelation' ||
         route.name === 'coach' ||
-        route.name === 'chat') &&
+        route.name === 'chat' ||
+        route.name === 'events' ||
+        route.name === 'events-mine' ||
+        route.name === 'events-create') &&
       !me
     )
       go('#/');
   }, [checking, route, me, go]);
+
+  // Task 39 : toute route événementielle active le CONTEXTE Moments
+  // (navigation turquoise 4 onglets + « + », identité body.events-mode).
+  // Le contexte SURVIT à la sortie de l'univers (Profil partagé…) jusqu'à
+  // la bascule explicite « mode rencontre » (badge des écrans events) ou
+  // la fin de session — comme le prototype (badge = basculer de mode).
+  useEffect(() => {
+    if (route.name === 'events' || route.name === 'events-mine' || route.name === 'events-create') {
+      setEventsNav(true);
+    }
+  }, [route.name]);
 
   // Task 35 (demande fondateur — sidebar différenciée par mode) : le mode
   // est une propriété du PROFIL, pas de la page Discover. À l'ouverture de
@@ -392,7 +462,50 @@ export default function App() {
   } else if (route.name === 'matches' && me) {
     content = <Matches onOpenChat={(id) => go(`#/chat/${id}`)} />;
   } else if (route.name === 'moments' && me) {
-    content = <Moments />;
+    content = (
+      <Moments
+        onExploreEvents={() => go('#/events')}
+        onBackToDating={() => {
+          setEventsNav(false);
+          go('#/discover');
+        }}
+      />
+    );
+  } else if (route.name === 'events' && me) {
+    // Task 39 — feed d'événements « Wairyu Moments ».
+    content = (
+      <Events
+        onCreate={() => go('#/events/creer')}
+        onBackToDating={() => {
+          setEventsNav(false);
+          go('#/discover');
+        }}
+      />
+    );
+  } else if (route.name === 'events-mine' && me) {
+    content = (
+      <MyEvents
+        initialTab={route.tab}
+        onTabChange={(t) => syncHash(`#/events/mes/${EV_MINE_TO_SLUG[t]}`)}
+        onDiscover={() => go('#/events')}
+        onCreate={() => go('#/events/creer')}
+        onBackToDating={() => {
+          setEventsNav(false);
+          go('#/discover');
+        }}
+      />
+    );
+  } else if (route.name === 'events-create' && me) {
+    content = (
+      <CreateEvent
+        onPublished={() => go('#/events/mes/organises')}
+        onBack={() => go('#/events')}
+        onBackToDating={() => {
+          setEventsNav(false);
+          go('#/discover');
+        }}
+      />
+    );
   } else if (route.name === 'messages' && me) {
     content = (
       <Messages onOpenChat={(id) => go(`#/chat/${id}`)} onDiscover={() => go('#/discover')} />
@@ -468,7 +581,10 @@ export default function App() {
   }
 
   // Barre d'onglets permanente sur les pages principales (session requise).
-  const activeTab = TAB_ROUTES[route.name];
+  // Task 39 : sur #/moments, l'onglet actif dépend du contexte — « Moments »
+  // de la nav dating OU « Moments » de la nav événementielle.
+  let activeTab = TAB_ROUTES[route.name];
+  if (route.name === 'moments' && eventsNav) activeTab = 'events-moments';
   return (
     <main className={`app-shell ${activeTab && me ? 'tabpage' : ''}`}>
       {content}

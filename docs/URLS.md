@@ -104,3 +104,33 @@
 #/questionnaire              Questionnaire personnalité
 #/app                        Paramètres du compte
 ```
+
+---
+
+## 7. Task 39 — Univers événementiel « Wairyu Moments » (deep links ajoutés)
+
+Le mode événementiel dispose de ses propres URLs (slugs français canoniques,
+alias anglais tolérés, slug inconnu → dégradation gracieuse, jamais 404) :
+
+```
+#/events                    Wairyu Moments — Découvrir (feed d'événements)
+#/events/mes                Mes événements — onglet par défaut (À venir)
+#/events/mes/a-venir        Mes événements — À venir (alias : avenir, upcoming)
+#/events/mes/organises      Mes événements — Organisés (alias : organized, organised)
+#/events/mes/passes         Mes événements — Passés (alias : past)
+#/events/mes/billets        Mes événements — Mes billets (QR) (alias : tickets)
+#/events/creer              Créer un événement (alias : create, nouveau)
+```
+
+Entrées / sorties de l'univers :
+
+- Toute route `#/events*` active le **contexte Moments** : la navigation
+  bascule sur 4 onglets + bouton central « + » (Découvrir · Mes events ·
+  [+] Créer · Moments · Profil) et l'identité turquoise s'applique à toute
+  l'app tant que le contexte est actif (y compris sur Profil).
+- Le badge « Moments · actif » des écrans événementiels bascule le retour
+  vers le mode rencontre (#/discover) — comme le badge de l'en-tête du
+  prototype (clic = basculer de mode).
+- `#/moments` (onglet historique) existe toujours : en contexte Moments, il
+  met en évidence l'entrée « Moments » de la nav événementielle ; sinon il
+  reste l'onglet « Moments » de la nav dating, inchangé.
