@@ -9534,3 +9534,99 @@ body.theme-dark .mode-tab.moments-entry:hover {
     padding: 9px 2px;
   }
 }
+
+/* ===========================================================================
+   TASK 41 — Sélecteur de modes dans l'univers événementiel (append-only)
+   ---------------------------------------------------------------------------
+   Demande fondateur : « Lorsqu'on clique sur Moment, il est impossible
+   d'avoir accès aux autres modes. » — EvModeSwitch (composant Task 41)
+   reprend les 4 pastilles du sélecteur de Découvrir (Task 40) sur les
+   écrans events (feed, Mes events, onglet Moments). 🔥 🕯️ 🌍 = sorties
+   réelles, 📅 = actif (on y est). Turquoise = identité events (Task 39).
+   =========================================================================== */
+
+.ev-mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(45, 212, 191, 0.14);
+  border-radius: 999px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ev-mode-switch::-webkit-scrollbar {
+  display: none;
+}
+
+.ev-mode-pill {
+  flex: 1 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  color: #94a3b8;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ev-mode-pill-icon {
+  margin-right: 2px;
+}
+
+.ev-mode-pill:hover {
+  color: #fff;
+  background: rgba(45, 212, 191, 0.12);
+}
+
+.ev-mode-pill.active {
+  background: var(--w-gradient);
+  color: #fff;
+  font-weight: 700;
+  cursor: default;
+  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35);
+}
+
+/* Mobile : 4 pastilles — défilement horizontal sans casse (comme ev-cats) */
+@media (max-width: 480px) {
+  .ev-mode-switch {
+    margin-bottom: 12px;
+  }
+
+  .ev-mode-pill {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+}
+
+/* Task 41 bis — correction recette (mobile 390) : en tant qu'item flex de
+   .app-shell, .app prenait la largeur max-content de son enfant le plus
+   large (rangée de chips = 539px) → débordement horizontal PRÉEXISTANT à
+   la Task 39, révélé par la mesure scrollWidth. On borne la coquille de
+   l'univers événementiel : les rangées horizontales (ev-cats, héros,
+   ev-mode-switch) se resserrent et défilent EN INTERNE (déjà en place),
+   le desktop est inchangé (max-content < viewport, le cap ne s'applique pas). */
+body.events-mode .app {
+  max-width: 100%;
+}
+
+/* Task 41 ter — les ENFANTS du shell aussi : une rangée à défilement
+   (ev-cats) garde une largeur intrinsèque = contenu (539px) même dans un
+   shell borné ; le cap enfant borne la boîte, le défilement interne
+   (déjà en place) prend le relais. Cap pur : le desktop ne change pas. */
+body.events-mode .app > * {
+  min-width: 0;
+  max-width: 100%;
+}

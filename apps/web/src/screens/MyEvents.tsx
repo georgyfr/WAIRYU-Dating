@@ -13,7 +13,9 @@
  *  · Mes billets = un billet (code WRYU-XXXX + QR) par inscription réelle.
  */
 import { useMemo, useState } from 'react';
+import type { DiscoveryMode } from '@wairyu/shared';
 import { EvCheckin } from '../components/EvCheckin';
+import { EvModeSwitch } from '../components/EvModeSwitch';
 import {
   EV_MINE_SEED,
   createdAsMine,
@@ -40,9 +42,11 @@ interface Props {
   onDiscover: () => void;
   onCreate: () => void;
   onBackToDating: () => void;
+  /** Task 41 : accès direct aux autres modes depuis l'univers Moments. */
+  onDatingMode: (m: DiscoveryMode) => void;
 }
 
-export function MyEvents({ initialTab, onTabChange, onDiscover, onCreate, onBackToDating }: Props) {
+export function MyEvents({ initialTab, onTabChange, onDiscover, onCreate, onBackToDating, onDatingMode }: Props) {
   const [tab, setTab] = useState<EvMineTab>(initialTab ?? 'upcoming');
   const [checkin, setCheckin] = useState<{ event: EvEvent; code: string } | null>(null);
   const [tick, setTick] = useState(0);
@@ -102,6 +106,9 @@ export function MyEvents({ initialTab, onTabChange, onDiscover, onCreate, onBack
           </button>
         </div>
       </header>
+
+      {/* Task 41 — accès direct aux autres modes depuis l'univers Moments. */}
+      <EvModeSwitch onMode={onDatingMode} />
 
       <header className="wizard-head plain">
         <h1>🎟️ Mes événements</h1>

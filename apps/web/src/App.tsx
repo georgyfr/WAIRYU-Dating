@@ -470,6 +470,10 @@ export default function App() {
           setEventsNav(false);
           go('#/discover');
         }}
+        onDatingMode={(m) => {
+          setEventsNav(false);
+          go(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`);
+        }}
       />
     );
   } else if (route.name === 'events' && me) {
@@ -480,6 +484,10 @@ export default function App() {
         onBackToDating={() => {
           setEventsNav(false);
           go('#/discover');
+        }}
+        onDatingMode={(m) => {
+          setEventsNav(false);
+          go(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`);
         }}
       />
     );
@@ -493,6 +501,10 @@ export default function App() {
         onBackToDating={() => {
           setEventsNav(false);
           go('#/discover');
+        }}
+        onDatingMode={(m) => {
+          setEventsNav(false);
+          go(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`);
         }}
       />
     );

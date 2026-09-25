@@ -17,9 +17,11 @@
  * bougent pas (le mode Moments n'est PAS un DiscoveryMode).
  */
 import { useMemo, useRef, useState } from 'react';
+import type { DiscoveryMode } from '@wairyu/shared';
 import { toast } from '../lib/toast';
 import { EvCheckin } from '../components/EvCheckin';
 import { EvMissed } from '../components/EvMissed';
+import { EvModeSwitch } from '../components/EvModeSwitch';
 import {
   EV_NOTIFS,
   evUpcoming,
@@ -141,9 +143,12 @@ interface Props {
   onCreate: () => void;
   /** Badge d'en-tête « Moments » → retour au mode rencontre (bascule). */
   onBackToDating: () => void;
+  /** Task 41 : accès direct aux autres modes depuis l'univers Moments —
+   *  App sort du contexte events et ouvre #/discover/:mode (bascule Task 36). */
+  onDatingMode: (m: DiscoveryMode) => void;
 }
 
-export function Events({ onCreate, onBackToDating }: Props) {
+export function Events({ onCreate, onBackToDating, onDatingMode }: Props) {
   const [joinedTick, setJoinedTick] = useState(0); // re-rendu après inscription
   const [cat, setCat] = useState<Cat>('tous');
   const [filters, setFilters] = useState<EvFilters>(DEFAULT_FILTERS);
@@ -261,6 +266,10 @@ export function Events({ onCreate, onBackToDating }: Props) {
           </button>
         </div>
       </header>
+
+      {/* Task 41 — accès direct aux autres modes depuis l'univers Moments
+          (demande fondateur : la seule sortie était le badge discret). */}
+      <EvModeSwitch onMode={onDatingMode} />
 
       {/* ---- Héros aurora ---- */}
       <section className="ev-hero">

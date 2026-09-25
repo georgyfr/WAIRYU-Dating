@@ -14,8 +14,10 @@
  * historique du teaser est conservé ci-dessous (append-only).
  */
 import { useEffect, useState } from 'react';
+import type { DiscoveryMode } from '@wairyu/shared';
 import { toast } from '../lib/toast';
 import { EvMissed } from '../components/EvMissed';
+import { EvModeSwitch } from '../components/EvModeSwitch';
 import { useEventsNav } from '../lib/events-mode';
 import { EV_MEMORIES, getCreated, getJoined } from '../lib/events';
 
@@ -76,9 +78,12 @@ interface MomentsProps {
   onExploreEvents?: () => void;
   /** Task 39 — badge d'en-tête (contexte Moments) : retour au mode rencontre. */
   onBackToDating?: () => void;
+  /** Task 41 — accès direct aux autres modes depuis l'univers Moments
+   *  (affiché uniquement en contexte événementiel, avec le sélecteur). */
+  onDatingMode?: (m: DiscoveryMode) => void;
 }
 
-export function Moments({ onExploreEvents, onBackToDating }: MomentsProps = {}) {
+export function Moments({ onExploreEvents, onBackToDating, onDatingMode }: MomentsProps = {}) {
   const [notify, setNotify] = useState<Record<string, boolean>>({});
   const [flash, setFlash] = useState<string | null>(null);
   const [missedOpen, setMissedOpen] = useState(false);
@@ -134,6 +139,10 @@ export function Moments({ onExploreEvents, onBackToDating }: MomentsProps = {}) 
         )}
         {activeCount > 0 && <span className="head-count">{activeCount}</span>}
       </header>
+
+      {/* Task 41 — en contexte événementiel, accès direct aux autres modes
+          (en mode dating, le teaser est DÉJÀ dans l'univers rencontre). */}
+      {inEvents && onDatingMode && <EvModeSwitch onMode={onDatingMode} />}
 
       {/* ---- Task 39 : l'expérience Moments est là — entrée du mode événementiel ---- */}
       <section className="ev-entry">
