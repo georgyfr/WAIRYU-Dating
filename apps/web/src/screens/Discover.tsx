@@ -65,6 +65,10 @@ interface Props {
   initialMode?: DiscoveryMode;
   /** Task 36 : notifie App après une bascule réussie — l'URL suit le mode. */
   onModeChange?: (mode: DiscoveryMode) => void;
+  /** Task 40 : ouvre l'univers événementiel « Wairyu Moments » (#/events).
+   *  Moments n'est PAS un DiscoveryMode (univers parallèle Task 39) — aucune
+   *  bascule serveur ici : simple navigation, le mode dating est préservé. */
+  onMoments?: () => void;
 }
 
 const MODE_TABS: { id: DiscoveryMode; label: string; icon: string; hint: string }[] = [
@@ -342,7 +346,7 @@ function InvisibleSteps() {
   );
 }
 
-export function Discover({ onMatches, initialMode, onModeChange }: Props) {
+export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Props) {
   const [prefs, setPrefs] = useState<PreferencesDto | null>(null);
   // Task 36 : le mode initial vient de l'URL quand elle en porte un
   // (#/discover/:mode) — sinon comportement historique (classic d'abord,
@@ -1262,6 +1266,22 @@ export function Discover({ onMatches, initialMode, onModeChange }: Props) {
             {t.label}
           </button>
         ))}
+        {/* Task 40 — 4e pastille : l'univers événementiel « Wairyu Moments ».
+            Jamais « active » ici (ce n'est pas un mode de découverte) : le clic
+            ouvre #/events — la nav turquoise prend le relais (Task 39). */}
+        <button
+          type="button"
+          role="tab"
+          aria-selected={false}
+          className="mode-tab moments-entry"
+          onClick={onMoments}
+          title="Événements réels près de toi — billetterie, souvenirs, Missed Connections."
+        >
+          <span className="mode-tab-icon" aria-hidden="true">
+            📅
+          </span>
+          Moments
+        </button>
       </div>
 
       {/* Bannière d'ambiance — une identité par mode */}

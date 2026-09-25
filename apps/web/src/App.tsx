@@ -449,6 +449,7 @@ export default function App() {
         onMatches={() => go('#/matches')}
         initialMode={route.mode}
         onModeChange={(m) => syncHash(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`)}
+        onMoments={() => go('#/events')}
       />
     );
   } else if (route.name === 'likes' && me) {
