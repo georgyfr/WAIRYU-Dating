@@ -10350,3 +10350,94 @@ a.mode-tab[data-busy] {
   color: #ffffff;
   background-image: var(--w-gradient);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Task 46 bis — POINT D'ENTRÉE DÉDIÉ MOBILE du sélecteur d'univers
+   Demande fondateur : « je veux aussi un point d'entrée dédié en mobile ».
+   En mobile/tablette (< 1024px), le chip indicateur (masqué depuis la
+   Task 35) devient une BANDE fine sur la PREMIÈRE ligne de la barre du
+   bas — au-dessus des onglets historiques, sur TOUTES les pages à onglets
+   (Messages, Likes, Matchs, Profil, Coach, Révélation, events…). Un tap
+   ouvre le même menu des 4 univers que la sidebar (Task 46), vers le HAUT.
+   ZÉRO changement de composant : bouton et menu existent déjà dans le DOM,
+   seul le CSS mobile les révèle. 100 % append-only.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1023px) {
+  /* La barre du bas passe à 2 lignes : ligne 1 = bande du mode, ligne 2 =
+     les onglets historiques INCHANGÉS (Task 42 : libellés 12.5px intacts —
+     ils occupent leur propre ligne, aucune largeur ne leur est retirée). */
+  .tabbar {
+    flex-wrap: wrap;
+  }
+
+  /* Le wrap (déjà rendu par TabBar, Task 46) occupe toute la 1re ligne. */
+  .tabbar-mode-wrap {
+    flex: 1 1 100%;
+    margin: 0;
+  }
+
+  /* La bande-mode — mêmes codes visuels que le chip desktop (Task 35/46) :
+     verre teinté de l'identité du mode courant, pastille pleine largeur. */
+  .tabbar-mode-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    margin: 0 0 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    background: rgba(236, 72, 153, 0.1);
+    color: #f9a8d4;
+  }
+
+  .tabbar-mode-chip .tabbar-mode-ico {
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  /* Variantes par mode — la palette desktop (6606+) est scoping ≥1024px :
+     repliée ici pour le mobile. events-mode reste gagnant via sa règle
+     historique 9424 (spécificité supérieure) → turquoise automatique. */
+  .tabbar-mode-chip.mode-invisible {
+    border-color: rgba(139, 92, 246, 0.45);
+    background: rgba(139, 92, 246, 0.14);
+    color: #ddd6fe;
+  }
+
+  .tabbar-mode-chip.mode-interracial {
+    border-color: rgba(244, 162, 89, 0.42);
+    background: rgba(244, 162, 89, 0.12);
+    color: #fcd9a8;
+  }
+
+  /* Le menu s'ouvre vers le HAUT (la bande est en bas de l'écran) —
+     mêmes entrées, mêmes teintes identitaires que la sidebar. */
+  .tabbar-mode-menu {
+    top: auto;
+    bottom: calc(100% + 10px);
+    max-height: min(420px, 62vh);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* La page réserve la hauteur de la bande en plus de la barre historique
+     (base 48px + bande ~40px) : aucun contenu ne passe sous la barre. */
+  .app-shell.tabpage {
+    padding-bottom: 88px;
+  }
+
+  /* La pilule « Nouvelle version » (Task 44) monte au-dessus de la bande.
+     :has cible uniquement les pages qui portent la bande ; sans support
+     :has, la pilule garde sa position historique (dégradation gracieuse). */
+  body:has(.tabbar-mode-chip) .upd-toast {
+    bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+}
