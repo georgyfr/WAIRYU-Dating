@@ -182,7 +182,12 @@ async function createMatchWithConversation(
   // du chat reste gouverné par conversationMode (§4.8) — l'origine est
   // purement descriptive (badges Messages/Matchs/Chat).
   originMode: DiscoveryMode,
-): Promise<{ matchId: string; conversationId: string; conversationMode: 'classic' | 'invisible' }> {
+): Promise<{
+  matchId: string;
+  conversationId: string;
+  conversationMode: 'classic' | 'invisible';
+  originMode: DiscoveryMode;
+}> {
   const [userA, userB] = [aId, bId].sort((x, y) => x.localeCompare(y));
   const matchId = crypto.randomUUID();
   await c.env.DB.prepare(
@@ -215,7 +220,7 @@ async function createMatchWithConversation(
   const conv = await c.env.DB.prepare(`SELECT id FROM conversations WHERE match_id = ?`)
     .bind(match.id)
     .first<{ id: string }>();
-  return { matchId: match.id, conversationId: conv?.id ?? conversationId, conversationMode };
+  return { matchId: match.id, conversationId: conv?.id ?? conversationId, conversationMode, originMode };
 }
 
 // ---------------------------------------------------------------------------
@@ -295,6 +300,7 @@ discoverRoutes.post('/discover/swipe', async (c) => {
   let matched = false;
   let matchId: string | null = null;
   let conversationMode: 'classic' | 'invisible' | null = null;
+  let originMode: DiscoveryMode | null = null; // Task 48 : exposé dans la réponse
   if (action !== 'pass') {
     const reciprocal = await c.env.DB.prepare(
       `SELECT 1 AS x FROM swipes
@@ -315,6 +321,7 @@ discoverRoutes.post('/discover/swipe', async (c) => {
       matched = true;
       matchId = res.matchId;
       conversationMode = res.conversationMode;
+      originMode = res.originMode;
       // Étape 6.8 — push « nouveau match » à l'AUTRE (le swipeur voit la
       // modale in-app ; best-effort, jamais bloquant).
       void sendPushToUser(c.env, target.id, {
@@ -331,6 +338,7 @@ discoverRoutes.post('/discover/swipe', async (c) => {
     matched,
     matchId,
     conversationMode,
+    originMode,
     matchedName: matched ? (target.display_name ?? 'Quelqu’un') : null,
     quota,
   };
@@ -460,6 +468,7 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
         status: 'accepted',
         matched: true,
         matchId: res.matchId,
+        originMode: 'invisible', // Task 48 : le double « Discuter » naît en Invisible
         quota: await buildQuota(c.env.DB, user.id),
       };
       return c.json(body);
@@ -481,6 +490,7 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
     status: 'pending',
     matched: false,
     matchId: null,
+    originMode: null,
     quota: await buildQuota(c.env.DB, user.id),
   };
   return c.json(body);
@@ -517,6 +527,7 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
       status: 'declined',
       matched: false,
       matchId: null,
+      originMode: null,
     };
     return c.json(body);
   }
@@ -543,6 +554,7 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
     status: 'accepted',
     matched: true,
     matchId: res.matchId,
+    originMode: 'invisible', // Task 48 : l'acceptation naît en Invisible
   };
   return c.json(body);
 });

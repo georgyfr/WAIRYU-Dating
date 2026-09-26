@@ -486,6 +486,8 @@ export interface SwipeResponse {
   matchId: string | null;
   /** Mode de la conversation créée ('classic' | 'invisible'). */
   conversationMode: 'classic' | 'invisible' | null;
+  /** Univers d'origine du match créé (Task 48 — null si pas de match). */
+  originMode: ConversationOriginMode | null;
   /** Prénom de la personne (écran « C'est un match ! »). */
   matchedName: string | null;
   quota: QuotaState;
@@ -532,6 +534,8 @@ export interface InvisibleRespondResponse {
   /** true = l'acceptation a créé un match (+ conversation Invisible). */
   matched: boolean;
   matchId: string | null;
+  /** Univers d'origine du match créé (Task 48 — null si pas de match). */
+  originMode: ConversationOriginMode | null;
 }
 
 /** POST /api/discover/invisible-request — envoi d'une demande. */
@@ -541,6 +545,8 @@ export interface InvisibleRequestResponse {
   /** true = la personne m'avait déjà demandé → match immédiat (double « Discuter »). */
   matched: boolean;
   matchId: string | null;
+  /** Univers d'origine du match créé (Task 48 — null si pas de match). */
+  originMode: ConversationOriginMode | null;
   quota: QuotaState;
 }
 

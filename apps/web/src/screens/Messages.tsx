@@ -10,7 +10,7 @@
  * le match (passerelle Classique → Invisible, modes), cette page est la
  * messagerie au quotidien — ce qu'on ouvre des dizaines de fois par jour.
  */
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSwr } from '../lib/swr';
 import { convChip } from '../lib/conv-origin';
 import type { ConversationLastMessage, ConversationListResponse } from '@wairyu/shared';
@@ -38,7 +38,22 @@ function previewText(m: ConversationLastMessage): string {
   return m.excerpt;
 }
 
+/** Filtre d'univers de la boîte de réception (Task 48-b — 100 % local). */
+type ConvFilter = 'all' | 'classic' | 'invisible' | 'interracial';
+
+const CONV_FILTERS: { key: ConvFilter; label: string; dot: string | null }[] = [
+  { key: 'all', label: 'Toutes', dot: null },
+  { key: 'classic', label: 'Classique', dot: 'var(--w-rose, #e2478f)' },
+  { key: 'invisible', label: 'Invisible', dot: '#b9a8e3' },
+  { key: 'interracial', label: 'Interracial', dot: '#d9a441' },
+];
+
 export function Messages({ onOpenChat, onDiscover }: Props) {
+  // Task 48-b : filtre visuel par univers — catégorisation IDENTIQUE au badge
+  // (convChip : le mode du chat prioritaire, sinon l'origine). Local et
+  // instantané, aucun appel API ; « Toutes » par défaut.
+  const [filter, setFilter] = useState<ConvFilter>('all');
+
   // Cache SWR partagé avec le badge de l'onglet (App) : au retour sur cette
   // page, la liste s'affiche INSTANTANÉMENT depuis le cache puis se
   // revalide en arrière-plan (Task 28 — plus de spinner à chaque clic).
@@ -58,6 +73,21 @@ export function Messages({ onOpenChat, onDiscover }: Props) {
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);
   }, [refresh]);
+
+  /** Catégorie d'affichage d'une conversation = classe du badge (Task 47). */
+  const catOf = (cv: { conversationMode: 'classic' | 'invisible'; originMode: 'classic' | 'invisible' | 'interracial' }) =>
+    convChip(cv.conversationMode, cv.originMode).cls;
+
+  const conversations = data?.conversations ?? [];
+  const counts = useMemo(() => {
+    const c: Record<ConvFilter, number> = { all: conversations.length, classic: 0, invisible: 0, interracial: 0 };
+    for (const cv of conversations) c[catOf(cv)] += 1;
+    return c;
+  }, [data]);
+  const shown = useMemo(
+    () => (filter === 'all' ? conversations : conversations.filter((cv) => catOf(cv) === filter)),
+    [data, filter],
+  );
 
   return (
     <div className="app page-messages">
@@ -90,8 +120,36 @@ export function Messages({ onOpenChat, onDiscover }: Props) {
         </div>
       )}
 
+      {/* Task 48-b : filtre par univers — visible dès qu'il y a des
+          conversations (inutile sur une boîte vide). Local, instantané. */}
+      {conversations.length > 0 && (
+        <div className="conv-filters" role="group" aria-label="Filtrer par univers">
+          {CONV_FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              className={`conv-filter ${filter === f.key ? 'active' : ''}`}
+              onClick={() => setFilter(f.key)}
+              aria-pressed={filter === f.key}
+            >
+              {f.dot && <span className="conv-filter-dot" style={{ background: f.dot }} aria-hidden="true" />}
+              {f.label}
+              <span className="conv-filter-count">{counts[f.key]}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {conversations.length > 0 && shown.length === 0 && (
+        <div className="empty-state">
+          <span className="empty-icon" aria-hidden="true">🔍</span>
+          <strong>Aucune conversation dans cet univers</strong>
+          <p className="hint">Change de filtre — tes conversations des autres univers sont toujours là.</p>
+        </div>
+      )}
+
       <div className="conv-list">
-        {data?.conversations.map((cv) => (
+        {shown.map((cv) => (
           <button
             key={cv.conversationId}
             type="button"

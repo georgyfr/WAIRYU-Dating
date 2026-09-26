@@ -53,3 +53,16 @@ export function convChip(
     title: 'Match né dans l’univers Classique — photos visibles.',
   };
 }
+
+/* Task 48-a — carte « C'est un match ! » : phrase d'origine, axée sur
+   l'univers où le match est NÉ (l'information nouvelle au moment exact du
+   match — le mode du chat s'affichera partout ailleurs). */
+export function originLine(originMode: 'classic' | 'invisible' | 'interracial'): string {
+  if (originMode === 'invisible') {
+    return '🕯️ Né dans l’univers Invisible — photos floutées jusqu’à la révélation mutuelle.';
+  }
+  if (originMode === 'interracial') {
+    return '🌍 Né dans l’univers Interracial — les continents se rencontrent.';
+  }
+  return '🔥 Né dans l’univers Classique — photos visibles.';
+}

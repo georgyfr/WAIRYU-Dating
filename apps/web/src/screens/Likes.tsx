@@ -19,6 +19,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
 import { toast } from '../lib/toast';
+import { originLine } from '../lib/conv-origin'; // Task 48-a : origine dans « C'est un match ! »
 import { countryMeta } from '../lib/geo';
 import { ARCHETYPES, type LikesMeDto, type LikesMeResponse, type ProfileResponse, type QuotaState, type SwipeResponse } from '@wairyu/shared';
 
@@ -33,7 +34,7 @@ interface Props {
 
 export function Likes({ onOpenChat: _onOpenChat, initialFilter, onFilterChange }: Props) {
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
-  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null } | null>(null);
+  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null; origin?: 'classic' | 'invisible' | 'interracial' | null } | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -82,18 +83,18 @@ export function Likes({ onOpenChat: _onOpenChat, initialFilter, onFilterChange }
       setError(null);
       try {
         if (isInvisible && action === 'like') {
-          const res = await api<{ ok: true; status: 'pending' | 'accepted'; matched: boolean; matchId: string | null; quota: QuotaState }>(
+          const res = await api<{ ok: true; status: 'pending' | 'accepted'; matched: boolean; matchId: string | null; originMode: 'classic' | 'invisible' | 'interracial' | null; quota: QuotaState }>(
             '/api/discover/invisible-request',
             { json: { targetId: l.userId } },
           );
-          if (res.matched) setMatchModal({ name: l.displayName, photo: l.photoUrl });
+          if (res.matched) setMatchModal({ name: l.displayName, photo: l.photoUrl, origin: res.originMode });
           else showFlash(`Demande envoyée à ${l.displayName} — elle pourra accepter ou passer.`);
         } else {
           const res = await api<SwipeResponse>('/api/discover/swipe', {
             json: { targetId: l.userId, action, mode },
           });
           if (action === 'like' && res.matched) {
-            setMatchModal({ name: l.displayName, photo: l.photoUrl });
+            setMatchModal({ name: l.displayName, photo: l.photoUrl, origin: res.originMode }); // Task 48-a : origine
           } else if (action === 'pass') {
             showFlash('Passé — discret, elle ne sera jamais notifiée.');
           }
@@ -249,6 +250,8 @@ export function Likes({ onOpenChat: _onOpenChat, initialFilter, onFilterChange }
             </div>
             <h2>C'est un match !</h2>
             <p>Vous vous êtes aimés — la conversation est déjà prête. Écris le premier message, c'est souvent lui qui fait la différence.</p>
+            {/* Task 48-a : univers où le match est NÉ (absent = match antérieur). */}
+            {matchModal.origin && <p className="match-origin">{originLine(matchModal.origin)}</p>}
             <div className="btn-col">
               <a className="btn primary" href="#/matches">💬 Voir mes matchs</a>
               <button type="button" className="btn ghost" onClick={() => setMatchModal(null)}>

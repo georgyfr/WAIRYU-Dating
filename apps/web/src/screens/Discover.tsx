@@ -48,6 +48,7 @@ import { api, ApiError } from '../lib/api';
 import { useSwr } from '../lib/swr';
 import { toast } from '../lib/toast';
 import { setSharedMode } from '../lib/mode';
+import { originLine } from '../lib/conv-origin'; // Task 48-a : origine dans « C'est un match ! »
 import { countryMeta, formatKm } from '../lib/geo';
 import {
   ARCHETYPES,
@@ -402,7 +403,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
   const [myCountry, setMyCountry] = useState<string | null>(null);
   const [intlFirst, setIntlFirst] = useState(false);
   // Task 38 : le pays accompagne le match — drapeaux face à face en Cultures.
-  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null; country?: string | null } | null>(null);
+  const [matchModal, setMatchModal] = useState<{ name: string; photo: string | null; country?: string | null; origin?: 'classic' | 'invisible' | 'interracial' | null } | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -670,6 +671,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
             name: res.matchedName ?? card?.displayName ?? target?.name ?? 'Quelqu’un',
             photo,
             country: card?.country ?? target?.country ?? null, // Task 38
+            origin: res.originMode, // Task 48-a : univers où le match est né
           });
           setBusy(false);
           return;
@@ -738,7 +740,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       const name = card?.displayName ?? target?.name ?? 'Quelqu’un';
       const photo = card?.photos[0]?.url ?? card?.photoUrl ?? target?.photo ?? null;
       try {
-        const res = await api<{ ok: true; status: 'pending' | 'accepted'; matched: boolean; matchId: string | null; quota: QuotaState }>(
+        const res = await api<{ ok: true; status: 'pending' | 'accepted'; matched: boolean; matchId: string | null; originMode: 'classic' | 'invisible' | 'interracial' | null; quota: QuotaState }>(
           '/api/discover/invisible-request',
           { json: { targetId: id } },
         );
@@ -767,7 +769,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
             : prev,
         );
         if (res.matched) {
-          setMatchModal({ name, photo, country: card?.country ?? target?.country ?? null }); // Task 38 : drapeaux
+          setMatchModal({ name, photo, country: card?.country ?? target?.country ?? null, origin: res.originMode }); // Task 38 : drapeaux + Task 48-a : origine
         } else {
           showFlash(`Demande envoyée à ${name} — à ${LABELS.intent[card?.intent ?? 'open'] ?? 'faire connaissance'} quand elle accepte.`);
         }
@@ -960,7 +962,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     setBusy(true);
     setError(null);
     try {
-      const res = await api<{ ok: true; status: 'accepted' | 'declined'; matched: boolean; matchId: string | null }>(
+      const res = await api<{ ok: true; status: 'accepted' | 'declined'; matched: boolean; matchId: string | null; originMode: 'classic' | 'invisible' | 'interracial' | null }>(
         `/api/discover/invisible-request/${reqId}/respond`,
         { json: { accept } },
       );
@@ -975,7 +977,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
             }
           : prev,
       );
-      if (res.matched) setMatchModal({ name: 'Une personne qui t’avait demandé de discuter', photo: null, country: null });
+      if (res.matched) setMatchModal({ name: 'Une personne qui t’avait demandé de discuter', photo: null, country: null, origin: res.originMode });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
     }
@@ -2300,6 +2302,9 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               Vous vous êtes aimés — la conversation est déjà prête. Écris le premier message,
               c’est souvent lui qui fait la différence.
             </p>
+            {/* Task 48-a : univers où le match est NÉ (la réponse API le porte
+                depuis maintenant ; absent = match antérieur → pas de ligne). */}
+            {matchModal.origin && <p className="match-origin">{originLine(matchModal.origin)}</p>}
             <div className="btn-col">
               <button type="button" className="btn primary" onClick={onMatches}>
                 💬 Envoyer un message

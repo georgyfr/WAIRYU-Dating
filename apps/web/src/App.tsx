@@ -43,6 +43,8 @@ import { TabBar, type TabId } from './components/TabBar';
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
 import { UpdateToast } from './components/UpdateToast'; // Task 44 : « Nouvelle version » — changements immédiats sans actualiser
+import { WHATS_NEW, WHATS_NEW_SHOW } from './lib/whatsnew'; // Task 48-c : journal « Quoi de neuf »
+import { loadedBundles } from './lib/appVersion'; // Task 48-c : signature des bundles chargés
 import { getSharedMode, setSharedMode, resetSharedMode } from './lib/mode';
 import { useEventsNav, setEventsNav, resetEventsNav } from './lib/events-mode';
 import type {
@@ -258,6 +260,9 @@ export default function App() {
   const [apiOk, setApiOk] = useState<boolean | null>(null);
   // Task 39 : contexte événementiel (hook inconditionnel — règles des hooks).
   const eventsNav = useEventsNav();
+  // Task 48-c : « Quoi de neuf » — ouverte au boot si une mise à jour a été
+  // livrée depuis la dernière session (signature des bundles différente).
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
   // Badge de l'onglet Messages : le cache SWR est PARTAGÉ avec la page
   // Messages — une seule requête réseau sert le badge ET la page, et les
@@ -285,6 +290,25 @@ export default function App() {
     const onHash = () => setRoute(parseHash());
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  // Task 48-c : détection « mise à jour livrée depuis la dernière fois ».
+  // Le détecteur Task 44 couvre l'onglet OUVERT (pilule Recharger) ; ceci
+  // couvre le RETOUR de l'utilisateur : au boot, si les bundles chargés
+  // diffèrent de la signature mémorisée au boot précédent, on affiche le
+  // journal. Première visite : on mémorise en silence. En dev (bundles non
+  // hashés) les deux signatures sont vides → jamais déclenché.
+  useEffect(() => {
+    try {
+      const KEY = 'wairyu_seen_bundles';
+      const current = loadedBundles().join('|');
+      if (!current) return; // dev / signature illisible → inactif
+      const previous = localStorage.getItem(KEY);
+      localStorage.setItem(KEY, current);
+      if (previous && previous !== current) setWhatsNewOpen(true);
+    } catch {
+      /* localStorage indisponible (privacy mode) → fonctionnalité silencieuse */
+    }
   }, []);
 
   useEffect(() => {
@@ -621,6 +645,43 @@ export default function App() {
       )}
       <ToastHost />
       <UpdateToast />
+
+      {/* Task 48-c : modale « Quoi de neuf » — journal des nouveautés
+          utilisateur-visibles, affichée quand une mise à jour est détectée
+          au boot (z 90, même étage que les autres modales). */}
+      {whatsNewOpen && (
+        <div
+          className="whatsnew-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Quoi de neuf"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setWhatsNewOpen(false);
+          }}
+        >
+          <div className="whatsnew-card">
+            <span className="whatsnew-spark" aria-hidden="true">✨</span>
+            <h2>Quoi de neuf&nbsp;?</h2>
+            <p className="whatsnew-sub">Wairyu évolue — voici les dernières nouveautés.</p>
+            <div className="whatsnew-list">
+              {WHATS_NEW.slice(0, WHATS_NEW_SHOW).map((e) => (
+                <div key={e.id} className="whatsnew-item">
+                  <div className="whatsnew-date">{e.date}</div>
+                  <strong>{e.title}</strong>
+                  <ul>
+                    {e.items.map((it, i) => (
+                      <li key={i}>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <button type="button" className="btn primary" onClick={() => setWhatsNewOpen(false)}>
+              C’est noté, merci !
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
