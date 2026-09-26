@@ -10130,3 +10130,30 @@ body.theme-dark .deck-card .feed-body.clickable:hover {
     animation: none;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Task 45 — Vraies URLs par mode + confidentialité du flou Invisible
+   ════════════════════════════════════════════════════════════════════
+   1) Les pastilles de mode (🔥🕯️🌍📅) sont maintenant de VRAIS liens
+      <a href="#/discover/:slug"> : l'URL de chaque onglet est visible au
+      survol, copiable au clic droit, ouvrable au clic-milieu et l'historique
+      la mémorise (pushHash côté App). Les styles .mode-tab existants (Task
+      30/40) s'appliquent à la classe — il ne manque que la remise à zéro du
+      rendu de lien par défaut (soulignement/couleur), 100 % append-only.
+   2) Pendant une bascule (data-busy posé par Discover), la pastille se
+      grise et ignore les clics — l'équivalent accessible de l'ancien
+      disabled={busy} sur <button>, sans bloquer la navigation clavier.
+   3) Côté confidentialité (deck Invisible), la correction est dans Discover
+      (squelette immédiat en bascule + payload du mauvais bassin jamais
+      rendu au deep link) — aucune règle CSS n'y participe : le flou
+      s'applique dès la PREMIÈRE frame rendue. */
+
+a.mode-tab {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a.mode-tab[data-busy] {
+  opacity: 0.55;
+  pointer-events: none;
+}

@@ -120,6 +120,18 @@ const MODE_CHIP: Record<'classic' | 'invisible' | 'interracial', { icon: string;
   invisible: { icon: '🕯️', label: 'Invisible' },
 };
 
+/** Task 45 (demande fondateur : « les onglets de chaque mode n'ont pas d'URL
+ * appropriées ») : le « Découvrir » du menu latéral pointe vers le SLUG du
+ * mode courant (#/discover/classique · /invisible · /interracial) au lieu du
+ * #/discover générique — chaque mode a sa page adressable, y compris depuis
+ * la sidebar. NAV_INVISIBLE portait déjà son slug ; NAV_MOMENTS (events) est
+ * hors périmètre. */
+const DISCOVER_SLUGS: Record<'classic' | 'invisible' | 'interracial', string> = {
+  classic: 'classique',
+  invisible: 'invisible',
+  interracial: 'interracial',
+};
+
 export function TabBar({ active, unread, likes, onGo }: Props) {
   // Mode courant de la session (Task 35/37) — null tant que non chargé :
   // aucun chip inventé, la sidebar reste NEUTRE (entrées Classique) en
@@ -130,7 +142,11 @@ export function TabBar({ active, unread, likes, onGo }: Props) {
   // navigation reste celle du prototype Moments (4 onglets + « + »).
   const eventsNav = useEventsNav();
   const chip = eventsNav ? { icon: '📅', label: 'Moments' } : mode ? MODE_CHIP[mode] : null;
-  const items = eventsNav ? NAV_MOMENTS : mode === 'invisible' ? NAV_INVISIBLE : NAV_CLASSIC;
+  // Task 45 : l'entrée « Découvrir » reçoit le slug du mode courant (les
+  // entrées Moments/évents gardent leur hash historique).
+  const items = (eventsNav ? NAV_MOMENTS : mode === 'invisible' ? NAV_INVISIBLE : NAV_CLASSIC).map(
+    (t) => (!eventsNav && t.id === 'discover' && mode ? { ...t, hash: `#/discover/${DISCOVER_SLUGS[mode]}` } : t),
+  );
   const badgeValue = (b?: NavItem['badge']) =>
     b === 'unread' ? unread : b === 'likes' ? likes : 0;
   return (

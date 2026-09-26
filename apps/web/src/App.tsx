@@ -315,6 +315,20 @@ export default function App() {
     setRoute(parseHash());
   }, []);
 
+  // Task 45 (demande fondateur : « les onglets de chaque mode n'ont pas d'URL
+  // appropriées ») : les MODES de Découvrir ont maintenant de VRAIES URLs
+  // navigables — pushState (au lieu du replaceState tab-like de Task 36) :
+  // chaque bascule crée une entrée d'historique, le bouton retour revient au
+  // mode précédent (l'effet URL Task 36 rejoue la bascule réelle), et l'URL
+  // de chaque onglet est partageable telle quelle. Le dédoublonnage évite
+  // les entrées jumelles quand onModeChange suit le clic sur la pastille.
+  // syncHash (replaceState) reste en place pour les filtres/fils internes
+  // (Likes, Mes events) — décision Task 36 documentée, hors périmètre.
+  const pushHash = useCallback((hash: string) => {
+    if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+    setRoute(parseHash());
+  }, []);
+
   const onLoggedOut = useCallback(() => {
     clearSwr(); // aucune donnée de l'ancien compte ne doit survivre (Task 28)
     resetSharedMode(); // ni son mode — la sidebar repart neutre (Task 35)
@@ -449,7 +463,7 @@ export default function App() {
       <Discover
         onMatches={() => go('#/matches')}
         initialMode={route.mode}
-        onModeChange={(m) => syncHash(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`)}
+        onModeChange={(m) => pushHash(`#/discover/${DISCOVER_MODE_TO_SLUG[m]}`)}
         onMoments={() => go('#/events')}
       />
     );

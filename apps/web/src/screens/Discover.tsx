@@ -87,6 +87,17 @@ const MODE_TABS: { id: DiscoveryMode; label: string; icon: string; hint: string 
   { id: 'interracial', label: 'Interracial', icon: '🌍', hint: 'Rencontres entre continents, portée mondiale.' },
 ];
 
+/** Task 45 : chaque onglet de mode a SA VRAIE URL (#/discover/:slug) — les
+ * pastilles deviennent de vrais liens : survol = adresse visible, clic droit
+ * « copier le lien », clic-milieu = nouvel onglet, historique navigable.
+ * Mêmes slugs que App.tsx (DISCOVER_MODE_TO_SLUG) — deep links Task 36
+ * strictement inchangés. */
+const MODE_SLUGS: Record<DiscoveryMode, string> = {
+  classic: 'classique',
+  invisible: 'invisible',
+  interracial: 'interracial',
+};
+
 /** Bannières d'ambiance — une identité forte par mode (enrichissement). */
 const MODE_HEROES: Record<DiscoveryMode, { title: string; sub: string; chips: string[] }> = {
   classic: {
@@ -496,9 +507,13 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     });
   }, []);
 
-  /** Charge une page du deck (append si p > 1). */
+  /** Charge une page du deck (append si p > 1).
+   *  Task 45 : seul un chargement REMPLAÇANT (replace=true — bascule de
+   *  mode, filtres, reload) masque les cartes via loading ; la pagination
+   *  (replace=false) garde la pile affichée — pas de flash de squelette
+   *  pendant l'ajout d'une page. */
   const loadDeck = useCallback(async (p: number, replace: boolean) => {
-    setLoading(true);
+    if (replace) setLoading(true);
     setError(null);
     try {
       const res = await api<FeedResponse>(`/api/feed?page=${p}`);
@@ -540,8 +555,18 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
           ? api<InboxResponse>('/api/discover/inbox').catch(() => null)
           : Promise.resolve(null);
       const [feedRes, inboxRes, likesRes] = await Promise.all([feedP, inboxP, likesP]);
-      setItems(feedRes.items);
-      setHasMore(feedRes.hasMore);
+      // Task 45 (trou de confidentialité signalé par le fondateur) : le feed
+      // ci-dessus est PARTI avant que le mode serveur soit connu — s'il était
+      // sur un AUTRE mode que le deep link (ex. serveur Classique, URL
+      // #/discover/invisible), ce payload décrit le MAUVAIS bassin : des
+      // profils aux photos NON floutées s'affichaient quelques secondes sur
+      // l'écran Invisible, le temps du PUT + refetch. On ne rend JAMAIS ce
+      // payload : pile vide (squelettes) et le deck du bon bassin arrive
+      // via l'effet deep-link → switchMode → loadDeck.
+      const wrongBassin =
+        !!initialMode && !!prof.preferences && prof.preferences.modeDefault !== initialMode;
+      setItems(wrongBassin ? [] : feedRes.items);
+      setHasMore(wrongBassin ? false : feedRes.hasMore);
       setPage(1);
       setInbox(inboxRes);
       setLikes(likesRes);
@@ -550,6 +575,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -830,6 +856,13 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
           setDraftFilters(effective);
           toast('Préférences initialisées avec des valeurs neutres — ajuste-les dans Filtres.', 'info');
         }
+        // Task 45 (confidentialité) : la pile de l'ANCIEN mode — dont les
+        // photos peuvent être NON floutées — ne doit jamais rester visible
+        // pendant le PUT + refetch qui suit (c'est ce qui donnait l'illusion
+        // « les images mettent du temps à se flouter »). Squelette immédiat :
+        // le deck se démonte dès maintenant, le bon bassin arrive avec le
+        // loadDeck(1, true) de fin de bascule.
+        setLoading(true);
         await api('/api/profile/preferences', {
           method: 'PUT',
           json: {
@@ -857,6 +890,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         const msg = err instanceof ApiError ? err.message : 'Erreur inattendue.';
         setError(msg);
         toast(msg, 'error'); // feedback garanti (l'erreur historique reste rendue)
+        setLoading(false); // Task 45 : pas de squelette figé si le PUT échoue
       }
       setBusy(false);
     },
@@ -1331,41 +1365,53 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         </div>
       </header>
 
-      {/* Onglets de mode — libre, réversible, transparent (§4.3.4) */}
+      {/* Onglets de mode — libre, réversible, transparent (§4.3.4).
+          Task 45 : de vrais LIENS (#/discover/:slug) — l'URL de chaque mode
+          est visible au survol, copiable au clic droit, ouvrable au
+          clic-milieu et l'historique la mémorise (pushHash côté App). Le
+          preventDefault garde la synchronisation APRÈS la bascule serveur
+          (comportement Task 36 : l'URL reflète le mode RÉELLEMENT actif). */}
       <div className={`mode-tabs mode-${mode}`} role="tablist">
         {MODE_TABS.map((t) => (
-          <button
+          <a
             key={t.id}
-            type="button"
             role="tab"
             aria-selected={mode === t.id}
             className={`mode-tab ${mode === t.id ? 'active' : ''}`}
-            disabled={busy}
-            onClick={() => void switchMode(t.id)}
+            href={`#/discover/${MODE_SLUGS[t.id]}`}
+            data-busy={busy ? 'true' : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              void switchMode(t.id);
+            }}
             title={t.hint}
           >
             <span className="mode-tab-icon" aria-hidden="true">
               {t.icon}
             </span>
             {t.label}
-          </button>
+          </a>
         ))}
         {/* Task 40 — 4e pastille : l'univers événementiel « Wairyu Moments ».
             Jamais « active » ici (ce n'est pas un mode de découverte) : le clic
-            ouvre #/events — la nav turquoise prend le relais (Task 39). */}
-        <button
-          type="button"
+            ouvre #/events — la nav turquoise prend le relais (Task 39).
+            Task 45 : vrai lien #/events (URL appropriée, comme les 3 modes). */}
+        <a
           role="tab"
           aria-selected={false}
           className="mode-tab moments-entry"
-          onClick={onMoments}
+          href="#/events"
+          onClick={(e) => {
+            e.preventDefault();
+            onMoments();
+          }}
           title="Événements réels près de toi — billetterie, souvenirs, Missed Connections."
         >
           <span className="mode-tab-icon" aria-hidden="true">
             📅
           </span>
           Moments
-        </button>
+        </a>
       </div>
 
       {/* Bannière d'ambiance — une identité par mode */}
@@ -1629,7 +1675,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               </span>
             </div>
           )}
-          {loading && items.length === 0 && (
+          {loading && (
             <>
               <p className="status">
                 <span className="dot" /> Recherche de profils compatibles…
@@ -1665,7 +1711,11 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               </div>
             </div>
           )}
-          {nextCard2 && (
+          {/* Task 45 (confidentialité) : les cartes ne se rendent JAMAIS
+              pendant un chargement remplaçant — la pile de l'ancien mode
+              (photos possiblement nettes) disparaît dès le premier instant
+              de la bascule vers l'Invisible, avant même le PUT. */}
+          {!loading && nextCard2 && (
             <div className="deck-card behind behind-2" aria-hidden="true">
               {nextCard2.photoUrl ? (
                 <div className={`feed-photo ${nextCard2.photoBlurred ? 'blurred' : ''}`}>
@@ -1679,7 +1729,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               </div>
             </div>
           )}
-          {nextCard && (
+          {!loading && nextCard && (
             <div className="deck-card behind behind-1" aria-hidden="true">
               {nextCard.photoUrl ? (
                 <div className={`feed-photo ${nextCard.photoBlurred ? 'blurred' : ''}`}>
@@ -1693,7 +1743,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               </div>
             </div>
           )}
-          {card && (
+          {!loading && card && (
             <article
               className={`deck-card ${exit ? `exit-${exit}` : ''}`}
               style={
@@ -1723,7 +1773,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               </div>
             </article>
           )}
-          {card && (
+          {!loading && card && (
             <>
               <div className="deck-actions">
                 <button
@@ -1917,7 +1967,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       {/* ── EXPLORER / DISCUTER (INVISIBLE) ── */}
       {isInvisible && (
         <div className="inv-list">
-          {loading && items.length === 0 && (
+          {loading && (
             <p className="status"><span className="dot" /> Exploration des personnalités…</p>
           )}
           {!loading && items.length === 0 && (
@@ -1926,7 +1976,10 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
               le Mode Invisible se nourrit des nouvelles inscriptions.
             </p>
           )}
-          {items.map((p) => (
+          {/* Task 45 (confidentialité) : pendant un chargement, la liste ne
+              rend RIEN — jamais les items de l'ancien mode (photos nettes)
+              sur l'écran Invisible. */}
+          {!loading && items.map((p) => (
             <article key={p.userId} className="feed-card inv-card">
               <CardCarousel p={p} />
               {/* Task 32 (réf. Invisible §4.2) : badge Score flottant sur la
