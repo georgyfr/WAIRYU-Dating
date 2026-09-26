@@ -42,6 +42,7 @@ import { Coach } from './screens/Coach';
 import { TabBar, type TabId } from './components/TabBar';
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
+import { UpdateToast } from './components/UpdateToast'; // Task 44 : « Nouvelle version » — changements immédiats sans actualiser
 import { getSharedMode, setSharedMode, resetSharedMode } from './lib/mode';
 import { useEventsNav, setEventsNav, resetEventsNav } from './lib/events-mode';
 import type {
@@ -605,6 +606,7 @@ export default function App() {
         <TabBar active={activeTab} unread={unread} likes={likesCount} onGo={go} />
       )}
       <ToastHost />
+      <UpdateToast />
     </main>
   );
 }
