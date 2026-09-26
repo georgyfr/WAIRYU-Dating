@@ -54,6 +54,8 @@ interface ChatCtx {
   conversationId: string;
   matchId: string;
   mode: 'classic' | 'invisible';
+  /** Univers où le match est NÉ (Task 47) — descriptif, distinct du mode du chat. */
+  originMode: 'classic' | 'invisible' | 'interracial';
   createdAt: number;
   revealedAt: number | null;
   me: string;
@@ -69,7 +71,7 @@ async function chatContext(c: Context<AppEnv>, conversationId: string): Promise<
   if (!/^[0-9a-f-]{16,64}$/i.test(conversationId)) throw errors.badRequest('Conversation invalide.');
 
   const row = await c.env.DB.prepare(
-    `SELECT c.id, c.mode, c.revealed_at, c.created_at,
+    `SELECT c.id, c.mode, c.origin_mode, c.revealed_at, c.created_at,
             m.id AS match_id, m.user_a_id, m.user_b_id
      FROM conversations c
      JOIN matches m ON m.id = c.match_id
@@ -79,6 +81,7 @@ async function chatContext(c: Context<AppEnv>, conversationId: string): Promise<
     .first<{
       id: string;
       mode: string;
+      origin_mode: string;
       revealed_at: number | null;
       created_at: number;
       match_id: string;
@@ -106,6 +109,13 @@ async function chatContext(c: Context<AppEnv>, conversationId: string): Promise<
     conversationId: row.id,
     matchId: row.match_id,
     mode: row.mode === 'invisible' ? 'invisible' : 'classic',
+    // Task 47 : univers d'origine du match (descriptif — fallback classic).
+    originMode:
+      row.origin_mode === 'invisible'
+        ? 'invisible'
+        : row.origin_mode === 'interracial'
+          ? 'interracial'
+          : 'classic',
     createdAt: row.created_at,
     revealedAt: row.revealed_at,
     me,
@@ -190,7 +200,7 @@ chatRoutes.get('/chat/conversations', async (c) => {
   if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.chatListUser.scope);
 
   const rowsResult = await c.env.DB.prepare(
-    `SELECT c.id AS conv_id, c.mode AS conv_mode, c.created_at, c.revealed_at,
+    `SELECT c.id AS conv_id, c.mode AS conv_mode, c.origin_mode AS conv_origin, c.created_at, c.revealed_at,
             m.id AS match_id,
             other.id AS other_id, other.display_name,
             other.verified_at AS other_verified,
@@ -209,6 +219,7 @@ chatRoutes.get('/chat/conversations', async (c) => {
     .all<{
       conv_id: string;
       conv_mode: string;
+      conv_origin: string;
       created_at: number;
       revealed_at: number | null;
       match_id: string;
@@ -300,6 +311,14 @@ chatRoutes.get('/chat/conversations', async (c) => {
         conversationId: r.conv_id,
         matchId: r.match_id,
         conversationMode: convMode,
+        // Task 47 : univers où le match est NÉ (descriptif — le flou reste
+        // piloté par convMode ci-dessus).
+        originMode:
+          r.conv_origin === 'invisible'
+            ? 'invisible'
+            : r.conv_origin === 'interracial'
+              ? 'interracial'
+              : 'classic',
         createdAt: r.created_at,
         lastActivityAt,
         unread: Math.max(0, s?.unread ?? 0),
@@ -415,7 +434,7 @@ chatRoutes.get('/chat/:id/ws', async (c) => {
     // Le titulaire du ticket doit toujours être membre actif du match —
     // et on profite de la lecture D1 pour seed la méta du DO (mode, dates).
     const row = await c.env.DB.prepare(
-      `SELECT c.id, c.mode, c.created_at,
+      `SELECT c.id, c.mode, c.origin_mode, c.created_at,
               m.id AS match_id,
               CASE WHEN m.user_a_id = ?2 THEN m.user_b_id ELSE m.user_a_id END AS other
        FROM conversations c
@@ -424,12 +443,18 @@ chatRoutes.get('/chat/:id/ws', async (c) => {
          AND (?2 IN (m.user_a_id, m.user_b_id))`,
     )
       .bind(conversationId, userId)
-      .first<{ id: string; mode: string; created_at: number; match_id: string; other: string }>();
+      .first<{ id: string; mode: string; origin_mode: string; created_at: number; match_id: string; other: string }>();
     if (!row) throw errors.notFound('Conversation introuvable ou fermée.');
     const ctx: ChatCtx = {
       conversationId: row.id,
       matchId: row.match_id,
       mode: row.mode === 'invisible' ? 'invisible' : 'classic',
+      originMode:
+        row.origin_mode === 'invisible'
+          ? 'invisible'
+          : row.origin_mode === 'interracial'
+            ? 'interracial'
+            : 'classic',
       createdAt: row.created_at,
       revealedAt: null,
       me: userId,
@@ -583,6 +608,8 @@ chatRoutes.get('/chat/:id/state', async (c) => {
   const body: ChatStateResponse = {
     conversationId: ctx.conversationId,
     conversationMode: ctx.mode,
+    // Task 47 : univers d'origine du match — affiché dans l'en-tête du chat.
+    originMode: ctx.originMode,
     createdAt: ctx.createdAt,
     messagesCount: stats.count,
     days,

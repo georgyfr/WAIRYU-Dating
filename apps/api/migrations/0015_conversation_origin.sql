@@ -1,0 +1,27 @@
+-- 0015_conversation_origin.sql — wairyu : univers d'ORIGINE des conversations (Task 47)
+-- Incrémental, jamais destructif : une seule colonne ajoutée, aucun backfill destructif.
+--
+-- Pourquoi : depuis Task 46 / 46 bis, l'utilisateur navigue librement entre les
+-- 3 univers (Classique, Invisible, Interracial) et l'univers événementiel
+-- Wairyu Moments. Les conversations atterrissent dans une boîte de réception
+-- UNIQUE (GET /api/chat/conversations n'a jamais filtré par mode) — mais
+-- l'univers où le match est NÉ n'était nulle part mémorisé : un match né en
+-- Interracial s'affichait « Classique » (sa conversation de chat est bien de
+-- mode 'classic' — §4.8 le flou suit le MODE DE LA CONVERSATION, pas
+-- l'origine). Task 47 : on mémorise l'origine pour la rendre visible
+-- (badge Messages / Matchs / Chat) sans toucher à la règle de flou.
+--
+-- Règles inchangées :
+--   - 1 paire = 1 match = 1 conversation (index uniques 0012) — pas de fil
+--     dupliqué par univers ; le re-match après unmatch CONSERVE la
+--     conversation d'origine et donc son origin_mode (§4.8).
+--   - Le flou des photos reste gouverné par conversations.mode
+--     ('classic' | 'invisible'), mutuellement consenti via la passerelle §4.4.
+--   - origin_mode est une énumération évolutive : AUCUN CHECK (leçon 0008) —
+--     l'API valide ('classic' | 'invisible' | 'interracial'), ajouter un
+--     univers ne demandera aucune migration.
+--
+-- Données préexistantes : DEFAULT 'classic' (conservateur — les conversations
+-- créées avant Task 47 affichent « Classique », sauf celles déjà en mode
+-- chat 'invisible' qui continuent d'afficher « Invisible » via conversations.mode).
+ALTER TABLE conversations ADD COLUMN origin_mode TEXT NOT NULL DEFAULT 'classic';

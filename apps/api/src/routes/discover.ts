@@ -177,6 +177,11 @@ async function createMatchWithConversation(
   bId: string,
   origin: 'like' | 'super' | 'invisible_request',
   conversationMode: 'classic' | 'invisible',
+  // Task 47 : univers de découverte où le match est NÉ (le contexte DÉCLARÉ
+  // par le front au moment de la réciprocité — 'interracial' compris). Le flou
+  // du chat reste gouverné par conversationMode (§4.8) — l'origine est
+  // purement descriptive (badges Messages/Matchs/Chat).
+  originMode: DiscoveryMode,
 ): Promise<{ matchId: string; conversationId: string; conversationMode: 'classic' | 'invisible' }> {
   const [userA, userB] = [aId, bId].sort((x, y) => x.localeCompare(y));
   const matchId = crypto.randomUUID();
@@ -200,10 +205,10 @@ async function createMatchWithConversation(
   if (!match) throw errors.internal('Création du match impossible.');
   const conversationId = crypto.randomUUID();
   await c.env.DB.prepare(
-    `INSERT INTO conversations (id, match_id, mode, created_at)
-     VALUES (?, ?, ?, ?) ON CONFLICT (match_id) DO NOTHING`,
+    `INSERT INTO conversations (id, match_id, mode, origin_mode, created_at)
+     VALUES (?, ?, ?, ?, ?) ON CONFLICT (match_id) DO NOTHING`,
   )
-    .bind(conversationId, match.id, conversationMode, Math.floor(Date.now() / 1000))
+    .bind(conversationId, match.id, conversationMode, originMode, Math.floor(Date.now() / 1000))
     .run();
   // Re-match : la conversation d'origine est CONSERVÉE (historique §4.8) —
   // on la relit pour toujours renvoyer la conversation réelle.
@@ -305,6 +310,7 @@ discoverRoutes.post('/discover/swipe', async (c) => {
         target.id,
         action === 'super' ? 'super' : 'like',
         conversationModeFinal,
+        contextMode, // Task 47 : l'origine est l'univers RÉEL de la réciprocité (classic/invisible/interracial)
       );
       matched = true;
       matchId = res.matchId;
@@ -436,7 +442,7 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
     }
     if (existing.status === 'pending') {
       // Double « Discuter » : match immédiat (les deux ont cliqué).
-      const res = await createMatchWithConversation(c, user.id, target.id, 'invisible_request', 'invisible');
+      const res = await createMatchWithConversation(c, user.id, target.id, 'invisible_request', 'invisible', 'invisible');
       await c.env.DB.prepare(
         `UPDATE invisible_requests SET status = 'accepted', match_id = ?, responded_at = ? WHERE id = ?`,
       )
@@ -517,7 +523,7 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
 
   // Acceptation → match + conversation INVISIBLE (photos floutées jusqu'à la
   // révélation consentie — Étape 6).
-  const res = await createMatchWithConversation(c, user.id, req.from_user, 'invisible_request', 'invisible');
+  const res = await createMatchWithConversation(c, user.id, req.from_user, 'invisible_request', 'invisible', 'invisible');
   await c.env.DB.prepare(
     `UPDATE invisible_requests SET status = 'accepted', match_id = ?, responded_at = ? WHERE id = ?`,
   )
@@ -631,7 +637,7 @@ discoverRoutes.get('/discover/matches', async (c) => {
 
   const { results: rows } = await c.env.DB.prepare(
     `SELECT m.id AS match_id, m.origin, m.created_at,
-            c.id AS conv_id, c.mode AS conv_mode,
+            c.id AS conv_id, c.mode AS conv_mode, c.origin_mode AS conv_origin,
             other.id AS other_id, other.display_name, other.city, other.country,
             other.verified_at AS other_verified,
             pp.type AS personality_type, pp.validated AS personality_validated,
@@ -653,6 +659,7 @@ discoverRoutes.get('/discover/matches', async (c) => {
       created_at: number;
       conv_id: string;
       conv_mode: string;
+      conv_origin: string;
       other_id: string;
       display_name: string | null;
       city: string | null;
@@ -710,6 +717,14 @@ discoverRoutes.get('/discover/matches', async (c) => {
         matchId: r.match_id,
         conversationId: r.conv_id,
         conversationMode: convMode,
+        // Task 47 : univers où le match est NÉ (descriptif — le flou reste
+        // piloté par convMode ci-dessus).
+        originMode:
+          r.conv_origin === 'invisible'
+            ? 'invisible'
+            : r.conv_origin === 'interracial'
+              ? 'interracial'
+              : 'classic',
         origin: (r.origin as MatchDto['origin']) ?? 'like',
         createdAt: r.created_at,
         other: {

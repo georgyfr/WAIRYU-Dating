@@ -544,12 +544,17 @@ export interface InvisibleRequestResponse {
   quota: QuotaState;
 }
 
+/** Univers de découverte où un match est né (Task 47 — énumération évolutive, validée API). */
+export type ConversationOriginMode = 'classic' | 'invisible' | 'interracial';
+
 /** Un match + sa conversation (GET /api/discover/matches). */
 export interface MatchDto {
   matchId: string;
   conversationId: string;
   /** Mode de la CONVERSATION — passerelle acceptée ⇒ 'invisible' (photos re-floutées). */
   conversationMode: 'classic' | 'invisible';
+  /** Univers où le match est NÉ (Task 47) — distinct du mode du chat ci-dessus. */
+  originMode: ConversationOriginMode;
   origin: 'like' | 'super' | 'invisible_request';
   createdAt: number;
   other: {
@@ -628,6 +633,8 @@ export interface ChatHistoryResponse {
 export interface ChatStateResponse {
   conversationId: string;
   conversationMode: 'classic' | 'invisible';
+  /** Univers où le match est NÉ (Task 47) — affiché dans l'en-tête du chat. */
+  originMode: ConversationOriginMode;
   createdAt: number;
   /** Messages échangés (les deux sens confondus, texte + voice). */
   messagesCount: number;
@@ -675,6 +682,8 @@ export interface ConversationDto {
   matchId: string;
   /** Mode de la CONVERSATION (régit le flou des photos — §4.8). */
   conversationMode: 'classic' | 'invisible';
+  /** Univers où le match est NÉ (Task 47) — indépendant du flou ci-dessus. */
+  originMode: ConversationOriginMode;
   /** Création de la conversation (epoch s). */
   createdAt: number;
   /** Dernière activité réelle = dernier message (ou création). */

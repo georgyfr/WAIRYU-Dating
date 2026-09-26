@@ -557,8 +557,28 @@ export function Chat({ conversationId, onBack }: Props) {
             {otherTyping ? 'est en train d’écrire…' : online ? 'en ligne' : 'hors ligne'}
           </span>
         </div>
-        <span className={`chip chip-conv ${state?.conversationMode ?? 'classic'}`}>
-          {state?.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}
+        {/* Task 47 : le badge priorise le mode du chat (flou §4.8), sinon l'univers d'origine. */}
+        <span
+          className={`chip chip-conv ${
+            (state?.conversationMode ?? 'classic') === 'invisible'
+              ? 'invisible'
+              : (state?.originMode ?? 'classic') === 'interracial'
+                ? 'interracial'
+                : 'classic'
+          }`}
+          title={
+            (state?.conversationMode ?? 'classic') === 'invisible'
+              ? 'Conversation Invisible — photos floutées jusqu’à la révélation mutuelle'
+              : (state?.originMode ?? 'classic') === 'interracial'
+                ? 'Match né dans l’univers Interracial — photos visibles'
+                : 'Match né dans l’univers Classique — photos visibles'
+          }
+        >
+          {(state?.conversationMode ?? 'classic') === 'invisible'
+            ? 'Invisible'
+            : (state?.originMode ?? 'classic') === 'interracial'
+              ? 'Interracial'
+              : 'Classique'}
         </span>
       </header>
 

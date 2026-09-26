@@ -10441,3 +10441,33 @@ a.mode-tab[data-busy] {
     bottom: calc(112px + env(safe-area-inset-bottom));
   }
 }
+
+/* ===========================================================================
+   Task 47 — Univers d'ORIGINE des conversations (chat multi-modes lisible)
+   Append-only : nouveaux blocs en fin de fichier. Aucune règle existante
+   n'est modifiée — les variantes .chip-conv.classic/.invisible historiques
+   (ligne ~1992) restent en place ; on ajoute uniquement la variante
+   .interracial (identité ambre de l'univers Cultures) + la ligne pédagogique
+   de la boîte de réception.
+   =========================================================================== */
+
+/* Chip « Interracial » — ambre Cultures (même famille que l'univers). */
+.chip-conv.interracial {
+  background: #f7ecd8;
+  color: #8a5a12;
+}
+
+/* Sombre : ambre inversé, cohérent avec les autres chips de conversation. */
+body.theme-dark .chip-conv.interracial {
+  background: #3a2f1c;
+  color: #f2e3c8;
+}
+
+/* Ligne pédagogique sous le titre « Messages » : une seule boîte pour les
+   3 univers ; discrète (12.5px, muted), n'ajoute pas de bruit visuel. */
+.messages-hint {
+  margin: -6px 0 14px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--c-muted);
+}

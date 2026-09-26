@@ -139,8 +139,8 @@ export function Matches({ onOpenChat }: Props) {
                     </span>
                   )}
                 </strong>
-                <span className={`chip chip-conv ${m.conversationMode}`}>
-                  {m.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}
+                <span className={`chip chip-conv ${m.originMode === 'interracial' && m.conversationMode === 'classic' ? 'interracial' : m.conversationMode}`} title={m.conversationMode === 'invisible' ? 'Conversation Invisible — photos floutées jusqu’à la révélation mutuelle' : m.originMode === 'interracial' ? 'Match né dans l’univers Interracial — photos visibles' : 'Match né dans l’univers Classique — photos visibles'}>
+                  {m.conversationMode === 'invisible' ? 'Invisible' : m.originMode === 'interracial' ? 'Interracial' : 'Classique'}
                 </span>
               </div>
               <p className="match-sub">

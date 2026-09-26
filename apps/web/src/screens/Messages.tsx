@@ -12,6 +12,7 @@
  */
 import { useEffect } from 'react';
 import { useSwr } from '../lib/swr';
+import { convChip } from '../lib/conv-origin';
 import type { ConversationLastMessage, ConversationListResponse } from '@wairyu/shared';
 
 interface Props {
@@ -64,6 +65,13 @@ export function Messages({ onOpenChat, onDiscover }: Props) {
         <h1>Messages</h1>
       </header>
 
+      {/* Task 47 — pédagogie multi-univers : UNE boîte pour les 3 univers ;
+          les conversations te suivent quand tu changes de mode (§4.8). */}
+      <p className="messages-hint">
+        Une seule boîte pour tes univers Classique, Invisible et Interracial — tes
+        conversations te suivent quand tu changes de mode.
+      </p>
+
       {error && <p className="error">{error}</p>}
       {loading && (
         <p className="status">
@@ -109,9 +117,16 @@ export function Messages({ onOpenChat, onDiscover }: Props) {
                       {' '}✓
                     </span>
                   )}
-                  <span className={`chip chip-conv ${cv.conversationMode}`}>
-                    {cv.conversationMode === 'invisible' ? 'Invisible' : 'Classique'}
-                  </span>
+                  {/* Task 47 : le badge priorise le MODE DU CHAT (flou §4.8),
+                      sinon il montre l'univers d'origine (Interracial). */}
+                  {(() => {
+                    const chip = convChip(cv.conversationMode, cv.originMode);
+                    return (
+                      <span className={`chip chip-conv ${chip.cls}`} title={chip.title}>
+                        {chip.label}
+                      </span>
+                    );
+                  })()}
                 </strong>
                 <time>{timeLabel(cv.lastMessage?.createdAt ?? cv.lastActivityAt)}</time>
               </span>
