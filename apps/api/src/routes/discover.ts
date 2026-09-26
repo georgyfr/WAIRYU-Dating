@@ -170,6 +170,48 @@ async function validTarget(
   return target;
 }
 
+// ---------------------------------------------------------------------------
+// Task 50 — MUTEX CLASSIQUE/INVISIBLE côté ÉCRITURES (règle fondateur Task 34
+// étendue au-delà du feed) : « si tu es dans le mode classique, tu ne peux
+// plus être en mode invisible, et vice versa. Quand tu migres vers le mode
+// classique, ton profil disparaît de l’autre mode. Mais les messages issus
+// des matchs peuvent rester. » Les BASSINS de lecture sont étanches depuis la
+// Task 34 (poolFilter dans generateFeedPage) ; ici on verrouille les
+// ÉCRITURES : un match ne peut naître qu’entre deux membres du MÊME bassin,
+// quel que soit le client (page périmée, client manipulé, like antérieur).
+// ---------------------------------------------------------------------------
+
+/** Mode RÉEL d’un compte (source de vérité D1 — défaut 'classic' sans ligne,
+ *  même convention que le poolFilter Task 34). */
+async function readModeOf(
+  c: Context<AppEnv>,
+  userId: string,
+): Promise<'classic' | 'invisible' | 'interracial'> {
+  const row = await c.env.DB.prepare(
+    `SELECT mode_default FROM user_preferences WHERE user_id = ?`,
+  )
+    .bind(userId)
+    .first<{ mode_default: string | null }>();
+  const m = row?.mode_default;
+  return m === 'invisible' || m === 'interracial' ? m : 'classic';
+}
+
+/**
+ * Verrou de bassin : rejette toute paire cross-mode (Classique/Interracial ⟷
+ * Invisible). Message non punitif — la personne a simplement changé d’univers
+ * (migration) ou n’a jamais appartenu au mien (principe §4.6.2 : respect du
+ * choix individuel, non punitif). À poser AVANT toute écriture (quota, swipe,
+ * demande, match) dans chaque route — un refus ne consomme alors RIEN.
+ */
+async function assertSamePool(
+  myMode: 'classic' | 'invisible' | 'interracial',
+  targetMode: 'classic' | 'invisible' | 'interracial',
+): Promise<void> {
+  if ((myMode === 'invisible') !== (targetMode === 'invisible')) {
+    throw errors.forbidden('Ce profil n’est pas dans ton univers.');
+  }
+}
+
 /** Crée le match (paire ordonnée) + sa conversation fondatrice. Idempotent. */
 async function createMatchWithConversation(
   c: Context<AppEnv>,
@@ -245,9 +287,12 @@ discoverRoutes.post('/discover/swipe', async (c) => {
     ['like', 'pass', 'super'] as const,
     'Action',
   );
-  // Contexte de découverte DECLARÉ par le front (défaut classic) — détermine
-  // le mode de la conversation fondatrice (règle déterministe §4.6, cf. en-tête).
-  const contextMode = validateEnum<DiscoveryMode>(
+  // Contexte de découverte DÉCLARÉ par le front (défaut classic) — validé en
+  // forme pour compat, mais NON crédité depuis la Task 50 : le bassin et le
+  // mode de la conversation fondatrice sont DÉRIVÉS du D1 réel (un client
+  // mensonger ne décide plus du flou §4.8). Un client honnête envoie déjà le
+  // mode du compte — comportement identique.
+  validateEnum<DiscoveryMode>(
     payload?.mode ?? 'classic',
     MODES as unknown as readonly DiscoveryMode[],
     'Mode',
@@ -260,6 +305,13 @@ discoverRoutes.post('/discover/swipe', async (c) => {
   }
 
   const target = await validTarget(c, user.id, payload?.targetId);
+
+  // Task 50 — verrou de bassin AVANT toute écriture (quota, swipe, match) :
+  // ma cible doit appartenir à MON univers. Le like d’il y a quelque temps
+  // reste visible côté « Likes reçus » (fait passé, flou du propriétaire
+  // respecté) mais il ne peut plus déboucher sur un match cross-mode.
+  const myMode = await readModeOf(c, user.id);
+  await assertSamePool(myMode, await readModeOf(c, target.id));
 
   // Un swipe par paire et par sens — jamais reproposé (le feed exclut déjà).
   const existing = await c.env.DB.prepare(
@@ -309,14 +361,18 @@ discoverRoutes.post('/discover/swipe', async (c) => {
       .bind(target.id, user.id)
       .first();
     if (reciprocal) {
-      const conversationModeFinal = contextMode === 'invisible' ? 'invisible' : 'classic';
+      // Task 50 — mode de la conversation DÉRIVÉ SERVEUR : le mode D1 RÉEL du
+      // swipeur qui ferme la réciprocité décide du flou (invisible → flou,
+      // classic/interracial → photos publiques) ; l’origine (Task 47) reste
+      // l’univers réel du compte — interracial compris.
+      const conversationModeFinal = myMode === 'invisible' ? 'invisible' : 'classic';
       const res = await createMatchWithConversation(
         c,
         user.id,
         target.id,
         action === 'super' ? 'super' : 'like',
         conversationModeFinal,
-        contextMode, // Task 47 : l'origine est l'univers RÉEL de la réciprocité (classic/invisible/interracial)
+        myMode, // Task 47/50 : l’origine est l’univers RÉEL du compte (classic/invisible/interracial)
       );
       matched = true;
       matchId = res.matchId;
@@ -421,6 +477,15 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
   }
 
   const target = await validTarget(c, user.id, payload?.targetId);
+
+  // Task 50 — le handshake « Discuter » vit dans l'univers Invisible : je dois
+  // y être, et la cible aussi (bassins étanches côté écritures). La garde couvre
+  // autant la création d'une demande que le double « Discuter » (match direct).
+  const myMode = await readModeOf(c, user.id);
+  if (myMode !== 'invisible') {
+    throw errors.forbidden('La demande « Discuter » est réservée à l’univers Invisible.');
+  }
+  await assertSamePool(myMode, await readModeOf(c, target.id));
 
   // Déjà en conversation ?
   const otherId = user.id.localeCompare(target.id) < 0 ? target.id : user.id;
@@ -532,6 +597,17 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
     return c.json(body);
   }
 
+  // Task 50 — mutex à l'acceptation : les deux membres doivent TOUJOURS
+  // appartenir à l'univers Invisible (un demandeur ayant migré vers Classique
+  // entre-temps ne peut plus être matché ici). Non destructif : la demande
+  // reste en base (§4.8 « ne supprime rien ») — elle disparaît simplement de
+  // la boîte de réception (inbox filtrée plus bas) et l'acceptation est refusée.
+  const myModeAccept = await readModeOf(c, user.id);
+  const senderMode = await readModeOf(c, req.from_user);
+  if (myModeAccept !== 'invisible' || senderMode !== 'invisible') {
+    throw errors.forbidden('Cette demande n’est plus disponible — quelqu’un a quitté l’univers Invisible.');
+  }
+
   // Acceptation → match + conversation INVISIBLE (photos floutées jusqu'à la
   // révélation consentie — Étape 6).
   const res = await createMatchWithConversation(c, user.id, req.from_user, 'invisible_request', 'invisible', 'invisible');
@@ -600,6 +676,10 @@ discoverRoutes.get('/discover/inbox', async (c) => {
   await Promise.all(
     (rows ?? []).map(async (r) => {
       const mine = r.from_user === user.id;
+      // Task 50 — mutex (lecture) : une demande reçue d'un membre qui a quitté
+      // l'univers Invisible est masquée (la ligne reste en base — non destructif,
+      // l'acceptation est de toute façon refusée par la garde du respond).
+      if (!mine && r.status === 'pending' && r.owner_mode !== 'invisible') return;
       const base = {
         id: r.id,
         fromUser: r.from_user,
