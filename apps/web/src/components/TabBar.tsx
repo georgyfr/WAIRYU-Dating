@@ -36,8 +36,13 @@
  * Task 35 (conservé) : le chip sous la marque affiche le mode courant
  * (🔥 Classique · 🌍 Interracial · 🕯️ Invisible).
  */
+import { useEffect, useRef, useState } from 'react';
 import { useSharedMode } from '../lib/mode';
-import { useEventsNav } from '../lib/events-mode';
+// Task 46 : setEventsNav — sortie explicite de l'univers événementiel quand
+// on rejoint un mode rencontre depuis le sélecteur (même sémantique que le
+// badge des écrans events, Task 39).
+import { useEventsNav, setEventsNav } from '../lib/events-mode';
+import type { DiscoveryMode } from '@wairyu/shared';
 
 export type TabId =
   | 'discover'
@@ -132,15 +137,110 @@ const DISCOVER_SLUGS: Record<'classic' | 'invisible' | 'interracial', string> = 
   interracial: 'interracial',
 };
 
+/** Entrée du sélecteur d'univers (Task 46). `mode: null` = univers Moments
+ * (mode événementiel, PAS un DiscoveryMode — cf. lib/events-mode.ts). */
+interface ModeMenuEntry {
+  key: 'classic' | 'invisible' | 'interracial' | 'moments';
+  mode: DiscoveryMode | null;
+  icon: string;
+  label: string;
+  hint: string;
+  hash: string;
+}
+
+/**
+ * Task 46 (demande fondateur — « il n'est pas possible de revenir à un autre
+ * mode quand on est à ce niveau », capture page Messages) : le chip de la
+ * sidebar n'était qu'un INDICATEUR (div aria-hidden, non cliquable) — depuis
+ * Messages, Likes, Matchs, Profil, Coach ou Révélation, aucune voie ne
+ * menait à un AUTRE mode. Il devient un SÉLECTEUR universel : 4 entrées aux
+ * VRAIES URLs (Task 45), proposées depuis TOUT niveau de la navigation —
+ * y compris depuis l'univers Moments (retour vers les modes rencontre).
+ * La bascule serveur reste l'affaire EXCLUSIVE de Discover (effet deep-link
+ * Task 36 : PUT persistant + deck du bon bassin + flou garanti Task 45) —
+ * ici on ne fait QUE naviguer : un seul écrivain, zéro double PUT
+ * (rate-limit Task 35), zéro nouvelle logique réseau. Hints repris verbatim
+ * des pastilles de Discover (cohérence produit).
+ */
+const MODE_MENU: ModeMenuEntry[] = [
+  {
+    key: 'classic',
+    mode: 'classic',
+    icon: '🔥',
+    label: 'Classique',
+    hint: 'Photos visibles, swipe libre.',
+    hash: '#/discover/classique',
+  },
+  {
+    key: 'invisible',
+    mode: 'invisible',
+    icon: '🕯️',
+    label: 'Invisible',
+    hint: 'Photos floutées — la personnalité d’abord.',
+    hash: '#/discover/invisible',
+  },
+  {
+    key: 'interracial',
+    mode: 'interracial',
+    icon: '🌍',
+    label: 'Interracial',
+    hint: 'Rencontres entre continents, portée mondiale.',
+    hash: '#/discover/interracial',
+  },
+  {
+    key: 'moments',
+    mode: null,
+    icon: '📅',
+    label: 'Wairyu Moments',
+    hint: 'Soirées, activités, billetterie.',
+    hash: '#/events',
+  },
+];
+
 export function TabBar({ active, unread, likes, onGo }: Props) {
   // Mode courant de la session (Task 35/37) — null tant que non chargé :
   // aucun chip inventé, la sidebar reste NEUTRE (entrées Classique) en
   // attendant les données, puis bascule vers le menu du mode.
   const mode = useSharedMode();
+
   // Task 39 : contexte événementiel actif ? (route #/events* ou badge) —
   // il PRIME sur le mode dating : tant qu'on parcourt les événements, la
   // navigation reste celle du prototype Moments (4 onglets + « + »).
   const eventsNav = useEventsNav();
+
+  // Task 46 — état du menu du sélecteur d'univers. Le menu se referme
+  // proprement : clic extérieur, touche Échap, ou navigation (goMode).
+  // Listeners posés UNIQUEMENT quand le menu est ouvert (zéro coût au repos).
+  const [modeMenuOpen, setModeMenuOpen] = useState(false);
+  const modeWrapRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!modeMenuOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (modeWrapRef.current && !modeWrapRef.current.contains(e.target as Node)) {
+        setModeMenuOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setModeMenuOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [modeMenuOpen]);
+
+  // Task 46 : rejoindre un univers depuis le sélecteur. Mode rencontre alors
+  // qu'on est dans l'univers Moments = sortie EXPLICITE du contexte
+  // événementiel d'abord (même sémantique que le badge des écrans events,
+  // Task 39), puis navigation vers la VRAIE URL du mode — Discover monte et
+  // exécute la bascule serveur via son effet deep-link (Task 36).
+  const goMode = (entry: ModeMenuEntry) => {
+    setModeMenuOpen(false);
+    if (entry.mode && eventsNav) setEventsNav(false);
+    onGo(entry.hash);
+  };
   const chip = eventsNav ? { icon: '📅', label: 'Moments' } : mode ? MODE_CHIP[mode] : null;
   // Task 45 : l'entrée « Découvrir » reçoit le slug du mode courant (les
   // entrées Moments/évents gardent leur hash historique).
@@ -157,13 +257,61 @@ export function TabBar({ active, unread, likes, onGo }: Props) {
         <span className="tabbar-logo">w</span>
         <span className="tabbar-word">wairyu</span>
       </div>
+      {/* Task 46 : le chip indicateur (div aria-hidden, historique Task 35
+          conservé visuellement à l'identique) devient le DÉCLENCHEUR du
+          sélecteur d'univers — depuis n'importe quel niveau (Messages,
+          Likes, Matchs, Profil, Coach, Révélation, events…). Les entrées
+          sont de vraies navigations vers les URLs Task 45 ; la bascule
+          serveur reste celle de Discover (effet deep-link Task 36). */}
       {chip && (
-        <div
-          className={`tabbar-mode-chip ${eventsNav ? 'mode-moments' : `mode-${mode}`}`}
-          aria-hidden="true"
-        >
-          <span className="tabbar-mode-ico">{chip.icon}</span>
-          {chip.label}
+        <div className="tabbar-mode-wrap" ref={modeWrapRef}>
+          <button
+            type="button"
+            className={`tabbar-mode-chip ${eventsNav ? 'mode-moments' : `mode-${mode}`}`}
+            aria-expanded={modeMenuOpen}
+            aria-controls="tabbar-mode-menu"
+            title="Changer de mode"
+            onClick={() => setModeMenuOpen((v) => !v)}
+          >
+            <span className="tabbar-mode-ico">{chip.icon}</span>
+            {chip.label}
+            <span className="tabbar-mode-caret" aria-hidden="true">
+              ▾
+            </span>
+          </button>
+          {modeMenuOpen && (
+            <div
+              className="tabbar-mode-menu"
+              id="tabbar-mode-menu"
+              role="group"
+              aria-label="Changer d'univers"
+            >
+              <span className="tabbar-mode-menu-title" aria-hidden="true">
+                Changer d'univers
+              </span>
+              {MODE_MENU.map((entry) => {
+                const isCurrent = eventsNav ? entry.key === 'moments' : entry.mode === mode;
+                return (
+                  <button
+                    key={entry.key}
+                    type="button"
+                    className={`tabbar-mode-opt mode-${entry.key} ${isCurrent ? 'current' : ''}`}
+                    aria-current={isCurrent ? 'true' : undefined}
+                    onClick={() => goMode(entry)}
+                  >
+                    <span className="tabbar-mode-opt-ico" aria-hidden="true">
+                      {entry.icon}
+                    </span>
+                    <span className="tabbar-mode-opt-txt">
+                      <span className="tabbar-mode-opt-label">{entry.label}</span>
+                      <span className="tabbar-mode-opt-hint">{entry.hint}</span>
+                    </span>
+                    {isCurrent && <span className="tabbar-mode-opt-now">actif</span>}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
       {/* Task 37 : bloc MENU (le wrapper ne change rien en mobile —

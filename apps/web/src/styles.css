@@ -10157,3 +10157,196 @@ a.mode-tab[data-busy] {
   opacity: 0.55;
   pointer-events: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Task 46 — SÉLECTEUR DE MODE UNIVERSEL (sidebar, tous niveaux)
+   Demande fondateur : « il n'est pas possible de revenir à un autre mode
+   quand on est à ce niveau » (capture page Messages). Le chip indicateur
+   (div aria-hidden, Task 35) devient un bouton qui ouvre le menu des 4
+   univers (Classique 🔥 · Invisible 🕯️ · Interracial 🌍 · Moments 📅) —
+   chaque entrée mène à la VRAIE URL du mode (Task 45) ; Discover exécute
+   la bascule serveur via son effet deep-link (Task 36). 100 % append-only :
+   couleurs, paddings et rayons historiques du chip restent ceux d'origine.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Le wrap remplace le chip comme enfant direct de la tabbar : les marges
+   historiques du chip (0 10px 14px) sont REPORTÉES sur le wrap (règles
+   plus tardives, même spécificité → gagnent par ordre de cascade) pour
+   ancrer le menu EXACTEMENT sous le chip — rendu identique, ancrage
+   déterministe. En mobile/tablette le chip reste display:none (règle
+   historique 6602) : le wrap est vide, zéro impact sur la barre du bas. */
+.tabbar-mode-wrap {
+  position: relative;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .tabbar-mode-wrap {
+    margin: 0 10px 14px;
+  }
+
+  /* div → button (Task 46) : réaffirme ce que le UA style différemment sur
+     <button> (font-family non héritée, largeur, marge) — le bloc
+     historique .tabbar-mode-chip (6602+) reste intact. */
+  .tabbar-mode-chip {
+    width: 100%;
+    margin: 0;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+}
+
+/* Flèche d'ouverture (absente du chip historique — purement additive) */
+.tabbar-mode-caret {
+  margin-left: auto;
+  font-size: 10px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: transform 0.18s ease;
+}
+
+.tabbar-mode-chip[aria-expanded='true'] .tabbar-mode-caret {
+  transform: rotate(180deg);
+}
+
+/* Menu — verre sombre cohérent avec l'identité « dark premium » (Task 31),
+   lisible dans les deux thèmes ; z-index dans le contexte de la tabbar
+   (fixed z 40) : au-dessus du contenu, sous les modales (90) et toasts
+   (200) — le même étagement que la pilule Task 44. */
+.tabbar-mode-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(22, 21, 31, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 44px rgba(8, 5, 16, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: t46-menu-in 0.16s ease;
+}
+
+@keyframes t46-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabbar-mode-menu {
+    animation: none;
+  }
+}
+
+.tabbar-mode-menu-title {
+  padding: 2px 6px 7px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(244, 242, 248, 0.55);
+}
+
+.tabbar-mode-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: none;
+  font-family: inherit;
+  color: #f4f2f8;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.tabbar-mode-opt:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tabbar-mode-opt:focus-visible {
+  outline: 2px solid rgba(236, 72, 153, 0.7);
+  outline-offset: 1px;
+}
+
+.tabbar-mode-opt.current {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.tabbar-mode-opt-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 17px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Teintes d'identité — mêmes familles que les pastilles de Discover */
+.tabbar-mode-opt.mode-classic .tabbar-mode-opt-ico {
+  background: rgba(236, 72, 153, 0.22);
+}
+
+.tabbar-mode-opt.mode-invisible .tabbar-mode-opt-ico {
+  background: rgba(139, 92, 246, 0.26);
+}
+
+.tabbar-mode-opt.mode-interracial .tabbar-mode-opt-ico {
+  background: rgba(244, 162, 89, 0.22);
+}
+
+.tabbar-mode-opt.mode-moments .tabbar-mode-opt-ico {
+  background: rgba(45, 212, 191, 0.22);
+}
+
+.tabbar-mode-opt-txt {
+  min-width: 0;
+}
+
+.tabbar-mode-opt-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1px;
+}
+
+.tabbar-mode-opt-hint {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: rgba(244, 242, 248, 0.62);
+}
+
+/* Badge « actif » — dégradé de l'univers courant (var(--w-gradient) suit
+   l'identité posée sur body : rose/violet/ambre/turquoise) */
+.tabbar-mode-opt-now {
+  flex: none;
+  margin-left: auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-image: var(--w-gradient);
+}

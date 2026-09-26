@@ -1403,7 +1403,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
           href="#/events"
           onClick={(e) => {
             e.preventDefault();
-            onMoments();
+            onMoments?.(); // Task 46 : prop optionnelle — appel gardé (typecheck)
           }}
           title="Événements réels près de toi — billetterie, souvenirs, Missed Connections."
         >
