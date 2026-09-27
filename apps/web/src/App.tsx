@@ -27,6 +27,7 @@ import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
 import { Profile } from './screens/Profile';
 import { Questionnaire } from './screens/Questionnaire';
+import { Heritage } from './screens/Heritage';
 import { Discover } from './screens/Discover';
 import { Matches } from './screens/Matches';
 import { Messages } from './screens/Messages';
@@ -63,6 +64,7 @@ type Route =
   | { name: 'fb-complete' }
   | { name: 'profile' }
   | { name: 'questionnaire' }
+  | { name: 'heritage' }
   | { name: 'discover'; mode?: DiscoveryMode }
   | { name: 'likes'; filter?: 'all' | 'like' | 'super' }
   | { name: 'matches' }
@@ -195,6 +197,9 @@ function parseHash(): Route {
     case 'questionnaire':
       // Étape 4 : questionnaire progressif.
       return { name: 'questionnaire' };
+    case 'heritage':
+      // Task 52 : profil d'héritage enrichi (7 sections éditables).
+      return { name: 'heritage' };
     case 'discover': {
       // Étape 5 : découverte dual-mode (pile Classique + Invisible + Top du jour).
       // Task 36 : #/discover/:mode — deep link direct d'un onglet de mode.
@@ -389,6 +394,7 @@ export default function App() {
       route.name === 'messages' ||
       route.name === 'moments' ||
       route.name === 'myprofile' ||
+      route.name === 'heritage' ||
       route.name === 'revelation' ||
       route.name === 'coach' ||
       route.name === 'chat' ||
@@ -409,6 +415,7 @@ export default function App() {
         route.name === 'messages' ||
         route.name === 'moments' ||
         route.name === 'myprofile' ||
+      route.name === 'heritage' ||
         route.name === 'revelation' ||
         route.name === 'coach' ||
         route.name === 'chat' ||
@@ -482,6 +489,9 @@ export default function App() {
         onDiscover={() => go('#/discover')}
       />
     );
+  } else if (route.name === 'heritage' && me) {
+    // Task 52 : écran d'héritage culturel (accès depuis Mon profil).
+    content = <Heritage onBack={() => go('#/myprofile')} />;
   } else if (route.name === 'discover' && me) {
     content = (
       <Discover
@@ -568,6 +578,7 @@ export default function App() {
         onEdit={() => go('#/profile')}
         onSettings={() => go('#/app')}
         onQuestionnaire={() => go('#/questionnaire')}
+        onHeritage={() => go('#/heritage')}
       />
     );
   } else if (route.name === 'revelation' && me) {

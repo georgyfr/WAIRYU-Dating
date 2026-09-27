@@ -653,7 +653,7 @@ discoverRoutes.get('/discover/inbox', async (c) => {
      LEFT JOIN personality_profiles pp ON pp.user_id = u.id
      WHERE (ir.to_user = ?1 AND ir.status = 'pending')
         OR (ir.from_user = ?1 AND ir.status IN ('pending','accepted','declined'))
-     ORDER BY ir.created_at DESC
+     ORDER BY ir.created_at DESC, ir.id DESC
      LIMIT 40`,
   )
     .bind(user.id)

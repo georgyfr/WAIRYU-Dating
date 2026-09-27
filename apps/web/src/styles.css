@@ -10665,3 +10665,248 @@ body:not(.theme-dark) .conv-filter.active {
   line-height: 1.5;
   color: #cfc8e0;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Task 52 — PROFIL D'HÉRITAGE ENRICHIS (bloc 100 % append-only)
+   Écran #/heritage + carte Mon profil + chips cartes Cultures + modale
+   « Pourquoi ce match culturel ? ». Identité : ambre/terre (Cultures),
+   neutre sur le reste de l'app — les chips héritent de .chip existante.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* --- Écran #/heritage : progression --- */
+.hg-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--c-muted, #8a8496);
+}
+.hg-progress-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(217, 164, 65, 0.18);
+  overflow: hidden;
+}
+.hg-progress-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  transition: width 0.3s ease;
+}
+
+/* --- Sections accordéon (7) --- */
+.hg-section {
+  border: 1px solid rgba(217, 164, 65, 0.28);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+.hg-section > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.hg-section > summary::-webkit-details-marker {
+  display: none;
+}
+.hg-section > summary .hg-ico {
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+.hg-section > summary strong {
+  display: block;
+  font-size: 14.5px;
+}
+.hg-section > summary small {
+  display: block;
+  color: var(--c-muted, #8a8496);
+  font-size: 12px;
+}
+.hg-section > summary .hg-done {
+  margin-left: auto;
+  flex: 0 0 auto;
+  background: rgba(217, 164, 65, 0.16);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  color: #d9a441;
+  font-size: 11px;
+}
+.hg-section[open] > summary {
+  border-bottom: 1px solid rgba(217, 164, 65, 0.18);
+}
+/* Sections PRIVÉES (Valeurs, Projets) : liseré discret neutre + badge privé. */
+.hg-section.hg-private {
+  border-style: dashed;
+}
+.hg-section.hg-private > summary .hg-ico {
+  filter: saturate(0.7);
+}
+
+/* --- Corps de section : champs --- */
+.hg-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+}
+.hg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hg-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.hg-label .hg-scale-val {
+  color: #d9a441;
+  font-weight: 700;
+}
+.hg-hint {
+  font-size: 12px;
+  color: var(--c-muted, #8a8496);
+  line-height: 1.4;
+}
+.hg-field input[type='text'],
+.hg-field textarea,
+.hg-field select {
+  width: 100%;
+  border: 1px solid rgba(150, 140, 120, 0.35);
+  border-radius: 10px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+}
+.hg-field input:focus,
+.hg-field textarea:focus,
+.hg-field select:focus {
+  outline: none;
+  border-color: #d9a441;
+}
+.hg-field input[type='range'] {
+  width: 100%;
+  accent-color: #d9a441;
+}
+.hg-scale-ends {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --- Chips (suggestions + valeurs) --- */
+.hg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.hg-chip {
+  background: rgba(217, 164, 65, 0.14);
+  border: 1px solid rgba(217, 164, 65, 0.38);
+  color: inherit;
+  cursor: pointer;
+}
+button.hg-chip:hover {
+  background: rgba(217, 164, 65, 0.26);
+}
+.hg-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 2px;
+}
+.hg-suggest .chip {
+  opacity: 0.82;
+}
+.hg-addrow {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.hg-addrow input {
+  flex: 1;
+  border: 1px solid rgba(150, 140, 120, 0.35);
+  border-radius: 10px;
+  padding: 8px 11px;
+  font: inherit;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+}
+
+/* --- Langues parlées : paires langue/niveau --- */
+.hg-langrow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+.hg-langrow select {
+  border: 1px solid rgba(150, 140, 120, 0.35);
+  border-radius: 10px;
+  padding: 8px 9px;
+  font: inherit;
+  font-size: 13.5px;
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+}
+
+/* --- Actions écran --- */
+.hg-actions {
+  margin-top: 14px;
+}
+.hg-actions .danger {
+  color: #e5484d;
+}
+
+/* --- Carte « Mon héritage » (Mon profil) --- */
+.profile-heritage h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.profile-heritage .hg-preview {
+  margin-bottom: 8px;
+}
+.profile-heritage button {
+  margin-top: 6px;
+}
+
+/* --- Chips d'héritage sur les CARTES Cultures --- */
+.hg-card-h {
+  margin: 2px 0 6px;
+}
+.hg-card-h .hg-chip {
+  font-size: 11.5px;
+  padding: 3px 9px;
+  cursor: default;
+}
+
+/* --- Modale « Pourquoi ce match culturel ? » : section héritage --- */
+.wc-sec.heritage .hg-chips {
+  margin-top: 6px;
+}
+.hg-transmit {
+  font-size: 12.8px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+  color: inherit;
+  opacity: 0.9;
+}
+
+/* --- Thème dark (l'app est dark par défaut) : légères adaptations --- */
+body.theme-dark .hg-section {
+  background: rgba(255, 255, 255, 0.04);
+}
+body.theme-dark .hg-field input[type='text'],
+body.theme-dark .hg-field textarea,
+body.theme-dark .hg-field select,
+body.theme-dark .hg-langrow select,
+body.theme-dark .hg-addrow input {
+  background: rgba(0, 0, 0, 0.25);
+}

@@ -141,6 +141,16 @@ const INDEX = new Map<string, CountryMeta>();
 for (const meta of C) for (const n of meta.names) INDEX.set(n, meta);
 
 /**
+ * Task 52 (Héritage — §2 Origines) : noms de pays AFFICHABLES, dérivés de la
+ * liste RÉELLE ci-dessus (premier nom normalisé de chaque entrée, capitalisé,
+ * trié FR) — les sélecteurs de l'écran Héritage n'inventent aucun pays.
+ */
+export const COUNTRY_NAMES: string[] = C.map((m) => m.names[0] ?? m.names[1] ?? m.code)
+  .filter((n, i, all) => all.indexOf(n) === i)
+  .map((n) => n.charAt(0).toUpperCase() + n.slice(1))
+  .sort((a, b) => a.localeCompare(b, 'fr'));
+
+/**
  * Méta d'un pays (libellé libre) : drapeau + continent — null si inconnu.
  * Tolère les préfixes (« Paris, France » → dernier segment).
  */

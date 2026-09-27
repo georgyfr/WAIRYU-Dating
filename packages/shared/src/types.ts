@@ -209,6 +209,10 @@ export interface ProfileResponse {
   preferences: PreferencesDto | null;
   /** Tous les champs requis sont-ils remplis (basics + ≥1 prompt + ≥1 photo + préférences) ? */
   profileComplete: boolean;
+  /** Task 52 — Profil d'Héritage Enrichi (7 sections, tout optionnel). null = jamais rempli. */
+  heritage: HeritageProfile | null;
+  /** Dernière écriture de l'héritage (epoch s) — null = jamais écrit. */
+  heritageUpdatedAt: number | null;
 }
 
 /** Préférences de découverte (GET/PUT /api/profile/preferences). */
@@ -239,6 +243,8 @@ export interface ProfileUpdate {
   consentAccepted?: boolean;
   /** Remplace la liste des prompts (max 3). */
   prompts?: PromptInput[];
+  /** Task 52 — héritage culturel : absent = inchangé · null = efface · objet = remplace (sanitisé). */
+  heritage?: HeritageProfile | null;
 }
 
 /** Corps de PUT /api/profile/preferences. */
@@ -430,6 +436,8 @@ export interface FeedProfile {
   online: 'online' | 'today' | 'recent' | null;
   /** Distance haversine entre moi et le profil (km, arrondie) — null si géo inconnue. */
   distanceKm: number | null;
+  /** Task 52 — résumé d'héritage PUBLIC (univers Cultures uniquement). null = non rempli. */
+  heritage: HeritageSummary | null;
 }
 
 // ---------- Enrichissement « dating » : likes reçus (tu plais !) ----------
@@ -813,4 +821,114 @@ export interface PushConfigResponse {
 export interface PushSubscribeResponse {
   ok: true;
   enabled: boolean;
+}
+
+// ---------- Task 52 — Profil d'Héritage Enrichi (spec « Conception détaillée ») ----------
+
+/**
+ * Niveau de langue auto-déclaré (CECRL simplifié, spec §2) :
+ * a1a2 = Débutant · b1b2 = Intermédiaire · c1 = Courant · c2 = Bilingue/natif.
+ */
+export type HeritageLangLevel = 'a1a2' | 'b1b2' | 'c1' | 'c2';
+
+/** Une langue parlée + son niveau (langues parlées, sélection multiple). */
+export interface HeritageLangSpoken {
+  langue: string;
+  niveau: HeritageLangLevel;
+}
+
+/**
+ * Profil d'Héritage complet — 7 sections, TOUT optionnel (spec : « Aucun
+ * champ n'est obligatoire au-delà du minimum »). La culture est une richesse,
+ * pas une case : l'utilisateur contrôle ce qu'il partage, avec qui, et quand.
+ *
+ * Sections 1-4 (Langues, Origines, Ouverture, Traditions) = MVP spec ;
+ * sections 5-7 (Valeurs, Projets, Affinités) = Phase 2 spec — livrées ici
+ * d'un bloc (l'API valide chaque section indépendamment).
+ */
+export interface HeritageProfile {
+  /** §1 Langues — parler, comprendre, apprendre. */
+  langues?: {
+    maternelle?: string;
+    parlees?: HeritageLangSpoken[];
+    comprises?: string[];
+    souhaiteApprendre?: string[];
+    /** « Peu importe », « Ma langue », « Langue commune », « Langue de l'autre ». */
+    preference?: 'peu_importe' | 'ma_langue' | 'langue_commune' | 'langue_autre';
+  };
+  /** §2 Origines — partagées sans enfermement (toujours optionnel). */
+  origines?: {
+    paysNaissance?: string;
+    paysResidence?: string;
+    originesFamiliales?: string[];
+    diaspora?: string;
+    regionOrigine?: string;
+  };
+  /** §3 Ouverture — volonté d'apprendre, de voyager, de s'adapter (1-5). */
+  ouverture?: {
+    apprendre?: number;
+    voyager?: number;
+    sAdapter?: number;
+    confort?: number;
+    relationInterculturelle?: 'activement' | 'si_affinites' | 'non';
+    relationDistance?: 'oui' | 'non' | 'peut_etre';
+  };
+  /** §4 Traditions — fêtes, rituels, ce qui se transmet. */
+  traditions?: {
+    fetes?: string[];
+    rituels?: string;
+    familiales?: string;
+    rapport?: 'tres_important' | 'important' | 'peu_important' | 'aucun';
+    aTransmettre?: string;
+  };
+  /** §5 Valeurs — PRIVÉ (jamais exposé dans le feed, RGPD art. 9). */
+  valeurs?: {
+    placeFamille?: 'centrale' | 'importante' | 'secondaire';
+    rapportReligion?: 'croyant_pratiquant' | 'croyant_non_pratiquant' | 'spirituel' | 'athe' | 'prefere_pas_dire';
+    roleAines?: 'tres_important' | 'important' | 'peu_important';
+    educationEnfants?: 'stricte' | 'equilibree' | 'libre';
+    roleCouple?: 'traditionnel' | 'egalitaire' | 'flexible';
+  };
+  /** §6 Projets interculturels — PRIVÉ (enfants/mobilité = intime). */
+  projets?: {
+    enfants?: 'oui' | 'non' | 'peut_etre';
+    educationBiculturelle?: 'biculturelle' | 'locale' | 'internationale';
+    lieuDeVie?: 'pays_origine' | 'pays_autre' | 'pays_tiers' | 'peu_importe';
+    mobilite?: 'pret_demenager' | 'enracine' | 'flexible';
+    projetCouple?: string;
+  };
+  /** §7 Affinités culturelles — cuisine, musique, arts (points communs). */
+  affinites?: {
+    cuisines?: string[];
+    platSignature?: string;
+    musiques?: string[];
+    artiste?: string;
+    filmsSeries?: string;
+  };
+}
+
+/**
+ * Résumé d'héritage PUBLIC — dérivé du profil complet et servi UNIQUEMENT
+ * dans l'univers Cultures (cartes du feed). PRIVACY frontière : les sections
+ * 5 (Valeurs — religion) et 6 (Projets — enfants, mobilité) ne sortent
+ * JAMAIS de la base : sensibles (« masquable », RGPD art. 9) — elles restent
+ * visibles du seul propriétaire dans son profil.
+ */
+export interface HeritageSummary {
+  /** Langue maternelle (null si absente). */
+  maternelle: string | null;
+  /** Langues parlées « Anglais (courant) » — libellé + niveau court. */
+  langues: string[];
+  /** Origines familiales + région d'origine (labels libres). */
+  origines: string[];
+  /** Fêtes célébrées. */
+  fetes: string[];
+  /** Traditions à transmettre (texte court — le plus parlant). */
+  aTransmettre: string | null;
+  /** Cuisines préférées. */
+  cuisines: string[];
+  /** Musiques préférées. */
+  musiques: string[];
+  /** Ouverture moyenne (échelles 1-5 renseignées, arrondie) — null si aucune. */
+  ouverture: number | null;
 }

@@ -38,6 +38,7 @@ import {
   isProfileComplete,
   isConfigured,
 } from '../lib/profile';
+import { parseHeritage, sanitizeHeritage } from '../lib/heritage';
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { GENDERS, INTENTS, LIMITS, ORIENTATIONS, PROFILE_LIMITS, PHOTO_THUMB_WIDTH, PHOTO_BLUR_WIDTH } from '@wairyu/shared';
 import type {
@@ -164,7 +165,8 @@ profileRoutes.get('/profile', async (c) => {
   const [basics, prompts, photos, prefs] = await Promise.all([
     c.env.DB.prepare(
       `SELECT display_name, birth_year, birth_date, gender, orientation, intent, city, country,
-              neighborhood, geo_region, bio, profile_consent_at FROM users WHERE id = ? LIMIT 1`,
+              neighborhood, geo_region, bio, profile_consent_at, heritage, heritage_updated_at
+       FROM users WHERE id = ? LIMIT 1`,
     )
       .bind(user.id)
       .first<{
@@ -180,6 +182,8 @@ profileRoutes.get('/profile', async (c) => {
         geo_region: string | null;
         bio: string | null;
         profile_consent_at: number | null;
+        heritage: string | null;
+        heritage_updated_at: number | null;
       }>(),
     c.env.DB.prepare(
       `SELECT prompt_key, answer FROM profile_prompts WHERE user_id = ? ORDER BY position ASC`,
@@ -231,6 +235,8 @@ profileRoutes.get('/profile', async (c) => {
     prompts: promptRows.map((p) => ({ key: p.prompt_key, answer: p.answer })),
     photos: await photosAsDto(c, photos, true),
     preferences: preferencesDto,
+    heritage: parseHeritage(basics.heritage),
+    heritageUpdatedAt: basics.heritage_updated_at ?? null,
     profileComplete: isProfileComplete(
       {
         display_name: basics.display_name,
@@ -351,6 +357,17 @@ profileRoutes.put('/profile', async (c) => {
   if ('bio' in payload) {
     sets.push('bio = ?');
     values.push(validateBio(payload.bio));
+  }
+  if ('heritage' in payload) {
+    // Task 52 — héritage culturel : null = efface · objet = remplace (sanitisé).
+    // JAMAIS compté comme « sensible » (il ne porte ni orientation/intention
+    // ni localisation) : contenu volontaire, comme la bio — éditable/supprimable
+    // à tout moment (RGPD).
+    const h = sanitizeHeritage(payload.heritage);
+    sets.push('heritage = ?');
+    values.push(h === null ? null : JSON.stringify(h));
+    sets.push('heritage_updated_at = ?');
+    values.push(now);
   }
   if (payload.consentAccepted === true) {
     sets.push('profile_consent_at = ?');

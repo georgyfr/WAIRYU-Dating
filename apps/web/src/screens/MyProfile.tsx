@@ -12,12 +12,34 @@
 import { useState, type CSSProperties } from 'react';
 import { useSwr } from '../lib/swr';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
-import { LABELS, PROMPT_LIBRARY, type LikesMeResponse, type MatchListResponse, type ProfileResponse } from '@wairyu/shared';
+import { LABELS, PROMPT_LIBRARY, type LikesMeResponse, type MatchListResponse, type ProfileResponse, type HeritageProfile } from '@wairyu/shared';
+import { HERITAGE_LABELS, HERITAGE_SECTIONS, sectionFilled } from '../lib/heritage-data';
 
 interface Props {
   onEdit: () => void;
   onSettings: () => void;
   onQuestionnaire: () => void;
+  /** Task 52 : ouvrir l'écran « Mon héritage culturel » (#/heritage). */
+  onHeritage: () => void;
+}
+
+/**
+ * Task 52 : chips de PRÉVIEW du profil d'héritage (vue propriétaire) —
+ * public (langues, origines, fêtes, cuisine, musique) ; les sections
+ * privées (Valeurs, Projets) ne sont PAS listées en chips (elles restent
+ * consultables/editables via l'écran #/heritage).
+ */
+function heritageChips(h: HeritageProfile): string[] {
+  const chips: string[] = [];
+  if (h.langues?.maternelle) chips.push(`🗣️ ${h.langues.maternelle} (maternelle)`);
+  for (const l of (h.langues?.parlees ?? []).slice(0, 3)) {
+    chips.push(`🗣️ ${l.langue} (${HERITAGE_LABELS.langLevelShort[l.niveau]})`);
+  }
+  for (const o of (h.origines?.originesFamiliales ?? []).slice(0, 3)) chips.push(`🌍 ${o}`);
+  for (const f of (h.traditions?.fetes ?? []).slice(0, 2)) chips.push(`🎉 ${f}`);
+  for (const c of (h.affinites?.cuisines ?? []).slice(0, 2)) chips.push(`🍲 ${c}`);
+  for (const m of (h.affinites?.musiques ?? []).slice(0, 2)) chips.push(`🎵 ${m}`);
+  return chips.slice(0, 8);
 }
 
 /** Âge exact depuis la date de naissance ISO (null si absente/incohérente). */
@@ -32,7 +54,7 @@ function ageOf(birthDate: string | null): number | null {
   return age >= 18 ? age : null;
 }
 
-export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
+export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: Props) {
   // Cache SWR : le profil s'affiche instantanément au retour sur l'onglet,
   // revalidé en arrière-plan (TTL 30 s — les modifications passent par
   // l'assistant qui invalide la clé « profile » après sauvegarde).
@@ -82,6 +104,9 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
     (prof.intent ? 10 : 0);
   const likesReceived = likesData?.count ?? 0;
   const matchCount = matchesData?.matches.length ?? 0;
+  // Task 52 : sections d'héritage renseignées (progression honnête, 0 si vide).
+  const hg = prof.heritage;
+  const hgFilled = hg ? HERITAGE_SECTIONS.filter((s) => sectionFilled(hg, s.key) > 0).length : 0;
 
   return (
     <div className="app page-profile">
@@ -200,6 +225,34 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire }: Props) {
       {/* Personnalité — même bloc que le compte (badge + raffinement/choix) */}
       <PersonalityBadge onOpen={() => setShowPers((v) => !v)} />
       {showPers && <PersonalityProposal refine />}
+
+      {/* Task 52 — Héritage culturel : aperçu + accès à l'écran #/heritage.
+          100 % additif : la carte n'apparaît QUE si le membre a ouvert
+          l'héritage (sinon un simple appel à remplir). */}
+      <article className="card profile-heritage">
+        <h3>🌍 Mon héritage culturel</h3>
+        {prof.heritage ? (
+          <>
+            <div className="hg-chips hg-preview">
+              {heritageChips(prof.heritage).map((c) => (
+                <span key={c} className="chip hg-chip">
+                  {c}
+                </span>
+              ))}
+            </div>
+            <p className="hint">
+              {hgFilled}/7 sections renseignées — les sections Valeurs et Projets restent privées.
+            </p>
+          </>
+        ) : (
+          <p className="hint">
+            Partage tes langues, origines, traditions et goûts — la richesse des différences, mise en valeur dans l&apos;univers Cultures. Facultatif, modifiable, effaçable.
+          </p>
+        )}
+        <button type="button" className="btn ghost small" onClick={onHeritage}>
+          {prof.heritage ? 'Modifier mon héritage' : 'Remplir mon héritage'}
+        </button>
+      </article>
 
       {prefs && (
         <article className="card profile-prefs">

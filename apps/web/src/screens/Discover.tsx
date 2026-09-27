@@ -194,6 +194,24 @@ function truncateTxt(s: string, max: number): string {
   return s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s;
 }
 
+/**
+ * Task 52 (Héritage, réf. Cultures §2) : chips du résumé d'héritage PUBLIC
+ * d'une carte Cultures. L'API ne projette JAMAIS les sections Valeurs
+ * (religion) ni Projets (enfants) — ce qui arrive ici est déjà filtré côté
+ * serveur (HeritageSummary). Aucun texte inventé : on ne montre que les
+ * champs réellement renseignés, plafonnés pour rester compacts.
+ */
+function heritageCardChips(s: NonNullable<FeedProfile['heritage']>): string[] {
+  const chips: string[] = [];
+  if (s.maternelle) chips.push(`🗣️ ${s.maternelle} (maternelle)`);
+  chips.push(...s.langues.slice(0, 2).map((l) => `🗣️ ${l}`));
+  chips.push(...s.origines.slice(0, 1).map((o) => `🌍 ${o}`));
+  chips.push(...s.fetes.slice(0, 1).map((f) => `🎉 ${f}`));
+  chips.push(...s.cuisines.slice(0, 1).map((c) => `🍲 ${c}`));
+  chips.push(...s.musiques.slice(0, 1).map((m) => `🎵 ${m}`));
+  return chips.slice(0, 7);
+}
+
 /* ─────────────────────────── Carrousel de photos ─────────────────────────── */
 
 /**
@@ -1253,6 +1271,17 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
           {p.highlights.slice(0, 3).map((h, i) => (
             <span key={i} className="intl-value">
               ✓ {highlightChip(h)}
+            </span>
+          ))}
+        </div>
+      )}
+      {/* Task 52 : chips d'héritage PUBLIC — résumé filtré côté serveur
+          (jamais Valeurs/Projets), affiché uniquement dans l'univers Cultures. */}
+      {isIntl && p.heritage && (
+        <div className="hg-chips hg-card-h">
+          {heritageCardChips(p.heritage).map((c) => (
+            <span key={c} className="chip hg-chip">
+              {c}
             </span>
           ))}
         </div>
@@ -2461,6 +2490,25 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
                   Le détail se débloque quand vous avez tous les deux complété le questionnaire de
                   personnalité — en attendant, les drapeaux et la distance restent de vraies informations.
                 </p>
+              )}
+              {/* Task 52 : aperçu d'héritage de la cible (résumé public déjà
+                  filtré par l'API — Valeurs/Projets jamais projetés). */}
+              {whyCulture.heritage && (
+                <div className="wc-sec heritage">
+                  <strong>Son héritage en un coup d&apos;œil</strong>
+                  <div className="hg-chips">
+                    {heritageCardChips(whyCulture.heritage).map((c) => (
+                      <span key={c} className="chip hg-chip">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                  {whyCulture.heritage.aTransmettre && (
+                    <p className="hg-transmit">
+                      🧵 Ce qu&apos;il/elle veut transmettre : « {whyCulture.heritage.aTransmettre} »
+                    </p>
+                  )}
+                </div>
               )}
               <div className="wc-ethic">
                 🌍 La culture est une richesse, pas une case : le score t’explique, il ne décide pas à ta place.

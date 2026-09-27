@@ -44,6 +44,7 @@ import {
   type ArchetypeId,
   type PersonalityAffinity,
 } from '@wairyu/shared';
+import { parseHeritage, summarizeHeritage } from './heritage';
 
 /** Sous-ensemble des bindings Worker requis par la génération de candidats. */
 export interface DiscoveryEnv {
@@ -77,6 +78,8 @@ interface PoolRow {
   intent: string | null;
   bio: string | null;
   geo_region: string | null;
+  /** Task 52 — héritage culturel (JSON brut, colonne users.heritage — u0.* le remonte). */
+  heritage: string | null;
   owner_mode: string | null;
   owner_mode_visible: number | null;
   verified_at: number | null;
@@ -304,6 +307,7 @@ export async function generateFeedPage(
   const { results: poolRows } = await env.DB.prepare(
     `SELECT u.id, u.display_name, u.birth_year, u.birth_date, u.city, u.neighborhood, u.country,
             u.intent, u.bio, u.geo_region, u.verified_at, u.mode_visible, u.last_seen,
+            u.heritage,
             up.mode_default AS owner_mode,
             pp.type AS personality_type, pp.validated AS personality_validated,
             qa.item_id AS qa_item, qa.value_json AS qa_value
@@ -490,6 +494,9 @@ export async function generateFeedPage(
       photoCount: 0,
       online: onlineBucket(row.last_seen, now),
       distanceKm,
+      // Task 52 — résumé d'héritage PUBLIC (univers Cultures uniquement ;
+      // sections Valeurs/Projets jamais projetées — cf. lib/heritage.ts).
+      heritage: summarizeHeritage(parseHeritage(row.heritage)),
     });
   }
 
