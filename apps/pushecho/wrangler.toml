@@ -1,0 +1,8 @@
+name = "wairyu-pushecho"
+main = "index.js"
+compatibility_date = "2025-01-01"
+account_id = "a6ad9b4a2f8b42a6cf7f38e4e519ec22"
+
+[[kv_namespaces]]
+binding = "PUSHECHO_KV"
+id = "43845aa10b9f431f95db047c4b4e3535"

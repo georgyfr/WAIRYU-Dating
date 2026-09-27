@@ -823,6 +823,27 @@ export interface PushSubscribeResponse {
   enabled: boolean;
 }
 
+// ---------- Task 54 — Simulation de notification (push web) ----------
+
+/**
+ * POST /api/push/test — l'utilisateur connecté s'envoie à lui-même un VRAI
+ * push (pipeline complet Worker → VAPID → FCM → Service Worker → bulle OS)
+ * pour vérifier que les notifications fonctionnent sur ses appareils.
+ */
+export interface PushTestResponse {
+  ok: boolean;
+  /** Nombre d'appareils auxquels le push a été délivré (0 = aucun abonnement). */
+  sent: number;
+  /** Serveur armé VAPID (false = push non configuré côté serveur). */
+  enabled: boolean;
+}
+
+/** POST /admin/push/send — simulation administrative (fondateur, audité). */
+export interface AdminPushSendResponse {
+  ok: boolean;
+  sent: number;
+}
+
 // ---------- Task 52 — Profil d'Héritage Enrichi (spec « Conception détaillée ») ----------
 
 /**

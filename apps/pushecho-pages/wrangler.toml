@@ -1,0 +1,7 @@
+name = "wairyu-pushecho"
+pages_build_output_dir = "public"
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "PUSHECHO_KV"
+id = "43845aa10b9f431f95db047c4b4e3535"

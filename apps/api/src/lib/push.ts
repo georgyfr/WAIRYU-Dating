@@ -20,6 +20,14 @@ export interface PushPayload {
   tag: string;
   /** Hash de navigation (SPA) à ouvrir au clic. */
   url: string;
+  /**
+   * Task 54 — EXCEPTION ponctuelle à l'anti-doublon : si true, le Service
+   * Worker affiche la notification système MÊME si une page est visible
+   * (simulation/test — le fondateur doit VOIR la bulle OS comme WhatsApp
+   * Web). Les pushes métier (message/match/demande) restent sans force :
+   * page visible ⇒ toast in-app, pas de doublon système (Task 53).
+   */
+  force?: boolean;
 }
 
 export interface PushSubscriptionKeys {
@@ -225,6 +233,9 @@ export async function sendPushToUser(
     )
       .bind(userId)
       .all<{ endpoint: string; p256dh: string; auth: string }>();
+    // Task 54 — télémétrie de dispatch (volume faible) : l'abonnement est-il
+    // VU au moment de l'envoi (diagnostic « notification jamais délivrée »).
+    console.log(JSON.stringify({ push: 'dispatch', user: userId.slice(0, 8), subs: subs?.length ?? 0 }));
     if (!subs || subs.length === 0) return 0;
 
     let sent = 0;
@@ -245,8 +256,22 @@ export async function sendPushToUser(
           body: body as BufferSource,
         });
         if (res.ok || res.status === 201) sent++;
-        // 404/410 : abonnement mort → nettoyage.
-        if (res.status === 404 || res.status === 410) {
+        else {
+          // Task 54 — diagnostic permanent : une réponse non-OK n'était JAMAIS
+          // journalisée (seules les exceptions l'étaient) — impossible de
+          // distinguer « abonnement mort » d'un blocage edge (ex. self-fetch
+          // workers.dev interdit). Host uniquement — JAMAIS l'URL complète
+          // (l'endpoint peut contenir des secrets dans sa query).
+          console.error(JSON.stringify({ push: 'send_not_ok', status: res.status, host: new URL(sub.endpoint).host }));
+        }
+        // 410 Gone (RFC 8030) : abonnement définitivement mort → nettoyage.
+        // Task 54 — le 404 ne supprime PLUS : observé en réel, un 404 peut
+        // être TRANSITOIRE (token pas encore propagé côté service, blocage
+        // edge) — supprimer sur 404 fait perdre le push SILENCIEUSEMENT pour
+        // toujours (la plainte fondatrice originelle). Un 404 isolé est sans
+        // coût : la ligne reste, le prochain envoi réessaiera, un vrai mort
+        // finira par répondre 410.
+        if (res.status === 410) {
           await env.DB.prepare(`DELETE FROM push_subscriptions WHERE endpoint = ?`)
             .bind(sub.endpoint)
             .run();

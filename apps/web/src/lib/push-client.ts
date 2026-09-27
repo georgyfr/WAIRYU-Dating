@@ -16,7 +16,7 @@
  *      (le serveur enverra à TOUS les appareils d'un utilisateur).
  */
 
-import type { PushConfigResponse } from '@wairyu/shared';
+import type { PushConfigResponse, PushTestResponse } from '@wairyu/shared';
 import { api } from './api';
 
 /** Support navigateur (PWA installée, Safari iOS ≥ 16.4, desktop, mobile). */
@@ -75,5 +75,24 @@ export async function activateWebPush(): Promise<PushActivateResult> {
     return 'granted';
   } catch {
     return 'error';
+  }
+}
+
+/**
+ * Task 54 — SIMULATION (demande fondateur : « fais-moi apparaître une
+ * notification sur mon PC actuellement avec le nom de l'application »).
+ * Demande au serveur d'envoyer un VRAI push vers tous les appareils
+ * abonnés de l'utilisateur : Worker → VAPID → FCM/Apple → Service Worker
+ * → bulle du système d'exploitation (même page visible — force:true).
+ * Ce n'est PAS une notification locale fabriquée dans la page : tout le
+ * pipeline Web Push réel est emprunté, c'est la preuve demandée.
+ * Retourne le nombre d'appareils touchés, ou null si échec réseau.
+ */
+export async function sendTestPush(): Promise<number | null> {
+  try {
+    const r = await api<PushTestResponse>('/api/push/test', { method: 'POST' });
+    return r.sent;
+  } catch {
+    return null;
   }
 }

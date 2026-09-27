@@ -15,6 +15,7 @@ import type { AppEnv } from '../env';
 import { isolateUptimeSeconds, snapshotCounters, currentStartedAt } from '../middleware/usage';
 import { createSession } from '../lib/auth';
 import { signedMediaUrl } from '../lib/cloudinary';
+import { sendPushToUser } from '../lib/push';
 import { verifyTotp, generateTotpSecret, otpauthUri } from '../lib/totp';
 import type {
   UsageResponse,
@@ -23,6 +24,7 @@ import type {
   AdminReportDetail,
   AdminFlagItem,
   AdminActionResponse,
+  AdminPushSendResponse,
 } from '@wairyu/shared';
 
 export const adminRoutes = new Hono<AppEnv>();
@@ -676,5 +678,60 @@ adminRoutes.post('/2fa/disable', async (c) => {
   await c.env.CONFIG.delete(TOTP_KV_KEY);
   await audit(c, 'totp_disable', null, null, null);
   const body: AdminActionResponse = { ok: true, action: 'totp_disable', note: '2FA désactivée.' };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// Task 54 — Simulation push administrative : « fais-moi apparaître une
+// notification sur mon PC actuellement avec le nom de l'application dessus ».
+// POST /admin/push/send { userId, title?, body?, url? } — envoie un VRAI push
+// (force:true → bulle OS même page visible) à TOUS les appareils abonnés de
+// l'utilisateur visé. Usage légitime : vérifier le pipeline push sur le compte
+// fondateur en PROD sans y créer de compte de test. Journalisé audit_admin ;
+// protégé par ADMIN_TOKEN (+2FA si activée) comme tout /admin/*.
+// ---------------------------------------------------------------------------
+
+adminRoutes.post('/push/send', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as {
+    userId?: unknown;
+    title?: unknown;
+    body?: unknown;
+    url?: unknown;
+  } | null;
+  const userId = typeof payload?.userId === 'string' ? payload.userId.trim() : '';
+  if (!/^[0-9a-f-]{36}$/.test(userId)) {
+    return c.json({ error: { code: 'bad_request', message: 'userId requis (UUID).' } }, 400);
+  }
+  const exists = await c.env.DB.prepare(
+    `SELECT id FROM users WHERE id = ? AND status != 'deleted' LIMIT 1`,
+  )
+    .bind(userId)
+    .first<{ id: string }>();
+  if (!exists) {
+    return c.json({ error: { code: 'not_found', message: 'Utilisateur introuvable.' } }, 404);
+  }
+
+  const now = new Date();
+  const title =
+    typeof payload?.title === 'string' && payload.title.trim() ? payload.title.trim().slice(0, 60) : 'WAIRYU 🔥';
+  const fallbackBody = `Simulation push — les notifications wairyu sont opérationnelles (${now
+    .toISOString()
+    .slice(0, 16)
+    .replace('T', ' ')} UTC).`;
+  const bodyText =
+    typeof payload?.body === 'string' && payload.body.trim()
+      ? payload.body.trim().slice(0, 200)
+      : fallbackBody;
+  const url = typeof payload?.url === 'string' && payload.url.startsWith('#/') ? payload.url : '#/matches';
+
+  const sent = await sendPushToUser(c.env, userId, {
+    title,
+    body: bodyText,
+    tag: `wairyu-admin-${now.getTime()}`,
+    url,
+    force: true,
+  });
+  await audit(c, 'push_send', userId, null, `sent=${sent} title="${title}"`);
+  const body: AdminPushSendResponse = { ok: sent > 0, sent };
   return c.json(body);
 });

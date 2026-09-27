@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, apiForm } from '../lib/api';
+import { sendTestPush } from '../lib/push-client';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
 import {
   SELFIE_POSE_LABELS,
@@ -215,7 +216,12 @@ export function Account({ me, onLoggedOut }: Props) {
         json: { endpoint: j.endpoint, keys: { p256dh: j.keys?.p256dh, auth: j.keys?.auth } },
       });
       setPushEnabled(true);
-      setMessage('Notifications activées — messages, matchs et révélations t’attendront ici.');
+      // Task 54 — démonstration immédiate : un VRAI push part du serveur
+      // (Worker → VAPID → FCM → SW → bulle OS avec le nom de l'app).
+      void sendTestPush();
+      setMessage(
+        'Notifications activées — une notification de simulation WAIRYU arrive dans quelques secondes 👀',
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Activation impossible sur ce navigateur.');
     }
@@ -240,6 +246,26 @@ export function Account({ me, onLoggedOut }: Props) {
       setError('Désactivation impossible — réessaie.');
     }
     setBusy(false);
+  }
+
+  /** Task 54 — SIMULATION : un VRAI push vers tous ses appareils (pas une
+   * notification locale) pour prouver que le pipeline fonctionne. */
+  async function testPush() {
+    setBusy(true);
+    setError(null);
+    const sent = await sendTestPush();
+    setBusy(false);
+    if (sent === null) {
+      setError('Impossible d’envoyer la simulation — vérifie ta connexion et réessaie.');
+    } else if (sent === 0) {
+      setError(
+        'Aucun appareil abonné sur ce compte — réactive les notifications puis retente la simulation.',
+      );
+    } else {
+      setMessage(
+        `🔔 Simulation envoyée vers ${sent} appareil${sent > 1 ? 's' : ''} — la notification WAIRYU arrive dans quelques secondes (regarde en bas à droite, ou ton centre de notifications).`,
+      );
+    }
   }
 
   const created = new Date(me.createdAt * 1000).toLocaleDateString('fr-FR', {
@@ -457,9 +483,15 @@ export function Account({ me, onLoggedOut }: Props) {
                 Activer les notifications
               </button>
             ) : (
-              <button type="button" className="btn ghost" onClick={() => void disablePush()} disabled={busy}>
-                Désactiver
-              </button>
+              <>
+                {/* Task 54 — simulation : prouve le pipeline complet en 1 clic */}
+                <button type="button" className="btn primary" onClick={() => void testPush()} disabled={busy}>
+                  🔔 Tester la notification
+                </button>
+                <button type="button" className="btn ghost" onClick={() => void disablePush()} disabled={busy}>
+                  Désactiver
+                </button>
+              </>
             )}
           </div>
         </div>

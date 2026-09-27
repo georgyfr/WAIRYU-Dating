@@ -32,6 +32,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-28-simulation-notif',
+    date: '28 septembre 2026',
+    title: 'Teste tes notifications en 1 clic',
+    items: [
+      'Un bouton « Tester la notification » arrive dans Paramètres : une vraie alerte s’affiche sur ton écran en quelques secondes.',
+      'Active tes notifications et une simulation part tout de suite — tu vois exactement ce que verront tes matchs.',
+      'Sur téléphone comme sur ordinateur, l’alerte porte le nom de WAIRYU, comme un SMS ou WhatsApp.',
+    ],
+  },
+  {
     id: '2026-09-28-notifications',
     date: '28 septembre 2026',
     title: 'Les notifications qui apparaissent vraiment',

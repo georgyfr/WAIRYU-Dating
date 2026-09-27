@@ -8,9 +8,9 @@ import { Hono } from 'hono';
 import type { Context } from 'hono';
 import type { AppEnv } from '../env';
 import { errors } from '../lib/errors';
-import { pushEnabled } from '../lib/push';
+import { pushEnabled, sendPushToUser } from '../lib/push';
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
-import type { PushConfigResponse, PushSubscribeResponse } from '@wairyu/shared';
+import type { PushConfigResponse, PushSubscribeResponse, PushTestResponse } from '@wairyu/shared';
 
 export const pushRoutes = new Hono<AppEnv>();
 
@@ -82,6 +82,53 @@ pushRoutes.post('/push/unsubscribe', async (c) => {
     .bind(endpoint, user.id)
     .run();
   return c.json({ ok: true as const });
+});
+
+// ---------------------------------------------------------------------------
+// Task 54 — SIMULATION : « fais-moi apparaître une notification sur mon PC
+// avec le nom de l'application dessus ». POST /api/push/test — l'utilisateur
+// connecté s'envoie à LUI-MÊME un VRAI push (Worker → VAPID → FCM/Apple →
+// Service Worker → bulle du système) pour VÉRIFIER que le pipeline complet
+// fonctionne sur ses appareils — ce n'est PAS une notification locale.
+// Titre = nom de l'app, corps horodaté (chaque simulation est unique et
+// renotify garantit l'affichage même si une ancienne bulle traîne).
+// force:true → la bulle OS apparaît même page visible (c'est le but de la
+// démonstration) ; les pushes métier gardent l'anti-doublon Task 53.
+// ---------------------------------------------------------------------------
+
+pushRoutes.post('/push/test', async (c) => {
+  const user = await requireUser(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushUser.scope);
+
+  const enabled = await pushEnabled(c.env);
+  if (!enabled) {
+    const body: PushTestResponse = { ok: false, sent: 0, enabled: false };
+    return c.json(body);
+  }
+
+  const now = new Date();
+  let when: string;
+  try {
+    when = new Intl.DateTimeFormat('fr-FR', {
+      timeZone: 'Africa/Douala',
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(now);
+  } catch {
+    when = now.toISOString().slice(0, 16).replace('T', ' ');
+  }
+  const sent = await sendPushToUser(c.env, user.id, {
+    title: 'WAIRYU 🔥',
+    body: `Simulation réussie — le push web fonctionne (${when}, heure de Douala). Tes messages et matchs apparaîtront comme ceci.`,
+    tag: `wairyu-test-${now.getTime()}`,
+    url: '#/matches',
+    force: true,
+  });
+  const body: PushTestResponse = { ok: sent > 0, sent, enabled: true };
+  return c.json(body);
 });
 
 // ---------------------------------------------------------------------------

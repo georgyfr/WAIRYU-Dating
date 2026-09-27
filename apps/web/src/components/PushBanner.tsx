@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { activateWebPush, pushSupported } from '../lib/push-client';
+import { activateWebPush, pushSupported, sendTestPush } from '../lib/push-client';
 import { toast } from '../lib/toast';
 
 const DISMISS_KEY = 'wairyu_push_prompt_dismissed';
@@ -48,7 +48,15 @@ export default function PushBanner() {
       } catch {
         /* bénin */
       }
-      toast('Notifications activées — tu ne manqueras plus aucun message ✨', 'success');
+      // Task 54 — démonstration immédiate : un VRAI push part du serveur
+      // (Worker → VAPID → FCM → SW → bulle OS avec le nom de l'app, même
+      // page visible). Le fondateur VOIT que « ça apparaît » en 2 secondes.
+      const sent = await sendTestPush();
+      if (sent !== null && sent > 0) {
+        toast('🔔 Simulation envoyée — la notification WAIRYU arrive dans quelques secondes, regarde ton écran !', 'success');
+      } else {
+        toast('Notifications activées — tu ne manqueras plus aucun message ✨', 'success');
+      }
     } else if (res === 'denied') {
       toast('Permission refusée — tu peux la réactiver dans Paramètres.', 'error');
       setVisible(false);
