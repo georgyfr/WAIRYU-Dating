@@ -32,6 +32,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-28-notifications',
+    date: '28 septembre 2026',
+    title: 'Les notifications qui apparaissent vraiment',
+    items: [
+      'Reçois tes messages, matchs et demandes comme un SMS — même app fermée, sur téléphone et ordinateur.',
+      'Sur ordinateur, un nouveau message apparaît en bas à droite, comme WhatsApp Web : un clic ouvre la conversation.',
+      'Active-les en un tap depuis la bannière (ou Paramètres) — on ne te le demandera qu’une fois.',
+    ],
+  },
+  {
     id: '2026-09-26-univers-chat',
     date: '26 septembre 2026',
     title: 'Ton chat prend les couleurs de tes univers',

@@ -1,7 +1,15 @@
 /**
- * Service Worker wairyu — notifications Web Push (Étape 6.8).
+ * Service Worker wairyu — notifications Web Push (Étape 6.8, enrichi Task 53).
  * Minimal volontairement : aucune interception de fetch (le cache immutable
  * est géré par les en-têtes Workers Assets — voir Étape perf).
+ *
+ * Task 53 (demande fondateur : « comme WhatsApp ») — anti-doublon :
+ *  - page visible (premier plan) → PAS de notification système : le SW
+ *    relait le payload à la page (postMessage « wairyu-push ») qui
+ *    rafraîchit immédiatement conversations → toast in-app bas-droite
+ *    (composant MessageToasts) + badge à jour en ~1 s ;
+ *  - page absente / en arrière-plan → notification système native
+ *    (comme un SMS), ouverte au bon endroit au clic.
  */
 
 self.addEventListener('install', () => {
@@ -20,14 +28,25 @@ self.addEventListener('push', (event) => {
     /* payload non JSON — valeurs par défaut */
   }
   event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      tag: data.tag,
-      renotify: true,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
-      data: { url: data.url },
-    }),
+    (async () => {
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      const visible = windows.filter((cl) => cl.visibilityState === 'visible');
+      // Page au premier plan : la notif système serait un doublon agaçant —
+      // on relaye et la page s'occupe du toast + badge (postMessage TOUJOURS
+      // envoyé, même en arrière-plan, pour un badge réactif au retour).
+      for (const cl of windows) {
+        cl.postMessage({ type: 'wairyu-push', data });
+      }
+      if (visible.length > 0) return;
+      await self.registration.showNotification(data.title, {
+        body: data.body,
+        tag: data.tag,
+        renotify: true,
+        icon: '/icons/icon-192.png',
+        badge: '/icons/icon-192.png',
+        data: { url: data.url },
+      });
+    })(),
   );
 });
 

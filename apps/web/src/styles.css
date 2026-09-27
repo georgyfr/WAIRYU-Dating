@@ -10910,3 +10910,250 @@ body.theme-dark .hg-langrow select,
 body.theme-dark .hg-addrow input {
   background: rgba(0, 0, 0, 0.25);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Task 53 — Notifications qui apparaissent vraiment (demande fondateur)
+   · PushBanner  : bannière d'activation discrète en bas (une fois/appareil)
+   · MessageToasts : toasts « nouveau message » bas-droite (comme WhatsApp Web)
+   Append-only : nouvelle section, rien en amont n'est modifié.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ---- Bannière d'activation des notifications ---- */
+.pushbanner {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 180; /* sous les toasts (200) et sous la tabbar visuelle */
+  width: min(92vw, 520px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(28, 24, 40, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  color: #fff;
+  animation: pushbanner-in 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes pushbanner-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.pushbanner-bell {
+  flex: 0 0 auto;
+  font-size: 22px;
+  filter: drop-shadow(0 2px 6px rgba(244, 162, 89, 0.35));
+}
+
+.pushbanner-txt {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.pushbanner-txt strong {
+  font-size: 13.8px;
+  font-weight: 800;
+}
+
+.pushbanner-txt small {
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: 0.78;
+}
+
+.pushbanner-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pushbanner .btn.primary {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 11px;
+}
+
+.pushbanner-x {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pushbanner-x:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* Page claire (Paramètres, accueil) : la bannière sombre reste lisible. */
+.page-settings ~ .pushbanner {
+  background: rgba(28, 24, 40, 0.96);
+}
+
+/* ---- Toasts « nouveau message » (bas-droite, WhatsApp Web) ---- */
+.msgtoasts {
+  position: fixed;
+  right: 18px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 190; /* au-dessus du contenu, sous le ToastHost (200) */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(92vw, 348px);
+  pointer-events: none; /* les cartes individuelles redeviennent cliquables */
+}
+
+.msgtoast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(28, 24, 40, 0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+  animation: msgtoast-in 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  font: inherit;
+  width: 100%;
+}
+
+.msgtoast:hover {
+  transform: translateY(-2px);
+  border-color: rgba(244, 162, 89, 0.45);
+}
+
+@keyframes msgtoast-in {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.msgtoast-ava {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.msgtoast-ava-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-dark));
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.msgtoast-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.msgtoast-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.msgtoast-head strong {
+  font-size: 13.6px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msgtoast-origin {
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.msgtoast-excerpt {
+  font-size: 12.6px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile : la pile passe au-dessus de la tabbar, pleine largeur. */
+@media (max-width: 640px) {
+  .msgtoasts {
+    left: 12px;
+    right: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+  }
+
+  .msgtoast {
+    animation-name: msgtoast-in-up;
+  }
+
+  @keyframes msgtoast-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .pushbanner {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)); /* au-dessus de la tabbar */
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pushbanner-actions {
+    margin-left: 38px;
+  }
+}

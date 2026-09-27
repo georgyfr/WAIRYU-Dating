@@ -41,6 +41,8 @@ import { Chat } from './screens/Chat';
 import { Revelation } from './screens/Revelation';
 import { Coach } from './screens/Coach';
 import { TabBar, type TabId } from './components/TabBar';
+import MessageToasts from './components/MessageToasts'; // Task 53 : toasts « nouveau message » bas-droite (comme WhatsApp Web)
+import PushBanner from './components/PushBanner'; // Task 53 : bannière d'activation des notifications
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
 import { UpdateToast } from './components/UpdateToast'; // Task 44 : « Nouvelle version » — changements immédiats sans actualiser
@@ -467,6 +469,28 @@ export default function App() {
     return () => window.clearInterval(id);
   }, [me, refreshConv, refreshLikes]);
 
+  // Task 53 (demande fondateur : « les notifications doivent apparaître comme
+  // WhatsApp ») — le SW est maintenant ENREGISTRÉ AU BOOT (avant, il ne
+  // l'était qu'en visitant Paramètres → un push ne pouvait jamais être
+  // livré sur l'écrasante majorité des appareils) et le push reçu pendant
+  // que la page est visible est relayé ici : revalidation IMMÉDIATE des
+  // conversations → MessageToasts affiche le toast bas-droite en ~1 s
+  // (le badge se met à jour dans la foulée, sans attendre le poll 30 s).
+  useEffect(() => {
+    if (!me) return;
+    let cancelled = false;
+    navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+    const onSwMessage = (event: MessageEvent) => {
+      const d = event.data as { type?: string } | null;
+      if (d?.type === 'wairyu-push' && !cancelled) refreshConv(true);
+    };
+    navigator.serviceWorker.addEventListener('message', onSwMessage);
+    return () => {
+      cancelled = true;
+      navigator.serviceWorker.removeEventListener('message', onSwMessage);
+    };
+  }, [me, refreshConv]);
+
   // ---- Rendu ----
   let content: JSX.Element;
 
@@ -656,6 +680,21 @@ export default function App() {
       )}
       <ToastHost />
       <UpdateToast />
+
+      {/* Task 53 : toasts « nouveau message » bas-droite (WhatsApp Web) —
+          keyé par compte : changement de session → snapshot et pile réinitialisés. */}
+      {me && (
+        <MessageToasts
+          key={me.userId}
+          convData={convData}
+          route={route}
+          onOpenChat={(id) => go(`#/chat/${id}`)}
+        />
+      )}
+
+      {/* Task 53 : bannière d'activation des notifications — proposée tant
+          que la permission est 'default' et non dismissée sur cet appareil. */}
+      {me && <PushBanner />}
 
       {/* Task 48-c : modale « Quoi de neuf » — journal des nouveautés
           utilisateur-visibles, affichée quand une mise à jour est détectée

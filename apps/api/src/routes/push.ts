@@ -83,3 +83,125 @@ pushRoutes.post('/push/unsubscribe', async (c) => {
     .run();
   return c.json({ ok: true as const });
 });
+
+// ---------------------------------------------------------------------------
+// Task 53 — POT DE TEST STAGING UNIQUEMENT : « endpoint » de push auto-répondant.
+//
+// Le smoke T53 s'abonne avec un endpoint qui pointe vers CETTE route :
+//   /api/push/test-echo?k=<clé stockage>&p=<priv b64url>&a=<auth b64url>
+// Quand sendPushToUser() délivre un vrai push chiffré « aes128gcm » (RFC 8291),
+// cette route DÉCHIFFRE le corps (même math que lib/push.ts côté réception) et
+// stocke le payload clair en KV (CONFIG, TTL 600 s) — le smoke le relit ensuite
+// via GET ?peek=<k> et compare au payload attendu. Preuve de bout en bout :
+// VAPID signé + chiffrement + livraison + déchiffrement = contenu exact.
+//
+// Garde : 404 hors staging (même design que /admin/test-session) — la route
+// déchiffre avec les clés fourniès par l'appelant lui-même, aucune donnée
+// utilisateur n'y transite, mais on la désactive quand même en production.
+// ---------------------------------------------------------------------------
+
+function b64urlToBytesT(s: string): Uint8Array {
+  const pad = '='.repeat((4 - (s.length % 4)) % 4);
+  const b64 = (s + pad).replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function hkdfT(ikm: Uint8Array, salt: Uint8Array, info: Uint8Array, length: number): Promise<Uint8Array> {
+  const key = await crypto.subtle.importKey('raw', ikm as BufferSource, 'HKDF', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'HKDF', hash: 'SHA-256', salt: salt as BufferSource, info: info as BufferSource },
+    key,
+    length * 8,
+  );
+  return new Uint8Array(bits);
+}
+
+pushRoutes.get('/push/test-echo', async (c) => {
+  if (c.env.ENVIRONMENT !== 'staging') {
+    return c.json({ error: { code: 'not_found', message: 'Réservé au staging.' } }, 404);
+  }
+  const k = c.req.query('k') ?? '';
+  const peek = await c.env.CONFIG.get(`pushecho:${k}`);
+  return c.json({ k, payload: peek ? JSON.parse(peek) : null });
+});
+
+pushRoutes.post('/push/test-echo', async (c) => {
+  if (c.env.ENVIRONMENT !== 'staging') {
+    return c.json({ error: { code: 'not_found', message: 'Réservé au staging.' } }, 404);
+  }
+  const k = (c.req.query('k') ?? '').slice(0, 64);
+  const p = c.req.query('p') ?? '';
+  const a = c.req.query('a') ?? '';
+  if (!k || !p || !a) return c.json({ error: { code: 'bad_request', message: 'Params manquants.' } }, 400);
+
+  const body = new Uint8Array(await c.req.arrayBuffer());
+  if (body.length < 86 + 16) return c.json({ error: { code: 'bad_request', message: 'Corps trop court.' } }, 400);
+
+  try {
+    // 1. En-tête aes128gcm : salt(16) || rs(4) || idlen(1) || ephPub(idlen).
+    const salt = body.slice(0, 16);
+    const idlen = body[20]!;
+    const ephPub = body.slice(21, 21 + idlen);
+    const ciphertext = body.slice(21 + idlen);
+    if (ephPub.length !== 65 || ephPub[0] !== 4) throw new Error('ephPub invalide');
+
+    // 2. ECDH(privé du destinataire de test, ephPub) → PRK → CEK/nonce.
+    const privJwk: JsonWebKey = {
+      kty: 'EC',
+      crv: 'P-256',
+      d: p,
+      // WebCrypto exige une clé privée EC COMPLÈTE (d + x + y) pour importKey :
+      // le smoke fournit donc p (d), x, y et a (auth) dans la query.
+      x: c.req.query('x') ?? '',
+      y: c.req.query('y') ?? '',
+      ext: true,
+    };
+    if (!privJwk.x || !privJwk.y) throw new Error('x/y requis');
+    const privKey = await crypto.subtle.importKey('jwk', privJwk, { name: 'ECDH', namedCurve: 'P-256' }, false, [
+      'deriveBits',
+    ]);
+    const ephKey = await crypto.subtle.importKey('raw', ephPub as BufferSource, { name: 'ECDH', namedCurve: 'P-256' }, true, []);
+    const ecdhAlg = { name: 'ECDH', public: ephKey } as unknown as SubtleCryptoDeriveKeyAlgorithm;
+    const ecdhBits = (await crypto.subtle.deriveBits(ecdhAlg, privKey, 256)) as ArrayBuffer;
+
+    // userPub : la clé p256dh de l'abonnement (x||y préfixé 0x04) — reconstruite
+    // depuis x/y de la MÊME paire (le smoke s'abonne avec sa propre clé pub).
+    const x = b64urlToBytesT(privJwk.x);
+    const y = b64urlToBytesT(privJwk.y);
+    const userPub = new Uint8Array(65);
+    userPub[0] = 4;
+    userPub.set(x, 1);
+    userPub.set(y, 33);
+    const authSecret = b64urlToBytesT(a);
+
+    const enc = new TextEncoder();
+    const info = new Uint8Array(13 + 1 + 65 + 65);
+    info.set(enc.encode('WebPush: info'), 0);
+    info.set(userPub, 14);
+    info.set(ephPub, 79);
+    const prkKey = await hkdfT(new Uint8Array(ecdhBits), authSecret, info, 32);
+
+    const cek = await hkdfT(prkKey, salt, enc.encode('Content-Encoding: aes128gcm\0'), 16);
+    const nonce = await hkdfT(prkKey, salt, enc.encode('Content-Encoding: nonce\0'), 12);
+
+    // 3. Déchiffrement + retrait du marqueur de dernier enregistrement 0x02.
+    const aesKey = await crypto.subtle.importKey('raw', cek as BufferSource, 'AES-GCM', false, ['decrypt']);
+    const padded = new Uint8Array(
+      await crypto.subtle.decrypt({ name: 'AES-GCM', iv: nonce as BufferSource, tagLength: 128 }, aesKey, ciphertext as BufferSource),
+    );
+    if (padded[padded.length - 1] !== 0x02) throw new Error('marqueur final absent');
+    const plaintext = new TextDecoder().decode(padded.slice(0, padded.length - 1));
+    const payload = JSON.parse(plaintext) as Record<string, unknown>;
+
+    await c.env.CONFIG.put(`pushecho:${k}`, JSON.stringify(payload), { expirationTtl: 600 });
+    return c.json({ ok: true, payload }, 201);
+  } catch (err) {
+    return c.json(
+      { error: { code: 'bad_request', message: `Échec déchiffrement : ${String(err)}` } },
+      400,
+    );
+  }
+});
