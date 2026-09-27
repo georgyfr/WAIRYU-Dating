@@ -11156,4 +11156,22 @@ body.theme-dark .hg-addrow input {
   .pushbanner-actions {
     margin-left: 38px;
   }
+} /* fin @media 640px (restauré — fusion Task 53) */
+
+/* ---- Task 53 : guide d'installation PWA (notifications iPhone/mobiles) ---- */
+.push-guide {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fdf6e9;
+  border: 1px solid #f0dfc0;
+  color: #7a5b1e;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+body.theme-dark .push-guide {
+  background: rgba(255, 176, 32, 0.1);
+  border-color: rgba(255, 176, 32, 0.4);
+  color: #f4d9a6;
 }

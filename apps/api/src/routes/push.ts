@@ -36,7 +36,7 @@ pushRoutes.get('/push/key', async (c) => {
 pushRoutes.post('/push/subscribe', async (c) => {
   const user = await requireUser(c);
   const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushUser, user.id);
-  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushUser.scope);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushTest.scope);
 
   const enabled = await pushEnabled(c.env);
   if (!enabled) {
@@ -98,8 +98,10 @@ pushRoutes.post('/push/unsubscribe', async (c) => {
 
 pushRoutes.post('/push/test', async (c) => {
   const user = await requireUser(c);
-  const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushUser, user.id);
-  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushUser.scope);
+  // Task 53 (fusion) : règle DÉDIÉE pushTest (5 / 10 min) — plus stricte que
+  // pushUser (30/h) car un bouton de démonstration est un vecteur de spam.
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushTest, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushTest.scope);
 
   const enabled = await pushEnabled(c.env);
   if (!enabled) {

@@ -74,6 +74,9 @@ export const RATE_RULES = {
   chatUnmatchUser: { scope: 'chat:unm:user', windowSeconds: 3600, max: 20 },
   /** Abonnements push (subscribe/unsubscribe) : 30 / heure. */
   pushUser: { scope: 'push:sub:user', windowSeconds: 3600, max: 30 },
+  /** Notification de test (POST /api/push/test) : 5 / 10 minutes — le bouton
+   * « Tester la notification » ne doit jamais pouvoir inonder le canal push. */
+  pushTest: { scope: 'push:test:user', windowSeconds: 600, max: 5 },
   /** Tickets WebSocket : 60 / heure (reconnexions tolérées largement). */
   chatTicketUser: { scope: 'chat:tk:user', windowSeconds: 3600, max: 60 },
   /** Boîte de réception (page Messages + badge d'onglet) — polling léger autorisé : 240 / h. */

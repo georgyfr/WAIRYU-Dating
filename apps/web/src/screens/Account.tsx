@@ -167,6 +167,33 @@ export function Account({ me, onLoggedOut }: Props) {
       'Notification' in window,
   );
 
+  /**
+   * Task 53 — guide d'installation iPhone : iOS n'autorise les notifications
+   * web QUE pour la PWA installée sur l'écran d'accueil (iOS 16.4+). Sans ce
+   * guide, un iPhone ne voit aucune explication (la section était masquée)
+   * — d'où l'impression que « ça marche uniquement sur PC ».
+   */
+  const [installGuide] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const ua = navigator.userAgent;
+    const isIOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && ((navigator as { maxTouchPoints?: number }).maxTouchPoints ?? 0) > 1);
+    if (!isIOS) return null;
+    const standaloneIOS = (navigator as { standalone?: boolean }).standalone === true;
+    const standalone =
+      standaloneIOS ||
+      (typeof window.matchMedia === 'function' && window.matchMedia('(display-mode: standalone)').matches);
+    if (standalone) return null;
+    return (
+      '📱 Sur iPhone, iOS n’affiche les notifications que pour l’application installée. ' +
+      '1) Touche le bouton Partager (le carré avec la flèche) en bas de Safari — ' +
+      '2) choisis « Sur l’écran d’accueil » — ' +
+      '3) ouvre wairyu depuis la nouvelle icône — ' +
+      '4) reviens dans Paramètres : les notifications s’activeront en un tap.'
+    );
+  });
+
   const refreshPush = useCallback(async () => {
     try {
       const cfg = await api<PushConfigResponse>('/api/push/key');
@@ -466,17 +493,18 @@ export function Account({ me, onLoggedOut }: Props) {
         </div>
       </div>
 
-      {/* ---- Notifications Web Push (Étape 6.8) ---- */}
-      {pushSupported && (
+      {/* ---- Notifications Web Push (Étape 6.8 · Task 53 : test réel + guide iPhone) ---- */}
+      {(pushSupported || installGuide) && (
         <div className="profile-cta">
           <div>
             <strong>Notifications</strong>
             <p className="hint">
               {pushEnabled
-                ? 'Tu reçois une alerte pour les nouveaux messages (hors conversation ouverte), matchs et demandes de révélation.'
+                ? 'Tu reçois une alerte pour les nouveaux messages (hors conversation ouverte), matchs et demandes de révélation — comme un SMS, même app fermée.'
                 : 'Active-les pour être prévenu·e d’un nouveau message, match ou demande de révélation — même app fermée.'}
             </p>
           </div>
+          {installGuide && <div className="push-guide">{installGuide}</div>}
           <div className="btn-col">
             {!pushEnabled ? (
               <button type="button" className="btn primary" onClick={() => void enablePush()} disabled={busy}>

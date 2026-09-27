@@ -49,6 +49,7 @@ export const WHATS_NEW: WhatsNewEntry[] = [
       'Reçois tes messages, matchs et demandes comme un SMS — même app fermée, sur téléphone et ordinateur.',
       'Sur ordinateur, un nouveau message apparaît en bas à droite, comme WhatsApp Web : un clic ouvre la conversation.',
       'Active-les en un tap depuis la bannière (ou Paramètres) — on ne te le demandera qu’une fois.',
+      'Sur iPhone, un nouveau guide t’accompagne : iOS n’affiche les alertes que pour l’app installée sur l’écran d’accueil.',
     ],
   },
   {
