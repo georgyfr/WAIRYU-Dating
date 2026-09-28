@@ -1,0 +1,44 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+
+> Item choisi : **Q2.1-17** (carte, bloc Dépassement de soi, riche en 5 canaux).
+
+```yaml
+item: Q2.1-17
+quete: "2.1 Tes valeurs"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+bloc_portrait: depassement_de_soi
+enonce: "La demande d'aide d'un proche passe avant mon programme du jour."
+echelle: likert5              # 1 Pas du tout comme moi … 5 Tout à fait comme moi (Arbitrage 2)
+orientation: D
+recodage: null                # D → contribue tel quel (Arbitrage 1)
+double_balise:
+  carte_id: bienveillance
+  signal_id: null
+computation:
+  carte:
+    contribution: "moyenne_bienveillance (2 items — min 1 valide requis)"
+    bloc: depassement_de_soi
+    etages_restants: [carte_quete, miroir_2_1, portrait_monde_M3, integral]
+  signal: null
+  fiabilite:
+    role: paire_miroir
+    pendant: Q2.1-18
+    regle: R6                 # |D − (6 − I)| ≥ 3 → drapeau sur bienveillance
+  modulation:
+    - si: "bienveillance ≥ 4 ET conformité ≥ 4"
+      effet: "bienveillance rendue « discrète » (retenue) vs « affirmée »"
+    - si: "R6 actif sur bienveillance"
+      effet: "slot S3 dégradé d'un degré ; miroir reformulé avec prudence"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as répondu que la demande d'aide d'un proche passe avant ton programme du jour"
+```
+
+## Notes
+
+- Ce modèle sert de gabarit pour les 24 items de la quête (les fiches condensées du tableau
+  `01-tableau-des-24-items.md` se déploient dans ce format complet).
+- Pour un item de trame ▲ : `carte_id: null`, `signal_id: DTM_N`, `ancrage.rappel_autorise: false`
+  (interdit structurel — la trame sécurité ne produit jamais de texte).
