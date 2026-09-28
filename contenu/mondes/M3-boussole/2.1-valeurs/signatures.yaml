@@ -1,0 +1,61 @@
+# ═══════════════════════════════════════════════════════════════════
+# QUÊTE 2.1 « TES VALEURS » — SIGNATURES ATTENDUES (format du registre)
+# quete: 2.1 · session: 2026-09-28 · fiche-mutation: FM-013
+# validateur: linter pass (6/6) · C1: paquet soumis (verdict en attente)
+# ⚠ Tous les seuils et fenêtres : À VALIDER PAR LE COMITÉ (verrou [9])
+# ═══════════════════════════════════════════════════════════════════
+signatures:
+
+  - id: SIG-2.1-01
+    nom: "Le gouvernail"
+    conditions_exactes: "bloc_max - bloc_suivant >= 0.5 (moyennes normalisées 1-5 des 4 blocs)"
+    seuil:
+      valeur: 0.5
+      statut: "À VALIDER PAR LE COMITÉ"
+    consequence: >-
+      La Carte nomme le bloc dominant ET le bloc le plus discret —
+      lumière + ombre en une phrase.
+    source: "20 items carte, 4 blocs"
+    fenetre_frequence_cible: "≈80 % de bloc dominant net"
+    fenetre_statut: "À VALIDER PAR LE COMITÉ"
+
+  - id: SIG-2.1-02
+    nom: "Les deux réponses qui se tirent dessus"
+    conditions_exactes: "|D_k - (6 - I_k)| >= 3 pour k appartenant aux 10 valeurs (règle R6)"
+    consequence: >-
+      Drapeau fiabilité sur k · rappel des 2 réponses en toutes lettres ·
+      score k = moyenne des items valides + prudence du miroir.
+    source: "10 paires miroir"
+    fenetre_frequence_cible: ">= 2 paires : 5-15 %"
+    fenetre_statut: "À VALIDER PAR LE COMITÉ"
+
+  - id: SIG-2.1-03
+    nom: "La boussole qui penche pour soi"
+    conditions_exactes: "score trame (Q2.1-21/22/23/24) normalisé >= T1 ET bloc depassement_de_soi au tiers inférieur"
+    seuil:
+      valeur: T1
+      statut: "À VALIDER PAR LE COMITÉ — verrou humain, jamais décidé en session"
+    consequence: >-
+      Alimente DTM_N (composante entitlement) côté moteur UNIQUEMENT —
+      zéro trace UI, entre dans la trame sécurité.
+    source: "4 trames × bloc Dépassement de soi"
+    fenetre_frequence_cible: "< 5 %"
+    fenetre_statut: "À VALIDER PAR LE COMITÉ"
+    interdit_structurel: "ce signal ne produit AUCUN texte, AUCUN slot, AUCUNE citation"
+
+  - id: SIG-2.1-04
+    nom: "L'étendue de la loyauté"
+    conditions_exactes: "|BE - UN| >= 1.0 → 3 degrés (cercle resserré / nuancé / étendu)"
+    seuil:
+      valeur: 1.0
+      statut: "À VALIDER PAR LE COMITÉ"
+    consequence: >-
+      Slot miroir descriptif, registre probabiliste (« conduit fréquemment à »),
+      jamais normatif.
+    source: "Q2.1-17/18 × Q2.1-19/20"
+    fenetre_frequence_cible: "étendu ≈30 %, resserré ≈25 %"
+    fenetre_statut: "À VALIDER PAR LE COMITÉ"
+
+notes_registre:
+  - "Les conséquences documentées dans un miroir s'expriment au registre probabiliste — jamais au futur certain."
+  - "Les 4 signatures sont rejouées contre les 4 Portraits du Monde 1 selon le protocole du Registre des Signatures (test de non-régression 22/22 à maintenir)."

@@ -1,0 +1,376 @@
+# ═══════════════════════════════════════════════════════════════════
+# QUÊTE 2.1 « TES VALEURS » — ITEMS (format machine)
+# quete: 2.1 · session: 2026-09-28 · fiche-mutation: FM-013
+# validateur: linter pass (6/6) · C1: paquet soumis (verdict en attente)
+# ═══════════════════════════════════════════════════════════════════
+meta:
+  quete: "2.1"
+  titre: "Tes valeurs"
+  monde: M3
+  monde_nom: "La Boussole"
+  statut_freemium: gratuit
+  categorie: Socle
+  phase: MVP
+  domaine: soi            # les liaisons M1×M2 vivent au Portrait de Domaine, jamais ici
+  plage_codes: "Q2.1-01..Q2.1-24"
+  echelle: likert5
+  libelles_echelle:
+    1: "Pas du tout comme moi"
+    2: "Plutôt pas comme moi"
+    3: "Neutre / je ne sais pas"
+    4: "Plutôt comme moi"
+    5: "Tout à fait comme moi"
+  recodage_inverse: "6 - réponse"
+  blocs_portrait:
+    ouverture_au_changement: [autonomie, stimulation, hedonisme]
+    affirmation_de_soi: [reussite, pouvoir]
+    conservation: [securite, conformite, tradition]
+    depassement_de_soi: [bienveillance, universalisme]
+  provenance:
+    session: "2026-09-28"
+    fiche_mutation: FM-013
+    validateur: "linter: pass 6/6 · C1: soumis, verdict en attente"
+    correction: "Q2.1-23 v2 — contamination lexicale vs Q2.1-09 corrigée (revue produit)"
+
+items:
+  - id: Q2.1-01
+    enonce: "Pour les grandes décisions, je préfère trancher moi-même."
+    orientation: D
+    dimension: autonomie
+    facette: "les grandes décisions"
+    paire_miroir: Q2.1-02
+    signal: null
+    computation:
+      carte: "autonomie → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-02"
+      modulation: "si conformité haute → « autonomie discrète »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-02
+    enonce: "Pour les grandes décisions, je préfère suivre ce que d'autres conseillent."
+    orientation: I
+    dimension: autonomie
+    facette: "les grandes décisions"
+    paire_miroir: Q2.1-01
+    signal: null
+    computation:
+      carte: "autonomie (recodé 6−r) → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-01"
+      modulation: "idem Q2.1-01"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-03
+    enonce: "Pour mes sorties, ce qui est inconnu m'attire le plus."
+    orientation: D
+    dimension: stimulation
+    facette: "le choix des sorties"
+    paire_miroir: Q2.1-04
+    signal: null
+    computation:
+      carte: "stimulation → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-04"
+      modulation: "si sécurité haute → « nouveauté encadrée »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-04
+    enonce: "Pour mes sorties, je choisis ce que je connais déjà."
+    orientation: I
+    dimension: stimulation
+    facette: "le choix des sorties"
+    paire_miroir: Q2.1-03
+    signal: null
+    computation:
+      carte: "stimulation (recodé 6−r) → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-03"
+      modulation: "idem Q2.1-03"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-05
+    enonce: "Quand une occasion de plaisir se présente, je la saisis."
+    orientation: D
+    dimension: hedonisme
+    facette: "l'occasion de plaisir"
+    paire_miroir: Q2.1-06
+    signal: null
+    computation:
+      carte: "hédonisme → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-06"
+      modulation: "si réussite haute → « plaisir mérité »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-06
+    enonce: "Quand une occasion de plaisir se présente, je la laisse passer."
+    orientation: I
+    dimension: hedonisme
+    facette: "l'occasion de plaisir"
+    paire_miroir: Q2.1-05
+    signal: null
+    computation:
+      carte: "hédonisme (recodé 6−r) → bloc ouverture_au_changement"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-05"
+      modulation: "idem Q2.1-05"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-07
+    enonce: "Dans un nouveau projet, je vise d'abord des résultats visibles."
+    orientation: D
+    dimension: reussite
+    facette: "le nouveau projet"
+    paire_miroir: Q2.1-08
+    signal: null
+    computation:
+      carte: "réussite → bloc affirmation_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-08"
+      modulation: "croisement pouvoir (moteur)"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-08
+    enonce: "Dans un nouveau projet, les résultats ne me motivent pas vraiment."
+    orientation: I
+    dimension: reussite
+    facette: "le nouveau projet"
+    paire_miroir: Q2.1-07
+    signal: null
+    computation:
+      carte: "réussite (recodé 6−r) → bloc affirmation_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-07"
+      modulation: "idem Q2.1-07"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-09
+    enonce: "Dans un groupe, je préfère que ce soit moi qui décide."
+    orientation: D
+    dimension: pouvoir
+    facette: "la décision du groupe"
+    paire_miroir: Q2.1-10
+    signal: null
+    computation:
+      carte: "pouvoir → bloc affirmation_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-10"
+      modulation: "croisement trames ▲ (moteur seul, jamais UI)"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-10
+    enonce: "Dans un groupe, je laisse volontiers la direction à quelqu'un d'autre."
+    orientation: I
+    dimension: pouvoir
+    facette: "la décision du groupe"
+    paire_miroir: Q2.1-09
+    signal: null
+    computation:
+      carte: "pouvoir (recodé 6−r) → bloc affirmation_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-09"
+      modulation: "idem Q2.1-09"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-11
+    enonce: "Une vie réglée me rassure plus qu'elle ne m'ennuie."
+    orientation: D
+    dimension: securite
+    facette: "la vie réglée"
+    paire_miroir: Q2.1-12
+    signal: null
+    computation:
+      carte: "sécurité → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-12"
+      modulation: "si stimulation haute → tension interne documentée"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-12
+    enonce: "Une vie réglée m'ennuie plus qu'elle ne me rassure."
+    orientation: I
+    dimension: securite
+    facette: "la vie réglée"
+    paire_miroir: Q2.1-11
+    signal: null
+    computation:
+      carte: "sécurité (recodé 6−r) → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-11"
+      modulation: "idem Q2.1-11"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-13
+    enonce: "Déçu par une décision du groupe, je le garde pour moi."
+    orientation: D
+    dimension: conformite
+    facette: "la déception dans le groupe"
+    paire_miroir: Q2.1-14
+    signal: null
+    computation:
+      carte: "conformité → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-14"
+      modulation: "si autonomie haute → « retenue choisie vs subie »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-14
+    enonce: "Déçu par une décision du groupe, je le dis tout de suite."
+    orientation: I
+    dimension: conformite
+    facette: "la déception dans le groupe"
+    paire_miroir: Q2.1-13
+    signal: null
+    computation:
+      carte: "conformité (recodé 6−r) → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-13"
+      modulation: "idem Q2.1-13"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-15
+    enonce: "Je maintiens les traditions que ma famille m'a transmises."
+    orientation: D
+    dimension: tradition
+    facette: "l'héritage reçu"
+    paire_miroir: Q2.1-16
+    signal: null
+    computation:
+      carte: "tradition → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-16"
+      modulation: "si universalisme haut → « héritage ouvert »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-16
+    enonce: "Je m'éloigne des traditions que ma famille m'a transmises."
+    orientation: I
+    dimension: tradition
+    facette: "l'héritage reçu"
+    paire_miroir: Q2.1-15
+    signal: null
+    computation:
+      carte: "tradition (recodé 6−r) → bloc conservation"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-15"
+      modulation: "idem Q2.1-15"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-17
+    enonce: "La demande d'aide d'un proche passe avant mon programme du jour."
+    orientation: D
+    dimension: bienveillance
+    facette: "la demande d'aide"
+    paire_miroir: Q2.1-18
+    signal: null
+    computation:
+      carte: "bienveillance → bloc depassement_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-18"
+      modulation: "si conformité haute → bienveillance « discrète » (retenue) vs « affirmée »"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-18
+    enonce: "Mon programme du jour passe avant la demande d'aide d'un proche."
+    orientation: I
+    dimension: bienveillance
+    facette: "la demande d'aide"
+    paire_miroir: Q2.1-17
+    signal: null
+    computation:
+      carte: "bienveillance (recodé 6−r) → bloc depassement_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-17"
+      modulation: "idem Q2.1-17"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-19
+    enonce: "Devant une façon de vivre très différente, je cherche d'abord à comprendre."
+    orientation: D
+    dimension: universalisme
+    facette: "la différence de modes de vie"
+    paire_miroir: Q2.1-20
+    signal: null
+    computation:
+      carte: "universalisme → bloc depassement_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-20"
+      modulation: "si bienveillance haute → loyauté élargie"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  - id: Q2.1-20
+    enonce: "Devant une façon de vivre très différente, je me méfie d'abord."
+    orientation: I
+    dimension: universalisme
+    facette: "la différence de modes de vie"
+    paire_miroir: Q2.1-19
+    signal: null
+    computation:
+      carte: "universalisme (recodé 6−r) → bloc depassement_de_soi"
+      signal: null
+      fiabilite: "R6 ↔ Q2.1-19"
+      modulation: "idem Q2.1-19"
+      ancrage: "rappel autorisé — en toutes lettres, sans code ni score"
+
+  # ─── ITEMS ▲ DE TRAME (DTM_N — déguisement « valeurs en creux ») ───
+  # Indiscernables des items carte · jamais rappelés en toutes lettres ·
+  # jamais adjacents à BE/UN/RE/PO dans le plan de mélange.
+
+  - id: Q2.1-21
+    enonce: "Il est normal que mes besoins passent avant ceux des autres."
+    orientation: D
+    dimension: null
+    facette: "la hiérarchie des besoins"
+    paire_miroir: null        # kit unique — 4 angles du même construit
+    signal: DTM_N
+    computation:
+      carte: null
+      signal: "DTM_N (composante entitlement) — croisement avec bienveillance basse (fiche)"
+      fiabilite: "cohérence des 4 angles trames (corrélation interne attendue modérée)"
+      modulation: "moteur seul — DTM_N · AUCUN effet UI"
+      ancrage: "rappel INTERDIT (trame sécurité invisible)"
+
+  - id: Q2.1-22
+    enonce: "Ce que je reçois reste en dessous de ce qui m'est dû."
+    orientation: D
+    dimension: null
+    facette: "le bilan des acquis"
+    paire_miroir: null
+    signal: DTM_N
+    computation:
+      carte: null
+      signal: "DTM_N (entitlement — sentiment d'être lésé)"
+      fiabilite: "cohérence des 4 angles trames"
+      modulation: "moteur seul — DTM_N · AUCUN effet UI"
+      ancrage: "rappel INTERDIT (trame sécurité invisible)"
+
+  - id: Q2.1-23
+    enonce: "Dans un groupe, ma place doit être reconnue avant celle des autres."
+    orientation: D
+    dimension: null
+    facette: "la place dans le groupe"
+    paire_miroir: null
+    signal: DTM_N
+    correction: "v2 (2026-09-28) — v1 « les décisions importantes me reviennent naturellement »
+                 contaminée lexicalement par Q2.1-09 (revue produit, FM-013)"
+    computation:
+      carte: null
+      signal: "DTM_N (entitlement — droit à la place, jamais la décision)"
+      fiabilite: "cohérence des 4 angles trames"
+      modulation: "moteur seul — DTM_N · AUCUN effet UI"
+      ancrage: "rappel INTERDIT (trame sécurité invisible)"
+
+  - id: Q2.1-24
+    enonce: "Quand on me traite comme tout le monde, je me sens invisible."
+    orientation: D
+    dimension: null
+    facette: "le traitement quotidien"
+    paire_miroir: null
+    signal: DTM_N
+    computation:
+      carte: null
+      signal: "DTM_N (entitlement — besoin de traitement spécial)"
+      fiabilite: "cohérence des 4 angles trames"
+      modulation: "moteur seul — DTM_N · AUCUN effet UI"
+      ancrage: "rappel INTERDIT (trame sécurité invisible)"

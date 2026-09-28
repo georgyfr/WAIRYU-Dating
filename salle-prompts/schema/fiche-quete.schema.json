@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "_role": "SCHEMA DU VALIDATEUR (linter) — fiche de quête + manifeste CI · initialisé par FM-014 · extensible",
+  "title": "fiche-quete.schema",
+  "type": "object",
+  "required": ["quete", "titre", "monde", "statut_freemium", "categorie", "phase", "plage_codes", "totaux"],
+  "properties": {
+    "quete": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "titre": { "type": "string", "minLength": 1 },
+    "monde": { "type": "string", "pattern": "^M(1[0-1]|[1-9])$" },
+    "statut_freemium": { "type": "string", "enum": ["gratuit", "premium"] },
+    "categorie": { "type": "string", "enum": ["Socle", "Libre", "Opt-in", "Match", "Passage"] },
+    "phase": { "type": "string", "minLength": 1 },
+    "plage_codes": {
+      "type": "object",
+      "required": ["debut", "fin", "codes_utilises"],
+      "properties": {
+        "debut": { "type": "string", "pattern": "^Q[0-9]+\\.[0-9]+-[0-9]{2}$" },
+        "fin": { "type": "string", "pattern": "^Q[0-9]+\\.[0-9]+-[0-9]{2}$" },
+        "codes_utilises": { "type": "integer", "minimum": 1 },
+        "codes_geler_a_jamais": { "type": "boolean" }
+      }
+    },
+    "totaux": {
+      "type": "object",
+      "required": ["items_total", "items_carte", "items_trame", "trames_par_signal"],
+      "properties": {
+        "items_total": { "type": "integer", "minimum": 1 },
+        "items_carte": { "type": "integer", "minimum": 0 },
+        "items_trame": { "type": "integer", "minimum": 0 },
+        "trames_par_signal": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "paires_miroir": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "signatures": { "type": "array", "items": { "type": "string", "pattern": "^SIG-[0-9]+\\.[0-9]+-[0-9]{2}$" } },
+    "slots": { "type": "array", "items": { "type": "string" } },
+    "melange": {
+      "type": "object",
+      "required": ["graine", "algorithme"],
+      "properties": {
+        "graine": { "type": "integer" },
+        "algorithme": { "type": "string" },
+        "verdicts_contraintes": { "type": "string" }
+      }
+    },
+    "empreintes": {
+      "type": "object",
+      "properties": {
+        "algorithme": { "type": "string", "const": "sha256" },
+        "fichiers": { "type": "object", "additionalProperties": { "$ref": "#/definitions/fichier_hash" } }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["session", "fiche_mutation"],
+      "properties": {
+        "session": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "fiche_mutation": { "type": "string", "pattern": "^FM-[0-9]{3}$" },
+        "validateur": { "type": "string" },
+        "correction_appliquee": { "type": "string" }
+      }
+    },
+    "controles_mise_en_ligne": {
+      "type": "object",
+      "required": ["fichiers_integraux_sans_ellipse", "chemins_respectent_arborescence_canonique", "totaux_manifeste_egal_fiche_quete", "hash_calcules_et_reportes", "aucun_flux_signal_vers_rendu"],
+      "properties": {
+        "fichiers_integraux_sans_ellipse": { "type": "boolean", "const": true },
+        "chemins_respectent_arborescence_canonique": { "type": "boolean", "const": true },
+        "totaux_manifeste_egal_fiche_quete": { "type": "boolean", "const": true },
+        "hash_calcules_et_reportes": { "type": "boolean", "const": true },
+        "aucun_flux_signal_vers_rendu": { "type": "boolean", "const": true }
+      }
+    }
+  },
+  "definitions": {
+    "fichier_hash": {
+      "type": "object",
+      "required": ["sha256", "octets"],
+      "properties": {
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "octets": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

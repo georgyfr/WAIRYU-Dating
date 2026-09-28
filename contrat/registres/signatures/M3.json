@@ -1,0 +1,49 @@
+{
+  "_role": "REGISTRE DES SIGNATURES — monde M3 (extrait) · source: FM-013 · session: 2026-09-28",
+  "monde": "M3",
+  "monde_nom": "La Boussole",
+  "signatures": [
+    {
+      "id": "SIG-2.1-01",
+      "quete": "2.1",
+      "nom": "Le gouvernail",
+      "conditions": "bloc_max - bloc_suivant >= 0.5 (moyennes normalisées 1-5 des 4 blocs)",
+      "consequence": "la Carte nomme le bloc dominant et le bloc le plus discret (lumière + ombre en une phrase)",
+      "source": "20 items carte, 4 blocs",
+      "fenetre_frequence_cible": "≈80 %",
+      "statut": "À VALIDER PAR LE COMITÉ"
+    },
+    {
+      "id": "SIG-2.1-02",
+      "quete": "2.1",
+      "nom": "Les deux réponses qui se tirent dessus",
+      "conditions": "|D_k - (6 - I_k)| >= 3, k ∈ 10 valeurs (règle R6)",
+      "consequence": "drapeau fiabilité sur k, rappel en toutes lettres, score k = moyenne des items valides + prudence",
+      "source": "10 paires miroir",
+      "fenetre_frequence_cible": ">= 2 paires : 5-15 %",
+      "statut": "À VALIDER PAR LE COMITÉ"
+    },
+    {
+      "id": "SIG-2.1-03",
+      "quete": "2.1",
+      "nom": "La boussole qui penche pour soi",
+      "conditions": "score trame Q2.1-21/22/23/24 normalisé >= T1 ET bloc depassement_de_soi au tiers inférieur",
+      "consequence": "alimente DTM_N (entitlement) côté moteur UNIQUEMENT — zéro trace UI, entre dans la trame sécurité",
+      "source": "4 trames × bloc Dépassement de soi",
+      "fenetre_frequence_cible": "< 5 %",
+      "statut": "À VALIDER PAR LE COMITÉ",
+      "interdit_structurel": "aucun texte, aucun slot, aucune citation"
+    },
+    {
+      "id": "SIG-2.1-04",
+      "quete": "2.1",
+      "nom": "L'étendue de la loyauté",
+      "conditions": "|BE - UN| >= 1.0 → 3 degrés (cercle resserré / nuancé / étendu)",
+      "consequence": "slot miroir descriptif, registre probabiliste, jamais normatif",
+      "source": "Q2.1-17/18 × Q2.1-19/20",
+      "fenetre_frequence_cible": "étendu ≈30 %, resserré ≈25 %",
+      "statut": "À VALIDER PAR LE COMITÉ"
+    }
+  ],
+  "invariant_note": "⚠ divergence d'invariants à trancher par le contrat : base 30 ou 31 signatures ? (voir FM-013 §5)"
+}
