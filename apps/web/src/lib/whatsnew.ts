@@ -32,6 +32,17 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-29-ergonomie-deck',
+    date: '29 septembre 2026',
+    title: 'Découvrir plus grand, plus vivant',
+    items: [
+      'La bannière du haut se replie d’un tap : tes profils occupent tout l’écran, surtout sur téléphone.',
+      'Tes quotas affichent maintenant une jauge chacun — tu vois toujours ce qu’il te reste, jour après jour.',
+      'Fin de pile ? Un radar t’annonce qui est en ligne et qui rejoint ton univers — tu n’es jamais seul·e.',
+      'Sur Android, tes gestes deviennent tangibles : une légère vibration confirme chaque swipe et chaque match.',
+    ],
+  },
+  {
     id: '2026-09-28-simulation-notif',
     date: '28 septembre 2026',
     title: 'Teste tes notifications en 1 clic',

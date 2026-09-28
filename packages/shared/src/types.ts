@@ -486,6 +486,19 @@ export interface QuotaState {
   rewindsLeft: number;
 }
 
+/**
+ * Task 55 — Radar de proximité : compteurs de présence AGRÉGÉS du bassin du
+ * compte (étanchéité des modes Task 34/50). Aucune donnée individuelle ne
+ * sort du serveur — uniquement 4 nombres, buckets volontairement vagues
+ * (en ligne < 15 min · aujourd'hui < 24 h · récents < 72 h · total actif 30 j).
+ */
+export interface PresenceResponse {
+  online: number;
+  today: number;
+  recent: number;
+  total: number;
+}
+
 /** POST /api/discover/swipe. */
 export interface SwipeResponse {
   ok: true;

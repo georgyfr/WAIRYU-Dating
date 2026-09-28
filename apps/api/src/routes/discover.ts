@@ -27,7 +27,7 @@ import type { AppEnv } from '../env';
 import { errors } from '../lib/errors';
 import { RATE_RULES, hitRateLimit, readWindowCount, rateLimitedError } from '../lib/ratelimit';
 import { signedMediaUrl } from '../lib/cloudinary';
-import { generateFeedPage } from '../lib/discovery';
+import { generateFeedPage, countPresence } from '../lib/discovery';
 import { sendPushToUser } from '../lib/push';
 import { validateEnum } from '../lib/profile';
 import { PHOTO_THUMB_WIDTH, PHOTO_BLUR_WIDTH, DISCOVERY } from '@wairyu/shared';
@@ -1131,4 +1131,15 @@ discoverRoutes.get('/discover/likes', async (c) => {
     note: 'Liker en retour = match immédiat. Elles ne savent pas que tu vois cette liste tant que tu ne réponds pas.',
   };
   return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/discover/presence — Task 55 : radar de proximité (agrégat).
+// Quatre compteurs de présence du bassin du compte (étanchéité Task 34/50 —
+// dérivé du mode_default SERVEUR, aucun paramètre client). Aucune donnée
+// individuelle : privacy par construction (voir lib/discovery.countPresence).
+// ---------------------------------------------------------------------------
+discoverRoutes.get('/discover/presence', async (c) => {
+  const user = await requireUser(c);
+  return c.json(await countPresence(c.env, user.id));
 });

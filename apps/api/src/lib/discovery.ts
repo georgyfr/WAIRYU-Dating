@@ -663,3 +663,88 @@ export async function computeDailyTop(
 
   return { day, users: processed, stored, skipped };
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+ * Task 55 — Radar de proximité (agrégat de présence, privacy stricte).
+ *
+ * Compte les membres ACTIFS du bassin du compte (étanchéité des modes
+ * Task 34/50 : le mode vient de user_preferences.mode_default, JAMAIS d'un
+ * paramètre client) et les regroupe par buckets de présence VAGUES — les
+ * mêmes seuils que onlineBucket() du feed (15 min / 24 h / 72 h).
+ *
+ * Garde-fous privacy :
+ *  · AUCUN profil, photo ni identifiant ne sort — 4 nombres agrégés seulement ;
+ *  · les profils INCOGNITO (Étape 7) sont exclus du comptage — ils ont choisi
+ *    de ne pas apparaître, un agrégat ne les trahit pas non plus ;
+ *  · les profils EN PAUSE sont exclus (même règle que le feed, plan 7.7) ;
+ *  · pas de filtre par préférences personnelles (âge/genre/intention) : le
+ *    radar décrit la COMMUNAUTÉ de l'univers courant (« X membres actifs »),
+ *    jamais une promesse de profils visibles dans la pile.
+ * ═════════════════════════════════════════════════════════════════════════ */
+
+export interface PresenceCounts {
+  online: number;
+  today: number;
+  recent: number;
+  total: number;
+}
+
+/** Task 55 : le radar ne lit que D1 — accepte tout env doté de la base. */
+type PresenceEnv = { DB: D1Database };
+
+export async function countPresence(env: PresenceEnv, userId: string): Promise<PresenceCounts> {
+  const now = Math.floor(Date.now() / 1000);
+  const bounds = ageBoundsISO();
+
+  // Mode du compte = source de vérité du bassin (règle fondateur Task 34/50).
+  const prefs = await env.DB.prepare(
+    `SELECT mode_default FROM user_preferences WHERE user_id = ?`,
+  )
+    .bind(userId)
+    .first<{ mode_default: string | null }>();
+  const myMode = prefs?.mode_default ?? 'classic';
+  const poolFilter =
+    myMode === 'invisible'
+      ? `AND EXISTS (
+             SELECT 1 FROM user_preferences upf
+             WHERE upf.user_id = u0.id AND upf.mode_default = 'invisible'
+           )`
+      : `AND NOT EXISTS (
+             SELECT 1 FROM user_preferences upf
+             WHERE upf.user_id = u0.id AND upf.mode_default = 'invisible'
+           )`;
+
+  // UNE requête d'agrégat — mêmes filtres de base que le pool du feed
+  // (actif, ≥1 photo active, session < 30 jours, 18-99 ans, non-pause),
+  // SANS les exclusions individuelles (swipes/blocs) : le radar est un
+  // indicateur d'ambiance de la communauté, pas la liste de la pile.
+  const row = await env.DB.prepare(
+    `SELECT
+       COUNT(*) AS total,
+       COALESCE(SUM(CASE WHEN ls > ?2 - 15 * 60 THEN 1 ELSE 0 END), 0) AS online,
+       COALESCE(SUM(CASE WHEN ls > ?2 - 24 * 3600 THEN 1 ELSE 0 END), 0) AS today,
+       COALESCE(SUM(CASE WHEN ls > ?2 - 72 * 3600 THEN 1 ELSE 0 END), 0) AS recent
+     FROM (
+       SELECT u0.id,
+              (SELECT MAX(s2.last_seen_at) FROM sessions s2
+                WHERE s2.user_id = u0.id AND s2.revoked_at IS NULL) AS ls
+       FROM users u0
+       WHERE u0.id != ?1 AND u0.status = 'active'
+         AND COALESCE(u0.paused, 0) = 0
+         AND COALESCE(u0.incognito, 0) = 0
+         AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u0.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
+         AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u0.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2 - 30 * 86400)
+         AND COALESCE(u0.birth_date, CAST(u0.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
+         ${poolFilter}
+     )`,
+  )
+    .bind(userId, now, bounds.min, bounds.max)
+    .first<{ total: number; online: number; today: number; recent: number }>();
+
+  return {
+    online: Math.max(0, row?.online ?? 0),
+    today: Math.max(0, row?.today ?? 0),
+    recent: Math.max(0, row?.recent ?? 0),
+    total: Math.max(0, row?.total ?? 0),
+  };
+}

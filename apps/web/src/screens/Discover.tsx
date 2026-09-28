@@ -62,6 +62,7 @@ import {
   type LikesMeResponse,
   type MatchListResponse,
   type PreferencesDto,
+  type PresenceResponse,
   type ProfileResponse,
   type QuotaState,
   type SwipeAction,
@@ -124,6 +125,33 @@ const ONLINE_LABELS: Record<NonNullable<FeedProfile['online']>, string> = {
   today: 'Actif aujourd’hui',
   recent: 'Actif récemment',
 };
+
+/** Task 55 : repli de la bannière d'ambiance — persisté (choix utilisateur). */
+const HERO_LS_KEY = 'wairyu.hero.collapsed';
+
+/**
+ * Task 55 — retour haptique léger au swipe (Android Chrome : navigator.vibrate ;
+ * iOS Safari l'ignore silencieusement — aucun effet de bord). Jamais bloquant :
+ * un navigateur sans l'API continue son geste normalement.
+ */
+function haptic(pattern: number | number[]): void {
+  try {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(pattern);
+  } catch {
+    /* silencieux — le haptique est un bonus, jamais une exigence */
+  }
+}
+
+/**
+ * Task 55 — classe d'état d'une pilule de quota : « q-empty » quand le quota
+ * est épuisé (pulse discret + libellé attenué), « q-low » sous 20 % restant.
+ */
+function quotaCls(left: number, max: number): string {
+  if (max <= 0) return '';
+  if (left <= 0) return ' q-empty';
+  if (left / max <= 0.2) return ' q-low';
+  return '';
+}
 
 type Exit = 'left' | 'right' | 'up' | null;
 
@@ -475,6 +503,19 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
    */
   const [seen, setSeen] = useState(0);
   /**
+   * Task 55 — radar de proximité : compteurs de présence AGRÉGÉS du bassin
+   * (endpoint /api/discover/presence — 4 nombres, aucune donnée individuelle).
+   * Affiché dans l'empty state : « la pile est vide » devient un signal de vie.
+   */
+  const [presence, setPresence] = useState<PresenceResponse | null>(null);
+  /**
+   * Task 55 — repli de la bannière d'ambiance : un tap sur le chevron
+   * compacte le bandeau (le titre reste, le sous-titre et les chips se
+   * replient). Persisté en localStorage — préférence utilisateur, comme les
+   * tris/filtres Task 38/43.
+   */
+  const [heroCollapsed, setHeroCollapsed] = useState<boolean>(() => localStorage.getItem(HERO_LS_KEY) === '1');
+  /**
    * Task 36 — références du deep-linking des onglets de mode :
    * - deepLinkHandled : l'alignement « URL ≠ serveur » au premier chargement
    *   des préférences ne doit déclencher qu'UNE bascule (les PUT rapprochés
@@ -633,6 +674,26 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     return d;
   }, [items, verifiedOnly, minScore, isIntl, intlContinents, onlineFirst, mode]);
 
+  /**
+   * Task 55 — radar de proximité : rafraîchi quand la pile est VIDE (et au
+   * premier écran vide). Un fetch léger (agrégat D1) — pas de polling : la
+   * donnée d'ambiance n'a pas besoin de temps réel, et on évite tout coût
+   * réseau tant que l'utilisateur voit encore des profils. Position APRÈS le
+   * useMemo du deck : la dépendance deck.length doit être déclarée avant.
+   */
+  useEffect(() => {
+    if (loading || deck.length > 0) return;
+    let dead = false;
+    api<PresenceResponse>('/api/discover/presence')
+      .then((r) => {
+        if (!dead) setPresence(r);
+      })
+      .catch(() => undefined);
+    return () => {
+      dead = true;
+    };
+  }, [loading, deck.length]);
+
   /** Retire une personne du deck (actionnée ailleurs — Top du jour, inbox). */
   const removeFromDeck = useCallback((userId: string) => {
     setItems((prev) => {
@@ -663,6 +724,9 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
       setError(null);
       const photo = card?.photos[0]?.url ?? card?.photoUrl ?? target?.photo ?? null;
       const dir: Exit = action === 'pass' ? 'left' : action === 'super' ? 'up' : 'right';
+      // Task 55 : retour haptique au geste — super = double pulsation plus
+      // forte (c'est l'action rare et gratifiante), like/passe = tap léger.
+      haptic(action === 'super' ? [20, 40, 20] : 10);
       const flyOut = () => {
         setExit(dir);
         window.setTimeout(() => {
@@ -680,6 +744,9 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         setQuota(res.quota);
         removeLike(id);
         if (res.matched) {
+          // Task 55 : match = la plus grande récompense de l'app — pulsation
+          // triple, distincte du swipe simple (mais toujours brève).
+          haptic([30, 50, 30, 50, 80]);
           refreshMatches(true); // la cloche Notifications voit le match immédiatement
           if (card) {
             removeFromDeck(id);
@@ -722,6 +789,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
     if (busy) return;
     setBusy(true);
     setError(null);
+    haptic(8); // Task 55 : Confirmation tactile douce de l'annulation
     try {
       const res = await api<{ ok: true; undone: boolean; targetId: string | null; quota: QuotaState }>(
         '/api/discover/rewind',
@@ -1445,33 +1513,74 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
         </a>
       </div>
 
-      {/* Bannière d'ambiance — une identité par mode */}
-      <section className={`mode-hero hero-${mode}`}>
-        <h2>{hero.title}</h2>
-        <p>{hero.sub}</p>
-        <div className="hero-chips">
-          {hero.chips.map((c) => (
-            <span key={c} className="chip-hero">
-              {c}
-            </span>
-          ))}
+      {/* Bannière d'ambiance — une identité par mode.
+          Task 55 : le chevron REPLIE le bandeau (sous-titre + chips) pour
+          laisser toute la hauteur utile à la carte — surtout en mobile.
+          Le titre reste toujours visible ; le choix est persisté (LS). */}
+      <section className={`mode-hero hero-${mode}`} data-collapsed={heroCollapsed || undefined}>
+        <div className="hero-head">
+          <h2>{hero.title}</h2>
+          <button
+            type="button"
+            className="hero-toggle"
+            aria-expanded={!heroCollapsed}
+            aria-label={heroCollapsed ? 'Déplier la bannière d’ambiance' : 'Replier la bannière d’ambiance'}
+            title={heroCollapsed ? 'Déplier — pourquoi c’est gratuit' : 'Replier — plus de place aux profils'}
+            onClick={() =>
+              setHeroCollapsed((v) => {
+                localStorage.setItem(HERO_LS_KEY, v ? '0' : '1');
+                return !v;
+              })
+            }
+          >
+            {heroCollapsed ? '▾' : '▴'}
+          </button>
         </div>
+        {!heroCollapsed && (
+          <>
+            <p>{hero.sub}</p>
+            <div className="hero-chips">
+              {hero.chips.map((c) => (
+                <span key={c} className="chip-hero">
+                  {c}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {isInvisible && <InvisibleSteps />}
 
-      {/* Barre de quotas + filtres */}
+      {/* Barre de quotas + filtres.
+          Task 55 : la mini-jauge (Task 43, likes) est GÉNÉRALISÉE aux quatre
+          pilules, avec états visuels — q-low (≤ 20 % restant) et q-empty
+          (épuisé : pulse discret). Les titres explicites restent. */}
       <div className="quota-row">
-        <span className="quota-chip" title="Likes restants aujourd'hui">
+        <span className={`quota-chip${quotaCls(quota?.likesLeft ?? 0, DISCOVERY.likesPerDay)}`} title="Likes restants aujourd'hui">
           ♥ {quota?.likesLeft ?? '–'}/{DISCOVERY.likesPerDay}
-          {/* Task 43 : mini-jauge de quota — reste/jour, données réelles. */}
           <i className="quota-bar" aria-hidden="true">
             <b style={{ width: `${Math.max(0, Math.min(100, ((quota?.likesLeft ?? 0) / DISCOVERY.likesPerDay) * 100))}%` }} />
           </i>
         </span>
-        <span className="quota-chip" title="Super Likes restants">✶ {quota?.supersLeft ?? '–'}/{DISCOVERY.superLikesPerDay}</span>
-        <span className="quota-chip" title="Demandes « Discuter » restantes">✉ {quota?.invisibleLeft ?? '–'}/{DISCOVERY.invisibleRequestsPerDay}</span>
-        <span className="quota-chip" title="Rewinds restants">↺ {quota?.rewindsLeft ?? '–'}/{DISCOVERY.rewindsPerDay}</span>
+        <span className={`quota-chip${quotaCls(quota?.supersLeft ?? 0, DISCOVERY.superLikesPerDay)}`} title="Super Likes restants">
+          ✶ {quota?.supersLeft ?? '–'}/{DISCOVERY.superLikesPerDay}
+          <i className="quota-bar" aria-hidden="true">
+            <b style={{ width: `${Math.max(0, Math.min(100, ((quota?.supersLeft ?? 0) / DISCOVERY.superLikesPerDay) * 100))}%` }} />
+          </i>
+        </span>
+        <span className={`quota-chip${quotaCls(quota?.invisibleLeft ?? 0, DISCOVERY.invisibleRequestsPerDay)}`} title="Demandes « Discuter » restantes">
+          ✉ {quota?.invisibleLeft ?? '–'}/{DISCOVERY.invisibleRequestsPerDay}
+          <i className="quota-bar" aria-hidden="true">
+            <b style={{ width: `${Math.max(0, Math.min(100, ((quota?.invisibleLeft ?? 0) / DISCOVERY.invisibleRequestsPerDay) * 100))}%` }} />
+          </i>
+        </span>
+        <span className={`quota-chip${quotaCls(quota?.rewindsLeft ?? 0, DISCOVERY.rewindsPerDay)}`} title="Rewinds restants">
+          ↺ {quota?.rewindsLeft ?? '–'}/{DISCOVERY.rewindsPerDay}
+          <i className="quota-bar" aria-hidden="true">
+            <b style={{ width: `${Math.max(0, Math.min(100, ((quota?.rewindsLeft ?? 0) / DISCOVERY.rewindsPerDay) * 100))}%` }} />
+          </i>
+        </span>
         <button type="button" className="btn ghost small" onClick={() => setShowFilters((v) => !v)}>
           Filtres
         </button>
@@ -1740,6 +1849,21 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
                   Élargir mes filtres
                 </button>
               </div>
+              {/* Task 55 — radar de proximité : la fin de pile n'est plus un
+                  cul-de-sac passif. Compteurs AGRÉGÉS du bassin (privacy :
+                  4 nombres, buckets vagues, incognito exclus côté serveur). */}
+              {presence && presence.total > 0 && (
+                <div className="presence-radar" role="status">
+                  <span className="radar-dot" aria-hidden="true" />
+                  <strong>
+                    {presence.online} en ligne maintenant
+                  </strong>
+                  <span className="radar-sep" aria-hidden="true">·</span>
+                  <span>{presence.today} actifs aujourd’hui</span>
+                  <span className="radar-sep" aria-hidden="true">·</span>
+                  <span>{presence.total} membres dans l’univers {MODE_TABS.find((t) => t.id === mode)?.label ?? 'Classique'}</span>
+                </div>
+              )}
             </div>
           )}
           {/* Task 45 (confidentialité) : les cartes ne se rendent JAMAIS

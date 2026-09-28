@@ -11175,3 +11175,213 @@ body.theme-dark .push-guide {
   border-color: rgba(255, 176, 32, 0.4);
   color: #f4d9a6;
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   TASK 55 — Pack quick wins ergonomie Découvrir (audit critique Gemini).
+   100 % additif : aucune règle existante n'est modifiée, tout est SCOPÉ
+   ci-dessous (sélecteurs nouveaux ou surcharge locale dans le media query).
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ---- §1 Repli de la bannière d'ambiance (chevron, persisté) ---- */
+.hero-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hero-toggle {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.2s;
+}
+
+.hero-toggle:hover {
+  background: rgba(255, 255, 255, 0.34);
+  transform: scale(1.08);
+}
+
+.mode-hero[data-collapsed] {
+  padding: 10px 16px;
+  gap: 0;
+}
+
+.mode-hero[data-collapsed] h2 {
+  font-size: 15.5px;
+}
+
+/* ---- §2 Quotas — états visuels (généralisation Task 43) ---- */
+/* La jauge reste celle de Task 43 ; on ajoute la teinte d'état + le pulse
+   quand le quota est épuisé (feedback doux, jamais punitif). */
+.quota-chip.q-low {
+  border-color: rgba(217, 119, 6, 0.4);
+}
+
+.quota-chip.q-low .quota-bar b {
+  background: #d97706;
+}
+
+.quota-chip.q-empty {
+  opacity: 0.62;
+  border-style: dashed;
+}
+
+.quota-chip.q-empty .quota-bar b {
+  background: rgba(45, 36, 56, 0.3);
+  animation: quotaPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes quotaPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+body.theme-dark .quota-chip.q-low {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+body.theme-dark .quota-chip.q-low .quota-bar b {
+  background: #fbbf24;
+}
+
+body.theme-dark .quota-chip.q-empty .quota-bar b {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ---- §3 Radar de proximité (empty state — compteurs agrégés) ---- */
+.presence-radar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.07);
+  font-size: 12.5px;
+  color: var(--c-text);
+}
+
+.presence-radar strong {
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.radar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  animation: radarPing 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes radarPing {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45); }
+  70% { box-shadow: 0 0 0 9px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.radar-sep {
+  opacity: 0.45;
+}
+
+body.theme-dark .presence-radar {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--c-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-dot,
+  .quota-chip.q-empty .quota-bar b {
+    animation: none;
+  }
+}
+
+/* ---- §4 Compaction mobile — la carte reprend la hauteur utile ----
+   (la critique « Gemini » avait raison sur CE point : sur 390 px, les
+   bandeaux mangeaient ~500 px avant la première carte). Append-only :
+   surcharges locales, aucune règle existante retouchée. */
+@media (max-width: 640px) {
+  .mode-tabs {
+    margin-top: 4px;
+    padding: 3px;
+  }
+
+  .mode-tab {
+    padding: 7px 4px;
+    font-size: 12.5px;
+  }
+
+  .mode-hero {
+    padding: 9px 12px;
+    gap: 5px;
+  }
+
+  .mode-hero h2 {
+    font-size: 15.5px;
+  }
+
+  .mode-hero p {
+    font-size: 12.5px;
+  }
+
+  /* chips d'ambiance plus compactes — 2 rangées au lieu de 3 sur 390 px */
+  .mode-hero .chip-hero {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+
+  .mode-hero[data-collapsed] {
+    padding: 8px 13px;
+  }
+
+  .mode-hero[data-collapsed] h2 {
+    font-size: 14px;
+  }
+
+  .quota-row {
+    margin-top: 7px;
+    gap: 5px;
+  }
+
+  .quota-chip {
+    padding: 3px 8px;
+    font-size: 11.5px;
+  }
+
+  .quota-bar {
+    width: 22px;
+    margin-left: 5px;
+  }
+
+  .presence-radar {
+    font-size: 11.5px;
+    gap: 5px;
+    padding: 8px 11px;
+  }
+
+  /* Task 55 : le radar de l'empty state ne doit JAMAIS passer sous les
+     barres fixes mobiles (chip de mode + tabbar ≈ 110 px). Le padding
+     historique (48 px, line 1426) ne suffit plus depuis l'ajout du radar :
+     on l'étend localement — la règle d'origine reste inchangée. */
+  .discover {
+    padding-bottom: 140px;
+  }
+}
