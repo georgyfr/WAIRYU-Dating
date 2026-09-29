@@ -1,0 +1,49 @@
+{
+  "quete": "1.9",
+  "titre": "Ton élan du moment",
+  "graine": 219427,
+  "items": [
+    {
+      "code": "Q1.9-01",
+      "orientation": "D",
+      "dimension": "autonomie"
+    },
+    {
+      "code": "Q1.9-02",
+      "orientation": "I",
+      "dimension": "autonomie"
+    },
+    {
+      "code": "Q1.9-03",
+      "orientation": "D",
+      "dimension": "autonomie"
+    },
+    {
+      "code": "Q1.9-04",
+      "orientation": "D",
+      "dimension": "competence"
+    },
+    {
+      "code": "Q1.9-05",
+      "orientation": "I",
+      "dimension": "competence"
+    },
+    {
+      "code": "Q1.9-06",
+      "orientation": "D",
+      "dimension": "competence"
+    },
+    {
+      "code": "Q1.9-07",
+      "orientation": "D",
+      "dimension": "affiliation"
+    },
+    {
+      "code": "Q1.9-08",
+      "orientation": "I",
+      "dimension": "affiliation"
+    }
+  ],
+  "c4_sans_objet": true,
+  "c4_note": "quête d'ÉTAT 8 items (3/3/2) : contrainte quasi-saturée (2 arrangements valides sur 560) — course 1 (c4 active) : verdict FAIL après 1200 échanges ; déclaration sans-objet, protection anti-enchaînement portée par c1 (PASS)"
+}

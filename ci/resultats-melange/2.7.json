@@ -1,0 +1,66 @@
+{
+  "quete": "2.7",
+  "titre": "Ta vision de la famille",
+  "graine_finale": 237427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q2.7-08"
+    },
+    {
+      "position": 2,
+      "code": "Q2.7-05"
+    },
+    {
+      "position": 3,
+      "code": "Q2.7-02"
+    },
+    {
+      "position": 4,
+      "code": "Q2.7-04"
+    },
+    {
+      "position": 5,
+      "code": "Q2.7-07"
+    },
+    {
+      "position": 6,
+      "code": "Q2.7-06"
+    },
+    {
+      "position": 7,
+      "code": "Q2.7-03"
+    },
+    {
+      "position": 8,
+      "code": "Q2.7-01"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
+  ],
+  "echanges": [
+    "pos 1 ↔ pos 5 · (1, 0, 2, 1, 1, 4) → (0, 0, 1, 1, 1, 4)",
+    "pos 1 ↔ pos 3 · (0, 0, 1, 1, 1, 4) → (0, 0, 0, 3, 2, 5)",
+    "pos 1 ↔ pos 2 · (0, 0, 0, 3, 2, 5) → (0, 0, 0, 2, 2, 4)",
+    "pos 5 ↔ pos 8 · (0, 0, 0, 2, 2, 4) → (0, 0, 0, 1, 1, 3)",
+    "pos 6 ↔ pos 8 · (0, 0, 0, 1, 1, 3) → (0, 0, 0, 0, 0, 2)"
+  ]
+}

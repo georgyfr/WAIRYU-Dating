@@ -1,0 +1,47 @@
+{
+  "quete": "2.7",
+  "titre": "Ta vision de la famille",
+  "graine": 237427,
+  "items": [
+    {
+      "code": "Q2.7-01",
+      "orientation": "D",
+      "dimension": "desir"
+    },
+    {
+      "code": "Q2.7-02",
+      "orientation": "I",
+      "dimension": "desir"
+    },
+    {
+      "code": "Q2.7-03",
+      "orientation": "D",
+      "dimension": "horizon"
+    },
+    {
+      "code": "Q2.7-04",
+      "orientation": "I",
+      "dimension": "horizon"
+    },
+    {
+      "code": "Q2.7-05",
+      "orientation": "D",
+      "dimension": "roles"
+    },
+    {
+      "code": "Q2.7-06",
+      "orientation": "I",
+      "dimension": "roles"
+    },
+    {
+      "code": "Q2.7-07",
+      "orientation": "D",
+      "dimension": "education"
+    },
+    {
+      "code": "Q2.7-08",
+      "orientation": "I",
+      "dimension": "education"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 1.5 « L'ÉPREUVE DU TEMPS » — 5 VARIANTES (étage 1)
+# Création : VAGUE 6 — Fin du Miroir (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : nombre de choix différés c (choix B) — partition exclusive +
+# exhaustive de 0 à 6 (C6, vérifiée machine).
+# ⚡ tâche comportementale : la carte est calculée sur les CHOIX (A = +1
+# impulsivité), jamais sur un déclaratif ; aucune « bonne répartition » —
+# les 5 variantes se valent, aucune n'est dressée en idéal (C4).
+# Le temps de réponse ne participe JAMAIS à la sélection (SIG-1.5-02, QFI
+# moteur seul — déflation de prudence, zéro trace).
+# Aucun code, score ou sigle au rendu ; les variables ne vivent que côté moteur.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "1.5 L'épreuve du temps"
+monde: M2
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "nombre de choix différés c (choix B) sur Q1.5-C1 → Q1.5-C6 — les 6 codes participent, aucune trame dans la quête"
+  logique: "c = 0 → Vit maintenant · c = 1-2 → Impatient du cœur · c = 3-4 → Équilibriste du temps · c = 5 → Pragmatique du cœur · c = 6 → Sait attendre"
+  exhaustivite: "5 plages ({0} · {1,2} · {3,4} · {5} · {6}) = partition totale de 0 à 6 — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "le temps de réponse (SIG-1.5-02) ne participe JAMAIS à la sélection — déflation QFI moteur seule"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « L'épreuve du temps »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-1.5-A
+    nom: "Le·La Main qui cueille"
+    ordre_selecteur: 1
+    condition: "c = 0 (aucun choix différé — les six en A)"
+    ancre_item: ["Q1.5-C1", "Q1.5-C2", "Q1.5-C3", "Q1.5-C4", "Q1.5-C5", "Q1.5-C6"]
+    portrait: "Tu prends la vie au moment où elle tend la main : l'argent de ce soir, le dîner chaud, la rencontre sans délai. Ton présent est un endroit où on se sent accueilli, et ça se lit dès la première conversation."
+    ombre: "Cueillir tout de suite laisse parfois des projets sans taille ni garde — et quelqu'un, à deux, attend encore le plan promis."
+    tension_interieure: "cueillir l'instant, sans en faire une dette pour plus tard."
+
+  - id: CARTE-1.5-B
+    nom: "Le·La Vague qui frappe"
+    ordre_selecteur: 2
+    condition: "c = 1 ou c = 2 (la majorité immédiate, une à deux attentes)"
+    ancre_item: ["Q1.5-C1", "Q1.5-C2", "Q1.5-C3", "Q1.5-C4", "Q1.5-C5", "Q1.5-C6"]
+    portrait: "Ton élan choisit vite et fort : la belle rencontre ce week-end, l'appartement signé sans tarder. Les histoires avec toi commencent tôt — et ça lance les choses que d'autres laissent attendre."
+    ombre: "La vague qui frappe entraîne aussi les décisions à chaud — et l'autre suit parfois un cap qui change en une semaine."
+    tension_interieure: "garder l'élan, en lui ajoutant une nuit quand quelqu'un d'autre embarque."
+
+  - id: CARTE-1.5-C
+    nom: "Le·La Funambule du temps"
+    ordre_selecteur: 3
+    condition: "c = 3 ou c = 4 (équilibre des mains)"
+    ancre_item: ["Q1.5-C1", "Q1.5-C2", "Q1.5-C3", "Q1.5-C4", "Q1.5-C5", "Q1.5-C6"]
+    portrait: "Tu marches sur le fil entre cueillir et attendre : un choix pour ce soir, un choix pour la semaine six. Ton tempo se règle pièce par pièce, pas par principe — et c'est ta signature."
+    ombre: "Le fil bouge avec l'humeur du jour — et l'autre ne devine pas ton tempo, il doit te le demander."
+    tension_interieure: "tenir ton fil, en disant à voix haute où tu en es."
+
+  - id: CARTE-1.5-D
+    nom: "Le·La Jardinier·se des saisons"
+    ordre_selecteur: 4
+    condition: "c = 5 (une seule main immédiate)"
+    ancre_item: ["Q1.5-C1", "Q1.5-C2", "Q1.5-C3", "Q1.5-C4", "Q1.5-C5", "Q1.5-C6"]
+    portrait: "Tu attends que la saison soit bonne : la somme qui double, la personne mieux lue, l'histoire qui s'installe. Ta patience n'attend pas par peur — elle vise, et ça se sent à l'arrivée."
+    ombre: "Le jardinier qui attend trop la saison voit parfois la fenêtre se fermer — et l'autre se demander s'il vaut le risque."
+    tension_interieure: "viser juste, sans laisser filer les portes qui ne sonnent qu'une fois."
+
+  - id: CARTE-1.5-E
+    nom: "Le·La Vin qui se garde"
+    ordre_selecteur: 5
+    condition: "c = 6 (tous les choix différés)"
+    ancre_item: ["Q1.5-C1", "Q1.5-C2", "Q1.5-C3", "Q1.5-C4", "Q1.5-C5", "Q1.5-C6"]
+    portrait: "Six choix, six attentes : tu sais ce que tu veux et tu acceptes le délai qui l'accompagne. Avec toi, le temps se lit — il ne surprend pas, et ça construit du solide."
+    ombre: "Le vin se garde, pas la vie entière : certaines envies expirent en cave — et l'autre attend sa part de maintenant."
+    tension_interieure: "garder le cap, sans transformer l'attente en règle totale."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "sélection par les choix réels (c = nombre de B) — la mesure est comportementale : A = +1 impulsivité côté moteur, aucun déclaratif"
+  - "neutralité absolue entre les 5 variantes : ni le pôle immédiat ni le pôle différé n'est écrit en idéal (C4 vérifié machine — zéro superlatif)"
+  - "le temps de réponse (SIG-1.5-02) ne participe jamais à la sélection et ne produit aucun texte — signal QFI moteur seul"
+  - "le croisement 1.4 × 1.5 (EC, SIG_COH_*) ne vit PAS sur la carte : il rend au Portrait de Monde M2 (ÉTAGE 3, conditions verbatim du registre) — continuité documentée dans 04-slots"
+  - "rappels en toutes lettres possibles dans le portrait (les montants et délais des options du tableau 01, jamais les codes)"
+  - "registre probabiliste : aucun futur certain (« parfois », « peuvent » — présent fréquentiel)"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées de la règle du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4 — compteur réel, jamais décoratif"

@@ -1,0 +1,57 @@
+{
+  "quete": "1.10",
+  "titre": "Ce que tu apportes",
+  "graine": 220427,
+  "items": [
+    {
+      "code": "Q1.10-01",
+      "orientation": "D",
+      "dimension": "presence"
+    },
+    {
+      "code": "Q1.10-02",
+      "orientation": "I",
+      "dimension": "presence"
+    },
+    {
+      "code": "Q1.10-03",
+      "orientation": "D",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q1.10-04",
+      "orientation": "I",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q1.10-05",
+      "orientation": "D",
+      "dimension": "compromis"
+    },
+    {
+      "code": "Q1.10-06",
+      "orientation": "I",
+      "dimension": "compromis"
+    },
+    {
+      "code": "Q1.10-07",
+      "orientation": "D",
+      "dimension": "torts"
+    },
+    {
+      "code": "Q1.10-08",
+      "orientation": "I",
+      "dimension": "torts"
+    },
+    {
+      "code": "Q1.10-09",
+      "orientation": "D",
+      "dimension": "soutien"
+    },
+    {
+      "code": "Q1.10-10",
+      "orientation": "I",
+      "dimension": "soutien"
+    }
+  ]
+}

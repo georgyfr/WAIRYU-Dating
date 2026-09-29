@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 1.10 « CE QUE TU APPORTES » — 3 VARIANTES (étage 1)
+# Création : VAGUE 6 — Fin du Miroir (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Titres imposés par la mission (registre libre) : La Rocade · L'Échelle ·
+# La Balise — métaphores d'objet (exemption C8 documentée, précédent VAGUE 5).
+# Sélection : contribution déclarée CONTRIB_D — partition exclusive + exhaustive
+# de 0 à 1 (C6, vérifiée machine). L'ombre est OBLIGATOIRE et nomme le coût
+# relationnel de la posture — jamais un jugement de la personne.
+# Le croisement avec M1 (SIG_CONTRIB) ne participe JAMAIS à la sélection ni au
+# rendu de la carte (moteur seul — facteur de confiance).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "1.10 Ce que tu apportes"
+monde: M2
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "contribution déclarée CONTRIB_D (moyenne des 10 items, I recodés 6−r, normalisée 0-1) — Q1.10-01 → Q1.10-10, aucune trame dans la quête"
+  logique: "CONTRIB_D > 0.65 → La Balise (contributeur fort) · 0.35-0.65 → L'Échelle (équilibré) · < 0.35 → La Rocade (asymétrique — exige plus qu'il n'offre)"
+  bornes: "faible < 0.35 · central 0.35-0.65 · élevé > 0.65 — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 plages = partition totale de [0,1] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "SIG_CONTRIB (croisement M1) ne participe JAMAIS à la sélection — facteur de confiance moteur seul"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ce que tu apportes »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-1.10-BALISE
+    nom: "La Balise"
+    ordre_selecteur: 1
+    condition: "CONTRIB_D > 0.65 (contributeur fort)"
+    ancre_item: ["Q1.10-01", "Q1.10-02", "Q1.10-03", "Q1.10-04", "Q1.10-05", "Q1.10-06", "Q1.10-07", "Q1.10-08", "Q1.10-09", "Q1.10-10"]
+    portrait: "Tu es la personne qui revient : le premier contact après la dispute, la réponse arrivée avant la demande, le tort reconnu le jour même. Ce que tu offres se voit, se vérifie, et tient une table à deux."
+    ombre: "Une balise qui brille pour les autres éclaire parfois peu son propre chemin — et donner peut devenir la seule façon que tu tolères d'être aimé·e."
+    tension_interieure: "donner fort, sans y perdre ta place de personne qui reçoit aussi."
+
+  - id: CARTE-1.10-ECHELLE
+    nom: "L'Échelle"
+    ordre_selecteur: 2
+    condition: "CONTRIB_D entre 0.35 et 0.65 (équilibré)"
+    ancre_item: ["Q1.10-01", "Q1.10-02", "Q1.10-03", "Q1.10-04", "Q1.10-05", "Q1.10-06", "Q1.10-07", "Q1.10-08", "Q1.10-09", "Q1.10-10"]
+    portrait: "Tu donnes et tu reçois : tu cherches ce qui arrange les deux, tu admets tes torts, tu aides selon le jour. Rien de spectaculaire — un équilibre qui se vérifie en marchant, pas en annonçant."
+    ombre: "L'équilibre peut glisser vers le compte exact : rendre chaque effort, mesurer chaque geste — et le lien devient un livre où l'on note plus qu'on ne s'offre."
+    tension_interieure: "garder le cap du donnant-donnant, sans transformer l'autre en débiteur."
+
+  - id: CARTE-1.10-ROCADE
+    nom: "La Rocade"
+    ordre_selecteur: 3
+    condition: "CONTRIB_D < 0.35 (asymétrique — exige plus qu'il n'offre)"
+    ancre_item: ["Q1.10-01", "Q1.10-02", "Q1.10-03", "Q1.10-04", "Q1.10-05", "Q1.10-06", "Q1.10-07", "Q1.10-08", "Q1.10-09", "Q1.10-10"]
+    portrait: "Tu sais ce que tu attends des gens et tu le demandes sans détour. Ton côté du chemin est bien entretenu — tu sais où tu veux aller, et ça a de la clarté."
+    ombre: "La rocade évite le centre : à force de recevoir plus que tu n'offres, les gens finissent par emprunter un autre chemin — et le silence qui suit coûte ce que tu croyais gagner."
+    tension_interieure: "demander ce dont tu as besoin, en commençant par poser la première pierre."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "titres imposés par la mission (registre libre) — mapping documenté : La Balise = contributeur fort (la présence qui revient) · L'Échelle = équilibré (l'appui des deux côtés) · La Rocade = asymétrique (le chemin qui contourne le centre du don)"
+  - "l'ombre est OBLIGATOIRE sur les 3 variantes et nomme le coût pour soi ET pour l'autre — l'asymétrique est une mécanique de couple, jamais un procès (zéro label accusateur)"
+  - "le portrait cite des comportements, jamais des qualités (anti auto-flatterie au rendu aussi)"
+  - "SIG_CONTRIB (croisement M1) ne participe ni à la sélection ni au rendu — facteur de confiance moteur seul, lecture croisée au Portrait (ÉTAGE 3)"
+  - "registre probabiliste : aucun futur certain (« parfois », « finissent par » — présent fréquentiel)"
+  - "C2/C3 : zéro signal de sécurité, zéro vocabulaire clinique"
+  - "C4 : aucun superlatif — aucune posture dressée en idéal (la balise n'est pas « meilleure » que la rocade)"
+  - "C8 : métaphores d'objet exemptées du point médian (précédent VAGUE 5) · « (e) » dans le corps"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

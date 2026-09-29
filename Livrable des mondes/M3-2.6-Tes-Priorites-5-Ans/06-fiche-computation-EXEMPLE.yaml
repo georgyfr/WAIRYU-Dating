@@ -1,0 +1,60 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN AXE (modèle des 5 canaux)
+# Axe choisi : Q2.6-01 (carrière / ambition — premier axe, porteur de la friction documentée n°1).
+# Fichier YAML strict (gabarit des 4 autres axes : seuls description et ancrage changent).
+item: Q2.6-01
+quete: "2.6 Tes priorités pour les 5 prochaines années"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: jeu_arbitrage_100     # NON-Likert : curseur 0-100, somme verrouillée sur les 5 axes
+axe: "Carrière / ambition"
+description_ecran: >-
+  Faire grandir ce que tu construis professionnellement. Formations, responsabilités,
+  lancement : les années où ton travail avance fort.
+echelle: null                 # pas d'échelle — une répartition sous contrainte
+orientation: null             # sans-objet (mélange sans objet, voir 02)
+dimension: null               # pas de dimension psychométrique — un choix de répartition
+mecanique:
+  curseur: "0 → 100, pas de 1"
+  somme: 100                  # verrouillée — validation inactive tant que Σ ≠ 100
+  valeur_par_defaut: none     # profil vierge : le choix est obligatoire
+  ecran: unique               # les 5 axes ensemble
+double_balise:
+  carte_id: priorites_2.6     # alimente la carte (4 variantes) et le miroir (4 profils)
+  signal_id: SIG-2.6-01       # signal conversationnel « à aborder tôt » — jamais un dealbreaker
+computation:
+  carte:
+    role: profil_de_decennie
+    regle: "la répartition choisit la variante (carrière/famille/liberté-dominant ou équilibré — partition 07 §2)"
+    rendu: etage_1_et_2        # carte (4 variantes) + miroir (4 profils)
+  signal:
+    role: signal_conversationnel
+    mecanisme: >-
+      écart brut > 40 points sur un axe avec un autre profil (EC_PRI_x) -> signal conversationnel
+      « à aborder tôt » via les amorces de conversation — jamais un score, jamais une élimination,
+      jamais un verdict sur l'un ou l'autre
+    rendu: moteur_seul         # l'écart ne se raconte dans AUCUN miroir individuel
+    condition: "EC_PRI_x > 40 — seuil verrou [9], provisoire concepteur"
+  fiabilite:
+    role: contrainte_de_somme
+    regle: >-
+      la somme verrouillée à 100 garantit une répartition complète (aucune donnée partielle) ;
+      le pas de 1 évite les répartitions décoratives ; re-passage possible (quête Libre) —
+      la décennie se relit
+  modulation:
+    - si: "répartition modifiée avant validation"
+      effet: "rien n'est enregistré tant que la somme n'est pas à 100 — pas de brouillon jugé"
+    - si: "mise à jour d'une répartition après validation"
+      effet: "compatibilités recalculées des deux côtés — fenêtre À VALIDER PAR LE COMITÉ"
+    - si: "dominance d'ancrage (stabilité ou projets communs en tête)"
+      effet: "profil « équilibré » au gabarit (07 §2) — jamais traité comme un non-choix"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — l'axe et l'intention, JAMAIS les points chiffrés (verrou 04 n° 5)"
+    exemple: "quand tu as mis le paquet sur la carrière"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 5 axes. Seuls changent : nom d'axe, description d'écran,
+    ancrage de rappel — la mécanique (curseur, somme, écran unique) est commune.
+  - >-
+    Aucune fiche de trame n'existe pour cette quête : aucun énoncé réservé, aucune balise de trame
+    — vérifié (n_trames = 0).

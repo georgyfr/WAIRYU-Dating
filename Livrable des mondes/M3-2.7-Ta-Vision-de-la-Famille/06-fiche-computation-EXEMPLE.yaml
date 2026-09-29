@@ -1,0 +1,52 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q2.7-01 (désir d'enfants — l'item factuel du dealbreaker parentalité).
+# Fichier YAML strict (gabarit des 7 autres items : seuls énoncé, angle, orientation et ancrage changent).
+item: Q2.7-01
+quete: "2.7 Ta vision de la famille"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Des enfants font partie du projet que je me fais."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de son angle
+dimension: desir              # angle 1/4 : désir d'enfants (paire R6 avec Q2.7-02 inversé)
+type_mesure: trait_declaratif # déclarative directe — sans trame, déguisement impossible
+double_balise:
+  carte_id: vision_famille_2.7 # alimente la carte (3 variantes) et le miroir (3 profils)
+  signal_id: SIG-2.7-01        # dealbreaker parentalité — SQL pré-filtrage, silence total
+computation:
+  carte:
+    role: score_de_quete
+    regle: "DESIR (moyenne 01 + 02 recodé, 1-5) choisit la variante (parent-avide / indécis-serein / sans-enfant-choisi)"
+    rendu: etage_1_et_2         # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: dealbreaker_parentalite
+    mecanisme: >-
+      |DESIR_A - DESIR_B| >= 2 (échelle 1-5) -> score de compatibilité = 0 — SQL pré-filtrage,
+      AVANT tout calcul ; aucune trace rendue chez l'un ni chez l'autre, aucun mot « dealbreaker »
+    rendu: moteur_seul          # le mécanisme façonne le pool, il ne commente personne
+    condition: ">= 2 — règle verbatim du CONTRAT (non re-votée) ; opération SQL proposée (03)"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'angle = moyenne des items valides + prudence
+      (precedent SIG-2.1-02)
+  modulation:
+    - si: "paire R6 divergente sur le désir (01 × 02)"
+      effet: "angle mis en prudence — la passation est re-proposée doucement ; un désir peu sûr n'est pas un drapeau, c'est un chantier"
+    - si: "réponse mise à jour (désir ou horizon)"
+      effet: "pré-filtrage et compatibilités recalculés des deux côtés — fenêtre À VALIDER PAR LE COMITÉ"
+    - si: "écart d'horizon > 4 ans avec un profil (proposition [9])"
+      effet: "signal conversationnel « à aborder tôt » (SIG-2.7-02) — jamais une élimination"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — le projet décrit, jamais chiffré, jamais un code"
+    exemple: "quand tu as répondu que des enfants font partie du projet que tu te fais"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 items. Seuls changent : énoncé, angle (désir / horizon /
+    rôles / cadre), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Aucune fiche de trame n'existe pour cette quête : aucun énoncé réservé, aucune balise de trame
+    — vérifié au registre (n_trames = 0).

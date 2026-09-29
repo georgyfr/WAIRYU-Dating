@@ -1,0 +1,59 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN CHOIX (modèle des 5 canaux)
+# Choix choisi : Q1.5-C1 (l'argent dû — premier binôme, porteur du modulateur DGR).
+# Fichier YAML strict (gabarit des autres choix : seuls l'ancrage de rappel et le domaine changent).
+item: Q1.5-C1
+quete: "1.5 L'épreuve du temps"
+monde: M2                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: choix_binaire_comportemental   # ⚡ NON-Likert : A immédiat / B différé, hypothétiques assumés
+registre: financier
+cadre_ecran: "Un argent qui t'est dû arrive."
+choix:
+  A: "Tu le reçois ce soir : 120 € sur ton compte."
+  B: "Tu le reçois dans six semaines : 200 € sur ton compte."
+echelle: null                 # pas d'échelle — un clic, A ou B
+orientation: null             # sans-objet hors Likert (mélange sans objet, voir 02)
+dimension: null               # mono-métrique : impulsivité comportementale côté moteur
+temps_de_reponse:
+  mesure: true                # écran → clic, mesuré par choix, jamais affiché
+  usage: SIG-1.5-02 (QFI)     # zéro texte rendu
+double_balise:
+  carte_id: score_impulsivite_1.5     # alimente la carte « Ce que tes choix révèlent » (étage 1)
+  signal_id: SIG-1.5-01               # modulateur DGR — aucune trame dans la quête (pas de balise trame)
+computation:
+  carte:
+    role: score_de_quete
+    regle: "A = +1 impulsivité ; IMP_B = n_A / 6 ∈ [0,1] — le score choisit la variante de carte (c = nombre de B)"
+    rendu: etage_1_et_2         # carte (5 variantes) + miroir (5 profils)
+  signal:
+    role: modulateur_DGR
+    mecanisme: >-
+      IMP_B module le signal dangerosité réactive côté moteur — correction du déclaratif 1.4,
+      le comportement prime progressivement (courbe J+90) ; aucun des deux membres ne voit
+      le modulateur agir
+    rendu: moteur_seul
+    condition: "IMP_B >= T_IMP ET garde QFI >= 0.60 — seuil provisoire concepteur (re-signature avant bêta)"
+  fiabilite:
+    role: temps_de_reponse
+    regle: >-
+      temps médian < 1,5 s sur les 6 choix OU réponse sans temps mesurable → drapeau QFI,
+      déflation de prudence du score — seuils À VALIDER PAR LE COMITÉ
+  modulation:
+    - si: "c = 0 (tout immédiat) ou c = 6 (tout différé)"
+      effet: "carte et miroir du pôle correspondant — profil complet, non segmenté"
+    - si: "profil mixte (1 ≤ c ≤ 5)"
+      effet: "profil valide et intermédiaire — le slot S3 raconte les deux mains ; aucune lecture d'incohérence"
+    - si: "passation inattentive (SIG-1.5-02)"
+      effet: "score déflaté côté moteur — aucun texte rendu, aucune relance"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, scènes de choix (hypothétiques assumés) — jamais les montants re-scorés, jamais les codes"
+    exemple: "quand tu as choisi de toucher l'argent tout de suite"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 6 choix (les fiches condensées du tableau 01 se déploient
+    dans ce format complet). Seuls changent : registre (financier/matériel/relationnel), cadre
+    d'écran, options A/B, ancrage de rappel.
+  - >-
+    Aucune fiche de trame n'existe pour cette quête : aucun énoncé réservé, aucune balise de trame
+    — vérifié au registre (n_trames = 0).

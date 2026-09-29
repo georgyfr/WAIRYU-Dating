@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.2 « TA PLACE POUR LA SPIRITUALITÉ » — 3 VARIANTES (étage 1)
+# Création : VAGUE 6 — Fin de la Boussole (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : centralité spirituelle SPIRIT_D — partition exclusive + exhaustive
+# de 0 à 1 (C6, vérifiée machine). NEUTRALITÉ ABSOLUE : les trois places se
+# valent — l'ombre de la centrale (« la foi partagée rassure mais
+# l'interprétation divise ») et celle de l'absente (« la liberté totale mais
+# moins de rituels communs ») sont prévues par la mission, la culturelle au
+# même gabarit. Aucune confession nommée, aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "2.2 Ta place pour la spiritualité"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "centralité spirituelle SPIRIT_D (moyenne des 6 items, I recodés 6−r, normalisée 0-1) — Q2.2-01 → Q2.2-06, aucune trame dans la quête"
+  logique: "SPIRIT_D > 0.65 → place centrale · 0.35-0.65 → place culturelle · < 0.35 → place libre (absente)"
+  bornes: "faible < 0.35 · central 0.35-0.65 · élevé > 0.65 — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 plages = partition totale de [0,1] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "l'écart à l'autre (EC_SPIRIT, SIG-2.2-01) ne participe JAMAIS à la sélection — filtre enrichi moteur seul"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ta place pour la spiritualité »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-2.2-CLOCHES
+    nom: "Le·La Cloche qui marque les jours"
+    ordre_selecteur: 1
+    condition: "SPIRIT_D > 0.65 (place centrale)"
+    ancre_item: ["Q2.2-01", "Q2.2-02", "Q2.2-03", "Q2.2-04", "Q2.2-05", "Q2.2-06"]
+    portrait: "Ta spiritualité se vit plus qu'elle ne se déclare : une place dans la semaine, un poids dans les décisions, une part du couple que tu veux vraie. Tu habites une architecture du sens, et elle se voit."
+    ombre: "La foi partagée rassure mais l'interprétation divise — entrer dans le même lieu n'empêche pas d'y voir deux paysages."
+    tension_interieure: "partager ta place, sans la réclamer comme entrée obligatoire."
+
+  - id: CARTE-2.2-FETES
+    nom: "Le·La Fête des saisons"
+    ordre_selecteur: 2
+    condition: "SPIRIT_D entre 0.35 et 0.65 (place culturelle)"
+    ancre_item: ["Q2.2-01", "Q2.2-02", "Q2.2-03", "Q2.2-04", "Q2.2-05", "Q2.2-06"]
+    portrait: "Ta spiritualité vit dans les grandes heures : les fêtes qui rassemblent, les saisons qui rythment, les gestes hérités que tu gardes sans tout suivre. Elle fait du lien, pas de la discipline."
+    ombre: "Les célébrations rassemblent et le quotidien reste sans rite commun — la fête dit l'appartenance, elle ne dit pas tout."
+    tension_interieure: "garder les grandes heures, sans laisser le reste des jours se taire."
+
+  - id: CARTE-2.2-CLAIRIERE
+    nom: "Le·La Clairière ouverte"
+    ordre_selecteur: 3
+    condition: "SPIRIT_D < 0.35 (place libre — absente)"
+    ancre_item: ["Q2.2-01", "Q2.2-02", "Q2.2-03", "Q2.2-04", "Q2.2-05", "Q2.2-06"]
+    portrait: "La spiritualité n'occupe pas de place chez toi, et ce n'est pas un vide : c'est une clairière ouverte. Tu cherches le sens sans autel et le lien sans rituel — ta façon d'habiter la vie en vaut une autre."
+    ombre: "La liberté totale donne moins de rituels communs — les jalons que d'autres héritent, tu les inventeras avec quelqu'un, à la main."
+    tension_interieure: "rester libre, en acceptant de bâtir des jalons à deux."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité absolue : les 3 variantes se valent — l'ombre de l'absente n'est pas un manque, celle de la centrale pas un procès, celle de la culturelle pas une surface (contrôles machine)"
+  - "ombres de la centrale et de l'absente prévues par la mission (verbatim cadré) ; la culturelle suit le même gabarit (coût pour soi ET pour l'autre)"
+  - "zéro confession : aucun dieu, texte, culte ni croyance nommée — la « place » est générique (C3 vérifié machine)"
+  - "SIG-2.2-01 (écart à l'autre) ne participe ni à la sélection ni au rendu — filtre enrichi moteur seul"
+  - "registre probabiliste : aucun futur certain (« parfois », « finissent par » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucune place dressée en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

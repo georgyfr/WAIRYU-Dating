@@ -1,0 +1,70 @@
+{
+  "quete": "1.10",
+  "titre": "Ce que tu apportes",
+  "graine_finale": 220427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q1.10-10"
+    },
+    {
+      "position": 2,
+      "code": "Q1.10-03"
+    },
+    {
+      "position": 3,
+      "code": "Q1.10-02"
+    },
+    {
+      "position": 4,
+      "code": "Q1.10-05"
+    },
+    {
+      "position": 5,
+      "code": "Q1.10-08"
+    },
+    {
+      "position": 6,
+      "code": "Q1.10-04"
+    },
+    {
+      "position": 7,
+      "code": "Q1.10-09"
+    },
+    {
+      "position": 8,
+      "code": "Q1.10-06"
+    },
+    {
+      "position": 9,
+      "code": "Q1.10-07"
+    },
+    {
+      "position": 10,
+      "code": "Q1.10-01"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
+  ],
+  "echanges": [
+    "pos 4 ↔ pos 3 · (0, 0, 0, 1, 1, 4) → (0, 0, 0, 0, 0, 2)"
+  ]
+}

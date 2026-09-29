@@ -1,0 +1,58 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTE DE LA QUÊTE 1.9 « TON ÉLAN DU MOMENT » — 1 VARIANTE UNIQUE (étage 1)
+# Création : VAGUE 6 — Fin du Miroir (2026-09-29).
+# Charte des cartes C1-C11 — CARTE DE CLARTÉ : 40-70 mots (hors C7 standard —
+# exception documentée, mission Production 2).
+# DESIGN PARTICULIER : la carte est UNIQUE et NON SÉLECTIVE par décision de
+# mission — elle décrit un ÉTAT du moment, pas un portrait de personnalité.
+# Elle est la même pour tous les profils d'élan : c'est sa doctrine, pas un
+# manque de logique de sélection (condition = toujours ; exhaustivité triviale).
+# ⚠ RÈGLE ABSOLUE : cette quête n'entre JAMAIS dans le score, JAMAIS dans le
+# matching — la carte parle de la personne à elle-même, jamais de sa place.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "1.9 Ton élan du moment"
+monde: M2
+statut_freemium: gratuit
+format: "etage_1_carte_clarte"
+charte: "C1-C11 (mission VAGUE 5) — exception longueurs : 40-70 mots (cartes de clarté, hors C7)"
+exception_longueur: "40-70 mots — documentée (mission VAGUE 5, Production 2)"
+
+selection:
+  variable: "aucune — carte unique par design (état du moment, pas un portrait)"
+  logique: "condition = toujours : la carte est identique pour les trois degrés d'élan (haut / mixte / bas)"
+  exhaustivite: "triviale — une variante, rendue à toute passation complète (C6 satisfait par construction)"
+  non_participant: "le score d'élan ne choisit RIEN sur cette carte : il ne vit qu'au miroir (3 profils) et au moteur (SIG_ÉLAN_FAIBLE, sans trace)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ton élan du moment »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-1.9-ETAT
+    nom: "La Météo du moment"
+    ordre_selecteur: 1
+    condition: "toujours — variante unique (état du moment, jamais un portrait de personnalité)"
+    ancre_item: ["Q1.9-01", "Q1.9-02", "Q1.9-03", "Q1.9-04", "Q1.9-05", "Q1.9-06", "Q1.9-07", "Q1.9-08"]
+    portrait: "Ce que tu lis ici n'est pas un portrait : c'est ta météo intérieure du jour. Ton élan monte, s'essouffle, revient — et ton énergie a le droit de bouger sans te trahir."
+    ombre: "Une météo datée trompe si on la relit plus tard : ce que tu offres aujourd'hui change — et l'autre lit l'aujourd'hui, pas ta semaine passée."
+    tension_interieure: "accepter que ton élan bouge, sans le forcer à mentir."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes clarté 40-70, vérifié machine (script hors dépôt)"
+  - "carte unique NON sélective : décision de mission (état ≠ portrait) — aucun degré d'élan n'est rendu sur la carte ; la lecture différenciée vit au miroir (3 profils)"
+  - "l'ombre nomme le coût d'une lecture datée (l'état expire) — jamais un jugement de l'élan (neutralité absolue : aucun niveau d'élan n'est un mérite)"
+  - "datation visible : la carte porte sa date de passation côté écran (moteur) — re-passation possible au plus tôt à 30 jours (cadrage 00-README)"
+  - "RÈGLE ABSOLUE gravée : cette quête ne participe à aucun score, aucun matching, aucune compatibilité — la carte ne mentionne jamais l'autre comme cible, seulement comme lecteur possible (fenêtre F1/F2 standard)"
+  - "registre probabiliste : aucun futur certain"
+  - "C2/C3 : zéro vocabulaire clinique, zéro promesse de protection — « météo » est une métaphore pédagogique autorisée (Constitution [3])"
+  - "C8 : titre métaphore d'objet (exemption du médian, précédent VAGUE 5) · « (e) » dans le corps"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

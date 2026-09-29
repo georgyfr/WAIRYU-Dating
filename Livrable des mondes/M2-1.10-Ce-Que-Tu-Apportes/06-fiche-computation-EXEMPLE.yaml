@@ -1,0 +1,55 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q1.10-03 (capacité de réparation — le premier pas, cœur du registre mission).
+# Fichier YAML strict (gabarit des 9 autres items : seuls énoncé, dimension, orientation et ancrage changent).
+item: Q1.10-03
+quete: "1.10 Ce que tu apportes"
+monde: M2                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Après une dispute, je reprends contact le premier."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de sa dimension
+dimension: reparation         # capacité de réparation (paire R6 avec Q1.10-04 inversé)
+type_mesure: trait_comportemental   # comportement observable — R6 requise (≠ quête d'état 1.9)
+double_balise:
+  carte_id: contribution_1.10 # alimente la carte (3 variantes) et le slot « ta contribution » du Portrait
+  signal_id: SIG_CONTRIB      # déclarée au registre M2 — croisement M1, moteur seul
+interdictions:
+  trace_ecart: true           # l'écart déclaré/mesuré ne rend JAMAIS un texte
+  qualites_auto: true         # aucun adjectif de soi au rendu (anti auto-flatterie)
+computation:
+  carte:
+    role: score_de_quete
+    regle: "CONTRIB_D = moyenne des 10 items (I recodés 6−r), normalisée 0-1 — choisit la variante (haut/central/bas)"
+    rendu: etage_1_et_2       # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: croisement_declare_mesure
+    mecanisme: >-
+      CONTRIB_D (cette quête) × CONTRIB_M (traits mesurés M1) : EC_CONTRIB > 0.30 (seuil verrou [9],
+      provisoire concepteur) -> facteur de confiance réduit + proposition de re-test ciblé AU membre
+    rendu: moteur_seul        # module la confiance, ne commente personne
+    condition: "EC_CONTRIB > 0.30 — statut registre M2 : À VALIDER PAR LE COMITÉ"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur la dimension,
+      rappel en toutes lettres, score de dimension = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) — plus le BIDR (désirabilité sociale, moteur) sur la passation
+  modulation:
+    - si: "paire R6 divergente sur une dimension"
+      effet: "dimension mise en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "sur-déclaration détectée (BIDR, moteur)"
+      effet: "déflation de prudence silencieuse — aucune trace, aucune relance"
+    - si: "EC_CONTRIB > 0.30 (proposition)"
+      effet: "facteur de confiance réduit + invitation douce au re-test ciblé (jamais imposée)"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, comportement cité — jamais une qualité prêtée, jamais un code"
+    exemple: "quand tu as répondu reprendre contact le premier après une dispute"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 10 items. Seuls changent : énoncé, dimension (présence /
+    réparation / compromis / torts / soutien), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Aucune fiche de trame n'existe pour cette quête : aucun énoncé réservé, aucune balise de trame
+    — vérifié au registre (n_trames = 0).

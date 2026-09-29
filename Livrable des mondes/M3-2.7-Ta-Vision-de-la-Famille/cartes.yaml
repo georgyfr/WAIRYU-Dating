@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.7 « TA VISION DE LA FAMILLE » — 3 VARIANTES (étage 1)
+# Création : VAGUE 6 — Fin de la Boussole (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : désir d'enfants DESIR — partition exclusive + exhaustive (C6, vérifiée machine).
+# Chaque profil est respecté : le désir d'enfant, l'indécision honnête et le choix
+# sans enfant sont trois vies dignes. Le DEALBREAKER parentalité (divergence ≥ 2,
+# score = 0, SQL pré-filtrage) est un mécanisme moteur SILENCIEUX — il ne participe
+# PAS à la sélection rendue ici (la carte décrit la personne, jamais son incompatibilité)
+# et ne s'écrit dans AUCUN texte.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "2.7 Ta vision de la famille"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "désir d'enfants DESIR (moyenne de Q2.7-01 et Q2.7-02 recodé 6−r, échelle 1-5, normalisée 0-1)"
+  logique: "DESIR > 0.65 → Le·La Berceau qui attend · 0.35-0.65 → Le·La Porte entrouverte · < 0.35 → Le·La Route à deux"
+  bornes: "faible < 0.35 · central 0.35-0.65 · élevé > 0.65 — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 plages = partition totale de [0,1] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "le dealbreaker (SIG-2.7-01) ne participe JAMAIS à la sélection et ne produit AUCUN texte — mécanisme moteur silencieux"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ta vision de la famille »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-2.7-BERCEAU
+    nom: "Le·La Berceau qui attend"
+    ordre_selecteur: 1
+    condition: "DESIR > 0.65 (désir d'enfants affirmé)"
+    ancre_item: ["Q2.7-01", "Q2.7-02", "Q2.7-03", "Q2.7-04", "Q2.7-05", "Q2.7-06", "Q2.7-07", "Q2.7-08"]
+    portrait: "Ton projet d'enfants se voit de loin : il s'annonce, il avance, il compte dans la vie que tu prépares. Tu poses les questions difficiles maintenant — parce que tu veux les vraies réponses, pas les réponses de politesse."
+    ombre: "Un désir qui avance presse parfois l'autre — et les décisions arrachées tiennent rarement debout longtemps."
+    tension_interieure: "porter ton désir, sans compter les heures de l'autre."
+
+  - id: CARTE-2.7-PORTE
+    nom: "Le·La Porte entrouverte"
+    ordre_selecteur: 2
+    condition: "DESIR entre 0.35 et 0.65 (désir en équilibre ouvert)"
+    ancre_item: ["Q2.7-01", "Q2.7-02", "Q2.7-03", "Q2.7-04", "Q2.7-05", "Q2.7-06", "Q2.7-07", "Q2.7-08"]
+    portrait: "Ton désir est une porte entrouverte : ni lancé ni fermé, honnêtement en suspens. Tu réponds peut-être parce que c'est vrai — et ça vaut mieux qu'un oui de politesse ou un non de peur."
+    ombre: "Le peut-être durable laisse porter la décision — le temps tranche rarement seul, et quelqu'un finit par choisir pour deux."
+    tension_interieure: "garder ton ouverture, en lui donnant une date."
+
+  - id: CARTE-2.7-ROUTE
+    nom: "Le·La Route à deux"
+    ordre_selecteur: 3
+    condition: "DESIR < 0.35 (projet sans enfants — un choix, pas un manque)"
+    ancre_item: ["Q2.7-01", "Q2.7-02", "Q2.7-03", "Q2.7-04", "Q2.7-05", "Q2.7-06", "Q2.7-07", "Q2.7-08"]
+    portrait: "Ton projet ne passe pas par les enfants — un choix, pas un manque. Tu construis une vie entière autrement, et tu la veux à deux, pleine, sans parenthèse imposée."
+    ombre: "La route choisie se dit tard parfois — l'incompatibilité découverte à la longue coûte les années déjà tissées."
+    tension_interieure: "tenir ta route, en la disant tôt et en toutes lettres."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "chaque profil respecté (C4 vérifié machine) : le désir d'enfant n'est pas une vertu, le choix sans enfant n'est pas un manque, l'indécision honnête n'est pas une lâcheté"
+  - "ombres prévues par la mission : le désir qui presse (BERCEAU) · l'indécis qui laisse porter (PORTE) · le choix qui découvre tard l'incompatibilité (ROUTE) — mécaniques de couple, jamais des défauts"
+  - "le dealbreaker parentalité (divergence ≥ 2 → score 0, SQL pré-filtrage) est moteur silencieux : il ne participe ni à la sélection ni au rendu, aucun texte ne le mentionne"
+  - "aucun chiffre d'années au rendu — l'horizon se dit en proximité relative (« posé après », « lancé tôt »), verrou 04 n° 6"
+  - "registre probabiliste : aucun futur certain (« parfois », « finissent par » — présent fréquentiel)"
+  - "C2/C3 : zéro signal de sécurité, zéro vocabulaire clinique — « indécis » est un ID moteur, jamais rendu"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

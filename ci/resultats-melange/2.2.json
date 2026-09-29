@@ -1,0 +1,56 @@
+{
+  "quete": "2.2",
+  "titre": "Ta place pour la spiritualité",
+  "graine_finale": 232427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q2.2-04"
+    },
+    {
+      "position": 2,
+      "code": "Q2.2-01"
+    },
+    {
+      "position": 3,
+      "code": "Q2.2-06"
+    },
+    {
+      "position": 4,
+      "code": "Q2.2-03"
+    },
+    {
+      "position": 5,
+      "code": "Q2.2-02"
+    },
+    {
+      "position": 6,
+      "code": "Q2.2-05"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 1,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": [
+    "pos 1 ↔ pos 4 · (1, 0, 1, 2, 2, 4) → (0, 0, 2, 1, 1, 3)",
+    "pos 4 ↔ pos 3 · (0, 0, 2, 1, 1, 3) → (0, 0, 0, 1, 1, 3)",
+    "pos 3 ↔ pos 6 · (0, 0, 0, 1, 1, 3) → (0, 0, 0, 0, 0, 0)"
+  ]
+}

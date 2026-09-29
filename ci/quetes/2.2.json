@@ -1,0 +1,37 @@
+{
+  "quete": "2.2",
+  "titre": "Ta place pour la spiritualité",
+  "graine": 232427,
+  "items": [
+    {
+      "code": "Q2.2-01",
+      "orientation": "D",
+      "dimension": "pratique"
+    },
+    {
+      "code": "Q2.2-02",
+      "orientation": "I",
+      "dimension": "pratique"
+    },
+    {
+      "code": "Q2.2-03",
+      "orientation": "D",
+      "dimension": "choix_de_vie"
+    },
+    {
+      "code": "Q2.2-04",
+      "orientation": "I",
+      "dimension": "choix_de_vie"
+    },
+    {
+      "code": "Q2.2-05",
+      "orientation": "D",
+      "dimension": "transmission"
+    },
+    {
+      "code": "Q2.2-06",
+      "orientation": "I",
+      "dimension": "transmission"
+    }
+  ]
+}

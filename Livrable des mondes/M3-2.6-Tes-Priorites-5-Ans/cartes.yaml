@@ -1,0 +1,86 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.6 « TES PRIORITÉS POUR LES 5 PROCHAINES ANNÉES » — 4 VARIANTES (étage 1)
+# Création : VAGUE 6 — Fin de la Boussole (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : partition exclusive + exhaustive des 4 profils (C6, vérifiée machine) —
+# voir 07-miroir §2 (dominance marquée ≥ 40 pts / écart ≥ 10 ; ancrage → équilibré,
+# mapping À VALIDER PAR LE COMITÉ).
+# Ombre OBLIGATOIRE : chaque variante nomme le coût EN COUPLE de la répartition —
+# jamais un jugement du choix (100 points sur la famille valent 100 sur la carrière).
+# Les points chiffrés ne sont JAMAIS rendus ; l'écart à l'autre (SIG-2.6-01) ne
+# participe ni à la sélection ni au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "2.6 Tes priorités pour les 5 prochaines années"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "répartition des 100 points sur Q2.6-01 → Q2.6-05 (Σ = 100, aucune trame dans la quête)"
+  logique: "dominance marquée (max ≥ 40 ET écart 2ᵉ ≥ 10) : max carrière → carrière-dominant · max famille → famille-dominant · max liberté → liberté-dominant · SINON (stabilité/communs en tête, ou répartition large) → équilibré"
+  exhaustivite: "les deux branches couvrent toutes les répartitions possibles (Σ = 100) — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  bornes: "seuils 40/10 — verrou [9], provisoire concepteur, À VALIDER PAR LE COMITÉ"
+  non_participant: "l'écart à l'autre (SIG-2.6-01) ne participe JAMAIS à la sélection — signal conversationnel moteur seul"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Tes priorités pour les 5 prochaines années »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-2.6-GRUE
+    nom: "Le·La Grue qui monte"
+    ordre_selecteur: 1
+    condition: "dominance marquée de l'axe Carrière / ambition (Q2.6-01 : max ≥ 40, écart 2ᵉ ≥ 10)"
+    ancre_item: ["Q2.6-01", "Q2.6-02", "Q2.6-03", "Q2.6-04", "Q2.6-05"]
+    portrait: "Tes cinq années ont un chantier : tu as mis ton énergie là où elle se double. Le travail avance, et tu le sais — ta répartition se lit comme une grue qui monte, charge après charge."
+    ombre: "Le chantier qui monte laisse parfois la maison sans lumière — et l'autre cherche sa place entre deux lancements."
+    tension_interieure: "faire monter la grue, sans vider la maison de ses habitants."
+
+  - id: CARTE-2.6-NID
+    nom: "Le·La Nid en chantier"
+    ordre_selecteur: 2
+    condition: "dominance marquée de l'axe Famille / projet parental (Q2.6-02)"
+    ancre_item: ["Q2.6-01", "Q2.6-02", "Q2.6-03", "Q2.6-04", "Q2.6-05"]
+    portrait: "Tes points vont au foyer : faire de la place pour un enfant — ou pour ceux qui sont là. Ces cinq années sont celles où tu construis le nid — un choix assumé, pas un repli."
+    ombre: "Le nid absorbe la vie de ceux qui le bâtissent — y compris ta part propre, et parfois la part de couple qui ne relève pas de la gestion."
+    tension_interieure: "bâtir le nid, sans t'y perdre comme ouvrier·ière."
+
+  - id: CARTE-2.6-MAISON
+    nom: "Le·La Maison aux cinq pièces"
+    ordre_selecteur: 3
+    condition: "SINON — stabilité ou projets communs en tête, ou aucune dominance marquée (répartition large)"
+    ancre_item: ["Q2.6-01", "Q2.6-02", "Q2.6-03", "Q2.6-04", "Q2.6-05"]
+    portrait: "Tes points ne font pas de course : tu répartis largement, ou tu as posé l'ancrage comme socle plutôt que comme bannière. Ta décennie se règle sur la tenue — une maison aux cinq pièces, chacune chauffée."
+    ombre: "La maison bien chauffée fait peu de courants d'air et peu d'horizons — rien n'explose, rien ne décolle."
+    tension_interieure: "tenir la maison, en gardant un chantier qui dépasse les murs."
+
+  - id: CARTE-2.6-COMPAS
+    nom: "Le·La Compas qui pointe l'horizon"
+    ordre_selecteur: 4
+    condition: "dominance marquée de l'axe Liberté / aventures (Q2.6-03)"
+    ancre_item: ["Q2.6-01", "Q2.6-02", "Q2.6-03", "Q2.6-04", "Q2.6-05"]
+    portrait: "Tes points vont aux routes : partir, bouger, découvrir sans tout verrouiller. Ces cinq années sont celles du sac léger — tu préfères les histoires aux habitudes, et ta répartition le dit sans détour."
+    ombre: "La route qui appelle laisse parfois quelqu'un au campement — des beaux souvenirs, mais sans témoin attitré."
+    tension_interieure: "suivre l'horizon, en laissant l'autre poser une étape."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "partition exclusive + exhaustive : 4 variantes couvrent toutes les répartitions possibles (Σ = 100) — le mapping « ancrage → équilibré » est documenté au 07 §2 et renvoyé au comité"
+  - "l'ombre nomme le coût EN COUPLE de la répartition (coût pour soi ET pour l'autre implicite aux situations) — jamais un jugement du choix (neutralité absolue : 100 points famille = 100 points carrière)"
+  - "aucun point chiffré rendu : les portraits parlent d'axes et d'intentions, jamais de scores (verrou 04 n° 5)"
+  - "SIG-2.6-01 (écart à l'autre) ne participe ni à la sélection ni au rendu — signal conversationnel moteur seul"
+  - "registre probabiliste : aucun futur certain (« parfois », « peuvent » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucune répartition dressée en idéal ; la friction n°1 (carrière × famille) n'est PAS citée sur les cartes (elle vit au miroir, citée comme fait documenté)"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"
