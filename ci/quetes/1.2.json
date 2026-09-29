@@ -1,0 +1,122 @@
+{
+  "quete": "1.2",
+  "titre": "Ta façon de t'attacher",
+  "graine": 212427,
+  "c2_dimensions_interdites": [
+    "anxiete"
+  ],
+  "c5_run_max": 4,
+  "c5_run_max_note": "borné 4 — finding 16 D / 4 I, alternance stricte impossible ; À RATIFIER PAR LE COMITÉ",
+  "items": [
+    {
+      "code": "Q1.2-01",
+      "orientation": "D",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-02",
+      "orientation": "D",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-03",
+      "orientation": "D",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-04",
+      "orientation": "D",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-05",
+      "orientation": "D",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-06",
+      "orientation": "I",
+      "dimension": "anxiete"
+    },
+    {
+      "code": "Q1.2-07",
+      "orientation": "D",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-08",
+      "orientation": "I",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-09",
+      "orientation": "D",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-10",
+      "orientation": "I",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-11",
+      "orientation": "I",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-12",
+      "orientation": "D",
+      "dimension": "evitement"
+    },
+    {
+      "code": "Q1.2-T09",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_M"
+    },
+    {
+      "code": "Q1.2-T10",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_M"
+    },
+    {
+      "code": "Q1.2-T11",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_M"
+    },
+    {
+      "code": "Q1.2-T12",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_M"
+    },
+    {
+      "code": "Q1.2-T13",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "RSQ"
+    },
+    {
+      "code": "Q1.2-T14",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "RSQ"
+    },
+    {
+      "code": "Q1.2-T15",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "RSQ"
+    },
+    {
+      "code": "Q1.2-T16",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "RSQ"
+    }
+  ],
+  "c2_sans_objet": true,
+  "c2_note": "sans-objet en pratique : 8 trames ancrées sur 20 positions rendent l'interdiction d'adjacence infaisable (tout slot touche une trame) ; la discrimination SDT-M/RSQ repose sur le croisement des scores, pas sur la topologie — À VALIDER PAR LE COMITÉ"
+}

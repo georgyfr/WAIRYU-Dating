@@ -1,0 +1,60 @@
+{
+  "quete": "1.4",
+  "titre": "Ton contrôle sur toi-même",
+  "graine_finale": 214427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q1.4-03"
+    },
+    {
+      "position": 2,
+      "code": "Q1.4-08"
+    },
+    {
+      "position": 3,
+      "code": "Q1.4-07"
+    },
+    {
+      "position": 4,
+      "code": "Q1.4-06"
+    },
+    {
+      "position": 5,
+      "code": "Q1.4-05"
+    },
+    {
+      "position": 6,
+      "code": "Q1.4-04"
+    },
+    {
+      "position": 7,
+      "code": "Q1.4-02"
+    },
+    {
+      "position": 8,
+      "code": "Q1.4-01"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 0,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": []
+}

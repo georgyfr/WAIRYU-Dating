@@ -1,0 +1,51 @@
+{
+  "quete": "1.4",
+  "titre": "Ton contrôle sur toi-même",
+  "graine": 214427,
+  "c4_sans_objet": true,
+  "c5_sans_objet": true,
+  "c5_run_max_note": "sans-objet : mono-dimension, alternance non contrainte",
+  "items": [
+    {
+      "code": "Q1.4-01",
+      "orientation": "D",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-02",
+      "orientation": "I",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-03",
+      "orientation": "D",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-04",
+      "orientation": "I",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-05",
+      "orientation": "D",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-06",
+      "orientation": "I",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-07",
+      "orientation": "D",
+      "dimension": "autocontrole"
+    },
+    {
+      "code": "Q1.4-08",
+      "orientation": "I",
+      "dimension": "autocontrole"
+    }
+  ],
+  "c1_sans_objet": true
+}

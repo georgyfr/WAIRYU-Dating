@@ -1,0 +1,59 @@
+{
+  "quete": "2.3",
+  "titre": "Tes non-négociables",
+  "graine": 23427,
+  "c4_sans_objet": true,
+  "c5_sans_objet": true,
+  "items": [
+    {
+      "code": "Q2.3-01",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-02",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-03",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-04",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-05",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-06",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-07",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-08",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-09",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.3-10",
+      "orientation": "-",
+      "dimension": null
+    }
+  ]
+}

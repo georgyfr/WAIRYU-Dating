@@ -1,0 +1,56 @@
+{
+  "quete": "1.6",
+  "titre": "Ta façon de penser",
+  "graine_finale": 216427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q1.6-06"
+    },
+    {
+      "position": 2,
+      "code": "Q1.6-02"
+    },
+    {
+      "position": 3,
+      "code": "Q1.6-03"
+    },
+    {
+      "position": 4,
+      "code": "Q1.6-07"
+    },
+    {
+      "position": 5,
+      "code": "Q1.6-04"
+    },
+    {
+      "position": 6,
+      "code": "Q1.6-01"
+    },
+    {
+      "position": 7,
+      "code": "Q1.6-05"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    3
+  ],
+  "echanges": []
+}

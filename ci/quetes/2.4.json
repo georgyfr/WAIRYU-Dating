@@ -1,0 +1,49 @@
+{
+  "quete": "2.4",
+  "titre": "Tes réalités",
+  "graine": 24427,
+  "c4_sans_objet": true,
+  "c5_sans_objet": true,
+  "items": [
+    {
+      "code": "Q2.4-01",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-02",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-03",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-04",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-05",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-06",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-07",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.4-08",
+      "orientation": "-",
+      "dimension": null
+    }
+  ]
+}

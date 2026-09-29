@@ -1,0 +1,44 @@
+{
+  "quete": "1.6",
+  "titre": "Ta façon de penser",
+  "graine": 216427,
+  "c4_sans_objet": true,
+  "items": [
+    {
+      "code": "Q1.6-01",
+      "orientation": "D",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-02",
+      "orientation": "I",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-03",
+      "orientation": "D",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-04",
+      "orientation": "I",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-05",
+      "orientation": "D",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-06",
+      "orientation": "I",
+      "dimension": "traitement"
+    },
+    {
+      "code": "Q1.6-07",
+      "orientation": "I",
+      "dimension": "traitement"
+    }
+  ],
+  "c1_sans_objet": true
+}

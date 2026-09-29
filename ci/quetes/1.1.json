@@ -1,0 +1,309 @@
+{
+  "quete": "1.1",
+  "titre": "Ta personnalité",
+  "graine": 211427,
+  "c2_dimensions_interdites": [
+    "bienveillance"
+  ],
+  "c5_run_max": 2,
+  "items": [
+    {
+      "code": "Q1.1-01",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-02",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-03",
+      "orientation": "I",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-04",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-05",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-06",
+      "orientation": "I",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-07",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-08",
+      "orientation": "I",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-09",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-10",
+      "orientation": "D",
+      "dimension": "ouverture"
+    },
+    {
+      "code": "Q1.1-11",
+      "orientation": "D",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-12",
+      "orientation": "I",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-13",
+      "orientation": "D",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-14",
+      "orientation": "I",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-15",
+      "orientation": "D",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-16",
+      "orientation": "I",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-17",
+      "orientation": "D",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-18",
+      "orientation": "I",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-19",
+      "orientation": "D",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-20",
+      "orientation": "I",
+      "dimension": "organisation"
+    },
+    {
+      "code": "Q1.1-21",
+      "orientation": "D",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-22",
+      "orientation": "I",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-23",
+      "orientation": "D",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-24",
+      "orientation": "I",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-25",
+      "orientation": "D",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-26",
+      "orientation": "I",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-27",
+      "orientation": "D",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-28",
+      "orientation": "I",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-29",
+      "orientation": "D",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-30",
+      "orientation": "I",
+      "dimension": "energie_sociale"
+    },
+    {
+      "code": "Q1.1-31",
+      "orientation": "D",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-32",
+      "orientation": "I",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-33",
+      "orientation": "D",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-34",
+      "orientation": "I",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-35",
+      "orientation": "D",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-36",
+      "orientation": "I",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-37",
+      "orientation": "D",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-38",
+      "orientation": "I",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-39",
+      "orientation": "D",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-40",
+      "orientation": "I",
+      "dimension": "bienveillance"
+    },
+    {
+      "code": "Q1.1-41",
+      "orientation": "D",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-42",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-43",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-44",
+      "orientation": "D",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-45",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-46",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-47",
+      "orientation": "D",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-48",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-49",
+      "orientation": "D",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-50",
+      "orientation": "I",
+      "dimension": "stabilite"
+    },
+    {
+      "code": "Q1.1-T01",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T02",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T03",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T04",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T05",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T06",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T07",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    },
+    {
+      "code": "Q1.1-T08",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DTM_N"
+    }
+  ]
+}

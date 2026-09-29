@@ -1,0 +1,40 @@
+{
+  "quete": "2.5",
+  "titre": "Ce que tu cherches",
+  "graine_finale": 25428,
+  "tentatives": 2,
+  "trace_c6": "graine 25427 → permutation identique à l'ordre des codes (c6 non satisfaite) → re-tirage documenté",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q2.5-01"
+    },
+    {
+      "position": 2,
+      "code": "Q2.5-03"
+    },
+    {
+      "position": 3,
+      "code": "Q2.5-02"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 0,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": []
+}

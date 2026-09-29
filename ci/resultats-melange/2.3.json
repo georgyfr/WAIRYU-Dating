@@ -1,0 +1,68 @@
+{
+  "quete": "2.3",
+  "titre": "Tes non-négociables",
+  "graine_finale": 23427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q2.3-02"
+    },
+    {
+      "position": 2,
+      "code": "Q2.3-07"
+    },
+    {
+      "position": 3,
+      "code": "Q2.3-08"
+    },
+    {
+      "position": 4,
+      "code": "Q2.3-10"
+    },
+    {
+      "position": 5,
+      "code": "Q2.3-06"
+    },
+    {
+      "position": 6,
+      "code": "Q2.3-09"
+    },
+    {
+      "position": 7,
+      "code": "Q2.3-04"
+    },
+    {
+      "position": 8,
+      "code": "Q2.3-03"
+    },
+    {
+      "position": 9,
+      "code": "Q2.3-01"
+    },
+    {
+      "position": 10,
+      "code": "Q2.3-05"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 0,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": []
+}

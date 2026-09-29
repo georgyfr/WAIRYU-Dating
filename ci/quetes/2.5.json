@@ -1,0 +1,24 @@
+{
+  "quete": "2.5",
+  "titre": "Ce que tu cherches",
+  "graine": 25427,
+  "c4_sans_objet": true,
+  "c5_sans_objet": true,
+  "items": [
+    {
+      "code": "Q2.5-01",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.5-02",
+      "orientation": "-",
+      "dimension": null
+    },
+    {
+      "code": "Q2.5-03",
+      "orientation": "-",
+      "dimension": null
+    }
+  ]
+}
