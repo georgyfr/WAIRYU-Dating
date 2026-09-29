@@ -1590,7 +1590,7 @@ L'utilisateur répond : "Je n'ai jamais rien regreté" (quête ludique)
 |---|---|---|  
 | 1.1 « Ta personnalité » | \+8 items d'entitlement et de grandiosité déguisés en questions de caractère (\*"Il arrive que les gens me doivent plus qu'ils ne l'admettent"\*) | \*\*DANGEROSITÉ\_MANIPULATIVE\*\* — composante narcissique |  
 | 1.2 « Ta façon de t'attacher » | \+4 items de méfiance projetée (\*"[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"\*) | Composante machiavélique \+ validation croisée blessures |  
-| 1.3 « Tes émotions » | \+6 items d'empathie réelle (la mesure qui corrige le Dark Empathy : \*"Quand quelqu'un pleure, je ressens d'abord son émotion, pas mon gêne"\*) | \*\*Composante empathie basse\*\* — la clé du croisement |  
+| 1.3 « Tes émotions » | \+6 items d'empathie réelle (la mesure qui corrige le Dark Empathy : \*"[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"\*) | \*\*Composante empathie basse\*\* — la clé du croisement |  
 | 1.4 « Ton contrôle sur toi-même » | \*(quête à double usage : l'auto-contrôle EST un trait de sécurité)\* | \*\*DANGEROSITÉ\_RÉACTIVE\*\* — inverse |  
 | 1.5 ⚡ « L'épreuve du temps » | \*(tâche comportementale — mesure l'impulsivité par le geste, corrige le déclaratif)\* | DANGEROSITÉ\_RÉACTIVE |
 
@@ -2415,7 +2415,7 @@ monde 1
 | Q1.3-T23 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
 | Q1.3-T24 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
 | Q1.3-T25 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | ↩ |  
-| Q1.3-T26 | Quand quelqu'un pleure, je ressens d'abord son chagrin, pas mon gêne. | ↩ |
+| Q1.3-T26 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | ↩ |
 
 \*\*Doublons :\*\* \`Q1.3-01.r\` \*"Je trouve généralement les mots justes pour mes états intérieurs."\* · \`Q1.3-12.r\` \*"Je tourne en boucle longtemps avant d'apaiser une tension."\*
 
