@@ -1,0 +1,43 @@
+# CARTES DE LA QUÊTE 2.3 « TES NON-NÉGOCIABLES »
+# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
+# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
+# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
+# Doctrine : l'ombre nomme le COÛT RELATIONNEL du choix (un filtre dur réduit le pool) — jamais un jugement.
+quete: "2.3 Tes non-négociables"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+variantes:
+  - id: CARTE-2.3-A
+    nom: "Les lignes rouges sont posées"
+    selecteur: >-
+      au moins une ligne rouge cochée sur Q2.3-01 → Q2.3-09
+      (seuil minimal de déclenchement À VALIDER PAR LE COMITÉ)
+    ancre_item: ["Q2.3-01", "Q2.3-02", "Q2.3-03", "Q2.3-04", "Q2.3-05", "Q2.3-06", "Q2.3-07", "Q2.3-08", "Q2.3-09"]
+    lumiere: "Tes lignes rouges sont posées. Tes rencontres démarrent sur du vrai, sans marchandage d'entrée, sans zone grise."
+    ombre: "Un cadre dur réduit le bassin : des histoires possibles restent derrière le filtre, et quelqu'un ne saura même pas pourquoi."
+    controle:
+      mots_total: 37
+      mots_lumiere: 17
+      mots_ombre: 20
+      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+  - id: CARTE-2.3-B
+    nom: "Le cadre ouvert"
+    selecteur: >-
+      aucune ligne rouge cochée sur Q2.3-01 → Q2.3-09 (Q2.3-10, champ libre, non compté)
+      — combinaison de déclenchement À VALIDER PAR LE COMITÉ
+    ancre_item: []
+    lumiere: "Tu gardes le cadre ouvert. Chaque rencontre arrive sans grille, avec sa part d'imprévu."
+    ombre: "Sans ligne rouge, les arbitrages se règlent en chemin : plus tard, à deux, et souvent plus cher."
+    controle:
+      mots_total: 31
+      mots_lumiere: 14
+      mots_ombre: 17
+      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
+  - "l'ombre des deux variantes nomme le coût pour soi ET le coût pour l'autre — jamais un jugement moral du choix"
+  - "registre probabiliste : aucun futur certain, aucune promesse (« se règlent », « restent » — présent fréquentiel)"
+  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
+  - "aucune mention du moteur, des filtres nominatifs, des codes ou des seuils"
+  - "état contradictoire (coche 2.3-08 × réponse Oui à 2.5-03) : pas de carte dédiée — drapeau QFI moteur seul, miroir dégradé"

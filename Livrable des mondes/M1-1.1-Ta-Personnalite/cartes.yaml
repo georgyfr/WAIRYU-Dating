@@ -1,0 +1,122 @@
+# ═══════════════════════════════════════════════════════════════════
+# QUÊTE 1.1 « TA PERSONNALITÉ » — LES 7 VARIANTES DE CARTE (étage 1)
+# Source : charte des cartes — « refonte des tests et outils wairyu.md », PARTIE 1 (variantes 1.1).
+# Sélecteurs et textes : VERBATIM du source gelé (fidélité [8]) — toute retouche passe par une
+# Fiche de Mutation.
+# ⚠ Tout seuil : « À VALIDER PAR LE COMITÉ » (verrou [9]).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "1.1 Ta personnalité"
+monde: "M1 — Le Miroir"
+statut_freemium: gratuit
+etage: "étage 1 — la carte (30-60 mots, lumière + ombre d'une phrase — Constitution [7])"
+
+variables:
+  O: ouverture                  # Q1.1-01 → 10
+  C: organisation               # Q1.1-11 → 20
+  E: energie_sociale            # Q1.1-21 → 30
+  A: bienveillance              # Q1.1-31 → 40
+  S: stabilite                  # Q1.1-41 → 50
+domaine_variables: "0 à 1 (constantes de zone du registre : faible < 0.35 · central 0.35-0.65 · élevé > 0.65)"
+
+logique_de_selection: "évaluée dans l'ordre (1 → 7), première correspondance retenue — tout seuil À VALIDER PAR LE COMITÉ"
+selecteurs_verbatim:
+  - {ordre: 1, condition: "S < 0.40 ET (E ≥ 0.55 OU O ≥ 0.55)", variante: "V5 — L'Intense"}
+  - {ordre: 2, condition: "C ≥ 0.65 ET S ≥ 0.60", variante: "V2 — Le·La Bâtisseur·se"}
+  - {ordre: 3, condition: "O ≥ 0.65 ET A ≥ 0.60", variante: "V1 — L'Explorateur·rice chaleureux·se"}
+  - {ordre: 4, condition: "E ≥ 0.65 ET O ≥ 0.60", variante: "V3 — L'Étoile sociale"}
+  - {ordre: 5, condition: "E ≤ 0.40 ET O ≥ 0.55", variante: "V6 — L'Indépendant·e profond·e"}
+  - {ordre: 6, condition: "S ≥ 0.60 ET A ≥ 0.55", variante: "V4 — L'Ancre"}
+  - {ordre: 7, condition: "tout le reste", variante: "V7 — L'Équilibriste"}
+
+# Rendu de l'écran de complétion (structure verbatim du source) :
+#   entete → titre de variante → lumière → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied (X% · Z personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ta personnalité »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé(e) : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: V1
+    nom: "L'Explorateur·rice chaleureux·se"
+    ordre_selecteur: 3
+    condition: "O ≥ 0.65 ET A ≥ 0.60"
+    lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité n'est jamais froide — elle est chaleureuse, elle veut partager. Les gens se sentent bienvenus dans ton élan."
+    ombre: "Parfois, tu choisis le nouveau par peur que le même devienne l'ennui — et ce qui compte finit par attendre."
+    tension_interieure: "vivre tout, sans blesser personne."
+    mots_lumiere_ombre: 68
+    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+
+  - id: V2
+    nom: "Le·La Bâtisseur·se"
+    ordre_selecteur: 2
+    condition: "C ≥ 0.65 ET S ≥ 0.60"
+    lumiere: "Tu es quelqu'un sur qui on peut compter — et ça se sait. Tu tiens tes promesses, tu prépares tes journées, tu finis ce que tu commences. Ce n'est pas de la rigidité : c'est du respect. Celui que tu portes aux choses, aux gens, à ta parole."
+    ombre: "Le contrôle a un coût — quand tout dérape, c'est toi que tu accuses en premier."
+    tension_interieure: "que tout soit solide, sans que ça devienne une prison."
+    mots_lumiere_ombre: 61
+    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+
+  - id: V3
+    nom: "L'Étoile sociale"
+    ordre_selecteur: 4
+    condition: "E ≥ 0.65 ET O ≥ 0.60"
+    lumiere: "Tu entres dans une pièce et l'air change. Tu lances les conversations, tu connectes les gens entre eux, tu rends les soirées vivantes. Ta curiosité et ton énergie se renforcent : plus tu découvres, plus tu as envie de le raconter."
+    ombre: "Le silence peut te sembler un vide à remplir — et tu remplis parfois ce qui aurait mérité d'être écouté."
+    tension_interieure: "être aimé(e) pour ta lumière, pas seulement pour ton spectacle."
+    mots_lumiere_ombre: 59
+    note_conformite: "conforme (30-60 mots)"
+
+  - id: V4
+    nom: "L'Ancre"
+    ordre_selecteur: 6
+    condition: "S ≥ 0.60 ET A ≥ 0.55"
+    lumiere: "Il y a des gens autour de qui on respire mieux. Tu en fais partie. Le calme te traverse sans te casser ; les autres le sentent et s'y appuient. Tu ne cherches pas à briller : tu cherches à faire du bien, sobrement, durablement."
+    ombre: "Ta stabilité peut devenir une forteresse — tu accordes parfois trop de patience aux situations qui n'en méritent plus."
+    tension_interieure: "porter les autres sans t'oublier."
+    mots_lumiere_ombre: 61
+    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+
+  - id: V5
+    nom: "L'Intense"
+    ordre_selecteur: 1
+    condition: "S < 0.40 ET (E ≥ 0.55 OU O ≥ 0.55)"
+    lumiere: "Tu vis à volume maximum. Les joies te portent, les peines te traversent, rien ne te laisse neutre. Cette intensité que certains nomment \"trop\", c'est aussi ta profondeur : tu remarques ce que les autres passent à côté, tu aimes sans compter, tu te souviens de tout."
+    ombre: "Le monde est parfois bruyant pour toi — et tu gères la tempête sans mode d'emploi."
+    tension_interieure: "être tout entier dans ce que tu vis, sans que ça te submerge."
+    mots_lumiere_ombre: 61
+    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+
+  - id: V6
+    nom: "L'Indépendant·e profond·e"
+    ordre_selecteur: 5
+    condition: "E ≤ 0.40 ET O ≥ 0.55"
+    lumiere: "Ton monde intérieur est vaste — c'est là que tu vis vraiment. Longues pensées, projets de fond, conversations à deux qui durent des heures : tu préfères la profondeur au bruit. Ceux qui te connaissent savent que ton calme cache un feu tranquille."
+    ombre: "Tu proposes rarement le premier contact — et certaines personnes que tu aurais aimées sont passées sans le savoir."
+    tension_interieure: "préserver ton monde sans en fermer la porte."
+    mots_lumiere_ombre: 59
+    note_conformite: "conforme (30-60 mots)"
+
+  - id: V7
+    nom: "L'Équilibriste"
+    ordre_selecteur: 7
+    condition: "tout le reste"
+    lumiere: "Ton profil ne rentre dans aucune case — et c'est une force déguisée. Tu possèdes un peu de tout : de la curiosité, de la constance, du cœur, du calme. Les gens te décrivent comme difficile à cerner et facile à aimer."
+    ombre: "Les profils complets changent lentement — vérifie que tu changes encore, et pas seulement que tu tiens."
+    tension_interieure: "être beaucoup de choses, sans te disperser en rien de tout."
+    mots_lumiere_ombre: 56
+    note_conformite: "conforme (30-60 mots)"
+
+notes_conformite:
+  - "Textes et sélecteurs verbatim du source gelé (fidélité [8]) — toute retouche passerait par une Fiche de Mutation."
+  - "4 variantes dépassent la cible 30-60 mots de l'étage 1 (V1 : 68 · V2 : 61 · V4 : 61 · V5 : 61) — dérive documentée, À VALIDER PAR LE COMITÉ (comptage : segments séparés par des espaces, hors ponctuation isolée ; guillemets et tirets exclus)."
+  - "« jamais » en absolu présent dans le texte verbatim de V1 (« Ta curiosité n'est jamais froide ») — interdit lexical [3] vs fidélité [8] : arbitrage comité."
+  - "Ombres verbatim : l'ancrage explicite « en situation de couple » (Constitution [2]) n'est pas littéral dans toutes les variantes du source (ex. V6) — arbitrage comité, fidélité [8] maintenue."
+  - "Les seuils des sélecteurs et l'ordre d'évaluation : À VALIDER PAR LE COMITÉ (aucun verrou [9] traité comme décision)."
+  - "Aucun code, score ou sigle dans les textes de carte (Constitution [3]) — les variables O C E A S ne vivent que dans les sélecteurs, côté moteur."
+  - "Symétrie lumière/ombre : chaque variante porte exactement 1 phrase lumière-dominante et 1 zone d'ombre + 1 tension intérieure (structure verbatim du source)."

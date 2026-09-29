@@ -1,0 +1,50 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q2.4-01 (tabac — l'exemple même du trou n°1 : la déclaration qui manquait au système).
+# Fichier YAML strict (le gabarit hybride Markdown+fence du modèle 2.1 n'était pas parsable — dérogation documentée).
+item: Q2.4-01
+quete: "2.4 Tes réalités"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: un_clic               # NON-Likert : auto-déclaration factuelle, une seule touche
+enonce: "Ma réalité : le tabac."
+etats:                        # 3 états, verbatim du source (l.571)
+  - "Je fume"
+  - "J'ai arrêté"
+  - "Non"
+echelle: null                 # pas d'échelle de degré — un état factuel
+orientation: null             # sans-objet hors Likert (c5 sans-objet)
+dimension: null               # déclaration factuelle : aucune dimension psychométrique
+double_balise:
+  carte_id: null
+  signal_id: null             # aucune trame dans la quête
+computation:
+  carte: null                 # une réalité ne se moyenne pas, ne se note pas — elle se croise
+  signal:
+    role: croisement_bidirectionnel
+    mecanisme: >-
+      mon état × ligne rouge Q2.3-01 des autres (leurs filtres s'appliquent à ma réalité) ;
+      leurs réalités × ma ligne rouge Q2.3-01 (mes filtres s'appliquent aux leurs) →
+      élimination déterministe au matching
+    rendu: moteur_seul        # aucun des deux membres ne voit le filtre agir
+  fiabilite:
+    role: qfi
+    regle: >-
+      incohérences déclarées/mesurées (ici : état « Non » ou « J'ai arrêté » × coche Q2.3-01
+      chez le même membre ; ailleurs : Q2.4-04 × 2.2, Q2.4-03 × 2.7) → drapeau QFI —
+      MOTEUR SEUL, jamais affiché, jamais dit
+  modulation:
+    - si: "état mis à jour (ex. « J'ai arrêté »)"
+      effet: "filtres recalculés des deux côtés — fenêtre de recalcul À VALIDER PAR LE COMITÉ"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as déclaré avoir arrêté le tabac"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 déclarations (les fiches condensées du tableau
+    01-tableau-des-items.md se déploient dans ce format complet). Seuls changent les états,
+    le domaine de croisement (Q2.3-0x visée) et la règle de fiabilité.
+  - >-
+    Rappel de doctrine : computation.carte: null pour les 8 items — les réalités ne produisent
+    aucune moyenne, aucun percentile, aucune note. La restitution (miroir S1) est un RAPPEL
+    descriptif, jamais une évaluation.

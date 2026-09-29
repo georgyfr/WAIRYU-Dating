@@ -1,0 +1,56 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM
+# Item choisi : Q1.7-01 (checklist opt-in, format hors Likert — dérogation documentée).
+
+item: Q1.7-01
+quete: "1.7 Ton fonctionnement (optionnel)"
+monde: M2                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+optin: strict                 # quête opt-in — consentement par case, aucune case pré-cochée
+question: "Coche ce qui te décrit, si tu veux le partager :"
+format: checklist             # HORS Likert (Arbitrage 2 non applicable) — dérogation documentée
+options:                      # VERBATIM source, ordre source
+  - "Neuro-atypique (TSA)"
+  - "TDAH"
+  - "Dys (dyslexie, dyspraxie…)"
+  - "Anxiété que je gère"
+  - "Autre (champ libre)"
+  - "Je ne souhaite pas le dire"
+option_retrait: "Je ne souhaite pas le dire"   # option de première classe
+double_balise:
+  carte_id: null              # aucune carte, aucune dimension — hors score par design
+  signal_id: null             # AUCUN signal de sécurité (verbatim usage moteur)
+computation:
+  carte: null                 # écran final spécial (charte PARTIE 7) — PAS de carte, PAS de partage
+  score: null                 # jamais dans aucun score (verbatim intro)
+  signal: null
+  fiabilite:
+    role: aucune              # rien à fiabiliser — pas de mesure, pas de normalisation
+  modulation:
+    - si: "au moins une case cochée ET Q1.7-02 = « Oui, affiche-le sur mon profil »"
+      effet: >-
+        affichage profil opt-in — la déclaration telle quelle, jamais reformulée ni déduite
+        (double consentement ; symétrie [7] : l'autre ne voit que cela)
+    - si: "au moins une case cochée (indépendamment de Q1.7-02)"
+      effet: >-
+        alimente le filtre d'affinité d'inclusion (moteur, silencieux, inclusion — jamais
+        exclusion) + réinitialisation des seuils des détecteurs (mécanisme verbatim ;
+        seuils : document trames, hors dépôt, canal privé)
+  ancrage:
+    rappel_autorise: false    # miroir EXEMPTÉ — aucun rappel analytique ; l'affichage profil
+                              # montre la déclaration elle-même, ce n'est pas un rappel de mesure
+retention:
+  modification: "à tout moment, depuis le profil (verbatim écran final)"
+  effacement: "à tout moment — « Tu peux le modifier ou l'effacer » (verbatim écran final)"
+  note: >-
+    régime de données détaillé (rétention, champ libre) : hors périmètre de production —
+    À VALIDER PAR LE COMITÉ/juridique
+
+# NOTES
+# - Hors Likert : cette fiche est le gabarit des 2 items de la quête ; il n'existe ni échelle 1-5,
+#   ni recodage « 6 − réponse », ni moyenne — le format checklist/un-clic est le design verbatim du
+#   source pour une quête opt-in (dérogation à l'Arbitrage 2 documentée, ratification comité).
+# - Q1.7-02 se modélise sur la même fiche avec format: un_clic_binaire et les options
+#   « Oui, affiche-le sur mon profil » / « Non, garde-le privé » (verbatim) ; sa seule sortie
+#   consentie est la visibilité du profil.
+# - La quête n'a AUCUNE carte, AUCUN miroir, AUCUN score : les champs carte, score et signal sont
+#   nuls par design, pas par omission.

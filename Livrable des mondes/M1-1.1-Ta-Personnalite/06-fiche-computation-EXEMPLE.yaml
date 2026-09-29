@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════════
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q1.1-17 « Je termine ce que je commence, même quand l'envie est passée. »
+# (carte, dimension organisation, orientation D — position 1 de la passation, graine 211427)
+# Gabarit pour les 58 items de la quête 1.1.
+# ═══════════════════════════════════════════════════════════════════
+
+item: Q1.1-17
+quete: "1.1 Ta personnalité"
+monde: M1                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+dimension: organisation       # Big Five C — la colonne Dimension (carte_id) du tableau 01
+enonce: "Je termine ce que je commence, même quand l'envie est passée."
+echelle: likert5              # 1 Pas du tout moi … 5 Tout à fait moi (conventions du source)
+orientation: D
+recodage: null                # D → contribue tel quel ; un inversé serait recodé 6 − réponse
+double_balise:
+  carte_id: organisation
+  signal_id: null
+computation:
+  carte:
+    contribution: "moyenne_organisation (10 items — min 1 valide requis)"
+    echelle_cible: C          # échelle 0-1, constante de zone : faible < 0.35 · central 0.35-0.65 · élevé > 0.65
+    etages_restants: [carte_quete_1_1, miroir_1_1, portrait_de_domaine_soi, portrait_integral]
+  signal: null                # aucun signal du glossaire [4] ne consomme directement C
+  fiabilite:
+    role: "intra-dimension — cohérence avec les 5 inversés de la dimension (12 · 14 · 16 · 18 · 20)"
+    pendant: null             # pas de paire miroir dédiée en 1.1 (pas de paires D/I appariées)
+    regle: "la détection des incohérences utilise les inversés (conventions du source) ; concordance doublons → QFI (fenêtre de présentation ≥ 2 semaines — À VALIDER PAR LE COMITÉ)"
+  modulation:
+    - si: "C ≥ 0.65 ET S ≥ 0.60"
+      effet: "carte V2 — Le·La Bâtisseur·se (sélecteur n°2, première correspondance retenue — seuils À VALIDER PAR LE COMITÉ)"
+    - si: "C > 0.75 ET A > 0.60 ET POL > 0.60"
+      effet: "signature narrative SIG_STANDARD_PROJETE (brique ombre « projection de standard » — à valider par le comité)"
+    - si: "QFI < 0.60"
+      effet: "usage narratif suspendu — versions prudentes (garde universelle du registre)"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, énoncé intégral mot pour mot entre guillemets, introduit en 2e personne, sans code ni score"
+    ancre_item: Q1.1-17       # champ MOTEUR — ne franchit jamais la chaîne rendue (FM-017)
+    exemple: "quand tu as répondu que « Je termine ce que je commence, même quand l'envie est passée. »"
+
+# ── Notes ─────────────────────────────────────────────────────────
+# · Ce modèle sert de gabarit pour les 58 items de la quête (les fiches condensées du tableau
+#   01-tableau-des-items.md se déploient dans ce format complet).
+# · Pour un item de trame ▲ (Q1.1-T01 → T08, ligne-réservée) : carte_id: null, signal_id: DTM_N,
+#   ancrage.rappel_autorise: false (interdit structurel — la trame sécurité ne produit jamais de
+#   texte) ; contenu du kit fourni hors dépôt, au moment de l'implémentation (FM-018 · [11-b]).
+# · Cas particulier Q1.1-48 : rappel SUSPENDU jusqu'à l'arbitrage comité (note d'audit du registre,
+#   voir 03-signatures-registre.md).

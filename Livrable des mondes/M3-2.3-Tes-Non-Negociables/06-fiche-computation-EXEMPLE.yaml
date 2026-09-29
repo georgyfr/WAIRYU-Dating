@@ -1,0 +1,48 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q2.3-01 (tabac — première ligne rouge, riche en croisements).
+# Fichier YAML strict (le gabarit hybride Markdown+fence du modèle 2.1 n'était pas parsable — dérogation documentée).
+item: Q2.3-01
+quete: "2.3 Tes non-négociables"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: checklist             # NON-Likert : l'utilisateur coche sa ligne rouge (pas d'échelle)
+enonce: "Je ne peux pas construire avec quelqu'un qui fume."
+echelle: null                 # pas d'échelle — coche / pas de coche
+orientation: null             # sans-objet hors Likert (c5 sans-objet)
+dimension: null               # checklist : aucune dimension psychométrique
+double_balise:
+  carte_id: null
+  signal_id: null             # aucune trame dans la quête
+computation:
+  carte: null                 # une coche n'alimente aucune moyenne — elle active un filtre
+  signal:
+    role: hard_constraint
+    mecanisme: >-
+      coche × réalité correspondante (Q2.4-01) chez un autre membre, dans les deux sens
+      (mes réalités × ses lignes rouges ; ses réalités × mes lignes rouges) →
+      élimination déterministe au matching
+    rendu: moteur_seul        # aucun des deux membres ne voit le filtre agir
+    condition: ">= 1 coche — seuil minimal À VALIDER PAR LE COMITÉ"
+  fiabilite:
+    role: croisement_retour
+    regle: >-
+      coche Q2.3-01 × Q2.4-01 « Je fume » chez le même membre → auto-contradiction déclarée
+      → drapeau QFI, moteur seul, zéro trace UI (SIG-2.3-03)
+  modulation:
+    - si: "0 coche sur les 9 items cochables"
+      effet: "aucun filtre dur activé — cadre ouvert documenté (SIG-2.3-02), jamais pénalisé"
+    - si: "réalité Q2.4-01 mise à jour chez un membre du pool"
+      effet: "filtres recalculés des deux côtés — fenêtre de recalcul À VALIDER PAR LE COMITÉ"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as posé comme ligne rouge de ne pas construire avec quelqu'un qui fume"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 9 items cochables (les fiches condensées du tableau
+    01-tableau-des-items.md se déploient dans ce format complet). Seuls changent le domaine de
+    croisement (Q2.4-0x visée) et la règle de fiabilité (réalité équivalente chez soi).
+  - >-
+    Cas particulier Q2.3-10 (champ libre) : signal: null, fiabilite: null, rappel_autorise: true
+    sous consentement et verbatim — traitement moteur À VALIDER PAR LE COMITÉ (hors computation
+    automatique en v1).

@@ -1,0 +1,23 @@
+# LIVRABLE 7 — ÉCRAN SPÉCIAL DE FIN DE QUÊTE 1.7 (SANS CARTE)
+# Charte des cartes, PARTIE 7 « LES DEUX ÉCRANS SPÉCIAUX (sans carte) » du source gelé
+# (l. 3298-3333) — texte VERBATIM.
+
+quete: "1.7"
+titre: "Ton fonctionnement (optionnel)"
+monde: M2
+statut_freemium: gratuit
+type: ecran_special           # PARTIE 7 de la charte — écran de confiance
+carte_recompense: null        # la variante de carte N'EXISTE PAS : « quête sans carte de récompense — écran de validation »
+note_charte: >-
+  « Fin de quête 1.7 “Ton fonctionnement (optionnel)” — écran de confiance, PAS de carte,
+  PAS de partage » (verbatim charte PARTIE 7)
+ecran_fin:
+  titre: "Merci pour ta confiance."
+  corps: "Ce que tu as partagé reste entre toi et l'app — sauf si tu as choisi de l'afficher sur ton profil. Il aidera les personnes que tu rencontreras à être à l'aise, et t'aidera à croiser des gens qui te comprennent.\n\nTu peux le modifier ou l'effacer à tout moment, depuis ton profil. Rien de tout cela n'entre dans aucun score."
+  boutons: ["[Retour au voyage]"]
+conformite:
+  - "texte VERBATIM du source gelé (charte PARTIE 7) — toute révision passe par le comité"
+  - "PAS de carte, PAS de partage : aucun bouton [Partager ma carte], aucun {fenêtre sur l'autre}"
+  - "révocabilité affichée (« modifier ou l'effacer à tout moment ») — doctrine consentement [2]"
+  - "aucun score, code ou sigle ne franchit le rendu — Constitution [3]"
+  - "l'information de visibilité (« sauf si tu as choisi de l'afficher ») reflète le double consentement 01 × 02"

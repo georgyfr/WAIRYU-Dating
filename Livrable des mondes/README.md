@@ -8,15 +8,24 @@ avec le rituel d'ouverture [10] : restitution en 5 lignes → validation → pro
 
 ```
 Livrable des mondes/
-└── M3-2.1-Tes-Valeurs/          ← quête 2.1 « Tes valeurs » (M3 — La Boussole, 🆓 gratuit, Socle, MVP)
-    ├── README.md                 ← vue d'ensemble + déclaration de conformité
-    ├── 01-tableau-des-24-items.md
-    ├── 02-plan-de-melange-graine-210427.md
-    ├── 03-signatures-registre.md
-    ├── 04-slots-de-miroir.md
-    ├── 05-ecran-d-intro.md
-    └── 06-fiche-computation-Q2.1-17.yaml
+├── M1-1.1-Ta-Personnalite/      ← quête 1.1 « Ta personnalité » (M1 — Le Miroir, 🆓 gratuit, 58 items)
+├── M1-1.2-Facon-Tattacher/      ← quête 1.2 « Ta façon de t'attacher » (M1, 🆓, 20 items)
+├── M1-1.3-Tes-Emotions/         ← quête 1.3 « Tes émotions » (M1, 🆓, 26 items)
+├── M2-1.4-Ton-Controle/         ← quête 1.4 « Ton contrôle sur toi-même » (M2 — Le Volant, 🆓, 8 items)
+├── M2-1.6-Ta-Facon-de-Penser/   ← quête 1.6 « Ta façon de penser » (M2, 🆓, 7 items + 3 énigmes)
+├── M2-1.7-Ton-Fonctionnement/   ← quête 1.7 « Ton fonctionnement » (M2, 🆓, opt-in, 2 items)
+├── M3-2.1-Tes-Valeurs/          ← quête 2.1 « Tes valeurs » (M3 — La Boussole, 🆓 gratuit, Socle, MVP)
+├── M3-2.3-Tes-Non-Negociables/  ← quête 2.3 « Tes non-négociables » (M3, 🆓, Socle, 10 checks)
+├── M3-2.4-Tes-Realites/         ← quête 2.4 « Tes réalités » (M3, 🆓, Socle, 8 clics)
+└── M3-2.5-Ce-Que-Tu-Cherches/   ← quête 2.5 « Ce que tu cherches » (M3, 🆓, Socle, 3 binaires)
 ```
+
+Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` (guide de lecture 1 page)
+· `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
+· `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
+
+**Taux de matérialisation : 148/570 items = 26,0 %** (24 + 124 items rédigés du Monde 1 ; 1.5 « conçus »
+et 1.8 « cadrés » exclus — P1 matérialise, ne rédige pas ; PHQ-9 différé au comité).
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 

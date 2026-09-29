@@ -1,0 +1,49 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+
+> Item choisi : **Q1.2-08** (carte, dimension Évitement, inversé — riche en 5 canaux).
+> Gabarit pour les 12 items carte de la quête (les fiches condensées du tableau
+> `01-tableau-des-items.md` se déploient dans ce format complet).
+> Pour un item de trame (T09-T16) : `carte_id: null`, `signal_id: DTM_M` ou `RSQ`,
+> `ancrage.rappel_autorise: false` — et **aucun énoncé dans ce dépôt** (FM-018 / [11-b]).
+
+```yaml
+item: Q1.2-08
+quete: "1.2 Ta façon de t'attacher"
+monde: M1                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+enonce: "Dépendre de quelqu'un ne me fait pas peur."
+echelle: likert5               # 1 Pas du tout comme moi … 5 Tout à fait comme moi (Arbitrage 2)
+orientation: I                 # marqueur ↩ du source gelé
+recodage: "6 − réponse"        # I → recodé au scoring (Arbitrage 1)
+double_balise:
+  carte_id: evitement
+  signal_id: null
+computation:
+  carte:
+    contribution: "moyenne_evi (6 items — min 1 valide requis)"
+    variable: EVI              # besoin d'espace, 0-1, effective (dictionnaire du registre M1)
+    etages_restants: [carte_quete, miroir_1_2, portrait_monde_M1, portrait_domaine_soi, integral]
+  signal: null
+  fiabilite:
+    role: coherence_dimension  # pas de doublon dédié (les doublons de la quête : 01.r, 09.r)
+    regle: "concordance intra-dimension évitement · garde universelle QFI"
+  modulation:
+    - si: "EVI > 0.65 ET S > 0.55 ET O > 0.65"
+      effet: "briques lumière composées du bloc autonome — moteur (seuils À VALIDER PAR LE COMITÉ)"
+    - si: "EVI > 0.65 ET X < 0.55"
+      effet: "brique ombre « la forteresse intérieure accumule » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+    - si: "QFI < 0.60"
+      effet: "signatures narratives suspendues — versions prudentes, jamais d'affirmation forte"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as répondu que dépendre de quelqu'un ne te fait pas peur"
+```
+
+## Notes
+
+- `variable: EVI` est une métadonnée moteur : elle ne franchit jamais un texte rendu
+  (Constitution [3]).
+- Les deux modulations citées sont des conditions du registre Monde 1 — leur conséquence
+  s'exécute au Portrait M1 (étage 3), pas dans le miroir de quête.
+- L'exemple d'ancrage est fidèle à l'énoncé, reformulé à la 2ᵉ personne, en toutes lettres.

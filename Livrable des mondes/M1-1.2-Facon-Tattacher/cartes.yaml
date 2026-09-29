@@ -1,0 +1,123 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 1.2 « Ta façon de t'attacher » — 5 variantes
+# Source : ddocumentation/refonte des tests et outils wairyu.md (gelé),
+#          charte des cartes PARTIE 2 (lignes 2758-2862) — VERBATIM.
+# Étage 1 de restitution (carte, 30-60 mots de cœur narratif par variante).
+# Les seuils du sélecteur sont des verrous [9] rejoués tels quels du source
+# gelé — À VALIDER PAR LE COMITÉ.
+# ═══════════════════════════════════════════════════════════════════
+quete: "1.2"
+titre: "Ta façon de t'attacher"
+monde: M1
+statut_freemium: gratuit
+source: "charte des cartes, PARTIE 2 — source gelé, verbatim"
+selection:
+  A: "besoin de réassurance (variable moteur ANX)"
+  E: "besoin d'espace (variable moteur EVI — marqueur « É » du source gelé)"
+note_verrou: "seuils du sélecteur À VALIDER PAR LE COMITÉ (Constitution [9]) — continuité Carte → Portrait : SIG_AMBIVALENT est aligné sur la condition de V4 (règle de continuité n°1 du registre)"
+variantes:
+  - ordre: 1
+    id: V1
+    nom: "L'Ancrage"
+    condition: "A < 0.40 ET É < 0.40"
+    texte: |
+      🧭 **QUÊTE ACCOMPLIE — « Ta façon de t'attacher »**
+
+      ### L'Ancrage
+
+      Tu aimes sans paniquer. La proximité te nourrit, la distance ne t'effraie pas : tu sais rester, tu sais lâcher. C'est le style que les chercheurs appellent "sécurisé" — mais toi, tu l'appelles simplement toi.
+
+      **Ta zone d'ombre :** Ton équilibre peut te faire sous-estimer à quel point l'autre, lui, a besoin de preuves.
+
+      **Ta tension intérieure :** aimer sans surveiller, rester sans retenir.
+
+      📊 Ton profil de voyage : **{X}%** complété
+      🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien.
+
+      [Partager ma carte]  [Quête suivante]
+      *{fenêtre sur l'autre}*
+  - ordre: 2
+    id: V2
+    nom: "La Vigie"
+    condition: "A ≥ 0.60 ET É < 0.50"
+    texte: |
+      🧭 **QUÊTE ACCOMPLIE — « Ta façon de t'attacher »**
+
+      ### La Vigie
+
+      Tu aimes fort, et tu veilles. Quand quelqu'un compte, tu y penses souvent, tu sens les variations d'humeur avant tout le monde, tu es prêt(e) à tout pour que ça tienne. Ta loyauté est totale.
+
+      **Ta zone d'ombre :** Le silence de l'autre te parle trop fort — et il dit presque toujours autre chose que ce que tu entends.
+
+      **Ta tension intérieure :** être rassuré(e) sans avoir à demander.
+
+      📊 Ton profil de voyage : **{X}%** complété
+      🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien.
+
+      [Partager ma carte]  [Quête suivante]
+      *{fenêtre sur l'autre}*
+  - ordre: 3
+    id: V3
+    nom: "L'Autonome"
+    condition: "A < 0.50 ET É ≥ 0.60"
+    texte: |
+      🧭 **QUÊTE ACCOMPLIE — « Ta façon de t'attacher »**
+
+      ### L'Autonome
+
+      Tu t'appartiens, et tu ne veux pas le perdre en aimant. Tu gères tes tempêtes seul(e), tu prends l'air quand ça devient dense, tu reviens quand tu as respiré. Ton amour est calme, stable, sans drame.
+
+      **Ta zone d'ombre :** Ton besoin d'air peut ressembler à une fuite pour qui ne connaît pas ton langage — dis-le avant que l'autre l'invente.
+
+      **Ta tension intérieure :** garder ton espace sans que l'autre s'y sente exclu(e).
+
+      📊 Ton profil de voyage : **{X}%** complété
+      🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien.
+
+      [Partager ma carte]  [Quête suivante]
+      *{fenêtre sur l'autre}*
+  - ordre: 4
+    id: V4
+    nom: "Le Va-et-vient"
+    condition: "A ≥ 0.55 ET É ≥ 0.55"
+    texte: |
+      🧭 **QUÊTE ACCOMPLIE — « Ta façon de t'attacher »**
+
+      ### Le Va-et-vient
+
+      Ton cœur a deux vitesses — et c'est vrai, c'est parfois épuisant. Quand ça compte, tu veux tout ; et dès que tu l'as, une partie de toi veut reprendre de l'air. Ce n'est ni de la légèreté ni de la bizarrerie : c'est ta façon d'avoir appris à aimer. Elle se comprend, elle s'apaise, elle se raconte.
+
+      **Ta zone d'ombre :** L'autre peut vivre ton rythme comme des signaux contradictoires — nomme-le, et la moitié du chemin est faite.
+
+      **Ta tension intérieure :** rester quand tu as envie de partir, partir sans avoir l'air de fuir.
+
+      📊 Ton profil de voyage : **{X}%** complété
+      🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien.
+
+      [Partager ma carte]  [Quête suivante]
+      *{fenêtre sur l'autre}*
+  - ordre: 5
+    id: V5
+    nom: "L'Équilibre en mouvement"
+    condition: "tout le reste"
+    texte: |
+      🧭 **QUÊTE ACCOMPLIE — « Ta façon de t'attacher »**
+
+      ### L'Équilibre en mouvement
+
+      Tu n'es ni dans la veille constante ni dans l'envol systématique : ta façon d'aimer s'ajuste à la personne en face. C'est une souplesse rare — elle demande juste que l'autre te suive dans ses propres mouvements.
+
+      **Ta zone d'ombre :** La souplesse a un prix : on peut croire que tu ne choisis jamais vraiment. Choisis, de temps en temps, à voix haute.
+
+      **Ta tension intérieure :** t'adapter sans t'effacer.
+
+      📊 Ton profil de voyage : **{X}%** complété
+      🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien.
+
+      [Partager ma carte]  [Quête suivante]
+      *{fenêtre sur l'autre}*
+notes_conformite:
+  lumiere_ombre: "chaque variante porte sa zone d'ombre (Constitution [2])"
+  registre_probabiliste: "ombre au conditionnel fréquentiel (« peut », « on peut croire ») — verbatim source"
+  metadonnees: "aucun code, score ou sigle dans les textes (Constitution [3])"
+  placeholders_moteur: "{X}%, {Z} personnes, {fenêtre sur l'autre} — remplis côté moteur, jamais calculés en clair dans les textes"

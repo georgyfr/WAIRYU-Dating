@@ -1,0 +1,44 @@
+# CARTES DE LA QUÊTE 2.5 « CE QUE TU CHERCHES »
+# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
+# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
+# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
+# Doctrine : l'ombre nomme le COÛT RELATIONNEL du cap déclaré — jamais un jugement de l'intention.
+quete: "2.5 Ce que tu cherches"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+variantes:
+  - id: CARTE-2.5-A
+    nom: "Le cap posé"
+    selecteur: >-
+      exclusivité affichée : Q2.5-01 « Oui » et Q2.5-03 « Non »
+      (combinaison de déclenchement À VALIDER PAR LE COMITÉ)
+    ancre_item: ["Q2.5-01", "Q2.5-03"]
+    lumiere: "Ton cap est posé : tu cherches à construire à deux, et ce cap se lit d'entrée."
+    ombre: "Un cap exclusif presse parfois les étapes : l'autre hérite d'un rythme qui n'est pas le sien."
+    controle:
+      mots_total: 32
+      mots_lumiere: 16
+      mots_ombre: 16
+      egalite: "ombre = lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+  - id: CARTE-2.5-B
+    nom: "Sans plan figé"
+    selecteur: >-
+      découverte ou non-exclusivité assumée : Q2.5-02 « Oui » ou Q2.5-03 « Oui »
+      (combinaison de déclenchement À VALIDER PAR LE COMITÉ)
+    ancre_item: ["Q2.5-02", "Q2.5-03"]
+    lumiere: "Tu bouges sans plan figé : la rencontre garde son espace, la pression reste dehors."
+    ombre: "Sans exclusivité affichée, quelqu'un peut s'attacher pendant que tu explores — ce coût se nomme tôt, ou se paie après."
+    controle:
+      mots_total: 33
+      mots_lumiere: 14
+      mots_ombre: 19
+      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
+  - "l'ombre des deux variantes nomme le coût pour soi ET le coût pour l'autre (rythme imposé à l'autre / attachement pendant l'exploration) — jamais un jugement de l'intention"
+  - "aucune variante pour l'état contradictoire (Q2.5-01 « Oui » × Q2.5-03 « Oui ») : drapeau QFI moteur seul, miroir dégradé — afficher une carte ici reviendrait à exhiber la contradiction"
+  - "l'intention est datée : aucune carte ne transforme la réponse d'aujourd'hui en trait permanent"
+  - "registre probabiliste : aucun futur certain (« presse parfois », « peut s'attacher » — fréquentiel)"
+  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
+  - "aucune allusion au croisement avec l'intention réelle (6.1) — gratuit ne présuppose jamais premium"

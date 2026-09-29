@@ -10,10 +10,11 @@
 
 | Fichier | Livrable |
 |---|---|
-| `01-tableau-des-24-items.md` | Intégralité des items : code gelé, énoncé, orientation D/I, dimension, facette, paire miroir, signal ▲, fiche de computation à 5 canaux |
-| `02-plan-de-melange-graine-210427.md` | Plan de mélange des blocs : graine seedée 210427, algorithme, ordre de passation, table de vérification des 6 contraintes |
+| `00-README.md` | guide de lecture 1 page : rôle de la quête, lecture des fichiers, flux de production |
+| `01-tableau-des-24-items.md` | 20 items carte (énoncé, orientation D/I, dimension, facette, paire miroir, signal ▲, fiche 5 canaux) + 4 slots de sécurité (énoncés HORS dépôt — FM-018/[11-b]) |
+| `02-plan-de-melange-graine-210427.md` | Plan de mélange : graine 210427 CONSERVÉE, ordre de passation réparé passe ⑤ (FM-015 — run max 2, verdicts REJOUÉS), table des 6 contraintes |
 | `03-signatures-registre.md` | 4 signatures attendues de la quête (format du registre) |
-| `04-slots-de-miroir.md` | Les slots de miroir alimentés (percentiles, citations en toutes lettres, degrés, écarts internes) |
+| `04-slots-de-miroir.md` | Les slots de miroir alimentés (percentiles, citations en toutes lettres, degrés, écarts internes) — corrections FM-017 : ancre_item en champ moteur, citations fidélisées, 2 verrous d'ombre |
 | `05-ecran-d-intro.md` | Écran d'intro de la quête (2 phrases, ton de la Constitution, statut freemium respecté) |
 | `06-fiche-computation-Q2.1-17.yaml` | Fiche de computation complète d'un item, modèle des 5 canaux, format YAML |
 
@@ -32,6 +33,8 @@
 - Seuil SIG-2.1-01 (0,5) · fenêtres de fréquence des 4 signatures · seuil trame T1 (SIG-2.1-03).
 - Le framework public des valeurs universelles est référencé **côté moteur uniquement** — jamais nommé dans aucun texte utilisateur (règle de jargon [3]).
 
-## 🔁 Circuit restant
+## ✅ Statut du circuit
 
-Production (fait) → **validateur (linter)** → **auditeur hostile C1 (session séparée)** → **gouvernance D1**.
+Production ✅ → validateur (linter 6/6) ✅ → **CI du contrat d'inventaire : 15/15** (après FM-015) ✅ → **auditeur hostile C1 : À CORRIGER → LIVRABLE** (clôturé par l'auditeur — `contrat/audits/`) ✅ → gouvernance D1 (FM-013/015/017/018) ✅.
+
+**Première quête LIVRABLE de Wairyu.** Findings 4.1 et 8.1 du C1 restent au comité (verrou [9]) ; rotation des formulations des 4 trames ▲ programmée avant bêta (FM-018 §4 — propositions concepteur, domaine réservé [9]).

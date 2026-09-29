@@ -1,0 +1,60 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q1.6-05 (carte, mono-dimension traitement, porteur du doublon longitudinal).
+
+item: Q1.6-05
+quete: "1.6 Ta façon de penser"
+monde: M2                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+dimension: traitement         # mono-dimension — 7/7 items déclaratifs de la quête
+enonce: "Ma première impression est souvent la bonne."
+echelle: likert5              # 1 Pas du tout comme moi … 5 Tout à fait comme moi (Arbitrage 2)
+orientation: D
+recodage: null                # D → contribue tel quel (Arbitrage 1)
+double_balise:
+  carte_id: traitement
+  signal_id: null             # AUCUNE trame dans la quête 1.6
+computation:
+  carte:
+    contribution: >-
+      pôle déclaratif (D) — moyenne des 7 items ; le sélecteur de carte croise D avec
+      E (énigmes résolues) — charte PARTIE 6
+    bloc: null                # mono-dimension — aucun bloc multi-dimensions
+    etages_restants: [carte_quete, miroir_1_6, portrait_monde_M2, portrait_domaine_soi, integral]
+  signal: null
+  fiabilite:
+    role: porteur_doublon
+    doublon: Q1.6-05.r
+    doublon_enonce: "Mon ressenti initial me sert de boussole, et rarement me trompe."
+    regle: "concordance longitudinale des deux réponses → QFI (fenêtre de re-passage : À VALIDER PAR LE COMITÉ)"
+  performance:
+    canal: >-
+      synthèse avec les 3 énigmes (réussite + temps de réponse capté, moteur) —
+      alimente POL (pôle de traitement analytique, registre §0.2)
+    note: >-
+      les impulsifs lâchent la réponse intuitive < 15 s (verbatim source) —
+      fenêtre À VALIDER PAR LE COMITÉ ; le temps n'est JAMAIS rendu en secondes
+  modulation:
+    - si: "C > 0.75 ET A > 0.60 ET POL > 0.60"
+      effet: >-
+        SIG_STANDARD_PROJETE consomme POL — brique ombre « projection de standard » (Portraits)
+        — seuils À VALIDER PAR LE COMITÉ
+    - si: "S > 0.65 ET POL > 0.65"
+      effet: >-
+        SIG_CALME_VERROU consomme POL — brique ombre « refuse l'urgence émotionnelle »
+        (Portraits) — seuils À VALIDER PAR LE COMITÉ
+    - si: "|POL_A − POL_B| > 0.70 au matching"
+      effet: >-
+        SIG_ECART_POLE — modulation de compatibilité de communication (pénalité) + signal
+        conversationnel symétrique — seuil À VALIDER PAR LE COMITÉ ; jamais rendu en chiffre
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as répondu que ta première impression est souvent la bonne"
+
+# NOTES
+# - Ce modèle sert de gabarit pour les 7 items déclaratifs de la quête (les fiches condensées du
+#   tableau 01-tableau-des-items.md se déploient dans ce format complet).
+# - Les 3 énigmes n'ont PAS de fiche Likert : items de performance hors échelle, hors contrat de
+#   mélange (ordre source É1→É2→É3 — FM future) — cadrage au fichier 01.
+# - La variable POL est produite par la synthèse déclaratif × performance (scoring verbatim) ; les
+#   signatures qui la consomment sont documentées au fichier 03-signatures-registre.md.

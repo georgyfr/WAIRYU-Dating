@@ -1,0 +1,65 @@
+# LIVRABLE 7 — CARTES DE LA QUÊTE 1.4 « TON CONTRÔLE SUR TOI-MÊME »
+# Charte des cartes, PARTIE 4 du source gelé (l. 2985-3087) — textes VERBATIM.
+# ⚠ Toutes les conditions de sélection ci-dessous sont des propositions du source gelé :
+#   À VALIDER PAR LE COMITÉ (verrou [9]). Elles vivent ici côté moteur — jamais rendues en UI.
+
+quete: "1.4"
+titre: "Ton contrôle sur toi-même"
+monde: M2
+statut_freemium: gratuit
+carte_recompense: presente          # la quête 1.4 A UNE carte standard (contrairement à 1.7)
+enonce_carte: "🧭 **QUÊTE ACCOMPLIE — « Ton contrôle sur toi-même »**"
+selection:
+  type: seuil_sur_score_de_quete    # score autocontrole normalisé 0-1
+  note: "seuils du sélecteur : propositions du source gelé — À VALIDER PAR LE COMITÉ"
+variantes:
+  - ordre: 1
+    condition: "score ≥ 0.75"
+    nom: "V1 — L'Artisan·e"
+    corps: |-
+      Quand tu décides quelque chose pour toi, ça arrive. Tes limites tiennent, tes promesses envers toi-même aussi. Ce n'est pas de la discipline militaire : c'est une confiance que tu t'accordes, jour après jour. Les autres la sentent — elle rend ton oui fiable et ton non solide.
+    zone_ombre: |-
+      Le risque du solide : te juger sans pitié le jour où tu glisses.
+    tension_interieure: "tenir sans te serrer."
+  - ordre: 2
+    condition: "0.60 – 0.74"
+    nom: "V2 — Le Juste-Milieu assumé"
+    corps: |-
+      Tu tiens ce qui compte et tu lâches ce qui n'a pas d'importance. Ton auto-contrôle n'est pas une armure : c'est une hiérarchie. Tu sais où mettre ton énergie — et c'est exactement comme ça qu'on dure.
+    zone_ombre: |-
+      La frontière entre "flexible" et "fatigué" se brouille parfois — vérifie de temps en temps de quel côté tu es.
+    tension_interieure: "rester souple sans te laisser porter."
+  - ordre: 3
+    condition: "0.45 – 0.59"
+    nom: "V3 — Le·La Vivant·e"
+    corps: |-
+      Tes résolutions sont sincères, tes rechutes aussi. Tu recommences, tu ajustes, tu recommences encore. Ce n'est pas du manque de volonté : c'est une vie qui préfère l'essai à la culpabilité. Beaucoup de choses se construisent comme ça.
+    zone_ombre: |-
+      Le "c'est la dernière fois" finit par perdre son sens — choisis un rituel plutôt qu'une promesse.
+    tension_interieure: "changer sans te détester."
+  - ordre: 4
+    condition: "0.30 – 0.44"
+    nom: "V4 — Le·La Cédant·e de bonne foi"
+    corps: |-
+      Tes intentions sont là, l'élan aussi — c'est le fil entre les deux qui casse. Les tentations du quotidien sont plus proches que tes objectifs. Tu le sais, tu le vis avec humour, parfois avec lassitude.
+    zone_ombre: |-
+      L'habitude de céder peut devenir une histoire que tu te racontes — "je suis comme ça". Tu es surtout comme ça, pour l'instant.
+    tension_interieure: "croire en toi plus longtemps qu'un lundi."
+  - ordre: 5
+    condition: "< 0.30"
+    nom: "V5 — L'Immédiat"
+    corps: |-
+      Tu vis au présent tendu. L'envie arrive, tu réponds. Les plans lointains t'ennuient, les plaisirs proches te parlent. C'est une manière entière d'exister — sincère, sans calcul, sans hypocrisie.
+    zone_ombre: |-
+      Certaines choses que tu veux vraiment — vraiment — demandent un délai. Elles ne l'auront que si tu le leur donnes.
+    tension_interieure: "profiter de maintenant sans le voler à plus tard."
+pied_de_carte_commun:
+  voyage: "📊 Ton profil de voyage : **{X}%** complété"
+  pool: "🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien."
+  boutons: ["[Partager ma carte]", "[Quête suivante]"]
+  fenetre_sur_autre: "*{fenêtre sur l'autre}*"
+conformite:
+  - "textes VERBATIM du source gelé (charte PARTIE 4) — toute révision passe par le comité"
+  - "chaque variante porte lumière (corps) + ombre (zone d'ombre) + tension — doctrine [2]"
+  - "aucun score, code ou sigle ne franchit le rendu — {X}% est la jauge de voyage du parcours, pas un score de test"
+  - "conditions de sélection et placeholders {X}/{Z} : métadonnées moteur — jamais affichées telles quelles"

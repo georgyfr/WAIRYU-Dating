@@ -1,0 +1,65 @@
+# LIVRABLE 7 — CARTES DE LA QUÊTE 1.6 « TA FAÇON DE PENSER »
+# Charte des cartes, PARTIE 6 du source gelé (l. 3194-3298) — textes VERBATIM.
+# ⚠ Toutes les conditions de sélection ci-dessous sont des propositions du source gelé :
+#   À VALIDER PAR LE COMITÉ (verrou [9]). Elles vivent ici côté moteur — jamais rendues en UI.
+
+quete: "1.6"
+titre: "Ta façon de penser"
+monde: M2
+statut_freemium: gratuit
+carte_recompense: presente          # la quête 1.6 A UNE carte standard
+enonce_carte: "🧭 **QUÊTE ACCOMPLIE — « Ta façon de penser »**"
+selection:
+  logique: "Logique de sélection (verbatim charte) : D = pôle déclaratif analytique, E = énigmes résolues"
+  note: "seuils du sélecteur D×E : propositions du source gelé — À VALIDER PAR LE COMITÉ"
+variantes:
+  - ordre: 1
+    condition: "D ≥ 0.60 ET E ≥ 2/3"
+    nom: "V1 — L'Horloger·ère"
+    corps: |-
+      Tu démontes les problèmes pièce par pièce, et ça se voit : tes réponses comme tes affirmations tiennent debout. Chez toi, réfléchir n'est pas douter — c'est construire.
+    zone_ombre: |-
+      Tout ne se démonte pas. Certaines choses — les gens, les envies, l'amour — se ressentent d'abord, se comprennent ensuite.
+    tension_interieure: "comprendre sans retirer la magie."
+  - ordre: 2
+    condition: "D < 0.40 ET E < 1/3"
+    nom: "V2 — Le Flair"
+    corps: |-
+      Ta première impression est ta boussole, et souvent elle a raison. Tu décides avec le ventre, tu réussis avec le style. La lenteur de l'analyse t'endort — le vivant t'appelle.
+    zone_ombre: |-
+      Les pièges qui demandent une seconde lecture te prennent parfois — parce que tu as déjà répondu.
+    tension_interieure: "faire confiance à ton flair sans le laisser seul."
+  - ordre: 3
+    condition: "D < 0.40 ET E ≥ 2/3"
+    nom: "V3 — Le Flair qui vérifie"
+    corps: |-
+      Tu dis suivre ton instinct — et pourtant, face aux pièges, tu as vérifié. Ton secret ? Un flair qui ne se croit pas infaillible. C'est la meilleure des combinaisons : tu ressens vite, tu confirmes sans te l'avouer.
+    zone_ombre: |-
+      Le jour où tu te seras entièrement avoué(e) méthodique, tu seras redoutable.
+    tension_interieure: "rester rapide sans te mentir."
+  - ordre: 4
+    condition: "D ≥ 0.60 ET E ≤ 1/3"
+    nom: "V4 — Le·La Prudent·e"
+    corps: |-
+      Tu pèses, tu vérifies, tu refuses de répondre trop vite — même aux questions qui en veulent. Ta prudence t'a évité plus d'erreurs qu'elle t'en a coûté de chances.
+    zone_ombre: |-
+      Il y a des réponses simples déguisées en pièges — tu les regardes passer en cherchant la complication.
+    tension_interieure: "vérifier sans douter de tout."
+  - ordre: 5
+    condition: "tout le reste"
+    nom: "V5 — Les Deux Mains"
+    corps: |-
+      Une main qui sent, une main qui mesure. Selon le terrain, tu changes d'outil — et c'est plus efficace que n'importe quelle doctrine. Tu es du genre à comprendre les deux camps : l'intuitif et l'analyste.
+    zone_ombre: |-
+      Le risque des gens complets : ne jamais devenir exceptionnel dans un seul geste.
+    tension_interieure: "choisir l'outil — et parfois s'y tenir."
+pied_de_carte_commun:
+  voyage: "📊 Ton profil de voyage : **{X}%** complété"
+  pool: "🤝 **{Z} personnes** attendent en ce moment un profil aussi riche que le tien."
+  boutons: ["[Partager ma carte]", "[Quête suivante]"]
+  fenetre_sur_autre: "*{fenêtre sur l'autre}*"
+conformite:
+  - "textes VERBATIM du source gelé (charte PARTIE 6) — toute révision passe par le comité"
+  - "chaque variante porte lumière (corps) + ombre (zone d'ombre) + tension — doctrine [2]"
+  - "aucun score, code ou sigle ne franchit le rendu — {X}% est la jauge de voyage du parcours, pas un score de test"
+  - "E compte les énigmes résolues (donnée moteur) ; le détail des énigmes n'est jamais déballé sur la carte"

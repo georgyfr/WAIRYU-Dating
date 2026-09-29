@@ -1,0 +1,52 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+
+> Item choisi : **Q1.3-12** (carte, dimension Régulation, inversé — riche en 5 canaux).
+> Gabarit pour les 20 items carte de la quête (les fiches condensées du tableau
+> `01-tableau-des-items.md` se déploient dans ce format complet).
+> Pour un item de trame (T21-T26) : `carte_id: null`, `signal_id: DE_U` ou `DE_C`,
+> `ancrage.rappel_autorise: false` — et **aucun énoncé dans ce dépôt** (FM-018 / [11-b]).
+
+```yaml
+item: Q1.3-12
+quete: "1.3 Tes émotions"
+monde: M1                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+enonce: "Je rumine des heures avant de retrouver mon calme."
+echelle: likert5               # 1 Pas du tout comme moi … 5 Tout à fait comme moi (Arbitrage 2)
+orientation: I                 # marqueur ↩ du source gelé
+recodage: "6 − réponse"        # I → recodé au scoring (Arbitrage 1)
+double_balise:
+  carte_id: regulation
+  signal_id: null
+computation:
+  carte:
+    contribution: "moyenne_regulation (7 items — min 1 valide requis)"
+    variable: R                # régulation, 0-1, effective — modulateur local du Monde 1
+    etages_restants: [carte_quete, miroir_1_3, portrait_monde_M1, portrait_domaine_soi, integral]
+  signal: null
+  fiabilite:
+    role: paire_doublon        # doublon fiabilité dédié
+    pendant: Q1.3-12.r         # concordance des deux réponses (fenêtre ≥ 2 semaines ⚠ À VALIDER)
+    regle: "alimente la méta QFI (cristallin / construction) · garde universelle"
+  modulation:
+    - si: "R < 0.40 ET S < 0.40"
+      effet: "brique ombre « la météo intérieure » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+    - si: "R < 0.40 ET ANX > 0.55"
+      effet: "brique ombre « la vérification sous pression » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+    - si: "R < 0.35 ET (S < 0.45 OU ANX > 0.60) ET QFI ≥ 0.60"
+      effet: "gabarit GAB-REN, dernière passe, une fois max — formulation verrouillée (À VALIDER PAR LE COMITÉ)"
+    - si: "QFI < 0.60"
+      effet: "signatures narratives suspendues — versions prudentes, jamais d'affirmation forte"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score"
+    exemple: "quand tu as répondu que tu rumines des heures avant de retrouver ton calme"
+```
+
+## Notes
+
+- `variable: R` est une métadonnée moteur : elle ne franchit jamais un texte rendu
+  (Constitution [3]).
+- R est le **modulateur local** du Monde 1 : cet item influe sur les variables effectives des
+  autres quêtes sans jamais toucher leurs énoncés (règle de continuité n°3 du registre).
+- L'exemple d'ancrage est fidèle à l'énoncé, reformulé à la 2ᵉ personne, en toutes lettres.

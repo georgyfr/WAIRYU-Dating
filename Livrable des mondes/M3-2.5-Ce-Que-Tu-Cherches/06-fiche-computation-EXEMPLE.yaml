@@ -1,0 +1,49 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 5 canaux)
+# Item choisi : Q2.5-01 (l'exclusivité — le binaire qui porte le dealbreaker et le futur croisement de tromperie).
+# Fichier YAML strict (le gabarit hybride Markdown+fence du modèle 2.1 n'était pas parsable — dérogation documentée).
+item: Q2.5-01
+quete: "2.5 Ce que tu cherches"
+monde: M3                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: binaire               # NON-Likert : oui / non — assumé, sans échelle
+enonce: "Tu cherches une relation exclusive."
+echelle: null                 # pas d'échelle — deux états
+orientation: null             # sans-objet hors Likert (c5 sans-objet)
+dimension: null               # binaire : aucune dimension psychométrique
+double_balise:
+  carte_id: null
+  signal_id: null             # aucune trame dans la quête
+computation:
+  carte:
+    contribution: "agrégat d'intention (avec Q2.5-02 et Q2.5-03) — intention affichée, restituable"
+    etages_restants: [carte_quete, miroir_2_5, portrait_monde_M3, integral]
+  signal:
+    role: dealbreaker_binaire
+    mecanisme: >-
+      croisement avec l'intention réelle mesurée plus tard (6.1, invisible, M8, opt-in) →
+      détection de tromperie — module la fiabilité de l'intention affichée dans le matching
+    rendu: moteur_seul        # jamais affiché, jamais suggéré, jamais sanctionné en UI
+    etat: "EN ATTENTE D'ACTIVATION — pré-requis : matérialisation de 6.1 (À VALIDER PAR LE COMITÉ)"
+  fiabilite:
+    role: coherence_interne
+    regle: >-
+      Q2.5-01 « Oui » × Q2.5-03 « Oui » → contradiction logique directe → drapeau QFI
+      (moteur seul) + miroir dégradé d'un degré, reformulé avec prudence — aucun texte accusateur
+  modulation:
+    - si: "réponse modifiée après passation"
+      effet: "intention affichée recalculée — fenêtre À VALIDER PAR LE COMITÉ"
+    - si: "état « Non / Non / Non » (aucune intention lisible)"
+      effet: "intention incomplète assumée — aucun dealbreaker binaire appliqué, miroir descriptif"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne, sans code ni score, daté (« aujourd'hui »)"
+    exemple: "quand tu as répondu que tu cherches une relation exclusive"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 3 binaires (les fiches condensées du tableau
+    01-tableau-des-items.md se déploient dans ce format complet). Seuls changent la règle de
+    cohérence (Q2.5-03 est le pendant logique de Q2.5-01) et le domaine de croisement.
+  - >-
+    Rappel de doctrine : le croisement 6.1 est décrit ici côté MOTEUR uniquement. Dans tout texte
+    destiné à l'utilisateur, il est interdit d'y faire allusion (gratuit ne présuppose jamais premium,
+    Constitution [6]).

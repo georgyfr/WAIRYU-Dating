@@ -1,0 +1,45 @@
+# CARTES DE LA QUÊTE 2.4 « TES RÉALITÉS »
+# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
+# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
+# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
+# Doctrine : les réalités sont FACTUELLES et JAMAIS jugées — l'ombre nomme des coûts de mécanisme
+# (le filtrage, le tri), jamais des défauts de la personne.
+quete: "2.4 Tes réalités"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+variantes:
+  - id: CARTE-2.4-A
+    nom: "La réalité, telle quelle"
+    selecteur: >-
+      au moins une réalité déclarée (Q2.4-01 → Q2.4-08) active des filtres hard constraints
+      chez d'autres membres — fréquence minimale de déclenchement À VALIDER PAR LE COMITÉ
+    ancre_item: ["Q2.4-01", "Q2.4-02", "Q2.4-03", "Q2.4-04", "Q2.4-05", "Q2.4-06", "Q2.4-07", "Q2.4-08"]
+    lumiere: "Tu déclares ta vie telle qu'elle est. Ceux qui te lisent savent à qui ils écrivent."
+    ombre: "Une réalité déclarée filtre aussi sans toi : certains s'écartent avant le premier mot, sans te le dire."
+    controle:
+      mots_total: 33
+      mots_lumiere: 16
+      mots_ombre: 17
+      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+  - id: CARTE-2.4-B
+    nom: "Le bassin large"
+    selecteur: >-
+      réalités déclarées activant peu de filtres chez les autres membres
+      — seuil « peu » À VALIDER PAR LE COMITÉ
+    ancre_item: ["Q2.4-01", "Q2.4-02", "Q2.4-03", "Q2.4-04", "Q2.4-05", "Q2.4-06", "Q2.4-07", "Q2.4-08"]
+    lumiere: "Tes réalités ouvrent large : peu de filtres s'appliquent, et le bassin reste grand."
+    ombre: "Un large bassin reporte le tri dans la conversation : les réalités décisives se découvrent en face, parfois après l'attachement."
+    controle:
+      mots_total: 32
+      mots_lumiere: 13
+      mots_ombre: 19
+      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
+  - "l'ombre des deux variantes décrit un coût de mécanisme (filtrage, tri reporté) — jamais un défaut de la personne"
+  - "coût pour soi ET pour l'autre nommés (A : écartement à l'insu de l'autre · B : découverte après attachement)"
+  - "registre probabiliste : aucun futur certain (« s'écartent », « se découvrent » — présent fréquentiel)"
+  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
+  - "aucune mention du moteur, des codes, des taux de croisement ou des seuils"
+  - "les deux variantes restent descriptives : aucune hiérarchie entre « réalité croisée » et « bassin large » — deux mécanismes, pas deux qualités de profil"
