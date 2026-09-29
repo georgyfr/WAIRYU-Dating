@@ -28,7 +28,7 @@ import {
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { verifyTurnstile } from '../lib/turnstile';
 import { emailProviderConfigured, sendOtpEmail } from '../lib/email';
-import { googleConfigured, buildAuthorizeUrl, exchangeCodeForProfile, generatePkce } from '../lib/google';
+import { googleConfigured, buildAuthorizeUrl, exchangeCodeForProfile, generatePkce, verifyGoogleIdToken } from '../lib/google';
 import {
   facebookConfigured,
   buildFacebookAuthorizeUrl,
@@ -88,6 +88,9 @@ authRoutes.get('/auth/config', (c) => {
   const body: AuthConfigResponse = {
     turnstileSiteKey: c.env.TURNSTILE_SITE_KEY ?? null,
     googleEnabled: googleConfigured(c.env),
+    // Task 57 : client_id public requis par le bouton GSI (popup FedCM) —
+    // sans navigation hors de l'app Android (TWA), voir POST /auth/google/idtoken.
+    googleClientId: googleConfigured(c.env) ? c.env.GOOGLE_CLIENT_ID : null,
     facebookEnabled: facebookConfigured(c.env),
     emailProvider: emailProviderConfigured(c.env) ? 'brevo' : 'dev',
   };
@@ -498,6 +501,48 @@ authRoutes.get('/auth/google/callback', async (c) => {
       `[oauth:google] échange/résolution échoués (récupérable) : ${e instanceof Error ? e.message : String(e)}`,
     );
     return c.redirect('/#/?google=retry', 302);
+  }
+});
+
+// ---- Google GSI (Task 57) : jeton d'identification de la popup FedCM ----
+// Le front charge accounts.google.com/gsi/client et affiche le bouton officiel
+// « Se connecter avec Google » DANS la page (popup interne au navigateur —
+// aucune navigation top-level, donc aucune sortie de la TWA Android). Google
+// appelle la callback JS avec un jeton d'identification (JWT) ; le front le
+// poste ici, on le vérifie (signature JWKS, émetteur, audience, expiration),
+// puis même résolution que le callback : fusion OTP par email vérifié, liaison
+// oauth_identities, session. Les AppError gardent leur message propre ; les
+// autres erreurs deviennent une erreur douce « google_popup_failed ».
+authRoutes.post('/auth/google/idtoken', async (c) => {
+  const env = c.env;
+  if (!googleConfigured(env)) throw errors.notFound();
+
+  const body = (await c.req.json().catch(() => null)) as { credential?: unknown } | null;
+  const credential = body?.credential;
+  if (typeof credential !== 'string' || credential.length < 100) {
+    throw errors.badRequest("Jeton Google manquant ou invalide. Réessaie.");
+  }
+
+  try {
+    const profile = await verifyGoogleIdToken(env, credential);
+    const email = normalizeEmail(profile.email);
+    if (!email) throw errors.badRequest('Email Google invalide.');
+
+    const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
+      id: profile.sub,
+      email,
+      name: profile.name,
+    });
+    await createSession(c, userId);
+    if (created) await bumpMetric(c.env.DB, 'signup_completed');
+    await bumpMetric(c.env.DB, 'login_google');
+    return c.json({ ok: true, google: 'ok', created } as const);
+  } catch (e) {
+    if (e instanceof AppError) throw e;
+    console.error(
+      `[oauth:google-gsi] jeton réfusé/échec : ${e instanceof Error ? e.message : String(e)}`,
+    );
+    throw errors.badRequest("Connexion Google refusée. Réessaie, ou utilise le code email.");
   }
 });
 

@@ -312,6 +312,8 @@ export interface AuthConfigResponse {
   turnstileSiteKey: string | null;
   /** Google OAuth configuré côté serveur ? */
   googleEnabled: boolean;
+  /** Client ID OAuth Google public (bouton « Sign in with Google » GSI popup, Task 57). */
+  googleClientId: string | null;
   /** Facebook Login configuré côté serveur ? */
   facebookEnabled: boolean;
   /** Mode d'envoi des emails OTP : 'brevo' ou 'dev' (staging sans clé Brevo). */

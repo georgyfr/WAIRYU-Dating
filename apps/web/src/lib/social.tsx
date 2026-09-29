@@ -4,7 +4,21 @@
  * sinon affichés en état « bientôt » désactivé. Sur l'écran d'inscription, le
  * consentement (18+ et CGU) est exigé avant de lancer le parcours social —
  * le fournisseur ne crée jamais un compte sans le consentement wairyu.
+ *
+ * Task 57 — connexion Google en popup FedCM (bouton officiel GSI) :
+ * dans l'app Android (TWA), l'ancien flux de redirection top-level vers
+ * accounts.google.com faisait SORTIR l'utilisateur de l'app — sur certains
+ * téléphones (tueurs de tâches agressifs HiOS/XOS/MIUI, crash Custom Tabs
+ * documentés) l'Activity wairyu est fermée pendant la connexion et
+ * l'utilisateur revient au launcher : « l'application se referme toute seule ».
+ * Le bouton officiel « Se connecter avec Google » s'ouvre DANS la page
+ * (popup interne au navigateur, zéro navigation top-level) et le jeton
+ * d'identification reçu est vérifié par POST /api/auth/google/idtoken.
+ * L'ancien flux de redirection est conservé en secours (lien discret
+ * « via le navigateur ») : aucune régression si GSI est indisponible.
  */
+import { useEffect, useRef, useState } from 'react';
+import { api } from '../lib/api';
 import type { AuthConfigResponse } from '@wairyu/shared';
 
 function GoogleGlyph() {
@@ -52,7 +66,58 @@ interface SocialButtonsProps {
 // navigation est empêchée (4 s).
 let socialStartLock = false;
 
+// ---------------------------------------------------------------------------
+// Task 57 — chargement unique (module-level) du script officiel GSI.
+// Le promesse est partagée entre Login et Signup ; timeout de sécurité 8 s
+// (réseau mobile filtré / script bloqué) → fallback redirect automatique.
+// ---------------------------------------------------------------------------
+interface GoogleIdApi {
+  initialize(config: {
+    client_id: string;
+    callback: (response: { credential: string }) => void;
+    use_fedcm_for_prompt?: boolean;
+  }): void;
+  renderButton(parent: HTMLElement, options: Record<string, unknown>): void;
+}
+declare global {
+  interface Window {
+    google?: { accounts?: { id?: GoogleIdApi } };
+  }
+}
+
+let gsiScriptPromise: Promise<GoogleIdApi | null> | null = null;
+function loadGoogleGsi(): Promise<GoogleIdApi | null> {
+  gsiScriptPromise ??= new Promise((resolve) => {
+    const existing = window.google?.accounts?.id;
+    if (existing) {
+      resolve(existing);
+      return;
+    }
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve(window.google?.accounts?.id ?? null);
+    };
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = finish;
+    script.onerror = finish;
+    // Réseau filtré / script bloqué : ne pas bloquer la connexion plus de 8 s.
+    setTimeout(finish, 8000);
+    document.head.appendChild(script);
+  });
+  return gsiScriptPromise;
+}
+
 export function SocialButtons({ config, requireConsent, onConsentBlocked }: SocialButtonsProps) {
+  const [gsiState, setGsiState] = useState<'loading' | 'ready' | 'failed'>('loading');
+  const [popupError, setPopupError] = useState<string | null>(null);
+  const gsiSlotRef = useRef<HTMLDivElement | null>(null);
+  const gsiVerifyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   function start(provider: 'google' | 'facebook') {
     if (requireConsent) {
       onConsentBlocked?.();
@@ -67,16 +132,109 @@ export function SocialButtons({ config, requireConsent, onConsentBlocked }: Soci
     window.location.href = `/api/auth/${provider}/start`;
   }
 
+  // Task 57 — reçoit le jeton d'identification de la popup GSI, le fait
+  // vérifier + poser la session, puis recharge (l'app ouvre sur la home).
+  async function submitGoogleCredential(credential: string) {
+    setPopupError(null);
+    try {
+      await api('/api/auth/google/idtoken', { json: { credential } });
+      window.location.reload();
+    } catch (err) {
+      setPopupError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+  }
+
+  const googleReady = config?.googleEnabled && config?.googleClientId && !requireConsent;
+
+  useEffect(() => {
+    if (!googleReady || gsiState === 'failed') return;
+    let cancelled = false;
+    void loadGoogleGsi().then((idApi) => {
+      if (cancelled) return;
+      // PIÈGE corrigé : le slot doit être DÉJÀ monté quand renderButton tourne —
+      // il est donc rendu en permanence (caché en CSS tant que GSI n'est pas prêt).
+      if (!idApi || !gsiSlotRef.current) {
+        setGsiState('failed');
+        return;
+      }
+      try {
+        idApi.initialize({
+          client_id: config?.googleClientId ?? '',
+          use_fedcm_for_prompt: true,
+          callback: (response) => {
+            void submitGoogleCredential(response.credential);
+          },
+        });
+        idApi.renderButton(gsiSlotRef.current, {
+          theme: 'outline',
+          size: 'large',
+          shape: 'pill',
+          text: 'continue_with',
+          locale: 'fr',
+        });
+        setGsiState('ready');
+        // Filet de sécurité (Task 57) : si l'origine du site n'est PAS autorisée
+        // dans la console Google (« The given origin is not allowed »), Google
+        // crée une iframe VIDE (largeur 0) sans lever d'erreur JS. Après 2,5 s,
+        // si le bouton ne s'est pas réellement rendu → retour automatique au
+        // flux de redirection historique : l'utilisateur a TOUJOURS un bouton
+        // Google utilisable, quel que soit l'état de la console Google.
+        gsiVerifyTimer.current = setTimeout(() => {
+          const iframeW = gsiSlotRef.current?.querySelector('iframe')?.getBoundingClientRect().width ?? 0;
+          if (iframeW < 40) setGsiState('failed');
+        }, 2500);
+      } catch {
+        setGsiState('failed');
+      }
+    });
+    return () => {
+      cancelled = true;
+      if (gsiVerifyTimer.current) clearTimeout(gsiVerifyTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [googleReady]);
+
   return (
     <>
       <div className="social-divider">
         <span>ou</span>
       </div>
       <div className="social-row">
+        {/* Google : bouton officiel GSI en popup (Task 57) quand disponible.
+            Le slot GSI est TOUJOURS monté (caché tant que pas prêt) — le ref
+            doit exister au moment de renderButton. En attendant / en échec :
+            ancien flux de redirection préservé. */}
         {config?.googleEnabled ? (
-          <button type="button" className="btn google" onClick={() => start('google')}>
-            <GoogleGlyph /> Continuer avec Google
-          </button>
+          requireConsent ? (
+            <button
+              type="button"
+              className="btn google disabled"
+              onClick={onConsentBlocked}
+              title="Coche d'abord 18+ et CGU pour activer la connexion Google."
+            >
+              <GoogleGlyph /> Continuer avec Google
+            </button>
+          ) : (
+            <div className="gsi-wrap">
+              <div
+                ref={gsiSlotRef}
+                className={gsiState === 'ready' ? 'gsi-slot' : 'gsi-slot gsi-hidden'}
+              />
+              {gsiState === 'ready' && (
+                <>
+                  <button type="button" className="social-alt" onClick={() => start('google')}>
+                    La fenêtre Google ne s'ouvre pas ? Continuer via le navigateur
+                  </button>
+                  {popupError && <p className="error">{popupError}</p>}
+                </>
+              )}
+              {gsiState !== 'ready' && (
+                <button type="button" className="btn google" onClick={() => start('google')}>
+                  <GoogleGlyph /> Continuer avec Google
+                </button>
+              )}
+            </div>
+          )
         ) : (
           <button
             type="button"

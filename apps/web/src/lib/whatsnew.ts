@@ -32,6 +32,15 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-29-google-popup',
+    date: '29 septembre 2026',
+    title: 'Connexion Google plus fiable dans l’application',
+    items: [
+      'La connexion avec Google s’ouvre maintenant dans une petite fenêtre, sans jamais quitter l’app : fini les fermetures inattendues sur certains téléphones.',
+      'Un lien de secours « via le navigateur » reste disponible si la fenêtre Google ne s’ouvre pas.',
+    ],
+  },
+  {
     id: '2026-09-29-app-mobile',
     date: '29 septembre 2026',
     title: 'wairyu s’installe sur ton téléphone',
