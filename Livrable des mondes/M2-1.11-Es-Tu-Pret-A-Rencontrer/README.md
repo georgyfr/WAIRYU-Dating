@@ -22,6 +22,7 @@
 |---|---|
 | `03-signatures-registre.md` | aucune signature — jamais de score, jamais public, jamais dans le matching : la lecture RB1 vit moteur, silencieuse et réversible (fiche de cadrage) |
 | `04-slots-de-miroir.md` | **pas de miroir** — écran de passage, exempté (Constitution [7] : « EXEMPTÉ si badge, écran de passage, fonctionnalité ») — ratification comité |
+| `07-miroir.md` | **pas de miroir** — même exemption que le 04 (écran de passage, Constitution [7]) — cohérence de liste vérifiée (V7.3) |
 | `06-fiche-computation-*.yaml` | aucune computation : les réponses ne calculent rien, elles routent (3 questions fermées) |
 | `cartes.yaml` | **pas de carte** — c'est un écran, documenté comme tel (la mission le verbatim : « pas de carte ») |
 | `02-plan-de-melange-*.md` | remplacé par `02-plan-de-passage.md` (ordre fixe scénarique — precedent 1.7) |

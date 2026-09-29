@@ -45,7 +45,7 @@ computation:
       effet: "rien n'est enregistré tant que la somme n'est pas à 100 — pas de brouillon jugé"
     - si: "mise à jour d'une répartition après validation"
       effet: "compatibilités recalculées des deux côtés — fenêtre À VALIDER PAR LE COMITÉ"
-    - si: "dominance d'ancrage (stabilité ou projets communs en tête)"
+    - si: "dominance d'ancrage (stabilité ou projets personnels en tête)"
       effet: "profil « équilibré » au gabarit (07 §2) — jamais traité comme un non-choix"
   ancrage:
     rappel_autorise: true

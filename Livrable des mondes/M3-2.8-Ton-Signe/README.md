@@ -1,7 +1,7 @@
 # QUÊTE 2.8 « TON SIGNE (JUSTE POUR LE JEU) » — LIVRABLES DE PRODUCTION
 
 > **Monde** : M3 — La Boussole · **Statut** : 🆓 gratuit · **Phase** : P1.5 (Contrat d'Inventaire)
-> **Format** : micro-quête opt-in — 1 sélection (12 signes + « Je ne veux pas dire ») · badge conversationnel
+> **Format** : micro-quête opt-in — 1 sélection (12 signes + « Je préfère ne pas dire ») · badge conversationnel
 > **Plage de codes gelée** : Q2.8-01 (sélection unique)
 > **Cadre** : Constitution v2.1 [5] (« 2.8 Ton signe (1, hors score) ») · Contrat d'Inventaire
 > (« Badge conversation + disclaimer de marque — **JAMAIS dans le score — règle absolue** ») · FM-011 v2
@@ -23,6 +23,7 @@
 |---|---|
 | `03-signatures-registre.md` | **aucune signature** — le badge n'entre dans aucun calcul : aucune signal à déclarer |
 | `04-slots-de-miroir.md` | **aucun miroir** — badge/écran exempté (Constitution [7] : « EXEMPTÉ si badge… ») — ratification comité |
+| `07-miroir.md` | **aucun miroir** — même exemption que le 04 (badge déclaratif pur, Constitution [7]) — cohérence de liste vérifiée (V7.3) |
 | `06-fiche-computation-*.yaml` | **aucune computation** — badge déclaratif pur : aucune donnée calculée, la sélection est une étiquette |
 | `02-plan-de-melange-*.md` | remplacé par `02-ordre-canonique.md` (1 clic — rien à mélanger) |
 
@@ -34,7 +35,7 @@
 | Dimension non listée | ✅ aucune — `dimension = null` |
 | Items non demandés | ✅ 1 exactement (Constitution [5] : « 2.8 Ton signe (1) ») |
 | Diagnostic / inférence de personnalité | ✅ aucune — les phrases légères suggèrent un clin d'œil, elles ne décrivent pas ; le disclaimer ferme la frontière |
-| « Je ne veux pas dire » traité comme un manque | ✅ jamais — option de première classe, silence assumé, aucune trace |
+| « Je préfère ne pas dire » traité comme un manque | ✅ jamais — option de première classe, silence assumé, aucune trace |
 | Compatibilité astro | ✅ nulle part — aucune « affinité de signes » dans aucun texte, aucun calcul |
 | Code/score/sigle au rendu | ✅ aucun |
 | Verrous [9] traités comme décisions | ✅ exemption de charte du badge miniature : ratification comité (precedent 1.7) |
@@ -43,8 +44,9 @@
 ## ⚠️ Points en attente de validation comité
 
 - Exemption de miroir et de charte d'ombre pour le badge miniature (precedent 1.7) · la version
-  gravée du disclaimer (mission : « la science, **elle,** est dans tes résultats ») contre la variante
-  contractuelle plus ancienne — arbitrage de production documenté · moment exact de proposition de
+  gravée du disclaimer (mission V8.D : « la science, **elle,** est dans tes résultats **de tests** »)
+  contre les variantes plus anciennes (contrat sans « elle, » · Vague 6 sans « de tests ») —
+  rotations documentées à la fiche de cadrage · moment exact de proposition de
   la quête (Phase P1.5) · régime de modification/effacement du badge (produit, hors périmètre).
 
 ## 🔁 Circuit restant

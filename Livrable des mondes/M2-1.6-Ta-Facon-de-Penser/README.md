@@ -15,7 +15,7 @@
 | `01-tableau-des-items.md` | Les 7 items VERBATIM + **les 3 énigmes ENTIÈRES** (énoncé, réponse intuitive, réponse correcte, statut juridique VERBATIM) + scoring + doublon |
 | `02-plan-de-melange-graine-216427.md` | Plan de mélange : graine 216427, ordre réel des 7 items, 6 verdicts réels — **les 3 énigmes sont HORS contrat de mélange** |
 | `03-signatures-registre.md` | SIG_ECART_POLE (pénalité écart de pôle) · SIG_STANDARD_PROJETE / SIG_CALME_VERROU (consomment POL) — format du registre |
-| `04-slots-de-miroir.md` | Slots de miroir — 7 items + 3 énigmes = 10 blocs → gabarit MOYEN 150-250 mots (Constitution [7]) |
+| `04-slots-de-miroir.md` | Slots de miroir — gabarit **LÉGER 80-150 mots** (tranchage mission V7.2 — les énigmes, blocs de performance, ne créent pas de densité de restitution) |
 | `05-ecran-d-intro.md` | Écran d'intro (texte VERBATIM du source, contrôles de conformité) |
 | `06-fiche-computation-EXEMPLE.yaml` | Fiche de computation complète de Q1.6-05 (D) — modèle des 5 canaux, YAML |
 | `cartes.yaml` | Les 5 variantes de carte (sélecteur D×E + textes VERBATIM, charte PARTIE 6) |

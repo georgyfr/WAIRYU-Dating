@@ -12,7 +12,7 @@
 | Q2.6-02 | Famille / projet parental | Faire de la place pour un enfant — ou pour ceux qui sont là. Le temps, l'énergie et les arbitrages du quotidien tournés vers la famille. | C: répartition→profil · S: idem 01 · F: idem 01 · M: idem 01 · A: rappel OK — « quand tu as donné la priorité à la famille » |
 | Q2.6-03 | Liberté / aventures | Partir, bouger, découvrir sans tout planifier. Les années où la légèreté du sac pèse plus que le socle. | C: répartition→profil · S: idem 01 · F: idem 01 · M: idem 01 · A: rappel OK — « quand tu as mis le paquet sur la liberté » |
 | Q2.6-04 | Stabilité / sécurité | Bâtir un socle qui tient : épargne, logement, santé, rythmes durables. Les années où tu sécurises avant d'étendre. | C: répartition→profil · S: idem 01 · F: idem 01 · M: idem 01 · A: rappel OK — « quand tu as choisi de sécuriser d'abord » |
-| Q2.6-05 | Projets communs à deux | Construire avec quelqu'un, pierre après pierre. Ce que vous montez ensemble — le couple comme chantier. | C: répartition→profil · S: idem 01 · F: idem 01 · M: idem 01 · A: rappel OK — « quand tu as réservé des points à ce que vous montez à deux » |
+| Q2.6-05 | Projets personnels | Faire vivre ce qui est à toi : créer, courir, t'engager. Les années où tes projets personnels — créatifs, sportifs, associatifs — trouvent leur fenêtre. | C: répartition→profil · S: idem 01 · F: idem 01 · M: idem 01 · A: rappel OK — « quand tu as gardé des points pour tes projets à toi » |
 
 ## Mécanique (exacte — rendu écran)
 
@@ -26,10 +26,19 @@
 
 ## Décisions de composition documentées (domaine réservé [9] — propositions)
 
+0. **Axe 05 « Projets personnels » (mission V8.B — RE-SPÉCIFICATION TRACÉE)** : la VAGUE 6 avait
+   livré l'axe « Projets communs à deux » (« Construire avec quelqu'un, pierre après pierre… »).
+   La mission V8.B nomme les 5 axes : « Carrière/Ambition · Projet familial · Liberté/Aventures ·
+   Stabilité/Sécurité · **Projets personnels (créatif, sportif, associatif...)** » — l'axe 05 est
+   réécrit en conséquence (production neuve déclarée — B.3 : aucun source gelé pour cette quête ;
+   ancienne description archivée dans l'historique git, commit `307f33e`). Conséquence documentée :
+   le couple n'est plus un axe NOMMÉ — il traverse les 5 (l'intro « pas comme tu voudrais
+   paraître » et l'ombre « quand le couple porte l'axe sacrifié », mission V8.A/V8.B, restent le
+   lieu relationnel de la quête).
 1. **« ou pour ceux qui sont là » (Q2.6-02)** : l'axe famille accueille les parents déjà en place —
    la formulation évite de présupposer un projet parental à venir (neutralité, C4).
 2. **Descriptions à 2 phrases** : chacune nomme le GESTE (faire grandir, faire de la place, partir,
-   bâtir, construire) puis le TEMPS (les années où…) — le format ancre l'horizon de 5 ans sans
+   bâtir, faire vivre) puis le TEMPS (les années où…) — le format ancre l'horizon de 5 ans sans
    promettre de résultat (aucun futur certain).
 3. **Aucun exemple de répartition à l'écran** : montrer une répartition exemplaire ferait une
    suggestion de caractère — la mécanique vierge est la consigne.

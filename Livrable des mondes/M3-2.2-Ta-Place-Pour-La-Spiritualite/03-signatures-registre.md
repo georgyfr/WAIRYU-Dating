@@ -2,6 +2,8 @@
 
 > ⚠ **Seuils et pondérations : verrou [9]** — les valeurs ci-dessous sont des PROPOSITIONS de
 > production (provisoires concepteur), jamais des décisions. Re-signature professionnelle avant bêta.
+> **Marquage mission V7/V8** : chaque seuil porte le statut **« À VALIDER PAR LE COMITÉ »** —
+> l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > Aucune signature de sécurité (trame) n'est attachée à cette quête — vérifié au registre du mélange.
 
 ## Les variables fournies par la quête
@@ -13,7 +15,8 @@
 
 | ID | Nom | Conditions exactes | Conséquence | Source | Fenêtre cible |
 |---|---|---|---|---|---|
-| **SIG-2.2-01** | L'homophilie graduée | **Filtre enrichi** : la compatibilité de deux profils est MODULÉE par l'écart de centralité (`EC_SPIRIT`) — plus l'écart est grand, plus le score de compatibilité décroît, dans les deux sens. **Jamais un dealbreaker binaire** : aucun seuil n'élimine, aucun écart ne coupe. Pondération exacte (linéaire proposée) : À VALIDER PAR LE COMITÉ [9] | Module le score de compatibilité côté moteur — aucune trace rendue chez l'un ni chez l'autre ; le miroir de chacun parle de SA place, jamais de l'écart à l'autre | 6 items déclaratifs (concept public : homophilie — nommé côté moteur uniquement) | recalcul à chaque mise à jour d'un des deux profils ⚠ |
+| **SIG-2.2-01** | L'homophilie graduée | **Filtre enrichi** : la compatibilité de deux profils est MODULÉE par l'écart de centralité (`EC_SPIRIT`) — plus l'écart est grand, plus le score de compatibilité décroît, dans les deux sens. **Jamais un dealbreaker binaire** : aucun seuil n'élimine, aucun écart ne coupe. Pondération exacte (linéaire proposée) : À VALIDER PAR LE COMITÉ [9] | Module le score de compatibilité côté moteur — aucune trace rendue chez l'un ni chez l'autre ; le miroir de chacun parle de SA place, jamais de l'écart à l'autre. **Sur écart fort entre profils extrêmes (mission V8.A)** : signal conversationnel « à aborder tôt » (fêtes, enfants, rythmes) — **jamais une pénalité dure, jamais une élimination** ; un couple mixte est légitime, la divergence est une information, pas un défaut | 6 items déclaratifs (concept public : homophilie — nommé côté moteur uniquement) | recalcul à chaque mise à jour d'un des deux profils ⚠ |
+| **SIG-2.2-02** | Le profil | **Seuils blocs sur SPIRIT_D** (proposition — À VALIDER PAR LE COMITÉ [9] ; bornes reprises FM-019 comme valeurs de départ) : **centrale > 0.65 · culturelle 0.35-0.65 · absente < 0.35** | Rendu descriptif par profil (miroir 07, carte) — trois façons égales d'habiter la spiritualité, aucune normée ; le profil ne commente jamais la ferveur, il décrit la PLACE | 6 items déclaratifs (blocs de centralité) | recalcul à chaque mise à jour ⚠ |
 
 ## Notes de registre
 

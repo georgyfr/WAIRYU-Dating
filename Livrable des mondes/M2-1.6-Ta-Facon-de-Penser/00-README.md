@@ -25,7 +25,7 @@
 | Signatures | SIG_ECART_POLE (n° 26, transversale, matching) · SIG_STANDARD_PROJETE (n° 13) et SIG_CALME_VERROU (n° 14) consomment POL (Portraits) — verbatim au fichier `03` |
 | Scoring (verbatim) | pôle analytique = items ↩ + énigmes résolues ; temps de réponse capté ; synthèse déclaratif × performance → dimension de compatibilité de communication (pénalité si écart de pôle > 0.7 entre deux matchs) ⚠ |
 | Carte | 5 variantes, sélecteur D×E — charte PARTIE 6 |
-| Miroir | **MOYEN** : 7 items + 3 énigmes = 10 blocs mesurés → 150-250 mots (Constitution [7]) |
+| Miroir | **LÉGER** (mission V7.2 — tranchage explicite) : 80-150 mots/variante — la densité de blocs (10) eût suggéré MOYEN ; les 3 énigmes sont de la performance (la manière, jamais notée), seuls les 7 items comptent pour le gabarit. Note de tranchage au `04`. |
 | Écran spécial | aucun — carte standard + partage |
 
 ## Table de fichiers intégrale (mission Phases A/B/C/D, point 2)
@@ -41,7 +41,7 @@
 | `05-ecran-d-intro.md` | le texte d'ouverture verbatim | rendu |
 | `06-fiche-computation-EXEMPLE.yaml` | le format complet d'une fiche item, exemplifié | moteur |
 | `cartes.yaml` | les 5 variantes de carte (sélecteur D×E) | rendu |
-| `07-miroir.md` | **ABSENT à ce jour** — briques de miroir de la quête 1.6 non encore produites (vague de miroirs M2 à venir ; les slots sont déjà définis au `04`) — absence consignée au rapport de mission | rendu (à venir) |
+| `07-miroir.md` | le miroir LÉGER — 3 briques-variantes (pôles : flair d'abord / les deux pieds / vérification d'abord — gabarits distincts par pôle, mission V7.2) | rendu |
 
 ## Interdits rappelés à la production
 

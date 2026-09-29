@@ -14,10 +14,10 @@
 |---|---|
 | `00-README.md` | Fiche de cadrage (4 angles, dealbreaker moteur, doctrine des 3 profils) |
 | `01-tableau-des-items.md` | Les 8 énoncés (D/I, angles, fiches condensées) + décisions de composition |
-| `02-plan-de-melange-graine-237427.md` | Mélange RÉEL (graine 237427, 6/6, 5 échanges, run max 2) |
-| `03-signatures-registre.md` | SIG-2.7-01 (dealbreaker, SQL pré-filtrage proposé) + SIG-2.7-02 (horizon > 4 ans) |
+| `02-plan-de-melange-graine-227427.md` | Mélange RÉEL (graine 227427, 6/6, 3 échanges, run max 2 — re-tirage mission V7/V8, 5 passes identiques) |
+| `03-signatures-registre.md` | SIG-2.7-01 (dealbreaker, SQL pré-filtrage proposé) + SIG-2.7-02 (horizon > 4 ans) + SIG-2.7-03 (friction des rôles — mission V8.C) |
 | `04-slots-de-miroir.md` | Miroir MOYEN (3 slots) + 9 verrous (le dealbreaker ne se raconte jamais) |
-| `05-ecran-d-intro.md` | Écran d'intro VERBATIM mission (« les sujets qu'on évite au début… ») |
+| `05-ecran-d-intro.md` | Écran d'intro (« les sujets qu'on évite au début… » — ajusté mission V8.C, note gravée) |
 | `06-fiche-computation-EXEMPLE.yaml` | Q2.7-01 aux 5 canaux (dealbreaker, paire R6, double balise) |
 | `07-miroir.md` | 3 profils respectés (berceau / porte / route), MOYEN 150-250 mots |
 | `cartes.yaml` | 3 variantes : Le·La Berceau qui attend · Le·La Porte entrouverte · Le·La Route à deux |
@@ -27,12 +27,12 @@
 
 | Interdit absolu | Statut |
 |---|---|
-| Dimensions non listées | ✅ les 4 angles sont nommés et bornés (désir · horizon · rôles · cadre) |
+| Dimensions non listées | ✅ les 4 angles sont nommés et bornés (désir · horizon · rôles · famille élargie) |
 | Items non demandés | ✅ 8 exactement (Constitution [5]) |
 | Format d'échelle changé | ✅ Likert 5 (Arbitrage 2) — paires R6 complètes, orientation conforme à `ci/quetes/2.7.json` |
 | Dealbreaker exposé | ✅ jamais — mécanisme moteur silencieux (SQL pré-filtrage) : aucune trace chez l'un ni chez l'autre, aucun mot « dealbreaker » rendu (vérifié machine sur les 10 fichiers) |
-| Données jugées moralement | ✅ trois vies dignes (désir / indécision / absence) ; ferme-doux sans vertu ; « domaine attitré » décrit, pas jugé |
-| Sigle hors glossaire [4] | ✅ DESIR, HORIZON, ROLES, CADRE, SIG-2.7-* restent moteur |
+| Données jugées moralement | ✅ trois vies dignes (désir / indécision / absence) ; élargie-noyau sans vertu ; « domaine attitré » décrit, pas jugé |
+| Sigle hors glossaire [4] | ✅ DESIR, HORIZON, ROLES, FAM_EL, SIG-2.7-* restent moteur |
 | Code/score/sigle au rendu | ✅ aucun — rappels en toutes lettres, horizon en proximité relative (jamais d'années) |
 | Verrous [9] traités comme décisions | ✅ règle du dealbreaker = contrat (non re-votée) ; opération SQL, seuil 4 ans et mapping score→années : PROPOSITIONS |
 | Trames au dépôt (règle 11-b) | ✅ aucune trame — quête déclarative directe (n_trames = 0) |
@@ -58,12 +58,12 @@ Production (fait) → **validateur (linter)** → **auditeur hostile C1 (session
 (8 énoncés + décisions)
 ═══ FIN FICHIER ═══
 
-═══ FICHIER : Livrable des mondes/M3-2.7-Ta-Vision-de-la-Famille/02-plan-de-melange-graine-237427.md ═══
-(mélange réel 237427)
+═══ FICHIER : Livrable des mondes/M3-2.7-Ta-Vision-de-la-Famille/02-plan-de-melange-graine-227427.md ═══
+(mélange réel 227427 — re-tirage mission V7/V8)
 ═══ FIN FICHIER ═══
 
 ═══ FICHIER : Livrable des mondes/M3-2.7-Ta-Vision-de-la-Famille/03-signatures-registre.md ═══
-(SIG-2.7-01 + SIG-2.7-02)
+(SIG-2.7-01 + SIG-2.7-02 + SIG-2.7-03)
 ═══ FIN FICHIER ═══
 
 ═══ FICHIER : Livrable des mondes/M3-2.7-Ta-Vision-de-la-Famille/04-slots-de-miroir.md ═══

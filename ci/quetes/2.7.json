@@ -1,7 +1,7 @@
 {
   "quete": "2.7",
   "titre": "Ta vision de la famille",
-  "graine": 237427,
+  "graine": 227427,
   "items": [
     {
       "code": "Q2.7-01",
@@ -36,12 +36,12 @@
     {
       "code": "Q2.7-07",
       "orientation": "D",
-      "dimension": "education"
+      "dimension": "famille_elargie"
     },
     {
       "code": "Q2.7-08",
       "orientation": "I",
-      "dimension": "education"
+      "dimension": "famille_elargie"
     }
   ]
 }

@@ -40,7 +40,7 @@
 | `05-ecran-d-intro.md` | le texte d'ouverture verbatim | rendu |
 | `06-fiche-computation-EXEMPLE.yaml` | le format complet d'une fiche item, exemplifié | moteur |
 | `cartes.yaml` | les 5 variantes de carte (sélecteur sur score de quête) | rendu |
-| `07-miroir.md` | **ABSENT à ce jour** — briques de miroir de la quête 1.4 non encore produites (vague de miroirs M2 à venir ; les slots sont déjà définis au `04`) — absence consignée au rapport de mission | rendu (à venir) |
+| `07-miroir.md` | le miroir MOYEN — 6 briques-variantes (3 profils × 2 textures A/B, mission V7.1 : LUMIÈRE → OMBRE en couple → TENSION, renvoi court 1.5) | rendu |
 
 ## Interdits rappelés à la production
 

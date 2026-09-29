@@ -81,8 +81,11 @@ contraintes sur toute régénération et refuse toute sortie divergente sans Fic
 | Graine FINALE | **25428** — re-tirage documenté par l'outil : c6 (ordre de passation ≠ ordre des codes) non satisfaite au premier tirage → graine + 1, conformément à la règle de re-tirage documenté de l'outil |
 | Statut | documentée TELLE QUELLE (le récit intégral du re-tirage figure ci-dessus) ; figée, reproductible |
 
-Chaîne de la série M3 : 2.1 = 210427 (mère) · 2.2 = 232427 · 2.3 = 23427 · 2.4 = 24427 ·
-**2.5 = 25427 → 25428** · 2.6/2.8 = mélange sans objet (Vague 6) · 2.7 = 237427.
+Chaîne de la série M3 : 2.1 = 210427 (mère) · 2.2 = **222427** (re-tirage mission V7/V8 —
+convention unifiée ordinal 12 ; ancienne graine 232427 archivée) · 2.3 = 23427 · 2.4 = 24427 ·
+**2.5 = 25427 → 25428** · 2.6/2.8 = mélange sans objet (graines assignées 226427/228427, mission
+V7/V8) · 2.7 = **227427** (re-tirage mission V7/V8 — convention unifiée ordinal 17 ; ancienne
+graine 237427 archivée).
 
 ## Finding — la borne de run atteignable (mission Phases A/B/C/D, point 3)
 

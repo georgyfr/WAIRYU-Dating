@@ -20,7 +20,7 @@ charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + 
 
 selection:
   variable: "répartition des 100 points sur Q2.6-01 → Q2.6-05 (Σ = 100, aucune trame dans la quête)"
-  logique: "dominance marquée (max ≥ 40 ET écart 2ᵉ ≥ 10) : max carrière → carrière-dominant · max famille → famille-dominant · max liberté → liberté-dominant · SINON (stabilité/communs en tête, ou répartition large) → équilibré"
+  logique: "dominance marquée (max ≥ 40 ET écart 2ᵉ ≥ 10) : max carrière → carrière-dominant · max famille → famille-dominant · max liberté → liberté-dominant · SINON (stabilité/projets personnels en tête, ou répartition large) → équilibré"
   exhaustivite: "les deux branches couvrent toutes les répartitions possibles (Σ = 100) — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
   bornes: "seuils 40/10 — verrou [9], provisoire concepteur, À VALIDER PAR LE COMITÉ"
   non_participant: "l'écart à l'autre (SIG-2.6-01) ne participe JAMAIS à la sélection — signal conversationnel moteur seul"
@@ -59,7 +59,7 @@ variantes:
   - id: CARTE-2.6-MAISON
     nom: "Le·La Maison aux cinq pièces"
     ordre_selecteur: 3
-    condition: "SINON — stabilité ou projets communs en tête, ou aucune dominance marquée (répartition large)"
+    condition: "SINON — stabilité ou projets personnels en tête, ou aucune dominance marquée (répartition large)"
     ancre_item: ["Q2.6-01", "Q2.6-02", "Q2.6-03", "Q2.6-04", "Q2.6-05"]
     portrait: "Tes points ne font pas de course : tu répartis largement, ou tu as posé l'ancrage comme socle plutôt que comme bannière. Ta décennie se règle sur la tenue — une maison aux cinq pièces, chacune chauffée."
     ombre: "La maison bien chauffée fait peu de courants d'air et peu d'horizons — rien n'explose, rien ne décolle."

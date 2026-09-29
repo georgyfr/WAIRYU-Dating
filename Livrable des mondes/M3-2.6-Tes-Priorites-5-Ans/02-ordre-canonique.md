@@ -1,10 +1,13 @@
 # LIVRABLE 2 — ORDRE DE PASSATION (SANS MÉLANGE — un seul écran d'arbitrage, documenté)
 
 ```
-GRAINE .................. SANS OBJET — aucun tirage n'est exécuté pour cette quête
+GRAINE .................. 226427 (ASSIGNÉE par la mission V7/V8 — mère 210427 + 1000 × ordinal 16)
+                          SANS TIRAGE : aucun mélange n'est exécuté (jeu d'arbitrage, un seul écran)
+                          — la graine est documentée pour l'uniformité de la convention, aucun
+                          algorithme ne la consomme
 ALGORITHME .............. non applicable (jeu d'arbitrage : un seul écran, pas d'items séquentiels)
 ORDRE DE PASSATION ...... écran unique — les 5 axes affichés ensemble (ordre canonique 01 → 05)
-PARTICULARITÉ ........... mélange SANS OBJET — documenté ci-dessous (mission VAGUE 6)
+PARTICULARITÉ ........... mélange SANS OBJET — documenté ci-dessous (mission VAGUE 6, réaffirmé V8.B)
 ```
 
 ## Pourquoi le mélange est sans objet (justification complète)
@@ -20,8 +23,9 @@ PARTICULARITÉ ........... mélange SANS OBJET — documenté ci-dessous (missio
    « run max 2 » n'est même pas atteignable, il n'y a rien à mesurer).
 5. **c6 — ordre de passation ≠ ordre des codes** : sans objet de fait — l'ordre d'affichage des
    axes n'est pas un ordre de réponses (tous les curseurs vivent sur le même écran). L'ordre
-   canonique 01 → 05 (carrière · famille · liberté · stabilité · communs) est un ordre de LECTURE
-   (du plus personnel vers le plus partagé), documenté comme partie du protocole.
+   canonique 01 → 05 (carrière · famille · liberté · stabilité · projets personnels) est un ordre
+   de LECTURE (du plus porté vers le plus personnel — mission V8.B), documenté comme partie du
+   protocole.
 
 ## Ce qui reste contrôlé malgré l'absence de mélange
 

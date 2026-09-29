@@ -43,6 +43,25 @@
    un dealbreaker DÉCLARÉ (coche 2.3, hard constraint) ; cette quête ne fournit JAMAIS un
    dealbreaker — elle module. Les deux mécanismes ne se doublonnent pas (voir 03).
 
+## Correspondance des angles (mission V8.A)
+
+La mission V8.A répartit les 6 items ainsi : « 2 pour la place du sacré au quotidien, 2 pour
+l'héritage/transmission, 2 pour la spiritualité en couple (partager une pratique / respecter
+l'absence) ». La structure livrée (3 paires miroir R6 — règle des traits déclaratifs stables)
+couvre les MÊMES contenus :
+
+| Angle mission V8.A | Items porteurs | Lecture |
+|---|---|---|
+| la place du sacré au quotidien | Q2.2-01 (la semaine) · Q2.2-02 (les grandes heures) | l'axe de la pratique — du quotidien à la fête (la culturelle y trouve son ancrage « l'héritage compte, la pratique non ») |
+| l'héritage / la transmission | Q2.2-02 (l'héritage des fêtes) · Q2.2-06 (transmettre, ou pas) | l'héritage est porté par les grandes heures ; la transmission par l'angle couple |
+| la spiritualité en couple (partager une pratique / respecter l'absence) | Q2.2-05 (le partage voulu) · Q2.2-06 (le retrait respecté) · Q2.2-03/04 (la place dans les décisions à deux) | le partage et son absence légitime — y compris la place qui oriente ou s'efface dans les choix |
+
+⚠ La répartition stricte 2/2/2 de la mission exigerait de rompre une paire miroir R6 (les angles
+impairs ne se replient pas en paires D/I) — la production conserve les 3 paires (règle R6) qui
+couvrent l'intégralité des contenus nommés ; l'écart d'arithmétique est documenté,
+**À VALIDER PAR LE COMITÉ** (aucun énoncé n'est réécrit — production neuve déclarée, B.3 :
+aucun source gelé pour cette quête).
+
 ## Contrôles mécaniques passés
 
 | Contrôle | Résultat |

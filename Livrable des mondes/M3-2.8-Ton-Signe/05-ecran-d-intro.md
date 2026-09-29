@@ -25,17 +25,17 @@
 >
 > *La scène te connaît déjà.*
 >
-> **Pour la conversation — la science, elle, est dans tes résultats.**
+> **Pour la conversation — la science, elle, est dans tes résultats de tests.**
 
 ### Contrôles de conformité (badge)
 
 | Contrôle | Résultat |
 |---|---|
 | Format miniature : titre + signe + 1 phrase légère | ✅ (« Ton signe : ♌ — juste pour le jeu » verbatim mission + la phrase légère du signe) |
-| **Disclaimer gravé inséparable** | ✅ affiché SOUS le badge, sur tout rendu (profil, conversation) — verbatim mission (« la science, elle, est dans tes résultats ») |
+| **Disclaimer gravé inséparable** | ✅ affiché SOUS le badge, sur tout rendu (profil, conversation) — verbatim mission (« la science, elle, est dans tes résultats de tests ») |
 | Zéro ombre / zéro tension / zéro portrait | ✅ exemption documentée (cartes.yaml) — c'est du jeu, la charte d'ombre ne s'applique pas au badge miniature |
 | Zéro métadonnée (score, code, sigle) | ✅ |
 | Zéro compatibilité astro nulle part | ✅ |
-| « Je ne veux pas dire » → aucun badge, aucune trace | ✅ (retour au voyage, silencieux) |
+| « Je préfère ne pas dire » → aucun badge, aucune trace | ✅ (retour au voyage, silencieux) |
 | Règle absolue rappelée à l'écran : le signe n'entre JAMAIS dans aucun calcul | ✅ — l'écran ne mentionne aucun score, aucun moteur, aucun calcul |
 | Statut freemium respecté : zéro teaser premium | ✅ |

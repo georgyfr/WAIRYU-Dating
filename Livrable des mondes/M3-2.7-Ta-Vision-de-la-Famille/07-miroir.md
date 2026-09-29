@@ -72,7 +72,8 @@ Ta route est choisie — elle gagne à se dire tôt, en toutes lettres.
 - `citation_items` → rappel en toutes lettres d'UN direct et d'UN inversé réels, résolus verbatim
   contre `01-tableau-des-items.md` — JAMAIS les codes, jamais un score, jamais un chiffre d'années.
 - **Le dealbreaker ne se raconte jamais** (verrou 04 n° 5) : aucun texte d'incompatibilité, aucune
-  mention d'élimination — le slot S3 parle d'éducation comme une couleur, pas une doctrine.
+  mention d'élimination — le slot S3 parle de la famille élargie comme une géographie, pas une
+  doctrine (angle mission V8.C).
 
 ## 3 — Table d'ancrage (affirmation → items → vérification)
 

@@ -15,12 +15,12 @@
 |---|---|
 | `00-README.md` | Fiche de cadrage (la place, jamais la croyance ; neutralité absolue ; distinction 2.3-04) |
 | `01-tableau-des-items.md` | Les 6 énoncés (D/I, 3 angles, fiches condensées) + décisions de composition |
-| `02-plan-de-melange-graine-232427.md` | Mélange RÉEL (graine 232427, 6/6, 3 échanges, run max 1) |
-| `03-signatures-registre.md` | SIG-2.2-01 « L'homophilie graduée » (module, n'élimine jamais) + variables |
-| `04-slots-de-miroir.md` | Miroir LÉGER (2 slots) + 9 verrous (zéro confession, l'écart ne se raconte pas) |
+| `02-plan-de-melange-graine-222427.md` | Mélange RÉEL (graine 222427, 6/6, 4 échanges, run max 1 — re-tirage mission V7/V8, 5 passes identiques) |
+| `03-signatures-registre.md` | SIG-2.2-01 « L'homophilie graduée » (module, n'élimine jamais ; signal « à aborder tôt » sur écart d'extrêmes) + SIG-2.2-02 « Le profil » + variables |
+| `04-slots-de-miroir.md` | Miroir MOYEN (3 slots — dont le croisement relationnel mission V8.A) + 9 verrous (zéro confession, l'écart calculé ne se raconte pas) |
 | `05-ecran-d-intro.md` | Écran d'intro (neutralité affichée, contrôles) |
 | `06-fiche-computation-EXEMPLE.yaml` | Q2.2-01 aux 5 canaux (paire R6, filtre enrichi, double balise) |
-| `07-miroir.md` | 3 profils respectés (centrale / culturelle / absente), LÉGER 80-150 mots |
+| `07-miroir.md` | 3 profils respectés (centrale / culturelle / absente), MOYEN 150-250 mots (mission V8.A) |
 | `cartes.yaml` | 3 variantes : La Cloche qui marque les jours · La Fête des saisons · La Clairière ouverte |
 | `README.md` | Le présent fichier |
 
@@ -42,8 +42,10 @@
 ## ⚠️ Points en attente de validation comité
 
 - Pondération exacte du filtre enrichi (linéaire proposé) et fenêtre de recalcul · bornes de
-  sélection des cartes (FM-019, provisoires) · gabarit « slots ∝ densité » LÉGER · ombre de la
-  place culturelle (non prévue verbatim par la mission, produite au même gabarit — à revoir).
+  sélection des cartes (FM-019, provisoires) · gabarit miroir MOYEN (tranchage mission V8.A) ·
+  ombre de la
+  place culturelle (produite au même gabarit — à revoir) · seuils blocs des 3 profils
+  (SIG-2.2-02, proposition).
 
 ## 🔁 Circuit restant
 
@@ -59,8 +61,8 @@ Production (fait) → **validateur (linter)** → **auditeur hostile C1 (session
 (6 énoncés + décisions)
 ═══ FIN FICHIER ═══
 
-═══ FICHIER : Livrable des mondes/M3-2.2-Ta-Place-Pour-La-Spiritualite/02-plan-de-melange-graine-232427.md ═══
-(mélange réel 232427)
+═══ FICHIER : Livrable des mondes/M3-2.2-Ta-Place-Pour-La-Spiritualite/02-plan-de-melange-graine-222427.md ═══
+(mélange réel 222427 — re-tirage mission V7/V8)
 ═══ FIN FICHIER ═══
 
 ═══ FICHIER : Livrable des mondes/M3-2.2-Ta-Place-Pour-La-Spiritualite/03-signatures-registre.md ═══
@@ -80,7 +82,7 @@ Production (fait) → **validateur (linter)** → **auditeur hostile C1 (session
 ═══ FIN FICHIER ═══
 
 ═══ FICHIER : Livrable des mondes/M3-2.2-Ta-Place-Pour-La-Spiritualite/07-miroir.md ═══
-(3 profils LÉGER)
+(3 profils MOYEN — mission V8.A)
 ═══ FIN FICHIER ═══
 
 ═══ FICHIER : Livrable des mondes/M3-2.2-Ta-Place-Pour-La-Spiritualite/cartes.yaml ═══

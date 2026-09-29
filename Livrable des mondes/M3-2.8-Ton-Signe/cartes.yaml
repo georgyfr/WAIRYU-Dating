@@ -22,13 +22,13 @@ exception_format: "badge miniature — exemption documentée (mission VAGUE 6, L
 selection:
   variable: "la sélection Q2.8-01 du membre (1 clic, opt-in) — aucune inférence, aucun calcul"
   logique: "le signe choisi EST la variante rendue — zéro scoring, zéro classement"
-  exhaustivite: "12 signes + « Je ne veux pas dire » = partition totale des choix possibles (C6 par nature) — la branche silence ne produit AUCUN badge et AUCUNE trace"
+  exhaustivite: "12 signes + « Je préfère ne pas dire » = partition totale des choix possibles (C6 par nature) — la branche silence ne produit AUCUN badge et AUCUNE trace"
   non_participant: "RIEN d'autre ne participe : aucune autre quête, aucun score, aucun moteur — règle absolue"
 
 # Rendu de l'écran de complétion (structure miniature) :
 #   titre du badge → signe → phrase légère → disclaimer gravé
 entete_ecran: "TON SIGNE — juste pour le jeu"
-label_disclaimer: "Pour la conversation — la science, elle, est dans tes résultats."
+label_disclaimer: "Pour la conversation — la science, elle, est dans tes résultats de tests."
 pied_ecran: "Le badge s'affiche sur ton profil et dans la conversation — modifiable ou effaçable en un clic. · [Changer] · [Retirer le badge] · [Quête suivante]"
 fenetre_sur_l_autre:
   - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
@@ -98,15 +98,15 @@ variantes:
 
   - id: CARTE-2.8-SILENCE
     nom: "(aucun badge)"
-    condition: "sélection Q2.8-01 = « Je ne veux pas dire » — AUCUN rendu, aucune trace, aucune relance (option de première classe, jamais réinterprétée)"
+    condition: "sélection Q2.8-01 = « Je préfère ne pas dire » — AUCUN rendu, aucune trace, aucune relance (option de première classe, jamais réinterprétée)"
     phrase_legere: null      # silence assumé — le voyage continue sans le badge
 
 regles_documentees:
   - "RÈGLE ABSOLUE gravée ici, à la fiche de cadrage, au tableau 01 et aux écrans : jamais dans le score, jamais dans le matching, jamais dans aucun calcul — ni filtre, ni pondération, ni tie-break, même déguisé"
-  - "disclaimer gravé inséparable : « Pour la conversation — la science, elle, est dans tes résultats. » — affiché sous tout rendu du badge (version mission fait foi ; variante contractuelle plus ancienne documentée à la fiche de cadrage)"
+  - "disclaimer gravé inséparable : « Pour la conversation — la science, elle, est dans tes résultats de tests. » — affiché sous tout rendu du badge (version mission V8.D fait foi ; variantes plus anciennes — contrat, Vague 6 — documentées à la fiche de cadrage)"
   - "exemption de charte documentée : badge miniature SANS ombre ni tension (mission LOT 8 : « 1 phrase légère ») — precedent 1.7 « écran spécial sans carte », ratification comité"
   - "phrases légères : registre du clin d'œil, zéro interdit lexical, zéro trait affirmé (le jeu suggère, il ne décrit pas) — vérifié machine"
-  - "« Je ne veux pas dire » : aucun badge, aucune trace, aucune inférence — traité comme absence de donnée, jamais comme réponse manquante"
+  - "« Je préfère ne pas dire » : aucun badge, aucune trace, aucune inférence — traité comme absence de donnée, jamais comme réponse manquante"
   - "aucune compatibilité astro nulle part dans l'app — le badge est une étiquette de conversation, pas un attribut"
   - "modifiable / effaçable en un clic — l'étiquette appartient au membre"
   - "C8 : n/a pour les noms de signes (étiquettes culturelles, pas des titres genrés) · « (e) » dans le corps"

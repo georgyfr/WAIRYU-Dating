@@ -13,8 +13,8 @@
 | `00-README.md` | Fiche de cadrage (mécanique exacte, scoring pondéré proposé, SIG, doctrine) |
 | `01-tableau-des-axes.md` | Les 5 axes (codes gelés, descriptions exactes de 2 phrases) + mécanique écran + décisions |
 | `02-ordre-canonique.md` | Écran unique — mélange SANS OBJET documenté (ordre d'affichage canonique) |
-| `03-signatures-registre.md` | SIG-2.6-01 « L'écart qui parle » (> 40 pts → signal conversationnel, jamais dealbreaker) |
-| `04-slots-de-miroir.md` | Miroir LÉGER (2 slots) + 9 verrous (jamais les points chiffrés au rendu) |
+| `03-signatures-registre.md` | SIG-2.6-01 « L'écart qui parle » (> 40 pts → signal) · SIG-2.6-02 « Le profil dominant » (axes majeurs, départage mission) · SIG-2.6-03 « La friction d'arbitrage » (2 axes ≤ 10 × 2.7) |
+| `04-slots-de-miroir.md` | Miroir MOYEN (3 slots — lumière/ombre/tension mission V8.B) + 9 verrous (jamais les points chiffrés au rendu) |
 | `05-ecran-d-intro.md` | Écran d'intro VERBATIM mission (« Cent points. Cinq horizons. ») |
 | `06-fiche-computation-EXEMPLE.yaml` | L'axe Q2.6-01 aux 5 canaux (mecanique: curseur/somme/vierge) |
 | `07-miroir.md` | 4 profils + partition exclusive + exhaustive (§2) + friction n°1 nommée sans prophétie |
@@ -30,16 +30,16 @@
 | Format d'échelle imposé | ⚠ dérogation documentée : jeu d'arbitrage 100 points (NON-Likert) — design du contrat (« Jeu 100 points »), ratification comité |
 | Mélange absent sans justification | ✅ SANS OBJET documenté (02) — un seul écran, rien à mélanger (mission VAGUE 6 : « documenté ») |
 | Suggestion de répartition | ✅ aucune valeur par défaut, aucun exemple affiché — le profil vierge oblige à choisir |
-| Données jugées moralement | ✅ aucune répartition « sage » ou « égoïste » — l'ancrage (stabilité/communs) n'est jamais un non-choix |
+| Données jugées moralement | ✅ aucune répartition « sage » ou « égoïste » — l'ancrage (stabilité/projets personnels) n'est jamais un non-choix |
 | Score/points rendus | ✅ jamais — les textes parlent d'axes et d'intentions, jamais de points chiffrés |
-| Sigle hors glossaire [4] | ✅ PRI_*, EC_PRI_x, D_PRI, SIG-2.6-01 restent moteur |
+| Sigle hors glossaire [4] | ✅ PRI_*, EC_PRI_x, D_PRI, SIG-2.6-01/02/03 restent moteur |
 | Verrous [9] traités comme décisions | ✅ seuils 40/10 et formule de distance pondérée : PROPOSITIONS (provisoires concepteur / À VALIDER PAR LE COMITÉ) |
 | Trames au dépôt (règle 11-b) | ✅ aucune trame — quête déclarative directe (n_trames = 0) |
 
 ## ⚠️ Points en attente de validation comité
 
 - Formule exacte de la distance pondérée (principe du contrat, opération proposée) · seuils de la
-  partition (40 / 10) · mapping « ancrage (stabilité/communs) → équilibré » · la formulation exacte
+  partition (40 / 10) · mapping « ancrage (stabilité/projets personnels) → équilibré » · la formulation exacte
   de l'amorce conversationnelle « à aborder tôt » · fenêtre de recalcul des compatibilités.
 
 ## 🔁 Circuit restant

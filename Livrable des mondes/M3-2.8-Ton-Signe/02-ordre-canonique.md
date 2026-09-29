@@ -1,7 +1,10 @@
 # LIVRABLE 2 — ORDRE DE PASSATION (SANS OBJET — un seul clic, documenté)
 
 ```
-GRAINE .................. SANS OBJET — aucun tirage n'est exécuté pour cette quête
+GRAINE .................. 228427 (ASSIGNÉE par la mission V7/V8 — mère 210427 + 1000 × ordinal 18)
+                          SANS TIRAGE : aucun mélange n'est exécuté (1 clic, opt-in) — la graine
+                          est documentée pour l'uniformité de la convention, aucun algorithme
+                          ne la consomme
 ALGORITHME .............. non applicable (1 sélection unique, opt-in)
 ORDRE DE PASSATION ...... sans objet — l'écran porte UNE option-mère (le signe choisi)
 PARTICULARITÉS .......... c1-c6 SANS-OBJET (documenté ci-dessous)
