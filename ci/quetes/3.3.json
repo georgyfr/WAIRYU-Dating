@@ -1,0 +1,20 @@
+{
+  "quete": "3.3",
+  "titre": "Ton temps libre",
+  "graine": 233427,
+  "c2_note": "aucune dimension interdite déclarée pour le signal CSR — le déguisement vient du THÈME (habitudes quotidiennes parmi les loisirs), pas du placement (règle d'indiscernabilité, document trames Partie 0)",
+  "items": [
+    { "code": "Q3.3-01", "orientation": "D", "dimension": "mode" },
+    { "code": "Q3.3-02", "orientation": "I", "dimension": "mode" },
+    { "code": "Q3.3-03", "orientation": "D", "dimension": "mode" },
+    { "code": "Q3.3-04", "orientation": "I", "dimension": "mode" },
+    { "code": "Q3.3-05", "orientation": "D", "dimension": "fond" },
+    { "code": "Q3.3-06", "orientation": "I", "dimension": "fond" },
+    { "code": "Q3.3-07", "orientation": "D", "dimension": "fond" },
+    { "code": "Q3.3-08", "orientation": "I", "dimension": "fond" },
+    { "code": "Q3.3-T09", "orientation": "D", "dimension": null, "signal": "CSR" },
+    { "code": "Q3.3-T10", "orientation": "D", "dimension": null, "signal": "CSR" },
+    { "code": "Q3.3-T11", "orientation": "D", "dimension": null, "signal": "CSR" },
+    { "code": "Q3.3-T12", "orientation": "D", "dimension": null, "signal": "CSR" }
+  ]
+}

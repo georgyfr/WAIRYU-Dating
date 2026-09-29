@@ -1,0 +1,59 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 8 canaux carte)
+# Item choisi : Q3.3-01 (la recharge par le dehors — l'angle le plus direct du mode centrifuge).
+# Fichier YAML strict (gabarit des 7 autres items carte : seuls énoncé, angle, orientation et ancrage changent).
+# Les 4 trames ▲ CSR suivent le modèle TRAME (document trames Partie 7 — hors dépôt) :
+# dimension null, orientation D, ancrage INTERDIT, aucun slot, aucun rendu.
+item: Q3.3-01
+quete: "3.3 Ton temps libre"
+monde: M4                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Après une semaine chargée, je ressors pour recharger."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel à l'axe du mode (centrifugie)
+dimension: mode               # volet 1/2 (paire R6 avec Q3.3-02)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: temps_libre_3.3   # alimente la carte (3 variantes) et le miroir (3 profils)
+  signal_id: SIG-3.3-01       # le mode (blocs centrifuge/mixte/centripète) — rendu descriptif
+computation:
+  carte:
+    role: score_de_quete
+    regle: "MODE_D = moyenne des 4 items mode (I recodés 6−r), normalisée 0-1 — choisit la variante (centrifuge/mixte/centripète) ; FOND_D enrichit le croisement conversationnel (moteur)"
+    rendu: etage_1_et_2        # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: mode_et_croisement
+    mecanisme: >-
+      le mode (SIG-3.3-01) décrit d'où vient l'énergie ; l'écart entre deux modes opposés
+      (EC_MODE > seuil, SIG-3.3-02) documente la friction (le délaissé × l'étouffé) au registre
+      fréquentiel et prépare des amorces « à aborder tôt » — jamais une pénalité dure, jamais
+      une élimination ; l'homogamie des loisirs (une activité de fond partagée) s'y documente
+    rendu: moteur_seul         # l'écart calculé n'est jamais rendu à un membre
+    condition: "seuils blocs et seuil d'écart proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'angle = moyenne des items valides + prudence
+      (precedent SIG-2.1-02)
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "modes opposés entre deux profils (EC_MODE > seuil)"
+      effet: "friction documentée au registre fréquentiel — amorce « à aborder tôt » préparée côté moteur, jamais rendue comme un défaut"
+    - si: "les 4 trames ▲ du signal CSR"
+      effet: "SIG-3.3-03 côté moteur SEUL — croisement 2.4 (fiabilité du profil ajustée), jamais au rendu, jamais au score de compatibilité, demi-vie du signal"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — le mode décrit, jamais un jugement, jamais un code"
+    exemple: "quand tu as dit ressortir pour recharger après une semaine chargée"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 items carte. Seuls changent : énoncé, volet (mode /
+    fond), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les 4 trames ▲ (T09-T12, signal CSR) suivent le modèle TRAME — énoncés hors dépôt
+    (document trames Partie 7), dimension null, ancrage INTERDIT, aucun rendu nulle part.
+  - >-
+    Le mot « consommations » et le sigle CSR restent côté moteur — au rendu, les habitudes
+    quotidiennes passent parmi les autres (indiscernabilité, document trames Partie 0).

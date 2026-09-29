@@ -1,0 +1,75 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 3.3 « TON TEMPS LIBRE » — 3 VARIANTES (étage 1)
+# Création : mission V9.C (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : centrifugie MODE_D — partition exclusive + exhaustive de 0 à 1
+# (C6, vérifiée machine). NEUTRALITÉ DU MODE : les trois façons de se nourrir
+# se valent — le centrifuge n'est pas instable, le centripète n'est pas rétréci.
+# AUCUNE trace des 4 trames CSR (moteur seul — verrou 04 n° 5, vérifié machine).
+# Aucun code, aucun sigle, aucun jargon au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "3.3 Ton temps libre"
+monde: M4
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "centrifugie MODE_D (moyenne des 4 items mode, I recodés 6−r, normalisée 0-1) — Q3.3-01 → Q3.3-04 ; le score FOND_D (Q3.3-05 → 08) enrichit le croisement conversationnel côté moteur, jamais la sélection"
+  logique: "MODE_D > 0.65 → le grand air (centrifuge) · 0.35-0.65 → l'entre-deux (mixte) · < 0.35 → le cocon (centripète)"
+  bornes: "faible < 0.35 · central 0.35-0.65 · élevé > 0.65 — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 plages = partition totale de [0,1] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "le score CSR (4 trames) ne participe JAMAIS à la sélection ni au rendu — vigilance moteur seul (SIG-3.3-03) ; l'écart à l'autre (EC_MODE, SIG-3.3-02) non plus"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🏡 QUÊTE ACCOMPLIE — « Ton temps libre »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-3.3-GRAND-AIR
+    nom: "Le·La Grand air"
+    ordre_selecteur: 1
+    condition: "MODE_D > 0.65 (centrifuge — nourri dehors)"
+    ancre_item: ["Q3.3-01", "Q3.3-02", "Q3.3-03", "Q3.3-04", "Q3.3-05", "Q3.3-06", "Q3.3-07", "Q3.3-08"]
+    portrait: "Ton énergie vient du dehors : après une semaine chargée, tu ressors et le monde te remplit. Les rues, les terrasses, les gens — tu reviens plus disponible que tu es partie."
+    ombre: "Le grand air emmène parfois : qui t'aime attend derrière la porte du monde. Une activité de fond à deux ramène ta ressource à la maison."
+    tension_interieure: "aller te nourrir dehors, en rapportant une part de ton temps libre à deux."
+
+  - id: CARTE-3.3-ENTRE-DEUX-RIVES
+    nom: "Le·La Rive du milieu"
+    ordre_selecteur: 2
+    condition: "MODE_D entre 0.35 et 0.65 (mixte — les deux rives)"
+    ancre_item: ["Q3.3-01", "Q3.3-02", "Q3.3-03", "Q3.3-04", "Q3.3-05", "Q3.3-06", "Q3.3-07", "Q3.3-08"]
+    portrait: "Ton énergie vient des deux rives : tantôt le dehors te recharge, tantôt le chez-toi. Tu glisses entre les modes selon les semaines — une souplesse qui épouse tes vraies envies."
+    ombre: "Ton mode se lit mal de l'extérieur : qui partage tes week-ends prépare deux scénarios. Ton mode de la semaine se dit en trois mots."
+    tension_interieure: "garder tes deux rives, en nommant celle où tu es cette semaine."
+
+  - id: CARTE-3.3-CHEMINEE
+    nom: "Le·La Cheminée allumée"
+    ordre_selecteur: 3
+    condition: "MODE_D < 0.35 (centripète — nourri chez soi)"
+    ancre_item: ["Q3.3-01", "Q3.3-02", "Q3.3-03", "Q3.3-04", "Q3.3-05", "Q3.3-06", "Q3.3-07", "Q3.3-08"]
+    portrait: "Ton énergie se recharge derrière ta porte : la maison te rend à toi, le calme est ta vraie ressource. Ce n'est pas un rétrécissement — c'est une façon entière de se nourrir, et elle tient la distance."
+    ombre: "Le cocon ferme parfois : qui t'aime veut sortir avec toi. Une fenêtre de dehors à deux ouvre le dedans sans le vider."
+    tension_interieure: "te nourrir chez toi, en ouvrant une fenêtre de dehors à deux."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité du mode : les 3 variantes se valent — le centripète n'est pas un rétréci (« pas un rétrécissement » assumé au portrait), le centrifuge pas un instable, le mixte pas un indécis (contrôles machine)"
+  - "AUCUNE trace des trames CSR : aucun mot des 4 énoncés hors dépôt ne figure dans les textes rendus — vérifié machine (garde hors dépôt, fenêtres + intégral)"
+  - "l'homogamie des loisirs ne se rend qu'en information conversationnelle (ombre) — jamais un critère, jamais une norme"
+  - "SIG-3.3-02 (écart à l'autre) ne participe ni à la sélection ni au rendu — friction générique moteur seul"
+  - "registre probabiliste : aucun futur certain (« parfois », « fréquemment » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucun mode dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"
