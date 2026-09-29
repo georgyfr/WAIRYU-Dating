@@ -1,0 +1,62 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UNE PAIRE (format adapté aux paires A/B)
+# Paire choisie : Q3.6-P1 (les intérieurs — la première paire d'origine, verbatim refonte).
+# Fichier YAML strict (gabarit des 7 autres paires : seuls thème, descriptions, pôle d'ancrage
+# et ancrage changent).
+item: Q3.6-P1
+quete: "3.6 Le choix visuel"
+monde: M4                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: paire_images_ab       # tâche comportementale — pas de Likert, pas d'orientation D/I
+theme: "les intérieurs"
+choix_a: "Une vie qui se passe autour de la maison"
+scene_a: "salon chaleureux, lumière du soir, rideaux mi-clos"   # note design — jamais à l'écran
+choix_b: "Une vie qui se passe dehors, à l'air libre"
+scene_b: "terrasse de rue, tabourets hauts, passants"           # note design — jamais à l'écran
+pole_ancrage: A               # côté moteur — VISO_ANC compte le choix A de cette paire
+source_b3: "verbatim refonte (« vie centrée maison vs vie ouverte dehors ») — conversion, jamais réécriture"
+type_mesure: projection_faible # mesure FAIBLE — signal complémentaire, jamais seule (refonte)
+double_balise:
+  carte_id: images_3.6        # alimente la carte (3 lecteurs) et le miroir (3 profils)
+  signal_id: null             # CANAL SIGNAL null — la quête ne porte AUCUN signal actif
+computation:
+  carte:
+    role: lecteur_images
+    regle: "VISO_ANC = somme des choix du pôle d'ancrage sur les 8 paires — partition ancré-dominant (≥ 6) / équilibre (3-5) / horizon-dominant (≤ 2), À VALIDER PAR LE COMITÉ [9]"
+    rendu: etage_1_et_2        # carte (3 lecteurs) + miroir (3 profils) — en COMPLÉMENT uniquement
+  signal:
+    role: aucun                # la mesure faible ne porte aucun signal (cadre refonte)
+    mecanisme: >-
+      aucune computation de signal pour cette quête : mesure faible — « jamais seule, jamais
+      clinique » (refonte verbatim) ; la valeur du rendu est conversationnelle (brise-glaces du
+      Mode Invisible) ; la lecture complémentaire éventuelle de P6 (portes) reste à l'arbitrage
+      comité (Arbitrage 4 — signal_id null sur toutes les paires)
+    rendu: moteur_seul
+    condition: "aucune — SIG-3.6-02 est une documentation d'arbitrage, pas un signal actif"
+  fiabilite:
+    role: choix_binaire
+    regle: >-
+      pas de paire R6 (hors Likert) ; la fiabilité repose sur l'équivalence de valeur des choix
+      (aucun choix « meilleur » — précédent 1.5) et sur la mesure faible assumée (une teinte,
+      jamais un trait)
+  modulation:
+    - si: "teinte dominante (VISO_ANC ≥ 6 ou ≤ 2)"
+      effet: "lecteur rendu en complément des autres restitutions du Monde — jamais seul, jamais au matching"
+    - si: "paire choisie citée dans une amorce de conversation (Mode Invisible)"
+      effet: "brise-glace du Mode Invisible — l'amorce cite l'image choisie, jamais un lecteur ni un score"
+    - si: "mise à jour des choix"
+      effet: "lecteur recalculé — le rendu suit, jamais rétroactivement exposé comme un test"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — l'image choisie re-citée, jamais un lecteur, jamais un code"
+    exemple: "quand tu as choisi la vie autour de la maison"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 paires. Seuls changent : thème, descriptions A/B,
+    scènes de référence (notes design), pôle d'ancrage, source B.3 (P1-P4 verbatim · P5-P8 neuves).
+  - >-
+    P6 (les deux portes) porte le champ signal_id null + la note d'Arbitrage 4 (lecture
+    complémentaire, code à arbitrer par le comité si requis) — aucune distinction visuelle au
+    rendu (indiscernabilité).
+  - >-
+    L'ordre gauche-droite des choix à l'écran est un paramètre de design — la correspondance
+    choix → pôle se fait sur l'ID du pôle, jamais sur le côté (documenté au 01).

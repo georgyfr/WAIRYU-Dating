@@ -1,0 +1,19 @@
+{
+  "quete": "3.6",
+  "titre": "Le choix visuel",
+  "graine": 236427,
+  "c5_sans_objet": true,
+  "c5_note": "sans-objet par config : paires d'images A/B — hors Likert, aucune orientation D/I à alterner (précédent 1.5 : tâche comportementale, c5 sans-objet, run_max 0 = non mesuré)",
+  "c4_sans_objet": true,
+  "c4_note": "sans-objet par config : chaque paire porte un thème distinct (8 thèmes, 1 item chacun) — aucune paire intra-dimension possible ; c1 en bénéficie par construction",
+  "items": [
+    { "code": "Q3.6-P1", "orientation": null, "dimension": "interieurs" },
+    { "code": "Q3.6-P2", "orientation": null, "dimension": "paysages" },
+    { "code": "Q3.6-P3", "orientation": null, "dimension": "tables" },
+    { "code": "Q3.6-P4", "orientation": null, "dimension": "scenes" },
+    { "code": "Q3.6-P5", "orientation": null, "dimension": "balcons" },
+    { "code": "Q3.6-P6", "orientation": null, "dimension": "portes" },
+    { "code": "Q3.6-P7", "orientation": null, "dimension": "dimanches" },
+    { "code": "Q3.6-P8", "orientation": null, "dimension": "fenetres" }
+  ]
+}

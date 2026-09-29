@@ -1,0 +1,60 @@
+{
+  "quete": "3.6",
+  "titre": "Le choix visuel",
+  "graine_finale": 236427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q3.6-P7"
+    },
+    {
+      "position": 2,
+      "code": "Q3.6-P6"
+    },
+    {
+      "position": 3,
+      "code": "Q3.6-P1"
+    },
+    {
+      "position": 4,
+      "code": "Q3.6-P4"
+    },
+    {
+      "position": 5,
+      "code": "Q3.6-P8"
+    },
+    {
+      "position": 6,
+      "code": "Q3.6-P3"
+    },
+    {
+      "position": 7,
+      "code": "Q3.6-P5"
+    },
+    {
+      "position": 8,
+      "code": "Q3.6-P2"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 0,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": []
+}

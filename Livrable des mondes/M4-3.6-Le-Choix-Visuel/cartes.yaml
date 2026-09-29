@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 3.6 « LE CHOIX VISUEL » — 3 VARIANTES (étage 1)
+# Brise-glaces du Mode Invisible — le produit premier de la quête.
+# Création : mission V9.F (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : dominante d'ancrage VISO_ANC — partition exclusive + exhaustive
+# de 0 à 8 (C6, vérifiée machine). MESURE FAIBLE : la carte est un brise-glace
+# conversationnel, jamais une lecture psychologique, jamais au matching seul.
+# Aucune trace de la lecture P6 (Arbitrage 4). Aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "3.6 Le choix visuel"
+monde: M4
+statut_freemium: gratuit
+format: "etage_1_carte_briseglace"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "dominante d'ancrage VISO_ANC (nombre de choix du pôle d'ancrage, 0 à 8) — Q3.6-P1 → Q3.6-P8"
+  logique: "VISO_ANC ≥ 6 → l'ancre · 3-5 → l'équilibre · ≤ 2 → l'horizon"
+  bornes: "≥ 6 / 3-5 / ≤ 2 (proposition) — partition exclusive + exhaustive de 0 à 8, À VALIDER PAR LE COMITÉ (bornes reprises FM-019, provisoire concepteur — re-signature professionnelle avant bêta)"
+  exhaustivite: "3 plages = partition totale de [0,8] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "la lecture complémentaire P6 (Arbitrage 4 — signal_id null) ne participe JAMAIS à la sélection ni au rendu ; le lecteur ne participe JAMAIS seul à un score de compatibilité (mesure faible)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+# SPÉCIFICITÉ brise-glace : les cartes du Mode Invisible citent les images choisies
+# comme amorces de conversation (le produit premier — refonte verbatim).
+entete_ecran: "🏡 QUÊTE ACCOMPLIE — « Le choix visuel »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-3.6-ANCRE
+    nom: "Le·La Portefeuille d'images posées"
+    ordre_selecteur: 1
+    condition: "VISO_ANC ≥ 6 (ancré-dominant)"
+    ancre_item: ["Q3.6-P1", "Q3.6-P2", "Q3.6-P3", "Q3.6-P4", "Q3.6-P5", "Q3.6-P6", "Q3.6-P7", "Q3.6-P8"]
+    portrait: "Tes images penchent au repos : la maison, la stabilité, le café lent, le dimanche cadencé. Tu choisis des lieux qui te portent — et qui font de bons débuts de conversation."
+    ombre: "L'ancre rassure et se ferme : les journées se ressemblent, un autre s'ennuie. La fenêtre ne change pas assez pour qui voudrait partir."
+    tension_interieure: "choisir tes lieux qui portent, en gardant une image dehors pour l'aventure."
+
+  - id: CARTE-3.6-EQUILIBRE
+    nom: "Le·La Trousse d'images variées"
+    ordre_selecteur: 2
+    condition: "VISO_ANC entre 3 et 5 (équilibre)"
+    ancre_item: ["Q3.6-P1", "Q3.6-P2", "Q3.6-P3", "Q3.6-P4", "Q3.6-P5", "Q3.6-P6", "Q3.6-P7", "Q3.6-P8"]
+    portrait: "Tes images se partagent : tantôt la maison, tantôt le dehors — le festin et le repas sobre, la tribu et le tête-à-tête. Tu navigues entre le calme et l'air libre sans y perdre ton fil."
+    ombre: "Ta variété se lit mal : qui partage tes week-ends ne sait pas si tu veux rester ou sortir. Ton image de la semaine se dit."
+    tension_interieure: "garder tes deux couleurs, en disant l'image de ta semaine."
+
+  - id: CARTE-3.6-HORIZON
+    nom: "Le·La Portefeuille d'images ouvertes"
+    ordre_selecteur: 3
+    condition: "VISO_ANC ≤ 2 (horizon-dominant)"
+    ancre_item: ["Q3.6-P1", "Q3.6-P2", "Q3.6-P3", "Q3.6-P4", "Q3.6-P5", "Q3.6-P6", "Q3.6-P7", "Q3.6-P8"]
+    portrait: "Tes images penchent dehors : la terrasse, le festin, le groupe, la ville qui bouge. Tu choisis des lieux où le monde entre — tes débuts de conversation se racontent tout seuls."
+    ombre: "L'horizon emmène et dépense : la maison devient parfois un couloir. Un chez-soi à partager avec le monde — et un autre qui a besoin de rentrer."
+    tension_interieure: "choisir tes lieux où le monde entre, en gardant une image dedans pour le retour."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "mesure faible : la carte est un brise-glace conversationnel — jamais une lecture psychologique, jamais au matching seul, rendu en complément uniquement (verrou 04 n° 4)"
+  - "AUCUNE trace de la lecture P6 (contrôle/isolement — Arbitrage 4, signal_id null) : vérifié machine sur les textes rendus"
+  - "les amorces de conversation (Mode Invisible) citent les images choisies (« ton intérieur choisi dit quelque chose »), jamais un lecteur ni un score"
+  - "registre probabiliste : aucun futur certain (« parfois », « fréquemment » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucune teinte dressée en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"
