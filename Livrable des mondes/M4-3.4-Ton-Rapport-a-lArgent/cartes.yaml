@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 3.4 « TON RAPPORT À L'ARGENT » — 5 VARIANTES (étage 1)
+# Création : mission V9.D (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : lecture 2 axes (dépense DEP_D × calcul CALC_D) — 4 quadrants +
+# central, partition exclusive + exhaustive par axe le plus dévié (SIG-3.4-01,
+# C6, vérifiée machine). NEUTRALITÉ : les cinq tempos se valent — le dépensier
+# n'est pas irresponsable, l'économe n'est pas radin, le calculé n'est pas froid.
+# AUCUNE trace des 2 trames DGR (moteur seul — verrou 04 n° 5, vérifié machine).
+# Zéro montant chiffré, aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "3.4 Ton rapport à l'argent"
+monde: M4
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "deux axes déclarés — dépense DEP_D (3 items) et calcul CALC_D (3 items), I recodés 6−r, normalisés 0-1 — Q3.4-01 → Q3.4-06 ; le score DGR_IF (2 trames, moteur seul) ne participe JAMAIS à la sélection"
+  logique: "dD = |DEP_D − 0.5| · dC = |CALC_D − 0.5| · max(dD, dC) ≤ 0.15 → central · sinon l'axe le plus dévié choisit le quadrant (4 variantes) · départage dD = dC : l'axe dépense tranche"
+  bornes: "déviations 0.15 (proposition) — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "5 sélections = partition totale du carré [0,1]² — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "le signal DGR (2 trames — croisements 1.4 × 1.5) ne participe JAMAIS à la sélection ni au rendu — vigilance moteur seul (SIG-3.4-03) ; l'écart à l'autre (EC_DEP, SIG-3.4-02) non plus"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🏡 QUÊTE ACCOMPLIE — « Ton rapport à l'argent »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-3.4-CŒUR-QUI-PAIE
+    nom: "Le·La Cœur qui paie"
+    ordre_selecteur: 1
+    condition: "DEP_D > 0.65 × CALC_D < 0.35 (dépensier × spontané)"
+    ancre_item: ["Q3.4-01", "Q3.4-02", "Q3.4-03", "Q3.4-04", "Q3.4-05", "Q3.4-06"]
+    portrait: "Ton argent suit ton cœur : les coups de cœur se vivent vite, les décisions se prennent sur place. L'argent circule et porte des moments — chez toi, une dépense est d'abord une émotion vraie."
+    ombre: "Le cœur paie sans lire : les fins de mois serrées guettent. La dispute d'argent arrive quand le compte se découvre après coup."
+    tension_interieure: "garder ton élan, en nommant une règle de compte que l'autre peut lire."
+
+  - id: CARTE-3.4-RAISONNE
+    nom: "Le·La Collectionneur raisonné"
+    ordre_selecteur: 2
+    condition: "DEP_D > 0.65 × CALC_D > 0.65 (dépensier × calculé)"
+    ancre_item: ["Q3.4-01", "Q3.4-02", "Q3.4-03", "Q3.4-04", "Q3.4-05", "Q3.4-06"]
+    portrait: "Tu dépenses avec intention : les envies te prennent, mais tes achats se comparent et se décident à froid. Tes comptes se lisent au jour le jour — chez toi, dépenser est un choix, pas une glissade."
+    ombre: "L'intention convainc et enferme : tes bonnes raisons s'accumulent comme des factures, et l'autre entre dans une rationale déjà écrite."
+    tension_interieure: "assumer tes envies choisies, en laissant l'autre écrire une ligne de la règle."
+
+  - id: CARTE-3.4-FLAIR
+    nom: "Le·La Flair du futé"
+    ordre_selecteur: 3
+    condition: "DEP_D < 0.35 × CALC_D < 0.35 (économe × spontané)"
+    ancre_item: ["Q3.4-01", "Q3.4-02", "Q3.4-03", "Q3.4-04", "Q3.4-05", "Q3.4-06"]
+    portrait: "Ton argent dort tranquille et tes décisions se prennent vite : tu sais dire non sur le moment, et oui au bon instant. Pas de feuille de route — un flair qui garde la maison légère."
+    ombre: "Ton non rapide se lit comme une porte fermée : l'élan de l'autre s'arrête devant un verdict qu'il n'a pas vu venir."
+    tension_interieure: "garder ton flair, en disant ce que ton non protège."
+
+  - id: CARTE-3.4-BIEN-TENUE
+    nom: "Le·La Maison bien tenue"
+    ordre_selecteur: 4
+    condition: "DEP_D < 0.35 × CALC_D > 0.65 (économe × calculé)"
+    ancre_item: ["Q3.4-01", "Q3.4-02", "Q3.4-03", "Q3.4-04", "Q3.4-05", "Q3.4-06"]
+    portrait: "Ton argent se garde et se lit : l'euro non dépensé dort tranquille, les achats se comparent à froid. Tes comptes se suivent au jour le jour. Ta maison tient — la sécurité se respire chez toi."
+    ombre: "Le cadre protège et peut enfermer : une dépense d'envie de l'autre devient une demande de permission — une enveloppe d'envies ouvre une porte."
+    tension_interieure: "tenir ta maison, en ouvrant une enveloppe où le désir ne passe pas pour une faute."
+
+  - id: CARTE-3.4-SAISONS
+    nom: "Le·La Marée des mois"
+    ordre_selecteur: 5
+    condition: "max(dD, dC) ≤ 0.15 (central — selon les mois)"
+    ancre_item: ["Q3.4-01", "Q3.4-02", "Q3.4-03", "Q3.4-04", "Q3.4-05", "Q3.4-06"]
+    portrait: "Ton argent ne vote ni cœur ni calcul. Selon les mois, tu craques ou tu laisses dormir, tu compares ou tu décides sur place. Ton tempo suit la saison — une aisance plus rare qu'elle n'y paraît."
+    ombre: "Ton tempo se lit mal : qui partage tes comptes cherche ta règle du mois. Elle se dit en trois mots — elle ne se devine pas."
+    tension_interieure: "suivre tes saisons, en donnant un mot d'avance sur ta règle du mois."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité : les 5 variantes se valent — le dépensier jamais irresponsable, l'économe jamais radin, le calculé jamais froid, le spontané jamais léger, le central jamais indécis (contrôles machine)"
+  - "zéro montant chiffré au rendu — l'argent se parle en situations, jamais en chiffres (verrou 04 n° 7)"
+  - "AUCUNE trace des trames DGR : aucun mot des 2 énoncés hors dépôt ne figure dans les textes rendus — vérifié machine (garde hors dépôt)"
+  - "SIG-3.4-02 (écart à l'autre) ne participe ni à la sélection ni au rendu — friction générique moteur seul"
+  - "registre probabiliste : aucun futur certain (« guettent », « arrivent » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucun tempo dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

@@ -1,0 +1,59 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 6 canaux carte)
+# Item choisi : Q3.4-01 (le coup de cœur — l'angle le plus parlant de la dépense).
+# Fichier YAML strict (gabarit des 5 autres items carte : seuls énoncé, axe, orientation et ancrage changent).
+# Les 2 trames ▲ DGR suivent le modèle TRAME (document trames Partie 7 — hors dépôt) :
+# dimension null, orientation D, ancrage INTERDIT, aucun slot, aucun rendu.
+item: Q3.4-01
+quete: "3.4 Ton rapport à l'argent"
+monde: M4                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Quand un coup de cœur me plaît, je craque vite."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel à l'axe de dépense
+dimension: depense            # axe 1/2 (paire R6 avec Q3.4-02)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: argent_3.4        # alimente la carte (5 variantes) et le miroir (5 profils)
+  signal_id: SIG-3.4-01       # le profil (4 quadrants + central) — rendu descriptif
+computation:
+  carte:
+    role: score_de_quete
+    regle: "DEP_D (3 items) et CALC_D (3 items), I recodés 6−r, normalisés 0-1 — l'axe le plus dévié choisit le quadrant, sinon central"
+    rendu: etage_1_et_2        # carte (5 variantes) + miroir (5 profils)
+  signal:
+    role: profil_et_friction
+    mecanisme: >-
+      le profil (SIG-3.4-01) décrit deux axes indépendants ; l'écart dépensier × économe fort
+      entre deux profils (EC_DEP > seuil, SIG-3.4-02) prépare un signal conversationnel
+      « à aborder tôt » — la dispute d'argent = 1re cause documentée — jamais une pénalité dure,
+      jamais une élimination ; les 2 trames DGR alimentent DGR côté moteur (croisements 1.4 × 1.5)
+    rendu: moteur_seul         # l'écart calculé et le DGR ne sont jamais rendus à un membre
+    condition: "seuils quadrants, seuil d'écart et seuil de vigilance proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'axe = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) ; les pivots Q3.4-03/06 reposent sur la cohérence d'axe + QFI
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "écart fort sur l'axe dépense entre deux profils (EC_DEP > seuil)"
+      effet: "signal conversationnel « à aborder tôt » préparé côté moteur — jamais de pénalité, jamais d'élimination"
+    - si: "les 2 trames ▲ du signal DGR"
+      effet: "DGR côté moteur SEUL — croisement avec 1.4 (auto-contrôle) et 1.5 (épreuve du temps), jamais au rendu, demi-vie du signal"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — le tempo décrit, jamais un jugement, jamais un montant, jamais un code"
+    exemple: "quand tu as dit craquer vite devant un coup de cœur"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 6 items carte. Seuls changent : énoncé, axe (dépense /
+    calcul), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les 2 trames ▲ (T07-T08, signal DGR) suivent le modèle TRAME — énoncés hors dépôt (document
+    trames Partie 7), dimension null, ancrage INTERDIT, aucun rendu nulle part.
+  - >-
+    Mélange 3.4 : outil DÉDIÉ melange-biaxes.py v2 (c4 sans-objet par arithmétique — ancres
+    trames, minimum 2 atteint ; c1 stricte satisfaite), graine 234427.

@@ -1,0 +1,52 @@
+{
+  "quete": "3.4",
+  "titre": "Ton rapport à l'argent",
+  "graine": 234427,
+  "c2_note": "aucune dimension interdite déclarée pour le signal DGR — le déguisement vient du THÈME (habitudes financières quotidiennes parmi les dépenses), pas du placement (règle d'indiscernabilité, document trames Partie 0)",
+  "items": [
+    {
+      "code": "Q3.4-01",
+      "orientation": "D",
+      "dimension": "depense"
+    },
+    {
+      "code": "Q3.4-02",
+      "orientation": "I",
+      "dimension": "depense"
+    },
+    {
+      "code": "Q3.4-03",
+      "orientation": "I",
+      "dimension": "depense"
+    },
+    {
+      "code": "Q3.4-04",
+      "orientation": "D",
+      "dimension": "calcul"
+    },
+    {
+      "code": "Q3.4-05",
+      "orientation": "I",
+      "dimension": "calcul"
+    },
+    {
+      "code": "Q3.4-06",
+      "orientation": "D",
+      "dimension": "calcul"
+    },
+    {
+      "code": "Q3.4-T07",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DGR"
+    },
+    {
+      "code": "Q3.4-T08",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "DGR"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 2
+}

@@ -43,5 +43,7 @@
       "orientation": "I",
       "dimension": "ordre"
     }
-  ]
+  ],
+  "c1_min_constructible": 1,
+  "c4_min_constructible": 6
 }
