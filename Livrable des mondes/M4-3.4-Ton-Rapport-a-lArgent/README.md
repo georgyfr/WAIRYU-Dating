@@ -7,8 +7,9 @@
 > **Plage de codes gelée** : Q3.4-01 → Q3.4-06 + Q3.4-T07 → Q3.4-T08
 > **Cadre** : Constitution v2.1 [5] (« Ton rapport à l'argent ») · refonte (Ajout 1 — « la 1re
 > cause de dispute conjugale documentée ») · mission V9.D — **B.3 : production neuve déclarée**
-> (axes et impulsivité financière cadrés au refonte, aucun texte d'item ; T07 = verbatim d'exemple
-> de la mission, consigné hors dépôt)
+> (axes et impulsivité financière cadrés au refonte, aucun texte d'item ; T07 = formulation neuve
+> après FINDING V9 — l'exemple de la mission était le verbatim de Q1.4-06 existant, brûlage
+> préventif, divergence documentée)
 > **Neutralité** : dépenser et économiser = deux façons égales d'habiter un budget.
 
 ## 📁 Contenu du livrable (10 fichiers)

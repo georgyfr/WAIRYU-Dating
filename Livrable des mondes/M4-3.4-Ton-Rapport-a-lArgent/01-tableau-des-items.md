@@ -5,7 +5,8 @@
 > **Neutralité des profils** : dépenser et économiser = deux façons égales d'habiter un budget —
 > le spontané et le calculé = deux tempos, ni l'un ni l'autre vertu ou défaut.
 > **2 axes (dépense 3 + calcul 3) + 2▲ DGR** · B.3 — production neuve déclarée (axes et impulsivité
-> financière cadrés au refonte, aucun texte d'item ; T07 = verbatim d'exemple de la mission, hors dépôt).
+> financière cadrés au refonte, aucun texte d'item ; T07 = formulation neuve après FINDING V9,
+hors dépôt).
 
 ## Axe 1 — DÉPENSE (dépensier ↔ économe)
 
@@ -28,12 +29,16 @@
 > ⚠ **Aucun énoncé de trame dans ce dépôt.** Contenu vivant : document trames (hors dépôt,
 > Partie 7), fourni à l'implémenteur uniquement au moment de l'intégration. Codes gelés à jamais.
 > Impulsivité financière déguisée en habitudes — formulations FRANCHES, indiscernables, jamais
-> édulcorées. Q3.4-T07 porte le verbatim d'exemple de la mission (consigné hors dépôt avec le
-> même statut que les autres formulations).
+> édulcorées. Q3.4-T07 porte une formulation NEUVE (angle : le découvert habituel — FINDING V9 :
+> l'exemple de la mission est le verbatim de Q1.4-06, item existant de la quête 1.4 — remplacé,
+> brûlage préventif, divergence documentée au STATUS et au document trames).
 
 **Q3.4-T07 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : le paiement différé « plus tard ».
-Alimente le signal DGR. Positions au mélange : 4.**
+(document trames, hors dépôt — Partie 7). Angle : le découvert habituel — ⚠ FINDING V9 :
+l'exemple de la mission (« Je rembourse "plus tard" ce que je m'autorise "maintenant" »)
+est le verbatim de Q1.4-06, item EXISTANT de la quête 1.4 — remplacé (anti-doublon, CI-15) ;
+divergence documentée au STATUS et au document trames (brûlage préventif). Alimente le signal
+DGR. Positions au mélange : 4.**
 
 **Q3.4-T08 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
 (document trames, hors dépôt — Partie 7). Angle : l'étalage des paiements en plusieurs fois.
@@ -77,7 +82,7 @@ premium (SIG-3.4-03).
 |---|---|---|
 | dépensier/économe | Q3.4-01 × 02 · Q3.4-03 (pivot) | le coup de cœur et l'épargne qui dort — l'axe de la dépense |
 | spontané/calculé | Q3.4-04 × 05 · Q3.4-06 (pivot) | la comparaison à froid et la visibilité des comptes — l'axe du calcul |
-| impulsivité financière déguisée (2▲ DGR) | Q3.4-T07 → T08 | le « plus tard » qui paie le « maintenant » — moteur seul, croisement 1.4 × 1.5 |
+| impulsivité financière déguisée (2▲ DGR) | Q3.4-T07 → T08 | le découvert habituel, l'achat étalé — angles indépendants de Q1.4-06 (finding V9), moteur seul, croisement 1.4 × 1.5 |
 
 ## Contrôles mécaniques passés
 
