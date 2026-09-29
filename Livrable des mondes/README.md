@@ -25,21 +25,30 @@ Livrable des mondes/
 ├── M3-2.5-Ce-Que-Tu-Cherches/   ← quête 2.5 « Ce que tu cherches » (M3, 🆓, Socle, 3 binaires)
 ├── M3-2.6-Tes-Priorites-5-Ans/  ← quête 2.6 « Tes priorités pour les 5 prochaines années » (M3, 🆓, jeu 100 points, VAGUE 6)
 ├── M3-2.7-Ta-Vision-de-la-Famille/ ← quête 2.7 « Ta vision de la famille » (M3, 🆓, 8 items — dealbreaker parentalité, VAGUE 6)
-└── M3-2.8-Ton-Signe/            ← quête 2.8 « Ton signe (juste pour le jeu) » (M3, 🆓, badge opt-in — hors score, VAGUE 6)
+├── M3-2.8-Ton-Signe/            ← quête 2.8 « Ton signe (juste pour le jeu) » (M3, 🆓, badge opt-in — hors score, VAGUE 6)
+├── M4-3.1-Ton-Rythme-de-Vie/    ← quête 3.1 « Ton rythme de vie » (M4 — Ton terrain, 🆓, 5 items, badge 🌅/🦉, MISSION V9)
+├── M4-3.2-Ton-Quotidien/        ← quête 3.2 « Ton quotidien » (M4, 🆓, 8 items 2 axes 5/3, outil dédié biaxes, MISSION V9)
+├── M4-3.3-Ton-Temps-Libre/      ← quête 3.3 ⚡ « Ton temps libre » (M4, 🆓, 8 carte + 4▲ CSR, MISSION V9)
+├── M4-3.4-Ton-Rapport-a-lArgent/ ← quête 3.4 « Ton rapport à l'argent » (M4, 🆓, 6 carte + 2▲ DGR, MISSION V9)
+├── M4-3.5-Ton-Entourage/        ← quête 3.5 « Ton entourage » (M4, 🆓, 6 items, R6 intégrales, MISSION V9)
+├── M4-3.6-Le-Choix-Visuel/      ← quête 3.6 ⚡ « Le choix visuel » (M4, 🆓, 8 paires A/B — brise-glaces, MISSION V9)
+└── M4-3.7-Tes-Attirances/       ← quête 3.7 « Tes attirances » (M4, 🆓, 5 déclaratifs PRIVÉS — pool Mode Invisible, MISSION V9)
 ```
 
 Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` (guide de lecture 1 page)
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 216/570 items = 37,9 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
-Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 — 1.5 ⚡ 6 choix, 1.9 état 8, 1.10 contribution 10, 1.11 écran 3,
-2.2 spiritualité 6, 2.6 arbitrage 5, 2.7 famille 8, 2.8 badge 1. Périmètre « questionnaires purs » hors
-formats spéciaux : 209/570 ≈ 37 % — l'attendu mission « ~210/570 = 37 % ». 1.8 « Ton bien-être » reste
-Phase 3 avec verrou renforcé (relecture professionnelle obligatoire, option de retrait — FM-019).)**
+**Taux de matérialisation : 268/570 items = 47,0 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · **MISSION V9 — Monde M4 « Ton terrain » : 52** — 3.1 rythme 5,
+3.2 quotidien 8, 3.3 temps libre 8 carte + 4▲ CSR, 3.4 argent 6 carte + 2▲ DGR, 3.5 entourage 6,
+3.6 choix visuel ⚡ 8 paires, 3.7 attirances 5. 1.8 « Ton bien-être » reste Phase 3 avec verrou
+renforcé (relecture professionnelle obligatoire, option de retrait — FM-019).)**
 
-> 🆓 **Après VAGUE 6, les mondes gratuits du voyage sont COMPLETS en items** : le voyageur gratuit
-> parcourt tout son territoire (M1 Le Miroir · M2 Le Volant · M3 La Boussole — Socle et quêtes Libre).
+> 🆓 **Après MISSION V9, les quatre premiers mondes gratuits du voyage sont COMPLETS en items** :
+> le voyageur gratuit parcourt son territoire (M1 Le Miroir · M2 Le Volant · M3 La Boussole —
+> Socle et quêtes Libre · **M4 Ton terrain — les 7 quêtes, dont 3.7 requis avant l'activation du
+> Mode Invisible**).
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 
