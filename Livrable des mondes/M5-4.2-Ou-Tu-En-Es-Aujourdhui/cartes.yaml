@@ -53,7 +53,7 @@ variantes:
     condition: "0.40 < DISP < 0.60 (en chemin)"
     ancre_item: ["Q4.2-01", "Q4.2-02", "Q4.2-03", "Q4.2-04", "Q4.2-05", "Q4.2-06", "Q4.2-07", "Q4.2-08", "Q4.2-09", "Q4.2-10", "Q4.2-11", "Q4.2-12", "Q4.2-13", "Q4.2-14", "Q4.2-15", "Q4.2-16", "Q4.2-17", "Q4.2-18"]
     portrait: "Des cartons sont faits, d'autres attendent : tu es entre deux météos, et c'est honnête. Des pages tournent, d'autres se relisent — et une parole claire te porte longtemps. Cet entre-deux se vit à ton rythme."
-    ombre: "Les jours de bascule existent : tout va, puis un détail rallume la braise. Le partenaire ne sait pas toujours lequel des deux est là."
+    ombre: "Les jours de bascule existent : tout va, puis un détail rallume la braise. Le partenaire ne sait pas d'avance lequel des deux est là."
     tension_interieure: "dire à l'autre ce qui rallume — la météo y gagne un bulletin."
 
   - id: CARTE-4.2-MAISON-EN-TRAVAUX

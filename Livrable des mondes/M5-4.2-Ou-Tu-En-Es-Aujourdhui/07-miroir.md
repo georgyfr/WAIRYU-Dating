@@ -25,14 +25,16 @@ braise, la porte au présent), jamais en étiquette, jamais en verdict.
 **TA LUMIÈRE**
 Tes chapitres passés te servent, comme tu l'as répondu — ils ne te pèsent plus. Tu sais ce
 que ces histoires t'ont appris, et le calme que tu as ramené reste. Les gens nouveaux, tu
-les regardes pour ce qu'ils sont. C'est une place calme, et elle s'entend.
+les regardes pour ce qu'ils sont. Cette histoire est rangée, les cartons sont faits. C'est
+une place calme, et elle s'entend quand on entre chez toi.
 
 **→ TON OMBRE (en couple)**
 Le calme bien installé se lit parfois comme une distance. La recherche documente que les
-profils apaisés vivent fréquemment un décalage de tempo : le partenaire, lui, a encore des
+profils apaisés vivent fréquemment un décalage de tempo. Le partenaire, lui, a encore des
 braises — et ton rangement peut ressembler à de l'indifférence. Le coût pour toi : défendre
 une sérénité qu'on prend pour du détachement. Le coût pour l'autre : se sentir en retard
-sur quelqu'un qui semble avoir tout réglé.
+sur quelqu'un qui semble avoir tout réglé. La place calme demande des mots pour se faire
+comprendre — elle ne se voit pas seule.
 
 **→ TA TENSION**
 Ta place est calme — elle demande des mots pour se faire comprendre.
@@ -48,14 +50,15 @@ Ta place est calme — elle demande des mots pour se faire comprendre.
 Tu es entre deux météos, comme tes réponses le disent : des cartons sont faits, d'autres
 attendent. Certaines pages tournent, d'autres se relisent. Ton besoin de clarté existe —
 une parole claire te porte longtemps. C'est un entre-deux honnête, et il se vit à ton
-rythme.
+rythme. Les pages qui tournent lentement tournent quand même. Rien n'est en retard ici —
+le chemin n'a pas d'horaire imposé.
 
 **→ TON OMBRE (en couple)**
-L'entre-deux vit fréquemment des jours de bascule : tout va, puis un prénom, une chanson,
-et la braise revit. La recherche documente que les profils en chemin vivent souvent ces
-retours sans prévenir — et le partenaire ne sait pas toujours lequel des deux est là. Le
-coût pour toi : gérer la bascule en silence. Le coût pour l'autre : lire une météo qui
-change sans bulletin.
+L'entre-deux vit fréquemment des jours de bascule. La recherche documente que les profils en
+chemin vivent souvent ces retours sans prévenir. Un prénom, une chanson — et la braise
+revit. Le partenaire ne sait pas d'avance lequel des deux est là. Le coût pour toi : gérer
+la bascule en silence. Le coût pour l'autre : lire une météo qui change sans bulletin. Les
+retours ne se choisissent pas — ils s'annoncent, et ça s'apprend.
 
 **→ TA TENSION**
 Tes cartons sont faits — la braise, elle, reprend parfois.
@@ -69,16 +72,17 @@ Tes cartons sont faits — la braise, elle, reprend parfois.
 
 **TA LUMIÈRE**
 Ton histoire occupe encore de la place, comme tu l'as répondu : le passé remonte, la
-comparaison travaille. Ce n'est pas une faille — c'est une maison en travaux, et les
-travaux se font à ton rythme. Ton besoin de confirmations dit une chose simple : la clarté
-t'aide à tenir.
+comparaison travaille. Ce n'est pas une faille — c'est une maison en travaux, et les travaux
+se font à ton rythme. Ton besoin de confirmations dit une chose simple. La clarté t'aide à
+tenir, et ça se comprend sans difficulté.
 
 **→ TON OMBRE (en couple)**
-La maison en travaux vit fréquemment des murs porteurs sensibles : une question posée
-tombe sur un chantier, un silence s'écrit en scénario inquiet. La recherche documente que
+La maison en travaux vit fréquemment des murs porteurs sensibles. La recherche documente que
 l'état qui travaille demande souvent des preuves répétées — et la répétition fatigue les
-deux. Le coût pour toi : vérifier au lieu de recevoir. Le coût pour l'autre : ne jamais
-en dire assez pour apaiser.
+deux. Une question posée tombe sur un chantier, un silence s'écrit en scénario inquiet. Le
+coût pour toi : vérifier au lieu de recevoir. Le coût pour l'autre : avoir l'impression de
+ne pas en dire assez pour apaiser. La preuve n'apaise pas — elle use, et le besoin reste
+légitime.
 
 **→ TA TENSION**
 Tu demandes beaucoup — le besoin est légitime, le dosage est l'artisanat.
@@ -86,4 +90,4 @@ Tu demandes beaucoup — le besoin est légitime, le dosage est l'artisanat.
 **→ LE MINI-RES**
 - Lumière : tu sais ce que tu vis — les travaux sont honnêtes.
 - Ombre : la preuve répétée n'apaise pas — elle use.
-- Mode d'emploi : nomme UNE peur précise à l'autre — la clarté commence par elle.
+- Mode d'emploi : nomme une peur précise à l'autre — la clarté commence par elle.

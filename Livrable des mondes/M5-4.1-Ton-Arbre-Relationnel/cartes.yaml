@@ -63,7 +63,7 @@ variantes:
     ancre_item: ["Q4.1-01", "Q4.1-02", "Q4.1-03", "Q4.1-04", "Q4.1-05", "Q4.1-06", "Q4.1-07", "Q4.1-08"]
     portrait: "Chez toi, l'essentiel se devinait plus qu'il ne se disait — tu as appris à lire une maison. Et ton avis compte autant que la paix du groupe : tu sais où tu vas sans avoir besoin qu'on le nomme."
     ombre: "Celui qui a appris à deviner devine encore. Un regard devient un reproche, une pause devient une décision — et l'autre se sent compris avant d'avoir parlé."
-    tension_interieure: "poser ta lecture en question, jamais en verdict — la réponse appartient à l'autre."
+    tension_interieure: "poser ta lecture en question — pas en verdict — la réponse appartient à l'autre."
 
   - id: CARTE-4.1-PLACE-HERITEE
     nom: "Le·La Place héritée"

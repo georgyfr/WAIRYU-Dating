@@ -25,37 +25,38 @@ parle en images (la table, la voix, la place tenue), jamais en étiquette, jamai
 **TA LUMIÈRE**
 Chez toi, les émotions se disaient à voix haute, comme tu l'as répondu — et un désaccord se
 nommait puis se réparait. Tu as grandi où les mots circulent. Aujourd'hui, ton avis compte
-autant que la paix du groupe : tu tiens ta voix sans casser la table. C'est un héritage qui
-se porte léger.
+autant que la paix du groupe. Tu tiens ta voix sans casser la table. C'est un héritage qui
+se porte léger, et ça se sent.
 
 **→ TON OMBRE (en couple)**
 Là où les mots circulaient, ils attendent souvent une réponse immédiate. La recherche
 documente que les profils issus de climats très nommés vivent fréquemment un malentendu
-inverse : un partenaire qui digère en silence peut être lu comme un mur. Le coût pour toi :
+inverse. Un partenaire qui digère en silence peut être lu comme un mur. Le coût pour toi :
 confondre silence et refus. Le coût pour l'autre : se sentir sommé de parler avant d'avoir
-trouvé ses mots.
+trouvé ses mots. La table chauffe quand l'un veut parler et que l'autre pèse ses mots.
 
 **→ TA TENSION**
 Ta voix vient vite — celle de l'autre arrive parfois en retard.
 
 **→ LE MINI-RES**
 - Lumière : les mots circulent chez toi — la table est chaleureuse.
-- Ombre : un silence n'est pas un mur, il se demande sans le deviner.
+- Ombre : un silence n'est pas un mur — il se demande sans le deviner.
 - Mode d'emploi : laisse à l'autre le temps du retour — le sujet résiste à la nuit.
 
 ### MR-41-HER-NOMM-HERIT — le rôle dans la lumière
 
 **TA LUMIÈRE**
-Chez toi, tout se disait — et tu as tôt tenu un rôle qu'on t'a confié. Tu sais porter :
-une place, une attention, une responsabilité qui a fait de toi quelqu'un de fiable. La
-table parlait et toi tu tenais la maison. Aujourd'hui encore, tu tiens ce rôle — c'est une
-force que les tiens reconnaissent.
+Chez toi, tout se disait — et tu as tôt tenu un rôle qu'on t'a confié. Tu sais porter une
+place, une attention, une responsabilité qui a fait de toi quelqu'un de fiable. La table
+parlait, et toi tu tenais la maison. Aujourd'hui encore, tu tiens ce rôle. C'est une force
+que les tiens reconnaissent, et elle se voit.
 
 **→ TON OMBRE (en couple)**
 Le rôle confié tôt devient fréquemment un habit qui ne s'enlève plus. La recherche documente
-que les profils au rôle hérité vivent souvent une fatigue discrète : continuer à tenir même
-quand la table a changé. Le coût pour toi : être fiable jusqu'à l'oubli de soi. Le coût pour
-l'autre : recevoir un partenaire qui assume tout et ne demande rien.
+que les profils au rôle hérité vivent souvent une fatigue discrète. Continuer à tenir quand
+la table a changé — ça s'appelle l'oubli de soi. Le coût pour toi : être fiable jusqu'à
+t'effacer de la liste. Le coût pour l'autre : recevoir un partenaire qui assume tout et ne
+demande rien. La force devient un mur quand elle refuse de l'aide.
 
 **→ TA TENSION**
 Ton rôle te tient — parfois plus que tu ne le tiens.
@@ -69,15 +70,16 @@ Ton rôle te tient — parfois plus que tu ne le tiens.
 
 **TA LUMIÈRE**
 Chez toi, les émotions se devinaient plus qu'elles ne se disaient — et tu as appris à lire.
-Aujourd'hui, ton avis compte autant que la paix du groupe : tu sais où tu vas, même quand
-personne ne le nomme. C'est une boussole silencieuse, apprise tôt et bien tenue.
+Aujourd'hui, ton avis compte autant que la paix du groupe. Tu sais où tu vas, même quand
+personne ne le nomme. C'est une boussole silencieuse, apprise tôt et bien tenue. Les maisons
+calmes forment souvent les meilleurs lecteurs.
 
 **→ TON OMBRE (en couple)**
 Celui qui a appris à deviner devine encore — parfois trop. La recherche documente que les
-profils lecteurs de silences vivent fréquemment des interprétations en avance : un regard
-devient un reproche, une pause devient une décision. Le coût pour toi : vivre des scènes
-qui n'ont pas eu lieu. Le coût pour l'autre : être compris avant d'avoir parlé — et se
-sentir court-circuité.
+profils lecteurs de silences vivent fréquemment des interprétations en avance. Un regard
+devient un reproche, une pause devient une décision. Le coût pour toi : vivre des scènes qui
+n'ont pas eu lieu. Le coût pour l'autre : être compris avant d'avoir parlé — et se sentir
+court-circuité. La lecture remplace la question, et la question reste en attente.
 
 **→ TA TENSION**
 Tu lis vite — tu vérifies rarement ce que ta lecture dit.
@@ -85,22 +87,23 @@ Tu lis vite — tu vérifies rarement ce que ta lecture dit.
 **→ LE MINI-RES**
 - Lumière : tu perçois ce que les autres ne disent pas — une attention rare.
 - Ombre : ce qui se devine se vérifie — sinon il se vit seul.
-- Mode d'emploi : pose ta lecture en question, jamais en verdict — la réponse appartient à l'autre.
+- Mode d'emploi : pose ta lecture en question, pas en verdict — la réponse appartient à l'autre.
 
 ### MR-41-HER-DEVIN-HERIT — la place héritée
 
 **TA LUMIÈRE**
 Chez toi, l'essentiel se devinait — et tu as tenu très tôt la place qu'il fallait tenir.
-Tu as appris à lire une maison et à la porter à la fois. La paix de la famille passe
-souvent avant ce que tu penses : c'est une fidélité profonde, celle qui garde debout ce
-qui compte.
+Tu as appris à lire une maison et à la porter à la fois. La paix de la famille passe souvent
+avant ce que tu penses. C'est une fidélité profonde — celle qui garde debout ce qui compte.
+Les maisons calmes savent reconnaître ce genre de fidélité.
 
 **→ TON OMBRE (en couple)**
 La place tenue tôt pèse fréquemment en silence. La recherche documente que les profils à
-loyautés invisibles fortes vivent souvent deux coûts : la fatigue du rôle jamais choisi,
-et l'avis qui attend derrière la paix du groupe. En couple, l'attente se déplace — l'autre
-devient la table qu'on ne veut pas troubler. Le coût pour toi : un avis qui s'accumule.
-Le coût pour l'autre : une harmonie qui cache une négociation jamais faite.
+loyautés invisibles fortes vivent souvent deux coûts. Le premier : la fatigue du rôle non
+choisi. Le second : l'avis qui attend derrière la paix du groupe. En couple, l'attente se
+déplace — l'autre devient la table qu'on ne veut pas troubler. Le coût pour toi : un avis
+qui s'accumule. Le coût pour l'autre : une harmonie qui cache une négociation qui reste à
+faire.
 
 **→ TA TENSION**
 Tu tiens la paix — et ton avis attend encore.
@@ -113,15 +116,17 @@ Tu tiens la paix — et ton avis attend encore.
 ### MR-41-HER-CENTRAL — selon la table
 
 **TA LUMIÈRE**
-Ton origine ne vote ni silence ni parole, ni rôle ni voix : selon les maisons et les
-années, tu t'adaptes. Tu dis quand c'est juste, tu devines quand c'est utile, tu tiens
-quand il faut. C'est une souplesse rare — apprise de près, comme tes réponses le disent.
+Ton origine ne vote ni silence ni parole, ni rôle ni voix : selon les maisons et les années,
+tu t'adaptes. Tu dis quand c'est juste, tu devines quand c'est utile, tu tiens quand il
+faut. C'est une souplesse rare, apprise de près. Tes réponses le disent : tu navigues entre
+les tables sans perdre ton nord.
 
 **→ TON OMBRE (en couple)**
-La souplesse se lit difficilement de dehors. La recherche documente que les profils
-centraux vivent fréquemment une question répétée : où en es-tu, vraiment ? Le partenaire
-cherche ta règle — elle existe, mais elle se devine mal. Le coût pour toi : réexpliquer.
-Le coût pour l'autre : habiter une maison aux saisons qu'il ne prévoit pas toujours.
+La souplesse se lit difficilement de dehors. La recherche documente que les profils centraux
+vivent fréquemment une question répétée : où en es-tu, vraiment ? Le partenaire cherche ta
+règle — elle existe, mais elle se devine mal. Le coût pour toi : réexpliquer sans fin. Le
+coût pour l'autre : habiter une maison aux saisons qu'il ne prévoit pas d'avance. L'aisance
+cache mal une règle qui n'a pas encore été dite. La règle se dit — elle se devine mal.
 
 **→ TA TENSION**
 Tu t'adaptes vite — ta règle, elle, se dit moins vite.
