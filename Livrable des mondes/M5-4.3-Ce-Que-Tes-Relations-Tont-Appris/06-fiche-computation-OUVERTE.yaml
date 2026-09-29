@@ -1,0 +1,59 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE (modèle OUVERTE — quête 4.3)
+# Item : Q4.3-01 — la tâche d'écriture (1 item, hors mélange, graine sans-objet).
+# Ce fichier matérialise le modèle OUVERTE : aucun score de quête, aucun rendu du contenu,
+# analyse P2 côté moteur (BLA — code gelé du dictionnaire).
+item: Q4.3-01
+quete: "4.3 Ce que tes relations t'ont appris"
+monde: M5                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: ouverte                # champ libre — sans limite dure, sans relance
+enonce: "Ce que tes relations t'ont appris — en quelques lignes, si tu veux."
+echelle: null                  # pas d'échelle — format non Likert
+orientation: null              # sans objet (format non Likert)
+dimension: null                # AUCUN score de quête — la tâche n'est pas notée
+type_mesure: recit_libre       # stockage moteur seul — JAMAIS rendu (interdit V10)
+retrait:
+  disponible: true
+  libelle: "Je préfère ne pas dire"   # saut sans pénalité — précédent 2.8
+double_balise:
+  carte_id: null               # aucune carte à P1.5 — carte rédigée P2 (slot SIG-4.3-01)
+  signal_id: SIG-4.3-01        # la part du récit (BLA, P2) — moteur SEUL
+computation:
+  carte:
+    role: aucun                # dimension null — rien à scorer
+    regle: "pas de score de quête — l'écran de complétion est simple et bienveillant (tonalités au 05)"
+    rendu: aucun_a_p15         # carte rédigée = P2 (slot documenté au 03/04)
+  signal:
+    role: bla_p2
+    mecanisme: >-
+      analyse linguistique P2 du récit (BLA — victime-permanente, code gelé [4]) :
+      deux pôles blâme externe ↔ responsabilité, tendance du RÉCIT jamais un diagnostic de
+      personne ; protections moteur (pacing, vigilance, croisement RB1 — demi-vie) ;
+      le seul produit rendu à P2 est la carte rédigée — images génériques du récit,
+      JAMAIS d'extrait ni de contenu personnel repris (interdit V10)
+    rendu: moteur_seul         # BLA et BLA_43 ne sont jamais rendus
+    condition: "seuils BLA et calibrage NLP proposés — À VALIDER PAR LE COMITÉ [9] — analyse activée en P2"
+  fiabilite:
+    role: sans_objet           # pas de paire R6 possible (1 item non Likert)
+    regle: >-
+      sans objet par design — la prudence passe par la patience : aucun rendu avant le
+      calibrage P2 ; récit trop court = non analysé (seuil de volume documenté, hors dépôt)
+  modulation:
+    - si: "récit trop court ou absent (retrait)"
+      effet: "aucune analyse, aucune conséquence — le retrait ne se voit nulle part"
+    - si: "BLA_43 penche fortement vers le blâme externe (P2)"
+      effet: "protections de pacing côté moteur + croisement RB1 × BLA (matrice 4.4) — jamais au rendu, jamais au match, demi-vie du signal"
+  ancrage:
+    rappel_autorise: false     # INTERDIT — aucun extrait, aucune citation, aucun rappel (interdit V10)
+    forme: null
+    exemple: null
+notes:
+  - >-
+    Modèle OUVERTE — le premier de la série : la réponse appartient au voyageur, le moteur
+    la lit, l'interface ne la montre JAMAIS (interdit V10 — aucun extrait nulle part).
+  - >-
+    Mélange : SANS-OBJET (1 item, aucun ordre à mélanger) — graine non consommée, ordinal 33
+    réservé non consommé (provenance documentée au 00-README, jamais réattribué).
+  - >-
+    La carte rédigée P2 : deux pôles respectés (blâme et responsabilité = deux postures de
+    récit, jamais deux valeurs de personne) — spécification au 03 (SIG-4.3-01).
