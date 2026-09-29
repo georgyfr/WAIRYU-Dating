@@ -1589,7 +1589,7 @@ L'utilisateur répond : "Je n'ai jamais rien regreté" (quête ludique)
 | Quête visible | Items de trame cachés dedans | Signal nourri |  
 |---|---|---|  
 | 1.1 « Ta personnalité » | \+8 items d'entitlement et de grandiosité déguisés en questions de caractère (\*"Il arrive que les gens me doivent plus qu'ils ne l'admettent"\*) | \*\*DANGEROSITÉ\_MANIPULATIVE\*\* — composante narcissique |  
-| 1.2 « Ta façon de t'attacher » | \+4 items de méfiance projetée (\*"Les gens sont gentils surtout quand ils veulent quelque chose"\*) | Composante machiavélique \+ validation croisée blessures |  
+| 1.2 « Ta façon de t'attacher » | \+4 items de méfiance projetée (\*"[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"\*) | Composante machiavélique \+ validation croisée blessures |  
 | 1.3 « Tes émotions » | \+6 items d'empathie réelle (la mesure qui corrige le Dark Empathy : \*"Quand quelqu'un pleure, je ressens d'abord son émotion, pas mon gêne"\*) | \*\*Composante empathie basse\*\* — la clé du croisement |  
 | 1.4 « Ton contrôle sur toi-même » | \*(quête à double usage : l'auto-contrôle EST un trait de sécurité)\* | \*\*DANGEROSITÉ\_RÉACTIVE\*\* — inverse |  
 | 1.5 ⚡ « L'épreuve du temps » | \*(tâche comportementale — mesure l'impulsivité par le geste, corrige le déclaratif)\* | DANGEROSITÉ\_RÉACTIVE |
@@ -2302,14 +2302,14 @@ monde 1
 
 | Code | Item | | Composante |  
 |---|---|---|---|  
-| Q1.1-T01 | Franchement, je mérite un peu plus que la moyenne. | | Entitlement |  
-| Q1.1-T02 | Je m'attends à ce que les gens fassent des efforts pour moi — et c'est normal. | | Entitlement |  
-| Q1.1-T03 | Il est légitime que mes besoins passent parfois avant ceux des autres. | | Entitlement |  
-| Q1.1-T04 | Je repère les occasions qui me sont réservées — et je les prends. | | Entitlement |  
-| Q1.1-T05 | Dans un groupe, mon avis devrait naturellement peser un peu plus. | | Entitlement |  
-| Q1.1-T06 | Les gens se souviennent longtemps de moi après une rencontre. | | Grandiosité |  
-| Q1.1-T07 | J'ai un effet sur les gens qui ne s'explique pas seulement par ma gentillesse. | | Grandiosité |  
-| Q1.1-T08 | Quand il faut décider, c'est moi qui décide — ça s'est toujours fait naturellement. | | Grandiosité |
+| Q1.1-T01 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Entitlement |  
+| Q1.1-T02 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Entitlement |  
+| Q1.1-T03 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Entitlement |  
+| Q1.1-T04 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Entitlement |  
+| Q1.1-T05 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Entitlement |  
+| Q1.1-T06 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Grandiosité |  
+| Q1.1-T07 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Grandiosité |  
+| Q1.1-T08 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | | Grandiosité |
 
 \*\*Doublons fiabilité (hors comptage, présentés à ≥ 2 semaines) :\*\* \`Q1.1-02.r\` \*"Tenter des choses nouvelles est ma façon naturelle d'avancer."\* (doublon de 02\) · \`Q1.1-11.r\` \*"Ma parole est fiable, même pour les petites choses."\* (doublon de 11).
 
@@ -2346,19 +2346,19 @@ monde 1
 
 | Code | Item | |  
 |---|---|---|  
-| Q1.2-T09 | Les gens sont gentils surtout quand ils veulent quelque chose. | |  
-| Q1.2-T10 | Quand quelqu'un est trop attentionné, je me demande ce qu'il cherche vraiment. | |  
-| Q1.2-T11 | Derrière la plupart des gentillesses, il y a un intérêt. | |  
-| Q1.2-T12 | Faire confiance entièrement, c'est mettre une arme dans les mains de l'autre. | |
+| Q1.2-T09 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T10 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T11 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T12 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |
 
 \#\#\# Trame sensibilité au rejet \`\[TRAME → RSQ : UX adaptative\]\`
 
 | Code | Item | |  
 |---|---|---|  
-| Q1.2-T13 | Quand quelqu'un met du temps à répondre, je finis souvent par croire qu'il a changé d'avis sur moi. | |  
-| Q1.2-T14 | Un refus poli me reste en tête plusieurs jours. | |  
-| Q1.2-T15 | Quand quelqu'un semble distant, je finis généralement par me demander ce que j'ai fait de mal. | |  
-| Q1.2-T16 | Je remarque bien plus les signes de rejet que les signes d'intérêt. | |
+| Q1.2-T13 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T14 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T15 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.2-T16 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |
 
 \*\*Doublons :\*\* \`Q1.2-01.r\` \*"Le silence de quelqu'un d'important m'inquiète très vite."\* · \`Q1.2-09.r\` \*"Même en couple, je gère mes problèmes en solo."\*
 
@@ -2410,11 +2410,11 @@ monde 1
 
 | Code | Item | |  
 |---|---|---|  
-| Q1.3-T21 | Le malheur des gens autour de moi passe assez vite dans ma tête. | |  
-| Q1.3-T22 | Je remarque très bien quand quelqu'un est vulnérable — et ça me donne un certain sentiment de maîtrise. | |  
-| Q1.3-T23 | Devant la détresse de quelqu'un, mon premier réflexe est de me demander comment ça me touche moi, avant de penser à lui. | |  
-| Q1.3-T24 | Je comprends les émotions des gens mieux qu'eux-mêmes — et c'est un avantage. | |  
-| Q1.3-T25 | Voir quelqu'un humilié(e) me fait mal, même quand je ne l'aime pas. | ↩ |  
+| Q1.3-T21 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.3-T22 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.3-T23 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.3-T24 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | |  
+| Q1.3-T25 | [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] | ↩ |  
 | Q1.3-T26 | Quand quelqu'un pleure, je ressens d'abord son chagrin, pas mon gêne. | ↩ |
 
 \*\*Doublons :\*\* \`Q1.3-01.r\` \*"Je trouve généralement les mots justes pour mes états intérieurs."\* · \`Q1.3-12.r\` \*"Je tourne en boucle longtemps avant d'apaiser une tension."\*
