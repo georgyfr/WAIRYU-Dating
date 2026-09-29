@@ -103,4 +103,8 @@ Tu produis, tu ne décides pas. Trois verrous sont HUMAINS et te sont interdits 
 
 Avant toute production, RESTITUE ta lecture de la mission en 5 lignes maximum : l'élément concerné, son monde, son statut freemium, ses contraintes principales, et la ou les ambiguïtés détectées. J'attends ma validation avant que tu produises.
 
+## [11] SÉCURITÉ D'OPÉRATION (gravée par FM-014 §4a — verdict du comité)
+
+Aucun identifiant, jeton ou secret n'est jamais écrit dans un fichier, une fiche, un livrable ou un message de commit. Les push vers le dépôt distant passent exclusivement par un jeton d'accès fourni par le concepteur, à PÉRIMÈTRE MINIMAL (contenu du dépôt seul, durée courte), transmis uniquement via variable d'environnement éphémère et helper d'identifiants en mémoire — jamais sur disque, jamais dans la configuration git, jamais en argument de commande. Tout jeton suspecté d'exposition est révoqué immédiatement par le concepteur. Un dépôt rouge (CI en échec) ne part jamais ; la vérification post-push (la remote pointe sur notre commit) fait partie de l'opération de publication.
+
 ════════════════════════════ FIN DE LA CONSTITUTION v2.1 ════════════════════════════

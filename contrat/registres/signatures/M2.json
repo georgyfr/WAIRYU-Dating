@@ -1,0 +1,19 @@
+{
+  "_role": "REGISTRE DES SIGNATURES — monde M2 (extrait) · source: FM-013 §5 régularisation · session: 2026-09-28",
+  "monde": "M2",
+  "monde_nom": "La Boussole — Le Volant",
+  "signatures": [
+    {
+      "id": "SIG_CONTRIB",
+      "quete": "1.10",
+      "nom": "Ce que tu apportes",
+      "conditions": "contribution déclarée à la quête 1.10 « Ce que tu apportes » × traits mesurés au Miroir (M1) — croisement déclaré × mesuré",
+      "consequence": "facteur de confiance : la cohérence entre ce que l'utilisateur déclare apporter et ce que ses items M1 mesurent module la confiance accordée à ses déclarations dans le matching",
+      "source": "quête 1.10 « Ce que tu apportes » (M2 = LE VOLANT, quêtes 1.4 → 1.11)",
+      "fenetre_frequence_cible": "À VALIDER PAR LE COMITÉ",
+      "statut": "À VALIDER PAR LE COMITÉ",
+      "note": "lien éventuel avec QFI (qualité de fiabilité du profil) à confirmer par le comité — les seuils de croisement et le poids du facteur restent domaine réservé [9]"
+    }
+  ],
+  "invariant_note": "Régularisation FM-013 §5 : les 35 signatures = 30 M1 (déclarées, maison fichier en attente — Voie B) + 1 M2 (SIG_CONTRIB, la présente) + 4 M3 (quête 2.1). La matérialisation mesure ce qui existe en fichiers — elle n'ajoute rien au contrat."
+}

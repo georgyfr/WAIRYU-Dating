@@ -45,5 +45,5 @@
       "statut": "À VALIDER PAR LE COMITÉ"
     }
   ],
-  "invariant_note": "⚠ divergence d'invariants à trancher par le contrat : base 30 ou 31 signatures ? (voir FM-013 §5)"
+  "invariant_note": "Tranchage comité 2026-09-28 (FM-013 §5) : 35 = 30 signatures M1 (déclarées au registre du Monde 1, maison fichier en attente — Voie B) + 1 M2 (SIG_CONTRIB, quête 1.10) + 4 M3 (quête 2.1). L'invariant compte ce qui EXISTE au contrat (design) ; la matérialisation mesure ce qui EXISTE en fichiers (production) — deux métriques, jamais confondues."
 }
