@@ -12,44 +12,155 @@
     ]
   },
   "ordre_passation": [
-    { "position": 1,  "code": "Q2.1-01" },
-    { "position": 2,  "code": "Q2.1-03" },
-    { "position": 3,  "code": "Q2.1-11" },
-    { "position": 4,  "code": "Q2.1-21", "trame": "DTM_N" },
-    { "position": 5,  "code": "Q2.1-15" },
-    { "position": 6,  "code": "Q2.1-05" },
-    { "position": 7,  "code": "Q2.1-13" },
-    { "position": 8,  "code": "Q2.1-02" },
-    { "position": 9,  "code": "Q2.1-06" },
-    { "position": 10, "code": "Q2.1-22", "trame": "DTM_N" },
-    { "position": 11, "code": "Q2.1-04" },
-    { "position": 12, "code": "Q2.1-19" },
-    { "position": 13, "code": "Q2.1-07" },
-    { "position": 14, "code": "Q2.1-09" },
-    { "position": 15, "code": "Q2.1-12" },
-    { "position": 16, "code": "Q2.1-23", "trame": "DTM_N" },
-    { "position": 17, "code": "Q2.1-14" },
-    { "position": 18, "code": "Q2.1-18" },
-    { "position": 19, "code": "Q2.1-20" },
-    { "position": 20, "code": "Q2.1-08" },
-    { "position": 21, "code": "Q2.1-17" },
-    { "position": 22, "code": "Q2.1-10" },
-    { "position": 23, "code": "Q2.1-16" },
-    { "position": 24, "code": "Q2.1-24", "trame": "DTM_N" }
+    {
+      "position": 1,
+      "code": "Q2.1-01"
+    },
+    {
+      "position": 2,
+      "code": "Q2.1-03"
+    },
+    {
+      "position": 3,
+      "code": "Q2.1-06"
+    },
+    {
+      "position": 4,
+      "code": "Q2.1-21",
+      "trame": "DTM_N"
+    },
+    {
+      "position": 5,
+      "code": "Q2.1-15"
+    },
+    {
+      "position": 6,
+      "code": "Q2.1-18"
+    },
+    {
+      "position": 7,
+      "code": "Q2.1-13"
+    },
+    {
+      "position": 8,
+      "code": "Q2.1-02"
+    },
+    {
+      "position": 9,
+      "code": "Q2.1-11"
+    },
+    {
+      "position": 10,
+      "code": "Q2.1-22",
+      "trame": "DTM_N"
+    },
+    {
+      "position": 11,
+      "code": "Q2.1-04"
+    },
+    {
+      "position": 12,
+      "code": "Q2.1-19"
+    },
+    {
+      "position": 13,
+      "code": "Q2.1-07"
+    },
+    {
+      "position": 14,
+      "code": "Q2.1-10"
+    },
+    {
+      "position": 15,
+      "code": "Q2.1-12"
+    },
+    {
+      "position": 16,
+      "code": "Q2.1-23",
+      "trame": "DTM_N"
+    },
+    {
+      "position": 17,
+      "code": "Q2.1-14"
+    },
+    {
+      "position": 18,
+      "code": "Q2.1-05"
+    },
+    {
+      "position": 19,
+      "code": "Q2.1-20"
+    },
+    {
+      "position": 20,
+      "code": "Q2.1-08"
+    },
+    {
+      "position": 21,
+      "code": "Q2.1-17"
+    },
+    {
+      "position": 22,
+      "code": "Q2.1-09"
+    },
+    {
+      "position": 23,
+      "code": "Q2.1-16"
+    },
+    {
+      "position": 24,
+      "code": "Q2.1-24",
+      "trame": "DTM_N"
+    }
   ],
   "contraintes": [
-    { "id": 1, "nom": "aucune dimension consecutive", "verdict": "pass", "detail": "vérifié sur les 23 paires de positions" },
-    { "id": 2, "nom": "trames jamais adjacentes a BE/UN/RE/PO", "verdict": "pass", "detail": "pos4→voisins 11,15 · pos10→voisins 06,04 · pos16→voisins 12,14 · pos24→voisin 16" },
-    { "id": 3, "nom": "1 trame par bloc de 6", "verdict": "pass", "detail": "pos 4 · 10 · 16 · 24" },
-    { "id": 4, "nom": "distance intra-dimension >= 3", "verdict": "pass", "detail": "AU 7 · ST 9 · HE 3 · RE 7 · PO 8 · SE 12 · CO 10 · TR 18 · BE 3" },
-    { "id": 5, "nom": "alternance D/I sans regroupement", "verdict": "pass", "detail": "aucun bloc de même orientation > 2" },
-    { "id": 6, "nom": "ordre des codes != ordre de passation", "verdict": "pass", "detail": "1er item vu = Q2.1-01, 2e = Q2.1-03" }
+    {
+      "id": 1,
+      "nom": "aucune dimension consecutive",
+      "verdict": "pass",
+      "detail": "vérifié sur les 23 paires de positions"
+    },
+    {
+      "id": 2,
+      "nom": "trames jamais adjacentes a BE/UN/RE/PO",
+      "verdict": "pass",
+      "detail": "pos4→voisins 11,15 · pos10→voisins 06,04 · pos16→voisins 12,14 · pos24→voisin 16"
+    },
+    {
+      "id": 3,
+      "nom": "1 trame par bloc de 6",
+      "verdict": "pass",
+      "detail": "pos 4 · 10 · 16 · 24"
+    },
+    {
+      "id": 4,
+      "nom": "distance intra-dimension >= 3",
+      "verdict": "pass",
+      "detail": "AU 7 · ST 9 · HE 3 · RE 7 · PO 8 · SE 12 · CO 10 · TR 18 · BE 3"
+    },
+    {
+      "id": 5,
+      "nom": "alternance D/I sans regroupement",
+      "verdict": "pass",
+      "detail": "rejeu FM-015 : runs max D/I en passation = 2 (trames incluses et hors trames)"
+    },
+    {
+      "id": 6,
+      "nom": "ordre des codes != ordre de passation",
+      "verdict": "pass",
+      "detail": "1er item vu = Q2.1-01, 2e = Q2.1-03"
+    }
   ],
   "historique": [
     {
       "date": "2026-09-28",
       "evenement": "rejeu après correction Q2.1-23 (contamination lexicale vs Q2.1-09 — FM-013)",
       "resultat": "séquence INCHANGÉE — l'adjacence dépend des dimensions, pas des énoncés ; graine 210427 conservée ; 6/6 contraintes re-passées"
+    },
+    {
+      "date": "2026-09-28",
+      "evenement": "passe ⑤ de réparation alternance D/I (FM-015 — finding CI-07 : 7 D consécutifs en tête déclarés 'pass')",
+      "resultat": "graine 210427 CONSERVÉE · trames ancrées (pos 4 · 10 · 16 · 24) · 3 échanges déterministes · run max 2 · contraintes 1-4 et 6 re-validées · séquence réécrite par l'outil (zéro transcription manuelle)"
     }
   ]
 }

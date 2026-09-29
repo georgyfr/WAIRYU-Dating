@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════════
 # QUÊTE 2.1 « TES VALEURS » — SLOTS DE MIROIR ALIMENTÉS
-# quete: 2.1 · session: 2026-09-28 · fiche-mutation: FM-013
+# quete: 2.1 · session: 2026-09-28 · fiche-mutation: FM-013 · corrections: FM-017
 # Miroir LOURD (24 items ≥ 15) → gabarit 300-450 mots (Constitution [7])
 # ═══════════════════════════════════════════════════════════════════
 slots:
@@ -12,15 +12,17 @@ slots:
       (descriptif : « la plupart des membres hésitent ici », jamais
       « tu es au-dessus de la moyenne »).
     degres: "percentile par bloc"
+    ancre_item: Q2.1-17        # champ MOTEUR — ne franchit jamais le rendu (FM-017)
     citations_exemples:
-      - "quand tu as répondu que le bien-être de tes proches passe avant ton programme du jour (Q2.1-17)"
+      - "quand tu as répondu que « La demande d'aide d'un proche passe avant mon programme du jour. »"
 
   - id: S2-2.1
     nom: "L'axe qui te tend"
     contenu: "Croisement Affirmation de soi × Dépassement de soi"
     degres: ["apaisé", "tendu", "tiré au cordeau"]
+    ancre_item: Q2.1-07        # champ MOTEUR — ne franchit jamais le rendu (FM-017)
     citations_exemples:
-      - "quand tu as dit viser d'abord des résultats visibles (Q2.1-07)"
+      - "quand tu as répondu que « Dans un nouveau projet, je vise d'abord des résultats visibles. »"
 
   - id: S3-2.1
     nom: "Quand tes réponses se répondent"
@@ -41,13 +43,17 @@ slots:
     nom: "L'étendue de ta loyauté"
     contenu: "BE × UN (signature SIG-2.1-04)"
     degres: ["resserrée", "nuancée", "étendue"]
+    ancre_item: Q2.1-19        # champ MOTEUR — ne franchit jamais le rendu (FM-017)
     citations_exemples:
-      - "quand tu as dit chercher d'abord à comprendre (Q2.1-19)"
+      - "quand tu as répondu que « Devant une façon de vivre très différente, je cherche d'abord à comprendre. »"
 
 verrous_de_slot:
-  - "Aucun code, score ou sigle franchit le rendu (Constitution [3] — aucune métadonnée visible)."
+  - "Aucun code, score ou sigle franchit le rendu (Constitution [3] — aucune métadonnée visible). Les ancre_item sont des champs moteur, jamais rendus."
   - "Les 4 items ▲ n'alimentent AUCUN slot (interdit structurel — la trame sécurité n'a pas d'étage de restitution, jamais au match, jamais dans les portraits, jamais au premium)."
   - "Volume d'ombre ≥ volume de lumière sur l'ensemble du miroir (Constitution [2])."
+  - "Chaque tendance d'ombre rendue par ces slots s'ancre dans une situation de couple concrète — jamais un trait abstrait seul (verrou d'ombre n°1, FM-017)."
+  - "Chaque tendance d'ombre nomme le coût pour l'utilisateur ET le coût pour l'autre — les deux, sans exception (verrou d'ombre n°2, FM-017)."
+  - "Les conséquences sont au conditionnel fréquentiel (« conduit fréquemment à », « la recherche documente que ») — jamais au futur certain (Constitution [2])."
   - "Les croisements inter-mondes du DOMAINE DU SOI (M1×M2) sont interdits ici : ils vivent au Portrait de Domaine (Constitution [5])."
   - "Registre probabiliste : conséquences au conditionnel fréquentiel, jamais au futur certain."
   - "Percentiles : toujours descriptifs — comparaison normative interdite."

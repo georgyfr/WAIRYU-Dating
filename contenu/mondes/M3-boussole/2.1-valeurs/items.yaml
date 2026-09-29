@@ -29,7 +29,7 @@ meta:
   provenance:
     session: "2026-09-28"
     fiche_mutation: FM-013
-    validateur: "linter: pass 6/6 · C1: soumis, verdict en attente"
+    validateur: "linter: pass 6/6 · CI 15/15 (après FM-015) · C1: LIVRABLE — re-audit delta vert (clôturé par l'auditeur)"
     correction: "Q2.1-23 v2 — contamination lexicale vs Q2.1-09 corrigée (revue produit)"
 
 items:

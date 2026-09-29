@@ -62,8 +62,8 @@ LIBELLES_LIKERT5 = {
     4: "Plutôt comme moi",
     5: "Tout à fait comme moi",
 }
-Q23_V2_EXACT = "Dans un groupe, ma place doit être reconnue avant celle des autres."
-Q23_V1_INTERDITE = "Dans un groupe, les décisions importantes me reviennent naturellement."
+# FM-018 §3 : plus aucune formulation de trame en clair dans la CI — contrôle par empreinte sha256.
+Q23_V2_SHA256 = "65973af8d031aa3640eb37f035fd444357d243125d7e8486688b10b321304a6d"
 LEXIQUE_DECISION = {"decide", "decides", "decision", "decisions", "decider",
                     "trancher", "tranche", "dirige", "diriger", "direction"}
 
@@ -431,13 +431,12 @@ def ci10():
     doc = charger_yaml("contenu/mondes/M3-boussole/2.1-valeurs/items.yaml")
     it23 = next(it for it in doc["items"] if it["id"] == "Q2.1-23")
     it09 = next(it for it in doc["items"] if it["id"] == "Q2.1-09")
-    exact = it23["enonce"] == Q23_V2_EXACT
-    v1_absente = Q23_V1_INTERDITE not in it23["enonce"]
+    exact = hashlib.sha256(it23["enonce"].encode("utf-8")).hexdigest() == Q23_V2_SHA256
     tok23 = tokens(it23["enonce"])
     lexique = sorted(tok23 & LEXIQUE_DECISION)
     surface = sorted(tok23 & tokens(it09["enonce"]))
-    ok = exact and v1_absente and not lexique
-    return ok, (f"v2 exacte : {exact} · v1 absente : {v1_absente} · lexique décision dans 23 : {lexique or 'aucun'} · "
+    ok = exact and not lexique
+    return ok, (f"empreinte v2 (sha256) : {exact} · lexique décision dans 23 : {lexique or 'aucun'} · "
                 f"mots partagés avec Q2.1-09 (structurels, tolérés) : {surface or 'aucun'}")
 
 
