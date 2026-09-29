@@ -1,0 +1,57 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 6 canaux)
+# Item choisi : Q3.5-01 (le poids des parents dans les décisions — l'angle le plus structurant).
+# Fichier YAML strict (gabarit des 5 autres items : seuls énoncé, angle, orientation et ancrage changent).
+item: Q3.5-01
+quete: "3.5 Ton entourage"
+monde: M4                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Mes parents comptent dans mes grandes décisions de couple."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de l'axe (poids de l'entourage)
+dimension: decisions          # angle 1/3 (paire R6 avec Q3.5-02)
+type_mesure: trait_declaratif # déclarative directe — déguisement impossible, sans trame
+double_balise:
+  carte_id: entourage_3.5     # alimente la carte (3 variantes) et le miroir (3 profils)
+  signal_id: SIG-3.5-01       # le profil (fusionnel/équilibre/indépendant) — rendu descriptif
+computation:
+  carte:
+    role: score_de_quete
+    regle: "ENTOUR_D = moyenne des 6 items (I recodés 6−r), normalisée 0-1 — choisit la variante (fusionnel/équilibre/indépendant)"
+    rendu: etage_1_et_2        # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: profil_et_friction
+    mecanisme: >-
+      le profil (SIG-3.5-01) décrit la place de l'entourage ; l'écart entre deux profils
+      (EC_ENTOUR > seuil, SIG-3.5-02) prépare un signal conversationnel « à aborder tôt » —
+      les fêtes de Noël, les dimanches, les devoirs envers les familles — jamais une pénalité
+      dure, jamais une élimination ; un couple mixte est légitime
+    rendu: moteur_seul         # l'écart calculé n'est jamais rendu à un membre
+    condition: "seuils blocs et seuil d'écart proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'angle = moyenne des items valides + prudence
+      (precedent SIG-2.1-02)
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "profils extrêmes divergents entre deux membres (EC_ENTOUR > seuil)"
+      effet: "amorce conversationnelle « à aborder tôt » préparée côté moteur — les fêtes, les dimanches, les devoirs ; jamais rendue comme un défaut"
+    - si: "mise à jour d'un profil du pool"
+      effet: "compatibilités recalculées des deux côtés — fenêtre À VALIDER PAR LE COMITÉ"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la place décrite, jamais un personnage, jamais un code"
+    exemple: "quand tu as dit que tes parents comptent dans tes grandes décisions"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 6 items. Seuls changent : énoncé, angle (décisions /
+    famille / amis), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Quête déclarative directe, déguisement impossible : aucune fiche de trame n'existe — aucun
+    énoncé réservé, aucune balise de trame (vérifié au registre, n_trames = 0).
+  - >-
+    Neutralité : la différenciation n'est pas l'indépendance — le concept public reste moteur,
+    le rendu parle de places (fusionnel/équilibre/indépendant respectés).
