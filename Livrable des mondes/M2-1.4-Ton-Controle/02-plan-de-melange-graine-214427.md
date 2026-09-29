@@ -54,3 +54,30 @@ python3 ci/outils/melange.py ci/quetes/1.4.json
 reproduit la séquence de référence ci-dessus. Le validateur (linter) rejoue les verdicts sur toute
 régénération et refuse toute sortie divergente sans Fiche de Mutation documentée.
 Config de la course : `ci/quetes/1.4.json` · résultats réels archivés : `ci/resultats-melange/1.4.json`.
+
+## Graine dérivée (chaîne documentée — mission Phases A/B/C/D, point 2)
+
+| Champ | Valeur |
+|---|---|
+| Graine mère (quête 2.1) | 210427 |
+| Règle de dérivation (Mondes 1-2) | graine_mère + 1000 × ordinal de quête |
+| Graine de la quête | 210427 + 1000 × 4 = **214427** |
+| Statut | figée, reproductible — tout changement = Fiche de Mutation + nouvelle course documentée |
+
+Chaîne transverse de la série : 2.1 = 210427 (mère) · 1.1 = 211427 · 1.2 = 212427 · 1.3 = 213427 ·
+**1.4 = 214427** · 1.5 = sans objet (mélange sans objet — ordre canonique) · 1.6 = 216427 · 1.7 = sans
+mélange (plan de passage).
+
+## Finding — la borne de run atteignable (mission Phases A/B/C/D, point 3)
+
+> Règle gravée : **on ne publie jamais un verdict non atteignable** — ici, aucune borne n'est
+> contractée, donc aucun verdict d'atteignabilité n'est requis (pas un verdict manqué : un
+> sans-objet décisionnel documenté).
+
+| Étape | Détail |
+|---|---|
+| Effectifs d'orientation | 4 D / 4 I — mais quête MONO-DIMENSION (`autocontrole`, 8/8) |
+| c5 (alternance D/I) | **sans-objet par config** (`c5_sans_objet: true`) : l'alternance D/I protège contre les regroupements ENTRE dimensions — sur une échelle unique, elle ne porte aucun bénéfice de mesure |
+| Borne contractée | **aucune** — pas de run max exigé |
+| Statut de `run_max: 0` dans l'artefact | « non mesuré » (c5 sans-objet), pas « run de longueur zéro » — même note d'honnêteté que 2.3 |
+| Verdict de la course réelle | c1-c6 : 6/6 PASS (les contraintes actives toutes vérifiées — artefact ci-dessus) |

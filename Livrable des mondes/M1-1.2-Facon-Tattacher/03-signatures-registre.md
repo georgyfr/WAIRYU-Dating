@@ -1,6 +1,7 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 1.2 (format du registre Monde 1)
 
 > ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > Portée : ces signatures s'évaluent au **Portrait M1** (étage 3) — jamais dans le miroir de quête seul.
 > La quête 1.2 alimente les variables **ANX** et **EVI** (attachement, 0-1, effectives) ; elle
 > participe aux croisements qui mobilisent R, S, X, O, A (quêtes 1.1 / 1.3) et POL (1.6).

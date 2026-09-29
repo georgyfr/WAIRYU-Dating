@@ -35,3 +35,12 @@ dont l'ordre porte le sens.
 | Outil `ci/outils/melange.py` | non exécuté pour cette quête — aucune config `ci/quetes/1.7.json` requise |
 | Fiche de Mutation | non requise pour l'absence de mélange ; TOUT changement d'ordre ou d'option passe par FM documentée |
 | Verdict | sans-objet — aucun verdict de mélange n'est déclaré pour cette quête |
+
+## Finding — borne de run : SANS OBJET (mission Phases A/B/C/D, point 3)
+
+> Règle gravée : **on ne publie jamais un verdict non atteignable.** Ici il n'y a ni mélange ni
+> course : aucune contrainte c1-c6 ne s'applique, donc aucune borne de run n'est contractée ni
+> requise. Le statut est le sans-objet décisionnel documenté (ordre source FIXE — séquence de
+> consentement), pas un verdict manqué. La graine est sans objet de fait : aucune graine n'est
+> enregistrée pour cette quête (aucun champ `graine` dans une config de mélange — la chaîne
+> 210427 + 1000 × ordinal ne s'applique qu'aux quêtes mélangées).

@@ -21,6 +21,7 @@ les portraits.
 | `04-slots-de-miroir.md` | Les 4 slots du miroir de quête + les 9 verrous de slot |
 | `05-ecran-d-intro.md` | Le texte d'ouverture verbatim + ses contrôles |
 | `06-fiche-computation-EXEMPLE.yaml` | Le format complet d'une fiche item (exemple : Q1.1-17) — gabarit des 58 |
+| `07-miroir.md` | Le miroir de quête (étage 2) — gabarit LOURD 300-450 mots, 20 briques-variantes, angles d'ombre imposés — créé VAGUE 4 |
 | `cartes.yaml` | Les 7 variantes de carte (sélecteurs + textes verbatim du source) |
 
 ## Le flux : items → mélange → passation → scoring → miroir

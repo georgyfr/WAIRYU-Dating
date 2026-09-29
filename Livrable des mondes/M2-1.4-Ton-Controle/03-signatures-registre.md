@@ -1,6 +1,7 @@
 # LIVRABLE 3 — SIGNATURES ET VARIABLES EN JEU (format du registre)
 
 > ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > La quête 1.4 n'émet **aucune signature propre** : elle fournit des VARIABLES d'entrée au registre des
 > signatures Monde 1 (source gelé, l. 5495-5777). Les signatures ci-dessous consomment ces variables au
 > Portrait (ÉTAGE 3+) — jamais dans le miroir de la quête seule.

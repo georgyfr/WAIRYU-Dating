@@ -29,6 +29,7 @@ fins (signatures) opèrent au Portrait M1 (étage 3), jamais dans le miroir de q
 | `04-slots-de-miroir.md` | Ce que le miroir rend à l'utilisateur, et ses 9 verrous |
 | `05-ecran-d-intro.md` | Le texte d'ouverture de la quête (verbatim) |
 | `06-fiche-computation-EXEMPLE.yaml` | Le modèle de computation d'un item, canal par canal |
+| `07-miroir.md` | Le miroir de quête (étage 2) — gabarit LOURD 300-450 mots, 8 briques + 3 croisées déclarées (ALA/IND/AMB) — créé VAGUE 4 |
 | `cartes.yaml` | Les 5 cartes possibles et leur logique de sélection (charte, verbatim) |
 
 ## Le flux de la donnée

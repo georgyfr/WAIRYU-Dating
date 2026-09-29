@@ -28,6 +28,21 @@
 | Miroir | **MOYEN** : 7 items + 3 énigmes = 10 blocs mesurés → 150-250 mots (Constitution [7]) |
 | Écran spécial | aucun — carte standard + partage |
 
+## Table de fichiers intégrale (mission Phases A/B/C/D, point 2)
+
+| Fichier | Contenu | Qui le lit |
+|---|---|---|
+| `00-README.md` | cette fiche de cadrage + table de fichiers | tout le monde |
+| `README.md` | vue d'ensemble + déclaration de conformité | tout le monde |
+| `01-tableau-des-items.md` | les 7 items déclaratifs verbatim + les 3 énigmes ENTIÈRES (verbatim) + le doublon Q1.6-05.r | production + implémenteur |
+| `02-plan-de-melange-graine-216427.md` | l'ordre de passation RÉEL (graine 216427) + verdicts c1-c6 + graine dérivée + finding borne de run | production + recette |
+| `03-signatures-registre.md` | la variable POL + les signatures qui la consomment (verbatim du registre) | moteur |
+| `04-slots-de-miroir.md` | les slots du miroir + les 9 verrous | rendu |
+| `05-ecran-d-intro.md` | le texte d'ouverture verbatim | rendu |
+| `06-fiche-computation-EXEMPLE.yaml` | le format complet d'une fiche item, exemplifié | moteur |
+| `cartes.yaml` | les 5 variantes de carte (sélecteur D×E) | rendu |
+| `07-miroir.md` | **ABSENT à ce jour** — briques de miroir de la quête 1.6 non encore produites (vague de miroirs M2 à venir ; les slots sont déjà définis au `04`) — absence consignée au rapport de mission | rendu (à venir) |
+
 ## Interdits rappelés à la production
 
 - Aucun seuil de signature de sécurité au dépôt (FM-018 / [11-b]) — la quête n'en contient de toute façon aucun.

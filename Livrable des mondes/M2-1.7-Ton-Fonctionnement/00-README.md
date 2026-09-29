@@ -30,6 +30,21 @@
 | Miroir | **EXEMPTÉ** (Constitution [7]) — justification au fichier `04` |
 | Consentement | opt-in strict : « si tu le souhaites » (verbatim intro) · « Je ne souhaite pas le dire » = option de première classe · modification/effacement à tout moment |
 
+## Table de fichiers intégrale (mission Phases A/B/C/D, point 2)
+
+| Fichier | Contenu | Qui le lit |
+|---|---|---|
+| `00-README.md` | cette fiche de cadrage + table de fichiers | tout le monde |
+| `README.md` | vue d'ensemble + déclaration de conformité | tout le monde |
+| `01-tableau-des-items.md` | les 2 questions opt-in verbatim + leurs options + usage moteur | production + implémenteur |
+| `02-plan-de-passage.md` | le plan de passage (SANS mélange — ordre source fixe) + finding borne de run sans objet | production + recette |
+| `03-signatures-registre.md` | AUCUNE signature — le fichier documente l'usage moteur et les garde-fous | moteur |
+| `04-slots-de-miroir.md` | l'EXEMPTION de miroir justifiée (Constitution [7]) | rendu |
+| `05-ecran-d-intro.md` | le texte d'ouverture verbatim | rendu |
+| `06-fiche-computation-EXEMPLE.yaml` | le format d'une fiche item, exemplifié (hors score) | moteur |
+| `cartes.yaml` | l'écran spécial de fin de quête (SANS carte, SANS partage — charte PARTIE 7, verbatim) | rendu |
+| `07-miroir.md` | **ABSENT PAR DESIGN** — miroir EXEMPTÉ pour cette quête (exemption documentée au `04` et dans le cadrage ci-dessus) | — (exempté) |
+
 ## Interdits rappelés à la production
 
 - Aucun seuil de signature de sécurité au dépôt (FM-018 / [11-b]) — la réinitialisation des seuils

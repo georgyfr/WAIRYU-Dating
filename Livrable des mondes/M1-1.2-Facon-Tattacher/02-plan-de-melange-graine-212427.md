@@ -89,3 +89,31 @@ Réexécuter `ci/outils/melange.py` sur `ci/quetes/1.2.json` (graine 212427) rep
 séquence de référence ci-dessus, octet pour octet. Le validateur (linter) rejoue les 6
 contraintes sur toute régénération et refuse toute sortie divergente sans Fiche de Mutation
 documentée. Les positions de trames restent ancrées par construction (c3).
+
+## Graine dérivée (chaîne documentée — mission Phases A/B/C/D, point 2)
+
+| Champ | Valeur |
+|---|---|
+| Graine mère (quête 2.1) | 210427 |
+| Règle de dérivation (Mondes 1-2) | graine_mère + 1000 × ordinal de quête |
+| Graine de la quête | 210427 + 1000 × 2 = **212427** |
+| Statut | figée, reproductible — tout changement = Fiche de Mutation + nouvelle course documentée |
+
+Chaîne transverse de la série : 2.1 = 210427 (mère) · 1.1 = 211427 · **1.2 = 212427** · 1.3 = 213427 ·
+1.4 = 214427 · 1.5 = sans objet (mélange sans objet — ordre canonique) · 1.6 = 216427 · 1.7 = sans
+mélange (plan de passage).
+
+## Finding — la borne de run atteignable (mission Phases A/B/C/D, point 3)
+
+> Règle gravée : **on ne publie jamais un verdict non atteignable.** Ici la démonstration arithmétique
+> prouve l'INVERSE d'une borne basse — elle fixe la borne minimale atteignable à 4, valeur ensuite
+> contractée et atteinte.
+
+| Étape | Détail |
+|---|---|
+| Effectifs d'orientation | 16 D (8 items carte + 8 trames ▲ toutes D) / 4 I |
+| Borne run max 2 — IMPOSSIBLE | les 4 I séparent la séquence en au plus 5 fenêtres de runs D ; capacité à run ≤ 2 : 2 × 5 = 10 < 16 D → aucune séquence ne satisfait c5 à borne 2 |
+| Borne run max 3 — IMPOSSIBLE | capacité 3 × 5 = 15 < 16 D → idem |
+| Borne minimale atteignable | ⌈16 / 5⌉ = **4** (capacité 4 × 5 = 20 ≥ 16 ✓) |
+| Borne contractée (c5) | run max **4** — ACCEPTÉE par le comité (FM-019, note bêta : mesurer le biais d'accordement sur cette quête) |
+| Verdict de la course réelle | **run_max = 4** (artefact ci-dessus) — la borne minimale arithmétique est ATTEINTE |

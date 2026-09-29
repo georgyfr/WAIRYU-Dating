@@ -4,6 +4,7 @@
 > (« Le Registre des Signatures — Monde 1 : Le Miroir », source `refonte des tests et outils
 > wairyu.md`) — ADOPTÉES comme valeurs de départ (décision comité, FM-019) — provisoire
 > concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 >
 > **Variables 1.1** (dictionnaire §0.2 du registre) : `O` ouverture · `C` organisation · `E` énergie
 > sociale · `A` bienveillance · `S` stabilité émotionnelle — domaine 0-1, effectif.

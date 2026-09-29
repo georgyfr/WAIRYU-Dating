@@ -1,6 +1,7 @@
 # LIVRABLE 3 — SIGNATURES EN JEU (format du registre)
 
 > ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > La quête 1.6 n'émet **aucune signature propre au miroir** : elle alimente la variable **POL**
 > (pôle de traitement analytique — registre §0.2 : « Pôle de traitement analytique (Q1.6 + énigmes,
 > synthèse) · 0-1 »), consommée par les signatures ci-dessous au Portrait et au matching.

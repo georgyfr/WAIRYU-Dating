@@ -87,3 +87,28 @@ Réexécuter `ci/outils/melange.py` sur `ci/quetes/1.3.json` (graine 213427) rep
 séquence de référence ci-dessus, octet pour octet. Le validateur (linter) rejoue les 6
 contraintes sur toute régénération et refuse toute sortie divergente sans Fiche de Mutation
 documentée. Les positions de trames restent ancrées par construction (c3).
+
+## Graine dérivée (chaîne documentée — mission Phases A/B/C/D, point 2)
+
+| Champ | Valeur |
+|---|---|
+| Graine mère (quête 2.1) | 210427 |
+| Règle de dérivation (Mondes 1-2) | graine_mère + 1000 × ordinal de quête |
+| Graine de la quête | 210427 + 1000 × 3 = **213427** |
+| Statut | figée, reproductible — tout changement = Fiche de Mutation + nouvelle course documentée |
+
+Chaîne transverse de la série : 2.1 = 210427 (mère) · 1.1 = 211427 · 1.2 = 212427 · **1.3 = 213427** ·
+1.4 = 214427 · 1.5 = sans objet (mélange sans objet — ordre canonique) · 1.6 = 216427 · 1.7 = sans
+mélange (plan de passage).
+
+## Finding — la borne de run atteignable (mission Phases A/B/C/D, point 3)
+
+> Règle gravée : **on ne publie jamais un verdict non atteignable.**
+
+| Étape | Détail |
+|---|---|
+| Effectifs d'orientation | 16 D (12 items carte + 4 trames ▲ T21-T24) / 10 I (8 items carte + 2 trames ↩ T25-T26) |
+| Borne contractée (c5) | run max **2** (config `c5_run_max: 2`) |
+| Atteignabilité — runs D | les 10 I séparent la séquence en au plus 11 fenêtres de runs D ; capacité à run ≤ 2 : 2 × 11 = 22 ≥ 16 ✓ |
+| Atteignabilité — runs I | les 16 D séparent la séquence en au plus 17 fenêtres de runs I ; capacité : 2 × 17 = 34 ≥ 10 ✓ |
+| Verdict de la course réelle | **run_max = 2** (artefact ci-dessus) — la borne est ATTEINTE, pas seulement atteignable |
