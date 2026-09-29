@@ -1,0 +1,125 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.1 « TES VALEURS » — 8 VARIANTES (étage 1)
+# Création : VAGUE 5 — Les Cartes de Récompense du Socle (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — non négociable, intégrale.
+# Sélection : bloc dominant (4 blocs) × tension intérieure (apaisée/tendue) = 8 variantes.
+# Tension : |Affirmation − Dépassement| ≥ 1,0 (échelle Likert 1-5) → tendue ; sinon → apaisée.
+# Les 4 trames Q2.1-21→24 (DTM_N) ne participent JAMAIS à la sélection de carte
+# et ne produisent AUCUN texte (rappel interdit — 01-tableau, fiche computation ▲).
+# Aucun code, score ou sigle au rendu ; les variables ne vivent que côté moteur.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "2.1 Tes valeurs"
+monde: M3
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  blocs:
+    ouverture: "Autonomie (01-02) · Stimulation (03-04) · Hédonisme (05-06)"
+    affirmation: "Réussite (07-08) · Pouvoir (09-10)"
+    conservation: "Sécurité (11-12) · Conformité (13-14) · Tradition (15-16)"
+    depassement: "Bienveillance (17-18) · Universalisme (19-20)"
+  calcul: "score de bloc = moyenne des facettes du bloc (items recodés 6−r pour les inversés), échelle Likert 1-5"
+  bloc_dominant: "maximum des 4 scores de bloc — égalité stricte départagée par l'ordre fixe : Ouverture → Affirmation → Conservation → Dépassement (déterministe, C6) — règle de départage À VALIDER PAR LE COMITÉ"
+  tension: "|Affirmation − Dépassement| ≥ 1,0 → tendue · sinon → apaisée (échelle Likert 1-5 — même unité que SIG-2.1-04)"
+  exhaustivite: "4 blocs (partition totale après départage) × 2 tensions = chaque profil possible tombe dans exactement une variante (C6 — vérifié machine, voir regles_documentees)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entete → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Tes valeurs »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-2.1-OUV-APA
+    nom: "Le·La Passeur·se d'horizons"
+    bloc_dominant: ouverture
+    tension: apaisée
+    condition: "bloc Ouverture = maximum des 4 blocs ET |Affirmation − Dépassement| < 1,0"
+    portrait: "Tu avances vers ce que tu ne connais pas encore — et tu sais y emmener les autres. L'inconnu t'attire plus qu'il ne t'inquiète, les occasions se saisissent, les habitudes te laissent libre. Ton autonomie n'est pas une fuite : c'est ta boussole."
+    ombre: "Quand le neuf fait la loi, ce qui dure finit par attendre — et parfois, ce qui attend, c'est ce qui comptait."
+    tension_interieure: "aller loin, sans lâcher ce qui compte."
+
+  - id: CARTE-2.1-OUV-TEN
+    nom: "Le·La Collectionneur·se de commencements"
+    bloc_dominant: ouverture
+    tension: tendue
+    condition: "bloc Ouverture = maximum des 4 blocs ET |Affirmation − Dépassement| ≥ 1,0"
+    portrait: "Le nouveau t'appelle et tu réponds : sorties inconnues, occasions saisies à la volée, décisions que tu tranches toi-même. Ta vie avance par commencements — et tu aimes ce mouvement. Rester immobile, pour toi, ressemble à reculer."
+    ombre: "Collectionner les commencements, c'est finir rarement : ce qui compte finit parfois par patienter derrière le prochain début."
+    tension_interieure: "commencer beaucoup, sans rien laisser à moitié."
+
+  - id: CARTE-2.1-AFF-APA
+    nom: "Le·La Bâtisseur·se de ponts"
+    bloc_dominant: affirmation
+    tension: apaisée
+    condition: "bloc Affirmation = maximum des 4 blocs ET |Affirmation − Dépassement| < 1,0"
+    portrait: "Tu vises des résultats visibles et tu sais décider — mais ta réussite ne tourne pas au solo. Tu connectes les gens, tu construis avec eux, tu laisses des ponts derrière toi. Diriger, chez toi, ressemble à organiser."
+    ombre: "Le cap est ton terrain — vérifie que les autres marchent à côté de toi, et pas seulement derrière toi."
+    tension_interieure: "mener le jeu, sans l'accaparer."
+
+  - id: CARTE-2.1-AFF-TEN
+    nom: "Le·La Ventouse à projets"
+    bloc_dominant: affirmation
+    tension: tendue
+    condition: "bloc Affirmation = maximum des 4 blocs ET |Affirmation − Dépassement| ≥ 1,0"
+    portrait: "Les projets t'habitent et te portent : tu vises, tu décides, tu avances. Ton énergie va là où ça se mesure. Et le prochain objectif t'attend déjà. Tu ne connais pas le temps mort."
+    ombre: "Les projets priment parfois sur les gens : ceux qui t'aiment peuvent vivre tes objectifs comme une salle d'attente sans fauteuil."
+    tension_interieure: "réussir, sans que ça coûte les gens."
+
+  - id: CARTE-2.1-CON-APA
+    nom: "L'Ancre qui regarde ailleurs"
+    bloc_dominant: conservation
+    tension: apaisée
+    condition: "bloc Conservation = maximum des 4 blocs ET |Affirmation − Dépassement| < 1,0"
+    portrait: "Ta stabilité est choisie, pas subie. Tu aimes ce qui règle la vie — les rythmes, les repères, les habitudes qui tiennent. Et quand de l'inconnu passe, tu le regardes sans paniquer : ton socle tient debout tout seul."
+    ombre: "Le socle peut devenir siège : à force de tenir, tu peux durer là où il faudrait partir."
+    tension_interieure: "rester posé(e), sans rester planté(e)."
+
+  - id: CARTE-2.1-CON-TEN
+    nom: "L'Enraciné·e vigilant·e"
+    bloc_dominant: conservation
+    tension: tendue
+    condition: "bloc Conservation = maximum des 4 blocs ET |Affirmation − Dépassement| ≥ 1,0"
+    portrait: "Ce qui dure te rassure plus que ça ne t'ennuie : une vie réglée, des repères tenus, les héritages que tu ne renies pas. Tu entretiens ce que tu as reçu, et ce que tu construis ressemble à du solide."
+    ombre: "Le cadre protège — et il peut fermer : ce que tu tiens trop fort finit par te tenir."
+    tension_interieure: "garder ce qui compte, sans garder tout."
+
+  - id: CARTE-2.1-DEP-APA
+    nom: "L'Aiguilleur·se du cœur"
+    bloc_dominant: depassement
+    tension: apaisée
+    condition: "bloc Dépassement = maximum des 4 blocs ET |Affirmation − Dépassement| < 1,0"
+    portrait: "Prendre soin, chez toi, n'est pas un détour : c'est la ligne droite. L'aide d'un proche compte plus que ton programme, et une façon de vivre différente te fait chercher à comprendre avant de juger. Ton cercle s'élargit sans se vider."
+    ombre: "Donner, c'est aussi choisir : vérifie que tu donnes par envie, et pas par devoir devenu habitude."
+    tension_interieure: "prendre soin des autres, sans t'y loger."
+
+  - id: CARTE-2.1-DEP-TEN
+    nom: "Le·La Phare qui s'oublie"
+    bloc_dominant: depassement
+    tension: tendue
+    condition: "bloc Dépassement = maximum des 4 blocs ET |Affirmation − Dépassement| ≥ 1,0"
+    portrait: "Tu éclaires large : les gens comptent avant les programmes, la différence ne te fait pas reculer, ton cercle est étendu et ta loyauté va loin. Il y a, chez toi, quelqu'un à aider à chaque horizon."
+    ombre: "Le phare qui éclaire tout peut s'oublier : à force de passer après, ton propre cap se brouille."
+    tension_interieure: "donner beaucoup, sans t'effacer du rivage."
+
+regles_documentees:
+  - "comptage des mots (C7) : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes 55-110, vérifié machine (script hors dépôt verif-cartes-vague5.py)"
+  - "C1/C9 : chaque variante porte une ombre honnête non édulcorée (le revers du bloc dominant) — la branche fine « rigidité des hauts / dérive des bas » se joue au miroir (briques à 2 branches [bloc dominant]/[bloc discret]) — continuité Carte → Miroir : même famille d'ombre, formulation différente"
+  - "C2 : aucun signal de sécurité dans la sélection ni le texte — la valeur « Sécurité » (Q2.1-11/12) est une dimension psychométrique du bloc Conservation (concept public), jamais une promesse de protection rendue ; les 4 trames DTM_N ne participent ni à la sélection ni au texte"
+  - "C3 : aucun label clinique, aucun pourcentage dans le texte — les noms de valeurs (Autonomie, Hédonisme, Universalisme…) ne sont JAMAIS rendus (portrait en langage courant, titres non typologiques)"
+  - "C4 : zéro interdit (« tu es unique », « tu mérites », « l'univers », superlatifs sans preuve) — vérifié machine"
+  - "C6 : sélection déterministe — même profil = même carte ; le départage d'égalité stricte entre blocs est un ordre fixe documenté (À VALIDER PAR LE COMITÉ)"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps"
+  - "C10/C11 : l'ombre vient de la lecture de la carte (blocs, réponses réelles) uniquement — la fenêtre F1/F2 est rotative côté moteur (anti-« app de tests »)"
+  - "citation d'une réponse en toutes lettres : possible (ancrage carte autorisé, fiche computation) mais NON retenue en carte — le bloc dominant est une moyenne, il ne garantit pas la direction d'un item isolé ; une citation impliciterait une direction pour des profils qui ne l'ont pas (C6). Le rappel en toutes lettres vit au miroir, conditionné finement par niveau"
+  - "SIG-2.1-01 « Le gouvernail » : la signature nomme le bloc dominant ET le plus discret — la carte VAGUE 5 croise elle-même les DEUX blocs dominants au portrait (mission) ; harmonisation signature/carte À VALIDER PAR LE COMITÉ"
+  - "delta vs 1.1 : le pied standard reprend la formulation 1.1 verbatim (compteur réel {X}%, compteur d'étage {Z}, boutons, fenêtre rotative) — compteur réel, jamais décoratif (mission VAGUE 5, Production 4)"

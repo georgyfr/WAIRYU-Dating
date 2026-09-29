@@ -1,46 +1,65 @@
-# CARTES DE LA QUÊTE 2.4 « TES RÉALITÉS »
-# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
-# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
-# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
-# Doctrine : les réalités sont FACTUELLES et JAMAIS jugées — l'ombre nomme des coûts de mécanisme
-# (le filtrage, le tri), jamais des défauts de la personne.
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.4 « TES RÉALITÉS » — 2 VARIANTES (étage 1)
+# v2 — VAGUE 5 « Les Cartes de Récompense du Socle » (2026-09-29) : la logique
+# de sélection est TRANCHÉE par le fondateur (mission VAGUE 5) — complétude des
+# 8 déclarations. La v1 (2 variantes par fréquence de déclenchement de filtres
+# chez les autres — non calculable côté utilisateur, seuils « À VALIDER ») est
+# remplacée par une sélection déclarative, déterministe (C6).
+# Charte des cartes C1-C11 — CARTE DE CLARTÉ : 40-70 mots (hors C7 standard —
+# exception documentée). Portrait 2 phrases · ombre 1 phrase · tension 1 phrase.
+# Doctrine : les réalités sont FACTUELLES et JAMAIS jugées — l'ombre nomme des
+# coûts de mécanisme (filtrage, invention par l'autre), jamais des défauts.
+# ═══════════════════════════════════════════════════════════════════
+
 quete: "2.4 Tes réalités"
 monde: M3
 statut_freemium: gratuit
-format: "etage_1_carte"
+format: "etage_1_carte_clarte"
+charte: "C1-C11 (mission VAGUE 5) — exception longueurs : 40-70 mots (cartes de clarté, hors C7)"
+exception_longueur: "40-70 mots — documentée (mission VAGUE 5, Production 2)"
+
+selection:
+  variable: "complétude des 8 déclarations Q2.4-01 → Q2.4-08 (une option choisie = déclarée ; item sans option choisie = non déclarée)"
+  logique_tranchee: "les 8 déclarées → Franc·e-jeu · au moins une manquante (≤ 7) → Énigmatique (mission VAGUE 5 — tranchage fondateur)"
+  exhaustivite: "2 plages (8 · ≤ 7) = partition totale — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  note_visibilite: "la complétude est INDEPENDANTE de la visibilité (décision comité FM-019) : une réalité privée reste déclarée — la privacité retire l'affichage, jamais la complétude"
+
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Tes réalités »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
 variantes:
+
   - id: CARTE-2.4-A
-    nom: "La réalité, telle quelle"
-    selecteur: >-
-      au moins une réalité déclarée (Q2.4-01 → Q2.4-08) active des filtres hard constraints
-      chez d'autres membres — fréquence minimale de déclenchement À VALIDER PAR LE COMITÉ
+    nom: "Le·La Franc·e-jeu"
+    ordre_selecteur: 1
+    condition: "les 8 réalités Q2.4-01 → Q2.4-08 déclarées (une option choisie sur chacune)"
     ancre_item: ["Q2.4-01", "Q2.4-02", "Q2.4-03", "Q2.4-04", "Q2.4-05", "Q2.4-06", "Q2.4-07", "Q2.4-08"]
-    lumiere: "Tu déclares ta vie telle qu'elle est. Ceux qui te lisent savent à qui ils écrivent."
-    ombre: "Une réalité déclarée filtre aussi sans toi : certains s'écartent avant le premier mot, sans te le dire."
-    controle:
-      mots_total: 33
-      mots_lumiere: 16
-      mots_ombre: 17
-      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+    portrait: "Tu déclares ta vie telle qu'elle est : le tabac, l'alcool, les enfants, le tempo — tout est sur la table. Ceux qui te lisent savent à qui ils écrivent."
+    ombre: "Tes faits protègent le temps des deux — et ils filtrent aussi sans toi : certains s'écartent avant le premier mot, sans te le dire."
+    tension_interieure: "être lisible, sans devenir transparent(e)."
+
   - id: CARTE-2.4-B
-    nom: "Le bassin large"
-    selecteur: >-
-      réalités déclarées activant peu de filtres chez les autres membres
-      — seuil « peu » À VALIDER PAR LE COMITÉ
+    nom: "L'Énigmatique"
+    ordre_selecteur: 2
+    condition: "au moins une réalité non déclarée (7 ou moins sur les 8)"
     ancre_item: ["Q2.4-01", "Q2.4-02", "Q2.4-03", "Q2.4-04", "Q2.4-05", "Q2.4-06", "Q2.4-07", "Q2.4-08"]
-    lumiere: "Tes réalités ouvrent large : peu de filtres s'appliquent, et le bassin reste grand."
-    ombre: "Un large bassin reporte le tri dans la conversation : les réalités décisives se découvrent en face, parfois après l'attachement."
-    controle:
-      mots_total: 32
-      mots_lumiere: 13
-      mots_ombre: 19
-      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+    portrait: "Tu remplis ce qui va de soi et tu gardes le reste pour plus tard : ton profil dit l'essentiel, pas tout. L'indéfini, chez toi, est un choix."
+    ombre: "Ce que tu ne dis pas, l'autre l'invente — rarement en ta faveur : le vide se remplit avec les peurs du lecteur."
+    tension_interieure: "garder du mystère, sans semer le doute."
+
 regles_documentees:
-  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
-  - "visibilité des réalités (décision comité FM-019) : chips visibles par défaut pour les items neutres, choix privé par item pour les sensibles, matching actif même sur les privés — les cartes et le miroir respectent toujours ce choix"
-  - "l'ombre des deux variantes décrit un coût de mécanisme (filtrage, tri reporté) — jamais un défaut de la personne"
-  - "coût pour soi ET pour l'autre nommés (A : écartement à l'insu de l'autre · B : découverte après attachement)"
-  - "registre probabiliste : aucun futur certain (« s'écartent », « se découvrent » — présent fréquentiel)"
-  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
-  - "aucune mention du moteur, des codes, des taux de croisement ou des seuils"
-  - "les deux variantes restent descriptives : aucune hiérarchie entre « réalité croisée » et « bassin large » — deux mécanismes, pas deux qualités de profil"
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes clarté 40-70, vérifié machine (script hors dépôt verif-cartes-vague5.py)"
+  - "v1 → v2 (fiche de mutation légère, mission VAGUE 5) : la v1 sélectionnait sur la fréquence de déclenchement de filtres chez les AUTRES (non calculable du point de vue de l'utilisateur, seuils « À VALIDER PAR LE COMITÉ ») — remplacée par la complétude déclarative tranchée par le fondateur ; les ombres v1 (le filtrage sans toi / le tri reporté dans la conversation) restent la doctrine, reprises aux ombres v2"
+  - "continuité Carte → Miroir (LOT 3) : A ↔ briques réalités (le tri se fait avant toi, faits = gain de temps réciproque) · B ↔ famille « tension des réalités » (ce que l'autre invente) — même famille d'ombre, formulation différente"
+  - "aucune réalité n'est jugée : l'ombre porte sur le mécanisme (filtrage, invention), jamais sur le contenu d'une vie (doctrine conservée)"
+  - "registre probabiliste : « certains s'écartent », « rarement en ta faveur » — présent fréquentiel, aucun futur certain"
+  - "C2 : aucun signal de sécurité — la complétude est un état déclaratif, jamais une promesse de protection"
+  - "C3 : aucun label clinique, aucun pourcentage dans le texte (le {X}% du pied est un compteur moteur, jamais un score de profil)"
+  - "C8 : « (e) » dans le corps (transparent(e)) — titres non genrés ou à médian"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) s'ajoute en v2 (mission Production 4)"
+  - "items 07/08 (où je vis · tempo) : propositions provisoires concepteur (domaine réservé [9]) — À VALIDER PAR LE COMITÉ (inchangé depuis la v1)"

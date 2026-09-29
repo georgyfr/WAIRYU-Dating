@@ -126,7 +126,7 @@ variantes:
 
       ### L'Apprenti·e
 
-      Tu es en train d'apprendre à connaître ce qui bouge en toi — et c'est le chantier le plus utile qui soit. Parfois clair, parfois embrouillé : c'est le rythme normal. La bonne nouvelle : tout ce qui s'apprend t'attend.
+      Tu es en train d'apprendre à connaître ce qui bouge en toi — et c'est un chantier qui rapporte à chaque étape. Parfois clair, parfois embrouillé : c'est le rythme normal. La bonne nouvelle : tout ce qui s'apprend t'attend.
 
       **Ta zone d'ombre :** Ne confonds pas "je ne sais pas ce que je ressens" et "je ne ressens rien" — la deuxième phrase est presque toujours fausse.
 
@@ -142,3 +142,8 @@ notes_conformite:
   registre_probabiliste: "ombre au conditionnel fréquentiel (« peut », « l'autre ne peut pas ») — verbatim source"
   metadonnees: "aucun code, score ou sigle dans les textes (Constitution [3])"
   placeholders_moteur: "{X}%, {Z} personnes, {fenêtre sur l'autre} — remplis côté moteur, jamais calculés en clair dans les textes"
+  audit_vague5:
+    - "AUDIT VAGUE 5 (2026-09-29) — charte des cartes C1-C11 (mission) : les 6 variantes auditées ; longueurs machine (cœur narratif, tokens avec lettres) : V1 67 · V2 66 · V3 65 · V4 60 · V5 55 · V6 64 — bornes C7 55-110 : 6/6 CONFORMES"
+    - "CORRECTION — V6 « L'Apprenti·e » (fiche de mutation légère, C4) : « c'est le chantier le plus utile qui soit » = superlatif sans preuve (C4 horoscope). Remplacé par : « c'est un chantier qui rapporte à chaque étape » — même longueur (8 mots), portée conservée"
+    - "CONFORMITÉ SANS RETOUCHE : V1-V5 — ne la touche pas (mission : si conforme, ne pas toucher) ; V5 = 55 mots, pile à la borne basse C7 (accepté, aucun mot ajouté)"
+    - "Points d'attention lexicaux (non interdits C4, consignés) : « Cette clarté est rare » (V1) et « une souplesse rare » côté 1.2 — rareté relative, pas superlatif ; « ça vaut de l'or » (V5) — idiomatique, portée descriptive"

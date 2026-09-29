@@ -1,43 +1,71 @@
-# CARTES DE LA QUÊTE 2.3 « TES NON-NÉGOCIABLES »
-# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
-# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
-# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
-# Doctrine : l'ombre nomme le COÛT RELATIONNEL du choix (un filtre dur réduit le pool) — jamais un jugement.
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.3 « TES NON-NÉGOCIABLES » — 3 VARIANTES (étage 1)
+# v2 — VAGUE 5 « Les Cartes de Récompense du Socle » (2026-09-29) : les logiques
+# de sélection et les titres sont TRANCHÉS par le fondateur (mission VAGUE 5) —
+# la v1 (2 variantes, seuil ≥ 1 coche / 0 coche, FM-019 provisoire) est remplacée.
+# Charte des cartes C1-C11 — CARTE DE CLARTÉ : 40-70 mots (hors C7 standard —
+# exception documentée, mission Production 2). Portrait 2 phrases · ombre 1 phrase
+# · tension 1 phrase.
+# Doctrine : l'ombre nomme le COÛT RELATIONNEL du choix — jamais un jugement.
+# Q2.3-10 (champ libre) n'est JAMAIS compté dans la sélection (hors moteur, v1).
+# ═══════════════════════════════════════════════════════════════════
+
 quete: "2.3 Tes non-négociables"
 monde: M3
 statut_freemium: gratuit
-format: "etage_1_carte"
+format: "etage_1_carte_clarte"
+charte: "C1-C11 (mission VAGUE 5) — exception longueurs : 40-70 mots (cartes de clarté, hors C7)"
+exception_longueur: "40-70 mots — documentée (mission VAGUE 5, Production 2)"
+
+selection:
+  variable: "nombre de lignes rouges cochées sur Q2.3-01 → Q2.3-09 (9 items fermés — Q2.3-10 champ libre non compté)"
+  logique_tranchee: "0-2 cochées → Confiant·e dans le flou · 3-6 cochées → Bâtisseur·se de frontières · 7+ cochées → Forteresse (mission VAGUE 5 — tranchage fondateur)"
+  exhaustivite: "3 plages (0-2 · 3-6 · 7+) = partition totale de 0 à 9 — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Tes non-négociables »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
 variantes:
+
   - id: CARTE-2.3-A
-    nom: "Les lignes rouges sont posées"
-    selecteur: >-
-      au moins une ligne rouge cochée sur Q2.3-01 → Q2.3-09
-      (seuil minimal de déclenchement ADOPTÉ (FM-019) — provisoire concepteur)
+    nom: "Le·La Confiant·e dans le flou"
+    ordre_selecteur: 1
+    condition: "0 à 2 lignes rouges cochées sur Q2.3-01 → Q2.3-09"
     ancre_item: ["Q2.3-01", "Q2.3-02", "Q2.3-03", "Q2.3-04", "Q2.3-05", "Q2.3-06", "Q2.3-07", "Q2.3-08", "Q2.3-09"]
-    lumiere: "Tes lignes rouges sont posées. Tes rencontres démarrent sur du vrai, sans marchandage d'entrée, sans zone grise."
-    ombre: "Un cadre dur réduit le bassin : des histoires possibles restent derrière le filtre, et quelqu'un ne saura même pas pourquoi."
-    controle:
-      mots_total: 37
-      mots_lumiere: 17
-      mots_ombre: 20
-      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+    portrait: "Tu coches presque rien : tu laisses la place aux surprises, et aux gens l'occasion de te surprendre. Ton cadre s'écrit en marchant."
+    ombre: "Sans limites déclarées, on finit par les subir avant de les choisir — pose-les avant qu'une histoire ne les pose pour toi."
+    tension_interieure: "faire confiance, sans te faire déborder."
+
   - id: CARTE-2.3-B
-    nom: "Le cadre ouvert"
-    selecteur: >-
-      aucune ligne rouge cochée sur Q2.3-01 → Q2.3-09 (Q2.3-10, champ libre, non compté)
-      — combinaison de déclenchement À VALIDER PAR LE COMITÉ
-    ancre_item: []
-    lumiere: "Tu gardes le cadre ouvert. Chaque rencontre arrive sans grille, avec sa part d'imprévu."
-    ombre: "Sans ligne rouge, les arbitrages se règlent en chemin : plus tard, à deux, et souvent plus cher."
-    controle:
-      mots_total: 31
-      mots_lumiere: 14
-      mots_ombre: 17
-      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+    nom: "Le·La Bâtisseur·se de frontières"
+    ordre_selecteur: 2
+    condition: "3 à 6 lignes rouges cochées sur Q2.3-01 → Q2.3-09"
+    ancre_item: ["Q2.3-01", "Q2.3-02", "Q2.3-03", "Q2.3-04", "Q2.3-05", "Q2.3-06", "Q2.3-07", "Q2.3-08", "Q2.3-09"]
+    portrait: "Tu as posé des limites, pas trop : tu sais où tu ne négocies pas, et tu laisses le reste à l'imprévu. Tes cadres disent qui tu es sans tout fermer."
+    ombre: "Attention aux frontières qui servent d'excuse : une ligne posée pour éviter la discussion ne protège plus, elle écarte."
+    tension_interieure: "tenir tes limites, sans t'en faire un bouclier contre tout."
+
+  - id: CARTE-2.3-C
+    nom: "Le·La Forteresse"
+    ordre_selecteur: 3
+    condition: "7 à 9 lignes rouges cochées sur Q2.3-01 → Q2.3-09"
+    ancre_item: ["Q2.3-01", "Q2.3-02", "Q2.3-03", "Q2.3-04", "Q2.3-05", "Q2.3-06", "Q2.3-07", "Q2.3-08", "Q2.3-09"]
+    portrait: "Tu sais exactement où tu ne négocies pas : tes lignes rouges se comptent, et elles tiennent. Tes rencontres démarrent nettes, sans zone grise à débrouiller après coup."
+    ombre: "Autant de lignes rouges filent plus de gens qu'elles n'en gardent — vérifie que tu gardes une porte, et pas un mur."
+    tension_interieure: "protéger ta vie, sans la vider d'avance."
+
 regles_documentees:
-  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
-  - "l'ombre des deux variantes nomme le coût pour soi ET le coût pour l'autre — jamais un jugement moral du choix"
-  - "registre probabiliste : aucun futur certain, aucune promesse (« se règlent », « restent » — présent fréquentiel)"
-  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
-  - "aucune mention du moteur, des filtres nominatifs, des codes ou des seuils"
-  - "état contradictoire (coche 2.3-08 × réponse Oui à 2.5-03) : pas de carte dédiée — drapeau QFI moteur seul, miroir dégradé"
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes clarté 40-70, vérifié machine (script hors dépôt verif-cartes-vague5.py)"
+  - "v1 → v2 (fiche de mutation légère, mission VAGUE 5) : la v1 (CARTE-2.3-A « Les lignes rouges sont posées » ≥ 1 coche · CARTE-2.3-B « Le cadre ouvert » 0 coche) est remplacée par les 3 plages tranchées par le fondateur (0-2 / 3-6 / 7+) — les ombres v1 (coût relationnel du filtre) restent la doctrine, reprises aux variantes B et C ; l'ombre v1 « cadre ouvert » (arbitrages réglés plus tard, plus cher) rejoint la variante A"
+  - "continuité Carte → Miroir (LOT 3) : A ↔ brique 0 coche « cadre ouvert assumé » · B/C ↔ briques filtre (« la grille trop pleine », « la mécanique exécute sans nuance ») — même famille d'ombre, formulation différente"
+  - "l'ombre nomme le coût pour soi ET le coût pour l'autre — jamais un jugement moral du choix (doctrine conservée de la v1)"
+  - "registre probabiliste : aucun futur certain (« on finit par », « peuvent » — présent fréquentiel)"
+  - "Q2.3-10 (mots de la personne) : jamais compté, jamais cité sans consentement verbatim (règle v1 conservée)"
+  - "C2 : aucun signal de sécurité — cocher des lignes rouges est un mécanisme de filtrage (hard constraints moteur), jamais une promesse de protection rendue"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) s'ajoute en v2 (mission Production 4) — compteur réel, jamais décoratif"

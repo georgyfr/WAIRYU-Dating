@@ -1,45 +1,93 @@
-# CARTES DE LA QUÊTE 2.5 « CE QUE TU CHERCHES »
-# Étage 1 — la Carte : 30-60 mots, partageable (Constitution [7]).
-# Lumière et ombre en égalité — volume d'ombre ≥ volume de lumière (Constitution [2]).
-# Sélecteurs en langage clair. Aucun code, score ou sigle au rendu (les ancres vivent en champ moteur).
-# Doctrine : l'ombre nomme le COÛT RELATIONNEL du cap déclaré — jamais un jugement de l'intention.
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 2.5 « CE QUE TU CHERCHES » — 4 VARIANTES (étage 1)
+# v2 — VAGUE 5 « Les Cartes de Récompense du Socle » (2026-09-29) : une carte
+# PAR INTENTION, y compris « Je découvre » (mission VAGUE 5 — tranchage
+# fondateur qui REVERSET la décision v1 « pas de carte dédiée en v1 », FM-019).
+# La v1 (2 variantes exclusivité / sans plan figé) est remplacée.
+# Charte des cartes C1-C11 — CARTE DE CLARTÉ : 40-70 mots (hors C7 standard —
+# exception documentée). Portrait 2 phrases · ombre 1 phrase · tension 1 phrase.
+# Doctrine : l'ombre nomme le COÛT RELATIONNEL du cap déclaré — jamais un
+# jugement de l'intention.
+# ═══════════════════════════════════════════════════════════════════
+
 quete: "2.5 Ce que tu cherches"
 monde: M3
 statut_freemium: gratuit
-format: "etage_1_carte"
+format: "etage_1_carte_clarte"
+charte: "C1-C11 (mission VAGUE 5) — exception longueurs : 40-70 mots (cartes de clarté, hors C7)"
+exception_longueur: "40-70 mots — documentée (mission VAGUE 5, Production 2)"
+
+selection:
+  variable: "l'intention affichée (agrégat des 3 binaires Q2.5-01/02/03 + la 4ᵉ réponse « Je découvre »)"
+  logique_tranchee: "évaluée dans l'ordre (1 → 6), première correspondance retenue — 4 cartes pour 4 intentions, cas limites routés (mission VAGUE 5) :"
+  ordre:
+    - "1. 4ᵉ réponse « Je découvre » choisie → EN EXPLORATION (l'état déclaré prime)"
+    - "2. Q2.5-01 = Oui ET Q2.5-03 = Oui (contradiction directe → drapeau QFI côté moteur) → EN EXPLORATION (carte de repli neutre — le drapeau ne s'expose JAMAIS en carte)"
+    - "3. Q2.5-03 = Oui (sans contradiction) → NON-EXCLUSIVITÉ ASSUMÉE"
+    - "4. Q2.5-01 = Oui ET Q2.5-03 = Non → EXCLUSIVITÉ POSÉE"
+    - "5. Q2.5-01 = Non ET Q2.5-02 = Oui ET Q2.5-03 = Non → DÉCOUVERTE"
+    - "6. Q2.5-01 = Non ET Q2.5-02 = Non ET Q2.5-03 = Non (aucune intention lisible) → EN EXPLORATION + message doux à l'écran (décision comité FM-019 conservée : « C'est bon de prendre le temps… »)"
+  exhaustivite: "les 8 combinaisons binaires + la 4ᵉ réponse couvrent tout l'espace — chaque profil tombe dans exactement une carte (C6, vérifié machine)"
+  points_limite: "les routages 2 et 6 (cas limites vers EN EXPLORATION) : interprétation de la mission (« 4 variantes, une par intention ») — À VALIDER PAR LE COMITÉ"
+
+entete_ecran: "🧭 QUÊTE ACCOMPLIE — « Ce que tu cherches »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
 variantes:
-  - id: CARTE-2.5-A
-    nom: "Le cap posé"
-    selecteur: >-
-      exclusivité affichée : Q2.5-01 « Oui » et Q2.5-03 « Non »
-      (combinaison de déclenchement À VALIDER PAR LE COMITÉ)
+
+  - id: CARTE-2.5-EXPL
+    nom: "Le·La Cœur qui choisit"
+    intention: "Exclusivité posée"
+    ordre_selecteur: 4
+    condition: "Q2.5-01 = Oui ET Q2.5-03 = Non"
     ancre_item: ["Q2.5-01", "Q2.5-03"]
-    lumiere: "Ton cap est posé : tu cherches à construire à deux, et ce cap se lit d'entrée."
-    ombre: "Un cap exclusif presse parfois les étapes : l'autre hérite d'un rythme qui n'est pas le sien."
-    controle:
-      mots_total: 32
-      mots_lumiere: 16
-      mots_ombre: 16
-      egalite: "ombre = lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
-  - id: CARTE-2.5-B
-    nom: "Sans plan figé"
-    selecteur: >-
-      découverte ou non-exclusivité assumée : Q2.5-02 « Oui » ou Q2.5-03 « Oui »
-      (combinaison de déclenchement À VALIDER PAR LE COMITÉ)
-    ancre_item: ["Q2.5-02", "Q2.5-03"]
-    lumiere: "Tu bouges sans plan figé : la rencontre garde son espace, la pression reste dehors."
-    ombre: "Sans exclusivité affichée, quelqu'un peut s'attacher pendant que tu explores — ce coût se nomme tôt, ou se paie après."
-    controle:
-      mots_total: 33
-      mots_lumiere: 14
-      mots_ombre: 19
-      egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
+    portrait: "Tu cherches une relation exclusive, et tu l'assumes : ton cap se lit d'entrée. Construire à deux, sans détours — c'est écrit."
+    ombre: "Un cap posé tôt presse parfois les étapes : l'autre hérite d'un rythme qui n'est pas le sien."
+    tension_interieure: "viser juste, sans brusquer la rencontre."
+
+  - id: CARTE-2.5-DECOU
+    nom: "Le·La Curieux·se sans carte"
+    intention: "Découverte"
+    ordre_selecteur: 5
+    condition: "Q2.5-01 = Non ET Q2.5-02 = Oui ET Q2.5-03 = Non"
+    ancre_item: ["Q2.5-01", "Q2.5-02", "Q2.5-03"]
+    portrait: "Tu cherches une rencontre, sans plan précis : tu veux voir qui arrive, sans scénario imposé. L'ouverture est ton cadre — elle s'affiche, elle ne se cache pas."
+    ombre: "Sans plan, quelqu'un peut s'attacher pendant que tu explores : ce coût se nomme tôt, ou se paie après."
+    tension_interieure: "laisser venir, sans laisser planer."
+
+  - id: CARTE-2.5-LIBRE
+    nom: "Le·La Libre honnête"
+    intention: "Non-exclusivité assumée"
+    ordre_selecteur: 3
+    condition: "Q2.5-03 = Oui (sans contradiction avec Q2.5-01)"
+    ancre_item: ["Q2.5-03", "Q2.5-01"]
+    portrait: "L'exclusivité n'est pas ce que tu vises aujourd'hui — et tu le dis. Tes rencontres démarrent sans malentendu de statut, parce que le tien s'affiche."
+    ombre: "L'exclusivité que tu n'affiches pas, quelqu'un l'espère malgré tout : nomme-le tôt, ou quelqu'un paiera le flou."
+    tension_interieure: "vivre ton rythme, sans faire attendre les cœurs."
+
+  - id: CARTE-2.5-JEDECOUVRE
+    nom: "Le·La Brouillon·ne de soi"
+    intention: "En exploration"
+    ordre_selecteur: 1
+    condition: "4ᵉ réponse « Je découvre » choisie — ET ordres 2 et 6 (cas limites routés : contradiction directe · aucune intention lisible)"
+    ancre_item: ["Q2.5-01", "Q2.5-02", "Q2.5-03"]
+    portrait: "Tu as répondu « Je découvre » — tu ne sais pas encore ce que tu cherches, et c'est déclaré. Tu explores ton propre cap en même temps que les rencontres."
+    ombre: "Découvrir sans jamais choisir est une façon de ne pas choisir : à force d'ouvrir toutes les portes, on n'entre nulle part."
+    tension_interieure: "chercher ta réponse, sans faire patienter ta vie."
+
 regles_documentees:
-  - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
-  - "la 4ᵉ réponse « Je découvre » (décision comité, FM-019 — compatible avec tout) n'a pas de carte dédiée en v1 : un état d'exploration n'est pas un cap à exposer — le miroir S1 la rappelle en toutes lettres"
-  - "l'ombre des deux variantes nomme le coût pour soi ET le coût pour l'autre (rythme imposé à l'autre / attachement pendant l'exploration) — jamais un jugement de l'intention"
-  - "aucune variante pour l'état contradictoire (Q2.5-01 « Oui » × Q2.5-03 « Oui ») : drapeau QFI moteur seul, miroir dégradé — afficher une carte ici reviendrait à exhiber la contradiction"
-  - "l'intention est datée : aucune carte ne transforme la réponse d'aujourd'hui en trait permanent"
-  - "registre probabiliste : aucun futur certain (« presse parfois », « peut s'attacher » — fréquentiel)"
-  - "aucun interdit lexical : ni « tu es unique », ni « tu mérites », ni « l'univers », ni superlatif sans preuve, ni « toujours »/« jamais » en absolu, ni « tu es quelqu'un qui »"
-  - "aucune allusion au croisement avec l'intention réelle (6.1) — gratuit ne présuppose jamais premium"
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes clarté 40-70, vérifié machine (script hors dépôt verif-cartes-vague5.py)"
+  - "v1 → v2 (fiche de mutation légère, mission VAGUE 5) : la v1 (2 variantes « cap posé » / « sans plan figé ») est remplacée par 4 cartes — une par intention ; REVERSAL DOCUMENTÉ : la v1 notait « Je découvre sans carte dédiée en v1 » (FM-019) — la mission VAGUE 5 tranche l'inverse et impose l'ombre « découvrir sans jamais choisir est une façon de ne pas choisir » (ligne du fondateur, reprise verbatim)"
+  - "continuité Carte → Miroir (LOT 3) : JEDECOUVRE ↔ message doux 3 « non » + rappel S1 · EXPL ↔ famille rythme imposé · LIBRE ↔ famille attachement pendant l'exploration · DECOU ↔ famille plan flou — même famille d'ombre, formulation différente"
+  - "cas limite « contradiction directe » (01 Oui × 03 Oui) : drapeau QFI + miroir dégradé CÔTÉ MOTEUR — la carte n'expose jamais le drapeau (C2/C3), repli sur la carte la plus neutre (À VALIDER PAR LE COMITÉ)"
+  - "« Je découvre » reste compatible avec tout côté moteur : aucun dealbreaker, aucun drapeau, aucun croisement dur (règle FM-019 conservée — la carte ne change pas le moteur)"
+  - "registre probabiliste : « parfois », « peut », « ou se paie après » — présent fréquentiel, aucun futur certain"
+  - "C2 : aucun signal de sécurité — afficher une intention n'est pas une promesse de protection"
+  - "C3 : aucun label clinique — « en exploration », « exclusivité » sont les libellés déclaratifs de l'app, pas des catégories cliniques"
+  - "C8 : point médian dans les titres genrés (Curieux·se, Brouillon·ne) · « (e) » dans le corps"
+  - "les citations de réponses (Q2.5-01/03 verbatim, « Je découvre ») sont direction-sûres par construction : la condition du sélecteur EST la réponse déclarée (C6 respecté)"

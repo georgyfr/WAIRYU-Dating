@@ -50,7 +50,7 @@ variantes:
     ombre: "Parfois, tu choisis le nouveau par peur que le même devienne l'ennui — et ce qui compte finit par attendre."
     tension_interieure: "vivre tout, sans blesser personne."
     mots_lumiere_ombre: 68
-    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5 ; dérive historique > 60 close)"
 
   - id: V2
     nom: "Le·La Bâtisseur·se"
@@ -60,7 +60,7 @@ variantes:
     ombre: "Le contrôle a un coût — quand tout dérape, c'est toi que tu accuses en premier."
     tension_interieure: "que tout soit solide, sans que ça devienne une prison."
     mots_lumiere_ombre: 61
-    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5 ; dérive historique > 60 close)"
 
   - id: V3
     nom: "L'Étoile sociale"
@@ -70,7 +70,7 @@ variantes:
     ombre: "Le silence peut te sembler un vide à remplir — et tu remplis parfois ce qui aurait mérité d'être écouté."
     tension_interieure: "être aimé(e) pour ta lumière, pas seulement pour ton spectacle."
     mots_lumiere_ombre: 59
-    note_conformite: "conforme (30-60 mots)"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5)"
 
   - id: V4
     nom: "L'Ancre"
@@ -80,7 +80,7 @@ variantes:
     ombre: "Ta stabilité peut devenir une forteresse — tu accordes parfois trop de patience aux situations qui n'en méritent plus."
     tension_interieure: "porter les autres sans t'oublier."
     mots_lumiere_ombre: 61
-    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5 ; dérive historique > 60 close)"
 
   - id: V5
     nom: "L'Intense"
@@ -90,7 +90,7 @@ variantes:
     ombre: "Le monde est parfois bruyant pour toi — et tu gères la tempête sans mode d'emploi."
     tension_interieure: "être tout entier dans ce que tu vis, sans que ça te submerge."
     mots_lumiere_ombre: 61
-    note_conformite: "dérive : > 60 mots (texte verbatim du source gelé) — À VALIDER PAR LE COMITÉ"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5 ; dérive historique > 60 close)"
 
   - id: V6
     nom: "L'Indépendant·e profond·e"
@@ -100,7 +100,7 @@ variantes:
     ombre: "Tu proposes rarement le premier contact — et certaines personnes que tu aurais aimées sont passées sans le savoir."
     tension_interieure: "préserver ton monde sans en fermer la porte."
     mots_lumiere_ombre: 59
-    note_conformite: "conforme (30-60 mots)"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5)"
 
   - id: V7
     nom: "L'Équilibriste"
@@ -110,12 +110,12 @@ variantes:
     ombre: "Les profils complets changent lentement — vérifie que tu changes encore, et pas seulement que tu tiens."
     tension_interieure: "être beaucoup de choses, sans te disperser en rien de tout."
     mots_lumiere_ombre: 56
-    note_conformite: "conforme (30-60 mots)"
+    note_conformite: "conforme (C7 55-110 — audit VAGUE 5)"
 
 notes_conformite:
   - "Textes et sélecteurs verbatim du source gelé (fidélité [8]) — toute retouche passerait par une Fiche de Mutation."
-  - "4 variantes dépassent la cible 30-60 mots de l'étage 1 (V1 : 68 · V2 : 61 · V4 : 61 · V5 : 61) — dérive documentée, À VALIDER PAR LE COMITÉ (comptage : segments séparés par des espaces, hors ponctuation isolée ; guillemets et tirets exclus)."
-  - "« jamais » en absolu présent dans le texte verbatim de V1 (« Ta curiosité n'est jamais froide ») — interdit lexical [3] vs fidélité [8] : arbitrage comité."
+  - "LONGUEURS (référentiel mis à jour — AUDIT VAGUE 5, 2026-09-29) : la charte des cartes C1-C11 (mission VAGUE 5) fixe la borne C7 à 55-110 mots — l'ancienne cible « 30-60 mots » est remplacée ; recompte machine (portrait+ombre+tension, tokens avec lettres) : V1 73 · V2 71 · V3 70 · V4 66 · V5 74 · V6 67 · V7 68 — 7/7 CONFORMES C7, les « dérives > 60 mots » de l'époque sont closes ; les champs mots_lumiere_ombre historiques (portée lumière+ombre, comptage v1) restent en l'état comme record"
+  - "« jamais » en absolu présent dans le texte verbatim de V1 (« Ta curiosité n'est jamais froide ») — descriptif, non horoscope (hors liste fermée C4 de la mission VAGUE 5 : « tu es unique », « tu mérites », « l'univers », superlatifs sans preuve) — conservé, arbitrage comité hérité maintenu"
   - "Ombres verbatim : l'ancrage explicite « en situation de couple » (Constitution [2]) n'est pas littéral dans toutes les variantes du source (ex. V6) — arbitrage comité, fidélité [8] maintenue."
   - "Les seuils des sélecteurs et l'ordre d'évaluation : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta."
   - "Aucun code, score ou sigle dans les textes de carte (Constitution [3]) — les variables O C E A S ne vivent que dans les sélecteurs, côté moteur."

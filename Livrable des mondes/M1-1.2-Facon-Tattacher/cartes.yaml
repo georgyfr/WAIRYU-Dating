@@ -25,7 +25,7 @@ variantes:
 
       ### L'Ancrage
 
-      Tu aimes sans paniquer. La proximité te nourrit, la distance ne t'effraie pas : tu sais rester, tu sais lâcher. C'est le style que les chercheurs appellent "sécurisé" — mais toi, tu l'appelles simplement toi.
+      Tu aimes sans paniquer. La proximité te nourrit, la distance ne t'effraie pas : tu sais rester, tu sais lâcher. Tu le nommes simplement toi : tu restes, tu le dis, tu répare vite ce qui grince dans une vie à deux.
 
       **Ta zone d'ombre :** Ton équilibre peut te faire sous-estimer à quel point l'autre, lui, a besoin de preuves.
 
@@ -45,7 +45,7 @@ variantes:
 
       ### La Vigie
 
-      Tu aimes fort, et tu veilles. Quand quelqu'un compte, tu y penses souvent, tu sens les variations d'humeur avant tout le monde, tu es prêt(e) à tout pour que ça tienne. Ta loyauté est totale.
+      Tu aimes fort, et tu veilles. Quand quelqu'un compte, tu y penses souvent, tu sens les variations d'humeur avant tout le monde, tu es prêt(e) à tout pour que ça tienne. Et quand tu donnes, tu donnes sans tenir la comptabilité.
 
       **Ta zone d'ombre :** Le silence de l'autre te parle trop fort — et il dit presque toujours autre chose que ce que tu entends.
 
@@ -121,3 +121,8 @@ notes_conformite:
   registre_probabiliste: "ombre au conditionnel fréquentiel (« peut », « on peut croire ») — verbatim source"
   metadonnees: "aucun code, score ou sigle dans les textes (Constitution [3])"
   placeholders_moteur: "{X}%, {Z} personnes, {fenêtre sur l'autre} — remplis côté moteur, jamais calculés en clair dans les textes"
+  audit_vague5:
+    - "AUDIT VAGUE 5 (2026-09-29) — charte des cartes C1-C11 (mission) : les 5 variantes auditées ; longueurs machine (cœur narratif, tokens avec lettres) : V1 61 · V2 69 · V3 67 · V4 86 · V5 60 — bornes C7 55-110 : 5/5 CONFORMES après corrections"
+    - "CORRECTION 1 — V1 « L'Ancrage » (fiche de mutation légère, C2+C3+C7) : la phrase « C'est le style que les chercheurs appellent \"sécurisé\" — mais toi, tu l'appelles simplement toi. » portait un LABEL CLINIQUE et un SIGNAL DE SÉCURITÉ (C2/C3 — interdits non négociables) et la carte tombait sous la borne C7 (54 mots). Remplacée par : « Tu le nommes simplement toi : tu restes, tu le dis, tu répare vite ce qui grince dans une vie à deux. » — le source gelé reste la référence d'origine ; la retouche est la première dérogation autorisée par la mission VAGUE 5 (Production 3 : « Corrige les violations »)"
+    - "CORRECTION 2 — V2 « La Vigie » (fiche de mutation légère, C4) : « Ta loyauté est totale. » = superlatif sans preuve (C4 horoscope). Remplacé par : « Et quand tu donnes, tu donnes sans tenir la comptabilité. » — concrétisation observable, même portée émotionnelle"
+    - "CONFORMITÉ SANS RETOUCHE : V3, V4, V5 — ne la touche pas (mission : si conforme, ne pas toucher)"
