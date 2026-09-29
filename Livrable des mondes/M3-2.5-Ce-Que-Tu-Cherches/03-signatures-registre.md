@@ -1,6 +1,7 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 2.5 (format du registre)
 
 > ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > Aucune signature de sécurité n'est attachée à cette quête (aucun item de trame — vérifié au registre du mélange).
 > **NOTE TROMPERIE OBLIGATOIRE** : la détection de tromperie (SIG-2.5-03) est un signal
 > **MOTEUR SEUL** — jamais affiché, jamais suggéré, jamais dit à l'utilisateur, jamais au match,

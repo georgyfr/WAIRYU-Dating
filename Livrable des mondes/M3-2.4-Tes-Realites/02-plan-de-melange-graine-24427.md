@@ -44,3 +44,26 @@ Réexécuter `python3 ci/outils/melange.py ci/quetes/2.4.json` reproduit la séq
 (linter) rejoue les 6 contraintes sur toute régénération et refuse toute sortie divergente sans Fiche de
 Mutation documentée. Les verdicts sans-objet sont portés par la config (`ci/quetes/2.4.json`) et restent
 rejouables mécaniquement.
+
+## Graine dérivée (chaîne documentée — mission Phases A/B/C/D, point 2)
+
+| Champ | Valeur |
+|---|---|
+| Graine enregistrée | **24427** — convention d'ORIGINE de la série M3 (concaténation « 24 » + « 427 »), antérieure à la règle « mère + 1000 × ordinal » adoptée pour les Mondes 1-2 |
+| Statut | documentée TELLE QUELLE (fidélité à l'artefact) ; figée, reproductible |
+
+Chaîne de la série M3 : 2.1 = 210427 (mère) · 2.2 = 232427 · 2.3 = 23427 · **2.4 = 24427** ·
+2.5 = 25427 → 25428 (re-tirage c6, graine + 1 — documenté au plan 2.5) · 2.6/2.8 = mélange sans
+objet (Vague 6) · 2.7 = 237427.
+
+## Finding — la borne de run atteignable (mission Phases A/B/C/D, point 3)
+
+> Règle gravée : **on ne publie jamais un verdict non atteignable.**
+
+| Étape | Détail |
+|---|---|
+| Format | DÉCLARATIONS BINAIRES à options verbatim — les 8 items n'ont NI orientation D NI I |
+| c5 (alternance D/I) | **sans-objet par config** (`c5_sans_objet: true`) : hors Likert, il n'existe pas d'orientation à alterner |
+| Borne contractée | **aucune** — pas de run max exigé |
+| Statut de `run_max: 0` dans l'artefact | « non mesuré » (c5 sans-objet), pas « run de longueur zéro » |
+| Verdict de la course réelle | c1-c6 : verdicts réels affichés ci-dessus — les contraintes ACTIVES toutes vérifiées |

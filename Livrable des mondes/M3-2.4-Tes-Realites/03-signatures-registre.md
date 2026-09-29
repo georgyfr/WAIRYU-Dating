@@ -1,6 +1,7 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 2.4 (format du registre)
 
 > ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
+> **Marquage mission Phases A/B/C/D (point 4 — conversion du registre des signatures) :** chaque seuil ci-dessus porte le statut **« À VALIDER PAR LE COMITÉ »** — l'adoption FM-019 fixe la valeur de départ ; la re-signature professionnelle avant bêta reste requise.
 > Aucune signature de sécurité n'est attachée à cette quête (aucun item de trame — vérifié au registre du mélange).
 > **NOTE QFI OBLIGATOIRE** : QFI (qualité de fiabilité du profil, glossaire [4]) est un signal
 > **MOTEUR SEUL** — jamais affiché, jamais dit à l'utilisateur, jamais au match, jamais dans les portraits.

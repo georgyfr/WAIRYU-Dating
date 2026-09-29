@@ -21,6 +21,7 @@
 5. `05-ecran-d-intro.md` — les 2 phrases d'entrée dans la quête.
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q2.4-01 (3 états) déployé au format complet.
 7. `cartes.yaml` — les 2 variantes de carte (étage 1).
+8. `07-miroir.md` — le miroir de quête (étage 2) — gabarit LÉGER 80-150 mots, 1 brique × 2 variantes de texture (A « par l'exemple » · B « par le mécanisme ») — créé VAGUE 4.
 
 ## 🔄 Flux de production
 
