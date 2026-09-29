@@ -32,23 +32,30 @@ Livrable des mondes/
 ├── M4-3.4-Ton-Rapport-a-lArgent/ ← quête 3.4 « Ton rapport à l'argent » (M4, 🆓, 6 carte + 2▲ DGR, MISSION V9)
 ├── M4-3.5-Ton-Entourage/        ← quête 3.5 « Ton entourage » (M4, 🆓, 6 items, R6 intégrales, MISSION V9)
 ├── M4-3.6-Le-Choix-Visuel/      ← quête 3.6 ⚡ « Le choix visuel » (M4, 🆓, 8 paires A/B — brise-glaces, MISSION V9)
-└── M4-3.7-Tes-Attirances/       ← quête 3.7 « Tes attirances » (M4, 🆓, 5 déclaratifs PRIVÉS — pool Mode Invisible, MISSION V9)
+├── M4-3.7-Tes-Attirances/       ← quête 3.7 « Tes attirances » (M4, 🆓, 5 déclaratifs PRIVÉS — pool Mode Invisible, MISSION V9)
+├── M5-4.1-Ton-Arbre-Relationnel/ ← quête 4.1 « Ton arbre relationnel » (M5 — Ton Héritage, 🆓, 8 items + génogramme interactif non compté, MISSION V10)
+├── M5-4.2-Ou-Tu-En-Es-Aujourdhui/ ← quête 4.2 « Où tu en es aujourd'hui » (M5, 🆓, 19 items : 10 RB1 + 8 RSQ + 1 ouverte, MISSION V10)
+├── M5-4.3-Ce-Que-Tes-Relations-Tont-Appris/ ← quête 4.3 ⚡ « Ce que tes relations t'ont appris » (M5, 🆓, 1 question ouverte — BLA P2, MISSION V10)
+└── M5-4.4-Blessures-Et-Aisance/ ← quête 4.4 (INVISIBLE) « Blessures et aisance » (M5, 12 carte-bloc + 10▲ — tissées chez 4.1/4.2, MISSION V10)
 ```
 
 Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` (guide de lecture 1 page)
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 268/570 items = 47,0 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
-Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · **MISSION V9 — Monde M4 « Ton terrain » : 52** — 3.1 rythme 5,
-3.2 quotidien 8, 3.3 temps libre 8 carte + 4▲ CSR, 3.4 argent 6 carte + 2▲ DGR, 3.5 entourage 6,
-3.6 choix visuel ⚡ 8 paires, 3.7 attirances 5. 1.8 « Ton bien-être » reste Phase 3 avec verrou
-renforcé (relecture professionnelle obligatoire, option de retrait — FM-019).)**
+**Taux de matérialisation : 318/570 items = 55,8 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · MISSION V9 — Monde M4 « Ton terrain » : 52 · **MISSION V10 —
+Monde M5 « Ton Héritage » : 50** — 4.1 arbre relationnel 8 + génogramme interactif non compté,
+4.2 où tu en es 19 (10 RB1 + 8 RSQ + 1 ouverte), 4.3 relations apprises ⚡ 1 ouverte,
+4.4 (invisible) blessures et aisance 22 (12 carte-bloc + 10▲ tissées dans les passations 4.1/4.2).
+1.8 « Ton bien-être » reste Phase 3 avec verrou renforcé (relecture professionnelle obligatoire,
+option de retrait — FM-019).)**
 
-> 🆓 **Après MISSION V9, les quatre premiers mondes gratuits du voyage sont COMPLETS en items** :
-> le voyageur gratuit parcourt son territoire (M1 Le Miroir · M2 Le Volant · M3 La Boussole —
-> Socle et quêtes Libre · **M4 Ton terrain — les 7 quêtes, dont 3.7 requis avant l'activation du
-> Mode Invisible**).
+> 🆓 **Après MISSION V10, les cinq premiers mondes du voyage sont COMPLETS en items** :
+> le voyageur parcourt son territoire (M1 Le Miroir · M2 Le Volant · M3 La Boussole ·
+> M4 Ton terrain — dont 3.7 requis avant l'activation du Mode Invisible · **M5 Ton Héritage —
+> 4.1→4.3 en accès libre, bloc invisible 4.4 tissé dans les passations 4.1/4.2** ; la frontière
+> freemium des mondes suivants reste À VALIDER PAR LE COMITÉ).
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 
