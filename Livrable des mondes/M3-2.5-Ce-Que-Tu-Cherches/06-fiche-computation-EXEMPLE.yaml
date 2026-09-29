@@ -33,7 +33,15 @@ computation:
     - si: "réponse modifiée après passation"
       effet: "intention affichée recalculée — fenêtre À VALIDER PAR LE COMITÉ"
     - si: "état « Non / Non / Non » (aucune intention lisible)"
-      effet: "intention incomplète assumée — aucun dealbreaker binaire appliqué, miroir descriptif"
+      effet: >-
+        intention incomplète assumée — message doux (décision comité, FM-019 : aucune relance,
+        aucune insinuation de défaut) + 4ᵉ réponse « Je découvre » proposée — aucun dealbreaker
+        binaire appliqué, miroir descriptif
+    - si: "4ᵉ réponse « Je découvre » choisie (décision comité, FM-019)"
+      effet: >-
+        intention affichée = en exploration — état déclaré COMPATIBLE AVEC TOUT : aucun dealbreaker
+        binaire, aucun drapeau QFI, aucun croisement dur ; restituable en toutes lettres ; les
+        réponses binaires existantes restent modifiables
   ancrage:
     rappel_autorise: true
     forme: "en toutes lettres, 2e personne, sans code ni score, daté (« aujourd'hui »)"
@@ -43,6 +51,10 @@ notes:
     Ce modèle sert de gabarit pour les 3 binaires (les fiches condensées du tableau
     01-tableau-des-items.md se déploient dans ce format complet). Seuls changent la règle de
     cohérence (Q2.5-03 est le pendant logique de Q2.5-01) et le domaine de croisement.
+  - >-
+    La 4ᵉ réponse « Je découvre » (décision comité, FM-019) est une réponse GLOBALE de la quête,
+    hors contrat de mélange (elle n'est pas un item) — l'agrégat d'intention la traite comme
+    l'état « en exploration », compatible avec tout.
   - >-
     Rappel de doctrine : le croisement 6.1 est décrit ici côté MOTEUR uniquement. Dans tout texte
     destiné à l'utilisateur, il est interdit d'y faire allusion (gratuit ne présuppose jamais premium,

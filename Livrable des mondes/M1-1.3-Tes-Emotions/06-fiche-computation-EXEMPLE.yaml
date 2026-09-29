@@ -30,9 +30,9 @@ computation:
     regle: "alimente la méta QFI (cristallin / construction) · garde universelle"
   modulation:
     - si: "R < 0.40 ET S < 0.40"
-      effet: "brique ombre « la météo intérieure » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+      effet: "brique ombre « la météo intérieure » — moteur (seuils ADOPTÉS (FM-019) — provisoire concepteur)"
     - si: "R < 0.40 ET ANX > 0.55"
-      effet: "brique ombre « la vérification sous pression » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+      effet: "brique ombre « la vérification sous pression » — moteur (seuils ADOPTÉS (FM-019) — provisoire concepteur)"
     - si: "R < 0.35 ET (S < 0.45 OU ANX > 0.60) ET QFI ≥ 0.60"
       effet: "gabarit GAB-REN, dernière passe, une fois max — formulation verrouillée (À VALIDER PAR LE COMITÉ)"
     - si: "QFI < 0.60"

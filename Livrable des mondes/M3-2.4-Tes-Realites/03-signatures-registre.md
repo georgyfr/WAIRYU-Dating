@@ -1,6 +1,6 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 2.4 (format du registre)
 
-> ⚠ **Tout seuil et toute fenêtre de fréquence sont des PROPOSITIONS — À VALIDER PAR LE COMITÉ (verrou [9]).**
+> ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
 > Aucune signature de sécurité n'est attachée à cette quête (aucun item de trame — vérifié au registre du mélange).
 > **NOTE QFI OBLIGATOIRE** : QFI (qualité de fiabilité du profil, glossaire [4]) est un signal
 > **MOTEUR SEUL** — jamais affiché, jamais dit à l'utilisateur, jamais au match, jamais dans les portraits.
@@ -22,5 +22,9 @@
   (l.598) — il reste invisible : il façonne le pool, il ne commente jamais les personnes.
 - **SIG-2.4-02 / SIG-2.4-03 alimentent QFI** : aucun slot, aucun texte, aucune citation. Leur seule
   sortie est côté moteur (paliers de prudence dans le rendu).
+- **Visibilité chips & matching (décision comité, FM-019)** : le croisement SIG-2.4-01 s'applique
+  **même quand une réalité est réglée privée** — la privacité retire la chip de l'affichage public,
+  jamais l'application du filtre. « J'ai arrêté » (Q2.4-01) = non-fumeur au filtre, « ex-fumeur »
+  à l'affichage (chip) : le moteur filtre sur l'état, l'UI montre le parcours.
 - Les 3 signatures sont rejouées contre les portraits du Monde selon le protocole du Registre des
   Signatures (test de non-régression à maintenir).

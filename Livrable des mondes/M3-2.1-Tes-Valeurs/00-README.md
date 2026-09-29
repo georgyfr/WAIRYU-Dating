@@ -15,7 +15,7 @@ DTM_N) dont les énoncés vivent hors dépôt — voir plus bas.
 | `README.md` | vue d'ensemble + déclaration de conformité | tout le monde |
 | `01-tableau-des-24-items.md` | les 20 items carte + les 4 slots de sécurité (énoncés hors dépôt) | production + implémenteur |
 | `02-plan-de-melange-graine-210427.md` | l'ordre de passation (graine 210427, passe ⑤ FM-015, run max 2) | production + recette |
-| `03-signatures-registre.md` | les 4 signatures SIG-2.1-01 → 04 (seuils « À VALIDER PAR LE COMITÉ ») | moteur |
+| `03-signatures-registre.md` | les 4 signatures SIG-2.1-01 → 04 (seuils ADOPTÉS comme valeurs de départ, FM-019 — provisoire concepteur ; T1 consigné hors dépôt) | moteur |
 | `04-slots-de-miroir.md` | les 4 slots de rendu S1 → S4 + les 9 verrous de slot | rendu |
 | `05-ecran-d-intro.md` | l'écran d'entrée de la quête | rendu |
 | `06-fiche-computation-Q2.1-17.yaml` | le format de fiche de computation (5 canaux), exemplifié | moteur |

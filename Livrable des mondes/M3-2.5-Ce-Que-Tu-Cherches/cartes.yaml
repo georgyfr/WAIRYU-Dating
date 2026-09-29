@@ -36,6 +36,7 @@ variantes:
       egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
 regles_documentees:
   - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
+  - "la 4ᵉ réponse « Je découvre » (décision comité, FM-019 — compatible avec tout) n'a pas de carte dédiée en v1 : un état d'exploration n'est pas un cap à exposer — le miroir S1 la rappelle en toutes lettres"
   - "l'ombre des deux variantes nomme le coût pour soi ET le coût pour l'autre (rythme imposé à l'autre / attachement pendant l'exploration) — jamais un jugement de l'intention"
   - "aucune variante pour l'état contradictoire (Q2.5-01 « Oui » × Q2.5-03 « Oui ») : drapeau QFI moteur seul, miroir dégradé — afficher une carte ici reviendrait à exhiber la contradiction"
   - "l'intention est datée : aucune carte ne transforme la réponse d'aujourd'hui en trait permanent"

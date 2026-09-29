@@ -14,7 +14,7 @@
 | `00-README.md` | 1 page : à quoi sert la quête, comment lire les fichiers, le flux items → mélange → passation → scoring → miroir |
 | `01-tableau-des-items.md` | Les 58 items : code gelé, énoncé verbatim, orientation D/I, dimension (carte_id), facette, signal ▲, fiche de computation condensée à 5 canaux · 8 lignes-réservées trame · 2 doublons fiabilité · dérives documentées |
 | `02-plan-de-melange-graine-211427.md` | Plan de mélange : graine 211427, algorithme, ordre de passation 1→58, verdicts RÉELS des 6 contraintes, positions trames, trace des 42 échanges de l'outil |
-| `03-signatures-registre.md` | Signatures du registre Monde 1 consommant O C E A S : 7 méta + narratives, conditions verbatim, chacune marquée « À VALIDER PAR LE COMITÉ » |
+| `03-signatures-registre.md` | Signatures du registre Monde 1 consommant O C E A S : 7 méta + narratives, conditions verbatim, chacune ADOPTÉE comme valeur de départ (FM-019) — provisoire concepteur |
 | `04-slots-de-miroir.md` | Slots de miroir (miroir LOURD : 58 ≥ 15 → gabarit 300-450 mots), citations en toutes lettres + ancre_item en champ moteur, 9 verrous de slot |
 | `05-ecran-d-intro.md` | Écran d'intro VERBATIM du source + contrôles de conformité |
 | `06-fiche-computation-EXEMPLE.yaml` | Fiche de computation complète d'un item (Q1.1-17), modèle des 5 canaux, format YAML |
@@ -30,7 +30,7 @@
 | Format d'échelle changé | ✅ Likert 5 niveaux verrouillé (conventions du source) |
 | Sigle hors glossaire [4] | ✅ seul DTM_N utilisé, côté moteur, jamais en UI |
 | Code, score ou sigle dans un texte rendu [3] | ✅ aucun — rappels en toutes lettres, `ancre_item` en champ moteur (FM-017) |
-| Verrous [9] traités comme décisions | ✅ tous les seuils et fenêtres marqués **« À VALIDER PAR LE COMITÉ »** — aucune décision |
+| Verrous [9] traités comme décisions | ✅ tous les seuils et fenêtres **ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — marqués « provisoire concepteur — re-signature professionnelle avant bêta » |
 | Recalcul ou invention du mélange | ✅ verdicts et ordre de passation copiés TELS QUELS de `ci/resultats-melange/1.1.json` (course réelle) |
 
 ## ⚠️ Points en attente de validation comité
@@ -40,7 +40,7 @@
 - **Facettes** : le source gelé ne nomme pas de facettes pour la quête 1.1 — les libellés du fichier 01 sont des descriptifs de production, non contractuels, à contractualiser ou rejeter.
 - **Ancre contestée Q1.1-48** : la note d'audit du registre (§ SIG_VERROU_AUTOACCUSATION) est reproduite telle quelle — l'option (a) ou (b) est une décision comité.
 - Fenêtre de présentation des doublons fiabilité (≥ 2 semaines après l'original) — règle du source, calibrage à valider.
-- Seuils des sélecteurs de carte (V1→V7) et seuils des signatures du registre — « À VALIDER PAR LE COMITÉ ».
+- Seuils des sélecteurs de carte (V1→V7) et seuils des signatures du registre — ADOPTÉS comme valeurs de départ (FM-019) : provisoire concepteur — re-signature professionnelle avant bêta.
 
 ## 🔁 Circuit restant
 

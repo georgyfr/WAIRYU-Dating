@@ -46,4 +46,4 @@
 - Aucune condition, aucun seuil, aucune fenêtre de fréquence : ce fichier n'en contient volontairement
   aucune — et n'en contiendra jamais sans Fiche de Mutation + verdict comité.
 - Toute évolution du filtre d'affinité d'inclusion ou du mécanisme de réinitialisation : Fiche de
-  Mutation + **À VALIDER PAR LE COMITÉ**.
+  Mutation + **ADOPTÉ (FM-019) — provisoire concepteur**.

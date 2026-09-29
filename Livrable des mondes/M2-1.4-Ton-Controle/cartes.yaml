@@ -1,7 +1,8 @@
 # LIVRABLE 7 — CARTES DE LA QUÊTE 1.4 « TON CONTRÔLE SUR TOI-MÊME »
 # Charte des cartes, PARTIE 4 du source gelé (l. 2985-3087) — textes VERBATIM.
 # ⚠ Toutes les conditions de sélection ci-dessous sont des propositions du source gelé :
-#   À VALIDER PAR LE COMITÉ (verrou [9]). Elles vivent ici côté moteur — jamais rendues en UI.
+#   ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature
+#   professionnelle avant bêta. Elles vivent ici côté moteur — jamais rendues en UI.
 
 quete: "1.4"
 titre: "Ton contrôle sur toi-même"
@@ -11,7 +12,7 @@ carte_recompense: presente          # la quête 1.4 A UNE carte standard (contra
 enonce_carte: "🧭 **QUÊTE ACCOMPLIE — « Ton contrôle sur toi-même »**"
 selection:
   type: seuil_sur_score_de_quete    # score autocontrole normalisé 0-1
-  note: "seuils du sélecteur : propositions du source gelé — À VALIDER PAR LE COMITÉ"
+  note: "seuils du sélecteur : propositions du source gelé — ADOPTÉS (FM-019) — provisoire concepteur"
 variantes:
   - ordre: 1
     condition: "score ≥ 0.75"

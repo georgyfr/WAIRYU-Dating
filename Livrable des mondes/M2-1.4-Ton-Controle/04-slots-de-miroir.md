@@ -34,4 +34,4 @@
   comparaison normative (« tu devrais », « plus que la moyenne ») au MVP.
 - **Aucun conseil de discipline** : la quête décrit une mécanique, elle ne prescrit pas une conduite.
 - Degrés mappés sur les zones moteur (faible < 0.35 · central 0.35-0.65 · élevé > 0.65) — bornes de
-  rendu : À VALIDER PAR LE COMITÉ.
+  rendu : ADOPTÉES comme valeurs de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.

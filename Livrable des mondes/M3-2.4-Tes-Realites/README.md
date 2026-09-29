@@ -14,7 +14,7 @@
 | `00-README.md` | Fiche de cadrage en tête (dimensions, format NON-Likert, signatures, slots, doctrine) + lecture des fichiers + flux |
 | `01-tableau-des-items.md` | Intégralité des 8 déclarations : code gelé, énoncé, format, options, croisement moteur, fiche de computation condensée |
 | `02-plan-de-melange-graine-24427.md` | Plan de mélange réel : graine seedée 24427, ordre de passation, verdicts c1-c6 (sans-objet documentés), table de vérification |
-| `03-signatures-registre.md` | 3 signatures proposées (dont la note QFI obligatoire) — tous les seuils « À VALIDER PAR LE COMITÉ » |
+| `03-signatures-registre.md` | 3 signatures (dont la note QFI obligatoire) — seuils ADOPTÉS comme valeurs de départ, provisoire concepteur (FM-019) |
 | `04-slots-de-miroir.md` | Miroir MOYEN (150-250 mots) : 3 slots + 9 verrous de slot |
 | `05-ecran-d-intro.md` | Écran d'intro (2 phrases, ton de la Constitution, statut freemium respecté) |
 | `06-fiche-computation-EXEMPLE.yaml` | Fiche de computation complète de l'item Q2.4-01 (3 états), modèle des 5 canaux |
@@ -31,12 +31,16 @@
 | **Données jugées moralement** | ✅ **ÉCRAN DE CONFORMITÉ : ces données sont factuelles et JAMAIS jugées.** Aucune formulation « mieux vaut », aucune hiérarchie des réalités (fumer, ne pas faire de sport, être nomade : des faits, pas des défauts) |
 | QFI affiché | ✅ QFI = signal MOTEUR SEUL, jamais affiché, jamais dit à l'utilisateur ni au match |
 | Code/score/sigle au rendu | ✅ aucun — rappels en toutes lettres (ancre_item en champ moteur) |
-| Verrous [9] traités comme décisions | ✅ tous les seuils marqués **« À VALIDER PAR LE COMITÉ »** |
+| Verrous [9] traités comme décisions | ✅ tous les seuils **ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — marqués « provisoire concepteur — re-signature professionnelle avant bêta » |
 
-## ⚠️ Points en attente de validation comité
+## ⚠️ Points en attente de validation comité (état après FM-019)
 
-- Seuils des 3 signatures (déclenchement, fréquence attendue, tension interne) · fenêtre de recalcul
-  des filtres à chaque mise à jour d'une réalité · équilibre mots lumière/ombre des cartes.
+- ✅ **Tranché (FM-019)** : seuils des 3 signatures ADOPTÉS comme valeurs de départ · décisions
+  produit (a) chips (visibles par défaut neutres, choix privé par item sensibles, matching actif
+  même sur les privés) et (b) « J'ai arrêté » = non-fumeur au filtre, « ex-fumeur » à l'affichage.
+- Restent : fenêtre de recalcul des filtres à chaque mise à jour · équilibre mots lumière/ombre des
+  cartes · composition des items 07/08 (propositions — domaine réservé [9]) · classification exacte
+  neutre/sensible des chips (proposition : sensibles = 03 enfants · 04 spiritualité).
 - Dérogation documentée : les options « Jamais » (alcool, enfants) sont des étiquettes de fréquence
   **prescrites verbatim par le source** (l.571, l.573) — des réponses déclaratives, pas des affirmations
   rédigées en absolu.

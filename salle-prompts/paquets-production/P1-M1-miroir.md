@@ -11,7 +11,7 @@
 3. **Les 22 trames du Monde 1** = SDT-N 8 (1.1) + SDT-M 4 (1.2) + RSQ 4 (1.2) + DE 6 (1.3) — conforme au contrat.
 4. **Le registre des 30 signatures M1** = 7 méta + 17 narratives + 6 sécurité (fin du source, 5 verrous CI propres).
 5. **Le registre des 18 codes signaux n'a aucune maison fichier** → matérialiser `contrat/registres/signaux.json` AVANT les trames (alignement SDT-N → code gelé DTM_N, aucun nouveau signal — arbitrage ④).
-6. **PHQ-9 (1.8) = instrument clinique** → vérification [2] zéro-diagnostic avant matérialisation, comité si non acté (tranchage C : DIFFÉRÉ au comité).
+6. **PHQ-9 (1.8) = instrument clinique** → ✅ TRANCHÉ (décision comité, FM-019) : **MAINTENU en Phase 3 avec verrou renforcé** — aucune matérialisation sans relecture professionnelle préalable ; **option de retrait** si la relecture échoue : lien ressources, ZÉRO collecte de données.
 7. **Règle d'or** : les 22 trames → `contenu/trames/securite.yaml` (maison B5), JAMAIS dans les fichiers de quête ; les fichiers de quête portent les codes + signal + position uniquement.
 
 ## Séquence verrouillée (tranchage B)
@@ -26,5 +26,5 @@
 ## Exclusions (assumées)
 
 - **1.5** : items comportementaux non rédigés (choix + temps mesuré) — FM future pour le contrat de mélange des items de performance.
-- **1.8** : PHQ-9 différé au comité (tranchage C).
+- **1.8** : PHQ-9 MAINTENU Phase 3 — verrou renforcé (relecture professionnelle obligatoire avant toute matérialisation ; en cas d'échec : retrait pur — lien ressources, zéro collecte) (FM-019).
 - **Énigmes 1.6** : hors contrat de mélange (items de performance, ordre source) — pénalité écart de pôle 0.7 documentée côté signatures.

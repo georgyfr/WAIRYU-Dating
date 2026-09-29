@@ -40,6 +40,24 @@ contrainte de rester FACTUELLES (jamais un jugement, jamais une préférence psy
 
 Les deux propositions (thèmes et libellés) restent **À VALIDER PAR LE COMITÉ**.
 
+## Décisions produit appliquées (décision comité, FM-019 — décisions a et b)
+
+**a) Visibilité des chips de réalités sur le profil :**
+
+| Règle | Contenu |
+|---|---|
+| Items neutres | chip **visible par défaut** (tabac 01, alcool 02, assiette 05, sport 06, où je vis 07, tempo 08) |
+| Items sensibles | **choix privé par item** : la personne coche « visible / privé » pour chaque item sensible (proposition de classification : enfants 03 · spiritualité 04 — classification exacte : provisoire concepteur) |
+| Matching | **actif même sur les privés** : une réalité privée ne s'affiche pas, mais le croisement bidirectionnel (SIG-2.4-01) l'applique côté moteur — la privacité retire l'affichage, jamais la protection |
+
+**b) Sémantique de « J'ai arrêté » (Q2.4-01) :**
+
+| Contexte | Traitement |
+|---|---|
+| **Filtre** (croisement avec les lignes rouges Q2.3-01 « non-fumeur » des autres) | « J'ai arrêté » = **non-fumeur** : la déclaration ne déclenche aucune élimination par un filtre non-fumeur |
+| **Affichage** (chip du profil) | le libellé rendu est **« ex-fumeur »** — l'état est montré tel qu'il se vit, pas réduit au « non-fumeur » du filtre |
+| Cohérence | la distinction filtre/affichage est documentée aux deux extrémités : le moteur filtre sur l'état, l'UI montre le parcours |
+
 ## Dérogation documentée — options « Jamais » (alcool, enfants)
 
 Les étiquettes « Jamais » sont des réponses de fréquence **prescrites verbatim par le source**

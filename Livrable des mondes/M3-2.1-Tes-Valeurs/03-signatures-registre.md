@@ -1,6 +1,6 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 2.1 (format du registre)
 
-> ⚠ **Tout seuil et toute fenêtre de fréquence sont des PROPOSITIONS — À VALIDER PAR LE COMITÉ (verrou [9]).**
+> ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
 
 | ID | Nom | Conditions exactes | Conséquence | Source | Fenêtre cible |
 |---|---|---|---|---|---|

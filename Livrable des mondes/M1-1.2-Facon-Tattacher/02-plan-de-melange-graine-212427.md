@@ -33,16 +33,20 @@ Le 1ᵉʳ item vu est Q1.2-12, le 2ᵉ est une trame — l'ordre des codes ≠ l
 Objectif final de l'outil : `(0, 0, 0, 0, 0, 11)` — zéro violation dure ; 11 paires adjacentes
 de même orientation résiduelles, tolérées sous le run max borné.
 
-## ⚠ Run max 4 BORNÉ — finding 16 D / 4 I — À RATIFIER PAR LE COMITÉ
+## ✅ Run max 4 BORNÉ — ACCEPTÉ DÉFINITIVEMENT (décision comité, FM-019)
 
 - Composition d'orientation : **16 D** (5 anxiété D + 3 évitement D + 8 trames D) contre
   **4 I** (Q1.2-06, Q1.2-08, Q1.2-10, Q1.2-11).
 - Avec 20 positions et 8 trames ancrées, l'alternance stricte (run max 2) est
   **mécaniquement impossible** : il faudrait ~10 D / 10 I.
 - Le verrou c5 a donc été borné à 4 dans la config (note gravée : « borné 4 — finding 16 D /
-  4 I, alternance stricte impossible ; À RATIFIER PAR LE COMITÉ »). Le run max réel atteint
+  4 I, alternance stricte impossible »). Le run max réel atteint
   est 4 (aucun bloc de même orientation > 4).
-- **La ratification de ce bornage est un verrou [9] — À RATIFIER PAR LE COMITÉ.**
+- **ACCEPTÉ, documenté définitivement** (décision comité, FM-019) — le bornage ne dépend plus
+  d'aucune ratification.
+- **Note bêta (décision comité)** : mesurer le **biais d'accordement** sur cette quête — un run
+  max 4 autorise des séquences plus longues de même orientation ; la bêta doit vérifier que cela
+  ne produit pas d'effet d'aquiescement mesurable (réponses qui se suivent) sur les items carte.
 
 ## ⚠ c2 sans-objet documenté — À VALIDER PAR LE COMITÉ
 

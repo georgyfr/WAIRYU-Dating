@@ -4,7 +4,7 @@
 #          charte des cartes PARTIE 3 (lignes 2862-2985) — VERBATIM.
 # Étage 1 de restitution (carte, 30-60 mots de cœur narratif par variante).
 # Les seuils du sélecteur sont des verrous [9] rejoués tels quels du source
-# gelé — À VALIDER PAR LE COMITÉ.
+# gelé — ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 # ═══════════════════════════════════════════════════════════════════
 quete: "1.3"
 titre: "Tes émotions"
@@ -15,7 +15,7 @@ selection:
   P: "perception (variable moteur P)"
   R: "régulation (variable moteur R)"
   X: "expression / connexion (variable moteur X)"
-note_verrou: "seuils du sélecteur À VALIDER PAR LE COMITÉ (Constitution [9]) — la fonction Dark Empathy (trame) ne participe JAMAIS à la sélection de carte"
+note_verrou: "seuils du sélecteur ADOPTÉS comme valeurs de départ (FM-019) — provisoire concepteur (Constitution [9]) — la fonction Dark Empathy (trame) ne participe JAMAIS à la sélection de carte"
 variantes:
   - ordre: 1
     id: V1

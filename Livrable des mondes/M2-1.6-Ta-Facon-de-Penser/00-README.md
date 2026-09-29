@@ -8,7 +8,7 @@
 - **Élément** : quête 1.6 « Ta façon de penser » — 7 items déclaratifs Likert + 3 énigmes de performance (60-90 s, réponse libre ou choix multiple), doublon longitudinal Q1.6-05.r.
 - **Monde** : M2 — Le Volant (codes Q1.6 — monde = métadonnée, FM-011 v2) · Domaine du Soi (M1+M2).
 - **Statut freemium** : 🆓 gratuit — zéro teaser premium.
-- **Contraintes principales** : énigmes reproduites ENTIÈRES verbatim (énoncés, réponses intuitive/correcte, statut juridique) · énigmes HORS contrat de mélange (ordre source É1→É2→É3) · temps de réponse capté mais jamais rendu · pénalité d'écart de pôle = matching only, jamais au miroir · tout seuil « À VALIDER PAR LE COMITÉ ».
+- **Contraintes principales** : énigmes reproduites ENTIÈRES verbatim (énoncés, réponses intuitive/correcte, statut juridique) · énigmes HORS contrat de mélange (ordre source É1→É2→É3) · temps de réponse capté mais jamais rendu · pénalité d'écart de pôle = matching only, jamais au miroir · tout seuil ADOPTÉ comme valeur de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 - **Ambiguïtés détectées** : ① la synthèse « déclaratif × performance » (POL) est le scoring propre de la quête — son croisement EST intra-quête, donc admissible au miroir, mais la pénalité d'écart de pôle entre deux matchs reste une modulation de matching (PASSE 5), jamais un contenu de miroir ; ② les énigmes n'ayant pas de contrat de mélange, leur ordre de passation suit l'ordre source — FM future à ouvrir ; ③ le rendu des énigmes au miroir décrit la MANIÈRE (vérifier vs répondre vite), jamais un décompte scolaire.
 
 ## Cadrage fiche

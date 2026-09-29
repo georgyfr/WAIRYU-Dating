@@ -1,6 +1,6 @@
 # LIVRABLE 3 — SIGNATURES ATTENDUES DE LA QUÊTE 1.3 (format du registre Monde 1)
 
-> ⚠ **Tout seuil et toute fenêtre de fréquence sont des PROPOSITIONS — À VALIDER PAR LE COMITÉ (verrou [9]).**
+> ⚠ **Seuils et fenêtres : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.**
 > Portée : ces signatures s'évaluent au **Portrait M1** (étage 3) — jamais dans le miroir de quête seul.
 > La quête 1.3 alimente les variables **P** (perception), **R** (régulation) et **X**
 > (expression), 0-1, effectives ; R est le modulateur local du Monde 1. Elle participe aux
@@ -12,12 +12,12 @@
 
 | # | ID | Conditions exactes (verbatim) | Conséquence | Verrou |
 |---|---|---|---|---|
-| 10 | **SIG_RADAR_DOUBLE** | P > 0.65 ET ANX > 0.70 ET R < 0.55 | Brique ombre « fausses alertes » (§2.2). Seuil ANX à 0.70 (pas 0.60) : c'est la valeur qui fait que l'Intense (ANX 0.61) reçoit le radar comme lumière (§1.3) et non comme ombre — vérifié contre les deux Portraits | seuils À VALIDER PAR LE COMITÉ |
-| 12 | **SIG_EXPRESS_CONDITIONNELLE** | X > 0.65 ET ANX > 0.60 | Brique ombre « l'expression qui attend un reçu » (§2.4) — croisement expression × anxiété, la donnée que l'échelle seule ne voit jamais | seuils À VALIDER PAR LE COMITÉ |
-| 22 | **SIG_METEO_FORTE** | S < 0.40 ET R < 0.40 | Brique ombre « la météo intérieure » (§2.1) + définition en ligne de la réactivité (concept nommé une fois, R18) | seuils À VALIDER PAR LE COMITÉ |
-| 23 | **SIG_MOTS_DE_CRISE** | SIG_METEO_FORTE ET X > 0.65 | Brique ombre « les mots qui restent » (§2.2) — réactivité × expressivité : le croisement qui fabrique les mots de crise | seuils À VALIDER PAR LE COMITÉ |
-| 24 | **SIG_VERIF_PRESSION** | ANX > 0.55 ET R < 0.40 | Brique ombre « la vérification sous pression » (§2.4). Seuil ANX abaissé à 0.55 ici : la réactivité transforme une anxiété modérée en pression relationnelle — asymétrie voulue avec la Vigie (0.70) | seuils À VALIDER PAR LE COMITÉ |
-| 25 | **SIG_REN_REQUIS** | R < 0.35 ET (S < 0.45 OU ANX > 0.60) ET garde QFI ≥ 0.60 | Gabarit unique GAB-REN (encadré de renvoi professionnel, formulation verrouillée) · évaluée en dernière passe, déclenchable une seule fois par Portrait, jamais réduplicée · fréquence cible 2-4% | seuils et fenêtre À VALIDER PAR LE COMITÉ |
+| 10 | **SIG_RADAR_DOUBLE** | P > 0.65 ET ANX > 0.70 ET R < 0.55 | Brique ombre « fausses alertes » (§2.2). Seuil ANX à 0.70 (pas 0.60) : c'est la valeur qui fait que l'Intense (ANX 0.61) reçoit le radar comme lumière (§1.3) et non comme ombre — vérifié contre les deux Portraits | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 12 | **SIG_EXPRESS_CONDITIONNELLE** | X > 0.65 ET ANX > 0.60 | Brique ombre « l'expression qui attend un reçu » (§2.4) — croisement expression × anxiété, la donnée que l'échelle seule ne voit jamais | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 22 | **SIG_METEO_FORTE** | S < 0.40 ET R < 0.40 | Brique ombre « la météo intérieure » (§2.1) + définition en ligne de la réactivité (concept nommé une fois, R18) | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 23 | **SIG_MOTS_DE_CRISE** | SIG_METEO_FORTE ET X > 0.65 | Brique ombre « les mots qui restent » (§2.2) — réactivité × expressivité : le croisement qui fabrique les mots de crise | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 24 | **SIG_VERIF_PRESSION** | ANX > 0.55 ET R < 0.40 | Brique ombre « la vérification sous pression » (§2.4). Seuil ANX abaissé à 0.55 ici : la réactivité transforme une anxiété modérée en pression relationnelle — asymétrie voulue avec la Vigie (0.70) | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 25 | **SIG_REN_REQUIS** | R < 0.35 ET (S < 0.45 OU ANX > 0.60) ET garde QFI ≥ 0.60 | Gabarit unique GAB-REN (encadré de renvoi professionnel, formulation verrouillée) · évaluée en dernière passe, déclenchable une seule fois par Portrait, jamais réduplicée · fréquence cible 2-4% | seuils et fenêtre ADOPTÉ (FM-019) — provisoire concepteur |
 
 ## La fonction Dark Empathy — mention SANS ses seuils
 
@@ -36,10 +36,10 @@ Rien de cette fonction n'est visible : aucun slot, aucune citation, aucun texte
 
 | # | ID | Conditions exactes (verbatim) | Conséquence | Verrou |
 |---|---|---|---|---|
-| 3 | SIG_QFI_CRISTALLIN | concordance doublons ≥ 0.90 ET temps de réponse normaux | Affirmations marquées « confirmées sur tes réponses » ; intervalles resserrés au rendu | seuils À VALIDER PAR LE COMITÉ |
-| 4 | SIG_QFI_CONSTRUCTION | concordance doublons 0.60-0.90 | Paragraphes prudents (« tes réponses sur ce point sont partagées — c'est une information en soi ») | seuils À VALIDER PAR LE COMITÉ |
-| 5 | SIG_QFI_STRATEGIQUE | désirabilité sociale élevée (items SDA trame) ET over-claiming ≥ 1 | Déflation des échelles déclarées (facteur 1 − 0.3×SDA) + note §0 renforcée | seuils À VALIDER PAR LE COMITÉ |
-| 6 | SIG_QFI_AVEUGLE | > 20% des items répondu < 1,2 s | Profil suspendu au matching + proposition de re-test (jamais de sanction affichée) | seuils À VALIDER PAR LE COMITÉ |
+| 3 | SIG_QFI_CRISTALLIN | concordance doublons ≥ 0.90 ET temps de réponse normaux | Affirmations marquées « confirmées sur tes réponses » ; intervalles resserrés au rendu | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 4 | SIG_QFI_CONSTRUCTION | concordance doublons 0.60-0.90 | Paragraphes prudents (« tes réponses sur ce point sont partagées — c'est une information en soi ») | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 5 | SIG_QFI_STRATEGIQUE | désirabilité sociale élevée (items SDA trame) ET over-claiming ≥ 1 | Déflation des échelles déclarées (facteur 1 − 0.3×SDA) + note §0 renforcée | seuils ADOPTÉ (FM-019) — provisoire concepteur |
+| 6 | SIG_QFI_AVEUGLE | > 20% des items répondu < 1,2 s | Profil suspendu au matching + proposition de re-test (jamais de sanction affichée) | seuils ADOPTÉ (FM-019) — provisoire concepteur |
 
 La signature 5 (SIG_QFI_STRATEGIQUE) est directement impliquée par cette quête : ses énoncés
 carte d'expression et de perception sont des points d'over-claiming mesurables — le croisement

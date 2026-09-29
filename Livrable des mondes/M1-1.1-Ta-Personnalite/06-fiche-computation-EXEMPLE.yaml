@@ -29,7 +29,7 @@ computation:
     regle: "la détection des incohérences utilise les inversés (conventions du source) ; concordance doublons → QFI (fenêtre de présentation ≥ 2 semaines — À VALIDER PAR LE COMITÉ)"
   modulation:
     - si: "C ≥ 0.65 ET S ≥ 0.60"
-      effet: "carte V2 — Le·La Bâtisseur·se (sélecteur n°2, première correspondance retenue — seuils À VALIDER PAR LE COMITÉ)"
+      effet: "carte V2 — Le·La Bâtisseur·se (sélecteur n°2, première correspondance retenue — seuils ADOPTÉS (FM-019) — provisoire concepteur COMITÉ)"
     - si: "C > 0.75 ET A > 0.60 ET POL > 0.60"
       effet: "signature narrative SIG_STANDARD_PROJETE (brique ombre « projection de standard » — à valider par le comité)"
     - si: "QFI < 0.60"

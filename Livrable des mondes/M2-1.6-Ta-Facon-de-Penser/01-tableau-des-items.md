@@ -41,7 +41,7 @@
 > **Scoring :** pôle analytique = items ↩ + énigmes résolues ; le **temps de réponse aux énigmes** est capté (les impulsifs lâchent la réponse intuitive < 15 s). Synthèse déclaratif × performance → dimension de compatibilité de communication (pénalité si écart de pôle > 0.7 entre deux matchs).
 
 ⚠ Seuils de ce scoring — fenêtre < 15 s et pénalité d'écart de pôle > 0.7 :
-**À VALIDER PAR LE COMITÉ** (verrou [9]). La synthèse déclaratif × performance alimente la variable
+**ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta. La synthèse déclaratif × performance alimente la variable
 **POL** (registre §0.2). La pénalité d'écart de pôle s'applique **au matching, entre deux profils**
 (SIG_ECART_POLE, PASSE 5) — jamais dans le miroir d'une quête seule, jamais comme chiffre rendu.
 

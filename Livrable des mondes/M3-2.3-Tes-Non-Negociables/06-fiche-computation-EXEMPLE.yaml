@@ -22,7 +22,7 @@ computation:
       (mes réalités × ses lignes rouges ; ses réalités × mes lignes rouges) →
       élimination déterministe au matching
     rendu: moteur_seul        # aucun des deux membres ne voit le filtre agir
-    condition: ">= 1 coche — seuil minimal À VALIDER PAR LE COMITÉ"
+    condition: ">= 1 coche — seuil minimal ADOPTÉ (FM-019) — provisoire concepteur"
   fiabilite:
     role: croisement_retour
     regle: >-

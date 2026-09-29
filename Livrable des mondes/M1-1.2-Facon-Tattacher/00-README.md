@@ -48,5 +48,6 @@ fins (signatures) opèrent au Portrait M1 (étage 3), jamais dans le miroir de q
 
 - **Zéro fuite** : aucune formulation de trame n'existe dans ce dossier (verrou [11-b]).
 - **Zéro métadonnée visible** : codes, scores et sigles ne franchissent jamais un texte rendu (Constitution [3]).
-- **Zéro décision** : tout seuil, toute fenêtre, tout run max est une proposition
-  « À VALIDER PAR LE COMITÉ » (Constitution [9]).
+- **Décisions comité appliquées (FM-019)** : seuils et fenêtres proposés ADOPTÉS comme valeurs de
+  départ — provisoire concepteur — re-signature professionnelle avant bêta · run max 4 borné
+  ACCEPTÉ (note bêta : biais d'accordement) · c2 sans-objet : reste en attente.

@@ -13,7 +13,7 @@
 | `00-README.md` | Fiche de cadrage en tête (dimensions, format NON-Likert, signatures, slots, doctrine) + lecture des fichiers + flux |
 | `01-tableau-des-items.md` | Intégralité des 10 items : code gelé, énoncé, format, options, croisement moteur, fiche de computation condensée |
 | `02-plan-de-melange-graine-23427.md` | Plan de mélange réel : graine seedée 23427, ordre de passation, verdicts c1-c6 (sans-objet documentés), table de vérification |
-| `03-signatures-registre.md` | 3 signatures proposées (format du registre) — tous les seuils « À VALIDER PAR LE COMITÉ » |
+| `03-signatures-registre.md` | 3 signatures (format du registre) — seuils ADOPTÉS comme valeurs de départ, provisoire concepteur (FM-019) |
 | `04-slots-de-miroir.md` | Miroir MOYEN (150-250 mots) : 3 slots + 9 verrous de slot |
 | `05-ecran-d-intro.md` | Écran d'intro (2 phrases, ton de la Constitution, statut freemium respecté) |
 | `06-fiche-computation-EXEMPLE.yaml` | Fiche de computation complète de l'item Q2.3-01 (format checklist), modèle des 5 canaux |
@@ -29,7 +29,7 @@
 | Sigle hors glossaire [4] | ✅ aucun sigle utilisé (aucune trame dans la quête) |
 | Données jugées moralement | ✅ cocher = « c'est rédhibitoire pour moi » — limite personnelle, aucune normativité, le cadre ouvert n'est jamais jugé |
 | Code/score/sigle au rendu | ✅ aucun — rappels en toutes lettres (ancre_item en champ moteur) |
-| Verrous [9] traités comme décisions | ✅ tous les seuils marqués **« À VALIDER PAR LE COMITÉ »** |
+| Verrous [9] traités comme décisions | ✅ tous les seuils **ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — marqués « provisoire concepteur — re-signature professionnelle avant bêta » |
 
 ## ⚠️ Points en attente de validation comité
 

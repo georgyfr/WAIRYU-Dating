@@ -25,7 +25,7 @@ Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` 
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
 **Taux de matérialisation : 148/570 items = 26,0 %** (24 + 124 items rédigés du Monde 1 ; 1.5 « conçus »
-et 1.8 « cadrés » exclus — P1 matérialise, ne rédige pas ; PHQ-9 différé au comité).
+et 1.8 « cadrés » exclus — P1 matérialise, ne rédige pas ; PHQ-9 maintenu Phase 3 avec verrou renforcé (relecture professionnelle obligatoire, option de retrait — FM-019)).
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 
@@ -39,6 +39,10 @@ et 1.8 « cadrés » exclus — P1 matérialise, ne rédige pas ; PHQ-9 différ�
 ## 🔒 Posture de production
 
 - Trois verrous HUMAINS (Constitution [9]) : seuils psychométriques, formulations de sécurité/bien-être,
-  validation scientifique. Toute valeur de ce type dans les livrables est marquée **« À VALIDER PAR LE COMITÉ »**.
+  validation scientifique. **État après FM-019 (décisions comité 2026-09-29)** : les seuils proposés
+  sont ADOPTÉS comme valeurs de départ et marqués « **provisoires concepteur — re-signature
+  professionnelle avant bêta** » dans les livrables ; les valeurs des signatures de sécurité restent
+  consignées hors dépôt (document trames, canal privé). Les points non couverts par FM-019 restent
+  marqués « À VALIDER PAR LE COMITÉ ».
 - Circuit de chaque livrable : **production → validateur (linter) → auditeur hostile C1 (session séparée) → gouvernance D1**.
 - Le Contrat d'Inventaire v1.3 reste la SOURCE UNIQUE. En cas de divergence : LE CONTRAT GAGNE — signale, ne corrige pas.

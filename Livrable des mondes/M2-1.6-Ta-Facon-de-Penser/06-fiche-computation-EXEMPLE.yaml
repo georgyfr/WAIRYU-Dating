@@ -32,20 +32,20 @@ computation:
       alimente POL (pôle de traitement analytique, registre §0.2)
     note: >-
       les impulsifs lâchent la réponse intuitive < 15 s (verbatim source) —
-      fenêtre À VALIDER PAR LE COMITÉ ; le temps n'est JAMAIS rendu en secondes
+      fenêtre ADOPTÉE (FM-019) — provisoire concepteur ; le temps n'est JAMAIS rendu en secondes
   modulation:
     - si: "C > 0.75 ET A > 0.60 ET POL > 0.60"
       effet: >-
         SIG_STANDARD_PROJETE consomme POL — brique ombre « projection de standard » (Portraits)
-        — seuils À VALIDER PAR LE COMITÉ
+        — seuils ADOPTÉS (FM-019) — provisoire concepteur
     - si: "S > 0.65 ET POL > 0.65"
       effet: >-
         SIG_CALME_VERROU consomme POL — brique ombre « refuse l'urgence émotionnelle »
-        (Portraits) — seuils À VALIDER PAR LE COMITÉ
+        (Portraits) — seuils ADOPTÉS (FM-019) — provisoire concepteur
     - si: "|POL_A − POL_B| > 0.70 au matching"
       effet: >-
         SIG_ECART_POLE — modulation de compatibilité de communication (pénalité) + signal
-        conversationnel symétrique — seuil À VALIDER PAR LE COMITÉ ; jamais rendu en chiffre
+        conversationnel symétrique — seuil ADOPTÉ (FM-019) — provisoire concepteur ; jamais rendu en chiffre
   ancrage:
     rappel_autorise: true
     forme: "en toutes lettres, 2e personne, sans code ni score"

@@ -8,7 +8,7 @@
 - **Élément** : quête 1.4 « Ton contrôle sur toi-même » — 8 items carte Likert, mono-dimension `autocontrole`, doublon longitudinal Q1.4-01.r, aucune trame.
 - **Monde** : M2 — Le Volant (codes Q1.4 — le monde est une métadonnée, FM-011 v2) · Domaine du Soi (M1+M2).
 - **Statut freemium** : 🆓 gratuit — zéro teaser premium (l'écran de conversion n'existe qu'à la complétion de M5).
-- **Contraintes principales** : fidélité VERBATIM au source · mono-dimension (pas de contrainte c1/c4 de mélange) · AUCUNE trame · SIG_DGR_PRECURSEUR jamais avec ses seuils · tout seuil « À VALIDER PAR LE COMITÉ » · miroir MOYEN 150-250 mots.
+- **Contraintes principales** : fidélité VERBATIM au source · mono-dimension (pas de contrainte c1/c4 de mélange) · AUCUNE trame · SIG_DGR_PRECURSEUR jamais avec ses seuils · tout seuil ADOPTÉ comme valeur de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta · miroir MOYEN 150-250 mots.
 - **Ambiguïtés détectées** : ① la numérotation 1.x traverse M1/M2 — dossier nommé `M2-1.4` conformément à la mission ; ② le doublon Q1.4-01.r (classe « trame fiabilité ») : énoncé reproduit sur instruction de mission — frontière [11-b] à arbitrer par le comité ; ③ usage moteur « croisé avec la tâche 1.5 » : croisement inter-quêtes → ÉTAGE 3 (Portrait de Monde), jamais dans le miroir de la quête seule.
 
 ## Cadrage fiche

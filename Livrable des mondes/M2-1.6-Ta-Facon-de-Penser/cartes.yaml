@@ -1,7 +1,8 @@
 # LIVRABLE 7 — CARTES DE LA QUÊTE 1.6 « TA FAÇON DE PENSER »
 # Charte des cartes, PARTIE 6 du source gelé (l. 3194-3298) — textes VERBATIM.
 # ⚠ Toutes les conditions de sélection ci-dessous sont des propositions du source gelé :
-#   À VALIDER PAR LE COMITÉ (verrou [9]). Elles vivent ici côté moteur — jamais rendues en UI.
+#   ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature
+#   professionnelle avant bêta. Elles vivent ici côté moteur — jamais rendues en UI.
 
 quete: "1.6"
 titre: "Ta façon de penser"
@@ -11,7 +12,7 @@ carte_recompense: presente          # la quête 1.6 A UNE carte standard
 enonce_carte: "🧭 **QUÊTE ACCOMPLIE — « Ta façon de penser »**"
 selection:
   logique: "Logique de sélection (verbatim charte) : D = pôle déclaratif analytique, E = énigmes résolues"
-  note: "seuils du sélecteur D×E : propositions du source gelé — À VALIDER PAR LE COMITÉ"
+  note: "seuils du sélecteur D×E : propositions du source gelé — ADOPTÉS (FM-019) — provisoire concepteur"
 variantes:
   - ordre: 1
     condition: "D ≥ 0.60 ET E ≥ 2/3"

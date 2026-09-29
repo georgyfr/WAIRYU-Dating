@@ -29,14 +29,14 @@
 | Formulations de trame au dépôt (FM-018 / [11-b]) | ✅ la quête ne contient **aucun** item de trame ▲ — aucun énoncé réservé n'est cité |
 | **Seuils de signature de sécurité au dépôt** | ✅ **SIG_DGR_PRECURSEUR (n° 32) : conditions et seuils ABSENTS de tous les fichiers** — « document trames, hors dépôt, canal privé » (cf. `03-signatures-registre.md`) |
 | Sigle hors glossaire [4] en UI | ✅ AC_D / AC_B / EC / DGR / IMP_B : côté moteur uniquement, jamais rendus à l'utilisateur |
-| Verrous [9] traités comme décisions | ✅ tout seuil (sélecteurs de carte, SIG_COH_*, fenêtres) marqué **« À VALIDER PAR LE COMITÉ »** |
+| Verrous [9] traités comme décisions | ✅ tout seuil (sélecteurs de carte, SIG_COH_*, fenêtres) **ADOPTÉ comme valeur de départ** (décision comité, FM-019) — « provisoire concepteur — re-signature professionnelle avant bêta » |
 | Codes/scores/sigles rendus à l'utilisateur [3] | ✅ aucun — rappels en toutes lettres uniquement |
 
 ## ⚠️ Points en attente de validation comité
 
 - **SIG_DGR_PRECURSEUR** : les conditions et seuils exacts (deux variables, deux seuils) sont consignés au document trames — hors dépôt, canal privé. Le présent livrable les omit VOLONTAIREMENT.
-- Seuils des sélecteurs de carte (0.75 / 0.60 / 0.45 / 0.30) : propositions du source gelé — À VALIDER PAR LE COMITÉ.
-- Conditions de SIG_COH_HAUTE (EC ≤ 0.15) / SIG_COH_DIV (EC ≥ 0.30), garde QFI ≥ 0.60, pondération interne 0.6/0.4 de la règle de silence : À VALIDER PAR LE COMITÉ.
+- Seuils des sélecteurs de carte (0.75 / 0.60 / 0.45 / 0.30) : propositions du source gelé — ADOPTÉS comme valeurs de départ (FM-019) : provisoire concepteur — re-signature professionnelle avant bêta.
+- Conditions de SIG_COH_HAUTE (EC ≤ 0.15) / SIG_COH_DIV (EC ≥ 0.30), garde QFI ≥ 0.60, pondération interne 0.6/0.4 de la règle de silence : ADOPTÉES comme valeurs de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 - Usage moteur « courbe J+90 » (le comportement prime progressivement sur le déclaratif) : calendrier et pondération À VALIDER PAR LE COMITÉ.
 - **Tension documentaire signalée** : le doublon `Q1.4-01.r` fait partie de la trame fiabilité (4 doublons longitudinaux) ; son énoncé est reproduit ici sur instruction explicite de la mission (« doublon Q1.4-01.r autorisé »). Le comité arbitre la frontière exacte de [11-b] pour la classe des doublons.
 

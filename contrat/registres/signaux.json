@@ -1,0 +1,125 @@
+{
+  "_meta": {
+    "fichier": "contrat/registres/signaux.json",
+    "role": "Registre matérialisé des codes signaux — la maison fichier qui manquait (paquet P1-M1, séquence verrouillée étape 1).",
+    "reference": "Constitution v2.1, section [4] — LE GLOSSAIRE DES SIGNAUX (côté moteur, JAMAIS en UI)",
+    "decision": "DÉCISIONS COMITÉ (FM-019, 2026-09-29) — renommages validés : SDT-N → DTM_N · SDT-M → DTM_M · DE ajouté au registre · RSQ inchangé. Aucun seuil ne change : ce registre ne contient AUCUN seuil (les valeurs vivent dans les fiches de signatures ; les conditions fines de sécurité restent hors dépôt, document trames, canal privé).",
+    "avertissement_historique": "Le sigle SDT désigne le Dark Triad Manipulative (renommé DTM par FM-002, renommages consommés par FM-019). Il ne désigne JAMAIS la théorie de l'autodétermination.",
+    "note_paquet_p1": "Le paquet P1-M1 annonçait « 18 codes signaux » (liste du source avec alias SDT-N/SDT-M/SDT et codes proposés) — le registre matérialisé retient les 13 codes gelés du dictionnaire [4] de la Constitution + DE (décision comité) ; les alias historiques vivent dans la table de correspondance.",
+    "date_materialisation": "2026-09-29",
+    "fiche_mutation": "FM-019"
+  },
+  "codes": [
+    {
+      "code": "DTM_N",
+      "definition": "narcissisme subclinique (entitlement + grandiosité)",
+      "ancien_nom": "SDT-N",
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["SIG-2.1-03 (quête 2.1, trames ▲)", "registre Monde 1 : trames T01-T08 (quête 1.1)", "SIG_SDT_COMPLET (n° 27)", "SIG_SDT_LEGER (n° 28)", "SIG_DARK_EMPATHY (n° 29)", "SIG_MEFANCE_FROIDE (n° 30)"]
+    },
+    {
+      "code": "DTM_M",
+      "definition": "machiavélisme (méfiance projetée)",
+      "ancien_nom": "SDT-M",
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["registre Monde 1 : trames T09-T12 (quête 1.2)", "SIG_MEFANCE_FROIDE (n° 30)", "SIG_MEFANCE_VULNERABLE (n° 31)"]
+    },
+    {
+      "code": "DGR",
+      "definition": "dangerosité réactive (impulsivité × instabilité)",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["SIG_DGR_PRECURSEUR (n° 32) — pré-signal, quête 1.4 ; évaluation complète aux Mondes 3 (argent) et 5 (tension)"]
+    },
+    {
+      "code": "JR1",
+      "definition": "jalousie comportementale",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quête 5.4 (P2, tissés)"]
+    },
+    {
+      "code": "CSR",
+      "definition": "consommations comportementales (jeu, écrans, achats, travail)",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quête 3.3"]
+    },
+    {
+      "code": "CMP",
+      "definition": "compulsion intime",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quête 6.1"]
+    },
+    {
+      "code": "COC",
+      "definition": "vigilance coercion (vécu du refus)",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quêtes 6.2 + 8.3 (matrices + 3)"]
+    },
+    {
+      "code": "RB1",
+      "definition": "rebound / disponibilité relationnelle",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quête 4.2 (échelle intégrée)"]
+    },
+    {
+      "code": "BLA",
+      "definition": "blâme externe (locus de contrôle)",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["quête 4.3 (1 ouverte)"]
+    },
+    {
+      "code": "RSQ",
+      "definition": "sensibilité au rejet (pilote l'UX adaptative)",
+      "ancien_nom": "RSQ (inchangé — décision comité)",
+      "statut": "actif — UX adaptative : jamais visible, jamais dans le score, jamais au Portrait",
+      "alimente": ["trames T13-T16 (quête 1.2)", "SIG_RSQ_HAUT (n° 33)", "quête 4.2 (+4 en 1.2)"]
+    },
+    {
+      "code": "QFI",
+      "definition": "qualité de fiabilité du profil",
+      "ancien_nom": null,
+      "statut": "actif — moteur seul, jamais affiché, jamais dit",
+      "alimente": ["trame fiabilité 9A (doublons, désirabilité, over-claiming, temps de réponse)", "garde universelle des signatures narratives", "SIG-2.4-02 / SIG-2.4-03 / SIG-2.5-02 (croisements Socle)"]
+    },
+    {
+      "code": "ECD",
+      "definition": "écart valeurs déclarées / révélées",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["croisements Monde 2 × comportements révélés (étages ultérieurs)"]
+    },
+    {
+      "code": "GEN",
+      "definition": "générosité réelle (geste mesuré)",
+      "ancien_nom": null,
+      "statut": "actif — côté moteur uniquement, jamais en UI",
+      "alimente": ["gestes mesurés (étages ultérieurs)"]
+    },
+    {
+      "code": "DE",
+      "definition": "Dark Empathy — croisement cognition-haute × compassion-basse ; deux composantes : DE_U (empathie outil, instrumentale) et DE_C (empathie souci, compassionnelle ; items inversés 6 − réponse)",
+      "ancien_nom": null,
+      "statut": "AJOUTÉ au registre (décision comité, FM-019) — composantes côté moteur uniquement, jamais en UI",
+      "alimente": ["trames T21-T26 (quête 1.3)", "SIG_DARK_EMPATHY (n° 29)"]
+    }
+  ],
+  "correspondance_anciens_codes": {
+    "SDT-N": "DTM_N",
+    "SDT-M": "DTM_M",
+    "SDT (signature agrégée du source)": "DTM_N + DTM_M (+ DE au croisement) — éclatée en codes gelés",
+    "RSQ": "RSQ (inchangé — décision comité)",
+    "DE": "DE (ajouté au registre — décision comité, FM-019)"
+  },
+  "regles": [
+    "Aucun code signal ne franchit jamais un texte destiné à l'utilisateur (Constitution [3]).",
+    "Les réponses des items de trame n'alimentent aucun slot, aucune carte, aucun rappel en toutes lettres (Constitution [2] — consentement structurel).",
+    "Ce registre ne contient AUCUN seuil : les valeurs des signatures vivent dans les fiches (03-signatures des livrables, registre Monde 1) ; les conditions fines de sécurité restent hors dépôt (FM-018 / Constitution [11-b]).",
+    "Un code est gelé à jamais : ce sont les formulations et les noms qui tournent, jamais les codes (arbitrage ③)."
+  ]
+}

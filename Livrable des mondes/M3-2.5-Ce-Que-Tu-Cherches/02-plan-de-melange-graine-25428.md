@@ -59,6 +59,13 @@ l'ordre des codes — c'est précisément ce que le re-tirage a rétabli.
 Note d'honnêteté sur `run_max: 0` dans l'artefact : la valeur affichée 0 signifie « non mesuré »
 (c5 sans-objet), pas « run de longueur zéro ».
 
+## La 4ᵉ réponse « Je découvre » (décision comité, FM-019) — hors contrat de mélange
+
+La 4ᵉ réponse globale « Je découvre » (décisions produit c — compatible avec tout, message doux si
+les 3 « non ») est une réponse de QUÊTE, pas un item : le contrat de mélange porte toujours
+exactement 3 items (Q2.5-01 → Q2.5-03). Aucune graine, aucun ordre, aucune contrainte ne change —
+le re-tirage 25427 → 25428 raconté ci-dessus reste la vérité du mélange.
+
 ## Reproductibilité
 
 Réexécuter `python3 ci/outils/melange.py ci/quetes/2.5.json` reproduit l'intégralité du récit ci-dessus :

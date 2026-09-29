@@ -5,7 +5,7 @@
 
 | Slot | Contenu | Degrés | Citations en toutes lettres (exemples) |
 |---|---|---|---|
-| **S1 — Ton cap** | Rappel de l'intention affichée, en toutes lettres, dans les mots mêmes de la réponse ; descriptif, daté (« aujourd'hui ») — jamais figé en trait permanent | exclusivité posée / découverte / non-exclusivité assumée / intention à clarifier (état « Non / Non / Non » — incomplet, pas fautif) | « quand tu as répondu que tu cherches une relation exclusive » (ancre_item : Q2.5-01, champ moteur) · « quand tu as dit que l'exclusivité n'est pas ce que tu vises aujourd'hui » (ancre_item : Q2.5-03, champ moteur) |
+| **S1 — Ton cap** | Rappel de l'intention affichée, en toutes lettres, dans les mots mêmes de la réponse ; descriptif, daté (« aujourd'hui ») — jamais figé en trait permanent | exclusivité posée / découverte / non-exclusivité assumée / **en exploration (4ᵉ réponse « Je découvre »)** / intention à clarifier (état « Non / Non / Non » — message doux, incomplet, pas fautif) | « quand tu as répondu que tu cherches une relation exclusive » (ancre_item : Q2.5-01, champ moteur) · « quand tu as dit que l'exclusivité n'est pas ce que tu vises aujourd'hui » (ancre_item : Q2.5-03, champ moteur) |
 | **S2 — Ce que ton cap demande à l'autre** | Ombre : chaque cap a un coût relationnel nommé — l'exclusivité presse les étapes ; la découverte et la non-exclusivité laissent quelqu'un s'attacher pendant que l'autre explore. Coût pour soi ET pour l'autre, conditionnel fréquentiel | cap unique / cap ouvert | « quand tu as déclaré chercher une rencontre, sans plan précis » (ancre_item : Q2.5-02, champ moteur) |
 
 ## Verrous de slot (9)
@@ -21,8 +21,10 @@
    invisible.
 6. **Registre probabiliste** : « conduit fréquemment à », jamais le futur certain.
 7. **Incomplétude assumée** : le miroir ne prétend jamais couvrir toute l'intention ; l'état
-   « intention à clarifier » est traité comme un état normal, jamais comme un défaut ; l'horizon de
-   complétude (6.1) n'est JAMAIS mentionné au rendu gratuit (Constitution [6] — aucun teaser premium).
+   « intention à clarifier » et l'état « en exploration » (« Je découvre ») sont traités comme des
+   états normaux, jamais comme des défauts — le « Non / Non / Non » est accueilli par un **message
+   doux** (décision comité), sans relance ni insinuation ; l'horizon de complétude (6.1) n'est
+   JAMAIS mentionné au rendu gratuit (Constitution [6] — aucun teaser premium).
 8. **L'intention est datée, pas figée** : « aujourd'hui » est rappelé tel quel — aucun texte ne transforme
    une réponse d'aujourd'hui en trait permanent de la personne.
 9. **Croisements autorisés ici** : 2.5 × 2.3 × 2.4 (même monde M3, quêtes Socle). Les liaisons du

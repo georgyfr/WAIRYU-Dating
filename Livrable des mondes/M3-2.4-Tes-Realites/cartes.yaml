@@ -37,6 +37,7 @@ variantes:
       egalite: "ombre ≥ lumière — tolérance d'équilibre À VALIDER PAR LE COMITÉ"
 regles_documentees:
   - "comptage des mots : tokens contenant au moins une lettre (la ponctuation seule, ex. « : », ne compte pas) — les valeurs de contrôle ci-dessus utilisent cette méthode"
+  - "visibilité des réalités (décision comité FM-019) : chips visibles par défaut pour les items neutres, choix privé par item pour les sensibles, matching actif même sur les privés — les cartes et le miroir respectent toujours ce choix"
   - "l'ombre des deux variantes décrit un coût de mécanisme (filtrage, tri reporté) — jamais un défaut de la personne"
   - "coût pour soi ET pour l'autre nommés (A : écartement à l'insu de l'autre · B : découverte après attachement)"
   - "registre probabiliste : aucun futur certain (« s'écartent », « se découvrent » — présent fréquentiel)"

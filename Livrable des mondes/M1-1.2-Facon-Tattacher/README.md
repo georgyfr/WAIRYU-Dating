@@ -28,18 +28,18 @@
 | Items non demandés | ✅ 20 exactement (12 carte + 8 trame) + 2 doublons fiabilité autorisés |
 | Format d'échelle changé | ✅ Likert 5 verrouillé (Arbitrage 2) |
 | Sigle hors glossaire [4] | ✅ DTM_M et RSQ sont au glossaire [4] — côté moteur uniquement, jamais en UI |
-| Verrous [9] traités comme décisions | ✅ seuils, fenêtres et run max borné marqués **« À VALIDER PAR LE COMITÉ »** — aucune décision |
+| Verrous [9] traités comme décisions | ✅ seuils et fenêtres **ADOPTÉS comme valeurs de départ** (FM-019, provisoire concepteur) · run max borné **ACCEPTÉ** (FM-019) · c2 sans-objet toujours en attente |
 | **FM-018 / Constitution [11-b]** — fuite de formulation de trame | ✅ **ZÉRO FUIE** : T09-T16 = lignes-réservées (codes + signal + positions au mélange uniquement, énoncés hors dépôt) |
 | Fidélité au source gelé | ✅ énoncés carte et cartes VERBATIM — 1 énoncé > 12 mots documenté en « Dérives documentées » |
 | Restitution des trames | ✅ aucun slot, aucune citation, aucun rappel — la trame sécurité n'a pas d'étage de restitution (Constitution [2]) |
 
 ## ⚠️ Points en attente de validation comité
 
-- **Run max 4 borné** (finding 16 D / 4 I, alternance stricte impossible) — À RATIFIER PAR LE COMITÉ.
+- ✅ **Run max 4 borné** (finding 16 D / 4 I, alternance stricte impossible) — **ACCEPTÉ, documenté définitivement** (décision comité, FM-019). Note bêta : mesurer le biais d'accordement sur cette quête.
 - **c2 sans-objet documenté** : 8 trames ancrées sur 20 positions rendent l'interdiction d'adjacence infaisable (tout slot non-trame touche une trame) — À VALIDER PAR LE COMITÉ.
 - Fenêtre des doublons fiabilité (≥ 2 semaines) — À VALIDER PAR LE COMITÉ.
-- Alignement DTM_M / RSQ au registre des signaux gelé (signaux.json sans maison fichier — signal remonté en Phase B).
-- Seuils des signatures (registre Monde 1 rejoués tels quels) — À VALIDER PAR LE COMITÉ.
+- ✅ Alignement DTM_M / RSQ au registre des signaux : `contrat/registres/signaux.json` MATÉRIALISÉ (décision comité, FM-019 — renommages SDT-N→DTM_N, SDT-M→DTM_M, DE ajouté, RSQ inchangé).
+- Seuils des signatures (registre Monde 1 rejoués tels quels) — ADOPTÉS comme valeurs de départ (FM-019) : provisoire concepteur — re-signature professionnelle avant bêta.
 - Les conditions fines des 6 signatures de sécurité et de SIG_RSQ_HAUT vivent **hors dépôt** (document trames) — jamais ici.
 
 ## 🔁 Circuit restant

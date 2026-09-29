@@ -26,7 +26,7 @@
 | Items non demandés | ✅ 24 exactement (20 carte + 4 ▲) |
 | Format d'échelle changé | ✅ Likert 5 verrouillé (Arbitrage 2) |
 | Sigle hors glossaire [4] | ✅ seul DTM_N utilisé, côté moteur, jamais en UI |
-| Verrous [9] traités comme décisions | ✅ seuils et fenêtres marqués **« À VALIDER PAR LE COMITÉ »** — aucune décision |
+| Verrous [9] traités comme décisions | ✅ seuils et fenêtres **ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — marqués « provisoire concepteur — re-signature professionnelle avant bêta » |
 
 ## ⚠️ Points en attente de validation comité
 

@@ -37,5 +37,5 @@
 - **Neutralité des deux pôles** : le flair et le calcul « marchent » tous les deux (verbatim intro) —
   aucune orientation n'est jamais valorisée, ni aux items, ni aux énigmes, ni au miroir.
 - Degrés mappés sur les zones moteur (faible < 0.35 · central 0.35-0.65 · élevé > 0.65) — bornes de
-  rendu : À VALIDER PAR LE COMITÉ.
+  rendu : ADOPTÉES comme valeurs de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 - Aucun croisement inter-quêtes ici (POL consommée au Portrait et au matching — ÉTAGE 3+).

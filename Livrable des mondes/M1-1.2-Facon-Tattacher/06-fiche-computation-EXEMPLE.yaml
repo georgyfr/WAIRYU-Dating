@@ -29,9 +29,9 @@ computation:
     regle: "concordance intra-dimension évitement · garde universelle QFI"
   modulation:
     - si: "EVI > 0.65 ET S > 0.55 ET O > 0.65"
-      effet: "briques lumière composées du bloc autonome — moteur (seuils À VALIDER PAR LE COMITÉ)"
+      effet: "briques lumière composées du bloc autonome — moteur (seuils ADOPTÉS (FM-019) — provisoire concepteur)"
     - si: "EVI > 0.65 ET X < 0.55"
-      effet: "brique ombre « la forteresse intérieure accumule » — moteur (seuils À VALIDER PAR LE COMITÉ)"
+      effet: "brique ombre « la forteresse intérieure accumule » — moteur (seuils ADOPTÉS (FM-019) — provisoire concepteur)"
     - si: "QFI < 0.60"
       effet: "signatures narratives suspendues — versions prudentes, jamais d'affirmation forte"
   ancrage:

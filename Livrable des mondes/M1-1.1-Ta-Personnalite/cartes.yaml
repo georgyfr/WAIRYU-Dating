@@ -3,7 +3,7 @@
 # Source : charte des cartes — « refonte des tests et outils wairyu.md », PARTIE 1 (variantes 1.1).
 # Sélecteurs et textes : VERBATIM du source gelé (fidélité [8]) — toute retouche passe par une
 # Fiche de Mutation.
-# ⚠ Tout seuil : « À VALIDER PAR LE COMITÉ » (verrou [9]).
+# ⚠ Seuils : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 # ═══════════════════════════════════════════════════════════════════
 
 quete: "1.1 Ta personnalité"
@@ -19,7 +19,7 @@ variables:
   S: stabilite                  # Q1.1-41 → 50
 domaine_variables: "0 à 1 (constantes de zone du registre : faible < 0.35 · central 0.35-0.65 · élevé > 0.65)"
 
-logique_de_selection: "évaluée dans l'ordre (1 → 7), première correspondance retenue — tout seuil À VALIDER PAR LE COMITÉ"
+logique_de_selection: "évaluée dans l'ordre (1 → 7), première correspondance retenue — seuils ADOPTÉS (FM-019, provisoire concepteur)"
 selecteurs_verbatim:
   - {ordre: 1, condition: "S < 0.40 ET (E ≥ 0.55 OU O ≥ 0.55)", variante: "V5 — L'Intense"}
   - {ordre: 2, condition: "C ≥ 0.65 ET S ≥ 0.60", variante: "V2 — Le·La Bâtisseur·se"}
@@ -117,6 +117,6 @@ notes_conformite:
   - "4 variantes dépassent la cible 30-60 mots de l'étage 1 (V1 : 68 · V2 : 61 · V4 : 61 · V5 : 61) — dérive documentée, À VALIDER PAR LE COMITÉ (comptage : segments séparés par des espaces, hors ponctuation isolée ; guillemets et tirets exclus)."
   - "« jamais » en absolu présent dans le texte verbatim de V1 (« Ta curiosité n'est jamais froide ») — interdit lexical [3] vs fidélité [8] : arbitrage comité."
   - "Ombres verbatim : l'ancrage explicite « en situation de couple » (Constitution [2]) n'est pas littéral dans toutes les variantes du source (ex. V6) — arbitrage comité, fidélité [8] maintenue."
-  - "Les seuils des sélecteurs et l'ordre d'évaluation : À VALIDER PAR LE COMITÉ (aucun verrou [9] traité comme décision)."
+  - "Les seuils des sélecteurs et l'ordre d'évaluation : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta."
   - "Aucun code, score ou sigle dans les textes de carte (Constitution [3]) — les variables O C E A S ne vivent que dans les sélecteurs, côté moteur."
   - "Symétrie lumière/ombre : chaque variante porte exactement 1 phrase lumière-dominante et 1 zone d'ombre + 1 tension intérieure (structure verbatim du source)."

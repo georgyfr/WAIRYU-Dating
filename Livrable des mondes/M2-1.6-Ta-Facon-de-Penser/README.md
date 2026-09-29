@@ -33,10 +33,10 @@
 
 ## ⚠️ Points en attente de validation comité
 
-- **Pénalité d'écart de pôle 0.70** (SIG_ECART_POLE, matching) : proposition du registre — À VALIDER PAR LE COMITÉ.
-- **Fenêtre « réponse intuitive < 15 s »** (captation du temps aux énigmes) : À VALIDER PAR LE COMITÉ.
+- **Pénalité d'écart de pôle 0.70** (SIG_ECART_POLE, matching) : proposition du registre — ADOPTÉE comme valeur de départ (FM-019) : provisoire concepteur — re-signature professionnelle avant bêta.
+- **Fenêtre « réponse intuitive < 15 s »** (captation du temps aux énigmes) : ADOPTÉE comme valeur de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 - Seuils du sélecteur de carte (D ≥ 0.60 / < 0.40 ; E ≥ 2/3 / ≤ 1/3) : propositions du source gelé — À VALIDER.
-- Conditions de SIG_STANDARD_PROJETE (C > 0.75 ET A > 0.60 ET POL > 0.60) et SIG_CALME_VERROU (S > 0.65 ET POL > 0.65) : À VALIDER PAR LE COMITÉ.
+- Conditions de SIG_STANDARD_PROJETE (C > 0.75 ET A > 0.60 ET POL > 0.60) et SIG_CALME_VERROU (S > 0.65 ET POL > 0.65) : ADOPTÉES comme valeurs de départ (FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 - **Items de performance hors contrat de mélange** (énigmes en ordre source É1→É2→É3) : cette absence de contrat est documentée — Fiche de Mutation future demandée (FM).
 - **Tension documentaire signalée** : le doublon `Q1.6-05.r` (trame fiabilité) — énoncé reproduit sur instruction de mission, frontière [11-b] à arbitrer par le comité.
 - Statut juridique de Q1.6-É3 (énigme de marine, folklore séculaire, auteur non identifiable) : note verbatim conservée — revue juridique périodique recommandée.

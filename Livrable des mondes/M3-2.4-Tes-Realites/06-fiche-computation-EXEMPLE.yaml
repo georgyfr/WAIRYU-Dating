@@ -9,7 +9,7 @@ format: un_clic               # NON-Likert : auto-déclaration factuelle, une se
 enonce: "Ma réalité : le tabac."
 etats:                        # 3 états, verbatim du source (l.571)
   - "Je fume"
-  - "J'ai arrêté"
+  - "J'ai arrêté"            # décision comité FM-019 : NON-FUMEUR au filtre — « ex-fumeur » à l'affichage (chip)
   - "Non"
 echelle: null                 # pas d'échelle de degré — un état factuel
 orientation: null             # sans-objet hors Likert (c5 sans-objet)
@@ -34,7 +34,14 @@ computation:
       MOTEUR SEUL, jamais affiché, jamais dit
   modulation:
     - si: "état mis à jour (ex. « J'ai arrêté »)"
-      effet: "filtres recalculés des deux côtés — fenêtre de recalcul À VALIDER PAR LE COMITÉ"
+      effet: >-
+        filtres recalculés des deux côtés — fenêtre de recalcul À VALIDER PAR LE COMITÉ ;
+        sémantique décision comité FM-019 : « J'ai arrêté » = non-fumeur au filtre (aucune
+        élimination par un filtre non-fumeur), chip affichée = « ex-fumeur »
+    - si: "réalité réglée PRIVÉE (décision comité FM-019 — items sensibles, choix par item)"
+      effet: >-
+        chip retirée de l'affichage public, croisement moteur MAINTENU (SIG-2.4-01 s'applique
+        même sur les privés) — la privacité retire l'affichage, jamais la protection
   ancrage:
     rappel_autorise: true
     forme: "en toutes lettres, 2e personne, sans code ni score"

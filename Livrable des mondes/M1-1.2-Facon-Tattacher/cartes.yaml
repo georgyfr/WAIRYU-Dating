@@ -4,7 +4,7 @@
 #          charte des cartes PARTIE 2 (lignes 2758-2862) — VERBATIM.
 # Étage 1 de restitution (carte, 30-60 mots de cœur narratif par variante).
 # Les seuils du sélecteur sont des verrous [9] rejoués tels quels du source
-# gelé — À VALIDER PAR LE COMITÉ.
+# gelé — ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta.
 # ═══════════════════════════════════════════════════════════════════
 quete: "1.2"
 titre: "Ta façon de t'attacher"
@@ -14,7 +14,7 @@ source: "charte des cartes, PARTIE 2 — source gelé, verbatim"
 selection:
   A: "besoin de réassurance (variable moteur ANX)"
   E: "besoin d'espace (variable moteur EVI — marqueur « É » du source gelé)"
-note_verrou: "seuils du sélecteur À VALIDER PAR LE COMITÉ (Constitution [9]) — continuité Carte → Portrait : SIG_AMBIVALENT est aligné sur la condition de V4 (règle de continuité n°1 du registre)"
+note_verrou: "seuils du sélecteur ADOPTÉS comme valeurs de départ (FM-019) — provisoire concepteur (Constitution [9]) — continuité Carte → Portrait : SIG_AMBIVALENT est aligné sur la condition de V4 (règle de continuité n°1 du registre)"
 variantes:
   - ordre: 1
     id: V1

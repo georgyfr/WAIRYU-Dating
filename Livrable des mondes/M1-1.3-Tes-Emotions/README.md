@@ -28,7 +28,7 @@
 | Items non demandés | ✅ 26 exactement (20 carte + 6 trame) + 2 doublons fiabilité autorisés |
 | Format d'échelle changé | ✅ Likert 5 verrouillé (Arbitrage 2) |
 | Sigle hors glossaire [4] | ✅ DE_U et DE_C vivent côté moteur (registre des variables du Monde 1) — jamais en UI |
-| Verrous [9] traités comme décisions | ✅ seuils, fenêtres et conditions marqués **« À VALIDER PAR LE COMITÉ »** — aucune décision |
+| Verrous [9] traités comme décisions | ✅ seuils, fenêtres et conditions **ADOPTÉS comme valeurs de départ** (décision comité, FM-019) — marqués « provisoire concepteur — re-signature professionnelle avant bêta » |
 | **FM-018 / Constitution [11-b]** — fuite de formulation de trame | ✅ **ZÉRO FUIE** : T21-T26 = lignes-réservées (codes + signal + positions au mélange uniquement, énoncés hors dépôt) |
 | Fonction Dark Empathy sans ses seuils | ✅ mentionnée en une ligne (« conditions et seuils hors dépôt ») — aucune condition composée reproduite |
 | Fidélité au source gelé | ✅ énoncés carte et cartes VERBATIM — 3 énoncés > 12 mots documentés en « Dérives documentées » |
@@ -38,8 +38,8 @@
 
 - **c2 sans-objet documenté** : c2 × c4 combinées infaisables (note de config gravée, voir `02`) — À VALIDER PAR LE COMITÉ.
 - Fenêtre des doublons fiabilité (≥ 2 semaines) — À VALIDER PAR LE COMITÉ.
-- Alignement DE_U / DE_C au registre des signaux gelé (signaux.json sans maison fichier — signal remonté en Phase B).
-- Seuils des signatures (registre Monde 1 rejoués tels quels) — À VALIDER PAR LE COMITÉ.
+- ✅ Alignement DE_U / DE_C au registre des signaux : `contrat/registres/signaux.json` MATÉRIALISÉ (décision comité, FM-019 — renommages SDT-N→DTM_N, SDT-M→DTM_M, **DE ajouté au registre**, RSQ inchangé).
+- Seuils des signatures (registre Monde 1 rejoués tels quels) — ADOPTÉS comme valeurs de départ (FM-019) : provisoire concepteur — re-signature professionnelle avant bêta.
 - Les conditions fines des 6 signatures de sécurité et de la fonction Dark Empathy vivent **hors dépôt** (document trames) — jamais ici.
 
 ## 🔁 Circuit restant

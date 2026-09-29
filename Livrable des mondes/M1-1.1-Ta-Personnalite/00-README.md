@@ -17,7 +17,7 @@ les portraits.
 | `README.md` | Vue d'ensemble + déclaration de conformité |
 | `01-tableau-des-items.md` | Les 58 items verbatim, un par ligne, avec leur fiche de computation à 5 canaux (C:/S:/F:/M:/A:) ; les 8 lignes-réservées de trame (aucun contenu) ; les 2 doublons fiabilité ; les dérives documentées |
 | `02-plan-de-melange-graine-211427.md` | L'ordre de passation réel (1→58), la graine, l'algorithme, les verdicts des 6 contraintes, la trace des échanges |
-| `03-signatures-registre.md` | Les règles du moteur qui consomment O C E A S — conditions verbatim du registre gelé, toutes « À VALIDER PAR LE COMITÉ » |
+| `03-signatures-registre.md` | Les règles du moteur qui consomment O C E A S — conditions verbatim du registre gelé, toutes ADOPTÉES comme valeurs de départ (FM-019) — provisoire concepteur |
 | `04-slots-de-miroir.md` | Les 4 slots du miroir de quête + les 9 verrous de slot |
 | `05-ecran-d-intro.md` | Le texte d'ouverture verbatim + ses contrôles |
 | `06-fiche-computation-EXEMPLE.yaml` | Le format complet d'une fiche item (exemple : Q1.1-17) — gabarit des 58 |
