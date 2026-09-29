@@ -1,0 +1,77 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 4.2 « OÙ TU EN ES AUJOURD'HUI » — 3 VARIANTES (étage 1)
+# Création : mission V10.B (2026-09-29, WAT).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : lecture par bandes DISP = (INT_D + (1 − ETAT_D)) / 2 — 3 bandes
+# partition exclusive + exhaustive (SIG-4.2-01, C6, vérifiée machine).
+# NEUTRALITÉ : trois météos se valent — apaisé jamais « réussi », en travail
+# jamais « cassé », en chemin jamais « hésitant ». JAMAIS de verdict de guérison
+# (interdit V10 — vérifié machine). AUCUNE trace des 8 trames hébergées du bloc
+# 4.4 (moteur seul — verrou 04 n° 5). Aucun extrait de la réponse ouverte
+# (verrou 04 n° 6). Zéro vocabulaire clinique, aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "4.2 Où tu en es aujourd'hui"
+monde: M5
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "INT_D (5 items) · ETAT_D (5 items) · RSQ_D (8 items), I recodés 6−r, normalisés 0-1 — Q4.2-01 → Q4.2-18 ; la ouverte Q4.2-19 (JAMAIS rendue) et les variables FIS/MEFI_42 (8 trames hébergées, moteur seul) ne participent JAMAIS à la sélection"
+  logique: "DISP = (INT_D + (1 − ETAT_D)) / 2 · apaisé ≥ 0.60 · en travail ≤ 0.40 · en chemin entre les deux · départage au bord : la bande INT_D décide"
+  bornes: "0.60 / 0.40 (proposition) — provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 sélections = partition totale de [0,1] sur DISP — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "RB1 (SIG-4.2-02) et RSQ-pacing (SIG-4.2-03) ne participent JAMAIS à la sélection ni au rendu — moteur seul ; la ouverte Q4.2-19 non plus (interdit V10)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🌱 QUÊTE ACCOMPLIE — « Où tu en es aujourd'hui »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un regarde sa propre météo. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-4.2-CHAPITRE-REFERME
+    nom: "Le·La Chapitre refermé"
+    ordre_selecteur: 1
+    condition: "DISP ≥ 0.60 (apaisé)"
+    ancre_item: ["Q4.2-01", "Q4.2-02", "Q4.2-03", "Q4.2-04", "Q4.2-05", "Q4.2-06", "Q4.2-07", "Q4.2-08", "Q4.2-09", "Q4.2-10", "Q4.2-11", "Q4.2-12", "Q4.2-13", "Q4.2-14", "Q4.2-15", "Q4.2-16", "Q4.2-17", "Q4.2-18"]
+    portrait: "Tes chapitres passés te servent — ils ne te pèsent plus. Tu sais ce qu'ils t'ont appris, le calme que tu as ramené reste, et les gens nouveaux tu les regardes pour ce qu'ils sont. Une place calme, et elle s'entend."
+    ombre: "Le rangement d'avant n'est pas celui de l'autre : une sérénité posée peut se lire comme une distance — la braise de l'autre ne connaît pas ton tempo."
+    tension_interieure: "raconter comment tu as rangé — l'autre y trouvera son propre tempo."
+
+  - id: CARTE-4.2-PAGE-QUI-TOURNE
+    nom: "Le·La Page qui tourne"
+    ordre_selecteur: 2
+    condition: "0.40 < DISP < 0.60 (en chemin)"
+    ancre_item: ["Q4.2-01", "Q4.2-02", "Q4.2-03", "Q4.2-04", "Q4.2-05", "Q4.2-06", "Q4.2-07", "Q4.2-08", "Q4.2-09", "Q4.2-10", "Q4.2-11", "Q4.2-12", "Q4.2-13", "Q4.2-14", "Q4.2-15", "Q4.2-16", "Q4.2-17", "Q4.2-18"]
+    portrait: "Des cartons sont faits, d'autres attendent : tu es entre deux météos, et c'est honnête. Des pages tournent, d'autres se relisent — et une parole claire te porte longtemps. Cet entre-deux se vit à ton rythme."
+    ombre: "Les jours de bascule existent : tout va, puis un détail rallume la braise. Le partenaire ne sait pas toujours lequel des deux est là."
+    tension_interieure: "dire à l'autre ce qui rallume — la météo y gagne un bulletin."
+
+  - id: CARTE-4.2-MAISON-EN-TRAVAUX
+    nom: "Le·La Maison en travaux"
+    ordre_selecteur: 3
+    condition: "DISP ≤ 0.40 (en travail)"
+    ancre_item: ["Q4.2-01", "Q4.2-02", "Q4.2-03", "Q4.2-04", "Q4.2-05", "Q4.2-06", "Q4.2-07", "Q4.2-08", "Q4.2-09", "Q4.2-10", "Q4.2-11", "Q4.2-12", "Q4.2-13", "Q4.2-14", "Q4.2-15", "Q4.2-16", "Q4.2-17", "Q4.2-18"]
+    portrait: "Ton histoire occupe encore de la place — le passé remonte, la comparaison travaille. Ce n'est pas une faille : c'est une maison en travaux, à ton rythme. Ton besoin de confirmations dit une chose simple : la clarté t'aide à tenir."
+    ombre: "Un silence s'écrit en scénario inquiet, une question tombe sur un chantier. La preuve répétée n'apaise pas — elle use les deux."
+    tension_interieure: "nommer une peur précise à l'autre — la clarté commence par elle."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité : les 3 météos se valent — apaisé jamais « réussi », en travail jamais « cassé », en chemin jamais « hésitant » (contrôles machine)"
+  - "JAMAIS de verdict de guérison (interdit V10) : aucun « guéri », « prêt·e », « c'est derrière toi » — vérifié machine"
+  - "zéro vocabulaire clinique (« rebond », « gatekeeping », « RSQ ») au rendu — vérifié machine"
+  - "AUCUNE trace des trames FIS/MEFI (bloc 4.4) : aucun mot des 8 énoncés hors dépôt ne figure dans les textes rendus — vérifié machine (garde hors dépôt)"
+  - "AUCUN extrait de la réponse ouverte (interdit V10) : Q4.2-19 absente de tout rendu — vérifié machine"
+  - "registre probabiliste : aucun futur certain (« risque », « peut » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucune météo dressée en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"

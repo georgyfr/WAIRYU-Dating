@@ -1,0 +1,64 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 18 canaux carte)
+# Item choisi : Q4.2-08 (la comparaison — l'angle le plus parlant de l'état qui travaille,
+# porteur du double sens RB1).
+# Fichier YAML strict (gabarit des 17 autres items carte : seuls énoncé, famille,
+# orientation et ancrage changent).
+# Les 8 trames ▲ hébergées (bloc 4.4) suivent le modèle TRAME (document trames Partie 8 —
+# hors dépôt) : dimension null, orientation D, ancrage INTERDIT, aucun slot, aucun rendu.
+item: Q4.2-08
+quete: "4.2 Où tu en es aujourd'hui"
+monde: M5                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Je compare encore les nouvelles rencontres à mon ancienne histoire."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel à l'état qui travaille
+dimension: etat               # famille 2/3 (paire R6 avec Q4.2-09)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: heritage_4.2      # alimente la carte (3 variantes) et le miroir (3 bandes)
+  signal_id: SIG-4.2-01       # où tu en es (bande DISP) — rendu descriptif météo
+computation:
+  carte:
+    role: score_de_quete
+    regle: "INT_D (5 items), ETAT_D (5 items) et RSQ_D (8 items), I recodés 6−r, normalisés 0-1 — DISP = (INT_D + (1 − ETAT_D)) / 2 → 3 bandes (apaisé ≥ 0.60 · en travail ≤ 0.40 · en chemin)"
+    rendu: etage_1_et_2        # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: disponibilite_rb1_rsq
+    mecanisme: >-
+      le rendu décrit la météo (SIG-4.2-01) ; côté moteur, ETAT_D haut × INT_D bas alimente
+      RB1 (gatekeeping rebound — double sens du refonte : le voyageur y voit son état, le
+      moteur y voit le rebond — JAMAIS un verdict de guérison) ; RSQ_D module le pacing
+      (anti-burnout) et croise la méfiance du bloc 4.4 (Méfiance × RSQ haut = protection)
+    rendu: moteur_seul         # RB1, RSQ et les croisements ne sont jamais rendus
+    condition: "seuils bandes, RB1 et pacing proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score de famille = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) ; les pivots Q4.2-05/10 reposent sur la cohérence d'axe + QFI
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "ETAT_D haut × INT_D bas côté moteur (RB1)"
+      effet: "protections de pacing côté moteur — jamais au rendu, jamais un verdict de guérison, demi-vie du signal"
+    - si: "RSQ_D haut"
+      effet: "pacing adaptatif anti-burnout (espacement, tonalité) + croisement matrice 4.4 (Méfiance × RSQ haut = protection) — jamais un score rendu"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la météo décrite, jamais un jugement, jamais un stade, jamais un code"
+    exemple: "quand tu as dit comparer encore les nouvelles rencontres"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 18 items carte. Seuls changent : énoncé, famille
+    (integration / etat / rsq), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    La question ouverte Q4.2-19 vit hors mélange — modèle OUVERTE (retrait « Je préfère ne
+    pas dire », contenu JAMAIS rendu — interdit V10, analyse BLA en P2).
+  - >-
+    Les 8 trames ▲ hébergées (Q4.4-T15→T22, variables FIS/MEFI du bloc 4.4) suivent le modèle
+    TRAME — énoncés hors dépôt (document trames Partie 8), ancrage INTERDIT, aucun rendu.
+  - >-
+    Mélange 4.2 : outil DÉDIÉ v3 melange-heritage.py (toutes contraintes dures à zéro —
+    objectif [0, 0, 0, 0, 7]), graine 242427, trames ancrées 3·6·9·12·15·18·22·26.
