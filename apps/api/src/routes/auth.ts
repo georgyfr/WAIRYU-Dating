@@ -27,8 +27,26 @@ import {
 } from '../lib/otp';
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { verifyTurnstile } from '../lib/turnstile';
-import { emailProviderConfigured, sendOtpEmail } from '../lib/email';
-import { googleConfigured, buildAuthorizeUrl, exchangeCodeForProfile, generatePkce, verifyGoogleIdToken } from '../lib/google';
+import { emailProviderConfigured, sendOtpEmail, sendPasswordResetEmail } from '../lib/email';
+import {
+  googleConfigured,
+  buildAuthorizeUrl,
+  exchangeCodeForProfile,
+  generatePkce,
+  verifyGoogleIdToken,
+} from '../lib/google';
+import {
+  normalizeUsername,
+  normalizeUsernameDisplay,
+  usernameError,
+  passwordPolicyError,
+  generateRecoveryCode,
+  normalizeRecoveryCode,
+  hashPassword,
+  verifyPassword,
+  // alias : auth.ts importe déjà sha256Hex depuis lib/otp (les deux coexistent).
+  sha256Hex as sha256HexPw,
+} from '../lib/password';
 import {
   facebookConfigured,
   buildFacebookAuthorizeUrl,
@@ -504,48 +522,6 @@ authRoutes.get('/auth/google/callback', async (c) => {
   }
 });
 
-// ---- Google GSI (Task 57) : jeton d'identification de la popup FedCM ----
-// Le front charge accounts.google.com/gsi/client et affiche le bouton officiel
-// « Se connecter avec Google » DANS la page (popup interne au navigateur —
-// aucune navigation top-level, donc aucune sortie de la TWA Android). Google
-// appelle la callback JS avec un jeton d'identification (JWT) ; le front le
-// poste ici, on le vérifie (signature JWKS, émetteur, audience, expiration),
-// puis même résolution que le callback : fusion OTP par email vérifié, liaison
-// oauth_identities, session. Les AppError gardent leur message propre ; les
-// autres erreurs deviennent une erreur douce « google_popup_failed ».
-authRoutes.post('/auth/google/idtoken', async (c) => {
-  const env = c.env;
-  if (!googleConfigured(env)) throw errors.notFound();
-
-  const body = (await c.req.json().catch(() => null)) as { credential?: unknown } | null;
-  const credential = body?.credential;
-  if (typeof credential !== 'string' || credential.length < 100) {
-    throw errors.badRequest("Jeton Google manquant ou invalide. Réessaie.");
-  }
-
-  try {
-    const profile = await verifyGoogleIdToken(env, credential);
-    const email = normalizeEmail(profile.email);
-    if (!email) throw errors.badRequest('Email Google invalide.');
-
-    const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
-      id: profile.sub,
-      email,
-      name: profile.name,
-    });
-    await createSession(c, userId);
-    if (created) await bumpMetric(c.env.DB, 'signup_completed');
-    await bumpMetric(c.env.DB, 'login_google');
-    return c.json({ ok: true, google: 'ok', created } as const);
-  } catch (e) {
-    if (e instanceof AppError) throw e;
-    console.error(
-      `[oauth:google-gsi] jeton réfusé/échec : ${e instanceof Error ? e.message : String(e)}`,
-    );
-    throw errors.badRequest("Connexion Google refusée. Réessaie, ou utilise le code email.");
-  }
-});
-
 // ---- Facebook (state signé ; pas de PKCE côté Meta pour le web) ----
 
 authRoutes.get('/auth/facebook/start', async (c) => {
@@ -731,11 +707,13 @@ authRoutes.get('/me', async (c) => {
     `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
             u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
             u.verified_at, u.suspended_until,
+            ap.username AS username,
             (SELECT COUNT(*) FROM photos p
               WHERE p.user_id = u.id AND p.status = 'active' AND p.deleted_at IS NULL) AS photo_count,
             (SELECT COUNT(*) FROM profile_prompts pp WHERE pp.user_id = u.id) AS prompt_count,
             (up.user_id IS NOT NULL) AS has_prefs
      FROM users u
+     LEFT JOIN auth_password ap ON ap.user_id = u.id
      LEFT JOIN user_preferences up ON up.user_id = u.id
      WHERE u.id = ? LIMIT 1`,
   )
@@ -744,6 +722,7 @@ authRoutes.get('/me', async (c) => {
       id: string;
       email: string;
       display_name: string | null;
+      username: string | null;
       email_verified_at: number | null;
       status: string;
       plan: string;
@@ -768,6 +747,9 @@ authRoutes.get('/me', async (c) => {
     userId: user.id,
     email: user.email,
     displayName: user.display_name,
+    // Task 60 (fondateur) — @pseudo de connexion : s'affiche TOUJOURS à la
+    // place du préfixe email (les comptes classiques ont un email placeholder).
+    username: user.username ?? null,
     emailVerified: user.email_verified_at !== null,
     status: user.status as MeResponse['status'],
     plan: user.plan as MeResponse['plan'],
@@ -913,4 +895,393 @@ authRoutes.delete('/account', async (c) => {
   clearSessionCookie(c);
   await bumpMetric(c.env.DB, 'account_deleted');
   return c.json({ deleted: true });
+});
+
+// ---------------------------------------------------------------------------
+// Task 57 — POST /api/auth/google/idtoken : bouton GSI (popup FedCM).
+// Le front reçoit le jeton ID dans la page (AUCUNE navigation hors de la TWA
+// Android, où le flux authorize casse) et le poste ici. Vérification
+// cryptographique complète côté serveur (lib/google.verifyGoogleIdToken).
+// ---------------------------------------------------------------------------
+authRoutes.post('/auth/google/idtoken', async (c) => {
+  const env = c.env;
+  if (!googleConfigured(env)) throw errors.notFound();
+  const body = (await c.req.json().catch(() => null)) as { credential?: unknown } | null;
+  const credential = body?.credential;
+  if (typeof credential !== 'string' || credential.length < 100) {
+    throw errors.badRequest('Jeton Google manquant ou invalide. Réessaie.');
+  }
+  try {
+    const profile = await verifyGoogleIdToken(env, credential);
+    const email = normalizeEmail(profile.email);
+    if (!email) throw errors.badRequest('Email Google invalide.');
+    const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
+      id: profile.sub,
+      email,
+      name: profile.name,
+    });
+    await createSession(c, userId);
+    if (created) await bumpMetric(c.env.DB, 'signup_completed');
+    await bumpMetric(c.env.DB, 'login_google');
+    return c.json({ ok: true, google: 'ok', created });
+  } catch (e) {
+    if (e instanceof AppError) throw e;
+    console.error(`[oauth:google-gsi] jeton refusé/échec : ${e instanceof Error ? e.message : String(e)}`);
+    throw errors.badRequest('Connexion Google refusée. Réessaie, ou utilise le code email.');
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Task 58 (fondateur) — comptes « classiques » pseudo + mot de passe.
+//  - inscription : pseudo (Task 61 : espaces/accents) + mot de passe → code
+//    de récupération affiché UNE fois + email placeholder (pas d'email requis) ;
+//  - connexion : @pseudo + mot de passe (verrou 15 min après 5 échecs) ;
+//  - récupération par code (avec/sans nouveau mot de passe) ;
+//  - « mot de passe oublié » par email (lien 1 h, Brevo) ;
+//  - changement de mot de passe + email de récupération (connecté).
+// ---------------------------------------------------------------------------
+const PW_LOCKOUT_ATTEMPTS = 5;
+const PW_LOCKOUT_SECONDS = 900; // 15 minutes
+const RECOVERY_CODE_PLACEHOLDER_EMAIL_DOMAIN = 'inbox.wairyu.local';
+
+function placeholderEmail(): string {
+  return `pw-${crypto.randomUUID().replace(/-/g, '')}@${RECOVERY_CODE_PLACEHOLDER_EMAIL_DOMAIN}`;
+}
+
+function isPlaceholderEmail(email: string): boolean {
+  return email.endsWith(`@${RECOVERY_CODE_PLACEHOLDER_EMAIL_DOMAIN}`);
+}
+
+async function findPasswordByUsername(db: D1Database, usernameCanonical: string) {
+  return db
+    .prepare(
+      `SELECT user_id, username, password_hash, recovery_code_hash, failed_attempts, locked_until
+       FROM auth_password WHERE username_canonical = ? LIMIT 1`,
+    )
+    .bind(usernameCanonical)
+    .first<{
+      user_id: string;
+      username: string;
+      password_hash: string;
+      recovery_code_hash: string | null;
+      failed_attempts: number;
+      locked_until: number | null;
+    }>();
+}
+
+/** 423 implicite — verrou actif ? → 429 avec le délai restant en minutes. */
+function lockedError(lockedUntil: number | null): void {
+  if (lockedUntil && lockedUntil > Math.floor(Date.now() / 1000)) {
+    const minutes = Math.ceil((lockedUntil - Math.floor(Date.now() / 1000)) / 60);
+    throw errors.rateLimited(`Trop de tentatives. Réessayez dans ${minutes} min.`);
+  }
+}
+
+async function registerLockFailure(db: D1Database, row: { user_id: string; failed_attempts: number }) {
+  const attempts = row.failed_attempts + 1;
+  const lock =
+    attempts >= PW_LOCKOUT_ATTEMPTS ? Math.floor(Date.now() / 1000) + PW_LOCKOUT_SECONDS : null;
+  await db
+    .prepare(
+      `UPDATE auth_password SET failed_attempts = ?, locked_until = ?, updated_at = ? WHERE user_id = ?`,
+    )
+    .bind(attempts, lock, Math.floor(Date.now() / 1000), row.user_id)
+    .run();
+}
+
+authRoutes.post('/auth/password/register', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const rawUsername = String(payload?.username ?? '');
+  const usernameDisplay = normalizeUsernameDisplay(rawUsername);
+  const username = normalizeUsername(rawUsername);
+  const password = typeof payload?.password === 'string' ? payload.password : '';
+  if (!usernameDisplay || !username) usernameError();
+  const policy = passwordPolicyError(password);
+  if (policy) throw errors.badRequest(policy);
+
+  const ip = await ipHash(c);
+  const authHeader = c.req.header('authorization') ?? '';
+  const smokeBypass =
+    c.env.ENVIRONMENT === 'staging' && !!c.env.ADMIN_TOKEN && authHeader === `Bearer ${c.env.ADMIN_TOKEN}`;
+  const perIp = smokeBypass
+    ? { allowed: true, remaining: 0, retryAfterSeconds: 0 }
+    : await hitRateLimit(c.env.DB, RATE_RULES.pwRegisterIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwRegisterIp.scope);
+  await verifyTurnstile(c, payload?.turnstile_token, ip);
+
+  const taken = await findPasswordByUsername(c.env.DB, username);
+  if (taken) throw errors.conflict('Ce pseudo est déjà pris. Choisis-en un autre.');
+
+  const now = Math.floor(Date.now() / 1000);
+  const userId = crypto.randomUUID();
+  const recoveryCode = generateRecoveryCode();
+  const recoveryCodeHash = await sha256HexPw(normalizeRecoveryCode(recoveryCode));
+  // users d'abord (email placeholder UNIQUE) — si auth_password échoue
+  // (pseudo pris entre-temps), on nettoie : AUCUN compte orphelin.
+  await c.env.DB.prepare(
+    `INSERT INTO users (id, email, email_verified_at, status, plan, created_at, updated_at)
+     VALUES (?, ?, NULL, 'active', 'free', ?, ?)`,
+  )
+    .bind(userId, placeholderEmail(), now, now)
+    .run();
+  try {
+    await c.env.DB.prepare(
+      `INSERT INTO auth_password (user_id, username, username_canonical, password_hash, recovery_code_hash,
+                                  recovery_code_generated_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+      .bind(userId, usernameDisplay, username, await hashPassword(password), recoveryCodeHash, now, now, now)
+      .run();
+  } catch (err) {
+    await c.env.DB.prepare(`DELETE FROM users WHERE id = ? AND status = 'active'`).bind(userId).run();
+    if (String(err).includes('UNIQUE')) throw errors.conflict('Ce pseudo est déjà pris. Choisis-en un autre.');
+    throw err;
+  }
+  await createSession(c, userId);
+  await bumpMetric(c.env.DB, 'password_signup');
+  const res = { userId, username: usernameDisplay, recoveryCode, created: true };
+  return c.json(res);
+});
+
+authRoutes.post('/auth/password/login', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const username = normalizeUsername(String(payload?.username ?? ''));
+  const password = typeof payload?.password === 'string' ? payload.password : '';
+  if (!username || !password) {
+    throw errors.badRequest('Indique ton pseudo et ton mot de passe.');
+  }
+  const ip = await ipHash(c);
+  const authHeader = c.req.header('authorization') ?? '';
+  const smokeBypass =
+    c.env.ENVIRONMENT === 'staging' && !!c.env.ADMIN_TOKEN && authHeader === `Bearer ${c.env.ADMIN_TOKEN}`;
+  const perIp = smokeBypass
+    ? { allowed: true, remaining: 0, retryAfterSeconds: 0 }
+    : await hitRateLimit(c.env.DB, RATE_RULES.pwLoginIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwLoginIp.scope);
+  const perUser = await hitRateLimit(c.env.DB, RATE_RULES.pwLoginUser, username);
+  if (!perUser.allowed) throw rateLimitedError(perUser.retryAfterSeconds, RATE_RULES.pwLoginUser.scope);
+
+  const row = await findPasswordByUsername(c.env.DB, username);
+  if (!row) throw errors.unauthorized('Pseudo ou mot de passe incorrect.');
+  lockedError(row.locked_until);
+  const ok = await verifyPassword(password, row.password_hash);
+  if (!ok) {
+    await registerLockFailure(c.env.DB, row);
+    throw errors.unauthorized('Pseudo ou mot de passe incorrect.');
+  }
+  const user = await c.env.DB.prepare(`SELECT status FROM users WHERE id = ? LIMIT 1`)
+    .bind(row.user_id)
+    .first<{ status: string }>();
+  if (user?.status === 'banned') {
+    throw errors.forbidden('Ce compte ne peut pas se connecter. Contactez le support.');
+  }
+  await c.env.DB.prepare(
+    `UPDATE auth_password SET failed_attempts = 0, locked_until = NULL, updated_at = ? WHERE user_id = ?`,
+  )
+    .bind(Math.floor(Date.now() / 1000), row.user_id)
+    .run();
+  await createSession(c, row.user_id);
+  await bumpMetric(c.env.DB, 'password_login');
+  const res = { userId: row.user_id, username: row.username };
+  return c.json(res);
+});
+
+// Récupération par code : soit « vérifier » (new_password absent → session
+// nouvelle pour ré-armer l'affichage du code), soit « réinitialiser »
+// (new_password présent → mot de passe remplacé + sessions révoquées).
+authRoutes.post('/auth/password/recovery', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const username = normalizeUsername(String(payload?.username ?? ''));
+  const code = normalizeRecoveryCode(String(payload?.recovery_code ?? ''));
+  const newPassword = typeof payload?.new_password === 'string' ? payload.new_password : null;
+  if (!username || code.length < 12) {
+    throw errors.badRequest('Indique ton pseudo et ton code de récupération (12 caractères).');
+  }
+  if (newPassword !== null) {
+    const policy = passwordPolicyError(newPassword);
+    if (policy) throw errors.badRequest(policy);
+  }
+  const ip = await ipHash(c);
+  const perIp = await hitRateLimit(c.env.DB, RATE_RULES.pwRecoveryIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwRecoveryIp.scope);
+  const perUser = await hitRateLimit(c.env.DB, RATE_RULES.pwRecoveryUser, username);
+  if (!perUser.allowed) throw rateLimitedError(perUser.retryAfterSeconds, RATE_RULES.pwRecoveryUser.scope);
+
+  const row = await findPasswordByUsername(c.env.DB, username);
+  if (!row?.recovery_code_hash) throw errors.unauthorized('Pseudo ou code de récupération incorrect.');
+  lockedError(row.locked_until);
+  const suppliedHash = await sha256HexPw(code);
+  if (suppliedHash !== row.recovery_code_hash) {
+    await registerLockFailure(c.env.DB, row);
+    throw errors.unauthorized('Pseudo ou code de récupération incorrect.');
+  }
+  const now = Math.floor(Date.now() / 1000);
+  if (newPassword !== null) {
+    await c.env.DB.prepare(
+      `UPDATE auth_password SET password_hash = ?, failed_attempts = 0, locked_until = NULL, updated_at = ? WHERE user_id = ?`,
+    )
+      .bind(await hashPassword(newPassword), now, row.user_id)
+      .run();
+    await revokeAllSessions(c, row.user_id);
+  } else {
+    await c.env.DB.prepare(
+      `UPDATE auth_password SET failed_attempts = 0, locked_until = NULL, updated_at = ? WHERE user_id = ?`,
+    )
+      .bind(now, row.user_id)
+      .run();
+  }
+  const user = await c.env.DB.prepare(`SELECT status FROM users WHERE id = ? LIMIT 1`)
+    .bind(row.user_id)
+    .first<{ status: string }>();
+  if (user?.status === 'banned') {
+    throw errors.forbidden('Ce compte ne peut pas se connecter. Contactez le support.');
+  }
+  await createSession(c, row.user_id);
+  await bumpMetric(c.env.DB, 'password_recovery');
+  const res = { ok: true, reset: newPassword !== null, username: row.username };
+  return c.json(res);
+});
+
+// « Mot de passe oublié » : réponse TOUJOURS positive (sent:true) — on ne
+// révèle jamais si l'email existe. Le lien (1 h, hashé en base, usage unique)
+// part par Brevo ; en staging sans Brevo, l'URL revient dans la réponse (dev).
+authRoutes.post('/auth/password/forgot', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const email = normalizeEmail(payload?.email as string | undefined);
+  if (!email) throw errors.badRequest('Adresse email invalide.');
+  const ip = await ipHash(c);
+  const perIp = await hitRateLimit(c.env.DB, RATE_RULES.pwForgotIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwForgotIp.scope);
+  const emailHash = await sha256Hex(email);
+  const perEmail = await hitRateLimit(c.env.DB, RATE_RULES.pwForgotEmail, emailHash);
+  if (!perEmail.allowed) throw rateLimitedError(perEmail.retryAfterSeconds, RATE_RULES.pwForgotEmail.scope);
+  await verifyTurnstile(c, payload?.turnstile_token, ip);
+
+  const match = await c.env.DB.prepare(
+    `SELECT u.id AS user_id, ap.username AS username
+     FROM users u JOIN auth_password ap ON ap.user_id = u.id
+     WHERE u.email = ? AND u.status != 'banned' LIMIT 1`,
+  )
+    .bind(email)
+    .first<{ user_id: string; username: string }>();
+  const res: { sent: true; channel: 'email'; devResetUrl?: string } = { sent: true, channel: 'email' };
+  if (match) {
+    const tokenBytes = new Uint8Array(32);
+    crypto.getRandomValues(tokenBytes);
+    const token = [...tokenBytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+    const now = Math.floor(Date.now() / 1000);
+    await c.env.DB.prepare(
+      `INSERT INTO password_resets (id, user_id, token_hash, created_at, expires_at, request_ip_hash)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    )
+      .bind(crypto.randomUUID(), match.user_id, await sha256Hex(token), now, now + 3600, ip)
+      .run();
+    const sent = await sendPasswordResetEmail(c.env, email, match.username, token);
+    if (sent.devResetUrl) res.devResetUrl = sent.devResetUrl;
+  }
+  return c.json(res);
+});
+
+authRoutes.post('/auth/password/reset', async (c) => {
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const token = typeof payload?.token === 'string' ? payload.token.trim() : '';
+  const newPassword = typeof payload?.new_password === 'string' ? payload.new_password : '';
+  if (!/^[0-9a-f]{64}$/.test(token)) throw errors.badRequest('Lien de réinitialisation invalide.');
+  const policy = passwordPolicyError(newPassword);
+  if (policy) throw errors.badRequest(policy);
+  const ip = await ipHash(c);
+  const perIp = await hitRateLimit(c.env.DB, RATE_RULES.pwResetIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwResetIp.scope);
+
+  const now = Math.floor(Date.now() / 1000);
+  const row = await c.env.DB.prepare(
+    `SELECT id, user_id, expires_at, consumed_at FROM password_resets
+     WHERE token_hash = ? ORDER BY created_at DESC LIMIT 1`,
+  )
+    .bind(await sha256HexPw(token))
+    .first<{ id: string; user_id: string; expires_at: number; consumed_at: number | null }>();
+  if (!row || row.consumed_at !== null || row.expires_at < now) {
+    throw new AppError(410, 'reset_expired', 'Ce lien a expiré. Demande-en un nouveau.');
+  }
+  await c.env.DB.prepare(
+    `UPDATE auth_password SET password_hash = ?, failed_attempts = 0, locked_until = NULL, updated_at = ? WHERE user_id = ?`,
+  )
+    .bind(await hashPassword(newPassword), now, row.user_id)
+    .run();
+  await c.env.DB.prepare(`UPDATE password_resets SET consumed_at = ? WHERE id = ?`).bind(now, row.id).run();
+  await revokeAllSessions(c, row.user_id);
+  await createSession(c, row.user_id);
+  await bumpMetric(c.env.DB, 'password_reset');
+  return c.json({ ok: true });
+});
+
+authRoutes.post('/auth/password/change', async (c) => {
+  const session = await requireAuth(c);
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const currentPassword = typeof payload?.current_password === 'string' ? payload.current_password : '';
+  const newPassword = typeof payload?.new_password === 'string' ? payload.new_password : '';
+  if (!currentPassword) throw errors.badRequest('Indique ton mot de passe actuel.');
+  const policy = passwordPolicyError(newPassword);
+  if (policy) throw errors.badRequest(policy);
+  const row = await c.env.DB.prepare(`SELECT password_hash FROM auth_password WHERE user_id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ password_hash: string }>();
+  if (!row) throw errors.badRequest("Ce compte n'utilise pas encore de mot de passe.");
+  const ok = await verifyPassword(currentPassword, row.password_hash);
+  if (!ok) throw errors.unauthorized('Mot de passe actuel incorrect.');
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(`UPDATE auth_password SET password_hash = ?, updated_at = ? WHERE user_id = ?`)
+    .bind(await hashPassword(newPassword), now, session.userId)
+    .run();
+  const revoked = await revokeAllSessions(c, session.userId);
+  await createSession(c, session.userId);
+  await bumpMetric(c.env.DB, 'password_change');
+  return c.json({ ok: true, revokedOthers: revoked });
+});
+
+// Email de récupération (connecté) : remplace le placeholder par un vrai
+// email — sert UNIQUEMENT à retrouver le mot de passe (jamais affiché).
+authRoutes.post('/account/recovery-email', async (c) => {
+  const session = await requireAuth(c);
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const email = normalizeEmail(payload?.email as string | undefined);
+  if (!email) throw errors.badRequest('Adresse email invalide.');
+  if (isPlaceholderEmail(email)) throw errors.badRequest('Adresse email invalide.');
+  const now = Math.floor(Date.now() / 1000);
+  try {
+    await c.env.DB.prepare(`UPDATE users SET email = ?, email_verified_at = NULL, updated_at = ? WHERE id = ?`)
+      .bind(email, now, session.userId)
+      .run();
+  } catch (err) {
+    if (String(err).includes('UNIQUE')) {
+      throw errors.conflict('Cet email est déjà utilisé sur un autre compte wairyu.');
+    }
+    throw err;
+  }
+  return c.json({ ok: true, email });
+});
+
+// État « identifiants » (connecté) : le front de Réglages affiche ce qui est
+// en place (mot de passe ? email ? code de récupération ?) sans rien révéler.
+authRoutes.get('/auth/password/status', async (c) => {
+  const session = await requireAuth(c);
+  const [user, pw] = await Promise.all([
+    c.env.DB.prepare(`SELECT email FROM users WHERE id = ? LIMIT 1`)
+      .bind(session.userId)
+      .first<{ email: string }>(),
+    c.env.DB.prepare(`SELECT username, recovery_code_hash FROM auth_password WHERE user_id = ? LIMIT 1`)
+      .bind(session.userId)
+      .first<{ username: string; recovery_code_hash: string | null }>(),
+  ]);
+  if (!user) throw errors.unauthorized();
+  const realEmail = !isPlaceholderEmail(user.email);
+  const masked = realEmail ? `${user.email.slice(0, 1)}***@${user.email.split('@')[1] ?? ''}` : null;
+  const res = {
+    hasPassword: pw !== null,
+    hasRecoveryEmail: realEmail,
+    recoveryEmailMasked: masked,
+    username: pw?.username ?? null,
+    hasRecoveryCode: pw?.recovery_code_hash !== null && pw?.recovery_code_hash !== undefined,
+  };
+  return c.json(res);
 });

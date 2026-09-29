@@ -32,6 +32,75 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-30-geoloc-guide',
+    date: '30 septembre 2026',
+    title: 'Ta position se débloque, pas à pas',
+    items: [
+      '« Détecter ma position » n’échoue plus en silence : wairyu reconnaît maintenant POURQUOI le téléphone refuse (position bloquée dans les autorisations, GPS coupé, détection trop longue).',
+      'Pour chaque cause, le remède exact s’affiche — par exemple : Réglages Android → Applications → wairyu → Autorisations → Position → Autoriser, puis re-tap sur « Détecter ma position ».',
+      'Si la position est déjà bloquée, le guide apparaît dès l’arrivée sur l’étape — plus besoin de taper à l’aveugle.',
+    ],
+  },
+  {
+    id: '2026-09-30-play-protect',
+    date: '30 septembre 2026',
+    title: 'Plus jamais bloquée par Google Play Protect',
+    items: [
+      'Google Play Protect bloque parfois les apps installées hors Play Store — wairyu s’installe désormais VIA CHROME : l’application créée est signée par Google, elle ne peut plus être bloquée.',
+      'Sur la page d’installation, la voie Chrome est maintenant recommandée ; l’APK direct reste disponible, avec le guide pour débloquer si Play Protect s’en mêle (« Plus de détails » → « Installer quand même »).',
+      'Si ton wairyu a été désactivée par Play Protect, les notifications reviennent dès qu’elle est réinstallée via Chrome (ou débloquée).',
+    ],
+  },
+  {
+    id: '2026-09-30-notifs-auto-reglages',
+    date: '30 septembre 2026',
+    title: 'Notifications automatiques et réglables à ta main',
+    items: [
+      'Les notifications s’activent désormais automatiquement — plus besoin de chercher le bouton : la demande arrive naturellement au premier contact avec l’app.',
+      'Dans Réglages → Notifications, tu décides de tout : tout couper, ou choisir exactement ce que tu veux recevoir (messages, matchs, sécurité, infos wairyu).',
+      'Ton téléphone refuse la demande ? wairyu t’explique exactement quoi faire (les applis qui affichent par-dessus l’écran bloquent tout) — plus jamais de blocage mystérieux.',
+    ],
+  },
+  {
+    id: '2026-09-29-pseudo-espaces',
+    date: '29 septembre 2026',
+    title: 'Des pseudos avec espaces, comme dans la vraie vie',
+    items: [
+      'Choisis le pseudo qui te ressemble : « Marie Claire », « Jean-Paul » ou « N’Guessan » — les espaces sont les bienvenus.',
+      'À la connexion, plus de piège : majuscules, accents et espaces ne comptent plus, impossible de te tromper.',
+      'Les pseudos déjà créés continuent de fonctionner exactement comme avant.',
+    ],
+  },
+  {
+    id: '2026-09-29-app-sans-url',
+    date: '29 septembre 2026',
+    title: 'wairyu comme une vraie appli — sans barre d’adresse',
+    items: [
+      'Sur Android avec l’application installée, tout lien ouvert dans le navigateur bascule automatiquement dans l’appli : plein écran, aucune URL.',
+      'Pas encore installée ? Une bulle te propose l’installation en un appui — après, la barre d’adresse disparaît pour toujours.',
+      'Sur iPhone : Partager → « Sur l’écran d’accueil », et wairyu s’ouvre comme une appli.',
+    ],
+  },
+  {
+    id: '2026-09-29-ouverture-directe',
+    date: '29 septembre 2026',
+    title: 'L’appli s’ouvre directement sur ton compte',
+    items: [
+      'Plus d’écran intermédiaire : quand tu reviens, ta découverte s’ouvre toute seule — aucun appui inutile.',
+      'Après une déconnexion, « Continuer en tant que » affiche ton pseudo, et ta connexion se remplit en un appui.',
+      'Ta recherche s’applique vraiment : tu ne vois que les profils qui correspondent à ton genre, ton orientation et ton âge.',
+    ],
+  },
+  {
+    id: '2026-09-29-inscription-simple',
+    date: '29 septembre 2026',
+    title: 'Inscription simplifiée + notification de bienvenue',
+    items: [
+      'Créer un compte est devenu plus simple : choisis un pseudo et un mot de passe, c’est tout — plus besoin d’attendre un code par email.',
+      'Dès l’inscription, une notification de félicitations arrive sur ton téléphone : la preuve que tu recevras messages et matchs même app fermée.',
+    ],
+  },
+  {
     id: '2026-09-29-google-popup',
     date: '29 septembre 2026',
     title: 'Connexion Google plus fiable dans l’application',

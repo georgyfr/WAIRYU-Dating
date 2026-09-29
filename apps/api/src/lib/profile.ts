@@ -167,6 +167,8 @@ export function validatePrompts(v: unknown): ValidatedPrompt[] {
 export interface ValidatedPreferences {
   modeDefault: (typeof MODE_DEFAULTS)[number];
   prefGender: 'women' | 'men' | 'everyone';
+  /** Task 60 — orientation recherchée (filtre de découverte). */
+  prefOrientation: 'straight' | 'gay' | 'bi' | 'everyone';
   minAge: number;
   maxAge: number;
   distanceKm: number;
@@ -190,6 +192,14 @@ export function validatePreferences(v: unknown): ValidatedPreferences {
   return {
     modeDefault: validateEnum(p.modeDefault, MODE_DEFAULTS, 'Mode'),
     prefGender: validateEnum(p.prefGender, ['women', 'men', 'everyone'] as const, 'Genres recherchés'),
+    // Task 60 : absent/vide → 'everyone' (compatibilité smoke/clients existants).
+    prefOrientation: validateEnum(
+      p.prefOrientation === undefined || p.prefOrientation === null || p.prefOrientation === ''
+        ? 'everyone'
+        : p.prefOrientation,
+      ['straight', 'gay', 'bi', 'everyone'] as const,
+      'Orientation recherchée',
+    ),
     minAge,
     maxAge,
     distanceKm,

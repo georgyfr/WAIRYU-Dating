@@ -128,8 +128,127 @@ pushRoutes.post('/push/test', async (c) => {
     tag: `wairyu-test-${now.getTime()}`,
     url: '#/matches',
     force: true,
+    bypassPrefs: true,
+    // Task 62 : réponse à l'action explicite de l'utilisateur
   });
   const body: PushTestResponse = { ok: sent > 0, sent, enabled: true };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// Task 59 (fondateur) — « À l'inscription, félicite-moi avec une notification »
+// POST /api/push/welcome — envoyée par le front DÈS l'abonnement push réussi
+// (juste après l'inscription classique Task 58, ou à la réactivation). Elle
+// récompense l'acceptation de la permission : premier vrai push = preuve vivante
+// que « messages et matchs t'annonceront comme ça, même app fermée ».
+// bypassPrefs : réponse à une action explicite — jamais filtrée (Task 62).
+// ---------------------------------------------------------------------------
+pushRoutes.post('/push/welcome', async (c) => {
+  const user = await requireUser(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushTest, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushTest.scope);
+  const enabled = await pushEnabled(c.env);
+  if (!enabled) {
+    const body = { ok: false, sent: 0, enabled: false };
+    return c.json(body);
+  }
+  const row = await c.env.DB.prepare(`SELECT username FROM auth_password WHERE user_id = ? LIMIT 1`)
+    .bind(user.id)
+    .first<{ username: string | null }>();
+  const who = row?.username ? ` @${row.username}` : '';
+  const now = Date.now();
+  const sent = await sendPushToUser(c.env, user.id, {
+    title: 'WAIRYU 🎉',
+    body: `Félicitations${who} ! Ton compte est créé. Ta personne idéale est peut-être en ligne en ce moment — avance et trouve celle ou celui qui te convient 💛`,
+    tag: `wairyu-welcome-${now}`,
+    url: '#/discover',
+    force: true,
+    bypassPrefs: true,
+    // Task 62 : réponse à l'action explicite de l'utilisateur
+  });
+  const body = { ok: sent > 0, sent, enabled: true };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// Task 62 (fondateur) — « notifications automatiques, choix des types dans
+// Réglages ». GET : état courant (défaut tout activé). PUT : écriture partielle
+// (enabled seul, types seul, ou les deux) — upsert D1 (0010_push_preferences
+// → migration 0020). Types filtrés côté Worker à CHAQUE push métier.
+// ---------------------------------------------------------------------------
+const PUSH_TYPES = ['message', 'match', 'checkin', 'news'] as const;
+type PushType = (typeof PUSH_TYPES)[number];
+
+function normalizeTypes(raw: unknown): Record<PushType, boolean> | null {
+  if (typeof raw !== 'object' || raw === null) return null;
+  const r = raw as Record<string, unknown>;
+  const out = {} as Record<PushType, boolean>;
+  for (const k of PUSH_TYPES) {
+    const v = r[k];
+    if (typeof v !== 'boolean') return null;
+    out[k] = v;
+  }
+  return out;
+}
+
+/** Les anciens payloads stockaient 0/1 — tout ce qui n'est pas 0/false est ACTIF. */
+function parseStoredTypes(s: string): Record<PushType, boolean> {
+  try {
+    const j = JSON.parse(s || '{}') as Record<string, unknown>;
+    const out = {} as Record<PushType, boolean>;
+    for (const k of PUSH_TYPES) {
+      const v = j[k];
+      out[k] = !(v === 0 || v === false);
+    }
+    return out;
+  } catch {
+    return { message: true, match: true, checkin: true, news: true };
+  }
+}
+
+pushRoutes.get('/push/preferences', async (c) => {
+  const user = await requireUser(c);
+  const row = await c.env.DB.prepare(`SELECT enabled, types FROM push_preferences WHERE user_id = ?`)
+    .bind(user.id)
+    .first<{ enabled: number; types: string }>();
+  const body = row
+    ? { enabled: !!row.enabled, types: parseStoredTypes(row.types) }
+    : { enabled: true, types: { message: true, match: true, checkin: true, news: true } as Record<PushType, boolean> };
+  return c.json(body);
+});
+
+pushRoutes.put('/push/preferences', async (c) => {
+  const user = await requireUser(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.pushUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.pushUser.scope);
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const hasEnabled = typeof payload?.enabled === 'boolean';
+  const types = normalizeTypes(payload?.types);
+  if (!hasEnabled && !types) {
+    throw errors.badRequest(
+      'Préférences invalides : enabled (boolean) et/ou types {message,match,checkin,news} booleans requis.',
+    );
+  }
+  const existing = await c.env.DB.prepare(`SELECT enabled, types FROM push_preferences WHERE user_id = ?`)
+    .bind(user.id)
+    .first<{ enabled: number; types: string }>();
+  const cur = existing
+    ? { enabled: !!existing.enabled, types: parseStoredTypes(existing.types) }
+    : { enabled: true, types: { message: true, match: true, checkin: true, news: true } as Record<PushType, boolean> };
+  const next = {
+    enabled: hasEnabled ? (payload!.enabled as boolean) : cur.enabled,
+    types: types ?? cur.types,
+  };
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(
+    `INSERT INTO push_preferences (user_id, enabled, types, updated_at)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT (user_id) DO UPDATE SET enabled = excluded.enabled,
+       types = excluded.types, updated_at = excluded.updated_at`,
+  )
+    .bind(user.id, next.enabled ? 1 : 0, JSON.stringify(next.types), now)
+    .run();
+  const body = next;
   return c.json(body);
 });
 

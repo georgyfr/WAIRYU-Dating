@@ -937,6 +937,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
             minAge: 18,
             maxAge: 99,
             distanceKm: 500,
+            prefOrientation: 'everyone',
             prefIntent: null,
           };
         if (!current) {

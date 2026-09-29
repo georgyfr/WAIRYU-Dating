@@ -97,6 +97,11 @@ export function Profile({ onDone }: Props) {
   const [neighborhood, setNeighborhood] = useState('');
   const [geoRegion, setGeoRegion] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
+  // Task 64 (fondateur : « pas d'autorisation » + capture « Aucune autorisation »)
+  // — état du guide géolocalisation : none | denied | unavailable | timeout.
+  // Le guide s'affiche DÈS L'ARRIVÉE si la permission est déjà refusée
+  // (navigator.permissions), pas seulement après un échec.
+  const [geoGuide, setGeoGuide] = useState<'none' | 'denied' | 'unavailable' | 'timeout'>('none');
   const [bio, setBio] = useState('');
 
   // --- Étape 4 : prompts
@@ -114,6 +119,8 @@ export function Profile({ onDone }: Props) {
   // --- Étape 6 : préférences
   const [modeDefault, setModeDefault] = useState<DiscoveryMode>('classic');
   const [prefGender, setPrefGender] = useState<PreferencesDto['prefGender']>('everyone');
+  // Task 60 — orientation RECHERCHÉE (étape 2, « personnes montrées »).
+  const [prefOrientation, setPrefOrientation] = useState<PreferencesDto['prefOrientation'] | ''>('');
   const [minAge, setMinAge] = useState(25);
   const [maxAge, setMaxAge] = useState(45);
   const [distanceKm, setDistanceKm] = useState(100);
@@ -122,7 +129,9 @@ export function Profile({ onDone }: Props) {
   const reload = useCallback(async () => {
     const p = await api<ProfileResponse>('/api/profile').catch(() => null);
     if (p) {
-      setDisplayName(p.displayName ?? '');
+      // Task 60 — @pseudo de connexion en tête de préremplissage (les comptes
+      // classiques n'ont PAS de displayName au premier passage).
+      setDisplayName(p.displayName ?? p.username ?? '');
       // Date de naissance : ISO stocké, sinon repli sur l'année seule (comptes anciens).
       if (p.birthDate) {
         const [y, m, d] = p.birthDate.split('-');
@@ -151,6 +160,8 @@ export function Profile({ onDone }: Props) {
       if (p.preferences) {
         setModeDefault(p.preferences.modeDefault);
         setPrefGender(p.preferences.prefGender);
+        // Task 60 — absent (anciens comptes) → '' (l'écran 2 propose 'everyone').
+        setPrefOrientation(p.preferences.prefOrientation ?? 'everyone');
         setMinAge(p.preferences.minAge);
         setMaxAge(p.preferences.maxAge);
         setDistanceKm(p.preferences.distanceKm);
@@ -163,6 +174,31 @@ export function Profile({ onDone }: Props) {
   useEffect(() => {
     void reload();
   }, [reload]);
+
+  // Task 64 — si la permission géolocalisation est DÉJÀ refusée sur ce
+  // navigateur/appareil, afficher le guide de déblocage dès l'arrivée sur
+  // l'étape 3 (l'utilisateur ne découvre pas le blocage après un échec).
+  useEffect(() => {
+    let cancelled = false;
+    try {
+      const perms = navigator.permissions;
+      if (perms && typeof perms.query === 'function') {
+        perms
+          .query({ name: 'geolocation' as PermissionName })
+          .then((status) => {
+            if (!cancelled && status.state === 'denied') setGeoGuide('denied');
+          })
+          .catch(() => {
+            /* Safari ancien : pas de query — le guide suivra l'échec réel */
+          });
+      }
+    } catch {
+      /* bénin */
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function save(json: unknown): Promise<boolean> {
     try {
@@ -183,6 +219,26 @@ export function Profile({ onDone }: Props) {
       ok = await save({ displayName, birthDate: composeBirthDate(), gender });
     } else if (step === 2) {
       ok = await save({ orientation, intent, consentAccepted: consent });
+      if (ok) {
+        // Task 60 — les choix de découverte de l'étape 2 sont DÉJÀ actifs :
+        // « personnes montrées » sauvegardée immédiatement (sauvegarde auto).
+        try {
+          await api('/api/profile/preferences', {
+            method: 'PUT',
+            json: {
+              modeDefault,
+              prefGender: prefGender || 'everyone',
+              prefOrientation: prefOrientation || 'everyone',
+              minAge,
+              maxAge,
+              distanceKm,
+              prefIntent: prefIntent || null,
+            },
+          });
+        } catch {
+          /* non bloquant — l'étape 6 re-sauvegardera */
+        }
+      }
     } else if (step === 3) {
       ok = await save({ city, country, neighborhood, geoRegion, bio });
     } else if (step === 4) {
@@ -206,6 +262,7 @@ export function Profile({ onDone }: Props) {
         json: {
           modeDefault,
           prefGender,
+          prefOrientation: prefOrientation || 'everyone',
           minAge,
           maxAge,
           distanceKm,
@@ -233,6 +290,11 @@ export function Profile({ onDone }: Props) {
    * → géocodage inverse côté Worker (Nominatim) → pays/ville/quartier remplis.
    * La position exacte ne transite qu'au millième de degré (~110 m) et rien de
    * précis n'est stocké : la base garde libellés + zone grossière ≈11 km.
+   *
+   * Task 64 (fondateur : « pas d'autorisation ») — les erreurs ne sont PLUS
+   * confondues : PERMISSION_DENIED (bloqué → guide), POSITION_UNAVAILABLE
+   * (GPS coupé → réglages rapides), TIMEOUT (couverture → réessayer).
+   * Chaque cause a son remède exact, affiché sous le bouton.
    */
   function detectLocation() {
     if (!navigator.geolocation) {
@@ -241,6 +303,7 @@ export function Profile({ onDone }: Props) {
     }
     setLocating(true);
     setError(null);
+    setGeoGuide('none');
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const lat = pos.coords.latitude;
@@ -262,10 +325,20 @@ export function Profile({ onDone }: Props) {
         } catch {
           setError('Ville introuvable depuis ta position — renseigne-la manuellement.');
         }
+        setGeoGuide('none');
         setLocating(false);
       },
-      () => {
-        setError('Position refusée — renseigne ta ville manuellement.');
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) {
+          setGeoGuide('denied');
+          setError('Position refusée sur ce téléphone — suis le guide ci-dessous, ou renseigne ta ville manuellement.');
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          setGeoGuide('unavailable');
+          setError('Position introuvable — renseigne ta ville manuellement.');
+        } else {
+          setGeoGuide('timeout');
+          setError('Détection trop longue — réessaie près d’une fenêtre, ou renseigne ta ville manuellement.');
+        }
         setLocating(false);
       },
       { timeout: 10000, enableHighAccuracy: false },
@@ -454,9 +527,24 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 2 : orientation + consentement ---------------- */}
+      {/* ---------------- Étape 2 : recherche + orientation + consentement ---------------- */}
       {step === 2 && (
         <div className="wizard-body">
+          <div className="field">
+            <span>Je recherche…</span>
+            <div className="choice-row">
+              {(['women', 'men', 'everyone'] as const).map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  className={`choice ${prefGender === g ? 'on' : ''}`}
+                  onClick={() => setPrefGender(g)}
+                >
+                  {LABELS.prefGender[g]}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="field">
             <span>Orientation</span>
             <div className="choice-row">
@@ -465,13 +553,47 @@ export function Profile({ onDone }: Props) {
                   key={o}
                   type="button"
                   className={`choice ${orientation === o ? 'on' : ''}`}
-                  onClick={() => setOrientation(o)}
+                  onClick={() => {
+                    setOrientation(o);
+                    // Task 60 — par défaut, la découverte suit l'orientation
+                    // déclarée (droit → hétéro, gay → homosexuel, bi → bi,
+                    // autre → tout le monde) — modifiable juste en dessous.
+                    if (prefOrientation === '') {
+                      setPrefOrientation(o === 'straight' ? 'straight' : o === 'gay' ? 'gay' : o === 'bi' ? 'bi' : 'everyone');
+                    }
+                  }}
                 >
                   {LABELS.orientation[o]}
                 </button>
               ))}
             </div>
           </div>
+          {prefOrientation !== '' && (
+            <div className="field">
+              <span>Personnes montrées dans ta découverte</span>
+              <div className="choice-row">
+                {([
+                  ['straight', 'Hétérosexuel·les'],
+                  ['gay', 'Homosexuel·les'],
+                  ['bi', 'Bisexuel·les'],
+                  ['everyone', 'Tout le monde'],
+                ] as const).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`choice ${prefOrientation === value ? 'on' : ''}`}
+                    onClick={() => setPrefOrientation(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <p className="hint tiny">
+                Tu ne verras que les profils qui correspondent à ce choix — et dont la recherche correspond à
+                ton profil. Tu pourras le changer à tout moment.
+              </p>
+            </div>
+          )}
           <div className="field">
             <span>Tu cherches…</span>
             <div className="choice-row">
@@ -519,6 +641,75 @@ export function Profile({ onDone }: Props) {
             <button type="button" className="btn ghost" onClick={detectLocation} disabled={locating}>
               {locating ? 'Détection en cours…' : 'Détecter ma position'}
             </button>
+
+            {/* Task 64 (fondateur : « pas d'autorisation » + capture « Aucune
+                autorisation » dans Réglages Android) — guide de déblocage PAR
+                CAUSE. Correction v2 : la voie CHROME est en PREMIER (elle
+                fonctionne pour l'appli installée via Chrome ET le navigateur),
+                et l'impasse du fondateur est explicitement désamorcée : pour
+                une appli installée VIA CHROME, « Aucune autorisation » dans
+                Réglages Android est NORMAL — la permission se règle dans
+                Chrome, PAS dans les autorisations Android. */}
+            {geoGuide !== 'none' && (
+              <div className="geo-guide" role="note" aria-label="Comment débloquer la position">
+                {geoGuide === 'denied' && (
+                  <>
+                    <strong>🔒 La position est bloquée sur ce téléphone</strong>
+                    <ol>
+                      <li>
+                        Ouvre <b>Chrome</b> (l'appli internet) et va sur{' '}
+                        <b>wairyu.wairyu.workers.dev</b> — appuie sur le <b>🔒</b> à côté de l'adresse →{' '}
+                        <b>Position</b> → <b>Autoriser</b>.
+                      </li>
+                      <li>
+                        Autre chemin : <b>Chrome</b> → <b>⋮</b> (menu) → <b>Paramètres</b> →{' '}
+                        <b>Paramètres des sites</b> → <b>Position</b> → wairyu.wairyu.workers.dev →{' '}
+                        <b>Autoriser</b>.
+                      </li>
+                      <li>
+                        <b>Tu as ouvert Réglages → Applications → wairyu et tu vois « Aucune autorisation » ?</b>{' '}
+                        C'est <b>normal</b> pour l'app installée via Chrome — la position se règle dans{' '}
+                        <b>Chrome</b> (étapes 1-2), pas dans les autorisations Android.
+                      </li>
+                      <li>
+                        Si tu as installé l'<b>APK wairyu</b> (fichier téléchargé du site) :{' '}
+                        <b>Réglages Android</b> → <b>Applications</b> → <b>wairyu</b> → <b>Autorisations</b> →{' '}
+                        <b>Position</b> → <b>Autoriser</b>.
+                      </li>
+                      <li>
+                        Reviens ici et appuie de nouveau sur <b>« Détecter ma position »</b> — inutile de
+                        recharger.
+                      </li>
+                    </ol>
+                  </>
+                )}
+                {geoGuide === 'unavailable' && (
+                  <>
+                    <strong>📍 Ton téléphone n'arrive pas à se localiser</strong>
+                    <ol>
+                      <li>
+                        Glisse la barre en haut de l'écran pour ouvrir les <b>réglages rapides</b>.
+                      </li>
+                      <li>
+                        Active <b>Position / Localisation</b> (GPS).
+                      </li>
+                      <li>
+                        Reviens ici et appuie sur <b>« Détecter ma position »</b>.
+                      </li>
+                    </ol>
+                  </>
+                )}
+                {geoGuide === 'timeout' && (
+                  <>
+                    <strong>⏱️ La détection a pris trop de temps</strong>
+                    <p>
+                      Réessaie près d'une fenêtre ou en extérieur — ou renseigne ta ville à la main
+                      ci-dessous.
+                    </p>
+                  </>
+                )}
+              </div>
+            )}
           </div>
           <label className="field">
             <span>Pays</span>

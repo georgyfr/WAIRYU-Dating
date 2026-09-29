@@ -207,6 +207,8 @@ export default {
               body: 'Ton check-in sécurité arrive à échéance — confirme que tout va bien.',
               tag: 'checkin',
               url: '#/app',
+              kind: 'checkin',
+              // Task 62 : filtrable via Réglages → Notifications
             });
             await env.DB.prepare(`UPDATE safety_checkins SET reminded_at = ? WHERE id = ?`)
               .bind(now, ck.id)

@@ -7,7 +7,14 @@
     <meta name="description" content="wairyu — rencontres sincères. Photos consenties, messages réels, matching explicable." />
     <link rel="icon" type="image/png" href="/icons/icon-192.png" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+        <!-- Task 60-URL : ouverture « application » sans barre d'adresse —
+         ces métas font ouvrir la PWA plein écran quand elle est ajoutée
+         à l'écran d'accueil (iOS Safari + Chrome Android historique). -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="wairyu" />
+<link rel="manifest" href="/manifest.webmanifest" />
     <!-- Police Nunito auto-hébergée (aucune dépendance tiers rendue bloquante).
          Preload = début du téléchargement dès le parse du HTML, sans attendre
          le CSS. font-display: swap → texte visible immédiatement. -->

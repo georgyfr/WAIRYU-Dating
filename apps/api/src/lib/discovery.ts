@@ -100,14 +100,17 @@ interface FeedPhotoRow {
 }
 
 /** Bornes d'âge ISO (date du jour UTC, ±anniversaire exact via birth_date). */
-function ageBoundsISO(): { min: string; max: string } {
+function ageBoundsISO(minAge = 18, maxAge = 99): { min: string; max: string } {
   const now = new Date();
   const y = now.getUTCFullYear();
   const m = String(now.getUTCMonth() + 1).padStart(2, '0');
   const d = String(now.getUTCDate()).padStart(2, '0');
-  // Le plus VIEUX acceptable = aujourd'hui − 99 ans ; le plus JEUNE = − 18 ans.
-  // (minAge/maxAge personnels appliqués en mémoire sur l'âge calculé.)
-  return { min: `${y - 99}-${m}-${d}`, max: `${y - 18}-${m}-${d}` };
+  // Task 60 — bornes DURIES en SQL par les préférences de l'utilisateur
+  // (avant : 18-99 fixe en SQL, préférences appliquées en mémoire seulement).
+  const minAgeEff = Math.max(18, Math.min(99, Math.floor(minAge)));
+  const maxAgeEff = Math.max(minAgeEff, Math.min(99, Math.floor(maxAge)));
+  // Le plus VIEUX acceptable = aujourd'hui − maxAge ans ; le plus JEUNE = − minAge.
+  return { min: `${y - maxAgeEff}-${m}-${d}`, max: `${y - minAgeEff}-${m}-${d}` };
 }
 
 /** Ordre de priorité des dimensions pour les extraits partagés (cartes Invisible). */
@@ -176,18 +179,19 @@ export async function generateFeedPage(
   const t0 = Date.now();
 
   // --- Mon profil + mes préférences ---
-  const me = await env.DB.prepare(`SELECT birth_year, geo_region FROM users WHERE id = ?`)
+  const me = await env.DB.prepare(`SELECT birth_year, geo_region, gender, orientation FROM users WHERE id = ?`)
     .bind(userId)
-    .first<{ birth_year: number | null; geo_region: string | null }>();
+    .first<{ birth_year: number | null; geo_region: string | null; gender: string | null; orientation: string | null }>();
   if (!me) throw new Error('user_not_found');
 
   const prefs = await env.DB.prepare(
-    `SELECT mode_default, pref_gender, min_age, max_age, distance_km, pref_intent FROM user_preferences WHERE user_id = ?`,
+    `SELECT mode_default, pref_gender, pref_orientation, min_age, max_age, distance_km, pref_intent FROM user_preferences WHERE user_id = ?`,
   )
     .bind(userId)
     .first<{
       mode_default: string;
       pref_gender: string;
+      pref_orientation: string;
       min_age: number;
       max_age: number;
       distance_km: number;
@@ -196,6 +200,7 @@ export async function generateFeedPage(
   const minAge = prefs?.min_age ?? 18;
   const maxAge = prefs?.max_age ?? 99;
   const prefGender = prefs?.pref_gender ?? 'everyone';
+  const prefOrientation = prefs?.pref_orientation ?? 'everyone';
   const prefIntent = prefs?.pref_intent ?? null;
   const distanceKmPref = prefs?.distance_km ?? 100;
   const myMode = prefs?.mode_default ?? 'classic';
@@ -269,7 +274,7 @@ export async function generateFeedPage(
   }
 
   // --- UNE requête pool : candidats + leurs réponses (aucun N+1) ---
-  const bounds = ageBoundsISO();
+  const bounds = ageBoundsISO(minAge, maxAge);
   const now = Math.floor(Date.now() / 1000);
   const genderFilter =
     prefGender === 'women'
@@ -277,6 +282,46 @@ export async function generateFeedPage(
       : prefGender === 'men'
         ? `AND u0.gender = 'man'`
         : '';
+  // Task 60 — filtre d'orientation RECHERCHÉE (le candidat a déclaré son
+  // orientation dans l'assistant ; NULL/'other' = non filtré côté candidat).
+  const orientationFilter =
+    prefOrientation === 'straight'
+      ? `AND u0.orientation = 'straight'`
+      : prefOrientation === 'gay'
+        ? `AND u0.orientation = 'gay'`
+        : prefOrientation === 'bi'
+          ? `AND u0.orientation = 'bi'`
+          : '';
+  // Task 60 — RÉCIPROCITÉ GENRE/ORIENTATION : je n'apparais pas chez ceux qui
+  // ne me recherchent pas. Un candidat sans préférences (jamais passé par
+  // l'assistant) voit tout le monde par défaut ('everyone').
+  const myGenderSql = ['man', 'woman', 'non_binary'].includes(String(me.gender)) ? String(me.gender) : '';
+  const myOrientSql = ['straight', 'gay', 'bi', 'other'].includes(String(me.orientation))
+    ? String(me.orientation)
+    : '';
+  const mutualGenderFilter = `AND (
+           NOT EXISTS (SELECT 1 FROM user_preferences upc WHERE upc.user_id = u0.id)
+           OR EXISTS (
+             SELECT 1 FROM user_preferences upc
+             WHERE upc.user_id = u0.id AND (
+               upc.pref_gender = 'everyone'
+               OR ('${myGenderSql}' = 'woman' AND upc.pref_gender = 'women')
+               OR ('${myGenderSql}' = 'man' AND upc.pref_gender = 'men')
+             )
+           )
+         )`;
+  const mutualOrientationFilter = `AND (
+           NOT EXISTS (SELECT 1 FROM user_preferences upc2 WHERE upc2.user_id = u0.id)
+           OR EXISTS (
+             SELECT 1 FROM user_preferences upc2
+             WHERE upc2.user_id = u0.id AND (
+               upc2.pref_orientation = 'everyone'
+               OR '${myOrientSql}' = ''
+               OR '${myOrientSql}' = 'other'
+               OR upc2.pref_orientation = '${myOrientSql}'
+             )
+           )
+         )`;
   const onlyIds = opts?.onlyIds;
   // NB : injecté DANS la sous-requête candidats → alias u0 (fix pool LIMIT/jointure).
   const onlyFilter = onlyIds && onlyIds.length > 0 ? `AND u0.id IN (${onlyIds.map(() => '?').join(',')})` : '';
@@ -321,6 +366,9 @@ export async function generateFeedPage(
          AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u0.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2)
          AND COALESCE(u0.birth_date, CAST(u0.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
          ${genderFilter}
+         ${orientationFilter}
+         ${mutualGenderFilter}
+         ${mutualOrientationFilter}
          AND (?6 IS NULL OR u0.intent = ?6)
          -- Étape 7 (plan 7.7) : un profil EN PAUSE n'apparaît nulle part.
          AND COALESCE(u0.paused, 0) = 0

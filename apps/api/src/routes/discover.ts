@@ -385,6 +385,8 @@ discoverRoutes.post('/discover/swipe', async (c) => {
         body: `${target.display_name ?? 'Quelqu’un'} a liké aussi — ouvrez la conversation.`,
         tag: `match-${res.matchId}`,
         url: `#/chat/${res.conversationId ?? ''}`,
+        kind: 'match',
+        // Task 62 : filtrable via Réglages → Notifications
       });
     }
   }
@@ -527,6 +529,7 @@ discoverRoutes.post('/discover/invisible-request', async (c) => {
         body: 'Vous avez demandé à discuter mutuellement — la conversation est ouverte.',
         tag: `match-${res.matchId}`,
         url: `#/chat/${res.conversationId}`,
+        kind: 'match',
       });
       const body: InvisibleRequestResponse = {
         ok: true,
@@ -623,6 +626,7 @@ discoverRoutes.post('/discover/invisible-request/:id/respond', async (c) => {
     body: 'Ta demande « Discuter » a été acceptée — la conversation est ouverte.',
     tag: `match-${res.matchId}`,
     url: `#/chat/${res.conversationId}`,
+        kind: 'match',
   });
 
   const body: InvisibleRespondResponse = {

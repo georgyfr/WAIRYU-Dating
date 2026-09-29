@@ -82,6 +82,40 @@
     padding: 10px 12px;
     margin-top: 12px;
   }
+  .way {
+    border: 1px solid rgba(108, 74, 182, .16);
+    border-radius: 12px;
+    padding: 14px 14px 10px;
+    margin-bottom: 14px;
+    background: #fdfcff;
+  }
+  .way-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: #1c7a43;
+    background: rgba(28, 122, 67, .1);
+    border-radius: 999px;
+    padding: 4px 10px;
+    margin-bottom: 10px;
+  }
+  .way-badge-warn {
+    color: #8a5a12;
+    background: rgba(244, 162, 89, .16);
+  }
+  .way > p { font-size: .93rem; line-height: 1.5; margin-bottom: 12px; }
+  .btn-sec {
+    background: #fff;
+    color: var(--c-primary-dark);
+    border: 2px solid var(--c-primary);
+  }
+  .btn-sec:hover { box-shadow: 0 4px 12px rgba(108, 74, 182, .22); }
+  .note-warn {
+    background: rgba(244, 162, 89, .12);
+    border: 1px solid rgba(244, 162, 89, .35);
+  }
+  .note-warn b { color: #8a5a12; }
   .qr-zone {
     text-align: center;
     margin-top: 8px;
@@ -107,20 +141,48 @@
     <img src="/icons/icon-192.png" alt="wairyu">
     <h1>wairyu</h1>
   </div>
-  <p class="tagline">Rencontres sincères — 100 % gratuit · photos consenties · matching explicable</p>
+  <p class="tagline">Rencontres sincères — 100 % gratuit · photos consenties · matching explicable<br>
+  <b style="color:var(--c-primary-dark);">Installée, wairyu s’ouvre plein écran : plus aucune barre d’adresse, comme une vraie application.</b></p>
 
   <div class="cards">
     <div class="card android" id="card-android">
-      <h2>🤖 Android — application APK</h2>
-      <a class="btn" href="/app/wairyu.apk" download>
-        📥 Télécharger l'application
-        <small>Version 1.0.0 · 1,4 Mo · installation directe</small>
-      </a>
-      <ol>
-        <li><b>Télécharge</b> l'APK avec le bouton ci-dessus.</li>
-        <li>Ouvre le fichier téléchargé ; Chrome peut demander d'<b>autoriser l'installation</b> de cette source → « Autoriser ».</li>
-        <li>Appuie sur <b>Installer</b>, puis ouvre <b>wairyu</b> — elle se comporte comme une vraie app (plein écran, notifications).</li>
-      </ol>
+      <h2>🤖 Android — installer wairyu</h2>
+
+      <!-- Task 63 : voie RECOMMANDÉE — l'installation par Chrome crée un
+           WebAPK signé par Google, distribué par Chrome lui-même : Google
+           Play Protect ne bloque JAMAIS ce type d'installation. C'est la
+           parade au blocage « App bloquée par Play Protect » subi par les
+           APK installés hors Play Store. -->
+      <div class="way" id="way-chrome">
+        <span class="way-badge">✅ RECOMMANDÉ — jamais bloqué par Play Protect</span>
+        <p>Installe wairyu <b>via Chrome</b> : l'application créée est <b>signée par Google</b> — Play Protect ne peut pas la bloquer. Même plein écran, même notifications, aucun avertissement.</p>
+        <a class="btn" id="btn-chrome-install" href="#" style="display:none;" role="button">📲 Installer maintenant</a>
+        <ol>
+          <li>Ouvre <b>wairyu.wairyu.workers.dev</b> dans <b>Chrome</b>.</li>
+          <li>Appuie sur <b>📲 Installer</b> (ou menu <b>⋮</b> → <b>« Installer l'application »</b> ou <b>« Ajouter à l'écran d'accueil »</b>).</li>
+          <li>Confirme <b>Installer</b> — l'icône wairyu apparaît sur l'écran d'accueil.</li>
+          <li>Ouvre wairyu depuis cette icône : plein écran, notifications actives.</li>
+        </ol>
+      </div>
+
+      <!-- Voie HISTORIQUE conservée (append-only) : l'APK direct reste
+           disponible, désormais en option, avec le guide Play Protect. -->
+      <div class="way" id="way-apk">
+        <span class="way-badge way-badge-warn">Option — APK direct (Play Protect peut le signaler)</span>
+        <a class="btn btn-sec" href="/app/wairyu.apk" download>
+          📥 Télécharger l'application
+          <small>Version 1.0.0 · 1,4 Mo · installation directe</small>
+        </a>
+        <ol>
+          <li><b>Télécharge</b> l'APK avec le bouton ci-dessus.</li>
+          <li>Ouvre le fichier téléchargé ; Chrome peut demander d'<b>autoriser l'installation</b> de cette source → « Autoriser ».</li>
+          <li>Appuie sur <b>Installer</b>, puis ouvre <b>wairyu</b> — elle se comporte comme une vraie app (plein écran, notifications).</li>
+        </ol>
+      </div>
+
+      <div class="note note-warn">🛡️ <b>« App bloquée » par Google Play Protect pendant l'installation de l'APK ?</b> C'est le comportement normal pour toute app hors Play Store — pas un virus. Sur l'écran de blocage : appuie sur <b>« Plus de détails »</b>, puis <b>« Installer quand même »</b>.<br>
+      🛡️ <b>wairyu déjà installée mais désactivée / supprimée par Play Protect ?</b> Ouvre le <b>Play Store</b> → icône de profil → <b>Play Protect</b> → rouvre le rapport, touche <b>wairyu</b>, puis <b>« Autoriser »</b> (ou désactive temporairement l'analyse). Sinon : Réglages Android → Applications → wairyu → <b>Activer</b>.<br>
+      👉 L'installation <b>via Chrome</b> ci-dessus évite tout cela <b>pour toujours</b> — et les notifications reviennent dès que l'app n'est plus bloquée.</div>
       <div class="note">L'app est la version officielle de wairyu.wairyu.workers.dev, signée et vérifiée par Android. Aucun store intermédiaire, aucune donnée revendue — le 100 % gratuit reste total.<br>
       <b>Le téléchargement ne démarre pas ?</b> Tu es peut-être dans un navigateur intégré (WhatsApp, Facebook) : appuie sur ⋮ puis <b>« Ouvrir dans Chrome »</b>, ou copie ce lien dans Chrome : <b>wairyu.wairyu.workers.dev/app</b></div>
       <div class="qr-zone">
@@ -158,6 +220,44 @@
         card.style.order = '-1';
         card.style.boxShadow = '0 6px 24px rgba(108, 74, 182, .18)';
       }
+    })();
+  </script>
+  <script>
+    // Task 63 — installation WebAPK EN UN TAP depuis cette page même :
+    // Chrome émet beforeinstallprompt quand la PWA est installable depuis
+    // /app (manifest + service worker + HTTPS ✓). On capte l'événement et
+    // on révèle le bouton « 📲 Installer maintenant » de la voie Chrome.
+    (function () {
+      var btn = document.getElementById('btn-chrome-install');
+      var deferred = null;
+      function reveal() {
+        if (!btn) return;
+        btn.style.display = 'block';
+      }
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferred = e;
+        reveal();
+      });
+      if (btn) {
+        btn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (!deferred) { reveal(); return; }
+          deferred.prompt();
+          deferred.userChoice.then(function (choice) {
+            deferred = null;
+            if (choice && choice.outcome === 'accepted') {
+              btn.textContent = '✅ Installation lancée — reviens après l\'icône wairyu';
+            }
+          }).catch(function () {});
+        });
+      }
+      window.addEventListener('appinstalled', function () {
+        if (btn) {
+          btn.textContent = '✅ Installée ! Ouvre wairyu depuis l\'écran d\'accueil';
+          btn.style.display = 'block';
+        }
+      });
     })();
   </script>
 </body>

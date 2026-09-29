@@ -76,6 +76,19 @@ export function Login({ config }: Props) {
       <SocialButtons config={config} />
 
       <p className="switch">
+        Tu as un pseudo et un mot de passe ?{' '}
+        <a
+          href="#/login-email"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.hash = '#/login-email';
+          }}
+        >
+          Connexion avec ton pseudo
+        </a>
+      </p>
+
+      <p className="switch">
         Pas encore de compte ?{' '}
         <a
           href="#/signup"

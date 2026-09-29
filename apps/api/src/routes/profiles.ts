@@ -164,13 +164,17 @@ profileRoutes.get('/profile', async (c) => {
 
   const [basics, prompts, photos, prefs] = await Promise.all([
     c.env.DB.prepare(
-      `SELECT display_name, birth_year, birth_date, gender, orientation, intent, city, country,
-              neighborhood, geo_region, bio, profile_consent_at, heritage, heritage_updated_at
-       FROM users WHERE id = ? LIMIT 1`,
+      `SELECT u.display_name, u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.country,
+              u.neighborhood, u.geo_region, u.bio, u.profile_consent_at, u.heritage, u.heritage_updated_at,
+              ap.username AS username
+       FROM users u
+       LEFT JOIN auth_password ap ON ap.user_id = u.id
+       WHERE u.id = ? LIMIT 1`,
     )
       .bind(user.id)
       .first<{
         display_name: string | null;
+        username: string | null;
         birth_year: number | null;
         birth_date: string | null;
         gender: string | null;
@@ -192,13 +196,14 @@ profileRoutes.get('/profile', async (c) => {
       .all<{ prompt_key: string; answer: string }>(),
     Promise.resolve(await listActivePhotos(c, user.id)),
     c.env.DB.prepare(
-      `SELECT mode_default, pref_gender, min_age, max_age, distance_km, pref_intent
+      `SELECT mode_default, pref_gender, pref_orientation, min_age, max_age, distance_km, pref_intent
        FROM user_preferences WHERE user_id = ? LIMIT 1`,
     )
       .bind(user.id)
       .first<{
         mode_default: string;
         pref_gender: string;
+        pref_orientation: string | null;
         min_age: number;
         max_age: number;
         distance_km: number;
@@ -212,6 +217,7 @@ profileRoutes.get('/profile', async (c) => {
     ? {
         modeDefault: prefs.mode_default as PreferencesDto['modeDefault'],
         prefGender: prefs.pref_gender as PreferencesDto['prefGender'],
+        prefOrientation: (prefs.pref_orientation ?? 'everyone') as PreferencesDto['prefOrientation'],
         minAge: prefs.min_age,
         maxAge: prefs.max_age,
         distanceKm: prefs.distance_km,
@@ -221,6 +227,8 @@ profileRoutes.get('/profile', async (c) => {
 
   const body: ProfileResponse = {
     displayName: basics.display_name,
+    // Task 60 — @pseudo de connexion pour préremplir le nom affiché.
+    username: basics.username ?? null,
     birthYear: basics.birth_year,
     birthDate: basics.birth_date,
     gender: (basics.gender as Gender | null) ?? null,
@@ -404,13 +412,14 @@ profileRoutes.put('/profile', async (c) => {
 profileRoutes.get('/profile/preferences', async (c) => {
   const user = await requireUser(c);
   const prefs = await c.env.DB.prepare(
-    `SELECT mode_default, pref_gender, min_age, max_age, distance_km, pref_intent
+    `SELECT mode_default, pref_gender, pref_orientation, min_age, max_age, distance_km, pref_intent
      FROM user_preferences WHERE user_id = ? LIMIT 1`,
   )
     .bind(user.id)
     .first<{
       mode_default: string;
       pref_gender: string;
+      pref_orientation: string | null;
       min_age: number;
       max_age: number;
       distance_km: number;
@@ -420,6 +429,7 @@ profileRoutes.get('/profile/preferences', async (c) => {
   const body: PreferencesDto = {
     modeDefault: prefs.mode_default as PreferencesDto['modeDefault'],
     prefGender: prefs.pref_gender as PreferencesDto['prefGender'],
+    prefOrientation: (prefs.pref_orientation ?? 'everyone') as PreferencesDto['prefOrientation'],
     minAge: prefs.min_age,
     maxAge: prefs.max_age,
     distanceKm: prefs.distance_km,
@@ -440,11 +450,12 @@ profileRoutes.put('/profile/preferences', async (c) => {
   const now = Math.floor(Date.now() / 1000);
   await c.env.DB.prepare(
     `INSERT INTO user_preferences
-       (user_id, mode_default, pref_gender, min_age, max_age, distance_km, pref_intent, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+       (user_id, mode_default, pref_gender, pref_orientation, min_age, max_age, distance_km, pref_intent, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT (user_id) DO UPDATE SET
        mode_default = excluded.mode_default,
        pref_gender = excluded.pref_gender,
+       pref_orientation = excluded.pref_orientation,
        min_age = excluded.min_age,
        max_age = excluded.max_age,
        distance_km = excluded.distance_km,
@@ -455,6 +466,7 @@ profileRoutes.put('/profile/preferences', async (c) => {
       user.id,
       prefs.modeDefault,
       prefs.prefGender,
+      prefs.prefOrientation,
       prefs.minAge,
       prefs.maxAge,
       prefs.distanceKm,

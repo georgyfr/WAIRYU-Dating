@@ -105,6 +105,7 @@ export type ApiErrorCode =
   | 'otp_cooldown'
   | 'turnstile_failed'
   | 'conflict'
+  | 'reset_expired'
   | 'not_configured';
 
 /** Enveloppe d'erreur normalisée — toute erreur de l'API respecte ce contrat. */
@@ -163,6 +164,8 @@ export type DiscoveryMode = 'classic' | 'invisible' | 'interracial';
 export type Orientation = 'straight' | 'gay' | 'bi' | 'other';
 
 export type PrefGender = 'women' | 'men' | 'everyone';
+/** Task 60 — orientation déclarée (assistant étape 2) et filtre de découverte. */
+export type PrefOrientation = 'straight' | 'gay' | 'bi' | 'everyone';
 
 /** Un prompt rempli (clé de la bibliothèque + réponse personnelle). */
 export interface PromptInput {
@@ -188,6 +191,8 @@ export interface PhotoDto {
 /** Profil complet de l'utilisateur authentifié (GET /api/profile). */
 export interface ProfileResponse {
   displayName: string | null;
+  /** Task 60 — @pseudo de connexion (comptes classiques), null sinon. */
+  username?: string | null;
   birthYear: number | null;
   /** Date de naissance ISO « YYYY-MM-DD » (jour/mois/année — âge exact). */
   birthDate: string | null;
@@ -219,6 +224,8 @@ export interface ProfileResponse {
 export interface PreferencesDto {
   modeDefault: DiscoveryMode;
   prefGender: PrefGender;
+  /** Task 60 — orientation recherchée (filtre de découverte). */
+  prefOrientation: PrefOrientation;
   minAge: number;
   maxAge: number;
   distanceKm: number;
@@ -251,6 +258,8 @@ export interface ProfileUpdate {
 export interface PreferencesUpdate {
   modeDefault: DiscoveryMode;
   prefGender: PrefGender;
+  /** Task 60 — absent/vide = 'everyone' (compatibilité clients existants). */
+  prefOrientation?: PrefOrientation;
   minAge: number;
   maxAge: number;
   distanceKm: number;
@@ -312,8 +321,11 @@ export interface AuthConfigResponse {
   turnstileSiteKey: string | null;
   /** Google OAuth configuré côté serveur ? */
   googleEnabled: boolean;
-  /** Client ID OAuth Google public (bouton « Sign in with Google » GSI popup, Task 57). */
-  googleClientId: string | null;
+  /**
+   * Task 57 : client_id public requis par le bouton GSI (popup FedCM) —
+   * sans navigation hors de l'app Android (TWA), voir POST /auth/google/idtoken.
+   */
+  googleClientId?: string | null;
   /** Facebook Login configuré côté serveur ? */
   facebookEnabled: boolean;
   /** Mode d'envoi des emails OTP : 'brevo' ou 'dev' (staging sans clé Brevo). */
@@ -325,6 +337,11 @@ export interface MeResponse {
   userId: string;
   email: string;
   displayName: string | null;
+  /**
+   * Task 60 (fondateur) — @pseudo de connexion : s'affiche TOUJOURS à la
+   * place du préfixe email (les comptes classiques ont un email placeholder).
+   */
+  username?: string | null;
   emailVerified: boolean;
   status: 'pending' | 'active' | 'banned' | 'deleted';
   plan: 'free' | 'plus' | 'gold';

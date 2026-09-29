@@ -8,7 +8,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, apiForm } from '../lib/api';
-import { sendTestPush } from '../lib/push-client';
+import { sendTestPush, getPushPreferences, putPushPreferences, type PushPrefs } from '../lib/push-client';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
 import {
   SELFIE_POSE_LABELS,
@@ -47,6 +47,27 @@ export function Account({ me, onLoggedOut }: Props) {
   const [verifFiles, setVerifFiles] = useState<(File | null)[]>([null, null, null]);
   const [verifBusy, setVerifBusy] = useState(false);
 
+  // ---- Task 62 (fondateur) : Réglages → Notifications (types filtrables) ----
+  const [pushPrefs, setPushPrefs] = useState<PushPrefs | null>(null);
+  const [prefsBusy, setPrefsBusy] = useState(false);
+  const [overlayGuide, setOverlayGuide] = useState(false);
+  // ---- Task 58/60 : sécurité du compte (@pseudo, email, mot de passe) ----
+  const [pwStatus, setPwStatus] = useState<{
+    hasPassword: boolean;
+    hasRecoveryEmail: boolean;
+    recoveryEmailMasked: string | null;
+    username: string | null;
+    hasRecoveryCode: boolean;
+  } | null>(null);
+  const [recEmail, setRecEmail] = useState('');
+  const [recSaving, setRecSaving] = useState(false);
+  const [recSaved, setRecSaved] = useState(false);
+  const [pwOpen, setPwOpen] = useState(false);
+  const [pwCurrent, setPwCurrent] = useState('');
+  const [pwNew, setPwNew] = useState('');
+  const [secError, setSecError] = useState<string | null>(null);
+  const [secNotice, setSecNotice] = useState<string | null>(null);
+
   const refreshSafety = useCallback(async () => {
     try {
       const [p, v] = await Promise.all([
@@ -63,6 +84,101 @@ export function Account({ me, onLoggedOut }: Props) {
   useEffect(() => {
     void refreshSafety();
   }, [refreshSafety]);
+
+  // Task 62 — préférences de notifications (défaut tout activé côté serveur).
+  useEffect(() => {
+    getPushPreferences()
+      .then(setPushPrefs)
+      .catch(() => null);
+    // Task 58 — état identifiants (mot de passe ? email de récupération ?).
+    api<{
+      hasPassword: boolean;
+      hasRecoveryEmail: boolean;
+      recoveryEmailMasked: string | null;
+      username: string | null;
+      hasRecoveryCode: boolean;
+    }>('/api/auth/password/status')
+      .then(setPwStatus)
+      .catch(() => null);
+  }, []);
+
+  /** Toggle d'un type de notification (upsert serveur — vaut pour TOUS les appareils). */
+  async function togglePushType(type: keyof PushPrefs['types']) {
+    if (!pushPrefs) return;
+    setPrefsBusy(true);
+    setError(null);
+    try {
+      const next = await putPushPreferences({
+        types: { ...pushPrefs.types, [type]: !pushPrefs.types[type] },
+      });
+      setPushPrefs(next);
+    } catch (err) {
+      setError('Impossible d’enregistrer ta préférence — réessaie.');
+    }
+    setPrefsBusy(false);
+  }
+
+  /** Interrupteur maître des notifications. */
+  async function togglePushMaster() {
+    if (!pushPrefs) return;
+    setPrefsBusy(true);
+    setError(null);
+    try {
+      const next = await putPushPreferences({ enabled: !pushPrefs.enabled });
+      setPushPrefs(next);
+      setMessage(
+        next.enabled
+          ? 'Notifications réactivées — pense à activer la permission sur cet appareil si besoin.'
+          : 'Notifications désactivées — tu ne recevras plus aucune alerte.',
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setPrefsBusy(false);
+  }
+
+  /** Task 58 — enregistre l'email de récupération (sert UNIQUEMENT au mot de passe oublié). */
+  async function saveRecoveryEmail(e: React.FormEvent) {
+    e.preventDefault();
+    setSecError(null);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(recEmail.trim())) {
+      setSecError('Cette adresse email semble invalide.');
+      return;
+    }
+    setRecSaving(true);
+    try {
+      await api('/api/auth/account/recovery-email', { json: { email: recEmail.trim() } });
+      setRecSaved(true);
+      setSecNotice('Email de récupération enregistré ✓ — il servira uniquement à retrouver ton mot de passe.');
+      setPwStatus((prev) => (prev ? { ...prev, hasRecoveryEmail: true } : prev));
+    } catch (err) {
+      setSecError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setRecSaving(false);
+  }
+
+  /** Task 58 — changement de mot de passe (les autres appareils sont déconnectés). */
+  async function changePassword(e?: React.FormEvent) {
+    e?.preventDefault();
+    setSecError(null);
+    if (pwNew.length < 8) {
+      setSecError('Le nouveau mot de passe doit contenir au moins 8 caractères.');
+      return;
+    }
+    setPrefsBusy(true);
+    try {
+      await api('/api/auth/password/change', {
+        json: { current_password: pwCurrent, new_password: pwNew },
+      });
+      setSecNotice('Mot de passe changé ✓ — les autres appareils connectés à ton compte ont été déconnectés.');
+      setPwOpen(false);
+      setPwCurrent('');
+      setPwNew('');
+    } catch (err) {
+      setSecError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setPrefsBusy(false);
+  }
 
   async function putPrivacy(patch: Partial<Pick<PrivacyResponse, 'paused' | 'incognito' | 'modeVisible'>>) {
     setBusy(true);
@@ -225,7 +341,9 @@ export function Account({ me, onLoggedOut }: Props) {
       }
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
-        setMessage('Permission refusée — tu pourras la réactiver dans ton navigateur.');
+        setMessage(
+          'Permission refusée — pour la réactiver : réglages du navigateur → autorisations du site → Notifications.',
+        );
         setBusy(false);
         return;
       }
@@ -250,7 +368,7 @@ export function Account({ me, onLoggedOut }: Props) {
         'Notifications activées — une notification de simulation WAIRYU arrive dans quelques secondes 👀',
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Activation impossible sur ce navigateur.');
+      setError('Activation impossible — vérifie ta connexion et réessaie.');
     }
     setBusy(false);
   }
@@ -509,18 +627,83 @@ export function Account({ me, onLoggedOut }: Props) {
         </div>
       </div>
 
-      {/* ---- Notifications Web Push (Étape 6.8 · Task 53 : test réel + guide iPhone) ---- */}
+      {/* ---- Notifications Web Push (Étape 6.8 · Task 53/54/62) ---- */}
       {(pushSupported || installGuide) && (
         <div className="profile-cta">
           <div>
             <strong>Notifications</strong>
             <p className="hint">
               {pushEnabled
-                ? 'Tu reçois une alerte pour les nouveaux messages (hors conversation ouverte), matchs et demandes de révélation — comme un SMS, même app fermée.'
+                ? 'Tu reçois une alerte pour les nouveaux messages, matchs et demandes — comme un SMS, même app fermée.'
                 : 'Active-les pour être prévenu·e d’un nouveau message, match ou demande de révélation — même app fermée.'}
             </p>
+            {overlayGuide && (
+              <p className="hint tiny push-overlay-guide">
+                📵 <strong>Ton téléphone bloque la demande</strong> : une autre application affiche par-dessus
+                l’écran (filtre de lumière bleue, protection des yeux, bulles de messagerie…). Ferme ces
+                applications ou <strong>redémarre le téléphone</strong>, puis réessaie — c’est le téléphone,
+                pas wairyu, qui refuse. Solution durable : réglages Android → Applications → [cette appli] →
+                désactive « Afficher par-dessus les autres applications ».
+              </p>
+            )}
           </div>
           {installGuide && <div className="push-guide">{installGuide}</div>}
+          {/* Task 62 — Réglages des types de notifications (serveur = source de vérité) */}
+          {pushPrefs && (
+            <div className="push-prefs" data-testid="push-prefs">
+              <label className="push-pref-row push-pref-master">
+                <span>
+                  Recevoir des notifications
+                  <small> — interrupteur général, tous tes appareils</small>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={pushPrefs.enabled}
+                  onChange={() => void togglePushMaster()}
+                  disabled={prefsBusy}
+                />
+              </label>
+              <div className="push-pref-types">
+                <label className="push-pref-row">
+                  <span>💬 Nouveaux messages</span>
+                  <input
+                    type="checkbox"
+                    checked={pushPrefs.types.message}
+                    onChange={() => void togglePushType('message')}
+                    disabled={prefsBusy || !pushPrefs.enabled}
+                  />
+                </label>
+                <label className="push-pref-row">
+                  <span>✨ Matchs et demandes de discussion</span>
+                  <input
+                    type="checkbox"
+                    checked={pushPrefs.types.match}
+                    onChange={() => void togglePushType('match')}
+                    disabled={prefsBusy || !pushPrefs.enabled}
+                  />
+                </label>
+                <label className="push-pref-row">
+                  <span>🛡️ Rappels de sécurité (check-in)</span>
+                  <input
+                    type="checkbox"
+                    checked={pushPrefs.types.checkin}
+                    onChange={() => void togglePushType('checkin')}
+                    disabled={prefsBusy || !pushPrefs.enabled}
+                  />
+                </label>
+                <label className="push-pref-row">
+                  <span>📣 Infos wairyu (annonces officielles)</span>
+                  <input
+                    type="checkbox"
+                    checked={pushPrefs.types.news}
+                    onChange={() => void togglePushType('news')}
+                    disabled={prefsBusy || !pushPrefs.enabled}
+                  />
+                </label>
+              </div>
+              <p className="hint tiny">Tes choix s’appliquent côté serveur, sur tous tes appareils — même app fermée.</p>
+            </div>
+          )}
           <div className="btn-col">
             {!pushEnabled ? (
               <button type="button" className="btn primary" onClick={() => void enablePush()} disabled={busy}>
@@ -533,13 +716,100 @@ export function Account({ me, onLoggedOut }: Props) {
                   🔔 Tester la notification
                 </button>
                 <button type="button" className="btn ghost" onClick={() => void disablePush()} disabled={busy}>
-                  Désactiver
+                  Désactiver sur cet appareil
                 </button>
               </>
             )}
           </div>
         </div>
       )}
+
+      {/* ---- Task 58/60 : Sécurité du compte (@pseudo, email, mot de passe) ---- */}
+      <div className="sec-block">
+        <h3>Sécurité du compte</h3>
+        <p className="hint tiny">
+          Ton identifiant : <strong>{pwStatus?.username ? `@${pwStatus.username}` : 'email ou compte social'}</strong>
+          {pwStatus?.hasRecoveryEmail && pwStatus.recoveryEmailMasked
+            ? ` — email de récupération : ${pwStatus.recoveryEmailMasked}`
+            : ' — aucun email de récupération (utilise ton code de récupération en cas de perte)'}
+          .
+        </p>
+        {secNotice && <p className="notice">{secNotice}</p>}
+        {secError && <p className="error">{secError}</p>}
+
+        {pwStatus?.hasPassword && (
+          <div className="actions">
+            {pwOpen ? (
+              <div className="pw-form">
+                <label className="field">
+                  <span>Mot de passe actuel</span>
+                  <input
+                    type="password"
+                    name="current-password"
+                    autoComplete="current-password"
+                    value={pwCurrent}
+                    onChange={(e) => setPwCurrent(e.target.value)}
+                    maxLength={128}
+                  />
+                </label>
+                <label className="field">
+                  <span>Nouveau mot de passe</span>
+                  <input
+                    type="password"
+                    name="new-password"
+                    autoComplete="new-password"
+                    placeholder="au moins 8 caractères"
+                    value={pwNew}
+                    onChange={(e) => setPwNew(e.target.value)}
+                    maxLength={128}
+                  />
+                </label>
+                <p className="hint tiny">
+                  Par sécurité, les autres appareils connectés à ton compte seront déconnectés.
+                </p>
+                <div className="btn-col">
+                  <button type="button" className="btn primary" onClick={() => void changePassword()} disabled={prefsBusy}>
+                    Enregistrer le nouveau mot de passe
+                  </button>
+                  <button type="button" className="btn ghost" onClick={() => setPwOpen(false)} disabled={prefsBusy}>
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button type="button" className="btn ghost" onClick={() => setPwOpen(true)}>
+                Changer mon mot de passe
+              </button>
+            )}
+          </div>
+        )}
+
+        {!pwStatus?.hasRecoveryEmail && !recSaved && (
+          <form onSubmit={saveRecoveryEmail} noValidate>
+            <p className="hint tiny">
+              <strong>Astuce :</strong>{' ajoute un email de récupération — il servira uniquement à retrouver ton mot de passe en cas de perte. Il n\'apparaîtra jamais sur ton profil. Sans email, ton code de récupération reste ta bouée.'}
+            </p>
+            <label className="field">
+              <span>Email de récupération (facultatif)</span>
+              <input
+                type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                placeholder="toi@exemple.com"
+                value={recEmail}
+                onChange={(e) => setRecEmail(e.target.value)}
+              />
+            </label>
+            <button type="submit" className="btn ghost" disabled={recSaving}>
+              {recSaving ? 'Enregistrement…' : 'Enregistrer mon email'}
+            </button>
+          </form>
+        )}
+        {recSaved && (
+          <p className="notice">Email enregistré ✓ — il servira uniquement à retrouver ton mot de passe en cas de perte.</p>
+        )}
+      </div>
 
       {message && <p className="notice">{message}</p>}
 

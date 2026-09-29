@@ -17,6 +17,8 @@ export const errors = {
   unauthorized: (m = 'Authentification requise.') => new AppError(401, 'unauthorized', m),
   forbidden: (m = 'Accès refusé.') => new AppError(403, 'forbidden', m),
   notFound: (m = 'Ressource introuvable.') => new AppError(404, 'not_found', m),
+  /** 409 — conflit de ressource (ex. @pseudo déjà pris, Task 58). */
+  conflict: (m = 'Conflit avec une ressource existante.') => new AppError(409, 'conflict', m),
   rateLimited: (m = 'Trop de requêtes, réessayez plus tard.') =>
     new AppError(429, 'rate_limited', m),
   internal: (m = 'Une erreur interne est survenue.') => new AppError(500, 'internal', m),

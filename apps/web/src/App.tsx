@@ -21,7 +21,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from './lib/api';
 import { useSwr, clearSwr } from './lib/swr';
 import { Signup } from './screens/Signup';
+import { SignupEmail } from './screens/SignupEmail'; // Task 58 : inscription pseudo + mot de passe
 import { Login } from './screens/Login';
+import { LoginEmail } from './screens/LoginEmail'; // Task 58 : connexion pseudo + mot de passe
+import { Recover } from './screens/Recover'; // Task 58 : retrouver son compte
+import { Reset } from './screens/Reset'; // Task 58 : lien email « nouveau mot de passe »
 import { Verify } from './screens/Verify';
 import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
@@ -43,6 +47,9 @@ import { Coach } from './screens/Coach';
 import { TabBar, type TabId } from './components/TabBar';
 import MessageToasts from './components/MessageToasts'; // Task 53 : toasts « nouveau message » bas-droite (comme WhatsApp Web)
 import PushBanner from './components/PushBanner'; // Task 53 : bannière d'activation des notifications
+import InstallGate from './components/InstallGate'; // Task 60-URL : bannière « installer l'app » (WebAPK Chrome, Task 63)
+import { openInAppIfEligible } from './lib/open-in-app'; // Task 60-URL : bascule intent:// navigateur → app Android
+import { autoArmWebPush } from './lib/push-client'; // Task 62 : armement AUTOMATIQUE des notifications
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
 import { UpdateToast } from './components/UpdateToast'; // Task 44 : « Nouvelle version » — changements immédiats sans actualiser
@@ -61,7 +68,11 @@ import type {
 type Route =
   | { name: 'home'; notice?: string | null }
   | { name: 'signup' }
+  | { name: 'signup-email' } // Task 58 : inscription pseudo + mot de passe
   | { name: 'login' }
+  | { name: 'login-email' } // Task 58 : connexion pseudo + mot de passe
+  | { name: 'recover' } // Task 58 : retrouver son compte (code ou email)
+  | { name: 'reset'; token: string } // Task 58 : lien email « nouveau mot de passe »
   | { name: 'verify'; email: string; devCode?: string }
   | { name: 'fb-complete' }
   | { name: 'profile' }
@@ -153,6 +164,15 @@ const EV_MINE_TO_SLUG: Record<EvMineTab, string> = {
   tickets: 'billets',
 };
 
+const LAST_ACCOUNT_KEY = 'wairyu.last_account';
+
+// Task 60-URL (fondateur : « une application ne devrait pas avoir d'url ») —
+// bascule intent:// AU CHARGEMENT DU MODULE (avant le premier rendu React,
+// règles des hooks respectées) : 1 seule tentative par session, hors
+// standalone / page /app / ?noappopen=1 — voir lib/open-in-app.ts.
+// Si la navigation part, la page courante sera remplacée par l'app Android.
+openInAppIfEligible();
+
 /** Message de retour après un parcours social (callback ?google= / ?facebook=). */
 function parseNotice(params: URLSearchParams): string | null {
   if (params.get('google') === 'cancelled' || params.get('facebook') === 'cancelled') {
@@ -187,8 +207,23 @@ function parseHash(): Route {
   switch (seg0) {
     case 'signup':
       return { name: 'signup' };
+    case 'signup-email':
+      // Task 58 : inscription classique (pseudo + mot de passe, sans email).
+      return { name: 'signup-email' };
     case 'login':
       return { name: 'login' };
+    case 'login-email':
+      // Task 58 : connexion classique (pseudo + mot de passe).
+      return { name: 'login-email' };
+    case 'recover':
+      // Task 58 : retrouver son compte (code de récupération ou email).
+      return { name: 'recover' };
+    case 'reset': {
+      // Task 58 : lien email « nouveau mot de passe » — jeton 64 hex ; tout
+      // autre format → connexion (jamais d'écran cassé).
+      const token = params.get('t') ?? '';
+      return /^[0-9a-f]{64}$/.test(token) ? { name: 'reset', token } : { name: 'login' };
+    }
     case 'verify': {
       const email = params.get('e') ?? '';
       if (!email) return { name: 'login' };
@@ -271,6 +306,14 @@ export default function App() {
   const [me, setMe] = useState<MeResponse | null>(null);
   const [checking, setChecking] = useState(true);
   const [apiOk, setApiOk] = useState<boolean | null>(null);
+  // Task 60 — dernier compte utilisé sur cet appareil (@pseudo prérempli).
+  const [lastAccount, setLastAccount] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(LAST_ACCOUNT_KEY);
+    } catch {
+      return null;
+    }
+  });
   // Task 39 : contexte événementiel (hook inconditionnel — règles des hooks).
   const eventsNav = useEventsNav();
   // Task 48-c : « Quoi de neuf » — ouverte au boot si une mise à jour a été
@@ -333,7 +376,21 @@ export default function App() {
 
     // Session existante ? (cookie httpOnly — invisible au JS, seul l'API décide)
     api<MeResponse>('/api/me')
-      .then((user) => setMe(user))
+      .then((user) => {
+        setMe(user);
+        // Task 58/60 — @pseudo de connexion mémorisé pour préremplir la
+        // connexion classique (jamais l'email placeholder des comptes pw).
+        try {
+          const isPlaceholder = user.email.endsWith('@inbox.wairyu.local');
+          const label = user.username ?? user.displayName ?? (isPlaceholder ? null : user.email.split('@')[0]);
+          if (label) {
+            localStorage.setItem(LAST_ACCOUNT_KEY, label.replace(/^@/, ''));
+            setLastAccount(label.replace(/^@/, ''));
+          }
+        } catch {
+          /* bénin */
+        }
+      })
       .catch(() => setMe(null))
       .finally(() => setChecking(false));
   }, []);
@@ -389,6 +446,23 @@ export default function App() {
   useEffect(() => {
     if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
   }, [checking, route, me, go]);
+
+  // Task 60 (fondateur) — « l'appli s'ouvre directement sur ton compte » :
+  // un utilisateur DÉJÀ connecté qui ouvre l'accueil (ou n'importe quel écran
+  // d'auth) est emmené DIRECTEMENT à sa découverte (ou à l'assistant si son
+  // profil est incomplet). Le notice d'échec social reste prioritaire
+  // (l'utilisateur doit voir le message d'erreur une fois).
+  useEffect(() => {
+    if (
+      checking ||
+      !me ||
+      !['home', 'signup', 'signup-email', 'login', 'login-email', 'verify', 'recover', 'reset', 'fb-complete'].includes(route.name) ||
+      (route.name === 'home' && route.notice)
+    ) {
+      return;
+    }
+    go(me.profileComplete ? '#/discover' : '#/profile');
+  }, [checking, me, route, go]);
 
   // Thème « dark premium » (Task 31 — référence fondateur) : les pages de
   // l'expérience dating (onglets + chat) basculent le body en thème sombre ;
@@ -475,6 +549,14 @@ export default function App() {
     return () => window.clearInterval(id);
   }, [me, refreshConv, refreshLikes]);
 
+  // Task 62 — armement AUTOMATIQUE des notifications dès qu'un utilisateur
+  // connecté est connu (granted → (ré)abonnement silencieux ; default →
+  // demande au prochain geste ; denied → silence). Un essai par session.
+  useEffect(() => {
+    if (!me) return;
+    void autoArmWebPush();
+  }, [me]);
+
   // Task 53 (demande fondateur : « les notifications doivent apparaître comme
   // WhatsApp ») — le SW est maintenant ENREGISTRÉ AU BOOT (avant, il ne
   // l'était qu'en visitant Paramètres → un push ne pouvait jamais être
@@ -502,8 +584,16 @@ export default function App() {
 
   if (route.name === 'signup') {
     content = <Signup config={config} />;
+  } else if (route.name === 'signup-email') {
+    content = <SignupEmail config={config} />;
   } else if (route.name === 'login') {
     content = <Login config={config} />;
+  } else if (route.name === 'login-email') {
+    content = <LoginEmail config={config} />;
+  } else if (route.name === 'recover') {
+    content = <Recover config={config} />;
+  } else if (route.name === 'reset') {
+    content = <Reset token={route.token} />;
   } else if (route.name === 'verify') {
     content = <Verify email={route.email} devCode={route.devCode} onAuthenticated={onAuthenticated} />;
   } else if (route.name === 'fb-complete') {
@@ -644,8 +734,21 @@ export default function App() {
           </div>
         ) : me ? (
           <button type="button" className="btn primary" onClick={() => go('#/discover')}>
-            Continuer en tant que {me.displayName ?? me.email.split('@')[0]}
+            Continuer en tant que {me.username ? `@${me.username}` : me.displayName ?? me.email.split('@')[0]}
           </button>
+        ) : lastAccount ? (
+          // Task 60 (fondateur) — « l'appli s'ouvre directement sur ton compte » :
+          // le dernier compte utilisé sur CET appareil est proposé en 1 appui.
+          <>
+            <button type="button" className="btn primary" onClick={() => go('#/login-email')}>
+              Continuer en tant que @{lastAccount}
+            </button>
+            <div className="cta-row">
+              <button type="button" className="btn ghost" onClick={() => go('#/signup')}>
+                Ce n'est pas toi ? Créer un compte
+              </button>
+            </div>
+          </>
         ) : (
           <div className="cta-row">
             <button type="button" className="btn primary" onClick={() => go('#/signup')}>
@@ -686,6 +789,7 @@ export default function App() {
       )}
       <ToastHost />
       <UpdateToast />
+      <InstallGate />
 
       {/* Task 53 : toasts « nouveau message » bas-droite (WhatsApp Web) —
           keyé par compte : changement de session → snapshot et pile réinitialisés. */}

@@ -730,6 +730,8 @@ adminRoutes.post('/push/send', async (c) => {
     tag: `wairyu-admin-${now.getTime()}`,
     url,
     force: true,
+    kind: 'news',
+    // Task 62 : les annonces officielles respectent le toggle « Infos wairyu »
   });
   await audit(c, 'push_send', userId, null, `sent=${sent} title="${title}"`);
   const body: AdminPushSendResponse = { ok: sent > 0, sent };

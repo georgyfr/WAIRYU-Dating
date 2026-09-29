@@ -93,6 +93,22 @@ export const RATE_RULES = {
   safetyCheckinUser: { scope: 'safe:chk:user', windowSeconds: 86400, max: 20 },
   /** Toggles de confidentialité : 30 / heure. */
   safetyPrivacyUser: { scope: 'safe:priv:user', windowSeconds: 3600, max: 30 },
+  // --- Task 58 : inscription/connexion mot de passe ---
+  /** Inscriptions mot de passe par IP : 5 / heure (Turnstile en plus en prod). */
+  pwRegisterIp: { scope: 'pw:reg:ip', windowSeconds: 3600, max: 5 },
+  /** Tentatives de connexion par IP : 20 / heure (couvre les fautes de frappe). */
+  pwLoginIp: { scope: 'pw:login:ip', windowSeconds: 3600, max: 20 },
+  /** Tentatives par @pseudo : 10 / heure (brute-force killer, verrou 15 min en plus). */
+  pwLoginUser: { scope: 'pw:login:usr', windowSeconds: 3600, max: 10 },
+  /** Récupérations par code : 8 / heure par IP. */
+  pwRecoveryIp: { scope: 'pw:rec:ip', windowSeconds: 3600, max: 8 },
+  /** Récupérations par code : 6 / heure par @pseudo. */
+  pwRecoveryUser: { scope: 'pw:rec:usr', windowSeconds: 3600, max: 6 },
+  /** Demandes de lien email « mot de passe oublié » : 5 / h par IP, 3 / h par email. */
+  pwForgotIp: { scope: 'pw:forgot:ip', windowSeconds: 3600, max: 5 },
+  pwForgotEmail: { scope: 'pw:forgot:em', windowSeconds: 3600, max: 3 },
+  /** Consommation de liens de reset : 10 / heure par IP. */
+  pwResetIp: { scope: 'pw:reset:ip', windowSeconds: 3600, max: 10 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

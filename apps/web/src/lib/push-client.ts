@@ -96,3 +96,150 @@ export async function sendTestPush(): Promise<number | null> {
     return null;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Task 62 (fondateur) — ARMEMENT AUTOMATIQUE des notifications.
+// « Je suggère que les notifications se fassent automatiquement » : plus
+// besoin de trouver un réglage. Dès qu'un utilisateur CONNECTÉ ouvre l'app :
+//  - permission déjà 'granted' → (ré)abonnement silencieux SANS prompt
+//    (répare les appareils désynchronisés, aucun geste requis) ;
+//  - permission 'default' → le PROCHAIN geste utilisateur (1er tap, attendu
+//    ≤ 60 s) déclenche requestPermission() — un prompt demandé DANS un geste
+//    n'est jamais jeté par le navigateur, contrairement au prompt au load ;
+//  - permission 'denied' → silence total (retenter serait du spam) ;
+//  - refus « bloqué par une autre appli » (overlay) → cooldown 7 jours ;
+//  - un essai par session (sessionStorage) + cooldown 24 h par appareil.
+// ---------------------------------------------------------------------------
+
+const AUTO_TS_KEY = 'wairyu_push_auto_ts';
+const AUTO_KIND_KEY = 'wairyu_push_auto_kind';
+const AUTO_SESSION_KEY = 'wairyu_push_auto_session';
+
+function markAuto(kind: 'denied' | 'blocked') {
+  try {
+    localStorage.setItem(AUTO_TS_KEY, String(Date.now()));
+    localStorage.setItem(AUTO_KIND_KEY, kind);
+  } catch {
+    /* bénin */
+  }
+}
+
+function autoCooldownActive(): boolean {
+  try {
+    const ts = Number(localStorage.getItem(AUTO_TS_KEY) ?? '0');
+    if (!ts) return false;
+    const ttl = localStorage.getItem(AUTO_KIND_KEY) === 'denied' ? 7 * 24 * 3600e3 : 24 * 3600e3;
+    return Date.now() - ts < ttl;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Armement automatique (à appeler au boot quand `me` est connu).
+ * Retourne l'état final : 'subscribed' | 'armed' | 'skipped' | 'error'.
+ */
+export async function autoArmWebPush(): Promise<'subscribed' | 'armed' | 'skipped' | 'error'> {
+  if (!pushSupported()) return 'skipped';
+  const permission = Notification.permission;
+  if (permission === 'denied') return 'skipped';
+  try {
+    if (sessionStorage.getItem(AUTO_SESSION_KEY) === '1') return 'skipped';
+  } catch {
+    /* bénin */
+  }
+  if (autoCooldownActive()) return 'skipped';
+
+  // Cas 1 — déjà accordée : (ré)abonnement silencieux, aucun prompt.
+  if (permission === 'granted') {
+    try {
+      sessionStorage.setItem(AUTO_SESSION_KEY, '1');
+    } catch {
+      /* bénin */
+    }
+    try {
+      const cfg = await api<PushConfigResponse>('/api/push/key');
+      if (!cfg.enabled || !cfg.publicKey) return 'error';
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      const existing = await reg.pushManager.getSubscription();
+      if (!existing) {
+        await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(cfg.publicKey) as unknown as BufferSource,
+        });
+      }
+      const sub = await reg.pushManager.getSubscription();
+      const j = sub?.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } } | null;
+      await api('/api/push/subscribe', {
+        json: { endpoint: j?.endpoint, keys: { p256dh: j?.keys?.p256dh, auth: j?.keys?.auth } },
+      });
+      return 'subscribed';
+    } catch {
+      return 'error';
+    }
+  }
+
+  // Cas 2 — 'default' : on attend le PROCHAIN geste (tap) pour demander.
+  try {
+    sessionStorage.setItem(AUTO_SESSION_KEY, '1');
+  } catch {
+    /* bénin */
+  }
+  let fired = false;
+  const cleanup = () => {
+    document.removeEventListener('pointerdown', onGesture, true);
+    document.removeEventListener('click', onGesture, true);
+  };
+  const onGesture = () => {
+    if (fired) return;
+    fired = true;
+    cleanup();
+    void (async () => {
+      try {
+        const cfg = await api<PushConfigResponse>('/api/push/key');
+        if (!cfg?.enabled || !cfg.publicKey) return;
+        if ((await Notification.requestPermission()) === 'granted') {
+          await activateWebPush();
+          try {
+            localStorage.removeItem(AUTO_TS_KEY);
+            localStorage.removeItem(AUTO_KIND_KEY);
+          } catch {
+            /* bénin */
+          }
+          // Task 59/62 — confirmation + renvoi vers les types de Réglages.
+          const { toast } = await import('./toast');
+          toast('Notifications activées 🔔 Tu peux choisir leurs types dans Réglages.', 'success');
+        } else if (Notification.permission === 'default') {
+          markAuto('blocked');
+          const { toast } = await import('./toast');
+          toast(
+            "Ton téléphone bloque la demande (une autre appli affiche par-dessus l'écran). Réglages → Notifications pour le guide.",
+            'info',
+          );
+        } else {
+          markAuto('denied');
+        }
+      } catch {
+        /* bénin — retentera à la prochaine session */
+      }
+    })();
+  };
+  document.addEventListener('pointerdown', onGesture, { capture: true, once: true });
+  document.addEventListener('click', onGesture, { capture: true, once: true });
+  return 'armed';
+}
+
+/** Lecture/écriture des préférences serveur (Task 62 — Réglages). */
+export interface PushPrefs {
+  enabled: boolean;
+  types: { message: boolean; match: boolean; checkin: boolean; news: boolean };
+}
+
+export async function getPushPreferences(): Promise<PushPrefs> {
+  return api<PushPrefs>('/api/push/preferences');
+}
+
+export async function putPushPreferences(patch: Partial<PushPrefs>): Promise<PushPrefs> {
+  return api<PushPrefs>('/api/push/preferences', { method: 'PUT', json: patch });
+}

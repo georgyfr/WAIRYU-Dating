@@ -28,6 +28,20 @@ export interface PushPayload {
    * page visible ⇒ toast in-app, pas de doublon système (Task 53).
    */
   force?: boolean;
+  /**
+   * Task 62 — catégorie métier du push (« message » | « match » | « checkin » |
+   * « news ») : lue par sendPushToUser pour respecter les toggles de Réglages
+   * (push_preferences.types). Absent = push non filtrable (toujours envoyé).
+   */
+  kind?: string;
+  /**
+   * Task 62 — court-circuite le filtrage par préférences : réservé aux pushes
+   * qui RÉPONDENT à une action explicite de l'utilisateur (test « Tester la
+   * notification », félicitations à l'activation Task 59). Un utilisateur qui
+   * vient de demander un push doit le VOIR, même s'il vient d'éteindre un
+   * toggle (l'inverse serait un bug perçu).
+   */
+  bypassPrefs?: boolean;
 }
 
 export interface PushSubscriptionKeys {
@@ -227,6 +241,37 @@ export async function sendPushToUser(
   try {
     const cfg = await vapid(env);
     if (!cfg) return 0;
+
+    // Task 62 — filtrage par préférences (Réglages → Notifications) :
+    // interrupteur maître d'abord, puis le toggle de la catégorie (kind).
+    // bypassPrefs=true (action explicite) passe toujours.
+    if (!payload.bypassPrefs) {
+      const pref = await env.DB.prepare(`SELECT enabled, types FROM push_preferences WHERE user_id = ?`)
+        .bind(userId)
+        .first<{ enabled: number; types: string }>();
+      if (pref) {
+        if (!pref.enabled) {
+          console.log(
+            JSON.stringify({ push: 'filtered_prefs', user: userId.slice(0, 8), reason: 'master_off' }),
+          );
+          return 0;
+        }
+        if (payload.kind) {
+          try {
+            const types = JSON.parse(pref.types || '{}') as Record<string, unknown>;
+            const v = types[payload.kind];
+            if (v === 0 || v === false) {
+              console.log(
+                JSON.stringify({ push: 'filtered_prefs', user: userId.slice(0, 8), reason: payload.kind }),
+              );
+              return 0;
+            }
+          } catch {
+            // JSON invalide → on laisse passer (défaut = tout activé).
+          }
+        }
+      }
+    }
 
     const { results: subs } = await env.DB.prepare(
       `SELECT endpoint, p256dh, auth FROM push_subscriptions WHERE user_id = ?`,

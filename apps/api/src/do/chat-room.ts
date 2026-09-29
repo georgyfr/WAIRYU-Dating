@@ -697,6 +697,8 @@ export class ChatRoom extends DurableObject {
           body: input.kind === 'voice' ? '🎤 Note vocale' : input.body.slice(0, 120),
           tag: `msg-${cid}`,
           url: `#/chat/${cid}`,
+          kind: 'message',
+          // Task 62 : filtrable via Réglages → Notifications
         });
       }
     }
@@ -730,7 +732,7 @@ export class ChatRoom extends DurableObject {
 function pushPayloadFor(
   event: string,
   _recipient: string,
-): { title: string; body: string; tag: string; url: string } {
+): { title: string; body: string; tag: string; url: string; kind?: string } {
   switch (event) {
     case 'reveal_requested':
       return {
@@ -738,6 +740,8 @@ function pushPayloadFor(
         body: 'Quelqu’un est prêt·e à se révéler — à toi de voir.',
         tag: 'reveal',
         url: '#/matches',
+        kind: 'match',
+        // Task 62 : événements de relation → toggle « Matchs »
       };
     case 'reveal_accepted':
       return {
@@ -745,6 +749,7 @@ function pushPayloadFor(
         body: 'Vous vous êtes révélés mutuellement — jette un œil.',
         tag: 'reveal',
         url: '#/matches',
+        kind: 'match',
       };
     case 'gateway_accepted':
       return {
@@ -752,8 +757,15 @@ function pushPayloadFor(
         body: 'Votre conversation continue en Mode Invisible.',
         tag: 'gateway',
         url: '#/matches',
+        kind: 'match',
       };
     default:
-      return { title: 'Wairyu', body: 'Nouvelle activité dans une conversation.', tag: 'chat', url: '#/matches' };
+      return {
+        title: 'Wairyu',
+        body: 'Nouvelle activité dans une conversation.',
+        tag: 'chat',
+        url: '#/matches',
+        kind: 'message',
+      };
   }
 }

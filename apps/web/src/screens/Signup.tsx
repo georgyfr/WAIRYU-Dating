@@ -125,6 +125,19 @@ export function Signup({ config }: Props) {
       />
 
       <p className="switch">
+        Tu préfères un pseudo et un mot de passe, sans email ?{' '}
+        <a
+          href="#/signup-email"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.hash = '#/signup-email';
+          }}
+        >
+          S'inscrire avec un pseudo
+        </a>
+      </p>
+
+      <p className="switch">
         Déjà un compte ?{' '}
         <a
           href="#/login"

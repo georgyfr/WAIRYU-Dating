@@ -93,38 +93,19 @@ function base64url(buf: Uint8Array): string {
 }
 
 // ---------------------------------------------------------------------------
-// Task 57 — Sign in with Google (GSI) en popup FedCM : vérification du jeton
-// d'identification côté serveur. Pourquoi : dans l'app Android (TWA), la
-// redirection plein écran vers accounts.google.com fait sortir wairyu du
-// contexte de l'app — sur certains téléphones (tueurs de tâches agressifs,
-// crash Custom Tabs documentés) l'Activity est fermée pendant la connexion et
-// l'utilisateur revient au launcher. La popup GSI/FedCM s'ouvre DANS la page :
-// plus aucune navigation hors de l'app. Le front reçoit un jeton d'identification
-// (JWT) que l'on vérifie ici avec les clés publiques Google (JWKS) — même
-// résultat final que le callback : compte résolu + session posée.
+// Task 57 — Google Identity Services (bouton GSI / popup FedCM)
+//
+// Le flux authorize existant (redirect complet) casse dans la TWA Android
+// (la fenêtre system WebView du consentement Google se ferme sans retour —
+// crash constaté chez le fondateur, Task 56-b). Le bouton GSI rend un jeton
+// ID (JWT RS256) que le front poste à /api/auth/google/idtoken — ZÉRO
+// navigation hors de la page. Ici : vérification cryptographique stricte du
+// jeton (signature JWKS Google, iss, aud, exp, email_verified).
 // ---------------------------------------------------------------------------
 
 const GOOGLE_JWKS_URL = 'https://www.googleapis.com/oauth2/v3/certs';
-/** Clés JWKS mises en cache (Google tourne les clés ; 12 h est l'usage courant). */
-let jwksCache: { keys: GoogleJwk[]; fetchedAt: number } | null = null;
+let jwksCache: { keys: Array<Record<string, unknown>>; fetchedAt: number } | null = null;
 const JWKS_TTL_MS = 12 * 60 * 60 * 1000;
-
-interface GoogleIdTokenClaims {
-  iss: string;
-  aud: string;
-  sub: string;
-  email?: string;
-  email_verified?: boolean;
-  name?: string;
-  exp: number;
-}
-
-/** JWK Google : le type DOM JsonWebKey n'expose pas kid — on l'étend. */
-interface GoogleJwk extends JsonWebKey {
-  kid: string;
-  n: string;
-  e: string;
-}
 
 function base64UrlDecode(input: string): Uint8Array {
   const bin = atob(input.replace(/-/g, '+').replace(/_/g, '/'));
@@ -133,37 +114,34 @@ function base64UrlDecode(input: string): Uint8Array {
   return out;
 }
 
-async function fetchGoogleJwks(): Promise<GoogleJwk[]> {
+async function fetchGoogleJwks() {
   if (jwksCache && Date.now() - jwksCache.fetchedAt < JWKS_TTL_MS) return jwksCache.keys;
-  const res = await fetch(GOOGLE_JWKS_URL, {
-    cf: { cacheEverything: true, cacheTtl: 3600 },
-  } as RequestInit);
+  const res = await fetch(GOOGLE_JWKS_URL, { cf: { cacheEverything: true, cacheTtl: 3600 } });
   if (!res.ok) throw new Error(`google_jwks_failed:${res.status}`);
-  const body = (await res.json()) as { keys?: GoogleJwk[] };
+  const body = (await res.json()) as { keys?: Array<Record<string, unknown>> };
   const keys = body.keys ?? [];
   if (keys.length === 0) throw new Error('google_jwks_empty');
   jwksCache = { keys, fetchedAt: Date.now() };
   return keys;
 }
 
-/**
- * Vérifie un jeton d'identification Google (format JWT) : signature RS256
- * contre le JWKS officiel, émetteur, audience (= notre client_id) et
- * expiration. Renvoie le profil si le jeton est authentique ; lève une erreur
- * descriptive (jamais de 500 brut — le front présente le message doux).
- */
-export async function verifyGoogleIdToken(
-  env: GoogleEnv,
-  credential: string,
-): Promise<GoogleProfile> {
+interface GoogleIdClaims {
+  sub: string;
+  email: string;
+  email_verified: true;
+  name?: string;
+}
+
+/** Vérifie un credential GSI (signature RS256 + contraintes standard) → profil. */
+export async function verifyGoogleIdToken(env: { GOOGLE_CLIENT_ID?: string }, credential: string): Promise<GoogleIdClaims> {
   const parts = credential.split('.');
   if (parts.length !== 3) throw new Error('google_idtoken_malformed');
-  const signedPart = parts[0];
-  const payloadPart = parts[1];
-  const signaturePart = parts[2];
+  const signedPart = parts[0]!;
+  const payloadPart = parts[1]!;
+  const signaturePart = parts[2]!;
   if (!signedPart || !payloadPart || !signaturePart) throw new Error('google_idtoken_malformed');
-  let header: { kid?: string; alg?: string };
-  let claims: GoogleIdTokenClaims;
+  let header: { alg?: string; kid?: string };
+  let claims: Record<string, unknown>;
   try {
     header = JSON.parse(new TextDecoder().decode(base64UrlDecode(signedPart)));
     claims = JSON.parse(new TextDecoder().decode(base64UrlDecode(payloadPart)));
@@ -171,14 +149,12 @@ export async function verifyGoogleIdToken(
     throw new Error('google_idtoken_malformed');
   }
   if (header.alg !== 'RS256' || !header.kid) throw new Error('google_idtoken_alg_unsupported');
-
   const keys = await fetchGoogleJwks();
   const jwk = keys.find((k) => k.kid === header.kid);
   if (!jwk) throw new Error('google_idtoken_unknown_key');
-
   const key = await crypto.subtle.importKey(
     'jwk',
-    jwk,
+    jwk as unknown as JsonWebKey,
     { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
     false,
     ['verify'],
@@ -187,19 +163,17 @@ export async function verifyGoogleIdToken(
   const signature = base64UrlDecode(signaturePart);
   const ok = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', key, signature, data);
   if (!ok) throw new Error('google_idtoken_bad_signature');
-
   const now = Math.floor(Date.now() / 1000);
-  if (claims.exp + 60 < now) throw new Error('google_idtoken_expired');
+  if ((claims.exp as number) + 60 < now) throw new Error('google_idtoken_expired');
   const issuers = ['https://accounts.google.com', 'accounts.google.com'];
-  if (!issuers.includes(claims.iss)) throw new Error('google_idtoken_bad_issuer');
+  if (!issuers.includes(claims.iss as string)) throw new Error('google_idtoken_bad_issuer');
   if (claims.aud !== env.GOOGLE_CLIENT_ID) throw new Error('google_idtoken_bad_audience');
   if (claims.email_verified !== true) throw new Error('google_idtoken_email_unverified');
   if (!claims.email) throw new Error('google_idtoken_email_missing');
-
   return {
-    sub: claims.sub,
-    email: claims.email,
+    sub: claims.sub as string,
+    email: claims.email as string,
     email_verified: true,
-    name: claims.name,
+    name: claims.name as string | undefined,
   };
 }
