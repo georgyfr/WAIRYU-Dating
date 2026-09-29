@@ -1,0 +1,8 @@
+# Artefacts de build TWA (générés par bubblewrap build) — jamais commités
+app/build/
+.gradle/
+build_t56.log
+app-release-signed.apk
+app-release-unsigned-aligned.apk
+app-release-bundle.aab
+local.properties

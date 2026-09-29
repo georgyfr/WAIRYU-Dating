@@ -32,6 +32,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-29-app-mobile',
+    date: '29 septembre 2026',
+    title: 'wairyu s’installe sur ton téléphone',
+    items: [
+      'L’application Android arrive : télécharge l’APK officiel en 1 clic et retrouve wairyu comme une vraie app, avec notifications.',
+      'Une nouvelle page d’installation avec QR code te guide pas à pas — accessible depuis Paramètres.',
+      'iPhone : l’installation sur l’écran d’accueil est expliquée écran par écran (exigence iOS pour les notifications).',
+    ],
+  },
+  {
     id: '2026-09-29-ergonomie-deck',
     date: '29 septembre 2026',
     title: 'Découvrir plus grand, plus vivant',

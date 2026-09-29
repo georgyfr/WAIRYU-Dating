@@ -493,6 +493,22 @@ export function Account({ me, onLoggedOut }: Props) {
         </div>
       </div>
 
+      {/* ---- Application mobile (Task 56 : APK Android signé + guide PWA iPhone) ---- */}
+      <div className="profile-cta">
+        <div>
+          <strong>Application mobile</strong>
+          <p className="hint">
+            Installe wairyu sur ton téléphone : plein écran, icône sur l'accueil, notifications comme un SMS.
+            Android reçoit un APK officiel signé, iPhone un guide d'installation en 4 gestes.
+          </p>
+        </div>
+        <div className="btn-col">
+          <a className="btn primary" href="/app" target="_blank" rel="noreferrer">
+            📱 Installer l'application
+          </a>
+        </div>
+      </div>
+
       {/* ---- Notifications Web Push (Étape 6.8 · Task 53 : test réel + guide iPhone) ---- */}
       {(pushSupported || installGuide) && (
         <div className="profile-cta">

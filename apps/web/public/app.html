@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Installer wairyu — application mobile</title>
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<style>
+  :root {
+    --c-primary: #6c4ab6;
+    --c-primary-dark: #563a94;
+    --c-accent: #f4a259;
+    --c-bg: #faf8f5;
+    --c-text: #2d2438;
+    --c-muted: #7d7288;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--c-bg);
+    color: var(--c-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .brand img { width: 44px; height: 44px; border-radius: 12px; }
+  .brand h1 { font-size: 1.6rem; color: var(--c-primary); }
+  .tagline { color: var(--c-muted); font-size: .95rem; margin-bottom: 28px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 780px;
+    width: 100%;
+  }
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(45, 36, 56, .08);
+    border: 1px solid rgba(108, 74, 182, .12);
+  }
+  .card.android { border-top: 4px solid var(--c-primary); }
+  .card.iphone { border-top: 4px solid var(--c-accent); }
+  .card h2 { font-size: 1.15rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(135deg, var(--c-primary), var(--c-primary-dark));
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 15px 18px;
+    border-radius: 12px;
+    margin: 6px 0 16px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(108, 74, 182, .35); }
+  .btn small { display: block; font-weight: 400; font-size: .8rem; opacity: .85; margin-top: 3px; }
+  ol { margin: 0 0 8px 20px; color: var(--c-text); }
+  ol li { margin-bottom: 9px; line-height: 1.45; font-size: .93rem; }
+  ol li b { color: var(--c-primary-dark); }
+  .note {
+    font-size: .82rem;
+    color: var(--c-muted);
+    line-height: 1.5;
+    background: rgba(108, 74, 182, .06);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 12px;
+  }
+  .qr-zone {
+    text-align: center;
+    margin-top: 8px;
+  }
+  .qr-zone svg { border: 8px solid #fff; border-radius: 12px; box-shadow: 0 3px 12px rgba(45,36,56,.12); }
+  .qr-zone p { font-size: .85rem; color: var(--c-muted); margin-top: 10px; }
+  footer {
+    margin-top: 34px;
+    color: var(--c-muted);
+    font-size: .82rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+  footer a { color: var(--c-primary); text-decoration: none; font-weight: 600; }
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    body { padding-top: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <img src="/icons/icon-192.png" alt="wairyu">
+    <h1>wairyu</h1>
+  </div>
+  <p class="tagline">Rencontres sincères — 100 % gratuit · photos consenties · matching explicable</p>
+
+  <div class="cards">
+    <div class="card android" id="card-android">
+      <h2>🤖 Android — application APK</h2>
+      <a class="btn" href="/app/wairyu.apk" download>
+        📥 Télécharger l'application
+        <small>Version 1.0.0 · 1,4 Mo · installation directe</small>
+      </a>
+      <ol>
+        <li><b>Télécharge</b> l'APK avec le bouton ci-dessus.</li>
+        <li>Ouvre le fichier téléchargé ; Chrome peut demander d'<b>autoriser l'installation</b> de cette source → « Autoriser ».</li>
+        <li>Appuie sur <b>Installer</b>, puis ouvre <b>wairyu</b> — elle se comporte comme une vraie app (plein écran, notifications).</li>
+      </ol>
+      <div class="note">L'app est la version officielle de wairyu.wairyu.workers.dev, signée et vérifiée par Android. Aucun store intermédiaire, aucune donnée revendue — le 100 % gratuit reste total.</div>
+      <div class="qr-zone">
+        <svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 31 31" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h31v31H0z"/><path stroke="#2d2438" d="M1 1.5h7m1 0h2m4 0h1m1 0h1m2 0h2m1 0h7M1 2.5h1m5 0h1m1 0h1m1 0h1m3 0h1m3 0h1m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m3 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h3m1 0h1m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h1m1 0h6m2 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h2m3 0h1m2 0h4m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m2 0h2m2 0h2M1 9.5h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h5m1 0h1m2 0h1m1 0h2M1 10.5h3m4 0h2m1 0h3m3 0h1m2 0h2m1 0h3m3 0h1M3 11.5h5m2 0h2m3 0h1m1 0h1m5 0h3m1 0h2M1 12.5h4m1 0h1m1 0h4m1 0h4m3 0h1m1 0h2m5 0h1M1 13.5h1m3 0h3m10 0h1m1 0h2m2 0h1m1 0h2M5 14.5h1m3 0h1m1 0h1m1 0h2m1 0h1m3 0h1m1 0h2m3 0h3M1 15.5h2m2 0h5m1 0h3m1 0h1m1 0h2m1 0h1m1 0h3m2 0h3M2 16.5h3m1 0h1m1 0h1m2 0h4m2 0h1m2 0h1m7 0h1M1 17.5h2m2 0h4m2 0h1m1 0h1m3 0h1m1 0h1m4 0h3m1 0h1M2 18.5h3m1 0h1m6 0h2m1 0h1m4 0h1m2 0h1m1 0h3M1 19.5h1m1 0h2m1 0h4m1 0h1m1 0h1m2 0h2m3 0h1m1 0h3m1 0h1M8 20.5h1m1 0h1m2 0h1m3 0h3m1 0h1m1 0h2m2 0h1M2 21.5h1m1 0h4m1 0h2m3 0h1m2 0h3m1 0h7M9 22.5h7m1 0h1m3 0h1m3 0h5M1 23.5h7m1 0h1m1 0h1m1 0h2m5 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h1m2 0h2m7 0h1m3 0h2m1 0h2M1 25.5h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h2m1 0h1m2 0h5m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h9m1 0h3m2 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m5 0h2m2 0h1m3 0h1m2 0h1m1 0h1m1 0h1M1 29.5h7m1 0h1m3 0h2m1 0h1m3 0h4m2 0h1m1 0h1"/></svg>
+        <p>Scanne ce code avec ton téléphone Android</p>
+      </div>
+    </div>
+
+    <div class="card iphone" id="card-iphone">
+      <h2>🍎 iPhone / iPad — installation PWA</h2>
+      <p style="font-size:.93rem; margin-bottom:14px; color:var(--c-muted);">iOS n'autorise pas les APK : wairyu s'installe directement depuis Safari, en 4 gestes.</p>
+      <ol>
+        <li>Ouvre <b>wairyu.wairyu.workers.dev</b> dans <b>Safari</b> et connecte-toi.</li>
+        <li>Appuie sur le bouton <b>Partager</b> <span style="white-space:nowrap;">(carré avec flèche ↑)</span>.</li>
+        <li>Choisis <b>« Sur l'écran d'accueil »</b>.</li>
+        <li>Appuie sur <b>Ajouter</b> — l'icône wairyu apparaît, l'app s'ouvre en plein écran.</li>
+      </ol>
+      <div class="note">Sur iPhone, c'est AUSSI l'étape obligatoire pour recevoir les notifications (exigence iOS 16.4+). Sur Android installé via l'APK, les notifications sont actives dès l'ouverture.</div>
+    </div>
+  </div>
+
+  <footer>
+    Version 1.0.0 · 29/09/2026 · <a href="/">Retour à wairyu</a><br>
+    wairyu — rencontres sincères, 100 % gratuit, sans abonnement caché.
+  </footer>
+
+  <script>
+    // Met en avant la carte correspondant à la plateforme du visiteur
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+      var card = document.querySelector(isAndroid ? '#card-android' : isIOS ? '#card-iphone' : null);
+      if (card) {
+        card.style.order = '-1';
+        card.style.boxShadow = '0 6px 24px rgba(108, 74, 182, .18)';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wairyu.app",
+      "sha256_cert_fingerprints": [
+        "2de62bfe594d365f93b092ea4590d01153fd36353f54bbe173a9a596c3cf5f3f"
+      ]
+    }
+  }
+]

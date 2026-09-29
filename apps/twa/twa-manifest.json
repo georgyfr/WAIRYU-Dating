@@ -1,0 +1,41 @@
+{
+  "packageId": "com.wairyu.app",
+  "host": "wairyu.wairyu.workers.dev",
+  "name": "wairyu",
+  "launcherName": "wairyu",
+  "display": ["standalone"],
+  "startUrl": "/",
+  "webManifestUrl": "https://wairyu.wairyu.workers.dev/manifest.webmanifest",
+  "themeColor": "#6c4ab6",
+  "themeColorDark": "#6c4ab6",
+  "navigationColor": "#563a94",
+  "navigationColorDark": "#563a94",
+  "navigationDividerColor": "#563a94",
+  "navigationDividerColorDark": "#563a94",
+  "backgroundColor": "#faf8f5",
+  "iconUrl": "https://wairyu.wairyu.workers.dev/icons/icon-512.png",
+  "maskableIconUrl": "https://wairyu.wairyu.workers.dev/icons/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "enableNotifications": true,
+  "fallbackType": "customtabs",
+  "orientation": "portrait",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "minSdkVersion": 23,
+  "signingMode": "own",
+  "signingKey": {
+    "path": "/home/z/my-project/wairyu-dating/apps/twa/keystore/wairyu-upload.keystore",
+    "alias": "wairyu",
+    "password": "wairyu-TWA-2026-upload"
+  },
+  "features": {
+    "locationDelegation": { "enabled": true }
+  },
+  "alphaDependencies": { "enabled": false },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "includeSourceCode": false,
+  "shortcuts": [],
+  "additionalTrustedOrigins": []
+}
