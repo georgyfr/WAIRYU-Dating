@@ -1,0 +1,62 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle CARTE-BLOC — quête 4.4)
+# Item choisi : Q4.4-01 (le départ anticipé — l'angle le plus parlant du schéma abandon).
+# Fichier YAML strict (gabarit des 11 autres items carte-bloc : seuls énoncé, schéma,
+# orientation et ancrage changent — tous INTERDITS d'ancrage).
+# Les 10 trames ▲ suivent le modèle TRAME (document trames Partie 8 — hors dépôt) :
+# dimension null, orientation D, ancrage INTERDIT, aucun slot, aucun rendu —
+# hébergées dans les configs hôtes (ci/quetes/4.1.json · 4.2.json).
+item: Q4.4-01
+quete: "4.4 (invisible) Blessures et aisance"
+monde: M5                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: invisible     # le bloc sans écran — les items passent chez les hôtes
+format: likert5                # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Quand quelqu'un tarde à répondre, je pense déjà au départ."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                 # direct — contribue tel quel au schéma
+dimension: abandon             # schéma 1/5 (paire R6 avec Q4.4-02)
+type_mesure: lecture_carte     # lecture carte — nourrit le portrait, jamais une carte partageable
+session: null                  # PAS de passation propre — tissé dans les passations hôtes
+double_balise:
+  carte_id: portrait_heritage  # alimente la section « Ton Héritage » du portrait de monde M5
+  signal_id: SIG-4.4-01        # la peur du départ (niveaux) — moteur SEUL
+computation:
+  carte:
+    role: portrait_seul
+    regle: "ABAN_D (3 items), I recodés 6−r, normalisée 0-1 → 3 niveaux (bas < 0.35 · moyen · fort > 0.65 — proposition, comité) — rendu UNIQUEMENT au portrait de monde (section « Ton Héritage »), ton bienveillant sans label"
+    rendu: portrait_de_monde   # jamais de carte partageable, jamais de miroir de quête
+  signal:
+    role: matrice_des_pieges
+    mecanisme: >-
+      ABAN_D fort croise l'évitement de 1.2 (pénalité forte — le départ anticipé double la
+      distance) dans la matrice des pièges systémiques (SIG-4.4-06) : protection (pacing,
+      visibilité), jamais un verdict rendu, jamais au matching visible — "c'est du matching,
+      pas du portrait"
+    rendu: moteur_seul
+    condition: "croisements et seuils proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel INTERDIT ici (ancrage interdit — bloc invisible) : le drapeau module la
+      prudence du niveau, jamais un rappel en toutes lettres ; pivot Q4.4-03 = cohérence
+      intra-schéma + QFI
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "niveau mis en prudence côté moteur — aucun rappel (ancrage interdit)"
+    - si: "ABAN_D fort × évitement (1.2) fort"
+      effet: "pénalité forte côté moteur (pacing, visibilité réduite) — jamais au rendu, demi-vie"
+  ancrage:
+    rappel_autorise: false     # INTERDIT — bloc invisible : aucune citation nulle part
+    forme: null
+    exemple: null
+notes:
+  - >-
+    Modèle CARTE-BLOC — les 12 items nourrissent le portrait « blessures anciennes » au ton
+    bienveillant, sans label (interdit V10) ; les cinq noms de schémas restent moteur.
+  - >-
+    Session null — les items sont tissés dans les passations hôtes : positions seedées par
+    les graines des hôtes (4.1 · 4.2), contraintes re-jouées par hôte (plans 02 des hôtes).
+    Pas de 02-plan propre (ordinal 34 réservé non consommé).
+  - >-
+    Les 10 trames ▲ (T13 → T22, variables FIS/MEFI_INT) suivent le modèle TRAME — énoncés
+    hors dépôt (document trames Partie 8), ancrage INTERDIT, aucun rendu nulle part.
