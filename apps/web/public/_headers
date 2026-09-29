@@ -7,3 +7,10 @@
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Task 56-b : l'APK doit TOUJOURS se télécharger, jamais s'ouvrir dans le
+# navigateur — sans cette disposition, certains navigateurs internes
+# (WhatsApp/Facebook/Instagram) échouent silencieusement sur le lien.
+/app/wairyu.apk
+  Content-Type: application/vnd.android.package-archive
+  Content-Disposition: attachment; filename="wairyu.apk"

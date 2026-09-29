@@ -161,6 +161,12 @@ function parseNotice(params: URLSearchParams): string | null {
   if (params.get('google') === 'unverified') {
     return "L'email de ce compte Google n'est pas vérifié chez Google — utilise le code email.";
   }
+  // Task 56-b : échec récupérable du callback (code consommé, réseau mobile
+  // coupé) — l'API redirige ici au lieu d'un 500 JSON.
+  if (params.get('google') === 'retry' || params.get('facebook') === 'retry') {
+    const who = params.get('google') === 'retry' ? 'Google' : 'Facebook';
+    return `Connexion ${who} interrompue — souvent un double appui ou une coupure réseau. Réessaie, ou utilise le code email.`;
+  }
   if (params.get('facebook') === 'noemail') {
     return "Ce compte Facebook n'a pas d'email vérifié — utilise la méthode email.";
   }

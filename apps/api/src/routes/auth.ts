@@ -464,27 +464,41 @@ authRoutes.get('/auth/google/callback', async (c) => {
     throw errors.badRequest('Session Google invalide ou expirée. Recommencez.');
   }
 
-  const redirectUri = url.origin + '/api/auth/google/callback';
-  const profile = await exchangeCodeForProfile(
-    env,
-    url.searchParams.get('code') ?? '',
-    redirectUri,
-    state.verifier ?? '',
-  );
-  if (!profile.email_verified) return c.redirect('/#/?google=unverified', 302);
-  const email = normalizeEmail(profile.email);
-  if (!email) throw errors.badRequest('Email Google invalide.');
+  // Task 56-b : l'échange du code (réseau Google) et la résolution du compte
+  // ne doivent JAMAIS tuer le parcours d'un 500 JSON brut. Sur téléphone
+  // (réseau mobile capricieux, double appui qui re-émis le callback, code à
+  // usage unique consommé), l'échec est RÉCUPÉRABLE → message doux + relance
+  // via #/?google=retry. Les AppError intentionnelles (compte banni, email
+  // invalide) gardent leur message propre en étant relancées telles quelles.
+  try {
+    const redirectUri = url.origin + '/api/auth/google/callback';
+    const profile = await exchangeCodeForProfile(
+      env,
+      url.searchParams.get('code') ?? '',
+      redirectUri,
+      state.verifier ?? '',
+    );
+    if (!profile.email_verified) return c.redirect('/#/?google=unverified', 302);
+    const email = normalizeEmail(profile.email);
+    if (!email) throw errors.badRequest('Email Google invalide.');
 
-  const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
-    id: profile.sub,
-    email,
-    name: profile.name,
-  });
-  await createSession(c, userId);
-  if (created) await bumpMetric(c.env.DB, 'signup_completed');
-  await bumpMetric(c.env.DB, 'login_google');
-  clearOAuthStateCookie(c, 'google');
-  return c.redirect('/#/?google=ok', 302);
+    const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'google', {
+      id: profile.sub,
+      email,
+      name: profile.name,
+    });
+    await createSession(c, userId);
+    if (created) await bumpMetric(c.env.DB, 'signup_completed');
+    await bumpMetric(c.env.DB, 'login_google');
+    clearOAuthStateCookie(c, 'google');
+    return c.redirect('/#/?google=ok', 302);
+  } catch (e) {
+    if (e instanceof AppError) throw e;
+    console.error(
+      `[oauth:google] échange/résolution échoués (récupérable) : ${e instanceof Error ? e.message : String(e)}`,
+    );
+    return c.redirect('/#/?google=retry', 302);
+  }
 });
 
 // ---- Facebook (state signé ; pas de PKCE côté Meta pour le web) ----
@@ -515,36 +529,47 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
     throw errors.badRequest('Session Facebook invalide ou expirée. Recommencez.');
   }
 
-  const redirectUri = url.origin + '/api/auth/facebook/callback';
-  const profile = await exchangeFacebookCodeForProfile(
-    env,
-    url.searchParams.get('code') ?? '',
-    redirectUri,
-  );
-  // Facebook n'expose un email que si la permission est accordée ET confirmée
-  // sur le compte ; sinon rattrapage : profil mis en attente (cookie signé)
-  // puis écran #/fb-complete (email + code OTP) et rattachement via
-  // POST /api/auth/facebook/link — jamais de compte sans email vérifié.
-  const email = normalizeEmail(profile.email ?? '');
-  if (!email) {
-    await setFacebookLinkCookie(c, {
-      id: profile.id,
-      exp: Math.floor(Date.now() / 1000) + FB_LINK_TTL_SECONDS,
-    });
-    await bumpMetric(c.env.DB, 'facebook_link_started');
-    return c.redirect('/#/fb-complete', 302);
-  }
+  // Task 56-b : même blindage que Google — les échecs récupérables (code
+  // consommé par un callback rejoué, coupure réseau) renvoient vers
+  // #/?facebook=retry au lieu d'un 500 JSON ; AppError relancée telle quelle.
+  try {
+    const redirectUri = url.origin + '/api/auth/facebook/callback';
+    const profile = await exchangeFacebookCodeForProfile(
+      env,
+      url.searchParams.get('code') ?? '',
+      redirectUri,
+    );
+    // Facebook n'expose un email que si la permission est accordée ET confirmée
+    // sur le compte ; sinon rattrapage : profil mis en attente (cookie signé)
+    // puis écran #/fb-complete (email + code OTP) et rattachement via
+    // POST /api/auth/facebook/link — jamais de compte sans email vérifié.
+    const email = normalizeEmail(profile.email ?? '');
+    if (!email) {
+      await setFacebookLinkCookie(c, {
+        id: profile.id,
+        exp: Math.floor(Date.now() / 1000) + FB_LINK_TTL_SECONDS,
+      });
+      await bumpMetric(c.env.DB, 'facebook_link_started');
+      return c.redirect('/#/fb-complete', 302);
+    }
 
-  const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'facebook', {
-    id: profile.id,
-    email,
-    name: profile.name,
-  });
-  await createSession(c, userId);
-  if (created) await bumpMetric(c.env.DB, 'signup_completed');
-  await bumpMetric(c.env.DB, 'login_facebook');
-  clearOAuthStateCookie(c, 'facebook');
-  return c.redirect('/#/?facebook=ok', 302);
+    const { userId, created } = await resolveOrCreateOAuthUser(c.env.DB, 'facebook', {
+      id: profile.id,
+      email,
+      name: profile.name,
+    });
+    await createSession(c, userId);
+    if (created) await bumpMetric(c.env.DB, 'signup_completed');
+    await bumpMetric(c.env.DB, 'login_facebook');
+    clearOAuthStateCookie(c, 'facebook');
+    return c.redirect('/#/?facebook=ok', 302);
+  } catch (e) {
+    if (e instanceof AppError) throw e;
+    console.error(
+      `[oauth:facebook] échange/résolution échoués (récupérable) : ${e instanceof Error ? e.message : String(e)}`,
+    );
+    return c.redirect('/#/?facebook=retry', 302);
+  }
 });
 
 // ---- Rattachement d'une identité Facebook en attente (complétion email) ----

@@ -45,12 +45,24 @@ interface SocialButtonsProps {
   onConsentBlocked?: () => void;
 }
 
+// Task 56-b : verrou anti double-appui (module-level, survit aux re-rendus).
+// Deux départs rapprochés écrasent le cookie d'état OAuth (nouveau verifier
+// PKCE) et consomment le premier code → « session invalide » ou code usagé.
+// La navigation top-level décharge la page ; le timeout ne sert que si la
+// navigation est empêchée (4 s).
+let socialStartLock = false;
+
 export function SocialButtons({ config, requireConsent, onConsentBlocked }: SocialButtonsProps) {
   function start(provider: 'google' | 'facebook') {
     if (requireConsent) {
       onConsentBlocked?.();
       return;
     }
+    if (socialStartLock) return;
+    socialStartLock = true;
+    setTimeout(() => {
+      socialStartLock = false;
+    }, 4000);
     // Parcours OAuth complet : redirection top-level vers le worker.
     window.location.href = `/api/auth/${provider}/start`;
   }
