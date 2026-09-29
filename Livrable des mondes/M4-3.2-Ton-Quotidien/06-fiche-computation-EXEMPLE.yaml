@@ -1,0 +1,57 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 8 canaux)
+# Item choisi : Q3.2-01 (les sorties planifiées — l'angle le plus parlant de la planification).
+# Fichier YAML strict (gabarit des 7 autres items : seuls énoncé, axe, orientation et ancrage changent).
+item: Q3.2-01
+quete: "3.2 Ton quotidien"
+monde: M4                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Les sorties se décident chez moi plusieurs jours à l'avance."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel à l'axe de planification
+dimension: planification      # axe 1/2 (paire R6 avec Q3.2-02)
+type_mesure: trait_declaratif # déclarative directe — déguisement impossible, sans trame
+double_balise:
+  carte_id: quotidien_3.2     # alimente la carte (5 variantes) et le miroir (5 profils)
+  signal_id: SIG-3.2-01       # le profil quotidien (2 axes) — rendu descriptif, jamais un grade
+computation:
+  carte:
+    role: score_de_quete
+    regle: "PLAN_D (5 items) et ORDRE_D (3 items), I recodés 6−r, normalisés 0-1 — l'axe le plus dévié choisit le quadrant, sinon central"
+    rendu: etage_1_et_2        # carte (5 variantes) + miroir (5 profils)
+  signal:
+    role: profil_et_friction
+    mecanisme: >-
+      le profil quotidien (SIG-3.2-01) décrit deux axes indépendants ; l'écart entre deux
+      profils sur un axe (EC_PLAN / EC_ORDRE > seuil, SIG-3.2-02) prépare un signal
+      conversationnel « à aborder tôt » — les vacances, les rendez-vous, les week-ends,
+      la place des choses — jamais une pénalité dure, jamais une élimination
+    rendu: moteur_seul         # l'écart calculé n'est jamais rendu à un membre
+    condition: "seuils quadrants et seuils d'écart proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'axe = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) ; les pivots Q3.2-05/08 reposent sur la cohérence d'axe + QFI
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "écart fort sur un axe entre deux profils (EC_PLAN ou EC_ORDRE > seuil)"
+      effet: "signal conversationnel « à aborder tôt » préparé côté moteur — jamais de pénalité, jamais d'élimination"
+    - si: "mise à jour d'un profil du pool"
+      effet: "compatibilités recalculées des deux côtés — fenêtre À VALIDER PAR LE COMITÉ"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — le fonctionnement décrit, jamais un jugement, jamais un code"
+    exemple: "quand tu as dit que les sorties se décident chez toi plusieurs jours à l'avance"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 items. Seuls changent : énoncé, axe (planification /
+    ordre), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Quête déclarative directe, déguisement impossible : aucune fiche de trame n'existe — aucun
+    énoncé réservé, aucune balise de trame (vérifié au registre, n_trames = 0).
+  - >-
+    Mélange 3.2 : outil DÉDIÉ melange-biaxes.py (c1/c4 sans-objet par arithmétique — minimums
+    documentés au plan 02), graine 232427 (provenance documentée : ancienne graine retirée de 2.2).

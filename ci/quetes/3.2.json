@@ -1,0 +1,47 @@
+{
+  "quete": "3.2",
+  "titre": "Ton quotidien",
+  "graine": 232427,
+  "items": [
+    {
+      "code": "Q3.2-01",
+      "orientation": "D",
+      "dimension": "planification"
+    },
+    {
+      "code": "Q3.2-02",
+      "orientation": "I",
+      "dimension": "planification"
+    },
+    {
+      "code": "Q3.2-03",
+      "orientation": "D",
+      "dimension": "planification"
+    },
+    {
+      "code": "Q3.2-04",
+      "orientation": "I",
+      "dimension": "planification"
+    },
+    {
+      "code": "Q3.2-05",
+      "orientation": "D",
+      "dimension": "planification"
+    },
+    {
+      "code": "Q3.2-06",
+      "orientation": "D",
+      "dimension": "ordre"
+    },
+    {
+      "code": "Q3.2-07",
+      "orientation": "I",
+      "dimension": "ordre"
+    },
+    {
+      "code": "Q3.2-08",
+      "orientation": "I",
+      "dimension": "ordre"
+    }
+  ]
+}

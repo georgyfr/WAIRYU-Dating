@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 3.2 « TON QUOTIDIEN » — 5 VARIANTES (étage 1)
+# Création : mission V9.B (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : lecture 2 axes (planification PLAN_D × ordre ORDRE_D) — 4 quadrants
+# + central, partition exclusive + exhaustive par axe le plus dévié (SIG-3.2-01,
+# C6, vérifiée machine). NEUTRALITÉ DES STYLES : les cinq quotidiens se valent —
+# le désordre est un fonctionnement, pas une paresse ; l'ordre n'est pas une rigidité.
+# Aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "3.2 Ton quotidien"
+monde: M4
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "deux axes déclarés — planification PLAN_D (5 items) et ordre domestique ORDRE_D (3 items), I recodés 6−r, normalisés 0-1 — Q3.2-01 → Q3.2-08, aucune trame dans la quête"
+  logique: "dP = |PLAN_D − 0.5| · dO = |ORDRE_D − 0.5| · max(dP, dO) ≤ 0.15 → central · sinon l'axe le plus dévié choisit le quadrant (4 variantes) · départage dP = dO : l'axe ordre tranche"
+  bornes: "déviations 0.15 (proposition) — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "5 sélections = partition totale du carré [0,1]² — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "les écarts à l'autre (EC_PLAN, EC_ORDRE — SIG-3.2-02) ne participent JAMAIS à la sélection — friction conversationnelle moteur seul"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🏡 QUÊTE ACCOMPLIE — « Ton quotidien »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-3.2-HORLOGE
+    nom: "Le·La Cadran bien réglé"
+    ordre_selecteur: 1
+    condition: "PLAN_D > 0.65 × ORDRE_D > 0.65 (planificateur × ordonné)"
+    ancre_item: ["Q3.2-01", "Q3.2-02", "Q3.2-03", "Q3.2-04", "Q3.2-05", "Q3.2-06", "Q3.2-07", "Q3.2-08"]
+    portrait: "Ton quotidien tourne à l'heure : des journées qui se nomment d'avance, une maison où chaque chose a sa place. Tu rends la vie lisible — et cette fiabilité-là, les gens la sentent en entrant chez toi."
+    ombre: "Ta mécanique ne partage pas toute seule. Qui vit avec toi entre dans un programme qu'il n'a pas écrit — la case vide se nomme à deux."
+    tension_interieure: "garder ton cadran, en laissant à quelqu'un la ligne qui le décale un peu."
+
+  - id: CARTE-3.2-CALEPIN
+    nom: "Le·La Calépin et le flot"
+    ordre_selecteur: 2
+    condition: "PLAN_D > 0.65 × ORDRE_D < 0.35 (planificateur × désordonné)"
+    ancre_item: ["Q3.2-01", "Q3.2-02", "Q3.2-03", "Q3.2-04", "Q3.2-05", "Q3.2-06", "Q3.2-07", "Q3.2-08"]
+    portrait: "Ton dehors est cadré, ton dedans vit à son rythme : les rendez-vous notés, les choses où elles tombent. Deux systèmes distincts qui fonctionnent — tu planifies le monde sans te tenir le frigo à l'œil."
+    ombre: "Le mélange déroute : ton seuil de tolérance n'est pas celui de tout le monde. Ce qui chez toi n'est pas un problème se lit ailleurs comme un signal."
+    tension_interieure: "assumer ton flot intérieur, en nommant à deux ce qui se tolère et ce qui se range."
+
+  - id: CARTE-3.2-SANS-BUSSOLE
+    nom: "Le·La Porte qui suit le vent"
+    ordre_selecteur: 3
+    condition: "PLAN_D < 0.35 × ORDRE_D > 0.65 (improvisateur × ordonné)"
+    ancre_item: ["Q3.2-01", "Q3.2-02", "Q3.2-03", "Q3.2-04", "Q3.2-05", "Q3.2-06", "Q3.2-07", "Q3.2-08"]
+    portrait: "Ta journée suit le fil de ce qui arrive, et ta maison tient ses places : un calme sans programme. Tu accueilles l'imprévu sans rien laisser déborder — une souplesse qui a de la tenue."
+    ombre: "Ton oui d'un jour se découvre en marchant. Qui compte sur toi prépare deux fois ce que tu décides une fois — les grandes lignes réclament un mot d'avance."
+    tension_interieure: "suivre le fil, en posant deux ou trois jalons que les autres peuvent lire."
+
+  - id: CARTE-3.2-VENT
+    nom: "Le·La Voile au vent"
+    ordre_selecteur: 4
+    condition: "PLAN_D < 0.35 × ORDRE_D < 0.35 (improvisateur × désordonné)"
+    ancre_item: ["Q3.2-01", "Q3.2-02", "Q3.2-03", "Q3.2-04", "Q3.2-05", "Q3.2-06", "Q3.2-07", "Q3.2-08"]
+    portrait: "Tu vis au fil : les jours se dessinent en marchant, les choses restent où la vie les pose. Ton présent a de la place — c'est une façon entière d'habiter le quotidien, et elle désamorce bien des tempêtes."
+    ombre: "Sans minimum tenu, les charges invisibles s'accumulent : le frigo, le rendez-vous, le linge. Un plancher à deux évite que le fil les oublie."
+    tension_interieure: "garder ta liberté du fil, en tenant un plancher qui tient à deux."
+
+  - id: CARTE-3.2-MAREE
+    nom: "Le·La Marée des jours"
+    ordre_selecteur: 5
+    condition: "max(dP, dO) ≤ 0.15 (central — selon les jours)"
+    ancre_item: ["Q3.2-01", "Q3.2-02", "Q3.2-03", "Q3.2-04", "Q3.2-05", "Q3.2-06", "Q3.2-07", "Q3.2-08"]
+    portrait: "Ton quotidien ne vote ni programme ni fil : selon les saisons, tu planifies ou tu improvises, tu ranges ou tu laisses vivre. Cette aisance à changer de mode sans le payer est plus rare qu'elle n'y paraît."
+    ombre: "Ta flexibilité se lit dehors, pas dedans. Qui vit avec toi cherche ta règle du jour — ton mode s'annonce, il ne se devine pas."
+    tension_interieure: "rester souple, en donnant un mot d'avance sur ton mode du jour."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité des styles : les 5 variantes se valent — le désordre traité en fonctionnement (jamais une paresse), l'ordre jamais en rigidité, l'entre-deux jamais en indécision (contrôles machine)"
+  - "le mot « bordel » ne se rend PAS sur les cartes (jugement interdit) — il ne se cite qu'en ancrage miroir, dans la réponse exacte de la personne (verrou 04 n° 5)"
+  - "SIG-3.2-02 (friction/écarts à l'autre) ne participe ni à la sélection ni au rendu — moteur seul"
+  - "registre probabiliste : aucun futur certain (« parfois », « souvent » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucun style dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"
