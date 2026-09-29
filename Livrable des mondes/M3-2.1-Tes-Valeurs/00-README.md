@@ -19,6 +19,8 @@ DTM_N) dont les énoncés vivent hors dépôt — voir plus bas.
 | `04-slots-de-miroir.md` | les 4 slots de rendu S1 → S4 + les 9 verrous de slot | rendu |
 | `05-ecran-d-intro.md` | l'écran d'entrée de la quête | rendu |
 | `06-fiche-computation-Q2.1-17.yaml` | le format de fiche de computation (5 canaux), exemplifié | moteur |
+| `07-miroir.md` | le miroir de quête (étage 2) — gabarit LOURD 300-450 mots, 8 briques-variantes (4 blocs × 2, ombre à branches dominant/discret) — créé VAGUE 4 | rendu |
+| `cartes.yaml` | les 8 variantes de carte (étage 1) — bloc dominant × tension (|Aff − Dép| ≥ 1,0 → tendue), titres créatifs non typologiques — créé VAGUE 5 | rendu |
 
 ## Le flux de production
 
@@ -29,11 +31,13 @@ items (01) ──► plan de mélange (02, graine 210427) ──► passation (l
 scoring (fiches de computation) ──► signatures (03) ──► slots de miroir (04) ──► rendu
 ```
 
-1. Les items sont répondues dans l'ordre du plan de mélange — jamais l'ordre des codes.
+1. Les items sont répondus dans l'ordre du plan de mélange — jamais l'ordre des codes.
 2. Le scoring applique les arbitrages : Likert 5 (②) · inversés recodés `6 − réponse` (①).
 3. La cohérence miroir R6 compare chaque paire (D, I) — écart ≥ 3 → drapeau fiabilité (SIG-2.1-02).
 4. Les 4 blocs (ouverture / affirmation / conservation / dépassement) nourrissent SIG-2.1-01.
 5. Les 4 trames ▲ alimentent DTM_N côté MOTEUR SEUL — aucun slot, aucune carte, aucun rappel.
+6. Le rendu associe la **carte** (`cartes.yaml`, étage 1) et le **miroir** (`07-miroir.md`, étage 2)
+   aux slots alimentés — les deux étages précèdent les Portraits (étage 3).
 
 ## Point de sécurité (important)
 
