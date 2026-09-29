@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 3.1 « TON RYTHME DE VIE » — 3 VARIANTES (étage 1)
+# Création : mission V9.A (2026-09-29).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : matinalité CHRONO_D — partition exclusive + exhaustive de 0 à 1
+# (C6, vérifiée machine). ANTI-NORMATIVITÉ : les trois rythmes se valent —
+# l'oiseau de nuit n'est pas un défaut, le lève-tôt n'est pas une vertu.
+# Badge 🌅 (matinal) / 🦉 (nocturne) affiché avec la carte des extrêmes ;
+# l'intermédiaire n'a pas de badge (pont de conversation, jamais un grade).
+# Aucun jargon (chronotype), aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "3.1 Ton rythme de vie"
+monde: M4
+statut_freemium: gratuit
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "matinalité CHRONO_D (moyenne des 5 items, I recodés 6−r, normalisée 0-1) — Q3.1-01 → Q3.1-05, aucune trame dans la quête"
+  logique: "CHRONO_D > 0.65 → le lever tôt (🌅) · 0.35-0.65 → l'entre-deux · < 0.35 → les heures calmes (🦉)"
+  bornes: "faible < 0.35 · central 0.35-0.65 · élevé > 0.65 — reprises des zones moteur ADOPTÉES (FM-019), provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 plages = partition totale de [0,1] — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "l'écart à l'autre (EC_CHRONO, SIG-3.1-02) ne participe JAMAIS à la sélection — information conversationnelle moteur seul"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → badge (🌅/🦉 aux extrêmes) → titre de variante → portrait → « Ta zone d'ombre : »
+#   → « Ta tension intérieure : » → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre})
+entete_ecran: "🏡 QUÊTE ACCOMPLIE — « Ton rythme de vie »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-3.1-PREMIER-TRAIN
+    nom: "Le·La Premier train"
+    ordre_selecteur: 1
+    condition: "CHRONO_D > 0.65 (le lever tôt — badge 🌅)"
+    badge: "🌅"
+    ancre_item: ["Q3.1-01", "Q3.1-02", "Q3.1-03", "Q3.1-04", "Q3.1-05"]
+    portrait: "Ta journée démarre avant le bruit du monde : la tête claire, les heures fortes dès le lever. Tu prends le premier train — et tu y es toi. Ce temps du matin, tu ne le prêtes pas : il t'appartient."
+    ombre: "Ta soirée se ferme plus tôt que celle de beaucoup de gens. Le risque à deux : une fin de journée où l'un dort déjà, l'autre arrive."
+    tension_interieure: "garder tes heures fortes, sans fermer la porte de la soirée à quelqu'un."
+
+  - id: CARTE-3.1-MAREE
+    nom: "Le·La Marée entre deux heures"
+    ordre_selecteur: 2
+    condition: "CHRONO_D entre 0.35 et 0.65 (l'entre-deux)"
+    ancre_item: ["Q3.1-01", "Q3.1-02", "Q3.1-03", "Q3.1-04", "Q3.1-05"]
+    portrait: "Ton rythme ne vote ni matin ni soir : il glisse avec les jours, les saisons, les gens. Cette souplesse est une vraie ressource — tu es disponible là où les horloges rigides se cassent."
+    ombre: "Qui s'adapte à tout finit parfois sans heure à soi. Ton horloge suit volontiers celle des autres — et ta propre heure ne se défend pas seule."
+    tension_interieure: "rester souple, en protégeant quand même un créneau qui n'appartient qu'à toi."
+
+  - id: CARTE-3.1-LAMPE-MINUITEME
+    nom: "Le·La Lampe de minuit"
+    ordre_selecteur: 3
+    condition: "CHRONO_D < 0.35 (les heures calmes — badge 🦉)"
+    badge: "🦉"
+    ancre_item: ["Q3.1-01", "Q3.1-02", "Q3.1-03", "Q3.1-04", "Q3.1-05"]
+    portrait: "Ton énergie se lève quand le monde se couche : les heures calmes sont tes heures fortes. La nuit te rend à toi — ce n'est pas un défaut, c'est une horloge, la tienne. Le soir, tu penses mieux, tu aimes mieux, tu vis mieux."
+    ombre: "Le matin du monde arrive tôt, avec ses agendas et ses réveils — et ton horloge, elle, débute encore. À deux, ce décalage se nomme tôt ou se subit."
+    tension_interieure: "habiter ta nuit, sans laisser le matin du couple se jouer sans toi."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "anti-normativité : les 3 variantes se valent — l'ombre du nocturne n'est pas une paresse, celle du matinal pas une vertu, celle de l'entre-deux pas une indécision (contrôles machine)"
+  - "badge 🌅/🦉 aux extrêmes uniquement (pont de conversation, jamais un filtre ni un grade) — l'entre-deux n'en porte pas (décision de production, documentée au 04)"
+  - "zéro jargon : aucun « chronotype », aucun « rMEQ », aucune matinalité chiffrée au rendu (C3 vérifié machine)"
+  - "SIG-3.1-02 (écart à l'autre) ne participe ni à la sélection ni au rendu — information conversationnelle moteur seul"
+  - "registre probabiliste : aucun futur certain (« parfois », « finissent par » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucun rythme dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le pied standard ({X}% compteur réel · {Z} personnes · boutons · fenêtre rotative F1/F2) suit le gabarit de la mission Production 4"

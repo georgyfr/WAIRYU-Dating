@@ -1,0 +1,32 @@
+{
+  "quete": "3.1",
+  "titre": "Ton rythme de vie",
+  "graine": 231427,
+  "items": [
+    {
+      "code": "Q3.1-01",
+      "orientation": "D",
+      "dimension": "pic_energie"
+    },
+    {
+      "code": "Q3.1-02",
+      "orientation": "I",
+      "dimension": "pic_energie"
+    },
+    {
+      "code": "Q3.1-03",
+      "orientation": "D",
+      "dimension": "horloge_libre"
+    },
+    {
+      "code": "Q3.1-04",
+      "orientation": "I",
+      "dimension": "horloge_libre"
+    },
+    {
+      "code": "Q3.1-05",
+      "orientation": "I",
+      "dimension": "heures_calmes"
+    }
+  ]
+}
