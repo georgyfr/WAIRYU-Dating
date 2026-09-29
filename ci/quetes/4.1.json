@@ -1,0 +1,21 @@
+{
+  "quete": "4.1",
+  "titre": "Ton arbre relationnel",
+  "graine": 241427,
+  "c2_note": "aucune dimension interdite déclarée pour la variable FIS (bloc 4.4 hébergé) — le camouflage vient du THÈME (l'origine familiale et l'intimité tôt liées), pas du placement (règle d'indiscernabilité, document trames Partie 0)",
+  "items": [
+    { "code": "Q4.1-01", "orientation": "D", "dimension": "climat" },
+    { "code": "Q4.1-02", "orientation": "I", "dimension": "climat" },
+    { "code": "Q4.1-03", "orientation": "D", "dimension": "climat" },
+    { "code": "Q4.1-04", "orientation": "I", "dimension": "climat" },
+    { "code": "Q4.1-05", "orientation": "D", "dimension": "loyautes" },
+    { "code": "Q4.1-06", "orientation": "I", "dimension": "loyautes" },
+    { "code": "Q4.1-07", "orientation": "D", "dimension": "loyautes" },
+    { "code": "Q4.1-08", "orientation": "I", "dimension": "loyautes" },
+    { "code": "Q4.4-T13", "orientation": "D", "dimension": null, "signal": "FIS" },
+    { "code": "Q4.4-T14", "orientation": "D", "dimension": null, "signal": "FIS" }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 4,
+  "c4_note": "8 items (4/4) en 8 positions libres {1,2,3,4,6,7,8,9} (ancres trames 5·10) — l'alternance c1 stricte impose les patterns CLCL/LCLC sur les deux chaînes {1-2-3-4} et {6-7-8-9} : paires intra-axe (1,3)/(2,4) et (6,8)/(7,9) à distance 2 → déficit minimal 4, démonstration par placement au 02"
+}

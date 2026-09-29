@@ -1,0 +1,59 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 8 canaux carte)
+# Item choisi : Q4.1-05 (le rôle tenu — l'angle le plus parlant des loyautés invisibles).
+# Fichier YAML strict (gabarit des 7 autres items carte : seuls énoncé, axe, orientation et ancrage changent).
+# Les 2 trames ▲ hébergées (bloc 4.4) suivent le modèle TRAME (document trames Partie 8 — hors dépôt) :
+# dimension null, orientation D, ancrage INTERDIT, aucun slot, aucun rendu.
+item: Q4.1-05
+quete: "4.1 Ton arbre relationnel"
+monde: M5                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Je tiens encore le rôle qu'on m'a confié très tôt."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au poids des héritages
+dimension: loyautes           # axe 2/2 (paire R6 avec Q4.1-06)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: heritage_4.1      # alimente la carte (5 variantes) et le miroir (5 profils)
+  signal_id: SIG-4.1-02       # les loyautés invisibles — portrait + matrices moteur
+computation:
+  carte:
+    role: score_de_quete
+    regle: "CLIMAT_D (4 items) et LOYAUTE_D (4 items), I recodés 6−r, normalisés 0-1 — l'axe le plus dévié choisit le quadrant, sinon central"
+    rendu: etage_1_et_2        # carte (5 variantes) + miroir (5 profils)
+  signal:
+    role: climat_et_loyautes
+    mecanisme: >-
+      le climat raconté (SIG-4.1-01) décrit l'ambiance d'origine ; les loyautés invisibles
+      (SIG-4.1-02) documentent le poids des rôles tenus tôt — côté moteur, LOYAUTE_D croise
+      les variables du bloc 4.4 dans la matrice des pièges systémiques (renforcement
+      héritage×assujettissement, nuances documentées) — jamais au score affiché
+    rendu: portrait_et_moteur  # le portrait raconte, la matrice calcule — jamais l'inverse
+    condition: "seuils quadrants et croisements proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score d'axe = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) ; 4 paires R6 complètes (01×02 · 03×04 · 05×06 · 07×08)
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "LOYAUTE_D haut croisé aux variables 4.4 côté moteur"
+      effet: "matrice des pièges systémiques (SIG-4.4-06) — jamais au rendu, jamais au match"
+    - si: "les 2 trames ▲ FIS hébergées"
+      effet: "FIS_41 agrégée au bloc 4.4 côté moteur SEUL — jamais au rendu, demi-vie du signal"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la place décrite, jamais un jugement, jamais un blâme, jamais un code"
+    exemple: "quand tu as dit tenir encore le rôle confié très tôt"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 8 items carte. Seuls changent : énoncé, axe (climat /
+    loyautés), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les 2 trames ▲ hébergées (Q4.4-T13→T14, variable FIS du bloc 4.4) suivent le modèle TRAME —
+    énoncés hors dépôt (document trames Partie 8), dimension null, ancrage INTERDIT, aucun rendu.
+  - >-
+    Mélange 4.1 : outil DÉDIÉ v3 melange-heritage.py (c1 stricte PASS · c4 sans-objet par
+    arithmétique — minimum 4 ATTEINT), graine 241427, trames ancrées 5·10.

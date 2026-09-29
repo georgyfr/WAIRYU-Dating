@@ -1,0 +1,149 @@
+{
+  "quete": "4.2",
+  "titre": "Où tu en es aujourd'hui",
+  "graine": 242427,
+  "c2_note": "aucune dimension interdite déclarée pour les variables FIS/MEFI (bloc 4.4 hébergé) — le camouflage vient du THÈME (l'état après ruptures et l'intimité/méfiance naissante se répondent), pas du placement (règle d'indiscernabilité, document trames Partie 0)",
+  "items": [
+    {
+      "code": "Q4.2-01",
+      "orientation": "D",
+      "dimension": "integration"
+    },
+    {
+      "code": "Q4.2-02",
+      "orientation": "I",
+      "dimension": "integration"
+    },
+    {
+      "code": "Q4.2-03",
+      "orientation": "D",
+      "dimension": "integration"
+    },
+    {
+      "code": "Q4.2-04",
+      "orientation": "I",
+      "dimension": "integration"
+    },
+    {
+      "code": "Q4.2-05",
+      "orientation": "D",
+      "dimension": "integration"
+    },
+    {
+      "code": "Q4.2-06",
+      "orientation": "D",
+      "dimension": "etat"
+    },
+    {
+      "code": "Q4.2-07",
+      "orientation": "I",
+      "dimension": "etat"
+    },
+    {
+      "code": "Q4.2-08",
+      "orientation": "D",
+      "dimension": "etat"
+    },
+    {
+      "code": "Q4.2-09",
+      "orientation": "I",
+      "dimension": "etat"
+    },
+    {
+      "code": "Q4.2-10",
+      "orientation": "I",
+      "dimension": "etat"
+    },
+    {
+      "code": "Q4.2-11",
+      "orientation": "D",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-12",
+      "orientation": "I",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-13",
+      "orientation": "D",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-14",
+      "orientation": "I",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-15",
+      "orientation": "D",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-16",
+      "orientation": "I",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-17",
+      "orientation": "D",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.2-18",
+      "orientation": "I",
+      "dimension": "rsq"
+    },
+    {
+      "code": "Q4.4-T15",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "FIS"
+    },
+    {
+      "code": "Q4.4-T16",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "FIS"
+    },
+    {
+      "code": "Q4.4-T17",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "FIS"
+    },
+    {
+      "code": "Q4.4-T18",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "FIS"
+    },
+    {
+      "code": "Q4.4-T19",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "MEFI"
+    },
+    {
+      "code": "Q4.4-T20",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "MEFI"
+    },
+    {
+      "code": "Q4.4-T21",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "MEFI"
+    },
+    {
+      "code": "Q4.4-T22",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "MEFI"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "c4 STRICTEMENT FAISABLE — constat V10 : les ancres réelles {3,6,9,12,15,18,22,26} (divmod : les derniers blocs portent le reste) laissent 18 positions libres qui admettent un placement sans déficit (rsq {1,4,7,10,14,17,21,24} · integration {2,8,11,19,23} · etat {5,13,16,20,25} — toutes les paires intra-axe à distance ≥ 3) ; estimation initiale 9 fondée sur des ancres supposées — corrigée au constat (le cadrage s'ajuste au constat)"
+}
