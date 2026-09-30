@@ -1,0 +1,85 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 8.4 « LE BONUS » (1 geste)
+# quete : 8.4 « Le bonus » · fiche : 06 — fiche de computation (yaml)
+# 🆓 GRATUIT · P2 · accès premier match · mode à deux · opt-in · 1 geste (Q8.4-01)
+# Le geste des 20 pépites : garder / offrir une partie à ton match / partager
+# entre plusieurs profils — DON RÉEL (ce qui est offert sort de TON avoir).
+# SIG-8.4-01 « GEN » : MOTEUR SEUL — crédit au facteur de confiance du donneur.
+# BLOC ANTI-PRESSION : anti_patterns: ["classement", "badge", "relance", "pression"].
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "8.4 Le bonus"
+monde: M11                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit       # M11 ENTIER gratuit — Constitution [5]/[6]
+phase: p2
+acces: premier-match           # le monde M11 se débloque au premier match
+mode: a-deux                   # quêtes à deux, récompenses partagées
+opt_in: oui                    # l'invitation s'affiche une fois ; ignorer n'a aucune conséquence
+items: 1                       # 1 geste (le monde M11 : 46 = 36 + 6 + 3 + 1 geste)
+item_codes: [Q8.4-01]
+graine: sans-objet             # 1 geste, aucune permutation possible — 02-plan (graine non tirée ;
+                               # ordinal théorique 74 → 284427 gardé sans tirage, collision nulle)
+signatures: [SIG-8.4-01]
+
+libelle_ecran: "Wairyu t'offre 20 pépites. Tu peux les garder, en offrir une partie à ton match, ou les partager entre plusieurs profils. À toi."
+                               # libellé écran officiel VERBATIM (gelé — 01) ; évolution = Fiche de Mutation
+
+geste:
+  format: attribution          # jeu d'attribution en entiers — pas une échelle, pas un Likert
+  duree_estimee: "30 secondes"
+  repetition: une_fois_par_compte   # une seule invitation, silence après (anti-pression n° 4)
+  choix_possibles:             # 3 choix, d'égale dignité, aucune hiérarchie d'interface
+    - "garder"
+    - "offrir une partie à ton match"
+    - "partager entre plusieurs profils"
+  cible_du_don: matchs_actifs  # le don vit dans le lien (un ou plusieurs matchs actifs) —
+                               # pas de diffusion vers des inconnus (arbitrage n° 3 du 00)
+  granularite: entiers         # entiers de pépites — don minimum 1, plafond = ton avoir
+  don_reel: oui                # ce qui est offert sort de TON avoir — le reçu reçoit ce que
+                               # tu ne gardes plus ; aucune monnaie créée, convertie ou remboursée
+  jeton: "pépites"             # nom de production du jeton (libellé UI à ratifier — comité)
+  valeur_marchande: aucune     # ne s'achète pas, ne se vend pas, ne se convertit pas,
+                               # n'ouvre aucune fonctionnalité payante
+
+scoring:
+  moteur: seul                 # aucun texte de scoring ne franchit une interface
+  gen:
+    niveaux: "garde/partage"   # garde = 0 pépite offerte (crédit nul, choix neutre) ;
+                               # partage = au moins 1 pépite offerte
+    intensite: "paliers provisoires (amorce/coeur/large) — À VALIDER PAR LE COMITÉ"
+    facteur_confiance_donneur: oui   # crédit au facteur de confiance du profil donneur
+                               # (famille SIG_CONTRIB 1.10 — plafond et valeur : comité)
+    rendu: "jamais"            # [MÉTADONNÉE MOTEUR] grave l'interdit de rendu — GEN ne se
+                               # montre à personne : ni au donneur, ni au reçu, ni aux tiers
+
+anti_patterns: ["classement", "badge", "relance", "pression"]
+                               # le bloc anti-pression (03) : aucun avantage de visibilité ou de
+                               # matching payant déduit du geste ; aucun palmarès ; aucun statut
+                               # affiché sur un profil ; une seule invitation, silence après ;
+                               # garder est neutre, recevoir n'oblige à rien
+
+rendu:
+  miroir: "exempte-par-design" # aucun miroir — le geste parle (04/07, précédent 6.4)
+  carte: null                  # lecture carte vide — la récompense est le don reçu (partagée)
+  lecture_signal: "SIG-8.4-01 (moteur seul)"
+
+notes:
+  - >-
+    Constitution [5] : M11 — LE VOYAGE À DEUX (6 quêtes · 46 items), la rencontre est
+    gratuite. Constitution [6] : le premium n'achète personne ; l'unique écran de conversion
+    reste celui de M5 — zéro texte de vente autour du geste.
+  - >-
+    Provenance du principe : un protocole public et validé d'économie expérimentale
+    (économie comportementale) — cité sans auteur et sans terme technique ; Wairyu ne reprend
+    que le mécanisme (partage unilatéral et réel), aucun texte (Constitution [1]).
+  - >-
+    Divergence de gabarit consignée (00) : 1 geste, pas d'échelle ; mélange sans-objet (02) ;
+    miroir exempté (04/07) ; le yaml porte des champs de geste (opt_in, don_reel, choix) à la
+    place des champs d'échelle (orientation, paire_R6 : sans-objet).
+  - >-
+    Le crédit GEN n'entre dans aucun calcul de trame de sécurité (la trame reste invisible,
+    Constitution [2]) et ne compense aucun autre signal ; le niveau garde ne produit aucun
+    signal négatif (crédit nul, rien d'autre).
+  - >-
+    Élargissement futur (boutique, conversion, geste répété) : Fiche de Mutation + verdict
+    comité — le geste unique à une invitation est un choix d'anti-pression.

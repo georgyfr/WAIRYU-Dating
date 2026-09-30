@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 8.2 « ET TOI, TU FERAIS QUOI ? »
+# quete : 8.2 · fiche : 06 — fiche de computation de la quête (6 dilemmes)
+# 🆓 GRATUIT · P2 · acces: premier-match · mode: a-deux (révélation mutuelle après double réponse)
+# M11 — LE VOYAGE À DEUX : la rencontre n'est jamais payante (Constitution [6]).
+# SIG-8.2-01 (ECD) : MOTEUR SEUL — l'écart ne franchit aucun texte rendu, aucun profil,
+# aucune vue à deux. La carte unique (2 variantes) change de variante sans nommer l'écart.
+# AUCUNE bonne réponse — aucun score de dilemme, aucune récompense du bon choix.
+# Ordre fixe — graine sans-objet (02) : zéro course, zéro config ci/ attendue.
+# ═══════════════════════════════════════════════════════════════════
+quete: "8.2 Et toi, tu ferais quoi ?"
+monde: M11                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit        # LA RENCONTRE N'EST JAMAIS PAYANTE ([6]) — zéro teaser, zéro texte de vente
+phase: p2
+acces: premier-match            # M11 débloqué au premier match — la destination du voyage
+mode: a-deux                    # mission partagée : les deux membres répondent de leur côté
+revelation_mutuelle:
+  declencheur: double_reponse   # les 6 dilemmes répondus par les deux — rien ne se révèle à moitié
+  contenu: "choix + justification courte de chacun, dilemme par dilemme, symétrique"
+  consentement: "annoncé à l'écran d'entrée (05) — consenti par construction, révocable (sortie permanente)"
+  lecture_calculee: "aucune — la vue à deux montre deux choix et deux raisons, JAMAIS un écart, un accord ou un score (03)"
+items:
+  - { code: "Q8.2-01", angle: "promesse vs opportunité" }
+  - { code: "Q8.2-02", angle: "honnêteté vs tendresse" }
+  - { code: "Q8.2-03", angle: "argent partagé" }
+  - { code: "Q8.2-04", angle: "temps donné vs temps promis" }
+  - { code: "Q8.2-05", angle: "loyauté vs tolérance" }
+  - { code: "Q8.2-06", angle: "confort vs risque ensemble" }
+format:
+  type: dilemme_choix_force     # situation (≤ 30 mots, 2 phrases) → 2 options (≤ 12 mots) → justification courte libre (1-2 phrases)
+  echelle: null                 # hors Likert — pas d'orientation D/I, pas de recodage, pas de paire R6
+  bonne_reponse: aucune         # les deux options sont défendables — aucune récompense, aucune pénalité
+ordre: fixe                     # scénarios fixes — dramaturgie de vie à deux, précédent 6.5 (02)
+graine: sans-objet              # aucune course, aucune tentative, zéro tirage (02) — ordinal 72 réservé, non utilisé
+trames_hebergees: 0             # quête 100 % dilemmes — règle 11-b sans objet
+signatures: [SIG-8.2-01]        # ECD — écart valeurs déclarées / révélées (registre des signaux)
+scoring:
+  moteur: seul                  # MOTEUR SEUL — Constitution [3] : aucune métadonnée au rendu
+  ecd:
+    declarees: "2.1"            # « Tes valeurs » — 10 valeurs universelles (M3, codes Q2.1) — alignement
+                                # de la marque mission « 1.1 » consigné au 03 (point comité)
+    revelees: "8.2"             # les 6 dilemmes (pôles choisis + lecture fine des justifications — cotation comité)
+    rendu: "jamais — facteur de confiance côté moteur"
+  bonne_reponse: false          # aucun score de justesse — l'écart module la confiance de lecture, pas la dignité
+chiffrement: renforce
+export: jamais                  # l'écart et les justifications ne sortent dans AUCUN export
+sortie: permanente              # réponses modifiables/supprimables à tout moment
+notes:
+  - >-
+    Divergence de gabarit documentée (00) : PAS de miroir à profils multiples — UN SEUL slot de
+    rendu, la carte unique « Tes principes ET ton pragmatisme » (2 variantes : écart faible = profil
+    intégré / écart fort = profil en représentation — désignations moteur, jamais rendues).
+  - >-
+    Doctrine anti-hypocrisie (00) : l'écart est humain et commun — le système assume que tout le
+    monde en a un. Au rendu c'est un TON, jamais un mot : la carte n'accuse pas, elle accueille
+    (« tu vis tes principes ET ton pragmatisme, et ce n'est pas contradictoire »).
+  - >-
+    La carte reste personnelle (04) : sa variante dérive d'un signal moteur — elle ne se montre pas
+    à l'autre membre ; le canal à deux est la révélation mutuelle des dilemmes (consentie).
+    À VALIDER PAR LE COMITÉ.
+  - >-
+    Seuils de l'écart ECD : PROVISOIRES (proposition 0.30 faible/fort) — verrou [9], re-signature
+    professionnelle avant bêta (FM-019).

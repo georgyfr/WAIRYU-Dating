@@ -1,0 +1,18 @@
+{
+  "quete": "8.2",
+  "titre": "Et toi, tu ferais quoi ?",
+  "passation": "ordre-fixe-scenarique",
+  "note_passation": "M11 — dilemmes à deux joués dans l'ordre (situations fixes, graine sans-objet, aucune course). La révélation mutuelle suit la double réponse.",
+  "items": [
+    { "code": "Q8.2-01", "dimension": "promesse-vs-opportunite" },
+    { "code": "Q8.2-02", "dimension": "honnetete-vs-tendresse" },
+    { "code": "Q8.2-03", "dimension": "argent-partage" },
+    { "code": "Q8.2-04", "dimension": "temps-donne-vs-temps-promis" },
+    { "code": "Q8.2-05", "dimension": "loyaute-vs-tolerance" },
+    { "code": "Q8.2-06", "dimension": "confort-vs-risque-ensemble" }
+  ],
+  "c1_note": "sans-objet (6 scénarios fixes — aucune alternance D/I)",
+  "c2_note": "sans-objet (0 trame au dépôt) — quête sans signal ▲ au dépôt",
+  "c4_note": "sans-objet (ordre fixe)",
+  "scoring": { "moteur": "seul", "ecd": "écart valeurs déclarées (2.1) / révélées (8.2) — facteur de confiance — JAMAIS rendu" }
+}

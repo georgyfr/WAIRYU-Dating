@@ -48,7 +48,13 @@ Livrable des mondes/
 ├── M8-6.2-Ta-Relation-Au-Desir/     ← quête 6.2 « Ta relation au désir » (M8, 💎, opt-in, 20 items : 15 carte + 5▲ COC hébergées, étage 2 — consentement mutuel, VAGUE V13)
 ├── M9-6.3-Ta-Carte-Des-Preferences/ ← quête 6.3 « Ta carte des préférences » (M9 — L'Intime : Les Profondeurs, 💎, opt-in, 14 items — 5 axes + nouveauté + après, étage 3 PRIVÉ, VAGUE V13)
 ├── M9-6.4-Tes-Frontieres-Modernes/  ← quête 6.4 « Tes frontières modernes » (M9, 💎, opt-in, 6 items — 3 paires d'attitudes, zéro miroir par design, VAGUE V13)
-└── M9-6.5-Ton-Desir-Ta-Definition/  ← quête 6.5 « Ton désir, ta définition » (M9, 💎, VISIBLE — déclaratif d'inclusion, 3 items, miroir SYN unique, dealbreaker digne, VAGUE V13)
+├── M9-6.5-Ton-Desir-Ta-Definition/  ← quête 6.5 « Ton désir, ta définition » (M9, 💎, VISIBLE — déclaratif d'inclusion, 3 items, miroir SYN unique, dealbreaker digne, VAGUE V13)
+├── M11-8.1-Les-Questions-Qui-Rapprochent/ ← quête 8.1 « Les questions qui rapprochent » (M11 — Le Voyage à Deux, 🆓 TOUJOURS GRATUITE, MVP, 36 questions en 3 niveaux — ordre fixe scénarique, missions à deux, réponses croisées → compatibilité réelle NLP P2 moteur seul JAMAIS rendue avant calibration comité, anti-plagiat machine VERT, miroir exempté — la récompense est la réponse de l'autre, VAGUE V14-B)
+├── M11-8.2-Et-Toi-Tu-Ferais-Quoi/   ← quête 8.2 ⚡ « Et toi, tu ferais quoi ? » (M11, 🆓, P2, 6 dilemmes à choix forcé + justification courte — ECD valeurs déclarées 2.1 / révélées, facteur de confiance moteur seul, carte unique « Tes principes ET ton pragmatisme » 2 variantes non-jugeantes — l'anti-hypocrisie du système, VAGUE V14-B)
+├── M11-8.3-Le-Refus/                ← quête 8.3 ⚡ « Le refus » (M11, 🆓, P3, opt-in des deux, 3▲ COC hébergées T58-T60 — scénarios du non présentés comme assertivité, le double-filet anti-coercition avec 6.2, chiffrement maximal, AUCUN miroir AUCUNE carte — on ne gamifie pas la détection, VAGUE V14-B)
+├── M11-8.4-Le-Bonus/                ← quête 8.4 🎁 « Le bonus » (M11, 🆓, P2, opt-in, 1 geste GEN — le jeu des 20 pépites, crédit facteur de confiance du donneur, zéro classement/badge/relance, miroir exempté — le geste parle, VAGUE V14-B)
+├── M11-8.5-Vibe-Check-Voice-Check/  ← spécification 8.5 « Vibe Check / Voice Check » (M11, 🆓, P2, Mode Invisible — la voix avant le visage : texte → voix → photo, 30 s max, consentement des deux, ZÉRO analyse de la voix comme trait — biométrie interdite doctrine absolue, 0 item, VAGUE V14-B)
+└── M11-8.6-Les-Services-Du-Rendez-Vous/ ← spécification 8.6 « Les services du rendez-vous » (M11, 🆓, P2 — check-in sécurité avant date GRATUIT et PERMANENT · Coach de conversation · cartes de dialogue · feedback post-date → North Star + calibration, 0 item, VAGUE V14-B)
 
 **+ `portraits/domaines/coeur.md` — le PORTRAIT DE DOMAINE DU CŒUR (M6+M7, gabarit A5, VAGUE V12 — premier Portrait de Domaine réel : 6 liaisons croisées §2 + engagement §5).**
 ```
@@ -57,7 +63,7 @@ Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` 
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 461/570 items = 80,9 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+**Taux de matérialisation : 507/570 items = 88,9 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
 Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · MISSION V9 — Monde M4 « Ton terrain » : 52 · **MISSION V10 —
 Monde M5 « Ton Héritage » : 50** — 4.1 arbre relationnel 8 + génogramme interactif non compté,
 4.2 où tu en es 19 (10 RB1 + 8 RSQ + 1 ouverte), 4.3 relations apprises ⚡ 1 ouverte,
@@ -73,7 +79,14 @@ option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœu
 (15 carte + 5▲ COC hébergées — le marqueur prédateur le plus fiable, chiffrement maximal, étage 2) ·
 6.3 carte des préférences 14 (5 axes + nouveauté + après, étage 3 PRIVÉ — double consentement) ·
 6.4 frontières modernes 6 (3 paires d'attitudes, divergence signalée aux deux — zéro miroir par design) ·
-6.5 désir/définition 3 (VISIBLE — déclaratif d'inclusion, asexualité jamais en déficit, miroir SYN unique).)**
+6.5 désir/définition 3 (VISIBLE — déclaratif d'inclusion, asexualité jamais en déficit, miroir SYN unique) ·
+**VAGUE V14-B — Monde M11 « Le Voyage à Deux » (🆓 TOUJOURS GRATUIT — la rencontre n'est jamais payante, quêtes à deux débloquées au premier match, récompenses partagées) : 46** —
+8.1 questions qui rapprochent 36 (3 niveaux 12/12/12, ordre fixe scénarique, missions à deux, compatibilité réelle NLP P2 moteur seul JAMAIS rendue avant calibration comité — anti-plagiat machine VERT, miroir exempté) ·
+8.2 dilemmes ⚡ 6 (ECD — valeurs déclarées 2.1 / révélées, facteur de confiance, carte unique 2 variantes non-jugeantes) ·
+8.3 le refus ⚡ 3▲ COC hébergées T58-T60 (scénarios du non = assertivité en face, double-filet anti-coercition avec 6.2, chiffrement maximal, AUCUN miroir — on ne gamifie pas la détection) ·
+8.4 le bonus 🎁 1 geste GEN (20 pépites — don réel, facteur de confiance du donneur, zéro pression) ·
+8.5 Vibe/Voice Check — spécification 0 item (texte → voix → photo, ZÉRO analyse de voix comme trait — biométrie interdite) ·
+8.6 services du rendez-vous — spécification 0 item (check-in sécurité GRATUIT et PERMANENT · Coach · cartes de dialogue · feedback post-date → North Star + calibration).)
 
 > 🆓💎 **Après MISSION V13, le DOMAINE DE L'INTIME (M8+M9) est REFERMÉ en items** — cinq quêtes opt-in
 > (étages de révélation documentés : 1 après visuel · 2 consentement mutuel · 3 PRIVÉ après révélation photo ·
@@ -87,6 +100,17 @@ option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœu
 > [6] appliquée à la production : le premium change ZÉRO chose au contenu, ne présuppose rien du
 > gratuit, sans teaser (historique V11 2ᵉ gén. : les dossiers M6 ont été RÉ-ÉMIS après la perte du
 > sandbox — empreintes de mélange V11 reproduites 3/4, constat consigné aux plans 02).
+
+> 🌌 **VAGUE V14-B — LA DESTINATION EST EN MACHINE : M11 « Le Voyage à Deux » est REFERMÉ** (6/6
+> quêtes 8.1-8.6 — le monde se débloque au premier match, les quêtes se vivent À DEUX, les
+> récompenses sont partagées ; gabarit adapté « quête à deux » documenté aux 00 de chaque dossier :
+> miroirs exemptés 8.1/8.3/8.4 · carte unique 8.2 · dossiers de spécification 8.5/8.6). Le moteur
+> North Star a sa maison : la conversion match → conversation → rendez-vous est cadrée, mesurée
+> (compatibilité réelle NLP P2 — moteur seul, JAMAIS rendue avant calibration comité) et sécurisée
+> (3▲ COC T58-T60, le double-filet anti-coercition avec 6.2). **Restent hors production : 1.8
+> « Ton bien-être » (différé comité, verrou renforcé) et le Monde M10 « Mon Monde » (3 quêtes
+> 7.1-7.3 💎, 24 items — jamais produites ; la vague V14-A du cadrage n'a laissé aucune trace :
+> constat Étape 0 consigné au STATUS).**
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 
