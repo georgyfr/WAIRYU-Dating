@@ -32,6 +32,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-30-autorisations-normales',
+    date: '30 septembre 2026',
+    title: '« Aucune autorisation » ? C’est normal — le guide s’adapte',
+    items: [
+      'Le guide de déblocage des notifications commence maintenant par le plus rapide : l’icône 🔒 à côté de l’adresse dans Chrome → Autorisations → Notifications.',
+      'Si wairyu est listé « Non autorisé » et que rien ne se propose, le guide donne le remède réel : Tous les sites → wairyu → Effacer et réinitialiser.',
+      'Tu as ouvert Réglages → Applications → wairyu et tu vois « Aucune autorisation » ? Le guide t’explique désormais que c’est normal pour une appli installée via Chrome — cet écran vide ne bloque rien, tout se règle dans Chrome.',
+    ],
+  },
+  {
     id: '2026-09-30-notifications-badoo',
     date: '30 septembre 2026',
     title: 'Tes notifications, gérées comme Badoo',

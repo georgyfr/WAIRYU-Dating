@@ -4302,8 +4302,12 @@ kbd {
   background: #fbf9fd;
 }
 
-/* Interrupteur façon iOS */
-.switch {
+/* Interrupteur façon iOS — renommé .switch → .w-switch (t70) : la classe .switch
+   était déjà utilisée par les paragraphes-liens « S'inscrire / Se connecter »
+   (.switch ligne 441) ; la définition toggle (width:48px; height:28px) chargée
+   après écrasait les paragraphes → texte empilé verticalement sur la page
+   d'inscription (capture fondateur 01/10). Rien n'est supprimé : renommage pur. */
+.w-switch {
   width: 48px;
   height: 28px;
   border-radius: 999px;
@@ -4316,7 +4320,7 @@ kbd {
   padding: 0;
 }
 
-.switch .knob {
+.w-switch .knob {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -4328,11 +4332,11 @@ kbd {
   transition: transform 0.15s;
 }
 
-.switch.on {
+.w-switch.on {
   background: var(--c-primary);
 }
 
-.switch.on .knob {
+.w-switch.on .knob {
   transform: translateX(20px);
 }
 
@@ -5525,13 +5529,14 @@ body.theme-dark .filter-switch-row .filter-label {
   color: #e5e7eb;
 }
 
-/* Switch (vérifiés uniquement) */
-body.theme-dark .switch {
+/* Switch (vérifiés uniquement) — renommé .switch → .w-switch (t70, conflit avec
+   les paragraphes-liens .switch, voir le bloc « Interrupteur façon iOS ») */
+body.theme-dark .w-switch {
   background: var(--w-surface-3);
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-body.theme-dark .switch.on {
+body.theme-dark .w-switch.on {
   background: var(--w-gradient);
   border-color: transparent;
 }
@@ -11863,4 +11868,23 @@ body.theme-dark .presence-radar {
 }
 .notif-sys .notifgate-paths {
   margin-top: 4px;
+}
+
+/* ── Task 68 — encart « Aucune autorisation = NORMAL » (fin du guide de
+   réparation, carte globale + Réglages) : l'impasse constatée deux fois
+   en réel sur le téléphone du fondateur (géoloc t64, notifications t68)
+   est désamorcée pour TOUS les téléphones. Couleurs de texte explicites
+   (leçon t65 : jamais de couleur héritée sur fond clair). ── */
+.notifgate-note {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(46, 164, 79, 0.1);
+  border: 1px solid rgba(46, 164, 79, 0.35);
+  color: #1c5c38;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.notifgate-note strong {
+  color: #14522f;
 }
