@@ -1,0 +1,80 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.2 « TA VISION DE L'AMOUR » — 4 VARIANTES (étage 1)
+# 💎 PREMIUM · P1.5 · Création : phase R V12 — 2ᵉ génération (dossier V11 perdu au reset,
+# rédaction neuve sur le cadre gelé — worklog Task 21).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : axe dominant (max des 4 moyennes d'axe, I recodés 6−r, normalisés) —
+# ex æquo strict → départage à la 1ʳᵉ position de passation (proposition, comité) —
+# partition exclusive + exhaustive (SIG-5.2-01, C6, vérifiée machine). Bornes À VALIDER
+# PAR LE COMITÉ [9]. NEUTRALITÉ DES CROYANCES : aucun axe n'est un idéal — la carte
+# décrit un film, elle ne le corrige pas (zéro verdict, zéro prédiction).
+# SLOT PROBABILISTE (matière gelée refonte l. 1813) : « la suite te dira si tu attends
+# ou si tu construis » — reprise à la carte destin ; ailleurs, registre probabiliste.
+# SIG-5.2-02 (pénalité destin extrême × évitant) : [MOTEUR SEUL] — INVISIBLE au rendu ;
+# aucune variante ci-dessous n'expose un croisement, un seuil ou un score.
+# AUCUNE trame hébergée par 5.2 (quête 100 % carte) — rien à cacher, rien à masquer.
+# Zéro nom de la typologie de référence au rendu, zéro sigle, zéro vocabulaire clinique.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.2 Ta vision de l'amour"
+monde: M6
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "quatre moyennes d'axe déclarées — destin DESTIN (Q5.2-01 × 02) · coup de foudre FOUDRE (Q5.2-03 × 04) · grand amour unique UNIQUE (Q5.2-05 × 06) · idéalisation IDEAL (Q5.2-07 × 08), I recodés 6−r, normalisés 0-1"
+  logique: "dominant = max des 4 axes · secondaire = 2ᵉ du tri (affiché en conversation, jamais calculé en entrée moteur) · ex æquo strict → départage à la 1ʳᵉ position de passation"
+  bornes: "départage ex æquo (proposition) — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "4 sélections = partition totale de l'espace de réponses — chaque profil tombe dans exactement une variante (C6, vérifiée machine)"
+  non_participant: "AUCUN croisement, aucun score de compatibilité, aucune exclusion de match depuis cette quête à l'affichage — la pénalité croisée SIG-5.2-02 vit au ledger, MOTEUR SEUL (gravé au 00-README et au 03)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Ta vision de l'amour »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Ta vision de l'amour dit ton rapport au temps — la suite te dira si tu attends ou si tu construis."
+  - "F2 : Ce portrait ne corrige personne — il donne des mots à ce que tu crois, en couple comme avant."
+
+variantes:
+
+  - id: CARTE-5.2-ECRIT-DAVANCE
+    nom: "L'amour écrit d'avance"
+    ordre_selecteur: 1
+    condition: "DESTIN = max des 4 axes (destin dominant)"
+    ancre_item: ["Q5.2-01", "Q5.2-02", "Q5.2-03", "Q5.2-04", "Q5.2-05", "Q5.2-06", "Q5.2-07", "Q5.2-08"]
+    portrait: "Tu crois à l'amour qui frappe une fois — tu l'as répondu : ce qui doit arriver finit par arriver. Les rencontres marquantes gardent pour toi un goût d'évidence, et tu laisses l'imprévu te surprendre."
+    ombre: "Le quotidien devient un texte à interpréter — ce qui coince se lit comme un signal. Tu attends le signe, l'autre porte l'initiative."
+    tension_interieure: "la suite te dira si tu attends ou si tu construis."
+
+  - id: CARTE-5.2-ECLAIR
+    nom: "L'amour qui frappe"
+    ordre_selecteur: 2
+    condition: "FOUDRE = max des 4 axes (coup de foudre dominant)"
+    ancre_item: ["Q5.2-01", "Q5.2-02", "Q5.2-03", "Q5.2-04", "Q5.2-05", "Q5.2-06", "Q5.2-07", "Q5.2-08"]
+    portrait: "On peut savoir dès les premières minutes que ça compte — tu l'as répondu. Être saisi t'arrive, et tu accordes du crédit à ce premier contact : les débuts te vivent grand."
+    ombre: "Les histoires commencées vite demandent un rattrapage d'étapes. T'engager sur une première impression — et l'autre hérite du rôle du premier soir."
+    tension_interieure: "l'éclair ouvre l'histoire — c'est la suite qui la tient."
+
+  - id: CARTE-5.2-UNIQUE
+    nom: "L'amour unique"
+    ordre_selecteur: 3
+    condition: "UNIQUE = max des 4 axes (grand amour unique dominant)"
+    ancre_item: ["Q5.2-01", "Q5.2-02", "Q5.2-03", "Q5.2-04", "Q5.2-05", "Q5.2-06", "Q5.2-07", "Q5.2-08"]
+    portrait: "Au fond, il n'y a qu'un grand amour pour chacun — tu l'as répondu. Ce poids-là, tu lui donnes sans compter : tu n'es pas là pour collectionner, tu es là pour tenir."
+    ombre: "Chaque histoire se mesure alors contre un mythe — le quotidien ne gagne pas souvent contre une légende. L'autre rivalise avec un fantôme."
+    tension_interieure: "le mythe inspire — il peut aussi empêcher de voir qui est là."
+
+  - id: CARTE-5.2-VERSION-QUI-POURRAIT
+    nom: "L'amour en potentiel"
+    ordre_selecteur: 4
+    condition: "IDEAL = max des 4 axes (idéalisation dominante)"
+    ancre_item: ["Q5.2-01", "Q5.2-02", "Q5.2-03", "Q5.2-04", "Q5.2-05", "Q5.2-06", "Q5.2-07", "Q5.2-08"]
+    portrait: "Quand quelque chose te plaît, tu imagines surtout ce qu'il pourrait devenir — tu l'as répondu. Tu vois le meilleur des gens, et cette élévation se sent : les gens grandissent près de toi."
+    ombre: "La personne réelle et la version imaginée divergent — et l'écart se paie des deux côtés. Être aimé·e pour un potentiel épuise."
+    tension_interieure: "aimer le meilleur de quelqu'un commence par voir qui il est déjà."

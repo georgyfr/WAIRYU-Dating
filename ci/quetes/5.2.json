@@ -1,0 +1,50 @@
+{
+  "quete": "5.2",
+  "titre": "Ta vision de l'amour",
+  "graine": 252427,
+  "items": [
+    {
+      "code": "Q5.2-01",
+      "orientation": "D",
+      "dimension": "destin"
+    },
+    {
+      "code": "Q5.2-02",
+      "orientation": "I",
+      "dimension": "destin"
+    },
+    {
+      "code": "Q5.2-03",
+      "orientation": "D",
+      "dimension": "foudre"
+    },
+    {
+      "code": "Q5.2-04",
+      "orientation": "I",
+      "dimension": "foudre"
+    },
+    {
+      "code": "Q5.2-05",
+      "orientation": "D",
+      "dimension": "unique"
+    },
+    {
+      "code": "Q5.2-06",
+      "orientation": "I",
+      "dimension": "unique"
+    },
+    {
+      "code": "Q5.2-07",
+      "orientation": "D",
+      "dimension": "ideal"
+    },
+    {
+      "code": "Q5.2-08",
+      "orientation": "I",
+      "dimension": "ideal"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "8 items = 4 dimensions × 2 — c4 STRICTEMENT FAISABLE (distance intra-axe >= 3 : positions 1-10, chaque axe 2 items, un calendrier 10 positions admet 4 paires à distance >= 3 sans contrainte supplémentaire)"
+}

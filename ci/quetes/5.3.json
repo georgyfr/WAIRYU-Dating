@@ -1,0 +1,60 @@
+{
+  "quete": "5.3",
+  "titre": "Comment tu exprimes ton affection",
+  "graine": 253427,
+  "items": [
+    {
+      "code": "Q5.3-01",
+      "orientation": "D",
+      "dimension": "mots"
+    },
+    {
+      "code": "Q5.3-02",
+      "orientation": "I",
+      "dimension": "mots"
+    },
+    {
+      "code": "Q5.3-03",
+      "orientation": "D",
+      "dimension": "temps"
+    },
+    {
+      "code": "Q5.3-04",
+      "orientation": "I",
+      "dimension": "temps"
+    },
+    {
+      "code": "Q5.3-05",
+      "orientation": "D",
+      "dimension": "gestes"
+    },
+    {
+      "code": "Q5.3-06",
+      "orientation": "I",
+      "dimension": "gestes"
+    },
+    {
+      "code": "Q5.3-07",
+      "orientation": "D",
+      "dimension": "attentions"
+    },
+    {
+      "code": "Q5.3-08",
+      "orientation": "I",
+      "dimension": "attentions"
+    },
+    {
+      "code": "Q5.3-09",
+      "orientation": "D",
+      "dimension": "contact"
+    },
+    {
+      "code": "Q5.3-10",
+      "orientation": "I",
+      "dimension": "contact"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "10 items = 5 canaux × 2 — c4 STRICTEMENT FAISABLE (distance intra-canal >= 3 sur 10 positions)"
+}

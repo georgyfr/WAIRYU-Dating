@@ -1,0 +1,84 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION COMPLÈTE — QUÊTE 5.3 (modèle des 10 items carte)
+# Item choisi : Q5.3-01 (le mot qui porte — l'angle le plus parlant des mots valorisants).
+# Fichier YAML strict (gabarit des 10 items : seuls énoncé, canal, orientation et ancrage changent).
+# 💎 PREMIUM · P2 · accès libre au sein du territoire premium
+# RÈGLE CAPITALE (gravée au 00-README et au 03) : JAMAIS DANS LE SCORE —
+# cette quête est conversationnelle uniquement ; le champ `score` est null par concept.
+# ═══════════════════════════════════════════════════════════════════
+quete: "5.3 Comment tu exprimes ton affection"
+monde: M6                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: P2
+acces: libre_territoire_premium
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Un mot qui me valorise me porte toute la journée."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — le bord « canal plein » (l'I de la paire, Q5.3-02, se recode 6−r)
+dimension: mots_valorisants   # canal 1/5 (paire R6 avec Q5.3-02)
+type_mesure: trait_declaratif # déclarative directe — aucune trame hébergée par 5.3
+score: null                   # JAMAIS DANS LE SCORE — conversationnel uniquement :
+                              # aucune entrée au score de compatibilité, aucune signature
+                              # de matching, aucun croisement moteur. Par CONCEPT, pas
+                              # par choix d'implémentation : le champ n'existe pas pour 5.3.
+double_balise:
+  carte_id: canal_5.3         # alimente la carte (6 variantes) et le miroir (6 profils)
+  signal_id: SIG-5.3-01       # conversationnelle — dominante/secondaire AFFICHÉES, jamais calculées en entrée moteur
+dimensions_de_la_quete:       # les 5 canaux — libellés UI génériques obligatoires
+  - code: mots_valorisants    # items Q5.3-01 × 02 · libellé UI : « mots valorisants »
+  - code: temps_partage       # items Q5.3-03 × 04 · libellé UI : « temps partagé »
+  - code: gestes_services     # items Q5.3-05 × 06 · libellé UI : « gestes et services »
+  - code: attentions_cadeaux  # items Q5.3-07 × 08 · libellé UI : « attentions et cadeaux »
+  - code: contact_physique    # items Q5.3-09 × 10 · libellé UI : « contact physique »
+computation:
+  carte:
+    role: conversationnel
+    regle: >-
+      5 moyennes de canal (2 items chacune, I recodés 6−r, normalisées 0-1) — routage
+      d'AFFICHAGE des 6 variantes (5 canaux + équilibré si écart max−min ≤ 0.25,
+      bornes À VALIDER PAR LE COMITÉ [9]) — aucune agrégation au score de compatibilité
+    rendu: etage_1_et_2        # carte (6 variantes) + miroir (6 profils)
+  signal:
+    role: conversationnel
+    mecanisme: >-
+      SIG-5.3-01 — le canal dominant et le canal secondaire s'AFFICHENT en libellés
+      conversationnels (cartes de dialogue, mode d'emploi croisé à deux) ; ils ne se
+      calculent JAMAIS en entrée moteur : aucune pondération, aucune matrice, aucune
+      signature de matching — JAMAIS DANS LE SCORE
+    rendu: conversation        # des mots pour se parler, jamais des chiffres pour se trier
+    condition: "exemption de domaine gravée au 03 — 5.3 exclue des liaisons 5.1×5.4, 5.1×5.5, 5.2×5.4, 5.2×5.6, 5.7×5.4, 5.7×5.5"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur le canal,
+      rappel en toutes lettres, moyenne de canal = items valides + prudence
+      (precedent SIG-2.1-02) ; 5 paires R6 completes (01x02 · 03x04 · 05x06 · 07x08 · 09x10)
+  modulation:
+    - si: "paire R6 divergente sur un canal"
+      effet: "canal mis en prudence à l'affichage — le rappel raconte les deux réponses sans jugement"
+    - si: "tentative d'entrée au score, au matching ou à un croisement moteur"
+      effet: "BLOQUÉ PAR CONCEPT — règle JAMAIS DANS LE SCORE (00-README + 03) ; aucune modulation de score n'existe pour 5.3"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la préférence décrite, jamais jugée, jamais un code"
+    exemple: "quand tu as dit qu'un compliment sincère te porte"
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 10 items carte. Seuls changent : énoncé, canal
+    (les 5 codes ci-dessus), orientation (recodage 6−r pour les I : 02 · 04 · 06 · 08 · 10),
+    ancrage.
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) : l'écran d'intro
+    n'anticipe aucun autre contenu ; badge visible au 00-README et à l'entête de complétion.
+  - >-
+    Marque déposée du domaine : INTERDITE en toutes lettres dans tout le dossier (UI,
+    marketing, store, dépôt) — le concept des canaux d'expression affective est public,
+    les libellés UI sont les formulations neutres Wairyu, les items sont 100 % Wairyu.
+  - >-
+    Mélange 5.3 : outil générique melange.py, graine 253427 (gelée V11, re-prise à
+    l'identique), verdicts 6/6 PASS, run max 2, empreinte 59527dae… reproduisant
+    l'enregistrement V11 — config canonique ci/quetes/5.3.json À CRÉER par la session
+    principale (voir 02).
+  - >-
+    2ᵉ génération (phase R, V12) — dossier V11 perdu au reset : texte réécrit, cadre gelé
+    inchangé (spécification Task 21 du worklog).

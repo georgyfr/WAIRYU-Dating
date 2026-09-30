@@ -1,0 +1,118 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.1 « TON STYLE AMOUREUX » — 7 VARIANTES (étage 1)
+# Création : ré-émission 2ᵉ génération, mission R-a (phase R — le dossier V11, jamais
+# poussé, a été perdu au reset du bac à sable ; textes réécrits Wairyu, cadre gelé
+# repris des enregistrements du worklog Task 21).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), cible 77-99, vérifiée machine (script hors dépôt).
+# Sélection : cascade SIG-5.1-01 — dominant = max des six scores de style (18 items,
+# I recodés 6−r, normalisés 0-1) ; bande 0.10 → secondaire nommé au rendu du miroir ;
+# étendue des six ≤ 0.10 → profil égalitaire/mixte ; quasi-égalité < 0.05 → départage
+# au pivot puis à la 1re position de passation (bornes À VALIDER PAR LE COMITÉ).
+# NEUTRALITÉ TYPOLOGIQUE STRICTE : les six façons d'aimer se valent — l'ombre est
+# dans l'EXCÈS en couple, jamais dans la nature ; aucune façon supérieure ou inférieure.
+# Kit unique par profil dominant (refonte). ZÉRO nom d'atelier de la typologie au
+# rendu (nommage UI obligatoire : la passion, le jeu, l'amitié devenue amour, le
+# pragmatisme, l'intensité, le don de soi) — contrôle machine affiné en mots entiers.
+# AUCUNE trame dans cette quête : 5.1 n'héberge AUCUN signal ▲ — zéro contenu signal.
+# Zéro vocabulaire clinique, aucun code, aucun sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.1 Ton style amoureux"
+monde: M6
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension), cible 77-99"
+
+selection:
+  variable: "les six scores de style — Q5.1-01 → Q5.1-18, I recodés 6−r, normalisés 0-1 (variables, formules et cascade au 03 — moteur) ; la matrice des façons [MOTEUR SEUL] ne participe JAMAIS à la sélection ni au rendu"
+  logique: "dominant = max des six · bande 0.10 : secondaire à ≤ 0.10 → nommé au slot S2 du miroir (jamais un deuxième portrait) · quasi-égalité < 0.05 → départage au pivot puis à la 1re position de passation · étendue des six ≤ 0.10 → profil égalitaire/mixte (7e variante)"
+  bornes: "0.05 (écart) / bande 0.10 / étendue 0.10 — propositions À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "8 sélections = partition totale des profils possibles — chaque résultat tombe dans exactement une variante (C6, vérifié machine) : 6 dominants + 1 égalitaire/mixte"
+  non_participant: "la matrice des façons [MOTEUR SEUL] (cellules moteur au 03) ne participe JAMAIS à la sélection ni au rendu ; le pré-signal SIG-5.1-03 est ATTENDU V12, non calculé dans cette quête"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💘 QUÊTE ACCOMPLIE — « Ton style amoureux »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un aime avec d'autres façons — la rencontre, c'est justement la traduction."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-5.1-FLAMME
+    nom: "Le·La Flamme"
+    ordre_selecteur: 1
+    condition: "dominant = la passion — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Quand l'attirance frappe fort, tout le reste attend — tu l'as dit. La passion, chez toi, est un moteur. Une histoire qui t'embrase change ton tempo : le monde passe au second plan."
+    ombre: "Le feu ne brûle pas les mardis ordinaires. Le quotidien déçoit parfois, et l'autre peut se sentir en dessous face à quelqu'un qui vit en sommets. Le coût pour toi : confondre calme et fin du feu. Le coût pour l'autre : croire qu'un jour ordinaire ne suffit plus."
+    tension_interieure: "vivre les sommets sans lire les jours ordinaires comme des fins."
+
+  - id: CARTE-5.1-PARTIE
+    nom: "Le·La Partie"
+    ordre_selecteur: 2
+    condition: "dominant = le jeu — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Garder un peu de jeu rend l'histoire plus vivante — tu l'as dit. Chez toi, aimer respire : la taquinerie, le pas de côté, la plaisanterie qui détend. Avec toi, les premières heures pèsent moins lourd."
+    ombre: "La légèreté se lit mal quand l'autre est sérieux. Une vraie question répondue par une blague reste une question. Le coût pour toi : passer pour absent alors que tu es là. Le coût pour l'autre : ne pas savoir où il en est, et cesser de demander."
+    tension_interieure: "garder la légèreté sans laisser les vraies questions sans réponse."
+
+  - id: CARTE-5.1-ROUTE-LONGUE
+    nom: "Le·La Route longue"
+    ordre_selecteur: 3
+    condition: "dominant = l'amitié devenue amour — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Les meilleures histoires commencent par une amitié — tu l'as dit. Chez toi, l'amour grandit sans se presser : d'abord la conversation, puis la confiance, puis le reste. La durée est ta façon de dire les choses."
+    ombre: "L'amour qui tarde à se nommer se fait attendre. Le coût pour toi : un attachement profond lu comme de l'habitude. Le coût pour l'autre : douter de ce qui est déjà là, faute d'un mot."
+    tension_interieure: "laisser grandir sans laisser le mot attendre trop de saisons."
+
+  - id: CARTE-5.1-BOUSSOLE
+    nom: "Le·La Boussole"
+    ordre_selecteur: 4
+    condition: "dominant = le pragmatisme — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "L'amour tient quand les projets de vie collent — tu l'as dit. Chez toi, aimer, c'est bâtir : les horaires se rangent, l'argent se parle, les décisions se prennent à deux. Ce qui est décidé avec toi tient la route."
+    ombre: "La liste rassure et masque parfois la personne. Le coût pour toi : les rencontres sans case passent à côté — parfois les bonnes. Le coût pour l'autre : se sentir examiné plutôt que découvert."
+    tension_interieure: "garder tes repères en laissant la personne surprendre la liste."
+
+  - id: CARTE-5.1-VIGIE
+    nom: "Le·La Vigie"
+    ordre_selecteur: 5
+    condition: "dominant = l'intensité — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Ton attention ne dort pas — tu l'as dit à ta façon : des signes réguliers te mettent en paix. Quand tu aimes, tu remarques tout, et ta présence fait des abris."
+    ombre: "Ton équilibre voyage dans la poche de l'autre. Une réponse qui tarde gonfle des scénarios. Le coût pour toi : une paix qui dépend d'un horaire. Le coût pour l'autre : devenir gardien de ton calme, et fatiguer de ce rôle."
+    tension_interieure: "aimer fort en gardant ta paix chez toi, pas chez l'autre."
+
+  - id: CARTE-5.1-PORT
+    nom: "Le·La Port"
+    ordre_selecteur: 6
+    condition: "dominant = le don de soi — écart au second > 0.10 (kit unique)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Aimer, c'est d'abord prendre soin sans compter — tu l'as dit. Tu devines les besoins avant les mots, et tu déplaces tes priorités sans bruit. Prendre soin, chez toi, est un réflexe de première seconde."
+    ombre: "Donner sans retour vide le compte en silence. Le coût pour toi : une fatigue qui arrive après coup. Le coût pour l'autre : recevoir plus qu'il ne peut porter, et ne plus oser demander."
+    tension_interieure: "prendre soin des autres chaque jour sans oublier de recevoir à ton tour."
+
+  - id: CARTE-5.1-PALETTE
+    nom: "Le·La Palette"
+    ordre_selecteur: 7
+    condition: "étendue des six scores ≤ 0.10 (égalitaire/mixte — scores serrés)"
+    ancre_item: ["Q5.1-01", "Q5.1-02", "Q5.1-03", "Q5.1-04", "Q5.1-05", "Q5.1-06", "Q5.1-07", "Q5.1-08", "Q5.1-09", "Q5.1-10", "Q5.1-11", "Q5.1-12", "Q5.1-13", "Q5.1-14", "Q5.1-15", "Q5.1-16", "Q5.1-17", "Q5.1-18"]
+    portrait: "Aucune façon d'aimer n'a dominé chez toi — et c'est une réponse complète. La passion, le jeu, la durée, les projets, l'attention, le don : tu passes d'une main à l'autre selon la saison."
+    ombre: "Ta souplesse se lit mal de dehors. Une semaine passionnée, une semaine posée : l'autre peut y lire une inconstance qui n'en est pas une. Le coût pour toi : réexpliquer ce que tu vis simplement. Le coût pour l'autre : prévoir mal tes saisons."
+    tension_interieure: "dire un mot de ta saison du moment — la règle se devine mal."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, cible 77-99, vérifié machine (script hors dépôt)"
+  - "neutralité typologique : les 7 variantes se valent — l'ombre est l'EXCÈS en couple, jamais la nature ; aucune façon dressée en idéal ou en défaut (contrôles machine)"
+  - "rappels ancrés aux énoncés D uniquement (règle V11) et aux seules réponses de CETTE quête (règle premium [6]) — aucune présupposition des mondes gratuits, zéro teaser"
+  - "zéro nom d'atelier de la typologie au rendu — contrôle machine affiné en mots entiers (le nom UI « le pragmatisme » contient la sous-chaîne du nom d'atelier : arbitrage consigné au 00-README)"
+  - "registre probabiliste : aucun futur certain (« parfois », « peut » — présent fréquentiel) ; zéro « toujours » / « jamais » au rendu"
+  - "C4 : aucun superlatif — aucune façon d'aimer dressée en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "zéro contenu signal ▲ : 5.1 n'héberge aucune trame — aucune formulation, aucune position, aucun angle des trames perdues T01-T42 (décision comité)"

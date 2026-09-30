@@ -1,0 +1,70 @@
+{
+  "quete": "5.7",
+  "titre": "Ton humour",
+  "graine": 257427,
+  "items": [
+    {
+      "code": "Q5.7-01",
+      "orientation": "D",
+      "dimension": "affil"
+    },
+    {
+      "code": "Q5.7-02",
+      "orientation": "I",
+      "dimension": "affil"
+    },
+    {
+      "code": "Q5.7-03",
+      "orientation": "D",
+      "dimension": "affil"
+    },
+    {
+      "code": "Q5.7-04",
+      "orientation": "D",
+      "dimension": "gaie"
+    },
+    {
+      "code": "Q5.7-05",
+      "orientation": "I",
+      "dimension": "gaie"
+    },
+    {
+      "code": "Q5.7-06",
+      "orientation": "I",
+      "dimension": "gaie"
+    },
+    {
+      "code": "Q5.7-07",
+      "orientation": "D",
+      "dimension": "agres"
+    },
+    {
+      "code": "Q5.7-08",
+      "orientation": "I",
+      "dimension": "agres"
+    },
+    {
+      "code": "Q5.7-09",
+      "orientation": "D",
+      "dimension": "agres"
+    },
+    {
+      "code": "Q5.7-10",
+      "orientation": "D",
+      "dimension": "degrad"
+    },
+    {
+      "code": "Q5.7-11",
+      "orientation": "I",
+      "dimension": "degrad"
+    },
+    {
+      "code": "Q5.7-12",
+      "orientation": "I",
+      "dimension": "degrad"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "12 items = 4 styles × 3 (1 paire R6 + 1 pivot par style) — c4 STRICTEMENT FAISABLE (distance intra-axe >= 3 sur 12 positions, calendrier documenté au plan 02)"
+}

@@ -1,0 +1,100 @@
+{
+  "quete": "5.1",
+  "titre": "Ton style amoureux",
+  "graine": 251427,
+  "items": [
+    {
+      "code": "Q5.1-01",
+      "orientation": "D",
+      "dimension": "eros"
+    },
+    {
+      "code": "Q5.1-02",
+      "orientation": "I",
+      "dimension": "eros"
+    },
+    {
+      "code": "Q5.1-03",
+      "orientation": "D",
+      "dimension": "eros"
+    },
+    {
+      "code": "Q5.1-04",
+      "orientation": "D",
+      "dimension": "ludus"
+    },
+    {
+      "code": "Q5.1-05",
+      "orientation": "I",
+      "dimension": "ludus"
+    },
+    {
+      "code": "Q5.1-06",
+      "orientation": "I",
+      "dimension": "ludus"
+    },
+    {
+      "code": "Q5.1-07",
+      "orientation": "D",
+      "dimension": "storge"
+    },
+    {
+      "code": "Q5.1-08",
+      "orientation": "I",
+      "dimension": "storge"
+    },
+    {
+      "code": "Q5.1-09",
+      "orientation": "D",
+      "dimension": "storge"
+    },
+    {
+      "code": "Q5.1-10",
+      "orientation": "D",
+      "dimension": "pragma"
+    },
+    {
+      "code": "Q5.1-11",
+      "orientation": "I",
+      "dimension": "pragma"
+    },
+    {
+      "code": "Q5.1-12",
+      "orientation": "I",
+      "dimension": "pragma"
+    },
+    {
+      "code": "Q5.1-13",
+      "orientation": "D",
+      "dimension": "mania"
+    },
+    {
+      "code": "Q5.1-14",
+      "orientation": "I",
+      "dimension": "mania"
+    },
+    {
+      "code": "Q5.1-15",
+      "orientation": "D",
+      "dimension": "mania"
+    },
+    {
+      "code": "Q5.1-16",
+      "orientation": "D",
+      "dimension": "agape"
+    },
+    {
+      "code": "Q5.1-17",
+      "orientation": "I",
+      "dimension": "agape"
+    },
+    {
+      "code": "Q5.1-18",
+      "orientation": "I",
+      "dimension": "agape"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "18 items = 6 façons × 3 (1 paire R6 + 1 pivot par façon) — c4 STRICTEMENT FAISABLE (distance intra-axe >= 3 sur 18 positions, calendrier documenté au plan 02)"
+}
