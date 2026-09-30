@@ -21,9 +21,15 @@
  */
 
 import { useEffect, useState } from 'react';
-import { isStandalone } from '../lib/open-in-app';
+import { isStandalone, intentAlreadyFailed } from '../lib/open-in-app';
 
-type Phase = 'hidden' | 'android-ready' | 'android-link' | 'ios' | 'installed';
+type Phase =
+  | 'hidden'
+  | 'android-ready'
+  | 'android-link'
+  | 'android-fallback' // Task 74 — intent déjà tenté et échoué : app non installée
+  | 'ios'
+  | 'installed';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -61,7 +67,16 @@ export default function InstallGate() {
     } catch {
       /* privacy mode — la bannière reste (bénin) */
     }
-    setPhase(pf === 'ios' ? 'ios' : 'android-link');
+    // Task 74 : si l'ouverture application (intent:// Task 60-URL) a déjà été
+    // tentée cette session et que la page s'exécute ENCORE ici, c'est que
+    // l'application n'est PAS installée — on nomme alors la barre d'adresse
+    // explicitement au lieu du message générique (le fondateur, utilisateur
+    // réel, n'avait pas fait le lien bannière ↔ barre d'adresse visible).
+    if (pf === 'android' && intentAlreadyFailed()) {
+      setPhase('android-fallback');
+    } else {
+      setPhase(pf === 'ios' ? 'ios' : 'android-link');
+    }
 
     const onPrompt = (e: Event) => {
       e.preventDefault();
@@ -125,6 +140,13 @@ export default function InstallGate() {
     title = '🎉 Application installée !';
     text =
       'Ouvre wairyu depuis l’icône de ton écran d’accueil — elle s’ouvrira plein écran, sans aucune barre d’adresse.';
+  } else if (phase === 'android-fallback') {
+    // Task 74 — la capture du fondateur (barre d'adresse visible au-dessus de
+    // l'onboarding) est le cas exact : lien ouvert dans une Custom Tab, app
+    // non installée, intent échoué. Le message NOMME la barre d'adresse.
+    title = 'Cette barre d’adresse ? Elle disparaît avec l’application';
+    text =
+      'wairyu est ouvert dans le navigateur : aucun site ne peut masquer la barre d’adresse, seul le téléphone le peut — en ouvrant l’application installée. L’installation prend 2 minutes.';
   } else {
     title = 'Ouvre wairyu comme une vraie application';
     text =
@@ -134,12 +156,18 @@ export default function InstallGate() {
   const chromeWayHint =
     phase === 'android-ready'
       ? 'Via Chrome : application signée par Google — jamais bloquée par Play Protect.'
-      : phase === 'android-link'
+      : phase === 'android-link' || phase === 'android-fallback'
         ? 'Installation via Chrome : signée par Google, sans blocage Play Protect.'
         : null;
 
   return (
-    <div className="installgate" role="region" aria-label="Installer l'application wairyu">
+    <div
+      className={'installgate' + (phase === 'android-fallback' ? ' fallback' : '')}
+      role="region"
+      aria-label="Installer l'application wairyu"
+      data-testid="installgate"
+      data-phase={phase}
+    >
       <span className="installgate-ico" aria-hidden="true">
         📲
       </span>
@@ -173,6 +201,11 @@ export default function InstallGate() {
         {phase === 'android-link' && (
           <a className="btn primary" href="/app">
             📲 Obtenir l’app
+          </a>
+        )}
+        {phase === 'android-fallback' && (
+          <a className="btn primary" href="/app" data-testid="installgate-fallback-cta">
+            📲 Installer l’application
           </a>
         )}
         {phase === 'ios' && (

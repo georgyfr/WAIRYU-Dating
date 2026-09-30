@@ -78,3 +78,21 @@ export function openInAppIfEligible(): boolean {
     return false;
   }
 }
+
+/**
+ * Task 74 (fondateur : capture « la barre d'adresse est encore visible ») —
+ * l'intent a-t-il DÉJÀ été tenté cette session et la page s'est retrouvée
+ * ICI ? Si oui, l'application n'est pas installée (ou sa vérification a
+ * échoué côté Android) : InstallGate passe alors en copie renforcée qui
+ * NOMME explicitement la barre d'adresse au lieu du message générique.
+ *
+ * Lecture seule — ne modifie jamais la clé (posée uniquement par
+ * openInAppIfEligible, qui reste l'unique point d'écriture).
+ */
+export function intentAlreadyFailed(): boolean {
+  try {
+    return sessionStorage.getItem(INTENT_TRIED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
