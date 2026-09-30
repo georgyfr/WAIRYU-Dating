@@ -69,11 +69,21 @@ self.addEventListener('notificationclick', (event) => {
   const url = (event.notification.data && event.notification.data.url) || '#/matches';
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
-      for (const client of list) {
-        if (client.url.includes(self.location.origin)) {
-          client.navigate(url).catch(() => client.focus());
-          return client.focus();
-        }
+      // Task 75 (fondateur : « masque l'url dans l'app — l'impression qu'on
+      // est dans un navigateur ») : quand l'application INSTALLÉE (WebAPK /
+      // TWA, fenêtre « standalone » — sans barre d'adresse) est ouverte, un
+      // tap de notification doit y atterrir ELLE-MÊME, pas dans un onglet
+      // navigateur qui traîne (sa barre d'adresse réapparaîtrait). Comportement
+      // d'origine conservé : première fenêtre wairyu trouvée = navigate + focus,
+      // sinon openWindow — seule l'ORDRE DE PRIORITÉ change (standalone d'abord).
+      const inOrigin = list.filter((cl) => cl.url.includes(self.location.origin));
+      const ordered = [
+        ...inOrigin.filter((cl) => cl.frameType === 'standalone'),
+        ...inOrigin.filter((cl) => cl.frameType !== 'standalone'),
+      ];
+      for (const client of ordered) {
+        client.navigate(url).catch(() => client.focus());
+        return client.focus();
       }
       return self.clients.openWindow('/' + url);
     }),

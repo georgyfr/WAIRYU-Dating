@@ -175,6 +175,16 @@ export default function InstallGate() {
         <strong>{title}</strong>
         <small>{text}</small>
         {chromeWayHint && <small className="installgate-chrome-way">{chromeWayHint}</small>}
+        {/* Task 75 (fondateur : la barre d'adresse revient « depuis l'app ») —
+            le chemin le plus fréquent vers le navigateur = re-ouvrir un lien
+            reçu par EMAIL au lieu de passer par l'icône. On nomme ce piège
+            explicitement sur les deux phases Android où l'app n'est pas (encore)
+            installée. */}
+        {(phase === 'android-fallback' || phase === 'android-link') && (
+          <small className="installgate-already">
+            Déjà installée&nbsp;? Ouvre wairyu depuis l’icône de ton écran d’accueil — jamais depuis un email ni un lien.
+          </small>
+        )}
         {phase === 'ios' && showSteps && (
           <ol className="installgate-steps">
             <li>
