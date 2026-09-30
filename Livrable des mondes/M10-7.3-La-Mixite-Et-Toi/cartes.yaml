@@ -1,0 +1,69 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 7.3 « LA MIXITÉ ET TOI » — 3 VARIANTES (étage 1)
+# 💎 PREMIUM · P3 · B.3 production neuve (V15 — MONDE M10 « MON MONDE »).
+# Charte des cartes C1-C11 — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : axe dominant des 6 items de mélange (max des 3 moyennes,
+# I recodés 6−r, normalisés) — ex æquo strict → départage à la 1ʳᵉ
+# position de passation (proposition, comité [9]) — partition
+# exclusive + exhaustive. LES DEUX DIGNES : la proximité choisie est
+# respectée, jamais jugée ; l'ouverture n'est jamais « plus évoluée ».
+# ⚠ LE MODULE OPT-IN VÉCU (Q7.3-07 × 08) NE PRODUIT AUCUNE CARTE —
+# son rendu = ressources bienveillantes séparées (SIG-7.3-03,
+# précédent sérénité 6.1) ; aucune variante ne le cite ni ne le route.
+# SIG-7.3-01 (matrice ANCRAGE × OUVERTURE — 4 quadrants) et
+# SIG-7.3-02 (« à aborder tôt », signal aux deux) : MOTEUR SEUL /
+# hors miroir — aucun quadrant, aucun seuil, aucun score au rendu.
+# AUCUNE trame hébergée (▲ = « — » ×8). RÈGLE DE DIGNITÉ MONDE 7 :
+# zéro mesure d'origine, zéro exotisme, le vécu jamais supposé.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "7.3 La mixité et toi"
+monde: M10
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "trois moyennes d'axe des 6 items de mélange — posture POSTURE (Q7.3-01 × 02) · famille FAMILLE (Q7.3-03 × 04) · tempo TEMPO (Q7.3-05 × 06), I recodés 6−r, normalisés 0-1"
+  logique: "dominant = max des 3 axes · secondaire = 2ᵉ du tri (nuance en conversation) · ex æquo strict → départage à la 1ʳᵉ position de passation"
+  bornes: "départage ex æquo (proposition) — À VALIDER PAR LE COMITÉ [9]"
+  exhaustivite: "3 sélections = partition totale de l'espace des 6 items de mélange (C6, vérifiée machine) ; les 2 items opt-in vécu sont HORS sélection"
+  non_participant: "AUCUN quadrant de la matrice 7.3 au rendu ; le signal famille sort aux deux membres, hors miroir et hors carte ; le module vécu ne route rien"
+
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « La mixité et toi »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Tes attentes sur l'entre-deux se disent — elles préparent la conversation, pas un examen."
+  - "F2 : Ce portrait décrit une attente, il ne la corrige pas — la proximité choisie se respecte autant."
+
+variantes:
+
+  - id: CARTE-7.3-POSTURE
+    nom: "L'entre-deux qui t'attire"
+    ordre_selecteur: 1
+    condition: "POSTURE = max des 3 axes (la posture dominante)"
+    ancre_item: ["Q7.3-01", "Q7.3-02", "Q7.3-03", "Q7.3-04", "Q7.3-05", "Q7.3-06"]
+    portrait: "Tu l'as répondu : une histoire entre deux mondes différents t'attire. Tu vois l'entre-deux comme un lieu d'habitation, pas comme une frontière — et cette curiosité se sent."
+    ombre: "L'attrait de l'ailleurs peut sous-estimer le poids des racines qui restent. L'autre risque de se sentir choisi pour sa différence plus que pour soi."
+    tension_interieure: "l'entre-deux attire — c'est le vivre-ensemble qui l'habite, jour après jour."
+
+  - id: CARTE-7.3-FAMILLE
+    nom: "La famille au cœur de la conversation"
+    ordre_selecteur: 2
+    condition: "FAMILLE = max des 3 axes (la famille dominante)"
+    ancre_item: ["Q7.3-01", "Q7.3-02", "Q7.3-03", "Q7.3-04", "Q7.3-05", "Q7.3-06"]
+    portrait: "Tu l'as répondu : ta famille saurait accueillir quelqu'un d'ailleurs. Les familles comptent chez toi — tu penses à la place qu'elles occuperont, et tu ne découvres rien à la dernière minute."
+    ombre: "Le regard des familles est la première friction des couples entre deux mondes. Anticiper protège ; attendre un accord avant d'avancer fatigue l'histoire et met l'autre en examen."
+    tension_interieure: "les familles accueillent — l'histoire s'écrit à deux d'abord."
+
+  - id: CARTE-7.3-TEMPO
+    nom: "Ton tempo d'explication"
+    ordre_selecteur: 3
+    condition: "TEMPO = max des 3 axes (le tempo dominant)"
+    ancre_item: ["Q7.3-01", "Q7.3-02", "Q7.3-03", "Q7.3-04", "Q7.3-05", "Q7.3-06"]
+    portrait: "Tu l'as répondu : aborder les différences tôt, avant qu'elles pèsent. Chez toi, les sujets se nomment avant de s'accumuler — les deux mondes se disent dès le départ."
+    ombre: "Les sujets ouverts tôt demandent un rythme que l'autre n'a pas choisi. Dire tôt éclaire ; réclamer tôt précipite — le tempo se négocie, il ne s'impose pas."
+    tension_interieure: "les grandes conversations s'accordent — elles ne s'imposent pas."

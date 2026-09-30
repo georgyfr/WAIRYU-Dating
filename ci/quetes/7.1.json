@@ -1,0 +1,50 @@
+{
+  "quete": "7.1",
+  "titre": "Tes racines",
+  "graine": 271427,
+  "items": [
+    {
+      "code": "Q7.1-01",
+      "orientation": "D",
+      "dimension": "quotidien"
+    },
+    {
+      "code": "Q7.1-02",
+      "orientation": "I",
+      "dimension": "quotidien"
+    },
+    {
+      "code": "Q7.1-03",
+      "orientation": "D",
+      "dimension": "transmission"
+    },
+    {
+      "code": "Q7.1-04",
+      "orientation": "I",
+      "dimension": "transmission"
+    },
+    {
+      "code": "Q7.1-05",
+      "orientation": "D",
+      "dimension": "famille"
+    },
+    {
+      "code": "Q7.1-06",
+      "orientation": "I",
+      "dimension": "famille"
+    },
+    {
+      "code": "Q7.1-07",
+      "orientation": "D",
+      "dimension": "traditions"
+    },
+    {
+      "code": "Q7.1-08",
+      "orientation": "I",
+      "dimension": "traditions"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "8 items = 4 dimensions × 2 — distance intra-axe ≥ 3 faisable"
+}

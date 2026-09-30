@@ -1,0 +1,75 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 7.1 « TES RACINES » — 4 VARIANTES (étage 1)
+# 💎 PREMIUM · P3 · B.3 production neuve (V15 — MONDE M10 « MON MONDE »).
+# Charte des cartes C1-C11 — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : axe dominant (max des 4 moyennes d'axe, I recodés 6−r,
+# normalisés) — ex æquo strict → départage à la 1ʳᵉ position de passation
+# (proposition, comité [9]) — partition exclusive + exhaustive.
+# RÈGLE DE DIGNITÉ (refonte l. 1380-1385) : on mesure le POIDS DE
+# L'HÉRITAGE, jamais une origine — zéro filtre par origine, zéro
+# exotisme, zéro case imposée (l'auto-identification reste libre).
+# SIG-7.1-01 (trait ANCRAGE) : [MOTEUR SEUL] — alimente la matrice
+# interculturelle 7.3, invisible au rendu ; aucune variante ci-dessous
+# n'expose un croisement, un seuil ou un score.
+# AUCUNE trame hébergée par 7.1 (quête 100 % carte) — ▲ = « — » ×8.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "7.1 Tes racines"
+monde: M10
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "quatre moyennes d'axe — quotidien QUOTIDIEN (Q7.1-01 × 02) · transmission TRANSMISSION (Q7.1-03 × 04) · famille FAMILLE (Q7.1-05 × 06) · traditions TRADITIONS (Q7.1-07 × 08), I recodés 6−r, normalisés 0-1"
+  logique: "dominant = max des 4 axes · secondaire = 2ᵉ du tri (nuance en conversation) · ex æquo strict → départage à la 1ʳᵉ position de passation"
+  bornes: "départage ex æquo (proposition) — À VALIDER PAR LE COMITÉ [9]"
+  exhaustivite: "4 sélections = partition totale de l'espace de réponses (C6, vérifiée machine) ; l'égalité stricte de plusieurs axes se lit aussi comme ancrage multiple — la conversation peut le nommer"
+  non_participant: "AUCUN croisement, aucun score, aucune exclusion de match depuis cette quête à l'affichage — le trait ANCRAGE vit au ledger, MOTEUR SEUL (gravé au 00-README et au 03)"
+
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Tes racines »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Tes racines disent la place que ton héritage tient — jamais d'où il vient."
+  - "F2 : Ce portrait décrit une place, il n'en juge aucune — aucune hiérarchie entre les quatre."
+
+variantes:
+
+  - id: CARTE-7.1-QUOTIDIEN
+    nom: "L'héritage qui se vit"
+    ordre_selecteur: 1
+    condition: "QUOTIDIEN = max des 4 axes (le quotidien dominant)"
+    ancre_item: ["Q7.1-01", "Q7.1-02", "Q7.1-03", "Q7.1-04", "Q7.1-05", "Q7.1-06", "Q7.1-07", "Q7.1-08"]
+    portrait: "Tu l'as répondu : ton héritage remplit tes journées — cuisine, langue, fêtes. Cette culture se vit chaque jour, sans effort ni discours, et elle nourrit ce que tu construis."
+    ombre: "Ce qui va de soi pour toi se négocie à deux. Un geste évident peut se lire comme un retrait ; l'autre côtoie une part de toi qui reste sans mode d'emploi."
+    tension_interieure: "ton héritage se vit — à deux, il apprend aussi à se dire."
+
+  - id: CARTE-7.1-TRANSMISSION
+    nom: "L'héritage qui se transmet"
+    ordre_selecteur: 2
+    condition: "TRANSMISSION = max des 4 axes (la transmission dominante)"
+    ancre_item: ["Q7.1-01", "Q7.1-02", "Q7.1-03", "Q7.1-04", "Q7.1-05", "Q7.1-06", "Q7.1-07", "Q7.1-08"]
+    portrait: "Tu l'as répondu : tu veux transmettre la langue, la cuisine et les fêtes. Un héritage se soigne — ça se raconte, ça se cuisine, ça se fête, et ta table en profite."
+    ombre: "Transmettre peut mesurer la place que l'autre accepte d'occuper. Qui goûte sans reprendre semble refuser — l'autre se sent enrôlé dans une chaîne qu'il n'a pas choisie."
+    tension_interieure: "ce que tu transmets se reçoit mieux en cadeau qu'en contrat."
+
+  - id: CARTE-7.1-FAMILLE
+    nom: "L'héritage qui se décide en famille"
+    ordre_selecteur: 3
+    condition: "FAMILLE = max des 4 axes (la famille élargie dominante)"
+    ancre_item: ["Q7.1-01", "Q7.1-02", "Q7.1-03", "Q7.1-04", "Q7.1-05", "Q7.1-06", "Q7.1-07", "Q7.1-08"]
+    portrait: "Tu l'as répondu : les avis de ta famille élargie comptent dans tes grands choix. Ta vie se construit avec un cercle large — cousins, oncles, grands-parents — et ce filet tient."
+    ombre: "Le regard du cercle arrive avant celui du couple. Tu arbitres des loyautés qui tirent en sens différents ; l'autre débat de vos choix avec des absents."
+    tension_interieure: "ta famille t'a construit — ton couple se construit à deux voix."
+
+  - id: CARTE-7.1-TRADITIONS
+    nom: "L'héritage qui se réinvente à deux"
+    ordre_selecteur: 4
+    condition: "TRADITIONS = max des 4 axes (les traditions dominantes)"
+    ancre_item: ["Q7.1-01", "Q7.1-02", "Q7.1-03", "Q7.1-04", "Q7.1-05", "Q7.1-06", "Q7.1-07", "Q7.1-08"]
+    portrait: "Tu l'as répondu : en couple, tu veux suivre les traditions que tu connais. Les rites te parlent — les mêmes plats, les mêmes fêtes, les gestes qui reviennent avec le calendrier."
+    ombre: "Deux héritages arrivent avec des calendriers qui ne se recouvrent pas. Une tradition défendue sans explication se lit comme une consigne ; l'autre se plie ou voit les siennes rétrécir."
+    tension_interieure: "les rites que tu suis ont été inventés un jour — les vôtres attendent leur tour."

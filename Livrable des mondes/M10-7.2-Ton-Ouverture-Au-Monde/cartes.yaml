@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 7.2 « TON OUVERTURE AU MONDE » — 3 VARIANTES (étage 1)
+# 💎 PREMIUM · P3 · B.3 production neuve (V15 — MONDE M10 « MON MONDE »).
+# Charte des cartes C1-C11 — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : zone du trait OUVERTURE (SIG-7.2-01 — moyenne des 4 axes,
+# I recodés 6−r, normalisés 0-1) : ≤ 0.35 → BAS · 0.35-0.65 → CENTRAL ·
+# ≥ 0.65 → HAUT — règle des 3 niveaux (refonte, chaque pôle a deux
+# faces) ; seuils À VALIDER PAR LE COMITÉ [9].
+# IMPÉRATIF DE DIGNITÉ GRAVÉ : l'ouverture faible est un RYTHME, pas un
+# défaut — le kit BAS est écrit sous ce verrou (lumière réelle, ombre
+# sans blâme). RÈGLE DE DIGNITÉ MONDE 7 : zéro mesure d'origine, zéro
+# exotisme, zéro filtre par origine — traits uniquement.
+# SIG-7.2-01 et la matrice interculturelle 7.3 : [MOTEUR SEUL] —
+# invisibles au rendu. AUCUNE trame hébergée (▲ = « — » ×8).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "7.2 Ton ouverture au monde"
+monde: M10
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "moyenne OUVERTURE (trait, 0-1) — energie (Q7.2-01 × 02) · apprentissage (Q7.2-03 × 04) · malentendu (Q7.2-05 × 06) · accueil (Q7.2-07 × 08), I recodés 6−r, normalisés 0-1"
+  logique: "zone du trait : ≤ 0.35 → variante BAS · 0.35-0.65 → CENTRAL · ≥ 0.65 → HAUT — chaque zone a sa lumière et son ombre"
+  bornes: "seuils 0.35 / 0.65 — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 zones = partition totale de l'espace de réponses (C6, vérifiée machine)"
+  non_participant: "AUCUN croisement, aucun score, aucune exclusion de match depuis cette quête à l'affichage — le trait alimente la matrice 7.3 au ledger, MOTEUR SEUL"
+
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Ton ouverture au monde »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Ton ouverture se lit comme un tempo — aucun pas n'est en retard."
+  - "F2 : Ce portrait décrit un rythme, il n'en note aucun — les trois zones se respectent."
+
+variantes:
+
+  - id: CARTE-7.2-HAUT
+    nom: "L'ailleurs qui nourrit"
+    ordre_selecteur: 1
+    condition: "OUVERTURE ≥ 0.65 (zone haute)"
+    ancre_item: ["Q7.2-01", "Q7.2-02", "Q7.2-03", "Q7.2-04", "Q7.2-05", "Q7.2-06", "Q7.2-07", "Q7.2-08"]
+    portrait: "Tu l'as répondu : découvrir les habitudes d'un autre monde te donne de l'énergie. Recevoir te réjouit, clarifier te tente — l'ailleurs fait du bien autour de toi."
+    ombre: "Poussée en excès, l'ouverture transforme l'autre en guide : on visite son monde au lieu de rencontrer sa personne. L'autre se sent visité plutôt que connu."
+    tension_interieure: "l'ailleurs t'appelle — la personne que tu aimes attend d'être rencontrée."
+
+  - id: CARTE-7.2-CENTRAL
+    nom: "Deux caps, une porte"
+    ordre_selecteur: 2
+    condition: "OUVERTURE entre 0.35 et 0.65 (zone centrale)"
+    ancre_item: ["Q7.2-01", "Q7.2-02", "Q7.2-03", "Q7.2-04", "Q7.2-05", "Q7.2-06", "Q7.2-07", "Q7.2-08"]
+    portrait: "Ton pas vers l'ailleurs avance des deux côtés : l'inconnu t'attire et le familier te tient. Tu gardes un cap connu et une porte ouverte — l'équilibre se règle au fil des rencontres."
+    ombre: "La souplesse facilite les ajustements du quotidien à deux. Elle demande un accord sur le tempo : chacun avance, personne ne décide seul du pas."
+    tension_interieure: "un équilibre, pas un juste milieu — il se vit, il ne se calcule pas."
+
+  - id: CARTE-7.2-BAS
+    nom: "Ton rythme à toi"
+    ordre_selecteur: 3
+    condition: "OUVERTURE ≤ 0.35 (zone basse)"
+    ancre_item: ["Q7.2-01", "Q7.2-02", "Q7.2-03", "Q7.2-04", "Q7.2-05", "Q7.2-06", "Q7.2-07", "Q7.2-08"]
+    portrait: "Ton pas vers l'ailleurs se prend calmement — le familier te tient, et tu y reviens avec constance. Ce que tu aimes, tu le connais bien ; ce que tu construis dure."
+    ombre: "En couple, l'inconnu entre par la porte de la personne que tu aimes. Chaque monde nouveau demande une énergie que tu préfères garder — les rythmes diffèrent, sans faute de part ni d'autre."
+    tension_interieure: "l'ouverture n'est pas une vitesse imposée — ton pas à toi est le bon pas."

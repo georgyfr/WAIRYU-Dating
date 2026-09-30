@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 7.1 « TES RACINES » (modèle des 8 items carte)
+# Item choisi : Q7.1-01 (le quotidien — l'angle le plus parlant de l'axe).
+# Gabarit des 8 items : seuls énoncé, axe, orientation et ancrage changent.
+# 💎 PREMIUM · P3 · accès libre au sein du territoire premium.
+# SIG-7.1-01 (trait ANCRAGE) : MOTEUR SEUL — alimente la matrice 7.3,
+# jamais au rendu. Zéro trame hébergée par M10 (▲ = « — » partout).
+# ═══════════════════════════════════════════════════════════════════
+quete: "7.1 Tes racines"
+monde: M10
+statut_freemium: premium
+phase: P3
+acces: libre_territoire_premium
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Mon héritage remplit mes journées de cuisine, de langue et de fêtes."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — l'I de la paire (Q7.1-02) se recode 6−r
+dimension: quotidien          # axe 1/4 (paire R6 avec Q7.1-02)
+type_mesure: heritage_declaratif    # déclaratif — aucune trame hébergée par M10
+double_balise:
+  carte_id: monde_7.1         # alimente la carte (4 variantes) et le miroir (4 profils)
+  signal_id: SIG-7.1-01       # trait ANCRAGE — moyenne des 4 axes (rendu conversationnel)
+  signal_moteur: SIG-7.3-01   # [MOTEUR SEUL] — matrice ANCRAGE × OUVERTURE (7.3) :
+                              # jamais au rendu, jamais en UI, jamais au match affiché ;
+                              # seuils À VALIDER PAR LE COMITÉ
+dimensions_de_la_quete:       # les 4 axes — libellés UI génériques obligatoires
+  - code: quotidien           # items Q7.1-01 × 02 · libellé UI : « le quotidien »
+  - code: transmission        # items Q7.1-03 × 04 · libellé UI : « la transmission »
+  - code: famille             # items Q7.1-05 × 06 · libellé UI : « la famille élargie »
+  - code: traditions          # items Q7.1-07 × 08 · libellé UI : « les traditions en couple »
+computation:
+  carte:
+    role: profil_affiche
+    regle: >-
+      4 moyennes d'axe (2 items chacune, I recodés 6−r, normalisées 0-1) — routage d'affichage
+      des 4 variantes (une par axe dominant ; ex æquo strict → départage à la 1ʳᵉ position de
+      passation, proposition À VALIDER PAR LE COMITÉ [9]) — aucune agrégation au score de
+      compatibilité depuis cette quête
+    rendu: etage_1_et_2        # carte (4 variantes) + miroir (4 profils)
+  signal:
+    role: trait_ancrage
+    mecanisme: >-
+      SIG-7.1-01 — ANCRAGE = moyenne des 4 axes (0-1). Il décrit le POIDS de l'héritage dans
+      la vie (le vécu, la transmission, la famille, les traditions), jamais une origine —
+      zéro filtre par origine dans le moteur (traits uniquement, règle de dignité refonte
+      l. 1380-1385). Il alimente la matrice interculturelle SIG-7.3-01 — MOTEUR SEUL.
+    rendu: etage_2             # miroir + carte, conversationnel
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'axe,
+      rappel en toutes lettres, moyenne d'axe = items valides + prudence
+      (précédent SIG-2.1-02) ; 4 paires R6 complètes (01x02 · 03x04 · 05x06 · 07x08)
+  modulation:
+    - si: "paire R6 divergente sur un axe"
+      effet: "axe mis en prudence à l'affichage — le rappel raconte les deux réponses sans jugement"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la place de l'héritage décrite, jamais jugée, jamais un code"
+    exemple: "quand tu as dit que ton héritage remplit tes journées"
+notes:
+  - >-
+    Cadre de dignité Monde 7 (refonte l. 1380-1385) : on mesure le poids de l'héritage, jamais
+    une origine ; l'auto-identification reste libre (zéro case imposée) ; zéro filtre par
+    origine dans le moteur. La position « multiple » de la source se lit dans l'égalité de
+    plusieurs axes dominants (départage conventionnel — À VALIDER PAR LE COMITÉ [9]).
+  - >-
+    Mélange 7.1 : outil générique melange.py, graine 271427 = 210427 + 1000 × ordinal 61
+    (convention concaténée, (7−1)×10+1) — course réelle ×3, verdicts au 02-plan ; config
+    canonique ci/quetes/7.1.json.
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) : badge visible au
+    00-README et à l'entête de complétion ; l'accès reste libre au sein du territoire premium.
