@@ -1,0 +1,91 @@
+{
+  "quete": "6.3",
+  "titre": "Ta carte des préférences",
+  "graine_finale": 263427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q6.3-06"
+    },
+    {
+      "position": 2,
+      "code": "Q6.3-08"
+    },
+    {
+      "position": 3,
+      "code": "Q6.3-03"
+    },
+    {
+      "position": 4,
+      "code": "Q6.3-14"
+    },
+    {
+      "position": 5,
+      "code": "Q6.3-05"
+    },
+    {
+      "position": 6,
+      "code": "Q6.3-09"
+    },
+    {
+      "position": 7,
+      "code": "Q6.3-02"
+    },
+    {
+      "position": 8,
+      "code": "Q6.3-07"
+    },
+    {
+      "position": 9,
+      "code": "Q6.3-12"
+    },
+    {
+      "position": 10,
+      "code": "Q6.3-04"
+    },
+    {
+      "position": 11,
+      "code": "Q6.3-11"
+    },
+    {
+      "position": 12,
+      "code": "Q6.3-01"
+    },
+    {
+      "position": 13,
+      "code": "Q6.3-13"
+    },
+    {
+      "position": 14,
+      "code": "Q6.3-10"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    5
+  ],
+  "echanges": [
+    "pos 6 ↔ pos 3 · (3, 0, 5, 5, 3, 8) → (3, 0, 4, 5, 3, 8)",
+    "pos 6 ↔ pos 5 · (3, 0, 4, 5, 3, 8) → (2, 0, 4, 7, 3, 10)",
+    "pos 14 ↔ pos 12 · (2, 0, 4, 7, 3, 10) → (1, 0, 3, 7, 3, 10)",
+    "pos 11 ↔ pos 14 · (1, 0, 3, 7, 3, 10) → (1, 0, 3, 6, 3, 9)",
+    "pos 13 ↔ pos 6 · (1, 0, 3, 6, 3, 9) → (0, 0, 0, 5, 2, 9)",
+    "pos 9 ↔ pos 4 · (0, 0, 0, 5, 2, 9) → (0, 0, 0, 0, 0, 5)"
+  ]
+}

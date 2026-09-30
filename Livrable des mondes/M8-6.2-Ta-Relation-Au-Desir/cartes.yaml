@@ -1,0 +1,91 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 6.2 « TA RELATION AU DÉSIR » — 3 VARIANTES (étage 2)
+# 🗒️ quete: 6.2 · fiche: première émission V13.B (FM à graver à la consolidation) · session: 2026-09-30
+# Création : V13 première émission (B.3 — production neuve déclarée).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# ÉTAGE 2 de « Ta Carte Intime » (carte du Monde M8/M9 — à étages, consentement mutuel) :
+# cette carte ne se montre qu'aux deux membres ayant activé l'étage (consentement mutuel).
+# Sélection : cascade de rendu (03/04) — dominante = max(TEMP_ELEVEE, TEMP_NEUTRE, TEMP_BASSE) ;
+# quasi-égalité < 0.05 → départage à la 1re position de passation ; bande 0.10 → le secondaire nuance
+# au slot S2 (3 profils gelés mission — pas de variante séparée).
+# NEUTRALITÉ STRICTE (règle 4 du bloc) : le système ne juge jamais les attitudes — les 3 variantes se
+# valent ; SANS AUCUNE HIÉRARCHIE ; l'ombre est le COÛT EN COUPLE, jamais la nature ; la matrice
+# ambiante ne sort que par son libellé, aux deux membres (« une différence de température ambiante,
+# pas une question de préférences ») — jamais dans une carte.
+# AUCUNE trame dans cette carte : les 5▲ (COC — codes Q6.2-T53→T57) ne participent à AUCUNE sélection,
+# AUCUN score affiché, AUCUNE variante — ancre_item porte les 15 codes carte seuls (aucune restitution
+# — règle 11-b, énoncés hors dépôt Partie 10).
+# Zéro vocabulaire clinique, aucun code, aucun sigle, zéro contenu explicite, zéro nom du construit
+# (charte TEMPÉRATURE) au rendu des variantes.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "6.2 Ta relation au désir"
+monde: M8
+statut_freemium: premium
+acces: opt-in                 # V13 — opt-in strict (récompense : l'accès à l'étage)
+etage_revelation: 2           # V13 — étage 2 : activation à consentement mutuel des deux membres
+chiffrement: maximal          # V13 — le plus élevé du projet (quête où vit COC)
+sortie: permanente            # V13 — porte sur les réponses items de la quête (la carte dérivée suit la sortie)
+format: "etage_2_carte"       # étage 2 de « Ta Carte Intime » (à étages, consentement mutuel)
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "les trois scores de température — TEMP_ELEVEE (Q6.2-01×02) · TEMP_NEUTRE (Q6.2-03×04) · TEMP_BASSE (Q6.2-05×06), I recodés 6−r, normalisés 0-1 (cascade au 03 — moteur) ; la dynamique (initiation, fusion) colore S1/S2 sans produire de profil"
+  logique: "dominante = max des trois températures · TEMP_ELEVEE dominante → « l'évidence détendue » · TEMP_NEUTRE dominante → « le fluide sans empressement » · TEMP_BASSE dominante → « la sécurité et la lenteur » · quasi-égalité < 0.05 → départage à la 1re position de passation · bande 0.10 → le secondaire nuance au slot S2 (pas de variante séparée — 3 profils gelés mission)"
+  bornes: "0.05 (écart) / bande 0.10 — propositions À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "les 3 variantes forment une partition exclusive + exhaustive des profils possibles — chaque résultat tombe dans exactement une variante (C6, vérifié machine) : 3 températures, aucune hiérarchie"
+  non_participant: "les 5▲ (COC — codes Q6.2-T53→T57) ne participent à AUCUNE sélection, AUCUN score affiché, AUCUNE carte ; le signal alimente SIG-6.2-03 (croisement 8.3 ATTENDU, P3/M11) — moteur seul, chiffrement maximal, phase P2 · la matrice ambiante (SIG-6.2-01) est un signal de match aux deux membres — jamais un contenu de carte · la matrice du refus (SIG-6.2-02) et la divergence fusion × autonome (SIG-6.2-04) ne se rendent jamais ici"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🌙 QUÊTE ACCOMPLIE — « Ta relation au désir »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un vit le désir à sa propre température — la rencontre, c'est la traduction des deux."
+  - "F2 : Ce portrait reste le tien — il ne se montre qu'aux deux membres qui activent l'étage, jamais à un tiers."
+
+variantes:
+
+  - id: CARTE-6.2-EVIDENCE
+    nom: "L'Évidence détendue"
+    ordre_selecteur: 1
+    condition: "TEMP_ELEVEE dominante — max des trois scores (quasi-égalité départagée ; bornes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.2-01", "Q6.2-02", "Q6.2-03", "Q6.2-04", "Q6.2-05", "Q6.2-06", "Q6.2-07", "Q6.2-08", "Q6.2-09", "Q6.2-10", "Q6.2-11", "Q6.2-12", "Q6.2-13", "Q6.2-14", "Q6.2-15"]
+    portrait: "Chez toi, l'intimité se vit dans la légèreté — les évocations détendent, le sujet circule, le désir se dit sans détour. Tu l'as dit : c'est une évidence, pas un examen."
+    ombre: "Un tempo détendu peut être lu comme une pression. Le coût pour toi : un désir sincère pris pour une exigence. Le coût pour l'autre : un rythme ressenti comme trop rapide, sans oser le dire. Dit tôt, le tempo se règle à deux."
+    tension_interieure: "garder l'évidence quand les rythmes des deux ne suivent pas le même calendrier."
+
+  - id: CARTE-6.2-FLUIDE
+    nom: "Le Fluide sans empressement"
+    ordre_selecteur: 2
+    condition: "TEMP_NEUTRE dominante — max des trois scores (quasi-égalité départagée ; bornes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.2-01", "Q6.2-02", "Q6.2-03", "Q6.2-04", "Q6.2-05", "Q6.2-06", "Q6.2-07", "Q6.2-08", "Q6.2-09", "Q6.2-10", "Q6.2-11", "Q6.2-12", "Q6.2-13", "Q6.2-14", "Q6.2-15"]
+    portrait: "Ni empressement ni évitement : chez toi, l'intimité se parle comme n'importe quel sujet. Un courant qui s'adapte — suivre ou mener, selon le moment, sans drame."
+    ombre: "Le calme se lit parfois en tiédeur. Le coût pour toi : être lu sans feu quand tu es sans vague. Le coût pour l'autre : douter du lien sous le calme. Nommé tôt, le fluide rassure — il n'exige rien, il accueille."
+    tension_interieure: "montrer le feu qui dort sous le courant calme."
+
+  - id: CARTE-6.2-LENTEUR
+    nom: "La Sécurité et la lenteur"
+    ordre_selecteur: 3
+    condition: "TEMP_BASSE dominante — max des trois scores (quasi-égalité départagée ; bornes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.2-01", "Q6.2-02", "Q6.2-03", "Q6.2-04", "Q6.2-05", "Q6.2-06", "Q6.2-07", "Q6.2-08", "Q6.2-09", "Q6.2-10", "Q6.2-11", "Q6.2-12", "Q6.2-13", "Q6.2-14", "Q6.2-15"]
+    portrait: "Chez toi, l'intimité demande un terrain préparé : la confiance d'abord, la lenteur ensuite. Un désir discret n'est pas un désir absent — il se construit tard, il se construit solide."
+    ombre: "La lenteur se lit parfois comme un refus. Le coût pour toi : voir l'occasion partir avant la confiance. Le coût pour l'autre : attendre sans connaître les règles. Annoncé tôt, ton terrain rassure — il cadre, il ne juge pas."
+    tension_interieure: "annoncer ton terrain avant que l'attente ne le traduise mal."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité stricte : les 3 variantes se valent, SANS AUCUNE HIÉRARCHIE — l'ombre est le COÛT EN COUPLE, jamais la nature ; le système ne juge jamais les attitudes (règle 4 du bloc — contrôle machine)"
+  - "la matrice ambiante (SIG-6.2-01) sort par son libellé seul, aux deux membres du match — jamais dans une carte ; « une différence de température ambiante, pas une question de préférences »"
+  - "rappels ancrés aux énoncés D des 15 carte uniquement (les 8 D : 01 · 03 · 05 · 07 · 09 · 10 · 12 · 14 — un énoncé I lu comme accord brut contredit le score recodé) et aux seules réponses de CETTE quête (règle premium [6]) — aucune présupposition des mondes gratuits, zéro teaser"
+  - "zéro trame au rendu : les 5▲ (COC — Q6.2-T53→T57) ne touchent AUCUNE variante, AUCUNE citation, AUCUN rappel — aucune restitution (règle 11-b, énoncés hors dépôt Partie 10)"
+  - "registre probabiliste : aucun futur certain de malheur (« peut », « parfois », « fréquemment » — présent fréquentiel) ; zéro « toujours » / « jamais » au rendu"
+  - "pudeur stricte : zéro contenu explicite au rendu (registre de la relation au désir) — zéro acte, zéro pratique"
+  - "charte TEMPÉRATURE : zéro nom du construit, zéro dérivé (radical phob- compris), zéro nom d'auteur — le rendu parle de température, en images"
+  - "C4 : aucun superlatif sans preuve — la seule formule superlative (« l'un des sujets les plus documentés des couples ») est gelée mission, adossée au refonte (2ᵉ cause de rupture documentée)"
+  - "C8 : métaphores d'objet exemptées du point médian (précédent VAGUE 5) — les noms de variantes portent leur genre grammatical fixe"
+  - "champs étendus V13 (acces, etage_revelation, chiffrement, sortie) : première application du domaine de l'Intime — extension documentée au 00-README, À VALIDER PAR LE COMITÉ"

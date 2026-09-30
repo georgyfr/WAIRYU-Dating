@@ -1,0 +1,42 @@
+{
+  "quete": "6.4",
+  "titre": "Tes frontières modernes",
+  "graine": 264427,
+  "items": [
+    {
+      "code": "Q6.4-01",
+      "orientation": "D",
+      "dimension": "pornographie"
+    },
+    {
+      "code": "Q6.4-02",
+      "orientation": "I",
+      "dimension": "pornographie"
+    },
+    {
+      "code": "Q6.4-03",
+      "orientation": "D",
+      "dimension": "masturbation"
+    },
+    {
+      "code": "Q6.4-04",
+      "orientation": "I",
+      "dimension": "masturbation"
+    },
+    {
+      "code": "Q6.4-05",
+      "orientation": "D",
+      "dimension": "flirt"
+    },
+    {
+      "code": "Q6.4-06",
+      "orientation": "I",
+      "dimension": "flirt"
+    }
+  ],
+  "c2_note": "sans-objet (0 trame) — quête sans signal ▲",
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "3 dimensions × 2 items sur 6 positions — c4 faisable (distance ≥ 3 par dimension : ex. {1,4} · {2,5} · {3,6})",
+  "c5_note": "3D/3I — alternance constructible (0 trame)"
+}

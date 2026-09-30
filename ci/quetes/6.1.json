@@ -1,0 +1,74 @@
+{
+  "quete": "6.1",
+  "titre": "Ta vie intime — l'essentiel",
+  "graine": 261427,
+  "items": [
+    {
+      "code": "Q6.1-01",
+      "orientation": "D",
+      "dimension": "desir"
+    },
+    {
+      "code": "Q6.1-02",
+      "orientation": "I",
+      "dimension": "desir"
+    },
+    {
+      "code": "Q6.1-03",
+      "orientation": "I",
+      "dimension": "desir"
+    },
+    {
+      "code": "Q6.1-04",
+      "orientation": "D",
+      "dimension": "intention"
+    },
+    {
+      "code": "Q6.1-05",
+      "orientation": "I",
+      "dimension": "intention"
+    },
+    {
+      "code": "Q6.1-06",
+      "orientation": "D",
+      "dimension": "intention"
+    },
+    {
+      "code": "Q6.1-07",
+      "orientation": "D",
+      "dimension": "communication"
+    },
+    {
+      "code": "Q6.1-08",
+      "orientation": "I",
+      "dimension": "communication"
+    },
+    {
+      "code": "Q6.1-09",
+      "orientation": "D",
+      "dimension": "communication"
+    },
+    {
+      "code": "Q6.1-10",
+      "orientation": "I",
+      "dimension": "communication"
+    },
+    {
+      "code": "Q6.1-T51",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "CMP"
+    },
+    {
+      "code": "Q6.1-T52",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "CMP"
+    }
+  ],
+  "c2_note": "aucune dimension interdite déclarée — le camouflage des 2▲ (CMP) vient du THÈME (le désir et son importance, l'intention, la communication — thème déclaré de la quête, règle d'indiscernabilité Partie 0)",
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "10 carte = 3 dimensions (desir ×3 · intention ×3 · communication ×4) sur 12 positions avec 2 ancres {6,12} — c4 faisable (distances constructibles ≥ 3) ; sous-module sérénité (S01-S04) HORS mélange : bloc fixe opt-in renforcé, c1/c4 sans-objet",
+  "c5_note": "2 trames D uniformes (divmod(12,2)=(6,0) → ancres {6,12}) + 5D/5I carte — run max 2 constructible"
+}

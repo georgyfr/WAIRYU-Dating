@@ -1,0 +1,114 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION COMPLÈTE — QUÊTE 6.3 (modèle des 14 items carte)
+# Item choisi : Q6.3-12 (le besoin d'après — proximité — l'angle le plus parlant
+# de la dimension la plus neuve de la quête ; porte SIG-6.3-01 en toutes lettres).
+# Fichier YAML strict (gabarit des 14 items : seuls énoncé, dimension, orientation et ancrage changent).
+# 💎 PREMIUM · P2 · opt-in strict · ÉTAGE 3 — PRIVÉ (double consentement, chiffrement renforcé,
+# jamais dans les exports, zéro tiers, sortie permanente).
+# SIG-6.3-01 (croisement câlin×autonome — besoin d'après divergent) : information conversationnelle,
+#   JAMAIS PÉNALITÉ — signalée aux DEUX uniquement ; le libellé est un ID moteur, jamais au rendu.
+# SIG-6.3-02 (matrice exploration — exploration × nouveauté module la DURÉE de compatibilité du
+#   désir) : MOTEUR SEUL — jamais au rendu, jamais en UI, jamais au match affiché.
+# SIG-6.3-03 (la carte à étages) : structurelle — la quête entière.
+# ═══════════════════════════════════════════════════════════════════
+quete: "6.3 Ta carte des préférences"
+monde: M9                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: P2
+acces: opt-in                 # opt-in strict — récompense, jamais châtiment (règle éthique 1)
+etage_revelation: 3-prive     # double consentement — après révélation photo, au choix des deux
+chiffrement: renforce         # RGPD renforcé (règle éthique 2) — jamais dans les exports
+sortie: permanente            # retrait à tout moment (règle éthique 6)
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Juste après, j'ai besoin de proximité et de contact."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — le versant proximité de la paire d'après (l'I de la paire, Q6.3-13, se recode 6−r)
+dimension: apres              # le besoin d'après — 3 items (paire R6 avec Q6.3-13 + pivot Q6.3-14)
+type_mesure: preference_declarative # déclarative — la FORME des préférences, jamais le volume ; aucune trame hébergée par 6.3
+double_balise:
+  carte_id: intime_6.3        # alimente la carte (4 variantes) et le miroir (4 profils) — rendu chiffré, étage 3
+  signal_id: SIG-6.3-01       # croisement câlin×autonome (ID moteur) — information conversationnelle,
+                              # JAMAIS PÉNALITÉ : divergence de besoin d'après remise aux DEUX uniquement,
+                              # jamais un tiers, jamais un score ; condition d'affichage et forme du
+                              # rappel À VALIDER PAR LE COMITÉ
+  signal_moteur: SIG-6.3-02   # [MOTEUR SEUL] — matrice exploration : exploration (05×06) × nouveauté
+                              # (09×10×11) module la DURÉE de compatibilité du désir — jamais au rendu,
+                              # jamais en UI, jamais au match affiché ; seuil et poids À VALIDER PAR LE COMITÉ
+  structure_revelation: SIG-6.3-03 # la carte à étages — opt-in, double consentement après révélation
+                              # photo, zéro tiers, jamais dans les exports, sortie permanente
+dimensions_de_la_quete:       # 7 dimensions — libellés UI régistre courant obligatoires (noms maison)
+  - code: douceur             # items Q6.3-01 × 02 (paire R6) · au rendu : « la douceur »
+  - code: intensite           # items Q6.3-03 × 04 (paire R6) · au rendu : « l'intensité »
+  - code: exploration         # items Q6.3-05 × 06 (paire R6) · au rendu : « l'exploration »
+  - code: jeu                 # item Q6.3-07 (pivot I) · au rendu : « le jeu »
+  - code: connexion           # item Q6.3-08 (pivot D) · au rendu : « la connexion »
+  - code: nouveaute           # items Q6.3-09 × 10 (paire R6) + Q6.3-11 (pivot D) · au rendu : « la nouveauté, avec le temps »
+  - code: apres               # items Q6.3-12 × 13 (paire R6) + Q6.3-14 (pivot I) · au rendu : « le besoin d'après »
+computation:
+  carte:
+    role: profil_affiche
+    regle: >-
+      7 scores (5 axes + nouveaute + versants d'après proximite/autonomie + pivot discussion,
+      I recodés 6−r, normalisés 0-1) — routage d'AFFICHAGE des 4 variantes (« Tes accords intimes »,
+      cascade de sélection 07 §0 ; seuils 0.60/0.30/0.40 provisoire concepteur, À VALIDER PAR LE
+      COMITÉ [9]) — aucune agrégation au score de compatibilité depuis cette quête ; le rendu vit
+      à l'étage 3 : chiffré renforcé, jamais dans les exports, visible de l'autre par progression
+      uniquement (double consentement après révélation photo)
+    rendu: etage_1_et_2_prive  # carte (4 variantes) + miroir (4 profils) — coffre étage 3
+  signal:
+    role: besoin_d_apres_conversationnel
+    mecanisme: >-
+      SIG-6.3-01 — le besoin d'après est le moment le plus vulnérable et le plus négligé
+      (audit §3 l. 923) : une divergence proximité×autonomie entre deux personnes est une
+      information à se dire, jamais un défaut. Doctrine des préférences : toute préférence est
+      légitime — seule la divergence se signale, aux DEUX, jamais un tiers, jamais en pénalité.
+      Intra-personne : paire 12×13 divergente → versant d'après mis en prudence, le rappel raconte
+      les deux réponses sans jugement (précédent SIG-2.1-02)
+    rendu: vue_partagee_etage_3 # double consentement uniquement — jamais dans le miroir de quête seul
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur la dimension,
+      rappel en toutes lettres, moyenne = items valides + prudence (precedent SIG-2.1-02) ;
+      5 paires R6 completes (01x02 · 03x04 · 05x06 · 09x10 · 12x13) + 4 pivots mono
+      (07 · 08 · 11 · 14 — cohérence intra-dimension + QFI, precedent 4.4/5.1)
+  modulation:
+    - si: "paire R6 divergente sur une dimension"
+      effet: "dimension mise en prudence à l'affichage — le rappel raconte les deux réponses sans jugement"
+    - si: "proximité (d'après) élevée chez l'un × autonomie (d'après) élevée chez l'autre"
+      effet: "SIG-6.3-01 — information conversationnelle remise aux DEUX (vue partagée à étages) : JAMAIS PÉNALITÉ, jamais un tiers, jamais un score ; le libellé 'câlin×autonome' reste moteur ; forme du rappel À VALIDER PAR LE COMITÉ"
+    - si: "exploration élevée (05×06) × nouveauté moteur continu (09×10×11) — et côté matching l'autre personne porte un tempo d'exploration différent"
+      effet: "SIG-6.3-02 [MOTEUR SEUL] — la durée de compatibilité du désir est modulée au ledger : AUCUN texte, AUCUN badge, AUCUN score, AUCUNE exclusion de match ; seuil et poids À VALIDER PAR LE COMITÉ"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la préférence décrite, jamais jugée, jamais un code"
+    exemple: "quand tu as dit que juste après, tu as besoin de proximité et de contact"
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 14 items carte. Seuls changent : énoncé, dimension (les 7 codes
+    ci-dessus), orientation (recodage 6−r pour les I : 02 · 04 · 06 · 07 · 10 · 13 · 14), ancrage.
+  - >-
+    💎 PREMIUM + ÉTAGE 3 PRIVÉ (Constitution [6] + [2] consentement structurel) : premium change
+    ZÉRO chose au contenu ; l'opt-in est une récompense, jamais un châtiment ; rien ne sort du
+    coffre sans les deux clés ; badges visibles au 00-README et à l'entête de complétion.
+  - >-
+    Références scientifiques (concepts publics, libres) : architecture libre des « 5 façons de
+    vivre le désir » (refonte l. 494 — nom maison obligatoire) + enrichissement audit §3
+    (nouveauté long terme, besoin d'après — l. 916-932). Le concept public du d'après (mot
+    anglais toléré AUX FICHIERS MOTEUR UNIQUEMENT) se rend « le besoin d'après » — le mot anglais
+    est INTERDIT au rendu (05/07/cartes/écrans). AUCUNE marque commerciale, AUCUN nom d'auteur,
+    AUCUN nom de typologie tierce — zéro occurrence dans tout le dossier.
+  - >-
+    Doctrine des préférences (verrou rendu) : TOUTE préférence est légitime — zéro hiérarchie,
+    zéro label, zéro jugement d'attitude ; l'ombre décrit un coût de divergence ou d'excès en
+    couple, jamais une nature défaillante ; la carte mesure la FORME des préférences, jamais le
+    volume (6.1/6.2 portent ce plan) — un désir rare a une carte pleine, l'asexualité n'est jamais
+    en déficit (règle éthique 5 : inclusion structurelle, matrices identiques).
+  - >-
+    AUCUNE trame hébergée par 6.3 : SIG-6.3-01/02 sont des CROISEMENTS de scores (pas des trames) —
+    zéro signal ▲, zéro position réservée ; c2/c3 du mélange SANS-OBJET.
+  - >-
+    Mélange 6.3 : outil générique melange.py, graine 263427 (210427 + 1000 × ordinal 53, zéro
+    collision vérifiée) — faisabilité c1-c6 ANALYTIQUE documentée au 02-plan (course NON exécutée :
+    interdit mission V13.C) — config canonique ci/quetes/6.3.json À CRÉER par la session principale,
+    course canonique ensuite (archive ci/resultats-melange/6.3.json attendue).

@@ -1,0 +1,58 @@
+{
+  "quete": "6.4",
+  "titre": "Tes frontières modernes",
+  "graine_finale": 264427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q6.4-02"
+    },
+    {
+      "position": 2,
+      "code": "Q6.4-05"
+    },
+    {
+      "position": 3,
+      "code": "Q6.4-04"
+    },
+    {
+      "position": 4,
+      "code": "Q6.4-01"
+    },
+    {
+      "position": 5,
+      "code": "Q6.4-06"
+    },
+    {
+      "position": 6,
+      "code": "Q6.4-03"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 1,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "echanges": [
+    "pos 6 ↔ pos 5 · (2, 0, 2, 0, 0, 1) → (2, 0, 2, 0, 0, 0)",
+    "pos 5 ↔ pos 2 · (2, 0, 2, 0, 0, 0) → (0, 0, 1, 2, 2, 4)",
+    "pos 1 ↔ pos 4 · (0, 0, 1, 2, 2, 4) → (0, 0, 1, 1, 1, 3)",
+    "pos 6 ↔ pos 5 · (0, 0, 1, 1, 1, 3) → (0, 0, 0, 1, 1, 3)",
+    "pos 6 ↔ pos 3 · (0, 0, 0, 1, 1, 3) → (0, 0, 0, 0, 0, 0)"
+  ]
+}

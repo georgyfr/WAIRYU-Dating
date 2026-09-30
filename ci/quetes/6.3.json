@@ -1,0 +1,82 @@
+{
+  "quete": "6.3",
+  "titre": "Ta carte des préférences",
+  "graine": 263427,
+  "items": [
+    {
+      "code": "Q6.3-01",
+      "orientation": "D",
+      "dimension": "douceur"
+    },
+    {
+      "code": "Q6.3-02",
+      "orientation": "I",
+      "dimension": "douceur"
+    },
+    {
+      "code": "Q6.3-03",
+      "orientation": "D",
+      "dimension": "intensite"
+    },
+    {
+      "code": "Q6.3-04",
+      "orientation": "I",
+      "dimension": "intensite"
+    },
+    {
+      "code": "Q6.3-05",
+      "orientation": "D",
+      "dimension": "exploration"
+    },
+    {
+      "code": "Q6.3-06",
+      "orientation": "I",
+      "dimension": "exploration"
+    },
+    {
+      "code": "Q6.3-07",
+      "orientation": "I",
+      "dimension": "jeu"
+    },
+    {
+      "code": "Q6.3-08",
+      "orientation": "D",
+      "dimension": "connexion"
+    },
+    {
+      "code": "Q6.3-09",
+      "orientation": "D",
+      "dimension": "nouveaute"
+    },
+    {
+      "code": "Q6.3-10",
+      "orientation": "I",
+      "dimension": "nouveaute"
+    },
+    {
+      "code": "Q6.3-11",
+      "orientation": "D",
+      "dimension": "nouveaute"
+    },
+    {
+      "code": "Q6.3-12",
+      "orientation": "D",
+      "dimension": "apres"
+    },
+    {
+      "code": "Q6.3-13",
+      "orientation": "I",
+      "dimension": "apres"
+    },
+    {
+      "code": "Q6.3-14",
+      "orientation": "I",
+      "dimension": "apres"
+    }
+  ],
+  "c2_note": "sans-objet (0 trame) — quête sans signal ▲",
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "7 dimensions sur 14 positions (douceur ×2 · intensite ×2 · exploration ×2 · jeu ×1 · connexion ×1 · nouveaute ×3 · apres ×3) — c4 faisable (finding n° 2 au 02 : calibre constructif documenté par l'agent V13.C)",
+  "c5_note": "7D/7I — alternance stricte admissible (0 trame)"
+}

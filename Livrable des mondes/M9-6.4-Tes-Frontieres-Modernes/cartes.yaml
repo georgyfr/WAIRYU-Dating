@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 6.4 « TES FRONTIÈRES MODERNES » — AUCUNE CARTE PAR DESIGN
+# quete : 6.4 « Tes frontières modernes » · fiche : cartes — documentation de l'absence
+# 💎 PREMIUM · P2 · Création : V13 — 1ʳᵉ génération (B.3 production neuve déclarée).
+# ═══════════════════════════════════════════════════════════════════
+# AUCUNE carte n'est produite pour cette quête — et c'est la conformité, pas un
+# manquement. Ce fichier DOCUMENTE l'absence (précédents 1.7 « écran spécial sans
+# carte » · 2.8 « badge — carte remplacée » : les quêtes hors portrait livrent
+# leur cartes.yaml comme preuve de décision, pas comme oubli).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "6.4 Tes frontières modernes"
+monde: M9
+statut_freemium: premium
+format: "aucune_carte_par_design"
+
+absence:
+  cartes: []                    # zéro variante — la liste vide est le livrable
+  fondement_table: >-
+    refonte gelée, table PARTIE 6 l. 2007 : « 6.4 | Tes frontières modernes | 6 |
+    (privé) | Divergence d'attitudes → signal "à aborder tôt" aux deux | P2 | Opt-in » —
+    la lecture carte est marquée (privé) : l'étage 1 n'existe pas pour cette quête
+  fondement_registre: >-
+    refonte gelée, registre des dimensions l. 3784 — classe C : « Frontières modernes —
+    zéro portrait individuel — FRI dyadique seulement ("divergence à aborder tôt") » ;
+    la carte est un portrait (étage 1, partageable) : exclue par le même fondement que
+    le miroir (fichier 07)
+  raisonnement: >-
+    Une carte est un portrait vivant, partageable — lumière + ombre d'une phrase.
+    Un portrait d'attitude serait un jugement : il hiérarchiserait des positions que
+    la quête déclare d'égal dignité (refonte l. 990 : le système ne juge jamais les
+    attitudes). Les attitudes ne sont pas des traits : ce sont des accords à négocier.
+  precedents: >-
+    1.7 « Ton fonctionnement » (miroir ET carte exemptés — écran spécial sans carte,
+    charte PARTIE 7) · 2.8 « Ton signe » (carte remplacée par le badge, charte d'ombre
+    sans objet) · 4.4 (aucune carte — refonte « — (aucune carte) ») — exemptions par
+    design documentées, précédent de tenue de liste (cohérence vérifiée)
+  ce_que_l_autre_voit_a_la_place: >-
+    rien sur aucun profil public. L'unique canal rendu de la quête est le signal
+    semi-visible « sujet de conversation à aborder tôt » (SIG-6.4-01, brique FRI
+    dyadique — fichier 04) : affiché aux deux membres du match, symétrique, sans
+    direction, jamais à un tiers, jamais pénalisé, jamais jugé
+  charte_c1_c11: sans_objet      # la charte des cartes (portrait + ombre + tension) ne
+                                 # s'applique à aucune variante — il n'y a aucune variante
+  ombre_lumiere: sans_objet      # la doctrine d'ombre ≥ lumière s'applique aux textes de
+                                 # portrait rendus — 6.4 n'en produit aucun (précédent 1.7)
+
+verrous:
+  - aucune variante de carte n'est créée pour 6.4, sous quelque libellé que ce soit
+  - toute évolution (carte conversationnelle, écran de complétion spécial) passe par une
+    Fiche de Mutation + verdict comité (précédents 1.7 / 2.8)
+  - le signal dyadique reste l'unique sortie rendue de la quête (fichiers 03 et 04)

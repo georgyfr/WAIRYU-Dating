@@ -1,0 +1,101 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 6.1 « TA VIE INTIME — L'ESSENTIEL » — 4 VARIANTES (étage 1)
+# 🗒️ quete: 6.1 · fiche: première émission V13.A (FM à graver à la consolidation) · session: 2026-09-30
+# Création : V13 première émission (B.3 — production neuve déclarée).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# ÉTAGE 1 de « Ta Carte Intime » (carte du Monde M8/M9 — à étages, consentement mutuel) :
+# cette carte ne se montre qu'après le visuel, en Mode Invisible, à qui tu choisis.
+# Sélection : cascade de rendu (03/04) — dominante = max(DES_D, INT_D, COM_D) ; communication
+# dominante → « le pont par la parole » ; sinon la température du désir décide (bandes 0.60 / 0.40 —
+# propositions À VALIDER PAR LE COMITÉ) ; quasi-égalité < 0.05 → départage au pivot puis à la 1re
+# position de passation (précédents 5.1/5.3/5.4/5.7).
+# NEUTRALITÉ STRICTE (règle 4 du bloc) : le système ne juge jamais les attitudes — les 4 variantes se
+# valent ; l'ombre est dans le COÛT EN COUPLE, jamais dans la nature ; l'écart de désir se dit SANS
+# BLÂME (gelé mission : « vos rythmes diffèrent — l'un des sujets les plus documentés des couples, qui
+# se travaille quand on en parle tôt »).
+# AUCUNE trame dans cette carte : les 2▲ (CMP — codes Q6.1-T51/T52) ne participent à AUCUNE sélection,
+# AUCUN score affiché, AUCUNE variante — ancre_item porte les 10 codes carte seuls (aucune restitution
+# — règle 11-b, énoncés hors dépôt Partie 10).
+# AUCUN sous-module sérénité dans cette carte (les S-codes n'y entrent pas — rendu ressources séparé,
+# REN compatible).
+# Zéro vocabulaire clinique, aucun code, aucun sigle, zéro contenu explicite au rendu des variantes.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "6.1 Ta vie intime — l'essentiel"
+monde: M8
+statut_freemium: premium
+acces: opt-in                 # V13 — opt-in strict (récompense : l'accès à l'étage)
+etage_revelation: 1           # V13 — premier étage intime, après la révélation du visuel
+chiffrement: renforce         # V13 — RGPD dédié, jamais dans les exports
+sortie: permanente            # V13 — porte sur les réponses items de la quête (la carte dérivée suit la sortie)
+format: "etage_1_carte"       # étage 1 de « Ta Carte Intime » (à étages, consentement mutuel)
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "les trois scores de dimension — DES_D (Q6.1-01→03) · INT_D (Q6.1-04→06) · COM_D (Q6.1-07→10), I recodés 6−r, normalisés 0-1 (cascade au 03 — moteur) ; la modératrice [MOTEUR SEUL] ne participe JAMAIS à la sélection ni au rendu"
+  logique: "dominante = max des trois · communication dominante → « le pont par la parole » · sinon la température du désir décide : DES_D ≥ 0.60 → « l'évidence tranquille » · 0.40 ≤ DES_D < 0.60 → « le rythme personnel » · DES_D < 0.40 → « la prudence qui se prépare » · quasi-égalité < 0.05 → départage au pivot puis à la 1re position de passation · l'intention colore la nuance (S2), jamais un profil"
+  bornes: "0.05 (écart) / bandes 0.60-0.40 — propositions À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "les 4 variantes forment une partition exclusive + exhaustive des profils possibles — chaque résultat tombe dans exactement une variante (C6, vérifié machine) : 1 communication dominante + 3 températures de désir"
+  non_participant: "les 2▲ (CMP — codes Q6.1-T51/T52) ne participent à AUCUNE sélection, AUCUN score affiché, AUCUNE carte ; le signal alimente SIG-6.1-03 (croisement impulsivité 1.4 ATTENDU) — moteur seul, phase P2 · les S-codes (sous-module sérénité) n'entrent pas dans les cartes (rendu ressources séparé, SIG-6.1-04 — REN compatible) · l'écart de désir (SIG-6.1-01) est un signal de match aux deux membres — jamais un contenu de carte"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🌙 QUÊTE ACCOMPLIE — « Ta vie intime — l'essentiel »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un vit l'intimité avec son propre tempo — la rencontre, c'est la traduction des deux."
+  - "F2 : Ce portrait reste le tien — il ne se montre qu'à qui tu choisis, étage par étage."
+
+variantes:
+
+  - id: CARTE-6.1-EVIDENCE
+    nom: "L'Évidence tranquille"
+    ordre_selecteur: 1
+    condition: "température du désir haute — DES_D ≥ 0.60 (communication non dominante ; bandes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.1-01", "Q6.1-02", "Q6.1-03", "Q6.1-04", "Q6.1-05", "Q6.1-06", "Q6.1-07", "Q6.1-08", "Q6.1-09", "Q6.1-10"]
+    portrait: "Une intimité vivante compte beaucoup dans l'équilibre d'un couple — tu l'as dit. Chez toi, le désir est une évidence tranquille : il fait partie de la vie, sans drame ni détour."
+    ombre: "Un désir présent rencontre parfois un tempo différent. Le coût pour toi : douter d'un désir qui reste vrai. Le coût pour l'autre : se sentir en dette d'un rythme qui n'est pas le sien. Vos rythmes diffèrent — cela se travaille quand on en parle tôt."
+    tension_interieure: "garder l'évidence tranquille quand les rythmes diffèrent."
+
+  - id: CARTE-6.1-RYTHME
+    nom: "Le Rythme personnel"
+    ordre_selecteur: 2
+    condition: "température du désir médiane — 0.40 ≤ DES_D < 0.60 (communication non dominante ; bandes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.1-01", "Q6.1-02", "Q6.1-03", "Q6.1-04", "Q6.1-05", "Q6.1-06", "Q6.1-07", "Q6.1-08", "Q6.1-09", "Q6.1-10"]
+    portrait: "Ton désir a son propre tempo — il s'allume selon les moments, comme tu l'as dit. Une intimité vivante compte chez toi, sans gouverner la maison : elle a sa place, pas son règne."
+    ombre: "Un tempo personnel se joue dans la rencontre d'un rythme différent. Le coût pour toi : devenir le gardien d'une fréquence reprochée en silence. Le coût pour l'autre : attendre un désir qu'il n'ose plus nommer. La divergence se dit sans blâme — elle s'apaise rarement en silence."
+    tension_interieure: "dire ton tempo une fois, pour qu'il cesse d'être une énigme."
+
+  - id: CARTE-6.1-PRUDENCE
+    nom: "La Prudence qui se prépare"
+    ordre_selecteur: 3
+    condition: "température du désir basse — DES_D < 0.40 (communication non dominante ; bandes À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q6.1-01", "Q6.1-02", "Q6.1-03", "Q6.1-04", "Q6.1-05", "Q6.1-06", "Q6.1-07", "Q6.1-08", "Q6.1-09", "Q6.1-10"]
+    portrait: "Chez toi, l'intimité demande un terrain préparé : la confiance d'abord, la lenteur ensuite — comme tes réponses l'ont dit. Un désir discret n'est pas un désir absent."
+    ombre: "La lenteur se lit parfois comme un refus. Le coût pour toi : justifier un rythme qui n'a pas à se justifier. Le coût pour l'autre : deviner, attendre, et parfois renoncer à demander. Dite tôt, ta prudence rassure."
+    tension_interieure: "annoncer ton terrain avant qu'on te le demande."
+
+  - id: CARTE-6.1-PONT
+    nom: "Le Pont par la parole"
+    ordre_selecteur: 4
+    condition: "communication dominante — COM_D = max(DES_D, INT_D, COM_D) après départage (cascade n° 2)"
+    ancre_item: ["Q6.1-01", "Q6.1-02", "Q6.1-03", "Q6.1-04", "Q6.1-05", "Q6.1-06", "Q6.1-07", "Q6.1-08", "Q6.1-09", "Q6.1-10"]
+    portrait: "Parler d'intimité, de limites, de consentement te vient naturellement — tu l'as dit. Chez toi, les sujets délicats circulent : l'aisance à en parler reste l'un des grands actifs d'une histoire à deux."
+    ombre: "Parler facile peut faire taire celui qui parle moins bien. Le coût pour toi : confondre le calme du sujet et le calme de l'autre. Le coût pour l'autre : se sentir examiné par quelqu'un qui s'exprime si bien."
+    tension_interieure: "qu'un pont ne tienne qu'à deux rives."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "neutralité stricte : les 4 variantes se valent — l'ombre est le COÛT EN COUPLE, jamais la nature ; le système ne juge jamais les attitudes (règle 4 du bloc — contrôle machine)"
+  - "l'écart de désir se rend SANS BLÂME (gelé mission : « vos rythmes diffèrent — l'un des sujets les plus documentés des couples, qui se travaille quand on en parle tôt ») — le signal d'écart (SIG-6.1-01) sort aux deux membres du match, jamais à un tiers, jamais dans une carte"
+  - "rappels ancrés aux énoncés D des 10 carte uniquement (les 5 D : 01 · 04 · 06 · 07 · 09 — un énoncé I lu comme accord brut contredit le score recodé) et aux seules réponses de CETTE quête (règle premium [6]) — aucune présupposition des mondes gratuits, zéro teaser"
+  - "zéro trame au rendu : les 2▲ (CMP — Q6.1-T51/T52) ne touchent AUCUNE variante, AUCUNE citation, AUCUN rappel — aucune restitution (règle 11-b, énoncés hors dépôt Partie 10) ; les S-codes (sérénité) n'entrent pas dans les cartes (rendu ressources séparé, REN compatible)"
+  - "registre probabiliste : aucun futur certain de malheur (« peut », « parfois », « fréquemment » — présent fréquentiel) ; zéro « toujours » / « jamais » au rendu"
+  - "pudeur stricte : zéro contenu explicite au rendu (registre de l'essentiel) — zéro acte, zéro pratique"
+  - "C4 : aucun superlatif sans preuve — la seule formule superlative (« l'un des sujets les plus documentés des couples ») est gelée mission, adossée au refonte (2ᵉ cause de rupture documentée)"
+  - "C8 : métaphores d'objet exemptées du point médian (précédent VAGUE 5) — les noms de variantes portent leur genre grammatical fixe"
+  - "champs étendus V13 (acces, etage_revelation, chiffrement, sortie) : première application du domaine de l'Intime — extension documentée au 00-README, À VALIDER PAR LE COMITÉ"

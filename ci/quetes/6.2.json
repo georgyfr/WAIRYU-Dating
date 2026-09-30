@@ -1,0 +1,117 @@
+{
+  "quete": "6.2",
+  "titre": "Ta relation au désir",
+  "graine": 262427,
+  "items": [
+    {
+      "code": "Q6.2-01",
+      "orientation": "D",
+      "dimension": "temp_elevee"
+    },
+    {
+      "code": "Q6.2-02",
+      "orientation": "I",
+      "dimension": "temp_elevee"
+    },
+    {
+      "code": "Q6.2-03",
+      "orientation": "D",
+      "dimension": "temp_neutre"
+    },
+    {
+      "code": "Q6.2-04",
+      "orientation": "I",
+      "dimension": "temp_neutre"
+    },
+    {
+      "code": "Q6.2-05",
+      "orientation": "D",
+      "dimension": "temp_basse"
+    },
+    {
+      "code": "Q6.2-06",
+      "orientation": "I",
+      "dimension": "temp_basse"
+    },
+    {
+      "code": "Q6.2-07",
+      "orientation": "D",
+      "dimension": "initiation"
+    },
+    {
+      "code": "Q6.2-08",
+      "orientation": "I",
+      "dimension": "initiation"
+    },
+    {
+      "code": "Q6.2-09",
+      "orientation": "D",
+      "dimension": "initiation"
+    },
+    {
+      "code": "Q6.2-10",
+      "orientation": "D",
+      "dimension": "fusion_coeur"
+    },
+    {
+      "code": "Q6.2-11",
+      "orientation": "I",
+      "dimension": "fusion_coeur"
+    },
+    {
+      "code": "Q6.2-12",
+      "orientation": "D",
+      "dimension": "fusion_besoin"
+    },
+    {
+      "code": "Q6.2-13",
+      "orientation": "I",
+      "dimension": "fusion_besoin"
+    },
+    {
+      "code": "Q6.2-14",
+      "orientation": "D",
+      "dimension": "fusion_contexte"
+    },
+    {
+      "code": "Q6.2-15",
+      "orientation": "I",
+      "dimension": "fusion_contexte"
+    },
+    {
+      "code": "Q6.2-T53",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "COC"
+    },
+    {
+      "code": "Q6.2-T54",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "COC"
+    },
+    {
+      "code": "Q6.2-T55",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "COC"
+    },
+    {
+      "code": "Q6.2-T56",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "COC"
+    },
+    {
+      "code": "Q6.2-T57",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "COC"
+    }
+  ],
+  "c2_note": "aucune dimension interdite déclarée — le camouflage des 5▲ (COC) vient du THÈME (la dynamique d'initiation et le refus sont le sujet déclaré du bloc B — règle d'indiscernabilité Partie 0)",
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "7 sous-dimensions (finding n° 1 au 02 — la dimension unique de 6 items est infaisable sous ancres {4,8,12,16,20}) : temp_elevee ×2 · temp_neutre ×2 · temp_basse ×2 · initiation ×3 · fusion_coeur ×2 · fusion_besoin ×2 · fusion_contexte ×2 — démonstration de constructibilité au 02",
+  "c5_note": "5 trames D uniformes (divmod(20,5)=(4,0) → ancres {4,8,12,16,20}) + 8D/7I carte — run max 2 constructible (démonstration au 02)"
+}
