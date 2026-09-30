@@ -43,14 +43,58 @@ const LATER_KEY = 'wairyu_notifgate_later_ts';
 const LATER_TTL = 24 * 3600e3; // « Plus tard » = 24 h (pas un piégé permanent)
 
 /**
- * Les 4 voies réelles de déblocage, partagées avec la section Réglages
+ * Les voies réelles de déblocage, partagées avec la section Réglages
  * (Account). Réutilisable partout (`<NotificationRepairSteps />`).
+ *
+ * Task 68 (captures du fondateur, 30/09) — remède aux DEUX impasses
+ * constatées EN RÉEL sur son téléphone :
+ *  ① taper wairyu dans la liste « Non autorisé » de Chrome n’offre PAS
+ *    toujours « Autoriser » (renvoi vers les réglages système) → remède :
+ *    « Tous les sites → wairyu.wairyu.workers.dev → Effacer et
+ *    réinitialiser » + la voie 🔒 de la barre d’adresse (la plus directe) ;
+ *  ② Réglages → Applications → wairyu → « Aucune autorisation » : NORMAL
+ *    pour une appli installée via Chrome (déjà démystifié pour la position
+ *    dans Profile.tsx t64) — étendu ici aux notifications.
  */
 export function NotificationRepairSteps() {
   return (
     <div className="notifgate-paths" data-testid="notifgate-paths">
       <div className="notifgate-path">
-        <span className="notifgate-path-tag ok">Le mieux — la voie Badoo</span>
+        <span className="notifgate-path-tag ok">Le plus rapide — l’icône 🔒 de l’adresse</span>
+        <ol>
+          <li>
+            Ouvre <strong>wairyu.wairyu.workers.dev</strong> dans <strong>Chrome</strong>
+          </li>
+          <li>
+            Touche le <strong>🔒</strong> (ou ⓘ) à <strong>gauche de l’adresse</strong> →{' '}
+            <strong>Autorisations</strong>
+          </li>
+          <li>
+            <strong>Notifications</strong> → <strong>Autoriser</strong>
+          </li>
+          <li>Reviens ici : wairyu détecte tout seul le déblocage</li>
+        </ol>
+      </div>
+      <div className="notifgate-path">
+        <span className="notifgate-path-tag">Voie 2 — wairyu est dans « Non autorisé »</span>
+        <ol>
+          <li>
+            Chrome → menu ⋮ → <strong>Paramètres</strong> → <strong>Paramètres des sites</strong>
+          </li>
+          <li>
+            <strong>Notifications</strong> → touche <strong>wairyu</strong> : si un{' '}
+            <strong>interrupteur</strong> s’affiche, active-le — c’est gagné
+          </li>
+          <li>
+            Si l’écran ne propose <strong>rien</strong> (renvoi ailleurs) : reviens en arrière →{' '}
+            <strong>Tous les sites</strong> → <strong>wairyu.wairyu.workers.dev</strong> →{' '}
+            <strong>Effacer et réinitialiser</strong>. La demande d’autorisation réapparaîtra à la
+            prochaine ouverture (⚠️ tu seras déconnecté·e : reconnecte-toi ensuite)
+          </li>
+        </ol>
+      </div>
+      <div className="notifgate-path">
+        <span className="notifgate-path-tag">Voie 3 — le mieux à terme : la voie Badoo</span>
         <p>
           <strong>Installer l’application</strong> : dans Chrome, ouvre wairyu → menu ⋮ →{' '}
           <strong>« Installer l’application »</strong> → ouvre l’appli installée →{' '}
@@ -60,37 +104,28 @@ export function NotificationRepairSteps() {
         </p>
       </div>
       <div className="notifgate-path">
-        <span className="notifgate-path-tag">Voie 2 — Chrome, l’écran de ta capture</span>
-        <ol>
-          <li>Ouvre Chrome (le navigateur, pas wairyu)</li>
-          <li>
-            Menu ⋮ → <strong>Paramètres</strong> → <strong>Paramètres du site</strong> →{' '}
-            <strong>Notifications</strong>
-          </li>
-          <li>
-            Dans la liste <strong>« Non autorisé »</strong>, touche <strong>wairyu</strong> →
-            choisis <strong>« Autoriser »</strong>
-          </li>
-          <li>Reviens ici : wairyu détecte tout seul le déblocage</li>
-        </ol>
-      </div>
-      <div className="notifgate-path">
-        <span className="notifgate-path-tag">Voie 3 — si aucune demande n’apparaît jamais</span>
+        <span className="notifgate-path-tag">Voie 4 — si aucune demande n’apparaît jamais</span>
         <p>
-          Sur le même écran « Notifications » de Chrome, le mode{' '}
+          Sur l’écran « Notifications » de Chrome, le mode{' '}
           <strong>« Réduire les demandes indésirables »</strong> transforme les demandes en petite
           pastille discrète. Choisis <strong>« Développer toutes les demandes »</strong> pour voir
           les fenêtres d’autorisation en entier.
         </p>
       </div>
       <div className="notifgate-path">
-        <span className="notifgate-path-tag">Voie 4 — appli déjà installée, toujours rien</span>
+        <span className="notifgate-path-tag">Voie 5 — appli installée, toujours rien</span>
         <p>
           Réglages du téléphone → <strong>Applications</strong> → <strong>wairyu</strong> →{' '}
-          <strong>Notifications</strong> → <strong>Autoriser</strong>. C’est exactement le réglage
-          « géré par l’application » que Badoo utilise.
+          <strong>Notifications</strong> → active <strong>« Autorisation de notifier »</strong>.
+          C’est exactement le réglage « géré par l’application » que Badoo utilise.
         </p>
       </div>
+      <p className="notifgate-note" data-testid="notifgate-note">
+        ✅ <strong>Tu vois « Aucune autorisation » dans Réglages → Applications → wairyu ?</strong>{' '}
+        C’est <strong>normal</strong> et ça ne bloque rien : une appli installée via Chrome ne
+        garde aucune permission Android classique — <strong>tout se règle dans Chrome</strong>{' '}
+        (voies 1 et 2). Cet écran vide n’est pas une panne.
+      </p>
     </div>
   );
 }
@@ -160,7 +195,7 @@ export default function NotificationGate() {
       return;
     }
     setHint(
-      'Toujours bloqué — vérifie la Voie 2 : Paramètres du site → Notifications → wairyu → Autoriser. Le changement est immédiat, inutile de redémarrer.',
+      'Toujours bloqué — essaie la Voie 1 (icône 🔒 à côté de l’adresse) ou la Voie 2 (Effacer et réinitialiser). Le changement est immédiat, inutile de redémarrer.',
     );
     setBusy(false);
   }
