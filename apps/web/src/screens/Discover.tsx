@@ -1767,7 +1767,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
                 </div>
                 <button
                   type="button"
-                  className={`switch ${verifiedOnly ? 'on' : ''}`}
+                  className={`w-switch ${verifiedOnly ? 'on' : ''}`}
                   role="switch"
                   aria-checked={verifiedOnly}
                   onClick={() => {
