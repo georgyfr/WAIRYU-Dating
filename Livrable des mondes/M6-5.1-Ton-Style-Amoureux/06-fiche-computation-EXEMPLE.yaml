@@ -1,0 +1,70 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 18 canaux carte)
+# Item choisi : Q5.1-13 (le besoin de signes — l'angle le plus sensible du style « l'intensité »).
+# Fichier YAML strict (gabarit des 18 items carte : seuls énoncé, style, orientation et ancrage changent).
+# Vigilance de rédaction : la mécanique se décrit en comportements quotidiens — jamais d'étiquette
+# clinique, jamais de mot du champ jalousie (pré-signal V12 côté 5.4 — SIG-5.1-03).
+item: Q5.1-13
+quete: "5.1 Ton style amoureux"
+monde: M6                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "J'ai besoin de signes réguliers pour me sentir en paix."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de style
+dimension: style_mania        # 5/6 des six styles (paire R6 avec Q5.1-14) — codes internes des 6 styles : style_eros, style_ludus, style_storge, style_pragma, style_mania, style_agape
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: coeur_5.1         # alimente la carte (7 variantes) et le miroir (7 profils)
+  signal_id: SIG-5.1-01       # la cascade dominant/secondaire — matrice SIG-5.1-02 moteur seul
+computation:
+  carte:
+    role: score_de_quete
+    regle: >-
+      six scores de style (style_eros → style_agape), I recodés 6−r, normalisés 0-1 —
+      dominant = max ; secondaire nommé si écart ≤ 0.10 (bande) ; étendue des six ≤ 0.10 →
+      profil égalitaire/mixte ; quasi-égalité < 0.05 → départage au pivot puis à la 1re
+      position de passation — bornes À VALIDER PAR LE COMITÉ [9]
+    rendu: etage_1_et_2        # carte (7 variantes) + miroir (7 profils)
+  signal:
+    role: cascade_et_matrice
+    mecanisme: >-
+      SIG-5.1-01 produit le dominant et le secondaire (kit unique par profil dominant — refonte) ;
+      SIG-5.1-02 croise les styles au moteur [MOTEUR SEUL] — cellules documentées : Ludus×Mania
+      (souffrance — l'un joue, l'autre surveille) et Agape×Ludus (exploitation — l'un donne,
+      l'autre prend), toutes les autres À VALIDER PAR LE COMITÉ — JAMAIS au rendu, JAMAIS en UI ;
+      SIG-5.1-03 pré-signal MANIA_D × JR1 : ATTENDU V12 (bloc 5.4, trames jalousie) — non calculé
+      dans cette quête, aucune donnée 5.4 disponible
+    rendu: moteur_seul         # le portrait raconte, la matrice calcule — jamais l'inverse
+    condition: "seuils 0.05 / bande 0.10 et cellules de matrice proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur le style,
+      rappel en toutes lettres, score de style = moyenne des items valides + prudence
+      (précédent SIG-2.1-02) ; 6 paires R6 complètes (01×02 · 04×05 · 07×08 · 10×11 · 13×14 · 16×17)
+      + 6 pivots mono (03 · 06 · 09 · 12 · 15 · 18 — cohérence intra-style + QFI)
+  modulation:
+    - si: "paire R6 divergente sur un style"
+      effet: "style mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "bande 0.10 atteinte par un second style"
+      effet: "le secondaire est nommé au slot S2 (une phrase) — jamais un deuxième portrait"
+    - si: "MANIA_D haut croisé à JR1 (bloc 5.4 — à partir de V12)"
+      effet: "pré-signal SIG-5.1-03 au portrait de domaine du CŒUR, côté moteur seul — jamais au rendu de 5.1"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la mécanique décrite, jamais une étiquette clinique, jamais un code"
+    exemple: "quand tu as dit avoir besoin de signes réguliers pour te sentir en paix"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 18 items carte. Seuls changent : énoncé, style
+    (style_eros → style_agape), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les rappels de rendu citent exclusivement les énoncés D (règle d'ancrage V11 — un énoncé I
+    lu comme accord brut contredit le score recodé au profil dominant).
+  - >-
+    Mélange 5.1 : graine 251427 (210427 + 1000 × ordinal 41), outil générique melange.py,
+    config ci/quetes/5.1.json À CRÉER — SESSION PRINCIPALE, course à exécuter ensuite
+    (c2/c3 sans-objet — zéro trame dans cette quête).
+  - >-
+    Statut freemium : premium (Constitution [6]) — l'intro ne présuppose aucun monde gratuit,
+    zéro teaser ; le rendu reste identique à une quête gratuite (le premium n'achète jamais l'autre).

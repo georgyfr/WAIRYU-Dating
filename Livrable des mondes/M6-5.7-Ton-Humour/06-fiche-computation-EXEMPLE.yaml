@@ -1,0 +1,69 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 12 canaux carte)
+# Item choisi : Q5.7-07 (l'angle le plus sensible — la moquerie couverte ; porte le croisement SIG-5.7-02).
+# Fichier YAML strict (gabarit des 11 autres items carte : seuls énoncé, dimension, orientation et ancrage changent).
+# Les 12 items de la quête sont TOUS carte — zéro trame hébergée par 5.7 (le bloc ▲ humour agressif
+# vit à la quête 5.4, phase V12 — verrou capital du 00-README).
+item: Q5.7-07
+quete: "5.7 Ton humour"
+monde: M6                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Je me moque des gens en disant que c'est pour rire."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au poids du style qui blesse
+dimension: agres              # style 3/4 (paire R6 avec Q5.7-08) — nom scientifique côté moteur seul :
+                              # agressif (typologie des styles d'humour, Martin et al., 2003 — usage
+                              # libre avec citation ; citation tenue en documentation interne, JAMAIS au rendu)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: coeur_5.7         # alimente la carte (4 variantes) et le miroir (4 profils)
+  signal_id: SIG-5.7-01       # cascade du style dominant — portrait + vigilance moteur (SIG-5.7-02)
+computation:
+  carte:
+    role: score_de_quete
+    regle: "AFFIL_D, GAIE_D, AGRES_D, DEGRAD_D (3 items chacune), I recodés 6−r, normalisées 0-1 — dominant = argmax, secondaire nommé selon la cascade SIG-5.7-01"
+    rendu: etage_1_et_2       # carte (4 variantes, partageables) + miroir (4 profils)
+  signal:
+    role: styles_et_vigilance
+    mecanisme: >-
+      la cascade (SIG-5.7-01) raconte le style dominant côté rendu ; côté moteur, AGRES_D croise
+      la sensibilité au rejet (RSQ — blocs 1.2/4.2) dans le drapeau de vigilance SIG-5.7-02 : la
+      préparation de la rencontre module sa prudence (la cible possible, et le tranchant lu comme
+      rejet) — jamais au score affiché, jamais au match
+    rendu: moteur             # SIG-5.7-02 vit MOTEUR SEUL — aucune phrase de rendu ne le mentionne
+    condition: "seuils de cascade et de croisement proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'angle,
+      rappel en toutes lettres, score de style = moyenne des items valides + prudence
+      (precedent SIG-2.1-02) ; 4 paires R6 complètes (01×02 · 04×05 · 07×08 · 10×11)
+      + 4 pivots (03 · 06 · 09 · 12)
+  modulation:
+    - si: "paire R6 divergente sur un angle"
+      effet: "angle mis en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "AGRES_D haut croisé à RSQ_haute côté moteur"
+      effet: "SIG-5.7-02 — drapeau de vigilance MOTEUR SEUL : jamais au rendu, jamais au match, jamais au premium"
+    - si: "écart(dominant − second) < 0.05"
+      effet: "secondaire nommé au rendu selon la cascade SIG-5.7-01 — égalité exacte : la première position de passation tranche"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — le rire décrit, jamais un jugement, jamais un code, jamais un nom scientifique de style"
+    exemple: "quand tu as dit te moquer des gens en disant que c'est pour rire"
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 12 items carte. Seuls changent : énoncé, dimension (affil /
+    gaie / agres / degrad), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Nommage : les noms scientifiques des styles (affiliatif, auto-améliorant, agressif,
+    auto-dégradant) et le nom d'auteur (Martin et al., 2003 — typologie libre avec citation)
+    restent MOTEUR — jamais au rendu 05/07/cartes ; le nommage UI verbatim seul : qui rapproche,
+    qui dédramatise, qui blesse, qui s'auto-rabaisse.
+  - >-
+    Doctrine d'ombre (gelée V11) : l'ombre = le COÛT, jamais le style — le coût est pour la cible
+    et pour la relation (AGRES_D), pour soi et pour l'autre qui ne peut pas rassurer à l'infini
+    (DEGRAD_D) ; aucun style jugé supérieur.
+  - >-
+    Mélange 5.7 : outil générique melange.py, graine 257427 (ordinal 47), tentative 1, verdicts
+    6/6, run max 2, 5 passes identiques (md5 6425e597bbd13fc8e993f80e4342c214) — config
+    ci/quetes/5.7.json À CRÉER par la session principale (contenu proposé verbatim au 02).

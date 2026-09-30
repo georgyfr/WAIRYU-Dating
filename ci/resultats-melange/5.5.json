@@ -1,0 +1,64 @@
+{
+  "quete": "5.5",
+  "titre": "Quand la tension monte",
+  "graine_finale": 255427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q5.5-01"
+    },
+    {
+      "position": 2,
+      "code": "Q5.5-04"
+    },
+    {
+      "position": 3,
+      "code": "Q5.5-07"
+    },
+    {
+      "position": 4,
+      "code": "Q5.5-02"
+    },
+    {
+      "position": 5,
+      "code": "Q5.5-06"
+    },
+    {
+      "position": 6,
+      "code": "Q5.5-03"
+    },
+    {
+      "position": 7,
+      "code": "Q5.5-08"
+    },
+    {
+      "position": 8,
+      "code": "Q5.5-05"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "echanges": [
+    "pos 8 ↔ pos 5 · (1, 0, 1, 1, 1, 4) → (0, 0, 2, 1, 1, 4)",
+    "pos 5 ↔ pos 7 · (0, 0, 2, 1, 1, 4) → (0, 0, 1, 1, 1, 4)",
+    "pos 2 ↔ pos 8 · (0, 0, 1, 1, 1, 4) → (0, 0, 0, 0, 0, 1)"
+  ]
+}

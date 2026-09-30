@@ -1,0 +1,50 @@
+{
+  "quete": "5.5",
+  "titre": "Quand la tension monte",
+  "graine": 255427,
+  "items": [
+    {
+      "code": "Q5.5-01",
+      "orientation": "D",
+      "dimension": "explose"
+    },
+    {
+      "code": "Q5.5-02",
+      "orientation": "I",
+      "dimension": "explose"
+    },
+    {
+      "code": "Q5.5-03",
+      "orientation": "D",
+      "dimension": "ferme"
+    },
+    {
+      "code": "Q5.5-04",
+      "orientation": "I",
+      "dimension": "ferme"
+    },
+    {
+      "code": "Q5.5-05",
+      "orientation": "D",
+      "dimension": "verbalise"
+    },
+    {
+      "code": "Q5.5-06",
+      "orientation": "I",
+      "dimension": "verbalise"
+    },
+    {
+      "code": "Q5.5-07",
+      "orientation": "D",
+      "dimension": "sombre"
+    },
+    {
+      "code": "Q5.5-08",
+      "orientation": "I",
+      "dimension": "sombre"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "8 items = 4 profils × 2 — c4 STRICTEMENT FAISABLE (distance intra-profil >= 3 sur 8 positions)"
+}

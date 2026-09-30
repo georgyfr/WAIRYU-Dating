@@ -36,26 +36,44 @@ Livrable des mondes/
 ├── M5-4.1-Ton-Arbre-Relationnel/ ← quête 4.1 « Ton arbre relationnel » (M5 — Ton Héritage, 🆓, 8 items + génogramme interactif non compté, MISSION V10)
 ├── M5-4.2-Ou-Tu-En-Es-Aujourdhui/ ← quête 4.2 « Où tu en es aujourd'hui » (M5, 🆓, 19 items : 10 RB1 + 8 RSQ + 1 ouverte, MISSION V10)
 ├── M5-4.3-Ce-Que-Tes-Relations-Tont-Appris/ ← quête 4.3 ⚡ « Ce que tes relations t'ont appris » (M5, 🆓, 1 question ouverte — BLA P2, MISSION V10)
-└── M5-4.4-Blessures-Et-Aisance/ ← quête 4.4 (INVISIBLE) « Blessures et aisance » (M5, 12 carte-bloc + 10▲ — tissées chez 4.1/4.2, MISSION V10)
+├── M5-4.4-Blessures-Et-Aisance/ ← quête 4.4 (INVISIBLE) « Blessures et aisance » (M5, 12 carte-bloc + 10▲ — tissées chez 4.1/4.2, MISSION V10)
+├── M6-5.1-Ton-Style-Amoureux/   ← quête 5.1 « Ton style amoureux » (M6 — Mon Cœur, 💎 PREMIUM, 18 items — 6 façons × 3, VAGUE V11 2ᵉ gén.)
+├── M6-5.2-Ta-Vision-De-Lamour/  ← quête 5.2 « Ta vision de l'amour » (M6, 💎, 8 items — 4 axes de croyances romantiques, VAGUE V11 2ᵉ gén.)
+├── M6-5.3-Comment-Tu-Exprimes-Ton-Affection/ ← quête 5.3 « Comment tu exprimes ton affection » (M6, 💎, 10 items — 5 canaux, JAMAIS DANS LE SCORE, VAGUE V11 2ᵉ gén.)
+├── M6-5.7-Ton-Humour/           ← quête 5.7 « Ton humour » (M6, 💎, 12 items — 4 styles, carte partageable, VAGUE V11 2ᵉ gén.)
+├── M7-5.4-Face-Aux-Desaccords/  ← quête 5.4 « Face aux désaccords » (M7 — Face aux Tempêtes, 💎, 23 items : 15 carte + 8▲ JR1/SD hébergées, MVP conflit, VAGUE V12)
+├── M7-5.5-Quand-La-Tension-Monte/ ← quête 5.5 « Quand la tension monte » (M7, 💎, 8 items — 4 températures, VAGUE V12)
+└── M7-5.6-Apres-Un-Desaccord/   ← quête 5.6 « Après un désaccord » (M7, 💎, 5 items — 5 capacités de réparation, VAGUE V12)
+
+**+ `portraits/domaines/coeur.md` — le PORTRAIT DE DOMAINE DU CŒUR (M6+M7, gabarit A5, VAGUE V12 — premier Portrait de Domaine réel : 6 liaisons croisées §2 + engagement §5).**
 ```
 
 Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` (guide de lecture 1 page)
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 318/570 items = 55,8 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+**Taux de matérialisation : 402/570 items = 70,5 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
 Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · MISSION V9 — Monde M4 « Ton terrain » : 52 · **MISSION V10 —
 Monde M5 « Ton Héritage » : 50** — 4.1 arbre relationnel 8 + génogramme interactif non compté,
 4.2 où tu en es 19 (10 RB1 + 8 RSQ + 1 ouverte), 4.3 relations apprises ⚡ 1 ouverte,
 4.4 (invisible) blessures et aisance 22 (12 carte-bloc + 10▲ tissées dans les passations 4.1/4.2).
 1.8 « Ton bien-être » reste Phase 3 avec verrou renforcé (relecture professionnelle obligatoire,
-option de retrait — FM-019).)**
+option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœur » (💎 PREMIUM) : 48** —
+5.1 style amoureux 18 · 5.2 vision de l'amour 8 · 5.3 expression de l'affection 10 (JAMAIS DANS LE SCORE)
+· 5.7 humour 12 · **VAGUE V12 — Monde M7 « Face aux Tempêtes » (💎 PREMIUM) : 36** — 5.4 désaccords 23
+(15 carte MVP conflit + 8▲ JR1/SD hébergées, énoncés hors dépôt règle 11-b) · 5.5 tension 8 ·
+5.6 réparation 5 · **+ le PORTRAIT DE DOMAINE DU CŒUR (M6+M7) — premier Portrait de Domaine réel**.)**
 
-> 🆓 **Après MISSION V10, les cinq premiers mondes du voyage sont COMPLETS en items** :
-> le voyageur parcourt son territoire (M1 Le Miroir · M2 Le Volant · M3 La Boussole ·
-> M4 Ton terrain — dont 3.7 requis avant l'activation du Mode Invisible · **M5 Ton Héritage —
-> 4.1→4.3 en accès libre, bloc invisible 4.4 tissé dans les passations 4.1/4.2** ; la frontière
-> freemium des mondes suivants reste À VALIDER PAR LE COMITÉ).
+> 🆓💎 **Après MISSION V12, le DOMAINE DU CŒUR (M6+M7) est REFERMÉ en items** — sept quêtes +
+> un Portrait de Domaine. Le voyageur parcourt son territoire gratuit (M1 Le Miroir · M2 Le Volant ·
+> M3 La Boussole · M4 Ton terrain — dont 3.7 requis avant l'activation du Mode Invisible · M5 Ton
+> Héritage — 4.1→4.3 en accès libre, bloc invisible 4.4 tissé dans les passations 4.1/4.2), puis
+> entre sur le **territoire 💎 PREMIUM** : **M6 Mon Cœur (5.1 · 5.2 · 5.3 · 5.7)** et **M7 Face aux
+> Tempêtes (5.4 · 5.5 · 5.6)** — couronnés par le **Portrait de Domaine du Cœur** (`portraits/
+> domaines/coeur.md`, gabarit A5, engagement §5 — la valeur de conversion tangible). Constitution
+> [6] appliquée à la production : le premium change ZÉRO chose au contenu, ne présuppose rien du
+> gratuit, sans teaser (historique V11 2ᵉ gén. : les dossiers M6 ont été RÉ-ÉMIS après la perte du
+> sandbox — empreintes de mélange V11 reproduites 3/4, constat consigné aux plans 02).
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 

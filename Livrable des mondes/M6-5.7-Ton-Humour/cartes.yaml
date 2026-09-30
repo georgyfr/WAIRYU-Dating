@@ -1,0 +1,95 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.7 « TON HUMOUR » — 4 VARIANTES (étage 1)
+# Création : V12 phase R — ré-émission 2ᵉ génération (dossier V11 perdu au reset ;
+# rédaction neuve sur cadre gelé — worklog Task 21).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# DUAL FACE (refonte verbatim) : la carte partageable est le produit central de
+# la quête — chaque style reçoit sa carte, SANS HIÉRARCHIE ; les deux faces à coût
+# restent assumées (précédent V11), avec l'ombre = le COÛT nommé, jamais une
+# condamnation. Le partage ne présuppose rien d'acheté (Constitution [6]).
+# Sélection : dominant = argmax des 4 scores (AFFIL_D · GAIE_D · AGRES_D · DEGRAD_D)
+# — cascade SIG-5.7-01 (seuils proposés, À VALIDER PAR LE COMITÉ). Le secondaire
+# (écart < 0.05) se nomme au miroir, jamais ici. Le croisement RSQ (SIG-5.7-02)
+# ne participe JAMAIS à la sélection ni au rendu (MOTEUR SEUL — verrou 04 n° 6).
+# NEUTRALITÉ TYPOLOGIQUE : les quatre façons de faire rire se valent — aucune
+# variante n'est un idéal, aucune n'est un défaut (C4, vérifié machine).
+# ZÉRO nom d'auteur, zéro sigle d'instrument, zéro nom scientifique de style au
+# rendu — nommage UI verbatim : qui rapproche · qui dédramatise · qui blesse ·
+# qui s'auto-rabaisse (vérifié machine).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.7 Ton humour"
+monde: M6
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "quatre scores déclarés — AFFIL_D, GAIE_D, AGRES_D, DEGRAD_D (3 items chacun), I recodés 6−r, normalisés 0-1 — Q5.7-01 → Q5.7-12 ; le croisement RSQ (SIG-5.7-02) ne participe JAMAIS à la sélection"
+  logique: "dominant = argmax des quatre scores · écart(dominant − second) < 0.05 → le secondaire est nommé au miroir (pas ici) · écart ∈ [0.05 ; 0.10] → note de prudence au miroir (carte du dominant) · égalité exacte → la première position de passation tranche"
+  bornes: "seuils 0.05 / 0.10 (propositions — provisoire concepteur, re-signature professionnelle avant bêta) — À VALIDER PAR LE COMITÉ"
+  exhaustivite: "4 sélections = partition totale par argmax — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "la sensibilité au rejet (RSQ — blocs 1.2/4.2, drapeau SIG-5.7-02 MOTEUR SEUL) ne participe JAMAIS à la sélection ni au rendu"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💘 QUÊTE ACCOMPLIE — « Ton humour »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un rit comme toi — même langue, autre accent. Le jour où vos cartes se croiseront, la conversation aura déjà commencé."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ton rire avant ton visage."
+
+variantes:
+
+  - id: CARTE-5.7-RAPPROCHE
+    nom: "Le·La Rire qui rapproche"
+    ordre_selecteur: 1
+    condition: "AFFIL_D = max des quatre scores (style dominant — qui rapproche)"
+    ancre_item: ["Q5.7-01", "Q5.7-02", "Q5.7-03", "Q5.7-04", "Q5.7-05", "Q5.7-06", "Q5.7-07", "Q5.7-08", "Q5.7-09", "Q5.7-10", "Q5.7-11", "Q5.7-12"]
+    portrait: "Tu as dit faire des blagues pour rapprocher les gens autour de toi, et chercher les rires à partager. Avec toi, une soirée se débloque vite : la gêne sort, les gens se parlent. Ton humour est ta façon de tendre la main."
+    ombre: "Le lien qui se fabrique en riant repousse le grave. En couple, les sujets lourds attendent un ton de blague qui ne vient pas. L'autre peut cesser de t'amener l'essentiel, faute de le voir atterrir. Ton rire est une langue : le sérieux a besoin du sien."
+    tension_interieure: "laisser le rire ouvrir la conversation, sans la finir à ta place."
+
+  - id: CARTE-5.7-LEGER
+    nom: "Le·La Rire qui dédramatise"
+    ordre_selecteur: 2
+    condition: "GAIE_D = max des quatre scores (style dominant — qui dédramatise)"
+    ancre_item: ["Q5.7-01", "Q5.7-02", "Q5.7-03", "Q5.7-04", "Q5.7-05", "Q5.7-06", "Q5.7-07", "Q5.7-08", "Q5.7-09", "Q5.7-10", "Q5.7-11", "Q5.7-12"]
+    portrait: "Tu as dit ris de tes galères pour mieux les traverser. Chez toi, un lundi noir devient une histoire racontable — le recul arrive avant la panique. Les gens repartent de tes mauvaises nouvelles avec moins de poids sur les épaules."
+    ombre: "Le rire posé trop tôt ferme la conversation nécessaire. En couple, ton calme drôle peut être pris pour un « ça va ». L'inquiétude vraie reste en anecdote, et l'autre croit le sujet réglé. La gravité se lit dans ton sourire — elle attendait une phrase claire."
+    tension_interieure: "garder le rire traversant, posé après le mot sérieux."
+
+  - id: CARTE-5.7-TRANCHANT
+    nom: "Le·La Rire qui blesse"
+    ordre_selecteur: 3
+    condition: "AGRES_D = max des quatre scores (style dominant — qui blesse)"
+    ancre_item: ["Q5.7-01", "Q5.7-02", "Q5.7-03", "Q5.7-04", "Q5.7-05", "Q5.7-06", "Q5.7-07", "Q5.7-08", "Q5.7-09", "Q5.7-10", "Q5.7-11", "Q5.7-12"]
+    portrait: "Tu as dit te moquer des gens en disant que c'est pour rire. Tu dis tout haut la remarque que d'autres gardent. Ton humour voit vite le faux et ne joue pas la comédie : chez toi, on sait ce qui se pense."
+    ombre: "La pique ne prévient pas sa cible. En couple, la personne visée n'était pas de la partie — elle rit, puis elle édite ce qu'elle te confie. La confiance se décale d'un demi-ton, plus prudente que drôle. Ton tranchant est une langue : ceux qui ne la parlent pas l'entendent quand même."
+    tension_interieure: "garder le tranchant pour les idées, la douceur pour les failles des proches."
+
+  - id: CARTE-5.7-DESAMORCE
+    nom: "Le·La Rire qui s'auto-rabaisse"
+    ordre_selecteur: 4
+    condition: "DEGRAD_D = max des quatre scores (style dominant — qui s'auto-rabaisse)"
+    ancre_item: ["Q5.7-01", "Q5.7-02", "Q5.7-03", "Q5.7-04", "Q5.7-05", "Q5.7-06", "Q5.7-07", "Q5.7-08", "Q5.7-09", "Q5.7-10", "Q5.7-11", "Q5.7-12"]
+    portrait: "Tu as dit te moquer de toi en premier pour faire rire. Ton humour désamorce la gêne avant qu'elle ne s'installe. Avec toi, on a le droit d'être imparfait — tu donnes l'exemple avant tout le monde."
+    ombre: "La blague sur soi peut devenir la seule présentation. En couple, l'autre ne peut pas rassurer à l'infini — chaque « mais non, tu vas bien » use un peu de tendresse. Et tes forces, moins moquées, restent à découvrir."
+    tension_interieure: "présenter une force sans rire — une seule suffit pour ouvrir la porte."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "équilibre renforcé (précédent V11) : ombre ≥ portrait sur chaque variante — coûts doubles nommés (pour toi / pour l'autre), vérifié machine"
+  - "neutralité typologique : les 4 variantes se valent — aucun style « sain », aucun style « malsain », aucune hiérarchie, zéro superlatif (contrôles machine)"
+  - "l'ombre = le COÛT (pour toi / pour l'autre), jamais la nature du style — aucune condamnation, aucun diagnostic dérivé (vérifié machine)"
+  - "zéro nom d'auteur, zéro sigle d'instrument, zéro nom scientifique de style au rendu — nommage UI verbatim (qui rapproche / qui dédramatise / qui blesse / qui s'auto-rabaisse) — vérifié machine"
+  - "SIG-5.7-02 (croisement RSQ) absent de la sélection et de tout texte rendu — MOTEUR SEUL — vérifié machine"
+  - "registre probabiliste : aucun futur certain — présent fréquentiel, zéro absolu temporel (vérifié machine)"
+  - "rappels ancrés aux énoncés D uniquement (Q5.7-01 · 04 · 07 · 10 cités en toutes lettres dans les portraits — jamais un code)"
+  - "C4 : aucun superlatif — aucun style dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "carte partageable assumée (dual face — refonte verbatim) : le pied garde le bouton [Partager ma carte] — le partage ne présuppose rien d'acheté ([6])"

@@ -1,0 +1,66 @@
+{
+  "quete": "5.2",
+  "titre": "Ta vision de l'amour",
+  "graine_finale": 252427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q5.2-02"
+    },
+    {
+      "position": 2,
+      "code": "Q5.2-05"
+    },
+    {
+      "position": 3,
+      "code": "Q5.2-04"
+    },
+    {
+      "position": 4,
+      "code": "Q5.2-07"
+    },
+    {
+      "position": 5,
+      "code": "Q5.2-06"
+    },
+    {
+      "position": 6,
+      "code": "Q5.2-03"
+    },
+    {
+      "position": 7,
+      "code": "Q5.2-01"
+    },
+    {
+      "position": 8,
+      "code": "Q5.2-08"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "echanges": [
+    "pos 3 ↔ pos 4 · (2, 0, 3, 0, 0, 1) → (1, 0, 3, 0, 0, 3)",
+    "pos 5 ↔ pos 1 · (1, 0, 3, 0, 0, 3) → (0, 0, 2, 0, 0, 3)",
+    "pos 8 ↔ pos 3 · (0, 0, 2, 0, 0, 3) → (0, 0, 0, 2, 2, 4)",
+    "pos 1 ↔ pos 8 · (0, 0, 0, 2, 2, 4) → (0, 0, 0, 1, 1, 4)",
+    "pos 4 ↔ pos 1 · (0, 0, 0, 1, 1, 4) → (0, 0, 0, 0, 0, 1)"
+  ]
+}

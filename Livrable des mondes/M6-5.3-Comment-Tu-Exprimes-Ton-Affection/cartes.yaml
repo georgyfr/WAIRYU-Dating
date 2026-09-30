@@ -1,0 +1,110 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.3 « COMMENT TU EXPRIMES TON AFFECTION » — 6 VARIANTES (étage 1)
+# 💎 PREMIUM · P2 · Création : phase R V12 — 2ᵉ génération (dossier V11 perdu au reset,
+# rédaction neuve sur le cadre gelé — worklog Task 21).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : canal dominant (max des 5 moyennes de canal, I recodés 6−r, normalisés) —
+# écart max − min ≤ 0.25 → équilibré (6ᵉ variante), ex æquo strict → équilibré —
+# partition exclusive + exhaustive (SIG-5.3-01, C6, vérifiée machine). Bornes À VALIDER
+# PAR LE COMITÉ [9]. NEUTRALITÉ DES CANAUX : les cinq canaux se valent — le canal
+# discret n'est jamais un déficit, il est l'adresse des demandes non formulées
+# (formulation signature exprimée en registre probabiliste — zéro « toujours/jamais »).
+# RÈGLE CAPITALE (00-README + 03) : JAMAIS DANS LE SCORE — le routage ci-dessous est
+# un routage d'AFFICHAGE conversationnel ; aucune entrée moteur, aucune signature de
+# matching, aucune agrégation au score de compatibilité.
+# AUCUNE trame hébergée par 5.3 (quête 100 % carte) — rien à cacher, rien à masquer.
+# Zéro marque commerciale, zéro sigle au rendu, zéro vocabulaire clinique.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.3 Comment tu exprimes ton affection"
+monde: M6
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "cinq moyennes de canal déclarées — mots CANAL_MOTS (Q5.3-01 × 02) · temps CANAL_TEMPS (Q5.3-03 × 04) · gestes CANAL_GESTES (Q5.3-05 × 06) · attentions CANAL_ATTENTIONS (Q5.3-07 × 08) · contact CANAL_CONTACT (Q5.3-09 × 10), I recodés 6−r, normalisés 0-1"
+  logique: "dominant = max des 5 · secondaire = 2ᵉ du tri (affiché en conversation, jamais calculé en entrée moteur) · écart max − min ≤ 0.25 → équilibré · ex æquo strict sur le max → équilibré"
+  bornes: "écart 0.25 (proposition) — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "6 sélections = partition totale de l'espace de réponses — chaque profil tombe dans exactement une variante (C6, vérifié machine)"
+  non_participant: "AUCUNE variable de cette quête ne participe à un score, un matching ou un croisement moteur — JAMAIS DANS LE SCORE (règle gravée au 00-README et au 03)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Comment tu exprimes ton affection »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Ton canal dominant dit ce qui te remplit — ton canal le plus discret garde tes demandes non formulées. À deux, ces deux lignes nourrissent des soirées entières."
+  - "F2 : Ce portrait ne note personne — il donne des mots à ce qui se passait sans se dire."
+
+variantes:
+
+  - id: CARTE-5.3-MOTS-QUI-DISENT
+    nom: "Le·La Mot qui porte"
+    ordre_selecteur: 1
+    condition: "CANAL_MOTS = max des 5 canaux · écart max − min > 0.25 (mots valorisants dominant)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Les mots te remplissent — tu l'as répondu : un compliment sincère te porte, une phrase juste te rallume. En couple, tu répares vite par la parole, et tu relis les messages qui te font du bien."
+    ombre: "Quand les mots portent tout, un silence se lit comme une absence. Ton partenaire digère peut-être — toi, tu comptes les minutes."
+    tension_interieure: "demander le mot que tu attends, plutôt que de le mesurer dans le blanc."
+
+  - id: CARTE-5.3-PRESENCE-PLEINE
+    nom: "Le·La Temps posé"
+    ordre_selecteur: 2
+    condition: "CANAL_TEMPS = max des 5 canaux · écart max − min > 0.25 (temps partagé dominant)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Ce qui te remplit, c'est du temps à deux sans écran — tu l'as répondu. Une soirée posée, une marche, une table qui traîne : la présence entière te dit l'amour plus fort que les objets."
+    ombre: "La présence distraite compte à moitié pour toi — et une moitié nourrit mal. La solitude à deux arrive sans prévenir."
+    tension_interieure: "poser un créneau nommé, plutôt qu'un reproche diffus."
+
+  - id: CARTE-5.3-GESTE-QUI-DIT
+    nom: "Le·La Geste qui dit"
+    ordre_selecteur: 3
+    condition: "CANAL_GESTES = max des 5 canaux · écart max − min > 0.25 (gestes et services dominant)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Chez toi, l'aide parle : tu l'as répondu, un service rendu te touche autant qu'un mot. La valise montée, le plein fait — tu lis l'amour dans ce qui se règle, et tu le rends de même."
+    ombre: "Donner pour être redevable installe une facture discrète. L'aide remplace parfois la présence — tu fais à la place d'un moment à deux."
+    tension_interieure: "dire ce qui t'aiderait, sans attendre l'échange exact."
+
+  - id: CARTE-5.3-DETAIL-JUSTE
+    nom: "Le·La Détail juste"
+    ordre_selecteur: 4
+    condition: "CANAL_ATTENTIONS = max des 5 canaux · écart max − min > 0.25 (attentions et cadeaux dominant)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Une attention choisie pour toi te marque — tu l'as répondu. L'objet pensé, pas acheté : la preuve que quelqu'un a écouté. Tu chasses le détail juste pour les autres, et tu le gardes pour toi."
+    ombre: "La preuve s'use quand elle se compte. Un anniversaire raté pèse plus lourd qu'une semaine entière de tendresse ordinaire."
+    tension_interieure: "nommer l'attention qui t'a marqué·e — la règle sort du tiroir."
+
+  - id: CARTE-5.3-PEAU-QUI-PARLE
+    nom: "Le·La Peau qui parle"
+    ordre_selecteur: 5
+    condition: "CANAL_CONTACT = max des 5 canaux · écart max − min > 0.25 (contact physique dominant)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Un câlin passe avant les mots — tu l'as répondu. Le contact dit vite ce qui prendrait une soirée : une main, une épaule, un au revoir complet. Ton corps résume, et tu te sens aimé·e."
+    ombre: "Quand le toucher est la seule langue, son absence sonne comme une alarme. Une pause de l'autre devient un message entier."
+    tension_interieure: "demander le contact par son nom — l'autre répond à une demande, pas à une alarme."
+
+  - id: CARTE-5.3-ECOUTE-LARGE
+    nom: "Le·La Écoute large"
+    ordre_selecteur: 6
+    condition: "écart max − min ≤ 0.25 entre les 5 canaux · ou ex æquo strict sur le max (profil équilibré)"
+    ancre_item: ["Q5.3-01", "Q5.3-02", "Q5.3-03", "Q5.3-04", "Q5.3-05", "Q5.3-06", "Q5.3-07", "Q5.3-08", "Q5.3-09", "Q5.3-10"]
+    portrait: "Tes canaux sont serrés : mots, temps, gestes, attentions, contact — rien ne domine nettement. Tu reçois l'affection sur plusieurs fréquences et tu en émets autant. Suivre le canal de l'autre te vient naturellement."
+    ombre: "Quand tout te remplit, rien ne crie. Ton besoin reste diffus — l'autre doit deviner quelle porte ouvrir, et vise parfois à côté."
+    tension_interieure: "classer tes trois dernières joies à deux — la tête de liste dit ton canal."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, vérifié machine (script hors dépôt)"
+  - "RÈGLE CAPITALE : JAMAIS DANS LE SCORE — la sélection ci-dessus route l'affichage conversationnel ; aucune entrée moteur, aucune signature de matching, aucune agrégation au score de compatibilité (gravé au 00-README et au 03)"
+  - "neutralité des canaux : les 6 variantes se valent — le canal discret jamais « carence », jamais « défaut », jamais « à corriger » ; l'équilibré jamais « absence de choix » (contrôles machine)"
+  - "marque commerciale du domaine : zéro occurrence en toutes lettres, toutes variantes — les libellés UI génériques seuls (mots valorisants, temps partagé, gestes et services, attentions et cadeaux, contact physique) — vérifié machine"
+  - "formulation signature (gravée au 03) exprimée au rendu en registre probabiliste : le canal discret = « tes demandes non formulées » — zéro « toujours/jamais » au texte affiché (Constitution [3])"
+  - "zéro vocabulaire clinique, zéro sigle, zéro code au rendu — vérifié machine"
+  - "registre probabiliste : aucun futur certain (« peut-être », « parfois » — présent fréquentiel)"
+  - "C4 : aucun superlatif — aucun canal dressé en idéal"
+  - "C8 : point médian dans les titres genrés · « (e)/(·e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "rappels en toutes lettres ancrés CETTE quête seule (« tu l'as répondu ») — aucune référence à une autre quête (Constitution [6])"

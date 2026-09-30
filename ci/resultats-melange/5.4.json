@@ -1,0 +1,140 @@
+{
+  "quete": "5.4",
+  "titre": "Face aux désaccords",
+  "graine_finale": 254427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q5.4-12"
+    },
+    {
+      "position": 2,
+      "code": "Q5.4-T43",
+      "trame": "JR1"
+    },
+    {
+      "position": 3,
+      "code": "Q5.4-15"
+    },
+    {
+      "position": 4,
+      "code": "Q5.4-09"
+    },
+    {
+      "position": 5,
+      "code": "Q5.4-T44",
+      "trame": "JR1"
+    },
+    {
+      "position": 6,
+      "code": "Q5.4-14"
+    },
+    {
+      "position": 7,
+      "code": "Q5.4-10"
+    },
+    {
+      "position": 8,
+      "code": "Q5.4-T45",
+      "trame": "JR1"
+    },
+    {
+      "position": 9,
+      "code": "Q5.4-08"
+    },
+    {
+      "position": 10,
+      "code": "Q5.4-01"
+    },
+    {
+      "position": 11,
+      "code": "Q5.4-T46",
+      "trame": "JR1"
+    },
+    {
+      "position": 12,
+      "code": "Q5.4-05"
+    },
+    {
+      "position": 13,
+      "code": "Q5.4-02"
+    },
+    {
+      "position": 14,
+      "code": "Q5.4-T47",
+      "trame": "SD"
+    },
+    {
+      "position": 15,
+      "code": "Q5.4-04"
+    },
+    {
+      "position": 16,
+      "code": "Q5.4-03"
+    },
+    {
+      "position": 17,
+      "code": "Q5.4-T48",
+      "trame": "SD"
+    },
+    {
+      "position": 18,
+      "code": "Q5.4-07"
+    },
+    {
+      "position": 19,
+      "code": "Q5.4-11"
+    },
+    {
+      "position": 20,
+      "code": "Q5.4-T49",
+      "trame": "SD"
+    },
+    {
+      "position": 21,
+      "code": "Q5.4-06"
+    },
+    {
+      "position": 22,
+      "code": "Q5.4-13"
+    },
+    {
+      "position": 23,
+      "code": "Q5.4-T50",
+      "trame": "SD"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [
+    2,
+    5,
+    8,
+    11,
+    14,
+    17,
+    20,
+    23
+  ],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    8
+  ],
+  "echanges": [
+    "pos 15 ↔ pos 19 · (0, 0, 1, 5, 2, 12) → (0, 0, 0, 3, 1, 10)",
+    "pos 9 ↔ pos 4 · (0, 0, 0, 3, 1, 10) → (0, 0, 0, 0, 0, 8)"
+  ]
+}

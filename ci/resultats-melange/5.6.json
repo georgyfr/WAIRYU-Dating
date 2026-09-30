@@ -1,0 +1,48 @@
+{
+  "quete": "5.6",
+  "titre": "Après un désaccord",
+  "graine_finale": 256427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q5.6-01"
+    },
+    {
+      "position": 2,
+      "code": "Q5.6-05"
+    },
+    {
+      "position": 3,
+      "code": "Q5.6-02"
+    },
+    {
+      "position": 4,
+      "code": "Q5.6-04"
+    },
+    {
+      "position": 5,
+      "code": "Q5.6-03"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
+  ],
+  "echanges": []
+}
