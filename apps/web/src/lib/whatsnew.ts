@@ -32,6 +32,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-30-barre-adresse-app',
+    date: '30 septembre 2026',
+    title: 'La barre d’adresse ? Elle s’en va avec l’application',
+    items: [
+      'wairyu ouvert depuis un lien (mail, WhatsApp…) reste dans le navigateur, avec sa barre d’adresse — aucun site ne peut la masquer, c’est le navigateur lui-même qui l’affiche.',
+      'L’application installée, elle, s’ouvre plein écran sans aucune barre d’adresse : quand wairyu détecte que l’app n’est pas encore installée, il te le dit maintenant clairement et t’emmène à la page d’installation en un appui.',
+      'Via Chrome, l’installation est signée par Google : jamais signalée par Play Protect, et les notifications passent en « géré par l’application ».',
+    ],
+  },
+  {
     id: '2026-09-30-autorisations-normales',
     date: '30 septembre 2026',
     title: '« Aucune autorisation » ? C’est normal — le guide s’adapte',

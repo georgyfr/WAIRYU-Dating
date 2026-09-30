@@ -11990,3 +11990,25 @@ body.theme-dark .auth-alt-item.aa-accent {
   background: var(--w-surface-3);
   border-color: rgba(255, 255, 255, 0.22);
 }
+
+/* --- Task 74 — variante « intent échoué » de la bannière d'installation ---
+   Quand l'ouverture application (intent:// Task 60-URL) a déjà été tentée et
+   que la page tourne ENCORE dans le navigateur, l'app n'est pas installée :
+   la bannière nomme alors la barre d'adresse et son CTA est renforcé.
+   Couleurs explicites (leçon t65) — pas de variables ambiguës. */
+.installgate.fallback {
+  background: #2b1f3f;
+  border: 1px solid #8b6fd0;
+}
+.installgate.fallback .installgate-actions .btn.primary {
+  background: #6c4ab6;
+  border-color: #8b6fd0;
+}
+.installgate.fallback .installgate-actions .btn.primary:hover {
+  background: #7c5acd;
+}
+
+body.theme-dark .installgate.fallback {
+  background: #1d1429;
+  border-color: #6c4ab6;
+}
