@@ -35,6 +35,33 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
     inputRef.current?.focus();
   }, []);
 
+  // Task 73 (fondateur) — « le code s'active automatiquement, il n'a pas
+  // besoin de l'insérer » : 1) le SW relait le payload push (kind 'otp')
+  // à la page ouverte → on soumet le code immédiatement (zéro tap) ;
+  // 2) le tap sur la notification ouvre #/verify?e=…&d=… → devCode prérempli
+  // → auto-soumission au montage.
+  const submittedRef = useRef(false);
+  useEffect(() => {
+    if (!devCode || submittedRef.current) return;
+    submittedRef.current = true;
+    void verify(devCode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+    const onMessage = (event: MessageEvent) => {
+      const data = (event.data ?? {}) as { type?: string; data?: { kind?: string; code?: string } };
+      if (data.type !== 'wairyu-push' || data.data?.kind !== 'otp' || !data.data.code) return;
+      if (submittedRef.current) return;
+      submittedRef.current = true;
+      void verify(data.data.code);
+    };
+    navigator.serviceWorker.addEventListener('message', onMessage);
+    return () => navigator.serviceWorker.removeEventListener('message', onMessage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (cooldown <= 0) return;
     const t = setTimeout(() => setCooldown((s) => s - 1), 1000);

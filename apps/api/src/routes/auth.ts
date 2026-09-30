@@ -186,6 +186,35 @@ authRoutes.post('/auth/otp/request', async (c) => {
   const sent = await sendOtpEmail(c.env, email, code, created);
   await bumpMetric(c.env.DB, 'otp_sent');
 
+  // Task 73 (fondateur) — le code arrive AUSSI en notification push quand le
+  // compte existe déjà (connexion) et qu'un appareil est abonné :
+  //  - page #/verify déjà ouverte et visible → le SW relaye le code à la page
+  //    (postMessage) qui se connecte TOUTE SEULE — zéro tap, zéro saisie ;
+  //  - page fermée → notification « Ton code de connexion : 123456 » dont le
+  //    tap ouvre #/verify?e=…&d=… → code prérempli → auto-soumission ;
+  //  - première inscription (compte pas encore créé) OU aucun abonnement →
+  //    l'email reste le canal (œuf-poule structurel, analysé en t72).
+  // bypassPrefs : le code RÉPOND à une demande explicite de l'utilisateur.
+  // Le push peut échouer silencieusement : l'email reste la référence.
+  if (user && !smokeBypassOtp) {
+    try {
+      const { sendPushToUser } = await import('../lib/push');
+      await sendPushToUser(c.env, user.id, {
+        title: 'Wairyu',
+        body: `Ton code de connexion : ${code} — il est valable 10 minutes.`,
+        tag: 'wairyu-otp',
+        url: `#/verify?e=${encodeURIComponent(email)}&d=${code}`,
+        kind: 'otp',
+        code,
+        bypassPrefs: true,
+      });
+    } catch (err) {
+      console.log(
+        JSON.stringify({ level: 'warn', msg: 'otp_push_failed', err: String(err).slice(0, 120) }),
+      );
+    }
+  }
+
   const body: OtpRequestResponse = { sent: true, channel: sent.channel };
   if (smokeBypassOtp) body.devCode = code; // staging + ADMIN_TOKEN uniquement (t73)
   else if (sent.devCode) body.devCode = sent.devCode; // staging-dev sans clé Brevo
