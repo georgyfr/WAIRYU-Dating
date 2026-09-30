@@ -126,6 +126,13 @@ authRoutes.post('/auth/otp/request', async (c) => {
   // 1) Anti-abus : fenêtres D1 par IP et par email.
   const ip = await ipHash(c);
   const emailHash = await sha256Hex(email);
+  // Task 73 — prolongement du bypass staging-only existant (register/login) :
+  // avec Bearer ADMIN_TOKEN en staging, la réponse renvoie le code (les smokes
+  // peuvent tester le parcours email OTP même quand Brevo est configuré).
+  // En production : impossible (ENVIRONMENT !== 'staging').
+  const authHeader0 = c.req.header('authorization') ?? '';
+  const smokeBypassOtp =
+    c.env.ENVIRONMENT === 'staging' && !!c.env.ADMIN_TOKEN && authHeader0 === `Bearer ${c.env.ADMIN_TOKEN}`;
   const perIp = await hitRateLimit(c.env.DB, RATE_RULES.otpRequestIp, ip);
   if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.otpRequestIp.scope);
   const perEmail = await hitRateLimit(c.env.DB, RATE_RULES.otpRequestEmail, emailHash);
@@ -179,8 +186,38 @@ authRoutes.post('/auth/otp/request', async (c) => {
   const sent = await sendOtpEmail(c.env, email, code, created);
   await bumpMetric(c.env.DB, 'otp_sent');
 
+  // Task 73 (fondateur) — le code arrive AUSSI en notification push quand le
+  // compte existe déjà (connexion) et qu'un appareil est abonné :
+  //  - page #/verify déjà ouverte et visible → le SW relaye le code à la page
+  //    (postMessage) qui se connecte TOUTE SEULE — zéro tap, zéro saisie ;
+  //  - page fermée → notification « Ton code de connexion : 123456 » dont le
+  //    tap ouvre #/verify?e=…&d=… → code prérempli → auto-soumission ;
+  //  - première inscription (compte pas encore créé) OU aucun abonnement →
+  //    l'email reste le canal (œuf-poule structurel, analysé en t72).
+  // bypassPrefs : le code RÉPOND à une demande explicite de l'utilisateur.
+  // Le push peut échouer silencieusement : l'email reste la référence.
+  if (user && !smokeBypassOtp) {
+    try {
+      const { sendPushToUser } = await import('../lib/push');
+      await sendPushToUser(c.env, user.id, {
+        title: 'Wairyu',
+        body: `Ton code de connexion : ${code} — il est valable 10 minutes.`,
+        tag: 'wairyu-otp',
+        url: `#/verify?e=${encodeURIComponent(email)}&d=${code}`,
+        kind: 'otp',
+        code,
+        bypassPrefs: true,
+      });
+    } catch (err) {
+      console.log(
+        JSON.stringify({ level: 'warn', msg: 'otp_push_failed', err: String(err).slice(0, 120) }),
+      );
+    }
+  }
+
   const body: OtpRequestResponse = { sent: true, channel: sent.channel };
-  if (sent.devCode) body.devCode = sent.devCode; // staging-dev uniquement
+  if (smokeBypassOtp) body.devCode = code; // staging + ADMIN_TOKEN uniquement (t73)
+  else if (sent.devCode) body.devCode = sent.devCode; // staging-dev sans clé Brevo
   return c.json(body);
 });
 
@@ -1045,10 +1082,17 @@ authRoutes.post('/auth/password/register', async (c) => {
 
 authRoutes.post('/auth/password/login', async (c) => {
   const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
-  const username = normalizeUsername(String(payload?.username ?? ''));
+  const identifierRaw = String(payload?.username ?? '').trim();
+  // Task 73 (fondateur) : l'identifiant peut être un PSEUDO OU UN EMAIL —
+  // les comptes email/Google/Facebook peuvent créer un mot de passe (t73),
+  // ils se connectent alors avec leur adresse. Un email ne peut jamais
+  // entrer en collision avec un pseudo : normalizeUsername retire tout
+  // caractère hors [a-z0-9_], donc un pseudo canonique ne contient jamais
+  // « @ » ni « . » — la recherche username_canonical = email.minuscule est sûre.
+  const identifier = identifierRaw.includes('@') ? identifierRaw.toLowerCase() : normalizeUsername(identifierRaw);
   const password = typeof payload?.password === 'string' ? payload.password : '';
-  if (!username || !password) {
-    throw errors.badRequest('Indique ton pseudo et ton mot de passe.');
+  if (!identifier || !password) {
+    throw errors.badRequest('Indique ton pseudo ou ton email et ton mot de passe.');
   }
   const ip = await ipHash(c);
   const authHeader = c.req.header('authorization') ?? '';
@@ -1058,16 +1102,16 @@ authRoutes.post('/auth/password/login', async (c) => {
     ? { allowed: true, remaining: 0, retryAfterSeconds: 0 }
     : await hitRateLimit(c.env.DB, RATE_RULES.pwLoginIp, ip);
   if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwLoginIp.scope);
-  const perUser = await hitRateLimit(c.env.DB, RATE_RULES.pwLoginUser, username);
+  const perUser = await hitRateLimit(c.env.DB, RATE_RULES.pwLoginUser, identifier);
   if (!perUser.allowed) throw rateLimitedError(perUser.retryAfterSeconds, RATE_RULES.pwLoginUser.scope);
 
-  const row = await findPasswordByUsername(c.env.DB, username);
-  if (!row) throw errors.unauthorized('Pseudo ou mot de passe incorrect.');
+  const row = await findPasswordByUsername(c.env.DB, identifier);
+  if (!row) throw errors.unauthorized('Pseudo, email ou mot de passe incorrect.');
   lockedError(row.locked_until);
   const ok = await verifyPassword(password, row.password_hash);
   if (!ok) {
     await registerLockFailure(c.env.DB, row);
-    throw errors.unauthorized('Pseudo ou mot de passe incorrect.');
+    throw errors.unauthorized('Pseudo, email ou mot de passe incorrect.');
   }
   const user = await c.env.DB.prepare(`SELECT status FROM users WHERE id = ? LIMIT 1`)
     .bind(row.user_id)
@@ -1237,6 +1281,55 @@ authRoutes.post('/auth/password/change', async (c) => {
   await createSession(c, session.userId);
   await bumpMetric(c.env.DB, 'password_change');
   return c.json({ ok: true, revokedOthers: revoked });
+});
+
+// Task 73 (fondateur) : mot de passe OPTIONNEL pour les comptes qui n'en ont
+// pas encore (inscription email, Google, Facebook). La session connectée fait
+// office de preuve d'identité — pas besoin de code par email. Le mot de passe
+// devient une 2ᵉ voie de connexion : « ceux qui se rappellent de leur mot de
+// passe ne fouillent jamais leur boîte mail ». L'identifiant de connexion est
+// l'email du compte (username = email, username_canonical = email minuscule —
+// zéro collision possible avec un pseudo, voir /auth/password/login).
+authRoutes.post('/auth/password/set', async (c) => {
+  const session = await requireAuth(c);
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const password = typeof payload?.password === 'string' ? payload.password : '';
+  const policy = passwordPolicyError(password);
+  if (policy) throw errors.badRequest(policy);
+  const ip = await ipHash(c);
+  const perIp = await hitRateLimit(c.env.DB, RATE_RULES.pwSetIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.pwSetIp.scope);
+
+  const existing = await c.env.DB.prepare(`SELECT user_id FROM auth_password WHERE user_id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ user_id: string }>();
+  if (existing) {
+    throw errors.badRequest('Ton compte a déjà un mot de passe — utilise « changer mon mot de passe ».');
+  }
+  const user = await c.env.DB.prepare(`SELECT email FROM users WHERE id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ email: string }>();
+  if (!user) throw errors.unauthorized();
+  if (isPlaceholderEmail(user.email)) {
+    throw errors.badRequest('Ce compte n\u2019a pas d\u2019adresse email réelle pour ancrer un mot de passe.');
+  }
+  const email = user.email.toLowerCase();
+  const now = Math.floor(Date.now() / 1000);
+  try {
+    await c.env.DB.prepare(
+      `INSERT INTO auth_password (user_id, username, username_canonical, password_hash, recovery_code_hash, failed_attempts, created_at, updated_at)
+       VALUES (?, ?, ?, ?, NULL, 0, ?, ?)`,
+    )
+      .bind(session.userId, email, email, await hashPassword(password), now, now)
+      .run();
+  } catch (err) {
+    if (String(err).includes('UNIQUE')) {
+      throw errors.conflict('Cet email est déjà rattaché à un autre identifiant de connexion wairyu.');
+    }
+    throw err;
+  }
+  await bumpMetric(c.env.DB, 'password_set');
+  return c.json({ ok: true, username: email });
 });
 
 // Email de récupération (connecté) : remplace le placeholder par un vrai

@@ -11888,3 +11888,105 @@ body.theme-dark .presence-radar {
 .notifgate-note strong {
   color: #14522f;
 }
+
+/* ===========================================================================
+   AUTH-ALT (t71) — bloc « autres voies » des pages inscription / connexion.
+   Demande fondateur : liberté de choisir sa voie (email / pseudo), bloc
+   convivial, ergonomique, doux, impossible de s'y perdre. Remplace visuellement
+   les anciens <p class="switch"> des 4 écrans d'auth — les règles .switch
+   (lignes 441/447) sont conservées, rien n'est supprimé (append-only).
+=========================================================================== */
+.auth-alt {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px dashed #e7e1ee;
+}
+
+.auth-alt-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  text-align: center;
+}
+
+.auth-alt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-alt-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 14px;
+  background: #fbf9fd;
+  border: 1px solid #e7e1ee;
+  border-radius: 14px;
+  color: var(--c-text);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.auth-alt-item .aa-icon {
+  font-size: 17px;
+  flex: 0 0 auto;
+}
+
+.auth-alt-item .aa-label {
+  flex: 1 1 auto;
+}
+
+.auth-alt-item .aa-chev {
+  color: var(--c-muted);
+  font-weight: 800;
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.auth-alt-item:hover {
+  background: #f3eefb;
+  border-color: #d8cdec;
+}
+
+.auth-alt-item:active {
+  transform: scale(0.985);
+}
+
+/* Voie la plus proche de la page courante : teinte violette douce */
+.auth-alt-item.aa-accent {
+  background: #f6f2fc;
+  border-color: #d8cdec;
+}
+
+/* Thème sombre — couleurs explicites (leçon t65 : jamais de texte illisible) */
+body.theme-dark .auth-alt {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .auth-alt-title {
+  color: #9a90a8;
+}
+
+body.theme-dark .auth-alt-item {
+  background: var(--w-surface-2);
+  border-color: var(--w-border);
+  color: #e5e7eb;
+}
+
+body.theme-dark .auth-alt-item:hover {
+  background: var(--w-surface-3);
+}
+
+body.theme-dark .auth-alt-item.aa-accent {
+  background: var(--w-surface-3);
+  border-color: rgba(255, 255, 255, 0.22);
+}

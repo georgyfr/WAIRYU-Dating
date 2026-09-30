@@ -72,6 +72,11 @@ export function Account({ me, onLoggedOut }: Props) {
   const [pwOpen, setPwOpen] = useState(false);
   const [pwCurrent, setPwCurrent] = useState('');
   const [pwNew, setPwNew] = useState('');
+  // Task 73 (fondateur) : création de mot de passe pour les comptes SANS
+  // (inscription email / Google / Facebook) — connexion par email ensuite.
+  const [pwSetOpen, setPwSetOpen] = useState(false);
+  const [pwSetNew, setPwSetNew] = useState('');
+  const [pwSetConfirm, setPwSetConfirm] = useState('');
   const [secError, setSecError] = useState<string | null>(null);
   const [secNotice, setSecNotice] = useState<string | null>(null);
 
@@ -186,6 +191,36 @@ export function Account({ me, onLoggedOut }: Props) {
       setPwOpen(false);
       setPwCurrent('');
       setPwNew('');
+    } catch (err) {
+      setSecError(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setPrefsBusy(false);
+  }
+
+  /** Task 73 — création d'un mot de passe (comptes email/social sans mot de passe).
+   * La session connectée prouve l'identité : pas de code par email nécessaire.
+   * Après création, la connexion se fait avec l'email + ce mot de passe. */
+  async function setPassword(e?: React.FormEvent) {
+    e?.preventDefault();
+    setSecError(null);
+    if (pwSetNew.length < 8) {
+      setSecError('Le mot de passe doit contenir au moins 8 caractères.');
+      return;
+    }
+    if (pwSetNew !== pwSetConfirm) {
+      setSecError('Les deux mots de passe ne correspondent pas.');
+      return;
+    }
+    setPrefsBusy(true);
+    try {
+      const r = await api<{ ok: boolean; username: string }>('/api/auth/password/set', {
+        json: { password: pwSetNew },
+      });
+      setSecNotice('Mot de passe créé ✓ — tu peux maintenant te connecter avec ton email et ce mot de passe.');
+      setPwStatus((prev) => (prev ? { ...prev, hasPassword: true, username: r.username } : prev));
+      setPwSetOpen(false);
+      setPwSetNew('');
+      setPwSetConfirm('');
     } catch (err) {
       setSecError(err instanceof Error ? err.message : 'Erreur inattendue.');
     }
@@ -837,6 +872,52 @@ export function Account({ me, onLoggedOut }: Props) {
               </button>
             )}
           </div>
+        )}
+
+        {!pwStatus?.hasPassword && pwStatus?.hasRecoveryEmail && (
+          pwSetOpen ? (
+            <div className="pw-form">
+              <p className="hint tiny">
+                Crée un mot de passe pour te connecter avec <strong>{pwStatus.recoveryEmailMasked ?? 'ton email'}</strong> —
+                plus besoin de code par email à chaque retour.
+              </p>
+              <label className="field">
+                <span>Nouveau mot de passe</span>
+                <input
+                  type="password"
+                  name="new-password"
+                  autoComplete="new-password"
+                  placeholder="au moins 8 caractères"
+                  value={pwSetNew}
+                  onChange={(e) => setPwSetNew(e.target.value)}
+                  maxLength={128}
+                />
+              </label>
+              <label className="field">
+                <span>Confirme le mot de passe</span>
+                <input
+                  type="password"
+                  name="new-password-confirm"
+                  autoComplete="new-password"
+                  value={pwSetConfirm}
+                  onChange={(e) => setPwSetConfirm(e.target.value)}
+                  maxLength={128}
+                />
+              </label>
+              <div className="btn-col">
+                <button type="button" className="btn primary" onClick={() => void setPassword()} disabled={prefsBusy}>
+                  Créer mon mot de passe
+                </button>
+                <button type="button" className="btn ghost" onClick={() => setPwSetOpen(false)} disabled={prefsBusy}>
+                  Annuler
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button type="button" className="btn ghost" onClick={() => setPwSetOpen(true)}>
+              Créer un mot de passe (connexion par email)
+            </button>
+          )
         )}
 
         {!pwStatus?.hasRecoveryEmail && !recSaved && (

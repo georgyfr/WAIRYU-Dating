@@ -35,11 +35,18 @@ export interface PushPayload {
    */
   kind?: string;
   /**
+   * Task 73 (fondateur) — code OTP brut, présent UNIQUEMENT sur kind='otp' :
+   * la page #/verify ouverte le lit via postMessage et se connecte sans
+   * saisie. Le payload est chiffré de bout en bout par le service push
+   * (VAPID) — le code ne transite JAMAIS par un endpoint REST consultable.
+   */
+  code?: string;
+  /**
    * Task 62 — court-circuite le filtrage par préférences : réservé aux pushes
    * qui RÉPONDENT à une action explicite de l'utilisateur (test « Tester la
-   * notification », félicitations à l'activation Task 59). Un utilisateur qui
-   * vient de demander un push doit le VOIR, même s'il vient d'éteindre un
-   * toggle (l'inverse serait un bug perçu).
+   * notification », félicitations à l'activation Task 59, code OTP demandé
+   * Task 73). Un utilisateur qui vient de demander un push doit le VOIR, même
+   * s'il vient d'éteindre un toggle (l'inverse serait un bug perçu).
    */
   bypassPrefs?: boolean;
 }

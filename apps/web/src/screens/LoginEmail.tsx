@@ -10,6 +10,7 @@
 import { useState } from 'react';
 import { api } from '../lib/api';
 import { SocialButtons } from '../lib/social';
+import { AuthAlt } from '../components/AuthAlt'; // t71 : bloc « autres voies » doux et lisible
 import type { AuthConfigResponse } from '@wairyu/shared';
 
 const LAST_ACCOUNT_KEY = 'wairyu.last_account';
@@ -37,7 +38,7 @@ export function LoginEmail({ config }: Props) {
     e.preventDefault();
     setError(null);
     if (!username.trim() || !password) {
-      setError('Indique ton pseudo et ton mot de passe.');
+      setError('Indique ton pseudo (ou ton email) et ton mot de passe.');
       return;
     }
     setBusy(true);
@@ -58,23 +59,23 @@ export function LoginEmail({ config }: Props) {
       </button>
       <h2>Content·e de te revoir</h2>
       <p className="hint">
-        Connexion avec ton pseudo et ton mot de passe — inutile de t'inquiéter des espaces, majuscules ou
+        Connexion avec ton pseudo (ou ton email) et ton mot de passe — inutile de t'inquiéter des espaces, majuscules ou
         accents : « Marie Claire », « marie claire » et « MARIECLAIRE » mènent au même compte.
       </p>
 
       <form onSubmit={submit} noValidate>
         <label className="field">
-          <span>Ton pseudo</span>
+          <span>Pseudo ou email</span>
           <input
             type="text"
             name="username"
             autoComplete="username"
             inputMode="text"
-            placeholder="ex : marie23"
+            placeholder="ex : marie23 ou toi@exemple.fr"
             value={username}
             onChange={(e2) => setUsername(e2.target.value)}
             autoFocus
-            maxLength={20}
+            maxLength={80}
           />
         </label>
         <label className="field">
@@ -121,30 +122,13 @@ export function LoginEmail({ config }: Props) {
 
       <SocialButtons config={config} />
 
-      <p className="switch">
-        Tu te connectais avec un code email ?{' '}
-        <a
-          href="#/login"
-          onClick={(e2) => {
-            e2.preventDefault();
-            window.location.hash = '#/login';
-          }}
-        >
-          Connexion par email
-        </a>
-      </p>
-      <p className="switch">
-        Pas encore de compte ?{' '}
-        <a
-          href="#/signup"
-          onClick={(e2) => {
-            e2.preventDefault();
-            window.location.hash = '#/signup';
-          }}
-        >
-          Créer un compte
-        </a>
-      </p>
+      <AuthAlt
+        items={[
+          { to: '#/login', icon: '📧', label: 'Se connecter avec un email', accent: true },
+          { to: '#/signup-email', icon: '✍️', label: "S'inscrire avec un pseudo" },
+          { to: '#/signup', icon: '📧', label: "S'inscrire avec un email" },
+        ]}
+      />
     </section>
   );
 }
