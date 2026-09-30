@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION COMPLÈTE — QUÊTE 6.4 (modèle des 6 items d'attitude)
+# quete : 6.4 « Tes frontières modernes » · fiche : 06 — fiche de computation
+# Item choisi : Q6.4-01 (le malaise — 1ʳᵉ dimension, paire 01×02).
+# Fichier YAML strict (gabarit des 6 items : seuls énoncé, orientation,
+# dimension et paire changent).
+# 💎 PREMIUM · P2 · opt-in · étage de révélation : privé (après le visuel)
+# SIG-6.4-01 (la divergence d'attitude) : signal SEMI-VISIBLE aux deux membres
+# du match — jamais pénalisé, jamais jugé, jamais à un tiers.
+# AUCUN rendu individuel (miroir/carte exemptés par design — classe C du registre).
+# ═══════════════════════════════════════════════════════════════════
+quete: "6.4 Tes frontières modernes"
+monde: M9                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: P2
+acces: opt-in                 # opt-in par étage — règle éthique n° 1 ; la quête entière est un consentement
+etage_revelation: prive       # les sujets chauds se dévoilent après la révélation photo, jamais avant (refonte l. 975-979)
+chiffrement: renforce         # RGPD renforcé — dédié, hors exports, effacement immédiat à la demande (refonte l. 988)
+sortie: permanente            # modifiable/supprimable à tout moment (refonte l. 992)
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Voir des contenus sexuels en solo, quand on est en couple, me pose problème."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — pôle « le malaise » ; le miroir de la paire (Q6.4-02, I) est recodé 6−r
+dimension: pornographie       # 1 des 3 dimensions internes (pornographie · masturbation · flirt) — moteur seul, jamais rendue
+type_mesure: attitude_declarative # attitude (pas comportement) — énoncé sobre, première personne, zéro description d'acte
+paire_R6: Q6.4-02             # énoncé + son miroir recodé (6−r) — certifie une attitude tenue (|D − (6−I)| ≥ 3)
+                              # une incohérence de paire n'est PAS une faute : elle n'alimente aucun signal
+double_balise:
+  carte_id: null              # AUCUNE carte — lecture carte privée par design (refonte l. 2007 · l. 3784)
+  signal_id: SIG-6.4-01       # la divergence d'attitude — signal SEMI-VISIBLE « sujet de conversation à aborder tôt » :
+                              # affiché aux DEUX membres du match, symétrique, sans direction, sans attribution ;
+                              # jamais pénalisé, jamais jugé, jamais à un tiers — seuil |écart| ≥ 0.30
+                              # (normalisée 0-1) PROVISOIRE — À VALIDER PAR LE COMITÉ
+  signal_moteur: null         # aucune signature moteur séparée — la position d'attitude individuelle
+                              # est un intermédiaire interne (jamais rendue, jamais score)
+rendu:
+  carte: false                # exemption par design (classe C — zéro portrait individuel)
+  miroir: false               # exemption par design (07 : documentation de l'exemption)
+  individuel: false           # aucun texte individuel existe pour cette quête
+  dyadique: true              # le seul canal rendu : brique FRI (100-150 mots, gabarit au 04)
+computation:
+  position_interne:
+    role: intermediate_moteur
+    regle: >-
+      1 position d'attitude par dimension (moyenne de l'item D et de l'item I recodé 6−r,
+      normalisée 0-1). Intermédiaire interne JAMAIS rendu individuellement — ni score, ni
+      profil, ni étiquette. Alimente un seul usage : le croisement SIG-6.4-01
+    rendu: aucun               # zéro sortie individuelle
+  signal:
+    role: divergence_aux_deux
+    mecanisme: >-
+      SIG-6.4-01 — à la formation du match, pour chaque dimension : si |position_A − position_B|
+      >= seuil (0.30 provisoire, comité), afficher le signal semi-visible aux DEUX membres :
+      brique FRI (gabarit 04) — le sujet nommé en toutes lettres, la divergence dite sans
+      direction ni attribution, « vos deux positions sont légitimes » gravé au gabarit.
+      JAMAIS de pénalité : aucun score, aucune modulation, aucune exclusion de match — la
+      divergence est une conversation à ouvrir, pas une incompatibilité (le seul dealbreaker
+      du bloc intime vit en 6.5, et il est digne)
+    rendu: semi_visible_espace_match   # les deux membres du match — jamais un profil public, jamais un tiers
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      3 paires R6 complètes (01×02 · 03×04 · 05×06) : |D_k − (6 − I_k)| >= 3 certifie une
+      attitude tenue. Une incohérence de paire n'est PAS une faute : elle ne pénalise rien,
+      elle n'alimente aucun signal (le jugement d'attitude est interdit — cadre éthique l. 990)
+  ancrage:
+    rappel_autorise: false     # AUCUN rappel individuel : citer l'énoncé d'un membre au profil de
+                               # l'autre trahirait la confidentialité renforcée — le gabarit FRI ne cite rien
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 6 items d'attitude. Seuls changent : énoncé, orientation
+    (les I recodés 6−r : 02 · 04 · 06), dimension (pornographie · masturbation · flirt),
+    paire_R6.
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) : l'écran d'intro
+    n'anticipe aucun autre contenu ; badge visible au 00-README et à l'entête de complétion.
+  - >-
+    Éthique centrale : AUCUNE bonne réponse — deux attitudes opposées sont légitimes ; c'est
+    leur conversation qui protège le couple. Pornophile et pornophobe sont des attitudes
+    légitimes (refonte l. 990) : le système ne juge jamais les attitudes, il signale la
+    divergence à explorer tôt — aux deux, jamais à un tiers.
+  - >-
+    Inclusion structurelle (règle éthique n° 5) : les énoncés et le croisement sont
+    indépendants du genre, de l'orientation et de l'âge — matrices identiques dans toutes
+    les configurations (documenté au 01).
+  - >-
+    Mélange 6.4 : graine 264427 (1ʳᵉ génération V13, zéro collision vérifiée), analyse honnête
+    c1/c4 des blocs de 2 au 02-plan — config canonique ci/quetes/6.4.json À CRÉER par la
+    session principale (course canonique attendue, archive ci/resultats-melange/6.4.json).
+  - >-
+    « micro-cheating » : terme technique du refonte, INTERDIT au rendu — l'app dit
+    « le flirt en ligne » (verrou gravé au 00-README, vérifié machine sur le dossier).

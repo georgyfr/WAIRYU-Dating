@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION COMPLÈTE — QUÊTE 6.5 (modèle des 3 items déclaratifs)
+# quete : 6.5 « Ton désir, ta définition » · fiche : 06 — fiche de computation
+# Item choisi : Q6.5-01 (l'identité du désir — cœur de l'inclusion).
+# Fichier YAML strict (gabarit des 3 items : seuls énoncé, options et dimension changent).
+# 💎 PREMIUM · P2 · LE SEUL item du bloc intime AFFICHÉ (visible, au choix du membre).
+# Format : choix-déclaratif — PAS une échelle Likert (échelle « déclaratif » documentée au 01).
+# L'asexualité JAMAIS en déficit — SIG-6.5-01 (dealbreaker digne) : MOTEUR SEUL.
+# ═══════════════════════════════════════════════════════════════════
+quete: "6.5 Ton désir, ta définition"
+monde: M9                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: P2
+acces: visible                # le seul item du bloc intime affiché — la passation reste un consentement (règle éthique n° 1)
+visibilite: visible           # affichage au choix du membre, sur son profil — identité, pas comportement (SIG-6.5-02)
+chiffrement: standard         # arbitrage de la mission — déclaratif d'identité affiché par design ;
+                              # DIVERGENCE documentée avec le régime renforcé du bloc : sortie permanente
+                              # et modification libre couvrent le régime — À VALIDER PAR LE COMITÉ/juridique
+sortie: permanente            # la définition se change quand la personne change
+modification: libre           # modifiable à tout moment — réversibilité immédiate de l'affichage
+format: choix_declaratif      # l'énoncé propose des options — PAS une échelle Likert ;
+                              # échelle « déclaratif » : zéro degré, zéro intensité, zéro score
+enonce: "Mon désir est…"
+options:                      # les 4 options EXACTES de la mission (verbatim refonte l. 902) —
+                              # les 4 sont légitimes, AUCUNE hiérarchie, aucune « case normale »
+  - option: "central"                       # le désir occupe une place majeure — pleine et entière
+  - option: "présent"                       # le désir existe, sans occuper le devant — pleine et entière
+  - option: "faible mais assumé"            # l'intensité ressentie, telle que déclarée — « assumé » retourne toute lecture de manque
+  - option: "je me définis comme asexuel(le)" # une ORIENTATION complète et légitime (refonte l. 902) —
+                                              # pas « à faible désir » : une identité ;
+                                              # rendu avec accord au genre déclaré (asexuel / asexuelle — moteur)
+reponse_requise: true         # Q6.5-01 est le cœur de la quête — la quête complète exige un choix parmi les 4
+                              # (02/03 offrent l'option de silence : « Je ne souhaite pas le dire »)
+orientation: null             # sans-objet — aucun recodage 6−r sur une identité déclarée (hors Likert)
+dimension: identite_du_desir  # étiquette de déclaration (moteur) — jamais un score, jamais rendue
+type_mesure: declaratif_identite # l'inclusion : on enregistre qui la personne se dit être — on ne la classe jamais
+paire_R6: null                # sans-objet — 1 item par dimension, aucune fiabilité interne attendue
+double_balise:
+  carte_id: inclusion_6.5     # la variante unique digne (affichage choisi — cartes.yaml)
+  signal_id: SIG-6.5-02       # la visibilité digne — l'affichage choisi, réversible à tout moment
+  signal_moteur: SIG-6.5-01   # [MOTEUR SEUL] — le dealbreaker digne : asexuel(le) assumé × libido-forte
+                              # assumée = une incompatibilité à éliminer tôt, DIGNEMENT (élimination
+                              # respectueuse, JAMAIS une pénalité, JAMAIS un « écart », JAMAIS un verdict
+                              # affiché — la non-proposition est une absence, les profils restent intacts) ;
+                              # condition croisée 6.2 ATTENDUE, non calculée — À VALIDER PAR LE COMITÉ
+rendu:
+  miroir: brique_SYN_unique   # 1 brique factuelle 40-60 mots (catégorie C — refonte l. 3700 · l. 3785) — fichier 07
+  carte: variante_unique_digne # l'affichage choisi au profil (cartes.yaml) — sans ombre (exemption documentée)
+  interpretation: false       # JAMAIS interprétée psychologiquement (catégorie C)
+computation:
+  declaration:
+    role: identite_enregistree
+    regle: >-
+      l'option déclarée est une étiquette d'identité — aucune agrégation, aucune normalisation,
+      aucun score ; elle alimente l'affichage choisi (SIG-6.5-02) et la condition du dealbreaker
+      digne (SIG-6.5-01, MOTEUR SEUL — croisée avec l'intensité déclarée en 6.2, condition et
+      seuil attendus)
+    rendu: etage_1_et_2        # carte (variante unique digne) + miroir (brique SYN unique)
+  dealbreaker:
+    role: moteur_seul
+    mecanisme: >-
+      SIG-6.5-01 — le moteur n'identifie AUCUN déficit : il rapproche deux définitions
+      légitimes du désir et constate qu'elles ne s'habitent pas ; l'élimination est tôt,
+      respectueuse et silencieuse (aucun message de rejet, aucun tiers, aucune trace) ;
+      les échelles d'intensité du bloc intime ne traitent JAMAIS l'asexualité comme un
+      déficit (gravé au 00 et au 03) ; si l'une des deux définitions évolue (Q6.5-03),
+      le moteur réévalue
+    rendu: jamais_expose       # [MOTEUR SEUL] — la marque est obligatoire partout où cette signature est documentée
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — substitution CERTIFIÉE du choix exact (04) ; un non-choix ne produit aucune phrase (zéro commentaire sur un silence) — zéro citation fausse"
+    exemple: "Tu as choisi de dire que tu te définis comme asexuelle."
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 3 items déclaratifs. Seuls changent : énoncé, options
+    (Q6.5-02/03 : « C'est vrai pour moi » · « Ce n'est pas tout à fait vrai pour moi » ·
+    « Je ne souhaite pas le dire » — option de première classe, précédent 1.7), dimension.
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) : l'écran d'intro
+    n'anticipe aucun autre contenu ; badge visible au 00-README et à l'entête de complétion.
+  - >-
+    Éthique centrale : les 4 options sont légitimes, aucune hiérarchie — l'asexualité est une
+    orientation complète et légitime, JAMAIS un déficit ; le dealbreaker digne élimine tôt,
+    dignement, sans pénalité et sans « écart » (refonte l. 902).
+  - >-
+    Inclusion structurelle (règle éthique n° 5) : les 3 items sont indépendants du genre, de
+    l'orientation et de l'âge — l'inclusion EST le propos de la quête (angle manquant n° 5).
+  - >-
+    Mélange SANS-OBJET : ordre de passation fixe 01→02→03 (séquence narrative identité →
+    dignité → évolution), graine non tirée, zéro course (02-plan-de-passage, précédents
+    1.7 / 4.4) — aucune config ci/quetes/6.5.json attendue de cette session.
+  - >-
+    Gabarit du miroir : classe C du registre (1 brique SYN factuelle 40-60 mots, jamais
+    interprétée) au lieu du LÉGER [7] — arbitrage consigné au 00-README, comité.

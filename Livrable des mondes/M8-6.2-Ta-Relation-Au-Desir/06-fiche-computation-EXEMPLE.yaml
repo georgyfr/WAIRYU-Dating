@@ -1,0 +1,66 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 15 canaux carte)
+# Item choisi : Q6.2-07 (l'élan d'initiation — l'item carte qui alimente directement la matrice du
+# refus SIG-6.2-02 [MOTEUR SEUL] : INIT bas = initiateur-hésitant, le pôle qui croise le refus-sensible ;
+# sa fiche montre la séparation INIT / STYLE_INIT — décision n° 3 du 01 — sans jamais toucher au contenu
+# des trames (les 5▲ COC portent la mesure de vigilance, pas les carte) ni à un mot explicite).
+# Fichier YAML strict (gabarit des 15 items carte : seuls énoncé, dimension, orientation et ancrage changent).
+# Champs étendus V13 (extension documentée au 00-README) : acces · etage_revelation · chiffrement · sortie.
+# ═══════════════════════════════════════════════════════════════════
+# 🗒️ quete: 6.2 · fiche: première émission V13.B (FM à graver à la consolidation) · session: 2026-09-30
+# ═══════════════════════════════════════════════════════════════════
+item: Q6.2-07
+quete: "6.2 Ta relation au désir"
+monde: M8                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+acces: opt-in                 # V13 — opt-in strict, la récompense ouvre l'étage, jamais un châtiment
+etage_revelation: 2           # V13 — étage 2 de l'Intime : activation à consentement MUTUEL des deux membres
+chiffrement: maximal          # V13 — le plus élevé du projet (quête où vit COC) — jamais dans les exports
+sortie: permanente            # V13 — toute réponse modifiable ou supprimable à tout moment
+phase: "P2"                   # refonte l. 2005 — quête entière
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Faire le premier pas dans l'intimité me vient sans effort."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score INIT (recodage pour la paire 08 : 6−r)
+dimension: initiation         # bloc B (3 mono — bloc impair) ; familles documentaires : température (A) · initiation (B) · fusion (C)
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: intime_6.2        # alimente la carte (3 variantes — étage 2 de « Ta Carte Intime ») et le miroir (3 profils)
+  signal_id: SIG-6.2-02       # la matrice du refus — MOTEUR SEUL (alimente COC ; jamais au rendu, jamais en UI)
+computation:
+  carte:
+    role: score_de_dimension
+    regle: >-
+      INIT = (Q6.2-07 D + Q6.2-08 I recodé 6−r) / 2, normalisé 0-1 ; STYLE_INIT = Q6.2-09 brut
+      (facette COMMENT : haut = le terrain préparé, bas = la franchise directe — JAMAIS fusionnée dans
+      INIT, décision n° 3 du 01) ; TEMP_ELEVEE / TEMP_NEUTRE / TEMP_BASSE = paires 01-06 (I recodés) ;
+      FUS_COEUR / FUS_BESOIN / FUS_CONTEXTE = paires 10-15 (I recodés) — cascade de rendu : dominante
+      = max des trois températures ; quasi-égalité < 0.05 → départage à la 1re position de passation ;
+      bande 0.10 → le secondaire nuance S2 (3 profils gelés mission) — bornes À VALIDER PAR LE COMITÉ [9]
+    rendu: etage_2            # carte (3 variantes) + miroir (3 profils) — consentement mutuel à l'activation
+  signal:
+    role: matrices_et_coc
+    mecanisme: >-
+      SIG-6.2-01 : matrice ambiante — TEMP_ELEVEE × TEMP_BASSE croisés entre les deux membres (et
+      symétriquement), vigilance si écart > 0.6 → « une différence de température ambiante, pas une
+      question de préférences », signal semi-visible AUX DEUX, jamais à un tiers, jamais de pénalité ;
+      SIG-6.2-02 : refus-sensible (COC) × initiateur-hésitant (INIT bas) = vigilance MAJEURE —
+      [MOTEUR SEUL, JAMAIS rendu] — alimente COC ; SIG-6.2-03 : les 5▲ COC (Q6.2-T53→T57) alimentent
+      le signal COC — MOTEUR SEUL, chiffrement maximal, croisement futur avec 8.3 « Le refus » ATTENDU
+      non calculé (P3/M11) ; SIG-6.2-04 : divergence FUS_COEUR × FUS_BESOIN entre membres =
+      information conversationnelle aux DEUX, jamais de pénalité ; les 5▲ n'entrent dans AUCUN score
+      affiché, AUCUN miroir, AUCUNE carte
+    rendu: moteur_seul         # le portrait raconte, les matrices et COC calculent — jamais l'inverse
+    condition: "seuils 0.6 (ambiante) / 0.05 (quasi-égalité) / bande 0.10 proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: cohérence_interne
+    mecanisme: >-
+      paire R6 sur les blocs A et C (énoncé + recodé 6−r) ; bloc B impair (3 mono — aucune paire
+      possible, décisions n° 1) ; incohérences alimentent la fiabilité du profil (QFI — dictionnaire [4])
+    rendu: moteur_seul
+ancre_rendu:
+  citation_permise: "Q6.2-07 (D) citable en toutes lettres au score haut — rappels ancrés aux énoncés D uniquement"
+  citation_interdite: "les 5▲ (Q6.2-T53→T57) : aucune citation, aucun rappel, aucune restitution — C: AUCUN · S: COC · A: aucun rappel"
+notes_production:
+  - "zéro accord en genre imposé — l'énoncé ne qualifie pas le répondant"
+  - "neutralité stricte : INIT bas n'est pas un déficit — un mode d'initiation attendu, jamais une carence"
+  - "charte TEMPÉRATURE : le construit public et ses dérivés (radical phob- compris) jamais écrits — le rendu parle de température"

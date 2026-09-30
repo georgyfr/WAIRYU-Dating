@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 6.3 « TA CARTE DES PRÉFÉRENCES » — 4 VARIANTES (étage 1 — PRIVÉ)
+# 💎 PREMIUM · P2 · opt-in strict · Création : V13.C — MONDE M9 « L'INTIME — LES PROFONDEURS »
+# (production neuve déclarée — B.3 : angles cadrés au refonte gelée l. 494 / l. 2006 / audit §3 l. 916-932).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# 🔒 ÉTAGE 3 — PRIVÉ (SIG-6.3-03 — verrou capital, gravé au 00/03/04/06) :
+#    la carte intime la plus personnelle — JAMAIS visible sans DOUBLE consentement
+#    (après la révélation photo, au choix des deux) · chiffrement renforcé ·
+#    JAMAIS dans les exports · ZÉRO tiers · sortie permanente.
+#    LA CARTE SE PARTAGE, ELLE NE SE MONTRE PAS : le bouton standard de partage public est
+#    ABSENT de cette quête (règle [2]/[7] — trois usages/trois visibilités) ; la visibilité à
+#    l'autre passe par la progression consentie uniquement. Aucune variante ci-dessous
+#    n'expose un croisement, un seuil, un score ou une donnée de l'autre personne.
+# Sélection : cascade des « accords intimes » (partition exclusive + exhaustive — SIG-6.3-03/C6,
+# proposition : seuils 0.60 / 0.30 / 0.40 À VALIDER PAR LE COMITÉ [9], détail au 07 §0).
+# DOCTRINE DES PRÉFÉRENCES : aucune hiérarchie entre profils — la carte décrit un accord,
+# elle ne le classe pas (zéro verdict, zéro correction, toute préférence légitime).
+# Le miroir de quête seul ne connaît pas l'autre personne — aucune divergence signalée ici.
+# SIG-6.3-02 (matrice exploration) : [MOTEUR SEUL] — INVISIBLE au rendu.
+# SIG-6.3-01 (croisement des besoins d'après — ID moteur) : information conversationnelle aux
+# DEUX — zéro pénalité, zéro tiers — une carte de quête ne l'expose pas.
+# AUCUNE trame hébergée par 6.3 — rien à cacher, rien à masquer. Zéro contenu explicite :
+# rythme, ambiance, cadre. Zéro absolu de fréquence au rendu. Le mot anglais du d'après est
+# interdit au rendu (rendu : « le besoin d'après »). Zéro marque commerciale, zéro nom d'auteur.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "6.3 Ta carte des préférences"
+monde: M9
+statut_freemium: premium
+acces: opt-in                 # opt-in strict — récompense, jamais châtiment
+etage_revelation: 3-prive     # double consentement — après révélation photo, au choix des deux
+chiffrement: renforce         # jamais dans les exports
+sortie: permanente            # retrait à tout moment
+format: "etage_1_carte_prive" # carte étage 1 au contenu de l'étage 3 — jamais publique
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "sept lectures déclarées — douceur (Q6.3-01 × 02) · intensite (03 × 04) · exploration (05 × 06) · jeu (07, recodé) · connexion (08) · nouveaute (09 × 10 × 11) · versants d'après proximite/autonomie (12 × 13) + discussion (14, recodé) — I recodés 6−r, normalisés 0-1"
+  logique: "cascade des accords intimes (première règle vraie) : nouveaute ≥ 0.60 ET exploration ≥ 0.60 → MOUVEMENT · |douceur − intensite| ≥ 0.30 → DEUX-VITESSES · nouveaute < 0.40 OU douceur ≥ 0.60 → CADRE · sinon → NUANCES · le secondaire colore la conversation, jamais un deuxième portrait"
+  bornes: "seuils 0.60 / 0.30 / 0.40 (proposition) — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "4 sélections = partition totale de l'espace de réponses — chaque carte tombe dans exactement une variante (C6, exclusive + exhaustive par construction : ordre de cascade + repli)"
+  non_participant: "AUCUN croisement, aucun score de compatibilité, aucune exclusion de match depuis cette quête à l'affichage — SIG-6.3-02 vit au ledger [MOTEUR SEUL], SIG-6.3-01 est une information conversationnelle remise aux DEUX dans la vue partagée (jamais une carte de quête)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard, ADAPTÉE étage 3) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied (SANS bouton de partage public — voir verrou ci-dessus).
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Ta carte des préférences » · 🔒 PRIVÉE (à vous deux, si vous le choisissez tous les deux)"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🔒 Ta carte reste dans ton coffre — elle se partage uniquement si vous l'acceptez tous les deux · [Quête suivante] · [Retirer ma carte]"
+fenetre_sur_l_autre:
+  - "F1 : Cette carte ne se montre pas — elle se partage uniquement par double consentement, après la révélation photo, au choix des deux."
+  - "F2 : Rien de cette quête ne sort en export ni vers un tiers — et tu la retires quand tu veux."
+
+variantes:
+
+  - id: CARTE-6.3-MOUVEMENT
+    nom: "L'exploration en mouvement"
+    ordre_selecteur: 1
+    condition: "nouveaute >= 0.60 ET exploration >= 0.60 (le double moteur — cascade règle 1)"
+    ancre_item: ["Q6.3-01", "Q6.3-02", "Q6.3-03", "Q6.3-04", "Q6.3-05", "Q6.3-06", "Q6.3-07", "Q6.3-08", "Q6.3-09", "Q6.3-10", "Q6.3-11", "Q6.3-12", "Q6.3-13", "Q6.3-14"]
+    portrait: "Tu l'as répondu : tu aimes explorer de nouveaux cadres quand la confiance est là, et l'envie d'explorer ne s'use pas. Ta carte avance : la curiosité y est un moteur, pas une phase."
+    ombre: "Le pas de côté, répété plus vite que l'autre ne suit, se lit comme une course. L'autre peut se sentir un invité perpétuel dans une maison qui bouge."
+    tension_interieure: "ta carte avance — la question est la vitesse qu'on marche à deux, et qui l'annonce."
+
+  - id: CARTE-6.3-CADRE
+    nom: "Le cadre rassurant"
+    ordre_selecteur: 2
+    condition: "nouveaute < 0.40 OU douceur >= 0.60 (le connu et le doux portent — cascade règle 3)"
+    ancre_item: ["Q6.3-01", "Q6.3-02", "Q6.3-03", "Q6.3-04", "Q6.3-05", "Q6.3-06", "Q6.3-07", "Q6.3-08", "Q6.3-09", "Q6.3-10", "Q6.3-11", "Q6.3-12", "Q6.3-13", "Q6.3-14"]
+    portrait: "Tu l'as répondu : un cadre doux où rien ne presse te convient, et le connu, avec le temps, te repose. Le connu, chez toi, est une langue apprise à deux : le répertoire est une promesse tenue."
+    ombre: "Des rituels trop solides deviennent des murs doux. Le cocon protège et isole : tout est si confortable que vouloir du neuf semble ingrat."
+    tension_interieure: "ta carte installe — la question est si le cadre se choisit encore, à deux, de temps en temps."
+
+  - id: CARTE-6.3-DEUX-VITESSES
+    nom: "Le rythme à deux vitesses"
+    ordre_selecteur: 3
+    condition: "|douceur − intensite| >= 0.30 (le tempo tranché — cascade règle 2)"
+    ancre_item: ["Q6.3-01", "Q6.3-02", "Q6.3-03", "Q6.3-04", "Q6.3-05", "Q6.3-06", "Q6.3-07", "Q6.3-08", "Q6.3-09", "Q6.3-10", "Q6.3-11", "Q6.3-12", "Q6.3-13", "Q6.3-14"]
+    portrait: "Tu l'as répondu : tu aimes quand l'ambiance monte et prend toute la place. Et, dans le même temps, qu'un cadre doux où rien ne presse. Chez toi, le désir a deux vitesses, et aucune contradiction."
+    ombre: "Le changement de vitesse se lit comme une nouvelle. L'autre navigue entre deux cartes sans savoir laquelle est ouverte ce soir."
+    tension_interieure: "ta carte alterne — la question n'est pas quelle vitesse est vraie, c'est d'annoncer le passage."
+
+  - id: CARTE-6.3-NUANCES
+    nom: "L'accord en nuances"
+    ordre_selecteur: 4
+    condition: "aucune règle 1-3 vraie (les tempos serrés — cascade règle 4, repli)"
+    ancre_item: ["Q6.3-01", "Q6.3-02", "Q6.3-03", "Q6.3-04", "Q6.3-05", "Q6.3-06", "Q6.3-07", "Q6.3-08", "Q6.3-09", "Q6.3-10", "Q6.3-11", "Q6.3-12", "Q6.3-13", "Q6.3-14"]
+    portrait: "Ta carte ne tranche pas : douceur et montée, connu et nouveau, proximité et coin te vont selon le moment. Tu l'as répondu sans le dire : c'est une carte d'écoute, pas une absence de carte."
+    ombre: "« Ça dépend » se lit parfois comme « ne demande pas ». La souplesse peut devenir du flou : tes préférences restent devinées au lieu d'être dites."
+    tension_interieure: "ta carte module — la question est de dire le tempo à chaque fois qu'il change."

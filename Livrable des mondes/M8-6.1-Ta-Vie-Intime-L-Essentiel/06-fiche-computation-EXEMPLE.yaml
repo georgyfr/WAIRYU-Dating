@@ -1,0 +1,92 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 10 canaux carte)
+# Item choisi : Q6.1-09 (la limite dite — l'angle le plus sensible du côté carte de cette quête :
+# poser sa limite à voix haute se joue à la frontière du consentement — sans jamais toucher au contenu
+# des trames (les 2▲ CMP portent la mesure de sécurité, pas les carte) ni à un mot explicite).
+# Fichier YAML strict (gabarit des 10 items carte : seuls énoncé, dimension, orientation et ancrage changent).
+# Champs étendus V13 (extension documentée au 00-README) : acces · etage_revelation · chiffrement · sortie.
+# ═══════════════════════════════════════════════════════════════════
+# 🗒️ quete: 6.1 · fiche: première émission V13.A (FM à graver à la consolidation) · session: 2026-09-30
+# ═══════════════════════════════════════════════════════════════════
+item: Q6.1-09
+quete: "6.1 Ta vie intime — l'essentiel"
+monde: M8                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+acces: opt-in                 # V13 — opt-in strict, la récompense ouvre l'étage, jamais un châtiment
+etage_revelation: 1           # V13 — premier étage intime, débloqué après la révélation du visuel
+chiffrement: renforce         # V13 — RGPD dédié, jamais dans les exports
+sortie: permanente            # V13 — toute réponse modifiable ou supprimable à tout moment
+phase: "P2"                   # refonte l. 2004 — premier monde opt-in du territoire intime
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Je nomme mes limites à voix haute, avant la gêne."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de dimension
+dimension: communication      # 3/3 des trois dimensions (paire R6 avec Q6.1-10) — codes internes : desir, intention, communication
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: intime_6.1        # alimente la carte (4 variantes — étage 1 de « Ta Carte Intime ») et le miroir (4 profils)
+  signal_id: SIG-6.1-02       # la communication comme modératrice — MOTEUR SEUL (terme d'interaction, jamais rendu tel quel)
+computation:
+  carte:
+    role: score_de_dimension
+    regle: >-
+      trois scores de dimension (DES_D, INT_D, COM_D), I recodés 6−r, normalisés 0-1 — cascade de rendu :
+      dominante = max ; quasi-égalité < 0.05 → départage au pivot puis à la 1re position de passation ;
+      communication dominante → « le pont par la parole » ; sinon la température du désir décide
+      (bandes 0.60 / 0.40) — bornes À VALIDER PAR LE COMITÉ [9]
+    rendu: etage_1_et_2        # carte (4 variantes) + miroir (4 profils)
+  signal:
+    role: ecart_et_moderatrice
+    mecanisme: >-
+      SIG-6.1-01 : écart de désir |DES_A − DES_B| > 0.7 → signal « à aborder tôt » rendu AUX DEUX MEMBRES
+      du match, sans blâme (seuil COMITÉ — jamais arbitraire ; jamais à un tiers) ; SIG-6.1-02 : terme
+      d'interaction COM × écart — une bonne communication compense des écarts modérés [MOTEUR SEUL,
+      JAMAIS rendu tel quel] ; SIG-6.1-03 : les 2▲ CMP (Q6.1-T51/T52) alimentent le signal CMP —
+      MOTEUR SEUL, croisement impulsivité 1.4 ATTENDU, non calculé ici (précédent JR1×Mania) ;
+      SIG-6.1-04 : SER_D (sous-module sérénité, bloc fixe hors mélange) × COM_D → ressources
+      bienveillantes REN, jamais une étiquette ; les 2▲ n'entrent dans AUCUN score affiché, AUCUN
+      miroir, AUCUNE carte
+    rendu: moteur_seul         # le portrait raconte, l'écart et la modératrice calculent — jamais l'inverse
+    condition: "seuils 0.7 (écart) / 0.05 (quasi-égalité) / bandes 0.60-0.40 (température) proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur la dimension,
+      rappel en toutes lettres, score de dimension = moyenne des items valides + prudence
+      (précédent SIG-2.1-02) ; 4 paires R6 complètes (01×02 · 04×05 · 07×08 · 09×10)
+      + 2 pivots mono (03 · 06 — cohérence intra-dimension + QFI)
+  modulation:
+    - si: "paire R6 divergente sur une dimension"
+      effet: "dimension mise en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "COM_D élevé croisé à un écart de désir modéré"
+      effet: "modératrice au moteur (SIG-6.1-02) — la compensation se calcule, elle ne se raconte jamais comme un correctif"
+    - si: "SER_D bas croisé à COM_D bas (sous-module sérénité actif)"
+      effet: "SIG-6.1-04 — ressources bienveillantes REN au rendu ressources séparé, jamais une étiquette, jamais au miroir de profils"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la mécanique décrite, jamais une étiquette clinique, jamais un code, jamais un contenu explicite"
+    exemple: "quand tu as dit nommer tes limites à voix haute, avant la gêne"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 10 items carte. Seuls changent : énoncé, dimension (desir →
+    communication), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les 2▲ (Q6.1-T51/T52 — signal CMP) suivent un gabarit distinct : codes + orientation D uniforme +
+    signal_id seuls au dépôt (énoncés exclusifs au document trames confidentiel — Partie 10, à graver par
+    le comité : aucune réinvention, règle 11-b) — aucune ligne de carte, de miroir ou de rappel ne les
+    touche. Phase de consommation moteur : P2, décision comité de mise en signal requise.
+  - >-
+    Le sous-module sérénité (Q6.1-S01→S04) vit HORS de ce gabarit : bloc fixe hors mélange, opt-in
+    renforcé distinct, rendu ressources bienveillantes séparé (REN compatible) — jamais un profil de
+    miroir, jamais une carte.
+  - >-
+    Les rappels de rendu citent exclusivement les énoncés D des 10 carte (règle d'ancrage — un énoncé I
+    lu comme accord brut contredit le score recodé au profil dominant).
+  - >-
+    Mélange 6.1 : graine 261427 (210427 + 1000 × ordinal 51), outil générique melange.py, ancres
+    attendues {6, 12} (divmod(12,2)=(6,0)), config ci/quetes/6.1.json À CRÉER — SESSION PRINCIPALE,
+    course réelle ensuite (analyse et démonstration de faisabilité hors dépôt au 02).
+  - >-
+    Champs étendus V13 (acces, etage_revelation, chiffrement, sortie) : première application du domaine
+    de l'Intime — extension documentée au 00-README, À VALIDER PAR LE COMITÉ ; statut freemium : premium
+    (Constitution [6]) — l'intro ne présuppose aucun monde gratuit, zéro teaser ; le rendu reste identique
+    à une quête gratuite (le premium n'achète jamais l'autre).

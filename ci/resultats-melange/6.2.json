@@ -1,0 +1,129 @@
+{
+  "quete": "6.2",
+  "titre": "Ta relation au désir",
+  "graine_finale": 262427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q6.2-03"
+    },
+    {
+      "position": 2,
+      "code": "Q6.2-05"
+    },
+    {
+      "position": 3,
+      "code": "Q6.2-08"
+    },
+    {
+      "position": 4,
+      "code": "Q6.2-T53",
+      "trame": "COC"
+    },
+    {
+      "position": 5,
+      "code": "Q6.2-01"
+    },
+    {
+      "position": 6,
+      "code": "Q6.2-15"
+    },
+    {
+      "position": 7,
+      "code": "Q6.2-10"
+    },
+    {
+      "position": 8,
+      "code": "Q6.2-T54",
+      "trame": "COC"
+    },
+    {
+      "position": 9,
+      "code": "Q6.2-02"
+    },
+    {
+      "position": 10,
+      "code": "Q6.2-07"
+    },
+    {
+      "position": 11,
+      "code": "Q6.2-06"
+    },
+    {
+      "position": 12,
+      "code": "Q6.2-T55",
+      "trame": "COC"
+    },
+    {
+      "position": 13,
+      "code": "Q6.2-12"
+    },
+    {
+      "position": 14,
+      "code": "Q6.2-04"
+    },
+    {
+      "position": 15,
+      "code": "Q6.2-11"
+    },
+    {
+      "position": 16,
+      "code": "Q6.2-T56",
+      "trame": "COC"
+    },
+    {
+      "position": 17,
+      "code": "Q6.2-09"
+    },
+    {
+      "position": 18,
+      "code": "Q6.2-13"
+    },
+    {
+      "position": 19,
+      "code": "Q6.2-14"
+    },
+    {
+      "position": 20,
+      "code": "Q6.2-T57",
+      "trame": "COC"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [
+    4,
+    8,
+    12,
+    16,
+    20
+  ],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    7
+  ],
+  "echanges": [
+    "pos 7 ↔ pos 9 · (0, 0, 2, 6, 2, 12) → (0, 0, 2, 4, 2, 10)",
+    "pos 15 ↔ pos 18 · (0, 0, 2, 4, 2, 10) → (0, 0, 1, 4, 2, 10)",
+    "pos 6 ↔ pos 7 · (0, 0, 1, 4, 2, 10) → (0, 0, 0, 5, 3, 10)",
+    "pos 1 ↔ pos 14 · (0, 0, 0, 5, 3, 10) → (0, 0, 0, 3, 2, 9)",
+    "pos 1 ↔ pos 2 · (0, 0, 0, 3, 2, 9) → (0, 0, 0, 3, 2, 8)",
+    "pos 7 ↔ pos 11 · (0, 0, 0, 3, 2, 8) → (0, 0, 0, 3, 1, 8)",
+    "pos 14 ↔ pos 5 · (0, 0, 0, 3, 1, 8) → (0, 0, 0, 2, 2, 6)",
+    "pos 14 ↔ pos 1 · (0, 0, 0, 2, 2, 6) → (0, 0, 0, 1, 1, 7)",
+    "pos 5 ↔ pos 6 · (0, 0, 0, 1, 1, 7) → (0, 0, 0, 0, 0, 7)"
+  ]
+}

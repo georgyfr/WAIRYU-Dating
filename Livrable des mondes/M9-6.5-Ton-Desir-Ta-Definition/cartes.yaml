@@ -1,0 +1,82 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTE DE LA QUÊTE 6.5 « TON DÉSIR, TA DÉFINITION » — LA VARIANTE UNIQUE DIGNE
+# quete : 6.5 « Ton désir, ta définition » · fiche : cartes — la variante unique
+# 💎 PREMIUM · P2 · Création : V13 — 1ʳᵉ génération (B.3 production neuve déclarée).
+# ═══════════════════════════════════════════════════════════════════
+# UNE SEULE variante — parce qu'il n'existe AUCUN « niveau » à décliner : la carte
+# répète la définition déclarée du membre, telle quelle, sans commentaire
+# (catégorie C du registre — refonte l. 3700 · l. 3785 : « 1 brique digne (SYN) —
+# jamais interprétée »).
+# EXEMPTION de la charte d'ombre (documentée) : la carte affiche une IDENTITÉ
+# déclarée, pas un portrait — interpréter une identité créerait l'ombre qu'on ne
+# peut pas dire (précédents 1.7 / 2.8 : badge déclaratif, charte d'ombre sans objet).
+# EXEMPTION du standard 55-110 (portrait + ombre + tension) : même fondement —
+# constaté 26-46 mots selon composition (vérifié machine).
+# L'affichage reste AU CHOIX du membre (SIG-6.5-02) — réversible à tout moment.
+# Le dealbreaker digne (SIG-6.5-01) : [MOTEUR SEUL] — INVISIBLE au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "6.5 Ton désir, ta définition"
+monde: M9
+statut_freemium: premium
+format: "etage_1_carte_declarative"
+
+selection:
+  variable: "la définition déclarée (Q6.5-01 + 02/03 si déclarés) — aucune agrégation, aucun score, aucun niveau"
+  logique: "UNE variante unique — la composition affiche ce que le membre a déclaré, tel quel"
+  exclusivite: "la variante est unique par construction — il n'existe ni niveau, ni profil, ni déclinaison par option (4 profils d'identité seraient 4 façades de juger)"
+  non_participant: "AUCUN croisement, aucun score de compatibilité, aucune exclusion de match depuis CETTE carte — le dealbreaker digne (SIG-6.5-01) vit au ledger, [MOTEUR SEUL], il n'a pas de texte"
+
+# Rendu de l'écran de complétion (structure adaptée au déclaratif — pas de zone d'ombre) :
+#   entête → titre de variante → la définition affichée → pied (compteur · boutons)
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Ton désir, ta définition »"
+label_ombre: null             # SANS-OBJET — identité déclarée : aucune zone d'ombre (exemption documentée, précédent 2.8)
+label_tension: null           # SANS-OBJET — même fondement : aucune tension interprétée
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Modifier ma définition] · [Quête suivante]"
+fenetre_sur_l_autre:
+  - "F1 : Ta définition se montre telle que tu l'as choisie — l'autre ne voit rien de plus."
+  - "F2 : Ce que tu déclares reste modifiable à tout moment — ta définition peut évoluer avec toi."
+
+variantes:
+
+  - id: CARTE-6.5-TA-DEFINITION
+    nom: "Ta définition, tes mots"
+    ordre_selecteur: 1        # l'unique variante — aucune sélection, aucun niveau
+    condition: "au moins Q6.5-01 déclaré (l'identité est le cœur de la quête — reponse_requise: true)"
+    ancre_item: ["Q6.5-01", "Q6.5-02", "Q6.5-03"]
+    composition:
+      ouverture: "Ce que je choisis de dire ici :"          # fixe
+      identite:                                             # Q6.5-01 — obligatoire, substitution certifiée
+        "central": "mon désir est central."
+        "présent": "mon désir est présent."
+        "faible mais assumé": "mon désir est faible mais assumé."
+        "je me définis comme asexuel(le)": "je me définis comme asexuel."   # accord au genre déclaré (asexuel / asexuelle — moteur) ;
+                                                                            # une orientation complète et légitime — jamais un déficit
+      assomption:                                           # Q6.5-02 — si « C'est vrai pour moi » ; sinon omise (aucun commentaire)
+        affichee: "Ma façon de vivre le désir m'appartient et se respecte."
+        omise: null
+      evolution:                                            # Q6.5-03 — si « C'est vrai pour moi » ; sinon omise (aucun commentaire)
+        affichee: "Mon désir peut évoluer avec le temps, les rencontres, la confiance."
+        omise: null
+      clôture: "Cette définition est la mienne — je peux la modifier à tout moment."   # fixe — sortie permanente, modification libre
+    affichage_complet: >-
+      Ce que je choisis de dire ici : mon désir est présent. Ma façon de vivre le désir
+      m'appartient et se respecte. Mon désir peut évoluer avec le temps, les rencontres,
+      la confiance. Cette définition est la mienne — je peux la modifier à tout moment.
+    affichage_complet_mots: 46   # vérifié machine (convention split — le tiret compte) — plage de composition : 26-46 mots selon déclarations
+    exclusion_ombre: >-
+      exemption documentée : identité déclarée, pas un portrait — aucune ombre, aucune
+      tension, aucune interprétation (catégorie C ; précédents 1.7 / 2.8 — badge déclaratif)
+    exclusion_score: >-
+      la carte n'entre dans aucun calcul, aucun croisement, aucune exclusion de match —
+      elle est l'affichage choisi (SIG-6.5-02), rien d'autre
+
+verrous:
+  - la variante est UNIQUE — aucune déclinaison par option, aucun libellé par niveau
+  - la carte répète les choix déclarés, elle ne les interprète pas (catégorie C — jamais interprétée)
+  - l'asexualité est rendue comme une orientation complète et légitime — JAMAIS en déficit,
+    avec l'accord de genre déclaré par le membre
+  - un non-déclaré n'apparaît pas — zéro commentaire sur un silence (option de première classe)
+  - l'affichage reste au choix du membre, réversible à tout moment (SIG-6.5-02 — sortie permanente)
+  - le dealbreaker digne (SIG-6.5-01) reste invisible — la carte ne dit rien d'une compatibilité
+  - zéro métadonnée, zéro code, zéro « toujours/jamais » au rendu (vérifié machine)

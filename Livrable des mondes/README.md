@@ -43,7 +43,12 @@ Livrable des mondes/
 ├── M6-5.7-Ton-Humour/           ← quête 5.7 « Ton humour » (M6, 💎, 12 items — 4 styles, carte partageable, VAGUE V11 2ᵉ gén.)
 ├── M7-5.4-Face-Aux-Desaccords/  ← quête 5.4 « Face aux désaccords » (M7 — Face aux Tempêtes, 💎, 23 items : 15 carte + 8▲ JR1/SD hébergées, MVP conflit, VAGUE V12)
 ├── M7-5.5-Quand-La-Tension-Monte/ ← quête 5.5 « Quand la tension monte » (M7, 💎, 8 items — 4 températures, VAGUE V12)
-└── M7-5.6-Apres-Un-Desaccord/   ← quête 5.6 « Après un désaccord » (M7, 💎, 5 items — 5 capacités de réparation, VAGUE V12)
+├── M7-5.6-Apres-Un-Desaccord/   ← quête 5.6 « Après un désaccord » (M7, 💎, 5 items — 5 capacités de réparation, VAGUE V12)
+├── M8-6.1-Ta-Vie-Intime-L-Essentiel/ ← quête 6.1 « Ta vie intime — l'essentiel » (M8 — L'Intime : L'Essentiel, 💎, opt-in, 16 items : 10 carte + 2▲ CMP + 4 sérénité, étage 1, VAGUE V13)
+├── M8-6.2-Ta-Relation-Au-Desir/     ← quête 6.2 « Ta relation au désir » (M8, 💎, opt-in, 20 items : 15 carte + 5▲ COC hébergées, étage 2 — consentement mutuel, VAGUE V13)
+├── M9-6.3-Ta-Carte-Des-Preferences/ ← quête 6.3 « Ta carte des préférences » (M9 — L'Intime : Les Profondeurs, 💎, opt-in, 14 items — 5 axes + nouveauté + après, étage 3 PRIVÉ, VAGUE V13)
+├── M9-6.4-Tes-Frontieres-Modernes/  ← quête 6.4 « Tes frontières modernes » (M9, 💎, opt-in, 6 items — 3 paires d'attitudes, zéro miroir par design, VAGUE V13)
+└── M9-6.5-Ton-Desir-Ta-Definition/  ← quête 6.5 « Ton désir, ta définition » (M9, 💎, VISIBLE — déclaratif d'inclusion, 3 items, miroir SYN unique, dealbreaker digne, VAGUE V13)
 
 **+ `portraits/domaines/coeur.md` — le PORTRAIT DE DOMAINE DU CŒUR (M6+M7, gabarit A5, VAGUE V12 — premier Portrait de Domaine réel : 6 liaisons croisées §2 + engagement §5).**
 ```
@@ -52,7 +57,7 @@ Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` 
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 402/570 items = 70,5 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+**Taux de matérialisation : 461/570 items = 80,9 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
 Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · MISSION V9 — Monde M4 « Ton terrain » : 52 · **MISSION V10 —
 Monde M5 « Ton Héritage » : 50** — 4.1 arbre relationnel 8 + génogramme interactif non compté,
 4.2 où tu en es 19 (10 RB1 + 8 RSQ + 1 ouverte), 4.3 relations apprises ⚡ 1 ouverte,
@@ -62,10 +67,18 @@ option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœu
 5.1 style amoureux 18 · 5.2 vision de l'amour 8 · 5.3 expression de l'affection 10 (JAMAIS DANS LE SCORE)
 · 5.7 humour 12 · **VAGUE V12 — Monde M7 « Face aux Tempêtes » (💎 PREMIUM) : 36** — 5.4 désaccords 23
 (15 carte MVP conflit + 8▲ JR1/SD hébergées, énoncés hors dépôt règle 11-b) · 5.5 tension 8 ·
-5.6 réparation 5 · **+ le PORTRAIT DE DOMAINE DU CŒUR (M6+M7) — premier Portrait de Domaine réel**.)**
+5.6 réparation 5 · **+ le PORTRAIT DE DOMAINE DU CŒUR (M6+M7) — premier Portrait de Domaine réel** ·
+**VAGUE V13 — Mondes M8+M9 « L'Intime » (💎 PREMIUM, opt-in strict — les 7 règles éthiques du bloc) : 59** —
+6.1 vie intime 16 (10 carte + 2▲ CMP + 4 sérénité opt-in renforcé, étage 1) · 6.2 relation au désir 20
+(15 carte + 5▲ COC hébergées — le marqueur prédateur le plus fiable, chiffrement maximal, étage 2) ·
+6.3 carte des préférences 14 (5 axes + nouveauté + après, étage 3 PRIVÉ — double consentement) ·
+6.4 frontières modernes 6 (3 paires d'attitudes, divergence signalée aux deux — zéro miroir par design) ·
+6.5 désir/définition 3 (VISIBLE — déclaratif d'inclusion, asexualité jamais en déficit, miroir SYN unique).)**
 
-> 🆓💎 **Après MISSION V12, le DOMAINE DU CŒUR (M6+M7) est REFERMÉ en items** — sept quêtes +
-> un Portrait de Domaine. Le voyageur parcourt son territoire gratuit (M1 Le Miroir · M2 Le Volant ·
+> 🆓💎 **Après MISSION V13, le DOMAINE DE L'INTIME (M8+M9) est REFERMÉ en items** — cinq quêtes opt-in
+> (étages de révélation documentés : 1 après visuel · 2 consentement mutuel · 3 PRIVÉ après révélation photo ·
+> 6.5 VISIBLE). Le Portrait de Domaine de l'Intime est ATTENDU (sur cadrage — les liaisons 6.x sont
+> documentées aux 03 des dossiers). Le voyageur parcourt son territoire gratuit (M1 Le Miroir · M2 Le Volant ·
 > M3 La Boussole · M4 Ton terrain — dont 3.7 requis avant l'activation du Mode Invisible · M5 Ton
 > Héritage — 4.1→4.3 en accès libre, bloc invisible 4.4 tissé dans les passations 4.1/4.2), puis
 > entre sur le **territoire 💎 PREMIUM** : **M6 Mon Cœur (5.1 · 5.2 · 5.3 · 5.7)** et **M7 Face aux
