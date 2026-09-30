@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { api } from '../lib/api';
 import { Turnstile } from '../lib/turnstile';
 import { SocialButtons } from '../lib/social';
+import { AuthAlt } from '../components/AuthAlt'; // t71 : bloc « autres voies » doux et lisible
 import type { AuthConfigResponse, OtpRequestResponse } from '@wairyu/shared';
 
 interface Props {
@@ -75,31 +76,16 @@ export function Login({ config }: Props) {
 
       <SocialButtons config={config} />
 
-      <p className="switch">
-        Tu as un pseudo et un mot de passe ?{' '}
-        <a
-          href="#/login-email"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.hash = '#/login-email';
-          }}
-        >
-          Connexion avec ton pseudo
-        </a>
-      </p>
+      {/* t71 : l'ancien <p class="switch"> « Connexion avec ton pseudo » est
+          remplacé par le bloc AuthAlt ci-dessous (même cible #/login-email) */}
 
-      <p className="switch">
-        Pas encore de compte ?{' '}
-        <a
-          href="#/signup"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.hash = '#/signup';
-          }}
-        >
-          Créer un compte
-        </a>
-      </p>
+      <AuthAlt
+        items={[
+          { to: '#/login-email', icon: '🔑', label: 'Se connecter avec un pseudo', accent: true },
+          { to: '#/signup', icon: '📧', label: "S'inscrire par email" },
+          { to: '#/signup-email', icon: '✍️', label: "S'inscrire avec un pseudo" },
+        ]}
+      />
     </section>
   );
 }

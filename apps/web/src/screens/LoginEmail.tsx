@@ -10,6 +10,7 @@
 import { useState } from 'react';
 import { api } from '../lib/api';
 import { SocialButtons } from '../lib/social';
+import { AuthAlt } from '../components/AuthAlt'; // t71 : bloc « autres voies » doux et lisible
 import type { AuthConfigResponse } from '@wairyu/shared';
 
 const LAST_ACCOUNT_KEY = 'wairyu.last_account';
@@ -121,30 +122,13 @@ export function LoginEmail({ config }: Props) {
 
       <SocialButtons config={config} />
 
-      <p className="switch">
-        Tu te connectais avec un code email ?{' '}
-        <a
-          href="#/login"
-          onClick={(e2) => {
-            e2.preventDefault();
-            window.location.hash = '#/login';
-          }}
-        >
-          Connexion par email
-        </a>
-      </p>
-      <p className="switch">
-        Pas encore de compte ?{' '}
-        <a
-          href="#/signup"
-          onClick={(e2) => {
-            e2.preventDefault();
-            window.location.hash = '#/signup';
-          }}
-        >
-          Créer un compte
-        </a>
-      </p>
+      <AuthAlt
+        items={[
+          { to: '#/login', icon: '📧', label: 'Se connecter avec un email', accent: true },
+          { to: '#/signup-email', icon: '✍️', label: "S'inscrire avec un pseudo" },
+          { to: '#/signup', icon: '📧', label: "S'inscrire avec un email" },
+        ]}
+      />
     </section>
   );
 }
