@@ -1,0 +1,78 @@
+# LIVRABLE 6 — FICHE DE COMPUTATION COMPLÈTE D'UN ITEM (modèle des 15 canaux carte)
+# Item choisi : Q5.4-13 (la place laissée à l'autre — l'angle le plus sensible du côté carte :
+# l'auto-effacement consenti se joue à la frontière du bien-être, sans jamais toucher au contenu
+# des trames — les 8▲ portent la mesure de sécurité, pas les carte).
+# Fichier YAML strict (gabarit des 15 items carte : seuls énoncé, posture, orientation et ancrage changent).
+item: Q5.4-13
+quete: "5.4 Face aux désaccords"
+monde: M7                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: "MVP (conflit) / P2 (trame)"   # refonte l. 1990 — la seule quête du domaine déjà au MVP (00-README, arbitrage 2)
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Pour la paix, j'accepte des décisions qui me déplaisent."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — contribue tel quel au score de posture
+dimension: cession            # 1/5 des cinq postures (paire R6 avec Q5.4-14) — codes internes : affirmation, cooperation, compromis, evitement, cession
+type_mesure: trait_declaratif # déclarative directe — sans trame côté carte
+double_balise:
+  carte_id: tempete_5.4       # alimente la carte (7 variantes) et le miroir (7 profils)
+  signal_id: SIG-5.4-01       # la cascade posture dominante — matrice SIG-5.4-02 moteur seul
+computation:
+  carte:
+    role: score_de_quete
+    regle: >-
+      cinq scores de posture (AFF_D → CED_D), I recodés 6−r, normalisés 0-1 — dominante = max ;
+      quasi-égalité < 0.05 → départage au pivot puis à la 1re position de passation ; bande 0.10 →
+      profil mixte (deux postures serrées) ; étendue des cinq ≤ 0.10 → profil égalitaire
+      (l'étendue prime sur la bande) — bornes À VALIDER PAR LE COMITÉ [9]
+    rendu: etage_1_et_2        # carte (7 variantes) + miroir (7 profils)
+  signal:
+    role: cascade_et_matrice
+    mecanisme: >-
+      SIG-5.4-01 produit la posture dominante (7 profils — partition exclusive + exhaustive) ;
+      SIG-5.4-02 croise les postures côté matching [MOTEUR SEUL] — cellules gelées mission :
+      affirmer×affirmer = escalade documentée (pénalité) et coopérer×coopérer = boost, toutes
+      les autres À VALIDER PAR LE COMITÉ — JAMAIS au rendu, JAMAIS en UI ; SIG-5.4-03 : les 4▲
+      JR1 (Q5.4-T43→T46) alimentent le signal JR1 — croisement Mania (5.1) × JR1 ATTENDU,
+      non calculé ici ; SIG-5.4-04 : 2+ SD sur les 4▲ (Q5.4-T47→T50) → vigilance moteur,
+      libellé UI de la charte uniquement (« signaux de communication à surveiller ») ;
+      les 8▲ n'entrent dans AUCUN score affiché, AUCUN miroir, AUCUNE carte
+    rendu: moteur_seul         # le portrait raconte, la matrice et les trames calculent — jamais l'inverse
+    condition: "seuils 0.05 / bande 0.10 / étendue 0.10, cellules de matrice et seuil SD 2+ proposés — À VALIDER PAR LE COMITÉ [9]"
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur la posture,
+      rappel en toutes lettres, score de posture = moyenne des items valides + prudence
+      (précédent SIG-2.1-02) ; 5 paires R6 complètes (01×02 · 04×05 · 07×08 · 10×11 · 13×14)
+      + 5 pivots mono (03 · 06 · 09 · 12 · 15 — cohérence intra-posture + QFI)
+  modulation:
+    - si: "paire R6 divergente sur une posture"
+      effet: "posture mise en prudence au score — le rappel raconte les deux réponses sans reproche"
+    - si: "bande 0.10 atteinte par une seconde posture"
+      effet: "profil mixte (S2) — la 1re mène, la 2e nuance, jamais deux portraits en un"
+    - si: "Mania (5.1) haut croisé à JR1 (4▲ de cette quête)"
+      effet: "croisement consigné ATTENDU au portrait de domaine du Cœur, côté moteur seul — jamais au rendu de cette quête"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — la mécanique décrite, jamais une étiquette clinique, jamais un code"
+    exemple: "quand tu as dit accepter, pour la paix, des décisions qui te déplaisent"
+notes:
+  - >-
+    Ce modèle sert de gabarit pour les 15 items carte. Seuls changent : énoncé, posture
+    (affirmation → cession), orientation (recodage 6−r pour les I), ancrage.
+  - >-
+    Les 8▲ (Q5.4-T43→T50 — signal JR1/SD) suivent un gabarit distinct : codes + orientation D
+    uniforme + signal_id seuls au dépôt (énoncés exclusifs au document trames confidentiel,
+    règle 11-b) — aucune ligne de carte, de miroir ou de rappel ne les touche. Phase de
+    consommation moteur : P2.
+  - >-
+    Les rappels de rendu citent exclusivement les énoncés D des 15 carte (règle d'ancrage —
+    un énoncé I lu comme accord brut contredit le score recodé au profil dominant).
+  - >-
+    Mélange 5.4 : graine 254427 (210427 + 1000 × ordinal 44), outil générique melange.py,
+    config ci/quetes/5.4.json À CRÉER — SESSION PRINCIPALE, course réelle ensuite
+    (trace de vérification hors dépôt au 02 — ancres réelles {2,5,8,11,14,17,20,23}).
+  - >-
+    Statut freemium : premium (Constitution [6]) — l'intro ne présuppose aucun monde gratuit,
+    zéro teaser ; le rendu reste identique à une quête gratuite (le premium n'achète jamais l'autre).

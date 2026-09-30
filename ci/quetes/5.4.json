@@ -1,0 +1,135 @@
+{
+  "quete": "5.4",
+  "titre": "Face aux désaccords",
+  "graine": 254427,
+  "items": [
+    {
+      "code": "Q5.4-01",
+      "orientation": "D",
+      "dimension": "aff"
+    },
+    {
+      "code": "Q5.4-02",
+      "orientation": "I",
+      "dimension": "aff"
+    },
+    {
+      "code": "Q5.4-03",
+      "orientation": "I",
+      "dimension": "aff"
+    },
+    {
+      "code": "Q5.4-04",
+      "orientation": "D",
+      "dimension": "coop"
+    },
+    {
+      "code": "Q5.4-05",
+      "orientation": "I",
+      "dimension": "coop"
+    },
+    {
+      "code": "Q5.4-06",
+      "orientation": "I",
+      "dimension": "coop"
+    },
+    {
+      "code": "Q5.4-07",
+      "orientation": "D",
+      "dimension": "comp"
+    },
+    {
+      "code": "Q5.4-08",
+      "orientation": "I",
+      "dimension": "comp"
+    },
+    {
+      "code": "Q5.4-09",
+      "orientation": "D",
+      "dimension": "comp"
+    },
+    {
+      "code": "Q5.4-10",
+      "orientation": "D",
+      "dimension": "evit"
+    },
+    {
+      "code": "Q5.4-11",
+      "orientation": "I",
+      "dimension": "evit"
+    },
+    {
+      "code": "Q5.4-12",
+      "orientation": "D",
+      "dimension": "evit"
+    },
+    {
+      "code": "Q5.4-13",
+      "orientation": "D",
+      "dimension": "ced"
+    },
+    {
+      "code": "Q5.4-14",
+      "orientation": "I",
+      "dimension": "ced"
+    },
+    {
+      "code": "Q5.4-15",
+      "orientation": "I",
+      "dimension": "ced"
+    },
+    {
+      "code": "Q5.4-T43",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "JR1"
+    },
+    {
+      "code": "Q5.4-T44",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "JR1"
+    },
+    {
+      "code": "Q5.4-T45",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "JR1"
+    },
+    {
+      "code": "Q5.4-T46",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "JR1"
+    },
+    {
+      "code": "Q5.4-T47",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "SD"
+    },
+    {
+      "code": "Q5.4-T48",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "SD"
+    },
+    {
+      "code": "Q5.4-T49",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "SD"
+    },
+    {
+      "code": "Q5.4-T50",
+      "orientation": "D",
+      "dimension": null,
+      "signal": "SD"
+    }
+  ],
+  "c2_note": "aucune dimension interdite déclarée — le camouflage des 8▲ (JR1/SD) vient du THÈME (réactions de couple banales / désaccords quotidiens), pas du placement (règle d'indiscernabilité, document trames Partie 0)",
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "15 carte = 5 postures × 3 — c4 STRICTEMENT FAISABLE sur 23 positions ; 8 trames ancrées c3 par construction (divmod(23,8) → ancres attendues {3,6,9,12,15,18,21,23})",
+  "c5_note": "arithmétique tendue — 8 trames D uniformes autour des ancres forcent des runs D serrés ; le minimum constructible est documenté à la course"
+}

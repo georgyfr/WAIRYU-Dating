@@ -1,0 +1,70 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.6 « APRÈS UN DÉSACCORD » — 3 VARIANTES (étage 1)
+# 💎 PREMIUM · P1.5 · Création : V12 — 1ʳᵉ génération (B.3 production neuve déclarée).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : niveau de réparation (moyenne des 5 items, I recodés 6−r, normalisée 0-1)
+# vs seuils provisoires T_bas/T_haut (comité) — ex æquo de seuil → niveau médian retenu
+# (proposition) — partition exclusive + exhaustive (SIG-5.6-01, C6, vérifiée machine).
+# GABARIT OUVERT : aucune variante ne scelle le niveau — « à travailler » se formule
+# comme une porte ; zéro verdict, zéro prédiction (REN compatible).
+# Tension commune : la réparation ne se mesure pas à la fréquence des disputes —
+# c'est ce qui se passe après qui compte (registre probabiliste).
+# SIG-5.6-02 (le modulateur réparation × posture 5.4) : [MOTEUR SEUL] — INVISIBLE au
+# rendu ; aucune variante ci-dessous n'expose un croisement, un seuil ou un score.
+# AUCUNE trame hébergée par 5.6 (quête 100 % carte) — rien à cacher, rien à masquer.
+# Zéro nom d'auteur de la recherche conjugale au rendu, zéro sigle, zéro vocabulaire clinique.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.6 Après un désaccord"
+monde: M7
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "moyenne unique de réparation REPARATION (Q5.6-01 → Q5.6-05 — I recodés 6−r, normalisée 0-1) vs seuils provisoires T_bas 0.40 / T_haut 0.70"
+  logique: "niveau = position de la moyenne vs seuils (3 sorties : élevée / à travailler / silencieuse) · ex æquo de seuil → niveau médian retenu (proposition, comité)"
+  bornes: "seuils T_bas/T_haut et départage ex æquo (propositions) — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "3 niveaux = partition totale de l'espace de réponses — chaque moyenne tombe dans exactement un niveau (C6, vérifiée machine : < T_bas / [T_bas, T_haut[ / >= T_haut)"
+  non_participant: "AUCUN croisement, aucun score de compatibilité, aucune exclusion de match depuis cette quête à l'affichage — le modulateur SIG-5.6-02 vit au ledger, MOTEUR SEUL (gravé au 00-README et au 03)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Après un désaccord »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Ta réparation dit ce qui se passe après un désaccord — ce qui se passe après pèse lourd."
+  - "F2 : Ce portrait ne scelle rien — un niveau de réparation se travaille, comme un muscle."
+
+variantes:
+
+  - id: CARTE-5.6-QUI-TIENT
+    nom: "La réparation qui tient"
+    ordre_selecteur: 1
+    condition: "REPARATION >= T_haut (niveau élevée — libellé UI proposé, comité)"
+    ancre_item: ["Q5.6-01", "Q5.6-02", "Q5.6-03", "Q5.6-04", "Q5.6-05"]
+    portrait: "Tu l'as répondu : tu t'excuses sans attendre qu'on te le demande. Après un désaccord, tu sais revenir — un geste, un trait d'humour, une excuse reçue à son compte."
+    ombre: "Quand tu fais le premier pas à chaque fois, le premier pas de l'autre reste un muscle dormant. Le coût pour toi : la fatigue d'être le seul à revenir. Le coût pour l'autre : s'appuyer sur tes excuses."
+    tension_interieure: "ce n'est pas la fréquence des disputes qui pèse — c'est ce qui se passe après. Laisse parfois à l'autre le pas de la porte."
+
+  - id: CARTE-5.6-SE-TRAVAILLE
+    nom: "La réparation qui se travaille"
+    ordre_selecteur: 2
+    condition: "T_bas <= REPARATION < T_haut (niveau à travailler — libellé UI proposé, comité)"
+    ancre_item: ["Q5.6-01", "Q5.6-02", "Q5.6-03", "Q5.6-04", "Q5.6-05"]
+    portrait: "Tes réparations existent — elles arrivent en retard, ou à contrecœur. L'humour te sert parfois à désamorcer, et une excuse sincèrement reçue te fait redescendre."
+    ombre: "La rumination transforme fréquemment un désaccord banal en blessure persistante : la dispute est réglée, elle repasse dans ta tête pendant des jours. Le coût pour toi : des lendemains qui paient pour la veille. Le coût pour l'autre : une excuse acceptée à moitié."
+    tension_interieure: "ton niveau de réparation n'est pas une taille : c'est un muscle — et un muscle, ça se travaille."
+
+  - id: CARTE-5.6-SILENCIEUSE
+    nom: "La réparation silencieuse"
+    ordre_selecteur: 3
+    condition: "REPARATION < T_bas (niveau silencieuse — libellé UI proposé, comité)"
+    ancre_item: ["Q5.6-01", "Q5.6-02", "Q5.6-03", "Q5.6-04", "Q5.6-05"]
+    portrait: "Tu l'as répondu : après une dispute, tu attends que l'autre fasse le premier pas. Ton silence évite d'enflammer ce qui est déjà vif — il a sa fonction."
+    ombre: "Quand personne ne revient, le mur de silence s'installe — le désaccord banal devient fréquemment une blessure persistante. Le coût pour toi : des disputes qui s'entassent. Le coût pour l'autre : frapper à une porte qui ne s'ouvre pas."
+    tension_interieure: "le silence est aussi une réponse — et la tienne peut changer de ton dès le premier pas."

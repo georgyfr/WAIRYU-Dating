@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION COMPLÈTE — QUÊTE 5.6 (modèle des 5 items carte)
+# Item choisi : Q5.6-01 (l'excuse offerte — 1ʳᵉ position de passation).
+# Fichier YAML strict (gabarit des 5 items : seuls énoncé, orientation et ancrage changent).
+# 💎 PREMIUM · P1.5 · accès libre au sein du territoire premium
+# SIG-5.6-02 (le modulateur réparation × posture 5.4) : MOTEUR SEUL — jamais au rendu.
+# ═══════════════════════════════════════════════════════════════════
+quete: "5.6 Après un désaccord"
+monde: M7                     # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: premium
+phase: P1.5
+acces: libre_territoire_premium
+format: likert5               # échelle 1-5 codée 1-5
+enonce: "Quand je me trompe, je m'excuse sans attendre qu'on me le demande."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — pleine capacité (les I de la quête : Q5.6-02 · Q5.6-04, recodés 6−r)
+dimension: reparation         # 1 DIMENSION UNIQUE — 5 capacités documentées (arbitrage c1 mono-dimension : voir 02, comité)
+type_mesure: capacite_declarative # déclarative — aucune trame hébergée par 5.6
+gabarit_ouvert: true          # CHAMP DOCUMENTÉ — le miroir ne scelle rien : le niveau se travaille
+                              # (porte, jamais un verdict) ; REN compatible — écran sans promesse, miroir qui ouvre
+double_balise:
+  carte_id: coeur_5.6         # alimente la carte (3 variantes) et le miroir (3 profils)
+  signal_id: SIG-5.6-01       # niveau de réparation, 3 sorties — rendu conversationnel, gabarit ouvert
+  signal_moteur: SIG-5.6-02   # [MOTEUR SEUL] — le modulateur réparation × posture de conflit (5.4) :
+                              # jamais au rendu, jamais en UI, jamais au match affiché ;
+                              # seuils (T_bas/T_haut provisoires 0.40/0.70) et poids
+                              # À VALIDER PAR LE COMITÉ
+capacites_de_la_quete:        # les 5 capacités — libellés UI génériques (1 dimension unique, 1 item chacune)
+  - code: excuse              # Q5.6-01 · savoir s'excuser · libellé UI : « l'excuse offerte »
+  - code: premier_pas         # Q5.6-02 · faire le premier pas · libellé UI : « le premier pas »
+  - code: humour              # Q5.6-03 · utiliser l'humour pour désamorcer · libellé UI : « l'humour qui désamorce »
+  - code: page_tournee        # Q5.6-04 · tourner la page sans ruminer · libellé UI : « la page tournée »
+  - code: accueil_excuse      # Q5.6-05 · accepter l'excuse de l'autre · libellé UI : « l'excuse reçue »
+computation:
+  carte:
+    role: profil_affiche
+    regle: >-
+      1 moyenne unique (5 items, I recodés 6−r, normalisée 0-1) — routage d'AFFICHAGE des 3 niveaux
+      (élévée / à travailler / silencieuse — libellés UI proposés, neutres, À VALIDER PAR LE COMITÉ) ;
+      ex æquo de seuil → niveau médian retenu (la porte plutôt que le silence, proposition) —
+      À VALIDER PAR LE COMITÉ [9] ; aucune agrégation au score de compatibilité depuis cette quête
+    rendu: etage_1_et_2        # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: niveau_ouvert
+    mecanisme: >-
+      SIG-5.6-01 — le niveau raconte un muscle entraînable (la réparation ne se mesure pas à la
+      fréquence des disputes mais à ce qui se passe après). Zéro verdict, zéro prédiction, zéro
+      correction : « à travailler » est formulé comme une porte — le gabarit est ouvert, le miroir
+      ne scelle rien (REN compatible)
+    rendu: etage_2             # miroir + carte
+  fiabilite:
+    role: sans_paire_R6
+    regle: >-
+      AUCUNE paire R6 (1 item par capacité — arithmétique documentée, spécification gelée 5.6) :
+      le drapeau |D_k − (6 − I_k)| >= 3 est SANS-OBJET sur cette quête ; la cohérence repose sur
+      la moyenne unique et la trame fiabilité tissée ailleurs dans le voyage (18 désirabilité
+      sociale + 8 over-claiming + 4 doublons longitudinaux — hors 5.6)
+  modulation:
+    - si: "REPARATION élevée (>= T_haut provisoire 0.70) × posture de conflit vive (5.4)"
+      effet: "SIG-5.6-02 [MOTEUR SEUL] — couple viable : l'amplificateur documenté (refonte l. 717) module le score de conflit global au ledger ; AUCUN texte, AUCUN badge, AUCUN score exposé"
+    - si: "REPARATION basse (< T_bas provisoire 0.40) × posture de conflit évitante (5.4)"
+      effet: "SIG-5.6-02 [MOTEUR SEUL] — l'enfer silencieux (refonte l. 706-708) : modulateur écrit au ledger ; JAMAIS au rendu, à l'UI, au match affiché ; seuils et poids À VALIDER PAR LE COMITÉ"
+    - si: "niveau médian (T_bas <= niveau < T_haut)"
+      effet: "aucune modulation moteur — affichage du niveau « à travailler » formulé comme une porte (gabarit ouvert)"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — citation CONDITIONNÉE à la réponse brute de l'énoncé cité (D 4-5 = citation pleine ; I 4-5 = citation pleine de l'énoncé I ; 1-2 = négation confirmée) — zéro citation fausse (arbitrage 6, comité)"
+    exemple: "quand tu as répondu que tu t'excuses sans attendre qu'on te le demande"
+notes:
+  - >-
+    Ce modèle sert de gabarit aux 5 items carte. Seuls changent : énoncé, orientation
+    (recodage 6−r pour les I : 02 · 04), ancrage conditionnel.
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) : l'écran d'intro
+    n'anticipe aucun autre contenu ; badge visible au 00-README et à l'entête de complétion.
+  - >-
+    Référence scientifique (moteur seulement) : recherche conjugale sur les tentatives de
+    réparation (concept public — refonte l. 706) — le nom d'auteur est INTERDIT au rendu
+    (05/07/cartes/écrans) ; il ne vit qu'au 00-README (fiche moteur), zéro occurrence ailleurs
+    au dossier (vérifié machine).
+  - >-
+    Mélange 5.6 : outil générique melange.py, graine 256427 (1ʳᵉ génération V12), verdicts
+    réels au 02-plan (trace préliminaire hors dépôt) — config canonique ci/quetes/5.6.json
+    À CRÉER par la session principale ; dérogation c1 mono-dimension documentée au 02.
+  - >-
+    Gabarit ouvert / REN documentés : champ gabarit_ouvert: true — le miroir ouvre une
+    porte, l'écran ne promet rien ; aucun niveau n'est un verdict.

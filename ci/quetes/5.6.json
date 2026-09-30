@@ -1,0 +1,35 @@
+{
+  "quete": "5.6",
+  "titre": "Après un désaccord",
+  "graine": 256427,
+  "items": [
+    {
+      "code": "Q5.6-01",
+      "orientation": "D",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q5.6-02",
+      "orientation": "I",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q5.6-03",
+      "orientation": "D",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q5.6-04",
+      "orientation": "I",
+      "dimension": "reparation"
+    },
+    {
+      "code": "Q5.6-05",
+      "orientation": "D",
+      "dimension": "reparation"
+    }
+  ],
+  "c1_sans_objet": true,
+  "c4_sans_objet": true,
+  "c1_note": "mono-dimension (réparation × 5) — c1/c4 sans-objet (champs prévus par la docstring melange.py : « sans-objet si mono-dimension ») — précédent arbitrage V12-c, À VALIDER PAR LE COMITÉ"
+}

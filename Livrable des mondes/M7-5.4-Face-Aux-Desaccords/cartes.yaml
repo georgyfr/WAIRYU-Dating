@@ -1,0 +1,116 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.4 « FACE AUX DÉSACCORDS » — 7 VARIANTES (étage 1)
+# Création : V12 première émission (B.3 — production neuve déclarée).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), cible 66-74, vérifiée machine (script hors dépôt).
+# Sélection : cascade SIG-5.4-01 — dominante = max des cinq scores de posture (15 items
+# carte, I recodés 6−r, normalisés 0-1) ; bande 0.10 → profil mixte ; étendue des cinq
+# ≤ 0.10 → profil égalitaire (l'étendue prime sur la bande) ; quasi-égalité < 0.05 →
+# départage au pivot puis à la 1re position de passation (bornes À VALIDER PAR LE COMITÉ).
+# NEUTRALITÉ STRICTE : les cinq postures se valent — l'ombre est dans le COÛT EN COUPLE,
+# jamais dans la nature ; aucune posture dressée en idéal ou en défaut.
+# AUCUNE trame dans cette carte : les 8▲ (JR1/SD — codes Q5.4-T43→T50) ne participent à
+# AUCUNE sélection, AUCUN score affiché, AUCUNE variante — ancre_item porte les 15 codes
+# carte seuls (aucune restitution — règle 11-b).
+# Zéro vocabulaire clinique, aucun code, aucun sigle au rendu des variantes.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.4 Face aux désaccords"
+monde: M7
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension), cible 66-74"
+
+selection:
+  variable: "les cinq scores de posture — Q5.4-01 → Q5.4-15, I recodés 6−r, normalisés 0-1 (variables, formules et cascade au 03 — moteur) ; la matrice de viabilité [MOTEUR SEUL] ne participe JAMAIS à la sélection ni au rendu"
+  logique: "dominante = max des cinq · quasi-égalité < 0.05 → départage au pivot puis à la 1re position de passation (ordonne le récit) · bande 0.10 (écart 1er-2e, étendue > 0.10) → profil mixte (6e variante) · étendue des cinq ≤ 0.10 → profil égalitaire (7e variante, l'étendue prime sur la bande)"
+  bornes: "0.05 (écart) / bande 0.10 / étendue 0.10 — propositions À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "les 7 variantes forment une partition exclusive + exhaustive des profils possibles — chaque résultat tombe dans exactement une variante (C6, vérifié machine) : 5 dominantes + 1 mixte + 1 égalitaire"
+  non_participant: "les 8▲ (JR1/SD — codes Q5.4-T43→T50) ne participent à AUCUNE sélection, AUCUN score affiché, AUCUN miroir, AUCUNE carte ; le signal JR1 alimente SIG-5.4-03 (croisement 5.1 × JR1, ATTENDU) et le signal SD alimente SIG-5.4-04 (vigilance 2+ SD) — moteur seul, phase P2"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "🌪️ QUÊTE ACCOMPLIE — « Face aux désaccords »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Quelque part, quelqu'un tient les désaccords autrement — la rencontre, c'est justement la traduction."
+  - "F2 : Ce portrait n'est pas une fin — c'est ta façon d'être trouvé·e : par quelqu'un qui lira ta carte avant ton visage."
+
+variantes:
+
+  - id: CARTE-5.4-GOUVERNAIL
+    nom: "Le·La Gouvernail"
+    ordre_selecteur: 1
+    condition: "dominante = affirmer — écart à la suivante > 0.10 et étendue des cinq > 0.10 (posture seule)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Dans un désaccord, tu tiens ta position jusqu'au bout — tu l'as dit. Ton premier désaccord en dira plus que dix rendez-vous : chez toi, il montrera quelqu'un qui tranche et remet la maison en route."
+    ombre: "La main ferme peut devenir un match. Le coût pour toi : des accords de surface, acceptés dehors et contestés dedans. Le coût pour l'autre : une place qui rétrécit jusqu'à ne plus proposer."
+    tension_interieure: "tenir le cap sans prendre toute la barre."
+
+  - id: CARTE-5.4-ATELIER
+    nom: "Le·La Atelier"
+    ordre_selecteur: 2
+    condition: "dominante = coopérer — écart à la suivante > 0.10 et étendue des cinq > 0.10 (posture seule)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Tu creuses ce qui compte vraiment pour chacun avant de proposer — tu l'as dit. Chez toi, une dispute devient une enquête à deux voix, et elle finit rarement en dette."
+    ombre: "La table de négociation permanente épuise. Le coût pour toi : porter la relation à bout de bras. Le coût pour l'autre : formuler un besoin à chaque fois, même sans en avoir la force."
+    tension_interieure: "garder la table à deux sans y passer toutes les soirées."
+
+  - id: CARTE-5.4-PASSERELLE
+    nom: "Le·La Passerelle"
+    ordre_selecteur: 3
+    condition: "dominante = compromettre — écart à la suivante > 0.10 et étendue des cinq > 0.10 (posture seule)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Un accord à mi-chemin débloque plus qu'il ne gâte — tu l'as dit. Chez toi, chacun lâche un peu, et les sujets avancent au lieu de se figer."
+    ombre: "Le milieu se paie en silence. Le coût pour toi : des arrangements tièdes qui reviennent sur la table. Le coût pour l'autre : un partenaire qui négocie tout, même ce qui méritait d'être défendu à fond."
+    tension_interieure: "désamorcer par le milieu sans oublier ce qui ne se coupe pas."
+
+  - id: CARTE-5.4-PAUSE
+    nom: "Le·La Pause"
+    ordre_selecteur: 4
+    condition: "dominante = éviter — écart à la suivante > 0.10 et étendue des cinq > 0.10 (posture seule)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Tu laisses refroidir avant de revenir sur un désaccord — tu l'as dit. Chez toi, la pause est un outil : à froid, le même sujet coûte moins cher qu'à chaud."
+    ombre: "Le sujet remis grossit en silence. Le coût pour toi : une liste mentale qui s'allonge. Le coût pour l'autre : soulever les sujets seule, et lire ton silence comme de l'indifférence."
+    tension_interieure: "laisser refroidir sans enterrer le sujet au fond."
+
+  - id: CARTE-5.4-PASSAGE
+    nom: "Le·La Passage"
+    ordre_selecteur: 5
+    condition: "dominante = céder — écart à la suivante > 0.10 et étendue des cinq > 0.10 (posture seule)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Pour la paix, tu acceptes des décisions qui te déplaisent — tu l'as dit. Chez toi, céder n'est pas perdre : c'est choisir le climat du foyer."
+    ombre: "La paix achetée se paie à terme. Le coût pour toi : un compte de silence qui se remplit sans être encaissé. Le coût pour l'autre : vivre avec un demi-oui, et perdre l'accès à ce que tu veux vraiment."
+    tension_interieure: "laisser la place sans en sortir."
+
+  - id: CARTE-5.4-DUO
+    nom: "Le·La Duo"
+    ordre_selecteur: 6
+    condition: "écart 1er-2e ≤ 0.10 avec étendue des cinq > 0.10 — deux postures dominantes serrées (la meneuse est nommée par le départage, binding au 04)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Deux postures montent ensemble chez toi — et c'est une réponse complète. Une main tranche, l'autre compose : ton premier désaccord dira quel duo mène, et il en dira plus que dix rendez-vous."
+    ombre: "Deux tempos se lisent en brouillard. Le coût pour toi : réexpliquer ta méthode à chaque friction. Le coût pour l'autre : ne plus savoir quand la décision se prend, ni avec qui."
+    tension_interieure: "annoncer ta main en entrant — le duo devient une partition."
+
+  - id: CARTE-5.4-EQUILIBRE
+    nom: "Le·La Équilibre"
+    ordre_selecteur: 7
+    condition: "étendue des cinq scores ≤ 0.10 (égalitaire — scores serrés ; l'étendue prime sur la bande)"
+    ancre_item: ["Q5.4-01", "Q5.4-02", "Q5.4-03", "Q5.4-04", "Q5.4-05", "Q5.4-06", "Q5.4-07", "Q5.4-08", "Q5.4-09", "Q5.4-10", "Q5.4-11", "Q5.4-12", "Q5.4-13", "Q5.4-14", "Q5.4-15"]
+    portrait: "Aucune posture n'a dominé chez toi — les cinq outils sont dans ta boîte. Tu mènes un conflit comme un problème, pas comme une identité."
+    ombre: "La palette change de main, et la lecture suit difficilement. Le coût pour toi : donner des clés que l'autre n'a pas. Le coût pour l'autre : aborder chaque désaccord sans mode d'emploi, et parfois renoncer à aborder."
+    tension_interieure: "dire sous quelle règle le désaccord se joue."
+
+regles_documentees:
+  - "comptage des mots : tokens contenant au moins une lettre, champ = portrait + ombre + tension_interieure — bornes standard 55-110, cible 66-74, vérifié machine (script hors dépôt)"
+  - "neutralité stricte : les 7 variantes se valent — l'ombre est le COÛT EN COUPLE, jamais la nature ; aucune posture dressée en idéal ou en défaut (contrôles machine)"
+  - "rappels ancrés aux énoncés D des 15 carte uniquement (règle d'ancrage : un énoncé I lu comme accord brut contredit le score recodé) et aux seules réponses de CETTE quête (règle premium [6]) — aucune présupposition des mondes gratuits, zéro teaser"
+  - "zéro trame au rendu : les 8▲ (JR1/SD — Q5.4-T43→T50) ne touchent AUCUNE variante, AUCUNE citation, AUCUN rappel — aucune restitution (règle 11-b, précédent 4.1/4.2)"
+  - "signature du monde (gelée mission, tutoiement) : « ton premier désaccord en dira plus que dix rendez-vous » — rendue au registre probabiliste (GOUVERNAIL, DUO), zéro « toujours/jamais »"
+  - "registre probabiliste : aucun futur certain de malheur (« peut », « rarement », « fréquemment » — présent fréquentiel) ; zéro « toujours » / « jamais » au rendu"
+  - "C4 : aucun superlatif — aucune posture dressée en idéal"
+  - "C8 : point médian dans les titres genrés · « (e) » dans le corps · métaphores d'objet exemptées du médian (précédent VAGUE 5)"
+  - "le profil égalitaire cite AUCUN énoncé (des scores serrés ne prouvent aucun accord haut individualisé — précédent 5.1 MIXTE) ; le profil mixte est bindé à l'énoncé D de la posture meneuse à l'exécution (04)"

@@ -1,0 +1,81 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 5.5 « QUAND LA TENSION MONTE » — 4 VARIANTES (étage 1)
+# 💎 PREMIUM · P1.5 · Création : V12 — MONDE M7 « Face aux Tempêtes »
+# (production neuve déclarée — B.3 : angles cadrés au refonte gelée l. 680-717 / l. 1991).
+# Charte des cartes C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots
+# (portrait + ombre + tension), vérifiée machine (script hors dépôt).
+# Sélection : température dominante (max des 4 moyennes de profil, I recodés 6−r, normalisés) —
+# ex æquo strict → départage à la 1ʳᵉ position de passation (conventions SIG-5.2-01,
+# proposition comité) — partition exclusive + exhaustive (SIG-5.5-01, C6, vérifiée machine).
+# Bornes À VALIDER PAR LE COMITÉ [9]. DOCTRINE DES TEMPÉRATURES : aucune hiérarchie entre
+# profils — la carte décrit un chemin, elle ne le classe pas (zéro verdict, zéro correction).
+# TENSION COMMUNE (gelée) : « la tension monte chez tout le monde — la question n'est pas si,
+# c'est comment et à quel prix » — reprise par variante, registre probabiliste, sans absolu.
+# SIG-5.5-02 (croisement explosif × fermé) et SIG-5.5-03 (explosif × impulsivité = DGR
+# composée) : [MOTEUR SEUL] — INVISIBLES au rendu ; aucune variante ci-dessous n'expose un
+# croisement, un seuil ou un score. AUCUNE trame hébergée par 5.5 (le DGR est un croisement,
+# pas une trame) — rien à cacher, rien à masquer. Zéro nom du pattern en anglais, zéro
+# vocabulaire clinique (« somatisation » rendue « le corps qui suit »), zéro sigle au rendu.
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "5.5 Quand la tension monte"
+monde: M7
+statut_freemium: premium
+format: "etage_1_carte"
+charte: "C1-C11 (mission VAGUE 5) — longueur standard 55-110 mots (portrait + ombre + tension)"
+
+selection:
+  variable: "quatre moyennes de profil déclarées — explosif EXPLOSIF (Q5.5-01 × 02) · ferme FERME (Q5.5-03 × 04) · verbalise à froid VERBALISE (Q5.5-05 × 06) · sombre SOMBRE (Q5.5-07 × 08), I recodés 6−r, normalisés 0-1"
+  logique: "dominant = max des 4 profils · secondaire = 2ᵉ du tri (affiché en conversation, jamais calculé en entrée moteur) · ex æquo strict → départage à la 1ʳᵉ position de passation (ordres 5.5 : explosif 1ʳᵉ · ferme 2ᵉ · sombre 3ᵉ · verbalise 5ᵉ)"
+  bornes: "départage ex æquo (proposition) — À VALIDER PAR LE COMITÉ [9], provisoire concepteur — re-signature professionnelle avant bêta"
+  exhaustivite: "4 sélections = partition totale de l'espace de réponses — chaque profil tombe dans exactement une variante (C6, vérifiée machine)"
+  non_participant: "AUCUN croisement, aucun score de compatibilité, aucune exclusion de match depuis cette quête à l'affichage — les croisements SIG-5.5-02 (explosif × fermé) et SIG-5.5-03 (DGR composée) vivent au ledger, MOTEUR SEUL (gravé au 00-README et au 03)"
+
+# Rendu de l'écran de complétion (structure du gabarit standard) :
+#   entête → titre de variante → portrait → « Ta zone d'ombre : » → « Ta tension intérieure : »
+#   → pied ({X}% compteur réel · {Z} personnes · boutons · {fenêtre sur l'autre})
+entete_ecran: "💎 QUÊTE ACCOMPLIE — « Quand la tension monte »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
+fenetre_sur_l_autre:
+  - "F1 : Ta température dit comment la tension sort de toi — pas à quel point tu la gères."
+  - "F2 : Ce portrait ne classe personne — chez tout le monde la tension monte ; ce qui varie, c'est le chemin et son prix."
+
+variantes:
+
+  - id: CARTE-5.5-MOTS-VIFS
+    nom: "La tension qui parle fort"
+    ordre_selecteur: 1
+    condition: "EXPLOSIF = max des 4 profils (explosif dominant)"
+    ancre_item: ["Q5.5-01", "Q5.5-02", "Q5.5-03", "Q5.5-04", "Q5.5-05", "Q5.5-06", "Q5.5-07", "Q5.5-08"]
+    portrait: "Quand la tension monte, les mots sortent plus fort que toi — tu l'as répondu. Ça sort, ça se voit : on sait où tu en es, et rien ne pourrit dessous."
+    ombre: "Les mots vifs coûtent deux fois — au départ, puis en réparations. L'autre retient le volume plus longtemps que le fond."
+    tension_interieure: "la tension monte chez tout le monde — la tienne parle fort ; la question est le prix des mots."
+
+  - id: CARTE-5.5-MUR
+    nom: "La tension qui se mure"
+    ordre_selecteur: 2
+    condition: "FERME = max des 4 profils (fermé dominant)"
+    ancre_item: ["Q5.5-01", "Q5.5-02", "Q5.5-03", "Q5.5-04", "Q5.5-05", "Q5.5-06", "Q5.5-07", "Q5.5-08"]
+    portrait: "Quand la tension monte, tu lèves un mur et tu te tais — tu l'as répondu. Ton silence protège la discussion de l'incendie : tu ne parles pas avant d'avoir retrouvé ta main."
+    ombre: "Le silence laisse l'autre deviner — et la devinette conduit plus loin que le différend : une pause se lit comme une fin."
+    tension_interieure: "la tension monte chez tout le monde — la tienne se mure ; la question est ce que le mur coûte à deux."
+
+  - id: CARTE-5.5-LE-RETOUR
+    nom: "La tension qui attend son heure"
+    ordre_selecteur: 3
+    condition: "VERBALISE = max des 4 profils (verbalise à froid dominant)"
+    ancre_item: ["Q5.5-01", "Q5.5-02", "Q5.5-03", "Q5.5-04", "Q5.5-05", "Q5.5-06", "Q5.5-07", "Q5.5-08"]
+    portrait: "Une fois le calme revenu, tu reviens sur ce qui a blessé — tu l'as répondu. Tu parles quand le calme permet d'entendre : les mots arrivent entiers, sans le volume de la montée."
+    ombre: "Entre la montée et le retour, la blessure s'installe — l'autre traverse la scène sans savoir qu'elle reviendra en mots."
+    tension_interieure: "la tension monte chez tout le monde — la tienne attend son heure ; la question est le temps qu'elle installe d'ici là."
+
+  - id: CARTE-5.5-LE-CORPS
+    nom: "La tension qui descend"
+    ordre_selecteur: 4
+    condition: "SOMBRE = max des 4 profils (sombre dominant)"
+    ancre_item: ["Q5.5-01", "Q5.5-02", "Q5.5-03", "Q5.5-04", "Q5.5-05", "Q5.5-06", "Q5.5-07", "Q5.5-08"]
+    portrait: "Quand la tension monte, tu te replie et le corps suit — tu l'as répondu. La peine prend la place des mots : tu la portes sans la dire, et ça se lit."
+    ombre: "Ce qui ne se dit pas se paie deux fois — dedans, puis entre vous : une peine qu'on ne peut pas consoler."
+    tension_interieure: "la tension monte chez tout le monde — la tienne descend ; la question est le langage qu'on lui donne."
