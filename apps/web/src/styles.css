@@ -11697,3 +11697,170 @@ body.theme-dark .presence-radar {
 .geo-guide p {
   margin: 4px 0 0;
 }
+
+/* --- Task 65 — NotificationGate : notifications « gérées par l'application » (comme Badoo) --- */
+.notifgate {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 74px;
+  z-index: 82;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.notifgate-card {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 540px;
+  background: #fff;
+  color: #2d2117; /* thème sombre global : couleur explicite OBLIGATOIRE sur fond clair */
+  border: 1px solid rgba(244, 162, 89, 0.45);
+  border-left: 4px solid var(--c-accent, #f4a259);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  padding: 14px 16px;
+  position: relative;
+  max-height: 68vh;
+  overflow: auto;
+  text-align: left;
+}
+.notifgate-title {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  padding-right: 22px;
+  color: #2d2117;
+}
+.notifgate-intro {
+  margin: 2px 0 8px;
+  font-size: 0.84rem;
+  color: #5b4636;
+  line-height: 1.5;
+}
+.notifgate-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: #8a7a6a;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+}
+.notifgate-paths {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.notifgate-path {
+  margin: 0;
+  padding: 8px 10px;
+  background: #fdf6ee;
+  border: 1px solid rgba(244, 162, 89, 0.25);
+  border-radius: 10px;
+}
+.notifgate-path p {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #4a3a2c;
+}
+.notifgate-path p strong,
+.notifgate-path li strong {
+  color: #2d2117;
+}
+.notifgate-path ol {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #4a3a2c;
+}
+.notifgate-path-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #8a5a2b;
+  background: rgba(244, 162, 89, 0.16);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-bottom: 4px;
+}
+.notifgate-path-tag.ok {
+  color: #1c7c46;
+  background: rgba(46, 164, 79, 0.14);
+}
+.notifgate-hint {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #8a5a2b;
+  background: #fff7ec;
+  border: 1px solid rgba(244, 162, 89, 0.35);
+  border-radius: 8px;
+  padding: 8px 10px;
+  line-height: 1.5;
+}
+.notifgate-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* --- Task 65 — Réglages : statut LIVE « Notifications du téléphone » --- */
+.notif-sys {
+  margin-top: 10px;
+  background: #fff;
+  color: #2d2117;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.notif-sys .hint {
+  color: #5b4636; /* lisible sur fond blanc (le .hint global vise le fond sombre) */
+}
+.notif-sys-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.notif-sys-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d2117;
+}
+.notif-sys-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.notif-sys-badge.granted {
+  color: #1c7c46;
+  background: rgba(46, 164, 79, 0.15);
+}
+.notif-sys-badge.default {
+  color: #8a5a2b;
+  background: rgba(244, 162, 89, 0.18);
+}
+.notif-sys-badge.denied {
+  color: #b3261e;
+  background: rgba(211, 47, 47, 0.12);
+}
+.notif-sys .notifgate-paths {
+  margin-top: 4px;
+}

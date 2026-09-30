@@ -48,6 +48,7 @@ import { TabBar, type TabId } from './components/TabBar';
 import MessageToasts from './components/MessageToasts'; // Task 53 : toasts « nouveau message » bas-droite (comme WhatsApp Web)
 import PushBanner from './components/PushBanner'; // Task 53 : bannière d'activation des notifications
 import InstallGate from './components/InstallGate'; // Task 60-URL : bannière « installer l'app » (WebAPK Chrome, Task 63)
+import NotificationGate from './components/NotificationGate'; // Task 65 : carte de réparation quand les notifications sont BLOQUÉES (voie Badoo « géré par l'application »)
 import { openInAppIfEligible } from './lib/open-in-app'; // Task 60-URL : bascule intent:// navigateur → app Android
 import { autoArmWebPush } from './lib/push-client'; // Task 62 : armement AUTOMATIQUE des notifications
 import type { DiscoveryMode } from '@wairyu/shared';
@@ -805,6 +806,12 @@ export default function App() {
       {/* Task 53 : bannière d'activation des notifications — proposée tant
           que la permission est 'default' et non dismissée sur cet appareil. */}
       {me && <PushBanner />}
+
+      {/* Task 65 : quand la permission est 'denied' (le cas du fondateur —
+          « bloquées sur Google »), aucune aide n'existait : carte de réparation
+          Badoo-style (voies de déblocage exactes + reprise auto au retour des
+          Réglages). Invisible pour 'default' et 'granted'. */}
+      {me && <NotificationGate />}
 
       {/* Task 48-c : modale « Quoi de neuf » — journal des nouveautés
           utilisateur-visibles, affichée quand une mise à jour est détectée

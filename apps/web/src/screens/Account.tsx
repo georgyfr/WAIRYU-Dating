@@ -8,7 +8,8 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { api, apiForm } from '../lib/api';
-import { sendTestPush, getPushPreferences, putPushPreferences, type PushPrefs } from '../lib/push-client';
+import { sendTestPush, getPushPreferences, putPushPreferences, notificationState, onPermissionMayChange, isStandaloneApp, type PushPrefs, type NotificationState } from '../lib/push-client';
+import { NotificationRepairSteps } from '../components/NotificationGate'; // Task 65 : mêmes voies de déblocage que la carte globale
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
 import {
   SELFIE_POSE_LABELS,
@@ -51,6 +52,12 @@ export function Account({ me, onLoggedOut }: Props) {
   const [pushPrefs, setPushPrefs] = useState<PushPrefs | null>(null);
   const [prefsBusy, setPrefsBusy] = useState(false);
   const [overlayGuide, setOverlayGuide] = useState(false);
+  // ---- Task 65 (fondateur) : état LIVE de la permission du téléphone ----
+  // « les notifications restent automatiquement bloquées sur Google » : les
+  // Réglages doivent montrer la VÉRITÉ système (Activées / Pas encore
+  // demandées / Bloquées) et offrir la réparation au même endroit.
+  const [sysPerm, setSysPerm] = useState<NotificationState>(() => notificationState());
+  const [sysRepairOpen, setSysRepairOpen] = useState(false);
   // ---- Task 58/60 : sécurité du compte (@pseudo, email, mot de passe) ----
   const [pwStatus, setPwStatus] = useState<{
     hasPassword: boolean;
@@ -101,6 +108,11 @@ export function Account({ me, onLoggedOut }: Props) {
       .then(setPwStatus)
       .catch(() => null);
   }, []);
+
+  // Task 65 — le badge suit la permission RÉELLE du téléphone, et se
+  // re-vérifie au retour des Réglages Android/Chrome (l’utilisateur vient
+  // d’y débloquer wairyu → le badge passe à Activées sans recharger).
+  useEffect(() => onPermissionMayChange(setSysPerm), []);
 
   /** Toggle d'un type de notification (upsert serveur — vaut pour TOUS les appareils). */
   async function togglePushType(type: keyof PushPrefs['types']) {
@@ -648,6 +660,49 @@ export function Account({ me, onLoggedOut }: Props) {
             )}
           </div>
           {installGuide && <div className="push-guide">{installGuide}</div>}
+          {/* Task 65 — état RÉEL de la permission du téléphone (vérité système) */}
+          {sysPerm !== 'unsupported' && (
+            <div className="notif-sys" data-testid="notif-sys">
+              <div className="notif-sys-row">
+                <span className="notif-sys-label">Notifications du téléphone</span>
+                <span className={`notif-sys-badge ${sysPerm}`} data-testid="notif-sys-badge">
+                  {sysPerm === 'granted' && '✅ Activées'}
+                  {sysPerm === 'default' && '⏳ Pas encore demandées'}
+                  {sysPerm === 'denied' && '❌ Bloquées'}
+                </span>
+              </div>
+              {sysPerm === 'granted' && isStandaloneApp() && (
+                <p className="hint tiny">
+                  Gérées par l’application — comme Badoo, elles ne dépendent plus des réglages de
+                  sites de Chrome.
+                </p>
+              )}
+              {sysPerm === 'default' && (
+                <p className="hint tiny">
+                  Pas encore demandées — appuie sur « Activer les notifications » ci-dessous, ou
+                  installe l’application (voie Badoo) pour qu’elles soient gérées par l’appli
+                  elle-même.
+                </p>
+              )}
+              {sysPerm === 'denied' && (
+                <>
+                  <p className="hint tiny">
+                    Bloquées par le téléphone ou Chrome — ça se débloque en 2 minutes (le même
+                    écran Chrome que celui de ta capture).
+                  </p>
+                  <button
+                    type="button"
+                    className="btn ghost"
+                    data-testid="notif-sys-repair"
+                    onClick={() => setSysRepairOpen((v) => !v)}
+                  >
+                    {sysRepairOpen ? 'Masquer le guide de déblocage' : '🛠️ Réparer — montrer le guide'}
+                  </button>
+                  {sysRepairOpen && <NotificationRepairSteps />}
+                </>
+              )}
+            </div>
+          )}
           {/* Task 62 — Réglages des types de notifications (serveur = source de vérité) */}
           {pushPrefs && (
             <div className="push-prefs" data-testid="push-prefs">

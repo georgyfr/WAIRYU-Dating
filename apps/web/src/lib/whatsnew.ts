@@ -32,6 +32,17 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: '2026-09-30-notifications-badoo',
+    date: '30 septembre 2026',
+    title: 'Tes notifications, gérées comme Badoo',
+    items: [
+      'Quand les notifications sont bloquées par le téléphone, wairyu ne se tait plus : une carte t’explique exactement où débloquer — le même écran Chrome que celui de ta capture (« Non autorisé » → wairyu → Autoriser).',
+      'La voie recommandée, celle de Badoo : installer l’application — les notifications passent alors sous « Géré par l’application » dans Chrome et ne peuvent plus être bloquées par la liste des sites.',
+      'Dès ton retour après le déblocage, wairyu s’en aperçoit tout seul et réactive tes notifications sans aucun appui.',
+      'Réglages → Notifications affiche désormais l’état réel du téléphone (Activées / Pas encore demandées / Bloquées) avec le guide de réparation intégré.',
+    ],
+  },
+  {
     id: '2026-09-30-geoloc-guide',
     date: '30 septembre 2026',
     title: 'Ta position se débloque, pas à pas',

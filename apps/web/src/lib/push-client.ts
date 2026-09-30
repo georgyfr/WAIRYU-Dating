@@ -243,3 +243,65 @@ export async function getPushPreferences(): Promise<PushPrefs> {
 export async function putPushPreferences(patch: Partial<PushPrefs>): Promise<PushPrefs> {
   return api<PushPrefs>('/api/push/preferences', { method: 'PUT', json: patch });
 }
+
+// ---------------------------------------------------------------------------
+// Task 65 (fondateur) — « gérées par l’application, comme Badoo ».
+//
+// SA CAPTURE (Chrome → ⋮ → Paramètres → Notifications) montre :
+//  - Badoo sous « Géré par l’application » : l’origine badoo.com est
+//    INSTALLÉE (WebAPK) — la permission de notifications vit au niveau de
+//    l’application Android, HORS de la liste des sites de Chrome ;
+//  - 16 sites « Non autorisé » + Chrome en mode « Réduire les demandes
+//    indésirables (recommandé) » : les demandes sont réduites à une pastille
+//    discrète → perçues comme « bloquées automatiquement par Google ».
+//
+// Ce module expose l’état système LIVE + la détection « appli installée »
+// pour piloter la carte NotificationGate et le statut des Réglages, plus un
+// signal de re-vérification quand l’utilisateur REVIENT des Réglages
+// (visibilitychange/focus) : il débloque le toggle côté Android/Chrome,
+// wairyu s’en aperçoit seul et (ré)abonne SANS nouveau geste.
+// ---------------------------------------------------------------------------
+
+export type NotificationState = 'granted' | 'default' | 'denied' | 'unsupported';
+
+/** État ACTUEL de la permission système (lecture directe, sans effet). */
+export function notificationState(): NotificationState {
+  if (!pushSupported()) return 'unsupported';
+  return Notification.permission;
+}
+
+/**
+ * L’appli tourne-t-elle INSTALLÉE (WebAPK Chrome — la voie recommandée de la
+ * page /app, PWA écran d’accueil iOS, APK TWA) ? Dans ce mode, la permission
+ * de notifications devient un réglage de l’application Android elle-même —
+ * l’équivalent exact du « Géré par l’application » de Badoo.
+ */
+export function isStandaloneApp(): boolean {
+  try {
+    if (window.matchMedia?.('(display-mode: standalone)').matches) return true;
+    if (window.matchMedia?.('(display-mode: minimal-ui)').matches) return true;
+    const nav = navigator as Navigator & { standalone?: boolean };
+    return nav.standalone === true; // Safari iOS
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Re-vérifie la permission à chaque retour au premier plan : c’est le moment
+ * où l’utilisateur revient des Réglages Android/Chrome après avoir débloqué.
+ * Retourne une fonction de nettoyage (pattern useEffect).
+ */
+export function onPermissionMayChange(cb: (state: NotificationState) => void): () => void {
+  if (!pushSupported()) return () => {};
+  const fire = () => cb(Notification.permission as NotificationState);
+  const onVis = () => {
+    if (document.visibilityState === 'visible') fire();
+  };
+  document.addEventListener('visibilitychange', onVis);
+  window.addEventListener('focus', fire);
+  return () => {
+    document.removeEventListener('visibilitychange', onVis);
+    window.removeEventListener('focus', fire);
+  };
+}
