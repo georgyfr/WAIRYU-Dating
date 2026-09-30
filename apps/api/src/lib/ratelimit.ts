@@ -109,6 +109,9 @@ export const RATE_RULES = {
   pwForgotEmail: { scope: 'pw:forgot:em', windowSeconds: 3600, max: 3 },
   /** Consommation de liens de reset : 10 / heure par IP. */
   pwResetIp: { scope: 'pw:reset:ip', windowSeconds: 3600, max: 10 },
+  // --- Task 73 (fondateur) : mot de passe optionnel pour les comptes email ---
+  /** Créations de mot de passe (connecté) par IP : 5 / heure (l'utilisateur est déjà authentifié, c'est surtout anti-abus). */
+  pwSetIp: { scope: 'pw:set:ip', windowSeconds: 3600, max: 5 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

@@ -38,7 +38,7 @@ export function LoginEmail({ config }: Props) {
     e.preventDefault();
     setError(null);
     if (!username.trim() || !password) {
-      setError('Indique ton pseudo et ton mot de passe.');
+      setError('Indique ton pseudo (ou ton email) et ton mot de passe.');
       return;
     }
     setBusy(true);
@@ -59,23 +59,23 @@ export function LoginEmail({ config }: Props) {
       </button>
       <h2>Content·e de te revoir</h2>
       <p className="hint">
-        Connexion avec ton pseudo et ton mot de passe — inutile de t'inquiéter des espaces, majuscules ou
+        Connexion avec ton pseudo (ou ton email) et ton mot de passe — inutile de t'inquiéter des espaces, majuscules ou
         accents : « Marie Claire », « marie claire » et « MARIECLAIRE » mènent au même compte.
       </p>
 
       <form onSubmit={submit} noValidate>
         <label className="field">
-          <span>Ton pseudo</span>
+          <span>Pseudo ou email</span>
           <input
             type="text"
             name="username"
             autoComplete="username"
             inputMode="text"
-            placeholder="ex : marie23"
+            placeholder="ex : marie23 ou toi@exemple.fr"
             value={username}
             onChange={(e2) => setUsername(e2.target.value)}
             autoFocus
-            maxLength={20}
+            maxLength={80}
           />
         </label>
         <label className="field">
