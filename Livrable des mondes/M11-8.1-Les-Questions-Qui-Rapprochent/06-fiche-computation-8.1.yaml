@@ -1,0 +1,184 @@
+# ═══════════════════════════════════════════════════════════════════
+# 🗒️ quete: 8.1 · dossier: M11-8.1-Les-Questions-Qui-Rapprochent · fiche: première émission V14.B.1 (FM à graver à la consolidation) · session: 2026-10-01
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 8.1 « LES QUESTIONS QUI RAPPROCHENT »
+# M11 « LE VOYAGE À DEUX » — 🆓 GRATUIT · MVP · débloquée au premier match
+# LE MOTEUR NORTH STAR : conversion match → conversation → relation.
+# 36 questions ouvertes (verbatim gelé — identique au 01-tableau-des-items.md),
+# 3 niveaux × 12, ordre fixe scénarique, graine SANS-OBJET (aucune permutation).
+# Mode À DEUX : 1 question par jour, la même pour le couple, chacun répond de
+# son côté — les deux réponses se révèlent seulement après la double réponse
+# (révélation mutuelle consentie — SIG-8.1-02, structurelle).
+# Réponses croisées (texte libre) → analyse de compatibilité réelle (NLP P2)
+# post-niveau-3 — [MOTEUR SEUL] ⛔ VERROU DUR : aucun score rendu à l'écran
+# avant calibration du comité (interdit mission explicite — SIG-8.1-01).
+# Exemption documentée : PAS de miroir individuel (07), PAS de cartes
+# individuelles (04) — les récompenses sont partagées (refonte l. 2039).
+# ═══════════════════════════════════════════════════════════════════
+quete: "8.1"
+titre: "Les questions qui rapprochent"
+monde: M11                     # métadonnée — le code reste la clé (FM-011 v2)
+monde_nom: "LE VOYAGE À DEUX"
+statut_freemium: gratuit       # Constitution [5] : M11 toujours gratuit · [6] : la rencontre n'est jamais payante
+phase: mvp                     # refonte PARTIE 8 l. 2032 — la première quête post-match en production
+acces: premier-match           # la quête s'ouvre au premier match — la destination du voyage
+mode: a-deux                   # missions progressives à deux — l'unité de passation est le couple
+recompense: partagee           # la récompense est la réponse de l'autre — aucune carte individuelle
+format: texte_libre            # pas de Likert, pas de D/I, pas de paires R6 (divergence de gabarit documentée au 00)
+langue: fr                     # 36 questions 100 % Wairyu, en français
+ordre: fixe-scenarique         # Q8.1-01 → Q8.1-36 — identique pour tous les couples
+graine: sans-objet             # aucune permutation, aucune course, aucune config ci/quetes/8.1.json (documenté au 02)
+deblocage:
+  principe: sequentiel         # les niveaux se débloquent en séquence
+  regle: "le niveau N+1 s'ouvre quand les 12 questions du niveau N sont complétées PAR LES DEUX partenaires"
+rythme:
+  question_par_jour: 1         # 1 question par jour, la même pour le couple
+  par_partenaire: 1            # chacun répond de son côté — 1 question par jour chacun
+  croisee: true                # le même énoncé des deux côtés — condition des réponses croisées
+  revelation: "après double réponse uniquement — révélation mutuelle consentie"
+consentement:
+  modele: double-par-question  # les deux répondent avant que quoi que ce soit se révèle (SIG-8.1-02)
+  revocabilite: a-tout-moment  # avant ET après révélation — la vue partagée se met à jour (forme exacte À VALIDER PAR LE COMITÉ)
+signatures: [SIG-8.1-01, SIG-8.1-02]
+chiffrement: renforce          # texte libre personnel — RGPD renforcé
+export: jamais                 # aucune réponse dans les exports, le résumé d'engagement ou toute vue au-delà des deux
+sortie: permanente             # toute réponse modifiable ou supprimable à tout moment
+tiers: aucun                   # aucune révélation hors du couple, aucun croisement exposé
+scoring:
+  moteur: seul                 # tout le calcul vit côté moteur — zéro rendu
+  compatibilite_reelle:
+    nlp: "P2"                  # analyse de texte libre — phase P2 (doctrine produit)
+    rendu: "jamais avant calibration comité"   # ⛔ VERROU DUR — interdit mission explicite
+    croisement: "post-niveau-3"                # les 36 × 2 complétées avant tout calcul
+  alimente: "moteur North Star (post-match) — conversion match → conversation → relation"
+miroir: exempte-documentee     # précédent 6.4 — voir 07
+cartes: aucune                 # les cartes individuelles n'existent pas dans M11 — voir 04
+items: 36                      # 36 + 6 + 3 + 1 = 46 items M11 (Constitution [5]) ✓
+niveaux:
+  "1": 12                      # Q8.1-01 → 12 — le léger (sans aucune vulnérabilité)
+  "2": 12                      # Q8.1-13 → 24 — le profond (personnel profond)
+  "3": 12                      # Q8.1-25 → 36 — la vulnérabilité mutuelle (assumée à deux)
+liste_items:                   # verbatim gelé — identique au 01-tableau-des-items.md
+  - code: Q8.1-01
+    niveau: 1
+    question: "Quel petit plaisir de ta semaine mériterait d'être raconté ?"
+  - code: Q8.1-02
+    niveau: 1
+    question: "Quelle odeur te ramène aussitôt dans un endroit que tu aimes ?"
+  - code: Q8.1-03
+    niveau: 1
+    question: "Quelle chanson te renvoie droit dans un été précis ?"
+  - code: Q8.1-04
+    niveau: 1
+    question: "Qu'est-ce qui rend tes dimanches différents des autres jours ?"
+  - code: Q8.1-05
+    niveau: 1
+    question: "Où emmènes-tu quelqu'un que tu veux régaler ?"
+  - code: Q8.1-06
+    niveau: 1
+    question: "Quelle pièce de ton chez-toi te ressemble le plus ?"
+  - code: Q8.1-07
+    niveau: 1
+    question: "Une semaine libre s'ouvre devant toi : par quoi commences-tu ?"
+  - code: Q8.1-08
+    niveau: 1
+    question: "Quel plat prépares-tu quand tu veux faire plaisir à quelqu'un ?"
+  - code: Q8.1-09
+    niveau: 1
+    question: "Tu es plutôt mer tôt le matin ou forêt au bout du jour ?"
+  - code: Q8.1-10
+    niveau: 1
+    question: "Quelle balade referais-tu demain avec le même plaisir ?"
+  - code: Q8.1-11
+    niveau: 1
+    question: "Quel bruit de ta journée te fait dire que tu es chez toi ?"
+  - code: Q8.1-12
+    niveau: 1
+    question: "Un week-end sans agenda se présente : comment le remplis-tu ?"
+  - code: Q8.1-13
+    niveau: 2
+    question: "Quelle décision de ta vie t'a fait grandir d'un coup d'un seul ?"
+  - code: Q8.1-14
+    niveau: 2
+    question: "Quel geste d'entraide observé autour de toi t'a marqué durablement ?"
+  - code: Q8.1-15
+    niveau: 2
+    question: "Qu'est-ce qu'une amitié t'a appris que personne d'autre n'aurait pu ?"
+  - code: Q8.1-16
+    niveau: 2
+    question: "Quelle part de ton métier ou de tes études te nourrit vraiment ?"
+  - code: Q8.1-17
+    niveau: 2
+    question: "Quelle difficulté traversée t'a donné une force que tu utilises encore ?"
+  - code: Q8.1-18
+    niveau: 2
+    question: "Quelle habitude de ta famille portes-tu sans l'avoir choisie ?"
+  - code: Q8.1-19
+    niveau: 2
+    question: "Quelle promesse faite à quelqu'un te coûte le plus à tenir ?"
+  - code: Q8.1-20
+    niveau: 2
+    question: "Quelle personne, sans lien de sang, a compté dans ta construction ?"
+  - code: Q8.1-21
+    niveau: 2
+    question: "Que dirais-tu à la version de toi d'il y a dix ans ?"
+  - code: Q8.1-22
+    niveau: 2
+    question: "Que fais-tu, toi, quand quelqu'un qui compte traverse un creux ?"
+  - code: Q8.1-23
+    niveau: 2
+    question: "Quel lieu de ton passé t'a façonné sans que tu t'en rendes compte ?"
+  - code: Q8.1-24
+    niveau: 2
+    question: "Quelle injustice quotidienne te fait réagir sans réfléchir ?"
+  - code: Q8.1-25
+    niveau: 3
+    question: "Quelle peur, en amour, te connaît le mieux ?"
+  - code: Q8.1-26
+    niveau: 3
+    question: "De quoi as-tu besoin le soir, quand la journée a été lourde ?"
+  - code: Q8.1-27
+    niveau: 3
+    question: "Quelle solitude t'a appris quelque chose d'important sur toi ?"
+  - code: Q8.1-28
+    niveau: 3
+    question: "Qu'est-ce que tu avoues seulement quand la confiance est installée ?"
+  - code: Q8.1-29
+    niveau: 3
+    question: "Qu'est-ce qui te permet vraiment de pardonner après une blessure ?"
+  - code: Q8.1-30
+    niveau: 3
+    question: "Qu'est-ce qui te fait te sentir accueilli quand tu arrives quelque part ?"
+  - code: Q8.1-31
+    niveau: 3
+    question: "Quand la vie pèse, de quoi as-tu le plus besoin : mots, silence, présence ?"
+  - code: Q8.1-32
+    niveau: 3
+    question: "Quelle part de toi mérite plus de place que tu lui en donnes ?"
+  - code: Q8.1-33
+    niveau: 3
+    question: "Qu'est-ce qui rend difficile, pour toi, de demander de l'aide ?"
+  - code: Q8.1-34
+    niveau: 3
+    question: "Quel pardon attends-tu encore, pour toi ou pour quelqu'un ?"
+  - code: Q8.1-35
+    niveau: 3
+    question: "À quoi reconnaît-on, chez toi, que tu es en confiance ?"
+  - code: Q8.1-36
+    niveau: 3
+    question: "Qu'est-ce que tu aimerais qu'on te dise plus souvent ?"
+notes_production:
+  - >-
+    Aucun code, niveau, identifiant de signature ou mention NLP ne franchit un texte destiné à
+    l'utilisateur (Constitution [3]) : à l'écran, la question en toutes lettres, puis les deux
+    réponses — rien d'autre.
+  - >-
+    Les 36 questions sont 100 % Wairyu ; le procédé d'escalade d'intimité mutuelle est un concept
+    public, les questions d'origine du procédé ne sont pas reprises (contrôle anti-plagiat machine
+    exécuté en session principale — mention au 00-README).
+  - >-
+    Les deux signatures portent le verrou « À VALIDER PAR LE COMITÉ » (Constitution [9] ; FM-019 :
+    valeurs de départ provisoires concepteur, re-signature professionnelle avant bêta).
+  - >-
+    Dossier à 9 fichiers : PAS de cartes.yaml (divergence de gabarit documentée au 00-README —
+    les récompenses sont partagées, refonte l. 2039).

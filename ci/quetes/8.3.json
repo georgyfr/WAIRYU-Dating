@@ -1,0 +1,15 @@
+{
+  "quete": "8.3",
+  "titre": "Le refus",
+  "passation": "ordre-fixe-scenarique",
+  "note_passation": "M11 — les 3 scénarios du non en positions fixes {1,2,3} (graine sans-objet, aucune course). Opt-in des deux partenaires, chiffrement maximal, moteur seul.",
+  "items": [
+    { "code": "Q8.3-T58", "position": 1, "dimension": "le-non-que-tu-recois", "signal": "COC", "hebergement": "énoncé hors dépôt — document trames Partie 11 (règle 11-b)" },
+    { "code": "Q8.3-T59", "position": 2, "dimension": "le-non-que-tu-donnes", "signal": "COC", "hebergement": "énoncé hors dépôt — document trames Partie 11 (règle 11-b)" },
+    { "code": "Q8.3-T60", "position": 3, "dimension": "le-non-qui-persiste", "signal": "COC", "hebergement": "énoncé hors dépôt — document trames Partie 11 (règle 11-b)" }
+  ],
+  "c1_note": "sans-objet (3 scénarios à positions fixes)",
+  "c2_note": "3▲ hébergées hors dépôt (T58-T60) — config sans énoncé, précédent 5.4/6.2",
+  "c4_note": "sans-objet (ordre fixe)",
+  "scoring": { "moteur": "seul", "signal": "COC", "croisement": "COC 6.2 (T53-T57) — double filet anti-coercition — seuils comité", "rendu": "jamais", "miroir": "aucun — on ne gamifie pas la détection" }
+}

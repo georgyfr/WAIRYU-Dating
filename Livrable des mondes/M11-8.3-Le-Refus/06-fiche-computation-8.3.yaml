@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 8.3 « LE REFUS » (3▲ trames hébergées — quête-trame intégrale)
+# quete : 8.3 · fiche : 06 — fiche de computation de la quête
+# 🆓 GRATUIT · P3 · acces: premier-match · mode: a-deux · opt_in: les-deux
+# ⛔ RÈGLE D'OR : ON NE GAMIFIE PAS LA DÉTECTION — le signal COC est MOTEUR SEUL, rendu: jamais ;
+#   AUCUN miroir, AUCUNE carte, AUCUNE récompense pour remplir un marqueur prédateur (04 · 07).
+# RÈGLE 11-B : les énoncés des 3 scénarios sont HORS DÉPÔT (document trames, Partie 11) —
+#   codes gelés à jamais, énoncés tournants.
+# L'écran de la quête parle d'assertivité seule — jamais de mesure, de score, de détection (05).
+# Ordre fixe — positions {1,2,3} — graine sans-objet (02) : zéro course, zéro config ci/ attendue.
+# ═══════════════════════════════════════════════════════════════════
+quete: "8.3 Le refus"
+monde: M11                      # métadonnée — le code reste la clé (FM-011 v2)
+statut_freemium: gratuit        # LA RENCONTRE N'EST JAMAIS PAYANTE ([6])
+phase: p3
+acces: premier-match
+mode: a-deux                    # mission partagée — les deux membres traversent les 3 scènes
+opt_in: les-deux                # la quête ne s'ouvre que si les DEUX partenaires optent —
+                                # l'opt-in refusé n'est jamais châtié, la quête attend sans rappel
+items:
+  type: trames_hebergees        # quête-trame intégrale — règle 11-b (énoncés hors dépôt)
+  codes:
+    - { code: "Q8.3-T58", position: 1, angle: "le non que tu reçois — comment tu le reçois", signal: COC }
+    - { code: "Q8.3-T59", position: 2, angle: "le non que tu donnes — comment tu le formules", signal: COC }
+    - { code: "Q8.3-T60", position: 3, angle: "le non qui persiste — ce que tu fais après le second", signal: COC }
+  enonces_au_depots: false      # AUCUN énoncé de scénario au dépôt — document trames, Partie 11
+format:
+  type: scenario_choix_force    # situation courte (assertivité) → réaction choisie parmi 4
+  options_par_scenarios: 4      # 1-2 réactions normales saines + 1-2 porteuses de signal COC —
+                                # plausibles, politesses-mélangées, JAMAIS caricaturales (grille : hors dépôt)
+  echelle: null                 # hors Likert — pas d'orientation D/I, pas de recodage
+  bonne_reponse: aucune         # aucune réaction présentée comme « la bonne » — l'assertivité se répète, elle ne se note pas
+ordre: fixe                     # positions {1, 2, 3} — escalade pédagogique (reçu → donné → tenu)
+graine: sans-objet              # aucune course, aucune tentative, zéro tirage (02) — ordinal 73 réservé, non utilisé
+signatures: [SIG-8.3-01]        # COC — le double filet (complète l'évaluation 6.2)
+scoring:
+  moteur: seul                  # MOTEUR SEUL — Constitution [3]
+  signal: COC                   # vigilance coercion (dictionnaire [4]) — registre ACTIF
+  croisement: "6.2 (T53-T57)"   # le double filet : réaction au refus en scénario (8.3, révélée)
+                                # × vécu du refus déclaré (6.2, trames T53-T57 — matrices)
+  rendu: "jamais"               # aucun score, aucun drapeau, aucun profil, aucun conseil —
+                                # toute restitution éventuelle est une décision comité (03)
+securite:
+  action_automatique: aucune    # jamais d'exclusion de match automatisée — décision humaine outillée,
+                                # conditions fines hors dépôt (FM-018)
+chiffrement: maximal
+export: jamais
+tiers: jamais                   # JAMAIS à l'autre partenaire sous forme d'accusation, jamais à un tiers (03)
+sortie: permanente              # réponses modifiables/supprimables à tout moment
+revelation_mutuelle:
+  mode: opt_in_par_scene        # à l'initiative de chaque membre, scène par scène — la conversation
+                                # est la récompense de la quête (assertivité)
+  declencheur_moteur: aucun     # JAMAIS déclenchée par le moteur, JAMAIS fondée sur le signal COC (03 · 04)
+notes:
+  - >-
+    EXEMPTION TOTALE (04 · 07, précédent 6.4) : AUCUN miroir, AUCUNE carte, AUCUNE brique rendue —
+    l'interdit structurel « on ne gamifie pas la détection » fait de l'absence de rendu la conformité.
+  - >-
+    La face visible est réellement utile : l'assertivité (recevoir un non, donner un non, tenir son
+    non) est une compétence de vie — si le signal n'existait pas, la passation serait identique.
+  - >-
+    Seuils d'activation et grille des réactions : PROVISOIRES / hors dépôt — verrou [9], comité,
+    re-signature professionnelle avant bêta (FM-019).
+  - >-
+    Les 3 énoncés officiels (T58-T60) sont livrés au document trames Partie 11 par canal privé —
+    gravure par la session principale (règle 11-b).

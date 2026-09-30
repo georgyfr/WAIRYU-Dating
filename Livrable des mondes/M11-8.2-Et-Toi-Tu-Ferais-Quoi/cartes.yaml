@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════════
+# CARTES DE LA QUÊTE 8.2 « ET TOI, TU FERAIS QUOI ? » — LA CARTE UNIQUE, 2 VARIANTES
+# quete : 8.2 « Et toi, tu ferais quoi ? » · fiche : cartes — la carte unique (étage 1)
+# 🆓 GRATUIT · M11 — LE VOYAGE À DEUX · P2 · Création : V14 — 1ʳᵉ génération (B.3 production neuve déclarée).
+# ═══════════════════════════════════════════════════════════════════
+# DIVERGENCE DE GABARIT (posée au 00) : PAS de miroir à profils multiples — un dilemme n'a pas
+# de profil, il a un choix et une raison. UN SEUL slot de rendu : la carte unique
+# « Tes principes ET ton pragmatisme », 2 variantes seulement.
+# SÉLECTION : par l'écart ECD (SIG-8.2-01, MOTEUR SEUL) — écart faible → INTEGRE ·
+# écart fort → REPRESENTATION. Seuil PROVISOIRE 0.30 — À VALIDER PAR LE COMITÉ [9]
+# (re-signature professionnelle avant bêta, FM-019).
+# ⛔ VERROU DU TON : les deux variantes sont non-jugeantes et chaleureuses ; l'écart y est
+# accueilli comme humain et commun ; l'ombre n'accuse JAMAIS ; les désignations moteur
+# (profil intégré / profil en représentation) et tout le champ lexical de l'accusation
+# ne franchissent jamais un texte rendu (Constitution [3] — vérifié machine).
+# LA CARTE RESTE PERSONNELLE (04) : sa variante dérive d'un signal moteur — elle ne se
+# montre pas à l'autre membre ; le canal à deux est la révélation mutuelle consentie.
+# Gratuit — aucun texte de vente, aucune présupposition de contenu premium ([6]).
+# ═══════════════════════════════════════════════════════════════════
+
+quete: "8.2 Et toi, tu ferais quoi ?"
+monde: M11
+statut_freemium: gratuit
+acces: premier-match
+mode: a-deux
+format: "etage_1_carte_unique_2_variantes"
+charte: "carte unique — 75-110 mots (portrait + lumière + ombre), phrases <= 22 mots, ombre >= lumière, ton non-jugeant"
+
+selection:
+  variable: "l'écart ECD (SIG-8.2-01) — écart valeurs déclarées (2.1) / révélées (8.2), normalisé 0-1, moteur seul"
+  logique: "écart < 0.30 → INTEGRE (profil intégré) · écart >= 0.30 → REPRESENTATION (profil en représentation) — seuil PROVISOIRE, comité"
+  exhaustivite: "2 sélections = partition totale de l'espace (un seul seuil binaire, deux régions)"
+  non_participant: "la carte n'entre dans AUCUN calcul de compatibilité, AUCUN croisement affiché, AUCUNE exclusion de match — l'écart reste au facteur de confiance, côté moteur (03)"
+  silence_structurel: "l'écart n'est jamais nommé, chiffré ni expliqué dans un texte rendu — la variation se dit en bienveillance seule"
+
+entete_ecran: "🆓 QUÊTE ACCOMPLIE — « Et toi, tu ferais quoi ? »"
+label_ombre: "Ta zone d'ombre :"
+label_tension: "Ta tension intérieure :"
+pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 Vos réponses se dévoilent à vous deux, quand vous avez répondu tous les deux. · [Quête suivante]"
+fenetre_sur_l_autre:
+  - "F1 : La révélation mutuelle montre vos choix et vos justifications, dilemme par dilemme — rien de calculé, rien de noté."
+  - "F2 : Ta carte reste à toi — l'autre voit vos réponses révélées (si vous y répondez tous les deux), pas ta carte."
+
+variantes:
+
+  - id: CARTE-8.2-INTEGRE
+    nom: "Le fil qui tient"
+    designation_moteur: "profil intégré (écart faible)"   # moteur seul — jamais rendu
+    ordre_selecteur: 1
+    condition: "écart ECD < 0.30 (seuil PROVISOIRE — À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q8.2-01", "Q8.2-02", "Q8.2-03", "Q8.2-04", "Q8.2-05", "Q8.2-06"]
+    portrait: "Tu vis tes principes, et tu les vis en situation : dans les dilemmes, tes choix ressemblent à ce que tu dis croire. Ce fil entre tes mots et tes gestes, tu le tiens — et ça se lit."
+    ombre: "Un fil bien tendu peut manquer de jeu. Quand la vie bouscule une ligne, le doute te touche plus fort qu'un autre."
+    tension_interieure: "ton pragmatisme existe aussi : il choisit les chemins, il ne déplace pas le cap."
+    affichage_complet: "Tu vis tes principes, et tu les vis en situation : dans les dilemmes, tes choix ressemblent à ce que tu dis croire. Ce fil entre tes mots et tes gestes, tu le tiens — et ça se lit. Lumière : ta parole te précède, on sait où tu en es, ça repose. Ombre : un fil bien tendu peut manquer de jeu. Quand la vie bouscule une ligne, le doute te touche plus fort qu'un autre. Ton pragmatisme existe aussi : il choisit les chemins, il ne déplace pas le cap. Et ce n'est pas contradictoire."
+    affichage_complet_mots: 92    # vérifié machine — phrases 22/15/13/10/13/14/5 · ombre 23 >= lumière 13
+
+  - id: CARTE-8.2-REPRESENTATION
+    nom: "Le fil qui s'ajuste"
+    designation_moteur: "profil en représentation (écart fort)"   # moteur seul — jamais rendu
+    ordre_selecteur: 2
+    condition: "écart ECD >= 0.30 (seuil PROVISOIRE — À VALIDER PAR LE COMITÉ)"
+    ancre_item: ["Q8.2-01", "Q8.2-02", "Q8.2-03", "Q8.2-04", "Q8.2-05", "Q8.2-06"]
+    portrait: "Dans les dilemmes, tu choisis souvent l'ajustement : ce qui préserve l'instant, l'équilibre, la personne en face. Tes principes, eux, restent clairs quand tu les dis."
+    ombre: "Si l'ajustement devient la réponse habituelle, l'entourage peut perdre le fil de ce qui compte vraiment pour toi."
+    tension_interieure: "le nommer à voix haute, de temps en temps, suffit à remettre le cap."
+    affichage_complet: "Dans les dilemmes, tu choisis souvent l'ajustement : ce qui préserve l'instant, l'équilibre, la personne en face. Tes principes, eux, restent clairs quand tu les dis. Les deux cohabitent — c'est plus répandu qu'on ne le croit. La vie place chacun dans des coins où le pragmatisme parle d'abord. Lumière : tu sais plier sans casser, tu désamorses, tu gardes le lien. Ombre : si l'ajustement devient la réponse habituelle, l'entourage peut perdre le fil de ce qui compte vraiment pour toi. Le nommer à voix haute, de temps en temps, suffit à remettre le cap. Tes principes et ton pragmatisme ne s'opposent pas : ils se relaient."
+    affichage_complet_mots: 103   # vérifié machine — phrases 16/9/10/12/12/19/14/11 · ombre 18 >= lumière 12
+
+verrous:
+  - deux variantes, pas une de plus — toute troisième variante passe par une Fiche de Mutation + verdict comité
+  - l'écart n'est jamais nommé, chiffré ni expliqué au rendu — ni écart, ni cohérence, ni seuil, ni facteur de confiance (Constitution [3])
+  - l'ombre n'accuse jamais — aucun reproche, aucune intention prêtée, aucun champ lexical de l'accusation (vérifié machine : 05, 07, cartes)
+  - les deux variantes portent la même dignité — la variation n'est pas un classement
+  - la carte reste personnelle — elle ne se montre pas à l'autre membre (canal à deux = révélation mutuelle consentie, 04)
+  - zéro citation de dilemme, de choix ou de justification dans la carte
+  - zéro métadonnée, zéro code, zéro « toujours/jamais » au rendu (vérifié machine)
+  - gratuit — aucun texte de vente, aucune présupposition de contenu premium ([6])
