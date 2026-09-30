@@ -12012,3 +12012,16 @@ body.theme-dark .installgate.fallback {
   background: #1d1429;
   border-color: #6c4ab6;
 }
+
+/* --- Task 75 (fondateur : « masque l'url dans l'app ») — ligne d'aide de
+     l'InstallGate : « Déjà installée ? Ouvre wairyu depuis l'icône… » — le
+     réflexe email/lien rouvre le navigateur (Custom Tab avec barre
+     d'adresse) ; seule l'icône de l'écran d'accueil ouvre l'application.
+     Couleurs explicites (leçon t65) — clair puis sombre. --- */
+.installgate-already {
+  color: #e8dcff;
+  font-weight: 600;
+}
+body.theme-dark .installgate-already {
+  color: #d6c6f5;
+}
