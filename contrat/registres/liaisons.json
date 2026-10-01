@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "fichier": "contrat/registres/liaisons.json",
+    "role": "Registre des LIAISONS DE DOMAINE — les croisements entre mondes issus d'une même origine, qui vivent dans les PORTRAITS DE DOMAINE et le PORTRAIT INTÉGRAL, JAMAIS dans un miroir de quête seul (Constitution [5]).",
+    "provenance": "Matérialisé post-audit (finding A.7, corrections P0 conception, 2026-10-01) — matérialisation PARTIELLE choisie : les 6 liaisons du cœur sont COMPLÈTES (documentées en V11, portées par portraits/domaines/coeur.md) ; les liaisons intime et soi sont des STUBS DOCUMENTÉS (attendues des vagues V13/V14, à matérialiser avec leurs Portraits de Domaine — différés FM-026 §2).",
+    "fiche_mutation": "FM-028-RETROSPECTIVE (post-audit A.7)"
+  },
+  "domaines": [
+    {
+      "domaine": "soi",
+      "mondes": ["M1", "M2"],
+      "statut": "STUB DOCUMENTÉ — liaisons attendues (vagues V14 : le Portrait de Domaine du Soi est différé sur cadrage, FM-026 §2)",
+      "liaisons": [
+        { "id": "SOI-L1", "titre": "stub — à documenter avec le Portrait de Domaine du Soi", "quêtes": ["1.1-1.3 × 1.4-1.11"], "porteur": "à venir" }
+      ],
+      "porteur_actuel": null
+    },
+    {
+      "domaine": "cœur",
+      "mondes": ["M6", "M7"],
+      "statut": "COMPLET — 6 liaisons documentées en V11 (portées par portraits/domaines/coeur.md §2)",
+      "liaisons": [
+        { "id": "COEUR-L1", "titre": "Ta façon d'aimer rencontre ta posture de conflit", "quêtes": ["5.1", "5.4"], "porteur": "portraits/domaines/coeur.md §2 Liaison 1", "resume": "le style amoureux reprend la main dans la dispute — l'esquive devient continuation du jeu, l'intensité procès d'attachement" },
+        { "id": "COEUR-L2", "titre": "La passion et la tempête partagent le même circuit", "quêtes": ["5.1", "5.5"], "porteur": "portraits/domaines/coeur.md §2 Liaison 2", "resume": "ce qui monte fort pour aimer monte fort pour se dire — l'autre apprend à craindre la montée qui l'a séduit" },
+        { "id": "COEUR-L3", "titre": "Le destin découvre le conflit comme une trahison du scénario", "quêtes": ["5.2", "5.4"], "porteur": "portraits/domaines/coeur.md §2 Liaison 3", "resume": "le premier désaccord n'était pas au scénario — le sujet enterré prouve l'incompatibilité" },
+        { "id": "COEUR-L4", "titre": "Pardonner détruirait le mythe", "quêtes": ["5.2", "5.6"], "porteur": "portraits/domaines/coeur.md §2 Liaison 4", "resume": "la réparation coûte plus cher que la rancune — la rumination protège le film en maintenant le procès" },
+        { "id": "COEUR-L5", "titre": "L'humour en désaccord : désamorcer ou esquiver", "quêtes": ["5.7", "5.4"], "porteur": "portraits/domaines/coeur.md §2 Liaison 5", "resume": "la langue des rires devient la langue de la tension — désamorçage réel ou esquive déguisée" },
+        { "id": "COEUR-L6", "titre": "Le coût de la langue de tes rires quand la tension monte", "quêtes": ["5.7", "5.5"], "porteur": "portraits/domaines/coeur.md §2 Liaison 6", "resume": "ce que l'humour contient de vrai et de différé remonte dans la tempête" }
+      ],
+      "porteur_actuel": "portraits/domaines/coeur.md"
+    },
+    {
+      "domaine": "intime",
+      "mondes": ["M8", "M9"],
+      "statut": "STUB DOCUMENTÉ — liaisons attendues (vagues V13 : les liaisons croisées sont documentées aux 03 des dossiers ; le Portrait de Domaine de l'Intime est différé sur cadrage, FM-026 §2)",
+      "liaisons": [
+        { "id": "INTIME-L1", "titre": "stub — à documenter avec le Portrait de Domaine de l'Intime (l'essentiel × les profondeurs)", "quêtes": ["6.1-6.2 × 6.3-6.5"], "porteur": "à venir" }
+      ],
+      "porteur_actuel": null
+    }
+  ],
+  "regles": [
+    "Une liaison de domaine vit dans le PORTRAIT DE DOMAINE et le PORTRAIT INTÉGRAL — jamais dans un miroir de quête seul (Constitution [5]).",
+    "Chaque liaison documente un mécanisme, un exemple, un coût pour toi, un coût pour l'autre — le conditionnel fréquentiel est de rigueur : aucune liaison ne prédit, toutes documentent (verrou gabarit cœur.md).",
+    "Volume d'ombre ≥ volume de lumière dans les sections croisées (verrou du gabarit)."
+  ]
+}

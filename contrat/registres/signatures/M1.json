@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "fichier": "contrat/registres/signatures/M1.json",
+    "role": "Registre matérialisé des signatures du Monde 1 — index machine du registre source verbatim (finding A.3, audit externe).",
+    "source_verbatim": "Livrable des mondes/M1-1.1-Ta-Personnalite/03-signatures-registre.md — les conditions et conséquences EXACTES vivent là (verbatim gravé) ; le présent registre en est l'index machine (id · famille · ancrage · verrou · maison), pas la réécriture.",
+    "provenance": "Matérialisé post-audit (finding A.3, corrections P0 conception, 2026-10-01) — RECONSTITUTION : contenu repris TEL QUEL du registre source.",
+    "ecart_arithmetique": "Le registre source titre « Les 17 Signatures Narratives » mais énumère 19 fiches numérotées 8-26 (bloc Autonome : 5 fiches pour 4 annoncées ; transversale n° 26 ajoutée). Écart signalé NON corrigé au registre source (Constitution [8]) — EN ATTENTE DE TRANCHAGE COMITÉ (question Q4 de l'auditeur). L'invariant CI (35 = 30 M1 + 1 M2 + 4 M3, où 30 = 7 méta + 17 narratives + 6 sécurité) reste en vigueur jusqu'au tranchage ; il sera ajusté après comité.",
+    "invariant_actuel": "30 M1 déclarées (7 méta + 17 narratives + 6 sécurité) — CI-01/CI-14",
+    "compte_materialise": "7 méta + 19 narratives + 6 sécurité (conditions fines hors dépôt, sans ID public) + 1 SIG_RSQ_HAUT (hors dépôt) = 33 fiches déclarées au présent index",
+    "fiche_mutation": "FM-028-RETROSPECTIVE (post-audit A.3)"
+  },
+  "monde": "M1",
+  "signatures": [
+    { "numero": 1, "id": "SIG_COH_HAUTE", "famille": "méta — cohérence", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 2, "id": "SIG_COH_DIV", "famille": "méta — divergence", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": null, "id": "REGLE_SILENCE_EC", "famille": "méta — règle de silence (0.15 < EC < 0.30 : aucun affichage)", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 3, "id": "SIG_QFI_CRISTALLIN", "famille": "méta — fiabilité", "ancrage_1_1": "doublons 02/11", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 4, "id": "SIG_QFI_CONSTRUCTION", "famille": "méta — fiabilité", "ancrage_1_1": "doublons 02/11", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 5, "id": "SIG_QFI_STRATEGIQUE", "famille": "méta — fiabilité", "ancrage_1_1": "module les 5 échelles", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 6, "id": "SIG_QFI_AVEUGLE", "famille": "méta — fiabilité", "ancrage_1_1": "couvre les 58 items", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+    { "numero": 7, "id": "SIG_AMBIVALENT", "famille": "méta — attachement", "ancrage_1_1": "ANX·EVI (1.2)", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie A)" },
+
+    { "numero": 8, "id": "SIG_ALARME_AMPLIFIEE", "famille": "narrative — Bloc Vigie", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 9, "id": "SIG_VIGIE_SOUTENABLE", "famille": "narrative — Bloc Vigie", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 10, "id": "SIG_RADAR_DOUBLE", "famille": "narrative — Bloc Vigie", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 11, "id": "SIG_ABSORPTION", "famille": "narrative — Bloc Vigie", "ancrage_1_1": "A", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 12, "id": "SIG_EXPRESS_CONDITIONNELLE", "famille": "narrative — Bloc Vigie", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 13, "id": "SIG_STANDARD_PROJETE", "famille": "narrative — Bloc Bâtisseur", "ancrage_1_1": "C · A", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 14, "id": "SIG_CALME_VERROU", "famille": "narrative — Bloc Bâtisseur", "ancrage_1_1": "S", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 15, "id": "SIG_REFUGE_OCCUPATION", "famille": "narrative — Bloc Bâtisseur", "ancrage_1_1": "C", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 16, "id": "SIG_VERROU_AUTOACCUSATION", "famille": "narrative — Bloc Bâtisseur", "ancrage_1_1": "A · S", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur · rappel Q1.1-48 SUSPENDU jusqu'à arbitrage (note d'audit du registre)", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 17, "id": "SIG_INDEPENDANCE_ACTIVE", "famille": "narrative — Bloc Autonome", "ancrage_1_1": "S · O", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 18, "id": "SIG_DESACTIVATION", "famille": "narrative — Bloc Autonome (signature-mère)", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 19, "id": "SIG_FORTERESSE", "famille": "narrative — Bloc Autonome", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 20, "id": "SIG_RETRAIT_PATIENT", "famille": "narrative — Bloc Autonome", "ancrage_1_1": "S", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 21, "id": "SIG_DEFET_SOUDAIN", "famille": "narrative — Bloc Autonome", "ancrage_1_1": "O", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 22, "id": "SIG_METEO_FORTE", "famille": "narrative — Bloc Intense", "ancrage_1_1": "S", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 23, "id": "SIG_MOTS_DE_CRISE", "famille": "narrative — Bloc Intense", "ancrage_1_1": "via METEO", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 24, "id": "SIG_VERIF_PRESSION", "famille": "narrative — Bloc Intense", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 25, "id": "SIG_REN_REQUIS", "famille": "narrative — Bloc Intense (gabarit GAB-REN, formulation verrouillée)", "ancrage_1_1": "S", "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+    { "numero": 26, "id": "SIG_ECARTE_POLE", "famille": "narrative — Transversale (matching)", "ancrage_1_1": null, "verrou": "ADOPTÉ (FM-019) — provisoire concepteur", "maison": "M1-1.1-Ta-Personnalite/03-signatures-registre.md (Partie B)" },
+
+    { "numero": null, "id": null, "famille": "sécurité — 6 fiches, conditions fines HORS DÉPÔT (document trames, canal privé — Partie C du registre source)", "ancrage_1_1": "trames T01-T08 (1.1)", "verrou": "Constitution [11-b] — jamais matérialisées au dépôt", "maison": "document trames confidentiel (hors dépôt)" },
+    { "numero": null, "id": "SIG_RSQ_HAUT", "famille": "sécurité — conditions fines hors dépôt (ID public, conditions privées)", "ancrage_1_1": "trames T13-T16 (1.2)", "verrou": "Constitution [11-b] — référencée au registre signaux.json (RSQ.alimente)", "maison": "document trames confidentiel (hors dépôt)" }
+  ]
+}
