@@ -44,11 +44,11 @@
 > la relation devient profonde, ancrée tôt. Formulations FRANCHES, indiscernables, jamais édulcorées.
 
 **Q4.4-T13 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 8). Angle : l'intimité qui approche — le recul juste avant.
+(document trames, hors dépôt — Partie 8). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : l'intimité qui approche — le recul juste avant.
 Alimente la variable FIS (bloc 4.4 — matrices moteur). Position au mélange de CETTE passation : 5.**
 
 **Q4.4-T14 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 8). Angle : la distance qui protège — l'habitude prise.
+(document trames, hors dépôt — Partie 8). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : la distance qui protège — l'habitude prise.
 Alimente la variable FIS (bloc 4.4). Position au mélange de CETTE passation : 10.**
 
 Propriétés communes (côté moteur, côté contrat) : dimension carte `null` · orientations **D** ·

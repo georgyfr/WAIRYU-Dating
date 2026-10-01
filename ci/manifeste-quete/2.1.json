@@ -1,81 +1,81 @@
 {
-  "_role": "MANIFESTE DE CONTRÔLE CI — c'est CE manifeste que le test test_contrat_inventaire comparera au Contrat d'Inventaire v1.3",
-  "quete": "2.1",
-  "titre": "Tes valeurs",
-  "monde": "M3",
-  "statut_freemium": "gratuit",
-  "categorie": "Socle",
-  "phase": "MVP",
-  "plage_codes": {
-    "debut": "Q2.1-01",
-    "fin": "Q2.1-24",
-    "codes_utilises": 24,
-    "codes_geler_a_jamais": true
+ "_role": "MANIFESTE DE CONTRÔLE CI — c'est CE manifeste que le test test_contrat_inventaire comparera au Contrat d'Inventaire v1.3",
+ "quete": "2.1",
+ "titre": "Tes valeurs",
+ "monde": "M3",
+ "statut_freemium": "gratuit",
+ "categorie": "Socle",
+ "phase": "MVP",
+ "plage_codes": {
+  "debut": "Q2.1-01",
+  "fin": "Q2.1-24",
+  "codes_utilises": 24,
+  "codes_geler_a_jamais": true
+ },
+ "totaux": {
+  "items_total": 24,
+  "items_carte": 20,
+  "items_trame": 4,
+  "trames_par_signal": {
+   "DTM_N": 4
   },
-  "totaux": {
-    "items_total": 24,
-    "items_carte": 20,
-    "items_trame": 4,
-    "trames_par_signal": {
-      "DTM_N": 4
-    },
-    "paires_miroir": 10,
-    "dimensions_carte": 10
-  },
-  "signatures": [
-    "SIG-2.1-01",
-    "SIG-2.1-02",
-    "SIG-2.1-03",
-    "SIG-2.1-04"
-  ],
-  "slots": [
-    "S1-2.1",
-    "S2-2.1",
-    "S3-2.1",
-    "S4-2.1"
-  ],
-  "melange": {
-    "graine": 210427,
-    "algorithme": "fisher-yates-seede + reparation-deterministe",
-    "verdicts_contraintes": "6/6 pass",
-    "reparation": "passe ⑤ FM-015 — run max 2, graine 210427 conservée, trames ancrées"
-  },
-  "empreintes": {
-    "algorithme": "sha256",
-    "fichiers": {
-      "contenu/mondes/M3-boussole/2.1-valeurs/items.yaml": {
-        "sha256": "b7da1c208600ea155c6d898587c2b3c7fa40b379692fa0529b1a1da270c8a9c3",
-        "octets": 13683
-      },
-      "contenu/mondes/M3-boussole/2.1-valeurs/melange.json": {
-        "sha256": "a3619423449ee0d9f603560c2f86c26a8ab89e7c909b619280fc978ea77374a5",
-        "octets": 3706
-      },
-      "contenu/mondes/M3-boussole/2.1-valeurs/signatures.yaml": {
-        "sha256": "373102b2dcd3eeacb4e27971bd6abdd3700854b2b1f4c7cf8c921b8844fa9367",
-        "octets": 3132
-      },
-      "contenu/mondes/M3-boussole/2.1-valeurs/slots.yaml": {
-        "sha256": "68bc78f5250b53a0c16336cdaaa0ac6e5864f805bcdc34194749fd319cae10ec",
-        "octets": 3756
-      },
-      "contenu/mondes/M3-boussole/2.1-valeurs/intro.md": {
-        "sha256": "5b8983452d109a02fdc3646b266431b7be3f9784e55fe666b525efd78b076ba8",
-        "octets": 911
-      }
-    }
-  },
-  "provenance": {
-    "session": "2026-09-28",
-    "fiche_mutation": "FM-013",
-    "validateur": "linter: pass 6/6 · C1: paquet soumis, verdict en attente",
-    "correction_appliquee": "Q2.1-23 v2 — contamination lexicale vs Q2.1-09 corrigée (revue produit)"
-  },
-  "controles_mise_en_ligne": {
-    "fichiers_integraux_sans_ellipse": true,
-    "chemins_respectent_arborescence_canonique": true,
-    "totaux_manifeste_egal_fiche_quete": true,
-    "hash_calcules_et_reportes": true,
-    "aucun_flux_signal_vers_rendu": true
+  "paires_miroir": 10,
+  "dimensions_carte": 10
+ },
+ "signatures": [
+  "SIG-2.1-01",
+  "SIG-2.1-02",
+  "SIG-2.1-03",
+  "SIG-2.1-04"
+ ],
+ "slots": [
+  "S1-2.1",
+  "S2-2.1",
+  "S3-2.1",
+  "S4-2.1"
+ ],
+ "melange": {
+  "graine": 210427,
+  "algorithme": "fisher-yates-seede + reparation-deterministe",
+  "verdicts_contraintes": "6/6 pass",
+  "reparation": "passe ⑤ FM-015 — run max 2, graine 210427 conservée, trames ancrées"
+ },
+ "empreintes": {
+  "algorithme": "sha256",
+  "fichiers": {
+   "contenu/mondes/M3-boussole/2.1-valeurs/items.yaml": {
+    "sha256": "b1917b205f09ec5e9a6b23e3a0fbeb0b1110c2d5d81a9171b466ca67eb7e4269",
+    "octets": 14277
+   },
+   "contenu/mondes/M3-boussole/2.1-valeurs/melange.json": {
+    "sha256": "a3619423449ee0d9f603560c2f86c26a8ab89e7c909b619280fc978ea77374a5",
+    "octets": 3706
+   },
+   "contenu/mondes/M3-boussole/2.1-valeurs/signatures.yaml": {
+    "sha256": "373102b2dcd3eeacb4e27971bd6abdd3700854b2b1f4c7cf8c921b8844fa9367",
+    "octets": 3132
+   },
+   "contenu/mondes/M3-boussole/2.1-valeurs/slots.yaml": {
+    "sha256": "68bc78f5250b53a0c16336cdaaa0ac6e5864f805bcdc34194749fd319cae10ec",
+    "octets": 3756
+   },
+   "contenu/mondes/M3-boussole/2.1-valeurs/intro.md": {
+    "sha256": "5b8983452d109a02fdc3646b266431b7be3f9784e55fe666b525efd78b076ba8",
+    "octets": 911
+   }
   }
+ },
+ "provenance": {
+  "session": "2026-09-28",
+  "fiche_mutation": "FM-013",
+  "validateur": "linter: pass 6/6 · C1: paquet soumis, verdict en attente",
+  "correction_appliquee": "Q2.1-23 v2 — contamination lexicale vs Q2.1-09 corrigée (revue produit)"
+ },
+ "controles_mise_en_ligne": {
+  "fichiers_integraux_sans_ellipse": true,
+  "chemins_respectent_arborescence_canonique": true,
+  "totaux_manifeste_egal_fiche_quete": true,
+  "hash_calcules_et_reportes": true,
+  "aucun_flux_signal_vers_rendu": true
+ }
 }

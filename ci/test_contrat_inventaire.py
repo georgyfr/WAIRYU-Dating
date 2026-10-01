@@ -63,7 +63,10 @@ LIBELLES_LIKERT5 = {
     5: "Tout à fait comme moi",
 }
 # FM-018 §3 : plus aucune formulation de trame en clair dans la CI — contrôle par empreinte sha256.
-Q23_V2_SHA256 = "65973af8d031aa3640eb37f035fd444357d243125d7e8486688b10b321304a6d"
+# FM-027 (finding F.1, 2026-10-01) : la formulation v2 elle-même est BRÛLÉE — l'empreinte
+# historique ci-dessous n'est plus un contrôle ; la garde verrouille désormais le PLACEHOLDER
+# officiel (ci/outils/garde_p0.py — source unique des libellés canoniques).
+Q23_V2_SHA256_HISTORIQUE = "65973af8d031aa3640eb37f035fd444357d243125d7e8486688b10b321304a6d"
 LEXIQUE_DECISION = {"decide", "decides", "decision", "decisions", "decider",
                     "trancher", "tranche", "dirige", "diriger", "direction"}
 
@@ -426,18 +429,23 @@ def ci09():
     return ligne[0], f"{ligne[1]} · {ids_sig}"
 
 
-@check("CI-10", "garde anti-régression Q2.1-23 v2 (contamination 09×23 — FM-013 §2)")
+@check("CI-10", "garde anti-régression DTM_N — placeholder officiel sur les 4 trames (FM-027 · finding F.1)")
 def ci10():
     doc = charger_yaml("contenu/mondes/M3-boussole/2.1-valeurs/items.yaml")
-    it23 = next(it for it in doc["items"] if it["id"] == "Q2.1-23")
-    it09 = next(it for it in doc["items"] if it["id"] == "Q2.1-09")
-    exact = hashlib.sha256(it23["enonce"].encode("utf-8")).hexdigest() == Q23_V2_SHA256
-    tok23 = tokens(it23["enonce"])
-    lexique = sorted(tok23 & LEXIQUE_DECISION)
-    surface = sorted(tok23 & tokens(it09["enonce"]))
-    ok = exact and not lexique
-    return ok, (f"empreinte v2 (sha256) : {exact} · lexique décision dans 23 : {lexique or 'aucun'} · "
-                f"mots partagés avec Q2.1-09 (structurels, tolérés) : {surface or 'aucun'}")
+    import sys as _sys
+    _sys.path.insert(0, str(RACINE / "ci" / "outils"))
+    import garde_p0
+    attendu = garde_p0.PLACEHOLDER
+    attendu_sha = garde_p0.PLACEHOLDER_SHA256_ATTENDU
+    trames = [it for it in doc["items"] if (it.get("signal") or "") == "DTM_N"]
+    ids = [it["id"] for it in trames]
+    exacts = {it["id"]: hashlib.sha256(it["enonce"].encode("utf-8")).hexdigest() == attendu_sha
+              for it in trames}
+    identiques = {it["id"]: it["enonce"] == attendu for it in trames}
+    ok = len(trames) == 4 and all(exacts.values()) and all(identiques.values()) \
+        and attendu_sha == hashlib.sha256(attendu.encode("utf-8")).hexdigest()
+    return ok, (f"4 trames attendues : {ids} · sha256 == placeholder officiel : "
+                f"{exacts} · textes identiques au canonique : {identiques}")
 
 
 @check("CI-11", "en-têtes de traçabilité présents sur les 5 fichiers de contenu")
@@ -512,6 +520,20 @@ def ci15():
     doublons = sorted({i for i in TOUS_IDS_ITEMS if TOUS_IDS_ITEMS.count(i) > 1})
     ok = not doublons and total_mat <= INVARIANTS["items_total"]
     return ok, f"{total_mat} items matérialisés sur {INVARIANTS['items_total']} · codes en double : {doublons or 'aucun'}"
+
+
+@check("CI-16", "garde étendue 11-b rejouée — zéro trame en clair, 7 formats, tout le dépôt (FM-027 · finding F.1)")
+def ci16():
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, str(RACINE / "ci" / "outils" / "garde_p0.py")],
+        capture_output=True, text=True, cwd=RACINE,
+    )
+    verdict = [l for l in out.stdout.splitlines() if l.startswith("VERDICT GARDE")]
+    scanned = [l for l in out.stdout.splitlines() if l.startswith("Fichiers texte scannés")]
+    return out.returncode == 0 and any("VERT" in v for v in verdict), (
+        (scanned[0] if scanned else "compte de fichiers absent") + " · " + (verdict[0] if verdict else f"absent (rc={out.returncode})")
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════

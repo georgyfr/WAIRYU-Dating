@@ -85,7 +85,7 @@
 ## Les 8 items de trame — LIGNES-RÉSERVÉES (sécurité)
 
 > ⚠️ **Q1.1-T01 à T08 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-> (document trames, hors dépôt). Alimente le signal DTM_N (SDT-N auto-centrage : entitlement T01-T05,
+> (document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal DTM_N (SDT-N auto-centrage : entitlement T01-T05,
 > grandiosité T06-T08). Positions au mélange : 7 · 14 · 21 · 28 · 35 · 42 · 50 · 58.**
 >
 > Aucune formulation de trame n'entre dans un dépôt accessible publiquement — sous peine de brûlage

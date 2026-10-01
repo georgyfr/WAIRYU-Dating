@@ -27,11 +27,11 @@
 > fourni à l'implémenteur uniquement au moment de l'intégration. Codes gelés à jamais.
 
 **Q1.2-T09 à T12 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt). Alimente le signal DTM_M (méfiance projetée). Positions au
+(document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal DTM_M (méfiance projetée). Positions au
 mélange : 2 · 4 · 6 · 8.**
 
 **Q1.2-T13 à T16 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt). Alimente le signal RSQ (sensibilité au rejet, pilote l'UX
+(document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal RSQ (sensibilité au rejet, pilote l'UX
 adaptative). Positions au mélange : 11 · 14 · 17 · 20.**
 
 Propriétés communes (côté moteur, côté contrat) : dimension carte `null` · orientation D ·

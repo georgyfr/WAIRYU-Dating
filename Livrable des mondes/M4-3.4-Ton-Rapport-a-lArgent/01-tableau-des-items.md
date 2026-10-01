@@ -34,14 +34,14 @@ hors dépôt).
 > brûlage préventif, divergence documentée au STATUS et au document trames).
 
 **Q3.4-T07 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : le découvert habituel — ⚠ FINDING V9 :
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : le découvert habituel — ⚠ FINDING V9 :
 l'exemple de la mission (« Je rembourse "plus tard" ce que je m'autorise "maintenant" »)
 est le verbatim de Q1.4-06, item EXISTANT de la quête 1.4 — remplacé (anti-doublon, CI-15) ;
 divergence documentée au STATUS et au document trames (brûlage préventif). Alimente le signal
 DGR. Positions au mélange : 4.**
 
 **Q3.4-T08 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : l'étalage des paiements en plusieurs fois.
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : l'étalage des paiements en plusieurs fois.
 Alimente le signal DGR. Positions au mélange : 8.**
 
 Propriétés communes (côté moteur, côté contrat) : dimension carte `null` · orientations **D** ·
