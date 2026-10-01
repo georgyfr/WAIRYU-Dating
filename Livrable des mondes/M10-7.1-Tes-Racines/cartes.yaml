@@ -33,7 +33,7 @@ label_ombre: "Ta zone d'ombre :"
 label_tension: "Ta tension intérieure :"
 pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
 fenetre_sur_l_autre:
-  - "F1 : Tes racines disent la place que ton héritage tient — jamais d'où il vient."
+  - "F1 : Tes racines disent la place que ton héritage tient — indépendamment d'où il vient."
   - "F2 : Ce portrait décrit une place, il n'en juge aucune — aucune hiérarchie entre les quatre."
 
 variantes:

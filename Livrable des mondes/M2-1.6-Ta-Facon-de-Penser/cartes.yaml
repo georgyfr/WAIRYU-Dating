@@ -52,7 +52,7 @@ variantes:
     corps: |-
       Une main qui sent, une main qui mesure. Selon le terrain, tu changes d'outil — et c'est plus efficace que n'importe quelle doctrine. Tu es du genre à comprendre les deux camps : l'intuitif et l'analyste.
     zone_ombre: |-
-      Le risque des gens complets : ne jamais devenir exceptionnel dans un seul geste.
+      Le risque des gens complets : ne pas devenir exceptionnel dans un seul geste.
     tension_interieure: "choisir l'outil — et parfois s'y tenir."
 pied_de_carte_commun:
   voyage: "📊 Ton profil de voyage : **{X}%** complété"
