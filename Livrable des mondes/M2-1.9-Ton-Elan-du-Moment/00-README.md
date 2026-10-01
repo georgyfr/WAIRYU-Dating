@@ -28,3 +28,16 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q1.9-01 aux 5 canaux.
 7. `07-miroir.md` — 3 profils + l'encadré ressources du profil bas.
 8. `cartes.yaml` — la carte unique « La Météo du moment » (format clarté 40-70).
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concept public** : la **théorie de l'autodétermination** — les besoins psychologiques
+  fondamentaux (autonomie · compétence · relation) et la motivation intrinsèque ; « l'élan
+  du moment » mesure un état motivant contextualisé, jamais un trait figé.
+- **Références** : **Deci & Ryan** (Self-Determination Theory).
+- **⚠ Avertissement de sigle** : le sigle historique « SDT » du dépôt désigne le Dark Triad
+  Manipulative (renommé DTM — registre signaux.json), JAMAIS cette théorie.
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs sont INTERDITS au rendu (05, 07,
+  cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers moteur.
+  Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit —
+  en attente de tranchage comité).

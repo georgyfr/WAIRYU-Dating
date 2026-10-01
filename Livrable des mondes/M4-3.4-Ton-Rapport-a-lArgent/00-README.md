@@ -27,3 +27,15 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q3.4-01 aux 5 canaux.
 7. `07-miroir.md` — 5 profils respectés (4 quadrants + central), gabarit MOYEN.
 8. `cartes.yaml` — 5 variantes de carte (étage 1, charte C1-C11).
+
+## Cadrage moteur (moteur seul — jamais au rendu) — finding B.4d (audit : claim non sourcé)
+
+- **Concepts publics** : les **attitudes envers l'argent** et les **comportements financiers**
+  comme prédicteurs documentés de la dynamique de couple (l'argent est une source fréquente
+  de tension — et un sujet dont la parlabilité protège).
+- **Références** : **Dew** (l'argent et les relations — conflits financiers conjugaux) ;
+  **Britt** (comportements financiers, achat compulsif et stress financier).
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs sont INTERDITS au rendu (05, 07,
+  cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers moteur.
+  Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit —
+  en attente de tranchage comité).
