@@ -50,6 +50,7 @@ import PushBanner from './components/PushBanner'; // Task 53 : bannière d'activ
 import InstallGate from './components/InstallGate'; // Task 60-URL : bannière « installer l'app » (WebAPK Chrome, Task 63)
 import NotificationGate from './components/NotificationGate'; // Task 65 : carte de réparation quand les notifications sont BLOQUÉES (voie Badoo « géré par l'application »)
 import { openInAppIfEligible } from './lib/open-in-app'; // Task 60-URL : bascule intent:// navigateur → app Android
+import { stashOtpRelay } from './lib/otpRelay'; // Task 78 : code OTP mis de côté quand aucun écran code n'est ouvert
 import { autoArmWebPush } from './lib/push-client'; // Task 62 : armement AUTOMATIQUE des notifications
 import type { DiscoveryMode } from '@wairyu/shared';
 import { ToastHost } from './lib/toast';
@@ -579,6 +580,44 @@ export default function App() {
       navigator.serviceWorker.removeEventListener('message', onSwMessage);
     };
   }, [me, refreshConv]);
+
+  // Task 78 (demande fondateur : « la notification push arrive, mais elle ne
+  // remplit pas automatiquement le code comme nous l'avions demandé ») —
+  // relais de niveau page, SANS garde `me` (le flux code OTP arrive
+  // précisément QUAND l'utilisateur est DÉCONNECTÉ — le listener Task 53
+  // ci-dessus ne s'enregistre que connecté, il ne pouvait pas le porter) :
+  //  1. 'wairyu-navigate' — le SW (notificationclick, tap d'une notification)
+  //     demande à la page de changer son propre hash : Client.navigate() du
+  //     SW ne sait PAS naviguer same-document (URL fragment seule, ex
+  //     #/verify?e=…&d=…) et échouait en silence → l'app revenait au premier
+  //     plan SANS le code dans l'URL (le champ restait vide). Ici, le hash
+  //     change de façon fiable → l'écran code reçoit ?e=&d= et se soumet.
+  //  2. 'wairyu-push' kind 'otp' — si l'écran de vérification n'est PAS
+  //     encore ouvert au moment du push (encore sur l'écran connexion, ou
+  //     ailleurs dans l'app), le code serait perdu (pas de notification
+  //     système, page visible) : on le met de côté (otpRelay, email lié,
+  //     10 min) — l'écran code le consommera à son montage.
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+    const onOtpSwMessage = (event: MessageEvent) => {
+      const d = (event.data ?? null) as
+        | { type?: string; url?: string; data?: { kind?: string; code?: string; url?: string } }
+        | null;
+      if (d?.type === 'wairyu-navigate') {
+        if (typeof d.url === 'string' && d.url.startsWith('#') && window.location.hash !== d.url) {
+          window.location.hash = d.url;
+        }
+        return;
+      }
+      if (d?.type === 'wairyu-push' && d.data?.kind === 'otp' && d.data.code) {
+        const qs = new URLSearchParams((d.data.url ?? '').split('?')[1] ?? '');
+        const relayEmail = qs.get('e') ?? '';
+        if (relayEmail) stashOtpRelay(relayEmail, d.data.code);
+      }
+    };
+    navigator.serviceWorker.addEventListener('message', onOtpSwMessage);
+    return () => navigator.serviceWorker.removeEventListener('message', onOtpSwMessage);
+  }, []);
 
   // ---- Rendu ----
   let content: JSX.Element;

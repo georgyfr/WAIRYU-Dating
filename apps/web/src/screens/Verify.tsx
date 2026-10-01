@@ -5,6 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { takeOtpRelay, clearOtpRelay } from '../lib/otpRelay'; // Task 78 : relais du code quand l'écran n'était pas encore ouvert
 import type { OtpRequestResponse, OtpVerifyResponse } from '@wairyu/shared';
 
 const RESEND_SECONDS = 60;
@@ -48,6 +49,36 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Task 78 (fondateur : « la notification push arrive, mais elle ne remplit
+  // pas automatiquement le code ») — deux rattrapages APPEND-ONLY :
+  //  A. devCode arrivé APRÈS le montage — le SW ne peut pas naviguer
+  //     same-document : c'est le relais 'wairyu-navigate' (App.tsx) qui change
+  //     le hash → cet écran, DÉJÀ MONTÉ (l'utilisateur attend sur « Ton code
+  //     à 6 chiffres »), ne se remonte PAS : ses props changent. L'effet de
+  //     montage historique ci-dessus (deps []) ne se rejoue jamais — on
+  //     réagit ici à devCode pour remplir + soumettre le champ.
+  //  B. code relayé pendant que cet écran N'EXISTAIT PAS — l'utilisateur
+  //     était encore sur « Recevoir mon code » (ou ailleurs dans l'app) :
+  //     App.tsx a mis le code de côté (otpRelay) → consommé ici au montage
+  //     (lié à l'email, frais de 10 minutes max, une seule fois).
+  const lateDevRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!devCode || submittedRef.current) return;
+    if (lateDevRef.current === devCode) return;
+    lateDevRef.current = devCode;
+    setCode(devCode);
+    void verify(devCode);
+  }, [devCode]);
+
+  useEffect(() => {
+    if (submittedRef.current) return;
+    const relayed = takeOtpRelay(email);
+    if (!relayed) return;
+    setCode(relayed);
+    void verify(relayed);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email]);
+
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
     const onMessage = (event: MessageEvent) => {
@@ -55,6 +86,8 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
       if (data.type !== 'wairyu-push' || data.data?.kind !== 'otp' || !data.data.code) return;
       if (submittedRef.current) return;
       submittedRef.current = true;
+      setCode(data.data.code); // Task 78 : le code devient VISIBLE pendant la vérification (l'utilisateur le VOIT se remplir)
+      clearOtpRelay(); // Task 78 : un code consommé en direct ne doit pas survivre dans le relais
       void verify(data.data.code);
     };
     navigator.serviceWorker.addEventListener('message', onMessage);

@@ -107,6 +107,17 @@ self.addEventListener('notificationclick', (event) => {
         ...inOrigin.filter((cl) => cl.frameType !== 'standalone'),
       ];
       for (const client of ordered) {
+        // Task 78 (fondateur : « la notification push arrive, mais elle ne
+        // remplit pas automatiquement le code ») — Client.navigate() ne sait
+        // PAS naviguer same-document (URL fragment seule, cas
+        // #/verify?e=…&d=…) : la navigation échoue en silence et le tap ne
+        // fait que remettre l'app au premier plan, champ code vide. On
+        // DEMANDE donc AUSSI à la page de changer son propre hash via
+        // postMessage — une page, elle, change son hash de façon fiable
+        // (relais traité dans App.tsx → l'écran code reçoit ?d= et se
+        // remplit + se soumet tout seul). navigate() reste tenté : il gère
+        // les cas où il fonctionne, le postMessage couvre les autres.
+        client.postMessage({ type: 'wairyu-navigate', url });
         client.navigate(url).catch(() => client.focus());
         return client.focus();
       }
