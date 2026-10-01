@@ -1,12 +1,16 @@
 /**
  * Écran d'inscription (Étape 2) — email + 18 ans et + + consentement CGU
  * + Turnstile. Le même flux OTP sert ensuite à la connexion (anti-énumération).
+ * P0 âge (33-c) : la date de naissance RÉELLE est collectée ici (input date,
+ * 18 ans révolus pré-validés) et voyage avec le code jusqu'à la vérification
+ * OTP — l'API l'exige à la création du compte (POST /auth/otp/verify).
  */
 import { useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { Turnstile } from '../lib/turnstile';
 import { SocialButtons } from '../lib/social';
 import { AuthAlt } from '../components/AuthAlt'; // t71 : bloc « autres voies » doux et lisible
+import { BIRTH_MIN, birthDateMax, estMajeur } from '../lib/age';
 import type { AuthConfigResponse, OtpRequestResponse } from '@wairyu/shared';
 
 interface Props {
@@ -15,6 +19,7 @@ interface Props {
 
 export function Signup({ config }: Props) {
   const [email, setEmail] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [adult, setAdult] = useState(false);
   const [terms, setTerms] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -27,6 +32,15 @@ export function Signup({ config }: Props) {
     setError(null);
     if (!email.trim()) {
       setError('Indique ton adresse email.');
+      return;
+    }
+    // P0 âge (33-c) : la date réelle est exigée par l'API — pré-validation.
+    if (!birthDate) {
+      setError('Indique ta date de naissance.');
+      return;
+    }
+    if (!estMajeur(birthDate)) {
+      setError('Tu dois avoir 18 ans révolus pour créer un compte wairyu.');
       return;
     }
     if (!adult) {
@@ -43,6 +57,9 @@ export function Signup({ config }: Props) {
         json: { email: email.trim(), turnstile_token: token },
       });
       const params = new URLSearchParams({ e: email.trim() });
+      // P0 âge : la birthDate (validée ci-dessus) accompagne le code — l'API
+      // l'exige à la CRÉATION du compte (ignorée pour une simple connexion).
+      params.set('b', birthDate);
       if (res.devCode) params.set('d', res.devCode);
       window.location.hash = `#/verify?${params.toString()}`;
     } catch (err) {
@@ -83,6 +100,24 @@ export function Signup({ config }: Props) {
           />
         </label>
 
+        <label className="field">
+          <span>Date de naissance</span>
+          <input
+            type="date"
+            name="birthDate"
+            autoComplete="bday"
+            required
+            min={BIRTH_MIN}
+            max={birthDateMax()}
+            value={birthDate}
+            onChange={(e2) => {
+              setBirthDate(e2.target.value);
+              setError(null);
+            }}
+          />
+        </label>
+        <p className="hint tiny">wairyu est réservée aux personnes majeures (18 ans révolus).</p>
+
         <label className="check">
           <input type="checkbox" checked={adult} onChange={(e2) => setAdult(e2.target.checked)} />
           <span>
@@ -119,9 +154,12 @@ export function Signup({ config }: Props) {
 
       <SocialButtons
         config={config}
-        requireConsent={!adult || !terms}
+        birthDate={estMajeur(birthDate) ? birthDate : undefined}
+        requireConsent={!adult || !terms || !estMajeur(birthDate)}
         onConsentBlocked={() =>
-          setError("Coche d'abord les deux cases ci-dessus : 18 ans ou plus et acceptation des CGU.")
+          setError(
+            'Indique ta date de naissance (18 ans révolus) puis coche les deux cases ci-dessus : 18 ans ou plus et acceptation des CGU.',
+          )
         }
       />
 

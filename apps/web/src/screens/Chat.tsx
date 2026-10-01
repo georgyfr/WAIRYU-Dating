@@ -609,6 +609,7 @@ export function Chat({ conversationId, onBack }: Props) {
           <div className="btn-row">
             <input
               type="date"
+              aria-label="Jour du check-in"
               value={checkinDate}
               min={new Date().toISOString().slice(0, 10)}
               max={new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10)}
@@ -627,7 +628,11 @@ export function Chat({ conversationId, onBack }: Props) {
             Le signalement ferme immédiatement la conversation et bloque le profil
             dans les deux sens. Notre équipe review sous 24 h.
           </p>
-          <select value={reportCategory} onChange={(e) => setReportCategory(e.target.value as ReportCategory)}>
+          <select
+            value={reportCategory}
+            onChange={(e) => setReportCategory(e.target.value as ReportCategory)}
+            aria-label="Motif du signalement"
+          >
             {REPORT_CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
                 {REPORT_LABELS[cat]}
@@ -636,6 +641,7 @@ export function Chat({ conversationId, onBack }: Props) {
           </select>
           <textarea
             placeholder="Détails (facultatif — 500 caractères max)"
+            aria-label="Détails du signalement (facultatif)"
             maxLength={500}
             value={reportDetails}
             onChange={(e) => setReportDetails(e.target.value)}
@@ -901,6 +907,7 @@ export function Chat({ conversationId, onBack }: Props) {
             <textarea
               value={draft}
               onChange={(e) => onDraftChange(e.target.value.slice(0, CHAT.maxTextLength))}
+              aria-label="Ton message"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();

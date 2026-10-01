@@ -19,6 +19,7 @@ import { Turnstile } from '../lib/turnstile';
 import { SocialButtons } from '../lib/social';
 import { AuthAlt } from '../components/AuthAlt'; // t71 : bloc « autres voies » doux et lisible
 import { pushSupported } from '../lib/push-client';
+import { BIRTH_MIN, birthDateMax, estMajeur } from '../lib/age';
 import type { AuthConfigResponse } from '@wairyu/shared';
 
 interface RegisterResponse {
@@ -287,6 +288,7 @@ export function SignupEmail({ config }: Props) {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [showPw, setShowPw] = useState(false);
+  const [birthDate, setBirthDate] = useState('');
   const [adult, setAdult] = useState(false);
   const [terms, setTerms] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -304,6 +306,9 @@ export function SignupEmail({ config }: Props) {
     }
     if (password.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
     if (password !== confirm) return 'Les deux mots de passe ne sont pas identiques.';
+    // P0 âge (33-c) : la date de naissance est exigée par l'API — pré-validation.
+    if (!birthDate) return 'Indique ta date de naissance.';
+    if (!estMajeur(birthDate)) return 'Tu dois avoir 18 ans révolus pour créer un compte wairyu.';
     if (!adult) return 'Tu dois avoir 18 ans ou plus pour créer un compte wairyu.';
     if (!terms) return 'Les CGU et la politique de confidentialité doivent être acceptées.';
     return null;
@@ -321,7 +326,14 @@ export function SignupEmail({ config }: Props) {
     setBusy(true);
     try {
       const res = await api<RegisterResponse>('/api/auth/password/register', {
-        json: { username: username.trim(), password, turnstile_token: token },
+        // P0 âge (33-c) : la birthDate (validée ci-dessus) est exigée par
+        // l'API AVANT tout INSERT users (mineur → 403, aucun compte).
+        json: {
+          username: username.trim(),
+          password,
+          birthDate,
+          turnstile_token: token,
+        },
       });
       setCreated(res);
     } catch (err) {
@@ -397,6 +409,24 @@ export function SignupEmail({ config }: Props) {
           />
         </label>
 
+        <label className="field">
+          <span>Date de naissance</span>
+          <input
+            type="date"
+            name="birthDate"
+            autoComplete="bday"
+            required
+            min={BIRTH_MIN}
+            max={birthDateMax()}
+            value={birthDate}
+            onChange={(e2) => {
+              setBirthDate(e2.target.value);
+              setClientError(null);
+            }}
+          />
+        </label>
+        <p className="hint tiny">wairyu est réservée aux personnes majeures (18 ans révolus).</p>
+
         <label className="check">
           <input type="checkbox" checked={adult} onChange={(e2) => setAdult(e2.target.checked)} />
           <span>
@@ -431,8 +461,13 @@ export function SignupEmail({ config }: Props) {
 
       <SocialButtons
         config={config}
-        requireConsent={!adult || !terms}
-        onConsentBlocked={() => setError("Coche d'abord les deux cases ci-dessus : 18 ans ou plus et acceptation des CGU.")}
+        birthDate={estMajeur(birthDate) ? birthDate : undefined}
+        requireConsent={!adult || !terms || !estMajeur(birthDate)}
+        onConsentBlocked={() =>
+          setError(
+            'Indique ta date de naissance (18 ans révolus) puis coche les deux cases ci-dessus : 18 ans ou plus et acceptation des CGU.',
+          )
+        }
       />
 
       <AuthAlt

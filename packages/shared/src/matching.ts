@@ -4,8 +4,9 @@
  * Philosophie (spécification §5) :
  *  - le score est INDICATIF, jamais prédictif : tolérance ±2 stable par paire
  *    et par jour (« pas un verdict »), avertissement obligatoire côté front ;
- *  - dimensions pondérées (§5.3.3) — les poids MVP sont renormalisés sur les
- *    dimensions couvertes par N1+N2 (Love Languages = Niveau 3, différé) :
+ *  - dimensions pondérées (§5.3.3) — les poids MVP vivent dans
+ *    PSYCHOMETRY.DIM_WEIGHTS (constants.ts — finding B.5d : zéro seuil codé
+ *    dur, surcharge env possible ; À VALIDER PAR LE COMITÉ) :
  *      Valeurs .26 · Objectifs .21 · Communication .16 · Personnalité .16
  *      · Attachement .11 · Préférences déclarées .10 ;
  *  - deal-breakers binaires EXCLUSIFS : si la réponse de l'un tombe dans la
@@ -13,7 +14,13 @@
  *    (filtre dur, pas un malus de score) ;
  *  - explicabilité « Pourquoi ce match ? » : 2 forces + 1 vigilance + 2
  *    sujets de conversation, déduits des écarts de réponses (§5.4).
+ *    ⚠ Le « vigilant » ici est un LIBELLÉ UX générique — il n'expose AUCUN
+ *    code ni seuil des 14 signaux du moteur de vigilance (voir vigilance.ts,
+ *    moteur seul). L'ancien « vigilanceScore » (min de dimensions, hors
+ *    moteur réel) a été renommé lowestDimScore — finding du re-audit.
  */
+
+import { PSYCHOMETRY } from './constants';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -69,21 +76,15 @@ export interface CompatibilityResult {
 }
 
 /**
- * Poids MVP (renormalisés, cf. en-tête). Somme = 1.00 avec PREF_WEIGHT +
- * ARCH_WEIGHT (Étape 4-bis : affinité d'archétypes — demande fondateur).
- * Écart max vs poids initiaux : ±0.02 — le score reste proportionnel.
+ * Poids MVP (renormalisés, cf. en-tête) — source : PSYCHOMETRY (B.5d).
+ * Somme = 1.00 avec PREF_WEIGHT + ARCH_WEIGHT (Étape 4-bis : affinité
+ * d'archétypes — demande fondateur). Écart max vs poids initiaux : ±0.02.
  */
-export const DIM_WEIGHTS: Record<QDimension, number> = {
-  values: 0.24,
-  goals: 0.19,
-  communication: 0.15,
-  personality: 0.15,
-  attachment: 0.10,
-};
+export const DIM_WEIGHTS = PSYCHOMETRY.DIM_WEIGHTS as Record<QDimension, number>;
 /** Dimension « Préférences déclarées » (hors banque de questions). */
-export const PREF_WEIGHT = 0.09;
+export const PREF_WEIGHT = PSYCHOMETRY.PREF_WEIGHT;
 /** Dimension « Affinité d'archétypes » (null tant que l'un des deux n'a pas de type). */
-export const ARCH_WEIGHT = 0.08;
+export const ARCH_WEIGHT = PSYCHOMETRY.ARCH_WEIGHT;
 
 export const DIM_LABELS: Record<QDimension, string> = {
   values: 'les valeurs fondamentales',
@@ -287,21 +288,23 @@ function buildReasons(
   const forces: string[] = [];
   const starters: string[] = [];
   let vigilance = '';
-  let vigilanceScore = 101;
+  // (honnêteté re-audit : ce tracker est le min des dimensions du score MVP —
+  //  il n'a JAMAIS été un signal du moteur de vigilance — nom renommé.)
+  let lowestDimScore = 101;
 
   // 1) Forces : dimensions bien alignées + réponses identiques marquantes.
   for (const d of [...dims].sort((x, y) => y.score - x.score)) {
-    if (d.score >= 72 && forces.length < 2 && d.items >= 2) {
+    if (d.score >= PSYCHOMETRY.FORCES_DIM_THRESHOLD && forces.length < 2 && d.items >= 2) {
       forces.push(`Vous êtes alignés sur ${DIM_LABELS[d.dimension]} (${d.score} % de similitude).`);
     }
-    if (d.score < vigilanceScore) vigilanceScore = d.score;
+    if (d.score < lowestDimScore) lowestDimScore = d.score;
   }
 
   // 2) Vigilance : dimension la plus basse, ou deal-breaker « voisin » (non exclu).
   if (conflict) {
     const item = items.find((i) => i.id === conflict);
     vigilance = `Vous divergez sur un point que l'un de vous deux considère rédhibitoire${item ? ` (« ${item.prompt} »)` : ''}.`;
-  } else if (vigilanceScore < 55 && dims.length > 0) {
+  } else if (lowestDimScore < PSYCHOMETRY.VIGILANCE_DIM_THRESHOLD && dims.length > 0) {
     const sorted = [...dims].sort((x, y) => x.score - y.score);
     const worst = sorted[0];
     if (worst) {

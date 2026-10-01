@@ -1770,6 +1770,7 @@ export function Discover({ onMatches, initialMode, onModeChange, onMoments }: Pr
                   className={`w-switch ${verifiedOnly ? 'on' : ''}`}
                   role="switch"
                   aria-checked={verifiedOnly}
+                  aria-label="Profils vérifiés uniquement"
                   onClick={() => {
                     const nv = !verifiedOnly;
                     setVerifiedOnly(nv);

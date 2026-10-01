@@ -78,6 +78,7 @@ function TagsField({
           value={draft}
           maxLength={40}
           placeholder="Ajouter…"
+          aria-label={`Ajouter à ${label}`}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -86,7 +87,7 @@ function TagsField({
             }
           }}
         />
-        <button type="button" className="btn ghost small" onClick={() => add(draft)} disabled={!draft.trim() || list.length >= max}>
+        <button type="button" className="btn ghost small" onClick={() => add(draft)} disabled={!draft.trim() || list.length >= max} aria-label={`Ajouter ${draft.trim() || ''}`}>
           ＋
         </button>
       </div>
@@ -130,6 +131,7 @@ function ScaleField({
         step={1}
         value={value ?? 3}
         onChange={(e) => onChange(Number(e.target.value))}
+        aria-label={label}
         aria-valuetext={value !== undefined ? `${value}/5` : undefined}
       />
       <span className="hg-hint hg-scale-ends">
@@ -158,7 +160,7 @@ function ChoiceField<T extends string>({
     <div className="hg-field">
       <span className="hg-label">{label}</span>
       {hint && <span className="hg-hint">{hint}</span>}
-      <select value={value ?? ''} onChange={(e) => onChange((e.target.value || undefined) as T | undefined)}>
+      <select value={value ?? ''} onChange={(e) => onChange((e.target.value || undefined) as T | undefined)} aria-label={label}>
         <option value="">Non précisé</option>
         {Object.entries(options).map(([k, v]) => (
           <option key={k} value={k}>
@@ -196,6 +198,7 @@ function TextField({
           maxLength={maxLength}
           rows={3}
           placeholder="Quelques mots suffisent…"
+          aria-label={label}
           onChange={(e) => onChange(e.target.value)}
         />
       ) : (
@@ -204,6 +207,7 @@ function TextField({
           value={value ?? ''}
           maxLength={maxLength}
           placeholder="Ton répondra ici…"
+          aria-label={label}
           onChange={(e) => onChange(e.target.value)}
         />
       )}
@@ -229,7 +233,7 @@ function LangSpokenField({
       <span className="hg-hint">Langue + niveau auto-déclaré (maximum 8)</span>
       {list.map((row, i) => (
         <div key={i} className="hg-langrow">
-          <select value={row.langue} onChange={(e) => setRow(i, { langue: e.target.value })}>
+          <select value={row.langue} onChange={(e) => setRow(i, { langue: e.target.value })} aria-label={`Langue ${i + 1}`}>
             <option value="">Langue…</option>
             {LANGUES.map((l) => (
               <option key={l} value={l}>
@@ -240,6 +244,7 @@ function LangSpokenField({
           <select
             value={row.niveau}
             onChange={(e) => setRow(i, { niveau: e.target.value as HeritageLangLevel })}
+            aria-label={`Niveau de ${row.langue || `la langue ${i + 1}`}`}
           >
             <option value="">Niveau…</option>
             {(Object.entries(HERITAGE_LABELS.langLevel) as [HeritageLangLevel, string][]).map(([k, v]) => (

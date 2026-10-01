@@ -985,3 +985,67 @@ export interface HeritageSummary {
   /** Ouverture moyenne (échelles 1-5 renseignées, arrondie) — null si aucune. */
   ouverture: number | null;
 }
+
+// ---------------------------------------------------------------------------
+// P0 runtime — banque doctrine (F.2a / BLOC 1) — 531 items, 0 générique
+// Codes gelés Q1.1-01 … Q11-8.6 · trames ▲ servies via le placeholder
+// officiel (règle 11-b — la formulation réelle ne vit QUE côté env/DO).
+// ---------------------------------------------------------------------------
+
+/** Formats de passation de la banque doctrine (formats spéciaux par quête). */
+export type DoctrineFormat =
+  | 'likert5'
+  | 'binaire_chronometre'
+  | 'paire_images'
+  | 'arbre_familial'
+  | 'ouverte'
+  | 'double_croisee'
+  | 'scenario_refus'
+  | 'declarations'
+  | 'questions'
+  | 'autre';
+
+export interface DoctrineQItem {
+  /** Code gelé — ex. « Q2.1-01 » ou trame « Q6.2-T53 ». */
+  code: string;
+  /** Monde M1…M11. */
+  monde: string;
+  /** Numéro de quête — ex. « 2.1 ». */
+  quete: string;
+  /** Position de passation dans la quête (1-based, null si non ordonnée). */
+  position: number | null;
+  format: DoctrineFormat;
+  prompt: string;
+  /** Options de choix (likert5, binaire, declarations…) — absent pour ouverte. */
+  options?: QItemOption[];
+  maxSelect?: number | null;
+  /**
+   * Trame sécurité ▲ : le prompt servi est le PLACEHOLDER OFFICIEL (11-b) ;
+   * la formulation réelle est injectée au runtime depuis TRAME_* (env/DO),
+   * jamais stockée dans le dépôt, jamais loggée.
+   */
+  isTrame: boolean;
+  /** Signal alimenté (registre signaux.json) — moteur seul. */
+  signalId?: string | null;
+  orientation?: 'D' | 'I' | null;
+}
+
+/** Réponse doctrine normalisée : 1-5 (likert/binaire), texte (ouverte), liste. */
+export type DoctrineValue = number | string | string[];
+
+export interface DoctrineProgress {
+  done: number;
+  total: number;
+}
+
+export interface DoctrineBankState {
+  bank: 'doctrine_v1';
+  items: DoctrineQItem[];
+  myAnswers: Record<string, DoctrineValue>;
+  progress: DoctrineProgress;
+}
+
+export interface DoctrineAnswerResponse {
+  saved: true;
+  progress: DoctrineProgress;
+}

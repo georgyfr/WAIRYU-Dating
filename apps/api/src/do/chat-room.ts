@@ -43,6 +43,25 @@ function ensureSchema(sql: SqlStorage): void {
   `);
 }
 
+/**
+ * Purge RGPD des messages (P0 runtime — minimisation, art. 5.1.e) :
+ * les contenus de conversation de plus de 365 jours sont SUPPRIMÉS du SQLite
+ * du DO (textes + métadonnées voice). Déclenchement TRIPLE :
+ *   - ALARME du DO (auto-programmée au réveil si absente, re-posée après
+ *     chaque purge — couvre les conversations inactives) ;
+ *   - à l'ACCÈS, throttlé à un passage / 24 h (meta 'purge_checked_at') ;
+ *   - à la prochaine alarme (24 h).
+ * NB : l'asset Cloudinary d'une voice note n'est pas détruit ici (endpoint
+ * /video/destroy absent de lib/cloudinary, hors périmètre) — la ligne du DO
+ * (seul chemin de lecture) est purgée ; la rétention média suit la politique
+ * de conservation (POLITIQUE-CONFIDENTIALITE-v1).
+ */
+const MESSAGE_RETENTION_SECONDS = 365 * 86400;
+/** Contrôle d'accès throttlé : un passage de purge par jour maximum. */
+const PURGE_CHECK_INTERVAL_SECONDS = 24 * 3600;
+/** Prochaine alarme après chaque purge (24 h). */
+const PURGE_ALARM_DELAY_SECONDS = 24 * 3600;
+
 interface MetaRow { k: string; v: string }
 interface MsgRow {
   seq: number;
@@ -57,6 +76,8 @@ interface MsgRow {
 export class ChatRoom extends DurableObject {
   /** Anti-spam en mémoire (perdue au redémarrage — acceptable, fenêtre 1 min). */
   private sent: Map<string, number[]> = new Map();
+  /** Alarme de purge déjà sondée par ce réveil de l'isolate (anti re-lecture). */
+  private purgeAlarmChecked = false;
 
   private get sql(): SqlStorage {
     return this.ctx.storage.sql;
@@ -196,6 +217,53 @@ export class ChatRoom extends DurableObject {
   }
 
   // ------------------------------------------------------------------
+  // Purge RGPD 365 j (voir constantes en tête de fichier)
+  // ------------------------------------------------------------------
+
+  /** Programme l'alarme de purge si aucune n'est posée (best-effort). */
+  private ensurePurgeAlarm(): void {
+    if (this.purgeAlarmChecked) return;
+    this.purgeAlarmChecked = true;
+    this.ctx.storage
+      .getAlarm()
+      .then((alarm) => {
+        if (alarm === null) {
+          return this.ctx.storage.setAlarm(Date.now() + PURGE_ALARM_DELAY_SECONDS * 1000);
+        }
+      })
+      .catch(() => undefined);
+  }
+
+  /** Supprime les messages > 365 j (RGPD — minimisation) et journalise. */
+  private purgeOldMessages(): { deleted: number } {
+    const cutoff = Math.floor(Date.now() / 1000) - MESSAGE_RETENTION_SECONDS;
+    const res = this.db().exec('DELETE FROM messages WHERE created_at < ?', cutoff);
+    const deleted = res.rowsWritten;
+    if (deleted > 0) {
+      console.log(
+        JSON.stringify({ do: 'ChatRoom', purge: 'messages_365d', deleted, cid: this.getMeta('cid') ?? '' }),
+      );
+    }
+    return { deleted };
+  }
+
+  /** Purge à l'accès — throttlée : au plus un passage par 24 h par DO. */
+  private purgeIfDue(): void {
+    this.ensurePurgeAlarm();
+    const now = Math.floor(Date.now() / 1000);
+    const last = Number(this.getMeta('purge_checked_at') ?? '0');
+    if (Number.isFinite(last) && now - last < PURGE_CHECK_INTERVAL_SECONDS) return;
+    this.setMeta('purge_checked_at', String(now));
+    this.ctx.waitUntil(Promise.resolve(this.purgeOldMessages()));
+  }
+
+  /** Alarme du DO : purge puis re-programmation du prochain passage. */
+  override async alarm(): Promise<void> {
+    this.purgeOldMessages();
+    await this.ctx.storage.setAlarm(Date.now() + PURGE_ALARM_DELAY_SECONDS * 1000);
+  }
+
+  // ------------------------------------------------------------------
   // Routes HTTP appelées par le Worker (auth déjà faite côté Worker)
   // ------------------------------------------------------------------
 
@@ -203,6 +271,8 @@ export class ChatRoom extends DurableObject {
     const url = new URL(request.url);
     const env = this.env as Env;
     try {
+      // Purge RGPD 365 j — à l'accès (throttlée) + alarme armée si absente.
+      this.purgeIfDue();
       switch (url.pathname) {
         case '/health':
           return Response.json({ ok: true, storage: this.ctx.storage.sql ? 'sqlite' : 'kv' });

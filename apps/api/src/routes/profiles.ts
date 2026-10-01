@@ -26,7 +26,6 @@ import {
 import {
   validateDisplayName,
   validateBirthYear,
-  validateBirthDate,
   validateEnum,
   validateCity,
   validateGeoRegion,
@@ -38,6 +37,8 @@ import {
   isProfileComplete,
   isConfigured,
 } from '../lib/profile';
+// P0 âge — même validateur strict que les inscriptions ; chemin mineur → ban.
+import { MinorAgeError, validateBirthDateISO } from '../lib/age';
 import { parseHeritage, sanitizeHeritage } from '../lib/heritage';
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { GENDERS, INTENTS, LIMITS, ORIENTATIONS, PROFILE_LIMITS, PHOTO_THUMB_WIDTH, PHOTO_BLUR_WIDTH } from '@wairyu/shared';
@@ -313,26 +314,45 @@ profileRoutes.put('/profile', async (c) => {
     sets.push('display_name = ?');
     values.push(validateDisplayName(payload.displayName));
   }
-  if ('birthYear' in payload) {
-    const year = validateBirthYear(payload.birthYear);
-    sets.push('birth_year = ?');
-    values.push(year);
-    // Invariant : birth_year et birth_date restent TOUJOURS cohérents —
-    // l'écriture « année seule » (compat anciens clients) cale la date au 1er janvier.
-    if (!('birthDate' in payload)) {
-      sets.push('birth_date = ?');
-      values.push(`${year}-01-01`);
+  // P0 âge — TOUTE écriture de date de naissance passe par le validateur
+  // strict partagé (lib/age.ts) : ISO, date réelle, 18 ans révolus. Les
+  // deux chemins (année seule compat anciens clients / date complète) sont
+  // recalculés depuis la DATE résolue pour que birth_year et birth_date
+  // restent synchronisés. Chemin MINEUR : AUCUN UPDATE — bannissement
+  // immédiat + révocation de TOUTES les sessions + audit_admin 'minor_ban'
+  // + 403 générique (re-audit finding « 0 minor handling »).
+  if ('birthYear' in payload || 'birthDate' in payload) {
+    let birth: { birthYear: number; birthDate: string };
+    try {
+      const resolvedIso =
+        'birthDate' in payload
+          ? String(payload.birthDate ?? '')
+          : `${validateBirthYear(payload.birthYear)}-01-01`;
+      birth = validateBirthDateISO(resolvedIso);
+    } catch (err) {
+      if (!(err instanceof MinorAgeError)) throw err; // 400 format/date
+      const nowMinor = Math.floor(Date.now() / 1000);
+      await c.env.DB.batch([
+        c.env.DB
+          .prepare(`UPDATE users SET status = 'banned', updated_at = ? WHERE id = ?`)
+          .bind(nowMinor, user.id),
+        c.env.DB
+          .prepare(`UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL`)
+          .bind(nowMinor, user.id),
+      ]);
+      await c.env.DB
+        .prepare(
+          `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
+           VALUES ('system', 'minor_ban', ?, NULL, ?, ?)`,
+        )
+        .bind(user.id, JSON.stringify({ source: 'profile_birth_update' }), nowMinor)
+        .run();
+      throw errors.forbidden('Les comptes wairyu sont réservés aux personnes majeures.');
     }
-  }
-  if ('birthDate' in payload) {
-    const iso = validateBirthDate(payload.birthDate);
     sets.push('birth_date = ?');
-    values.push(iso);
-    // birth_year reste synchronisé (compat matching/export/anciens écrans).
-    if (!('birthYear' in payload)) {
-      sets.push('birth_year = ?');
-      values.push(Number(iso.slice(0, 4)));
-    }
+    values.push(birth.birthDate);
+    sets.push('birth_year = ?');
+    values.push(birth.birthYear);
   }
   if ('gender' in payload) {
     sets.push('gender = ?');

@@ -253,6 +253,146 @@ safetyRoutes.post('/safety/verification/submit', async (c) => {
 // 2. Signalements (plan 7.3) — blocage mutuel immédiat + unmatch
 // ---------------------------------------------------------------------------
 
+// --- P0 — Agrégat + blocage automatique (re-audit : « 0 report_aggregate ») ---
+
+/** Catégories à blocage IMMÉDIAT (1 seul signalement pris en compte suffit). */
+const AUTO_BAN_CATEGORIES = ['harassment', 'scam', 'minor'];
+/** Fenêtre glissante de l'agrégat (jours). */
+const AGGREGATE_WINDOW_DAYS = 30;
+/** Anti-abus : ≥ 5 cibles DISTINCTES en 7 j → signaleur EXCLU des agrégats. */
+const SERIAL_REPORTER_MAX_TARGETS = 5;
+const SERIAL_REPORTER_WINDOW_DAYS = 7;
+
+/** Ligne d'audit « système » (blocage auto, exclusion anti-abus) — 0014. */
+async function auditSystem(
+  db: D1Database,
+  action: string,
+  targetUser: string | null,
+  targetId: string | null,
+  details: string | null,
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
+       VALUES ('system', ?, ?, ?, ?, ?)`,
+    )
+    .bind(action, targetUser, targetId, details, Math.floor(Date.now() / 1000))
+    .run();
+}
+
+/**
+ * Recalcule l'agrégat (reporté, catégorie) sur la fenêtre 30 j — recalcul
+ * COMPLET depuis `reports` à chaque signalement : idempotent par construction.
+ * Les signalements des « signaleurs en série » (≥ 5 cibles distinctes / 7 j,
+ * sous-requête NOT IN) sont EXCLUS des compteurs. Règles de blocage :
+ *   - harassment / scam / minor → immédiat (dès 1 signalement pris en compte) ;
+ *   - autres catégories → ≥ 2 signaleurs DISTINCTS.
+ * Blocage = users.status='banned' + révocation des sessions + ligne
+ * `sanctions` (created_by='system') + audit_admin 'auto_ban_aggregate'.
+ */
+async function recomputeReportAggregate(
+  db: D1Database,
+  reportedUserId: string,
+  category: string,
+): Promise<{ reportCount: number; distinctReporters: number; autoBanned: boolean }> {
+  const now = Math.floor(Date.now() / 1000);
+  const windowStart = now - AGGREGATE_WINDOW_DAYS * 86400;
+
+  // Compteurs avec EXCLUSION des signaleurs en série (anti-abus) — une seule
+  // requête statique : la sous-requête re-calcule la liste à chaque passage.
+  const agg = await db
+    .prepare(
+      `SELECT COUNT(*) AS n, COUNT(DISTINCT reporter_id) AS d, MAX(created_at) AS last_at
+       FROM reports
+       WHERE reported_id = ? AND category = ? AND created_at > ?
+         AND reporter_id NOT IN (
+           SELECT reporter_id FROM reports
+           WHERE created_at > ?
+           GROUP BY reporter_id
+           HAVING COUNT(DISTINCT reported_id) >= ?
+         )`,
+    )
+    .bind(
+      reportedUserId,
+      category,
+      windowStart,
+      now - SERIAL_REPORTER_WINDOW_DAYS * 86400,
+      SERIAL_REPORTER_MAX_TARGETS,
+    )
+    .first<{ n: number; d: number; last_at: number | null }>();
+  const reportCount = agg?.n ?? 0;
+  const distinctReporters = agg?.d ?? 0;
+
+  // Règle de blocage automatique (jamais re-déclenchée sur un compte déjà banni
+  // — idempotence de la SANCTION, pas seulement des compteurs).
+  let autoBanned = false;
+  let autoBlockedAt: number | null = null;
+  const mustBlock =
+    reportCount >= 1 &&
+    (AUTO_BAN_CATEGORIES.includes(category) || distinctReporters >= 2);
+  if (mustBlock) {
+    const target = await db
+      .prepare(`SELECT status FROM users WHERE id = ?`)
+      .bind(reportedUserId)
+      .first<{ status: string }>();
+    if (target && target.status !== 'banned' && target.status !== 'deleted') {
+      await db.batch([
+        db
+          .prepare(`UPDATE users SET status = 'banned', updated_at = ? WHERE id = ?`)
+          .bind(now, reportedUserId),
+        db
+          .prepare(`UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL`)
+          .bind(now, reportedUserId),
+        db
+          .prepare(
+            `INSERT INTO sanctions (id, user_id, type, reason, status, created_by, created_at, expires_at)
+             VALUES (?, ?, 'ban', ?, 'active', 'system', ?, NULL)`,
+          )
+          .bind(
+            crypto.randomUUID(),
+            reportedUserId,
+            `auto: agrégat signalements (${category}) — report_count=${reportCount}, distinct_reporters=${distinctReporters}`,
+            now,
+          ),
+      ]);
+      autoBanned = true;
+      autoBlockedAt = now;
+      await auditSystem(
+        db,
+        'auto_ban_aggregate',
+        reportedUserId,
+        null,
+        JSON.stringify({ category, reportCount, distinctReporters }),
+      );
+    }
+  }
+
+  // UPSERT idempotent — auto_blocked_at n'est JAMAIS écrasé par un recalcul.
+  await db
+    .prepare(
+      `INSERT INTO report_aggregate
+         (reported_user_id, category, window_days, report_count, distinct_reporters, last_report_at, auto_blocked_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (reported_user_id, category) DO UPDATE SET
+         report_count = excluded.report_count,
+         distinct_reporters = excluded.distinct_reporters,
+         last_report_at = excluded.last_report_at,
+         auto_blocked_at = COALESCE(report_aggregate.auto_blocked_at, excluded.auto_blocked_at)`,
+    )
+    .bind(
+      reportedUserId,
+      category,
+      AGGREGATE_WINDOW_DAYS,
+      reportCount,
+      distinctReporters,
+      agg?.last_at ?? now,
+      autoBlockedAt,
+    )
+    .run();
+
+  return { reportCount, distinctReporters, autoBanned };
+}
+
 safetyRoutes.post('/reports', async (c) => {
   const user = await requireUser(c);
   const rl = await hitRateLimit(c.env.DB, RATE_RULES.safetyReportUser, user.id);
@@ -347,6 +487,28 @@ safetyRoutes.post('/reports', async (c) => {
     conversationClosed = true;
   }
 
+  // --- P0 : agrégat + blocage automatique éventuel (recalcul complet) ---
+  // Anti-abus « signaleur en série » : ses signalements restent PROTECTEURS
+  // (blocage mutuel ci-dessus) mais sont exclus des compteurs d'agrégat.
+  const serialSelf = await c.env.DB.prepare(
+    `SELECT COUNT(DISTINCT reported_id) AS n FROM reports
+     WHERE reporter_id = ? AND created_at > ?`,
+  )
+    .bind(user.id, now - SERIAL_REPORTER_WINDOW_DAYS * 86400)
+    .first<{ n: number }>();
+  const reporterExcluded = (serialSelf?.n ?? 0) >= SERIAL_REPORTER_MAX_TARGETS;
+  await recomputeReportAggregate(c.env.DB, targetUserId, category);
+  if (reporterExcluded) {
+    // Consigne durable de l'exclusion (traçabilité anti-abus, review humaine).
+    await auditSystem(
+      c.env.DB,
+      'report_aggregate_reporter_excluded',
+      targetUserId,
+      reportId,
+      JSON.stringify({ category, reporterTargets7d: serialSelf?.n ?? 0 }),
+    );
+  }
+
   const body: ReportResponse = {
     ok: true,
     reportId,
@@ -354,6 +516,75 @@ safetyRoutes.post('/reports', async (c) => {
     note: conversationClosed
       ? 'Signalement envoyé — la conversation est fermée et le profil bloqué. Notre équipe review sous 24 h.'
       : 'Signalement envoyé — le profil est bloqué pour toi. Notre équipe review sous 24 h.',
+  };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// 2-bis. Recours sur sanction (P0 — re-audit : « 0 appeal »)
+// Le titulaire d'une sanction ACTIVE peut déposer UN recours en attente ;
+// la décision revient à un admin NOMMÉ (POST /admin/appeals/:id/review).
+// ---------------------------------------------------------------------------
+
+/** POST /api/sanctions/:id/appeal { message } — titulaire de la sanction uniquement. */
+safetyRoutes.post('/sanctions/:id/appeal', async (c) => {
+  // P0 recours — porte OUVERTE au titulaire sanctionné : contrairement à
+  // requireUser (403 banni/suspendu), on exige seulement une session valide
+  // d'un compte existant non supprimé. NB (limitation écosystème, hors
+  // périmètre whitelist) : un BANNI n'a plus de session (révoquées au ban) et
+  // le login lui est refusé ; le middleware /api/* (index.ts) bloque aussi les
+  // suspendus hors 4 routes — l'ouverture du canal de recours aux bannis
+  // (email support / dérogation middleware) reste à poser côté infra.
+  const session = c.get('session');
+  if (!session) throw errors.unauthorized();
+  const user = await c.env.DB.prepare(`SELECT id, status FROM users WHERE id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ id: string; status: string }>();
+  if (!user || user.status === 'deleted') throw errors.unauthorized();
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.safetyReportUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.safetyReportUser.scope);
+
+  const sanctionId = c.req.param('id');
+  const payload = (await c.req.json().catch(() => null)) as { message?: unknown } | null;
+  const message = typeof payload?.message === 'string' ? payload.message.trim().slice(0, 1000) : '';
+  if (message.length < 10) {
+    throw errors.badRequest('Explique ton recours (10 à 1000 caractères).');
+  }
+
+  const sanction = await c.env.DB.prepare(
+    `SELECT id, user_id, status FROM sanctions WHERE id = ? LIMIT 1`,
+  )
+    .bind(sanctionId)
+    .first<{ id: string; user_id: string; status: string }>();
+  // 404 générique : n'expose ni l'existence ni le titulaire d'une sanction.
+  if (!sanction || sanction.user_id !== user.id) {
+    throw errors.notFound('Sanction introuvable.');
+  }
+  if (sanction.status !== 'active') {
+    throw errors.badRequest('Cette sanction n\u2019est plus active — aucun recours nécessaire.');
+  }
+
+  const pending = await c.env.DB.prepare(
+    `SELECT id FROM sanctions_appeals WHERE sanction_id = ? AND status = 'pending' LIMIT 1`,
+  )
+    .bind(sanctionId)
+    .first<{ id: string }>();
+  if (pending) throw errors.conflict('Un recours est déjà en cours d\u2019examen.');
+
+  const now = Math.floor(Date.now() / 1000);
+  const appealId = crypto.randomUUID();
+  await c.env.DB.prepare(
+    `INSERT INTO sanctions_appeals (id, sanction_id, user_id, message, status, created_at)
+     VALUES (?, ?, ?, ?, 'pending', ?)`,
+  )
+    .bind(appealId, sanctionId, user.id, message, now)
+    .run();
+  await auditSystem(c.env.DB, 'appeal_created', user.id, appealId, JSON.stringify({ sanctionId }));
+
+  const body = {
+    ok: true as const,
+    appealId,
+    note: 'Recours enregistré — un membre de l\u2019équipe l\u2019examinera et tu auras une réponse.',
   };
   return c.json(body);
 });

@@ -12025,3 +12025,166 @@ body.theme-dark .installgate.fallback {
 body.theme-dark .installgate-already {
   color: #d6c6f5;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   P0 RUNTIME — ACCESSIBILITÉ · CIBLES TACTILES ≥ 44 px (re-audit
+   31-REAUDIT finding G.3b — session 33-c, volet frontend/a11y)
+
+   RÈGLE : tout élément interactif (button/a) offre une zone d'appui
+   d'au moins 44 × 44 px (WCAG 2.5.8 · HIG 44 pt). Les corrections sont
+   portées ICI, en fin de feuille, pour ne toucher AUCUNE règle de design
+   ci-dessus (aucune régression) : min-height/min-width garantissent la
+   boîte d'appui sans modifier les tailles typographiques.
+
+   DEUX VISUELS FINS PRÉSERVÉS PAR PADDING + background-clip (dessin
+   strictement inchangé, zone d'appui 44 px) :
+     · .car-bar   — segment de progression du carrousel (3,5 px de haut) ;
+     · .w-switch / .ev-switch — interrupteurs façon iOS (28 / 24 px).
+   Le background Shorthand des états (.on) et du thème sombre RÉINITIALISE
+   background-clip : chaque variante est donc re-déclarée explicitement.
+   Vérification machine : ci/outils/a11y_smoke.py (③ classes · ⑥
+   sélecteurs descendants, agrégation min-height ≥ 44). .deck-btn (54 px)
+   est conforme d'origine — volontairement absent de cette section.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* --- Boutons-icônes dimensionnés en dur (min-height ET min-width) --- */
+.modal-close,
+.modal-close.ev-close,
+.modal-close.on-photo,
+.ev-heart,
+.pushbanner-x,
+.installgate-x,
+.hero-toggle,
+.ev-back,
+.car-arrow,
+.head-bell,
+.emoji {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* --- Boutons texte / chips / cartes cliquables (min-height) --- */
+.back,
+.btn.small,
+.msgtoast,
+.notif-row,
+.see-all,
+.filter-chip,
+.conv-filter,
+.turnstile-retry,
+.upd-btn,
+.upd-later,
+.pw-toggle,
+.safety-btn,
+.chat-more,
+.danger-link,
+.mode-tab,
+.tabbar-item,
+.tabbar-mode-chip,
+.tabbar-mode-opt,
+.icebreaker-chip,
+.intl-score,
+.inv-score,
+.wc-sujet,
+.ev-btn,
+.ev-mode-pill,
+.ev-mode-badge,
+.ev-head-btn,
+.ev-type-btn,
+.ev-chip,
+.ev-cat,
+.ev-mine-tab,
+.ev-link,
+.car-zone,
+.pers-pick-card,
+.choice,
+.q-exit,
+.q-option,
+.likes-tile-photo {
+  min-height: 44px;
+}
+
+/* --- Sélecteurs descendants dimensionnés en dur (⑥) --- */
+.photo-actions button,
+.composer-row .mic,
+.composer-row .send,
+.voice-nudge button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* --- Interrupteurs & barre carrousel : appui 44 px, visuel préservé --- */
+.w-switch {
+  min-height: 44px;
+  padding: 8px 0; /* 44 − 2×8 = 28 px de pilule visible (inchangé) */
+}
+.w-switch .knob {
+  top: 11px; /* ancrage dans le padding-box élargi : 8 + 3 (position d'origine) */
+}
+.ev-switch {
+  min-height: 44px;
+  padding: 10px 0; /* 44 − 2×10 = 24 px de pilule visible (inchangé) */
+}
+.ev-switch::after {
+  top: 13px; /* 10 + 3 (position d'origine) */
+}
+.car-bar {
+  min-height: 44px;
+  padding: 20.25px 0; /* 44 − 2×20,25 = 3,5 px de barre visible (inchangé) */
+}
+.car-bar,
+.car-bar.on,
+body.theme-dark .car-bar,
+body.theme-dark .car-bar.on,
+.w-switch,
+.w-switch.on,
+body.theme-dark .w-switch,
+body.theme-dark .w-switch.on,
+.ev-switch,
+.ev-switch.on {
+  background-clip: content-box;
+  -webkit-background-clip: content-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   P0 RUNTIME — BANQUE DOCTRINE (BLOC 1, session 33-c chantier D) — rendu
+   spécifique dans l'écran questionnaire : réponse libre (ouverte) et carte
+   « passation guidée » des formats hors périmètre P0.
+   ═══════════════════════════════════════════════════════════════════════ */
+.q-opened {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.q-opened textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e5ddf2;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14.5px;
+  line-height: 1.45;
+  min-height: 110px;
+  resize: vertical;
+  background: #fff;
+  color: inherit;
+}
+.q-opened textarea:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+.q-special {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1.5px dashed #ddd3ec;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fbf9fd;
+}
+.q-special-title {
+  margin: 0;
+  font-weight: 800;
+  color: var(--c-primary-dark);
+}

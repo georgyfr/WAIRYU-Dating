@@ -599,6 +599,7 @@ export function Events({ onCreate, onBackToDating, onDatingMode }: Props) {
                   className={`ev-switch ${filters.singles ? 'on' : ''}`}
                   role="switch"
                   aria-checked={filters.singles}
+                  aria-label="Célibataires uniquement"
                   onClick={() => setFilters({ ...filters, singles: !filters.singles })}
                 />
               </div>
@@ -609,6 +610,7 @@ export function Events({ onCreate, onBackToDating, onDatingMode }: Props) {
                   className={`ev-switch ${filters.verified ? 'on' : ''}`}
                   role="switch"
                   aria-checked={filters.verified}
+                  aria-label="Uniquement membres vérifiés"
                   onClick={() => setFilters({ ...filters, verified: !filters.verified })}
                 />
               </div>
@@ -619,6 +621,7 @@ export function Events({ onCreate, onBackToDating, onDatingMode }: Props) {
                   className={`ev-switch ${filters.official ? 'on' : ''}`}
                   role="switch"
                   aria-checked={filters.official}
+                  aria-label="Événements wairyu officiels"
                   onClick={() => setFilters({ ...filters, official: !filters.official })}
                 />
               </div>
@@ -712,6 +715,7 @@ export function Events({ onCreate, onBackToDating, onDatingMode }: Props) {
               <input
                 type="text"
                 placeholder="Écris au groupe…"
+                aria-label="Message au groupe"
                 value={msgInput}
                 onChange={(e) => setMsgInput(e.target.value)}
                 onKeyDown={(e) => {
