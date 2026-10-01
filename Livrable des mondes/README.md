@@ -54,7 +54,10 @@ Livrable des mondes/
 ├── M11-8.3-Le-Refus/                ← quête 8.3 ⚡ « Le refus » (M11, 🆓, P3, opt-in des deux, 3▲ COC hébergées T58-T60 — scénarios du non présentés comme assertivité, le double-filet anti-coercition avec 6.2, chiffrement maximal, AUCUN miroir AUCUNE carte — on ne gamifie pas la détection, VAGUE V14-B)
 ├── M11-8.4-Le-Bonus/                ← quête 8.4 🎁 « Le bonus » (M11, 🆓, P2, opt-in, 1 geste GEN — le jeu des 20 pépites, crédit facteur de confiance du donneur, zéro classement/badge/relance, miroir exempté — le geste parle, VAGUE V14-B)
 ├── M11-8.5-Vibe-Check-Voice-Check/  ← spécification 8.5 « Vibe Check / Voice Check » (M11, 🆓, P2, Mode Invisible — la voix avant le visage : texte → voix → photo, 30 s max, consentement des deux, ZÉRO analyse de la voix comme trait — biométrie interdite doctrine absolue, 0 item, VAGUE V14-B)
-└── M11-8.6-Les-Services-Du-Rendez-Vous/ ← spécification 8.6 « Les services du rendez-vous » (M11, 🆓, P2 — check-in sécurité avant date GRATUIT et PERMANENT · Coach de conversation · cartes de dialogue · feedback post-date → North Star + calibration, 0 item, VAGUE V14-B)
+├── M11-8.6-Les-Services-Du-Rendez-Vous/ ← spécification 8.6 « Les services du rendez-vous » (M11, 🆓, P2 — check-in sécurité avant date GRATUIT et PERMANENT · Coach de conversation · cartes de dialogue · feedback post-date → North Star + calibration, 0 item, VAGUE V14-B)
+├── M10-7.1-Tes-Racines/            ← quête 7.1 « Tes racines » (M10 — Mon Monde, 💎 PREMIUM, P3, 8 items — 4 axes × 2 [quotidien · transmission · famille élargie · traditions en couple], 4 paires R6, trait ANCRAGE moteur seul → matrice 7.3, miroir LÉGER 4 profils d'ancrage descriptifs JAMAIS hiérarchisés, graine 271427, VAGUE V15)
+├── M10-7.2-Ton-Ouverture-Au-Monde/ ← quête 7.2 « Ton ouverture au monde » (M10, 💎, P3, 8 items — 4 axes × 2 [énergie · apprentissage · malentendu · accueil], trait OUVERTURE moteur seul, miroir 3 niveaux — kit BAS sous verrou de dignité « l'ouverture faible = un rythme, pas un défaut », SYN centrale catégorie C, graine 272427, VAGUE V15)
+└── M10-7.3-La-Mixite-Et-Toi/       ← quête 7.3 « La mixité et toi » (M10, 💎, P3, 8 items = 6 mélange [posture · famille · tempo] + 2 opt-in vécu JAMAIS supposé — retrait visible ×2, SIG-7.3-01 matrice ANCRAGE × OUVERTURE [bâtisseur de ponts · homophilie assumée · vigilance inverse · « à aborder tôt »] MOTEUR SEUL seuils comité · SIG-7.3-02 « à aborder tôt » aux deux · SIG-7.3-03 vécu → ressources, graine 273427, VAGUE V15)
 
 **+ `portraits/domaines/coeur.md` — le PORTRAIT DE DOMAINE DU CŒUR (M6+M7, gabarit A5, VAGUE V12 — premier Portrait de Domaine réel : 6 liaisons croisées §2 + engagement §5).**
 ```
@@ -63,7 +66,7 @@ Chaque dossier de quête porte : `README.md` (vue d'ensemble) · `00-README.md` 
 · `01-tableau-des-items.md` · `02-plan-de-melange-graine-*.md` · `03-signatures-registre.md`
 · `04-slots-de-miroir.md` · `05-ecran-d-intro.md` · `06-fiche-computation-*.yaml` · `cartes.yaml`.
 
-**Taux de matérialisation : 507/570 items = 88,9 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
+**Taux de matérialisation : 531/570 items = 93,2 %** (Monde 1 : 124 · Socle 2.1 : 24 · formats spéciaux
 Socle 2.3/2.4/2.5 : 21 · VAGUE 6 : 47 · MISSION V9 — Monde M4 « Ton terrain » : 52 · **MISSION V10 —
 Monde M5 « Ton Héritage » : 50** — 4.1 arbre relationnel 8 + génogramme interactif non compté,
 4.2 où tu en es 19 (10 RB1 + 8 RSQ + 1 ouverte), 4.3 relations apprises ⚡ 1 ouverte,
@@ -86,7 +89,11 @@ option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœu
 8.3 le refus ⚡ 3▲ COC hébergées T58-T60 (scénarios du non = assertivité en face, double-filet anti-coercition avec 6.2, chiffrement maximal, AUCUN miroir — on ne gamifie pas la détection) ·
 8.4 le bonus 🎁 1 geste GEN (20 pépites — don réel, facteur de confiance du donneur, zéro pression) ·
 8.5 Vibe/Voice Check — spécification 0 item (texte → voix → photo, ZÉRO analyse de voix comme trait — biométrie interdite) ·
-8.6 services du rendez-vous — spécification 0 item (check-in sécurité GRATUIT et PERMANENT · Coach · cartes de dialogue · feedback post-date → North Star + calibration).)
+8.6 services du rendez-vous — spécification 0 item (check-in sécurité GRATUIT et PERMANENT · Coach · cartes de dialogue · feedback post-date → North Star + calibration) ·
+**VAGUE V15 — Monde M10 « Mon Monde » (💎 PREMIUM, P3 — le module interculturel, traité avec la dignité qu'il exige : digne jamais exotisante · auto-identification libre · vécu opt-in strict · ZÉRO filtre par origine — l'ancrage × l'ouverture = des traits, jamais des origines) : 24** —
+7.1 racines 8 (4 axes × 2, trait ANCRAGE moteur seul, miroir LÉGER 4 profils descriptifs jamais hiérarchisés) ·
+7.2 ouverture 8 (4 axes × 2, trait OUVERTURE moteur seul, 3 niveaux — l'ouverture faible = un rythme, pas un défaut) ·
+7.3 mixité 8 (6 mélange + 2 opt-in vécu jamais supposé — matrice ANCRAGE × OUVERTURE moteur seul, signal « à aborder tôt » aux deux).)
 
 > 🆓💎 **Après MISSION V13, le DOMAINE DE L'INTIME (M8+M9) est REFERMÉ en items** — cinq quêtes opt-in
 > (étages de révélation documentés : 1 après visuel · 2 consentement mutuel · 3 PRIVÉ après révélation photo ·
@@ -107,10 +114,17 @@ option de retrait — FM-019) · **VAGUE V11 2ᵉ GÉN. — Monde M6 « Mon Cœu
 > miroirs exemptés 8.1/8.3/8.4 · carte unique 8.2 · dossiers de spécification 8.5/8.6). Le moteur
 > North Star a sa maison : la conversion match → conversation → rendez-vous est cadrée, mesurée
 > (compatibilité réelle NLP P2 — moteur seul, JAMAIS rendue avant calibration comité) et sécurisée
-> (3▲ COC T58-T60, le double-filet anti-coercition avec 6.2). **Restent hors production : 1.8
-> « Ton bien-être » (différé comité, verrou renforcé) et le Monde M10 « Mon Monde » (3 quêtes
-> 7.1-7.3 💎, 24 items — jamais produites ; la vague V14-A du cadrage n'a laissé aucune trace :
-> constat Étape 0 consigné au STATUS).**
+> (3▲ COC T58-T60, le double-filet anti-coercition avec 6.2). **Le Monde M10 « Mon Monde » est
+> désormais produit (VAGUE V15 — voir ci-dessous) ; la vague V14-A du cadrage n'avait laissé
+> aucune trace (constat Étape 0 consigné au STATUS).**
+
+> 🌟 **VAGUE V15 — LA CLÔTURE DE PRODUCTION : M10 « Mon Monde » est REFERMÉ (7.1-7.3 💎) —
+> 11/11 MONDES PRODUITS · 50/51 DOSSIERS · 531/570 items = 93,2 % — LA PRODUCTION DES QUÊTES
+> EST CLÔTURÉE (FM-026).** Le registre des différés avec verrous : 1.8 « Ton bien-être »
+> (comité — relecture professionnelle + option de retrait, FM-019) · la passe qualité (FM-019
+> backlog — OUVERTE après vagues, Fiche de Mutation obligatoire) · les Portraits de Domaine
+> Intime / Sécurité / Soi + le Portrait Intégral (sur cadrage) · T01-T42 (FM-018 — rotation
+> réservée au concepteur). **Passation au chantier d'implémentation consignée (FM-026 §3).**
 
 ## 📐 Conventions permanentes (arbitrages verrouillés, valables pour TOUTES les quêtes)
 

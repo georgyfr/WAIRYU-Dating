@@ -1,0 +1,45 @@
+{
+  "quete": "7.3",
+  "titre": "La mixité et toi",
+  "graine": 273427,
+  "items": [
+    {
+      "code": "Q7.3-01",
+      "orientation": "D",
+      "dimension": "posture"
+    },
+    {
+      "code": "Q7.3-02",
+      "orientation": "I",
+      "dimension": "posture"
+    },
+    {
+      "code": "Q7.3-03",
+      "orientation": "D",
+      "dimension": "famille"
+    },
+    {
+      "code": "Q7.3-04",
+      "orientation": "I",
+      "dimension": "famille"
+    },
+    {
+      "code": "Q7.3-05",
+      "orientation": "D",
+      "dimension": "tempo"
+    },
+    {
+      "code": "Q7.3-06",
+      "orientation": "I",
+      "dimension": "tempo"
+    }
+  ],
+  "c1_min_constructible": 0,
+  "c4_min_constructible": 0,
+  "c4_note": "6 items = 3 dimensions × 2 — distance intra-axe ≥ 3 faisable dans 6 positions (paires {1,4}/{2,5}/{3,6})",
+  "hors_melange": [
+    "Q7.3-07",
+    "Q7.3-08"
+  ],
+  "hors_melange_note": "Module opt-in vécu HORS mélange (précédent sérénité 6.1 : Q6.1-S01→S04 en bloc fixe) — champ documentaire additionnel ; le melange.py n'itère que sur \"items\", il ignore ce champ (zéro effet machine, déclaration de composition seule)."
+}

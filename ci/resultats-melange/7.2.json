@@ -1,0 +1,63 @@
+{
+  "quete": "7.2",
+  "titre": "Ton ouverture au monde",
+  "graine_finale": 272427,
+  "tentatives": 1,
+  "trace_c6": "re-tirage non nécessaire",
+  "ordre_passation": [
+    {
+      "position": 1,
+      "code": "Q7.2-01"
+    },
+    {
+      "position": 2,
+      "code": "Q7.2-04"
+    },
+    {
+      "position": 3,
+      "code": "Q7.2-05"
+    },
+    {
+      "position": 4,
+      "code": "Q7.2-08"
+    },
+    {
+      "position": 5,
+      "code": "Q7.2-02"
+    },
+    {
+      "position": 6,
+      "code": "Q7.2-03"
+    },
+    {
+      "position": 7,
+      "code": "Q7.2-07"
+    },
+    {
+      "position": 8,
+      "code": "Q7.2-06"
+    }
+  ],
+  "verdicts": {
+    "c1": true,
+    "c2": true,
+    "c3": true,
+    "c4": true,
+    "c5": true,
+    "c6": true
+  },
+  "run_max": 2,
+  "positions_trames": [],
+  "objectif_final": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
+  ],
+  "echanges": [
+    "pos 8 ↔ pos 6 · (1, 0, 1, 0, 0, 4) → (1, 0, 1, 0, 0, 3)",
+    "pos 1 ↔ pos 4 · (1, 0, 1, 0, 0, 3) → (0, 0, 0, 0, 0, 2)"
+  ]
+}

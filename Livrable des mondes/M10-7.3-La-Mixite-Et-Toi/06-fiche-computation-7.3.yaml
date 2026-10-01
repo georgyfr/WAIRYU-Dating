@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════════
+# FICHE DE COMPUTATION — QUÊTE 7.3 « LA MIXITÉ ET TOI » (modèle des 6 items mélange)
+# Item choisi : Q7.3-01 (la posture — l'angle le plus parlant de l'axe).
+# Gabarit des 6 items de mélange : seuls énoncé, axe, orientation et ancrage changent.
+# Les 2 items du module opt-in vécu (Q7.3-07 × 08) sont HORS mélange (précédent sérénité 6.1).
+# 💎 PREMIUM · P3 · accès libre au sein du territoire premium — module vécu : opt-in strict.
+# SIG-7.3-01 (matrice ANCRAGE × OUVERTURE — 4 quadrants verbatim refonte) : MOTEUR SEUL.
+# SIG-7.3-02 (« à aborder tôt ») : signal aux deux membres, jamais un verdict.
+# SIG-7.3-03 (vécu → ressources) : opt-in strict, jamais une brique, jamais au profil public.
+# Zéro trame hébergée par M10 (▲ = « — » partout).
+# ═══════════════════════════════════════════════════════════════════
+quete: "7.3 La mixité et toi"
+monde: M10
+statut_freemium: premium
+phase: P3
+acces: libre_territoire_premium   # module vécu : opt-in strict à l'entrée du module
+format: likert5               # Arbitrage 2 — échelle 1-5 codée 1-5
+enonce: "Une histoire entre deux mondes différents m'attire."
+echelle: "1 Pas du tout comme moi · 2 Plutôt pas comme moi · 3 Neutre / je ne sais pas · 4 Plutôt comme moi · 5 Tout à fait comme moi"
+orientation: D                # direct — l'I de la paire (Q7.3-02) se recode 6−r
+dimension: posture            # axe 1/3 (paire R6 avec Q7.3-02)
+type_mesure: attente_declarative    # déclaratif — aucune trame hébergée par M10
+double_balise:
+  carte_id: monde_7.3         # alimente la carte (3 variantes) et le miroir (3 profils)
+  signal_id: SIG-7.3-02       # « à aborder tôt » — divergence d'attentes famille, signal aux deux
+  signal_moteur: SIG-7.3-01   # [MOTEUR SEUL] — matrice ANCRAGE × OUVERTURE (4 quadrants,
+                              # verbatim refonte) ; consomme SIG-7.1-01 × SIG-7.2-01 ;
+                              # seuils À VALIDER PAR LE COMITÉ — jamais au rendu
+dimensions_de_la_quete:       # les 3 axes de mélange — libellés UI génériques obligatoires
+  - code: posture             # items Q7.3-01 × 02 · libellé UI : « la posture »
+  - code: famille             # items Q7.3-03 × 04 · libellé UI : « la famille »
+  - code: tempo               # items Q7.3-05 × 06 · libellé UI : « le tempo »
+module_optin_vecu:
+  items: ["Q7.3-07", "Q7.3-08"]
+  acces: opt_in_strict        # invitation explicite + retrait « Je préfère ne pas dire » à chaque item
+  hors_melange: true          # exclus de la config ci/quetes/7.3.json (précédent sérénité 6.1)
+  rendu: "ressources bienveillantes séparées (SIG-7.3-03) — aucune brique, aucune carte, jamais cité au profil public"
+computation:
+  carte:
+    role: profil_affiche
+    regle: >-
+      3 moyennes d'axe des 6 items de mélange (2 items chacune, I recodés 6−r, normalisées 0-1)
+      — routage d'affichage des 3 variantes (une par axe dominant ; ex æquo strict → départage
+      à la 1ʳᵉ position de passation [9]) — le module vécu ne route rien
+    rendu: etage_1_et_2        # carte (3 variantes) + miroir (3 profils)
+  signal:
+    role: divergence_famille
+    mecanisme: >-
+      SIG-7.3-02 — divergence d'attentes famille → signal « à aborder tôt » proposé AUX DEUX
+      membres du match (le regard des familles = première friction documentée des couples entre
+      deux mondes) ; jamais un verdict, jamais un score, jamais une pénalité
+    rendu: hors_miroir         # signal conversationnel aux deux, hors miroir et hors carte
+  fiabilite:
+    role: paire_R6
+    regle: >-
+      |D_k − (6 − I_k)| >= 3 (recherche documentée) -> drapeau fiabilité sur l'axe ;
+      3 paires R6 complètes sur les items de mélange (01x02 · 03x04 · 05x06)
+  modulation:
+    - si: "paire R6 divergente sur un axe"
+      effet: "axe mis en prudence à l'affichage — le rappel raconte les deux réponses sans jugement"
+  ancrage:
+    rappel_autorise: true
+    forme: "en toutes lettres, 2e personne — l'attente décrite, jamais corrigée, jamais un code"
+    exemple: "quand tu as dit que l'entre-deux t'attire"
+notes:
+  - >-
+    LE VÉCU MINORITAIRE N'EST JAMAIS SUPPOSÉ (refonte l. 1384) : le module s'ouvre par
+    invitation explicite, le retrait « Je préfère ne pas dire » est digne et visible à chaque
+    item, le refus ne se voit nulle part — ni au profil, ni au moteur d'affichage.
+  - >-
+    Mélange 7.3 : outil générique melange.py, graine 273427 = 210427 + 1000 × ordinal 63
+    (convention concaténée, (7−1)×10+3) — coordination M11 consignée au 02-plan (place de
+    décade citée par la réservation 8.3, consommée canoniquement par 7.3, zéro collision
+    réelle) ; course réelle ×3 sur les 6 items de mélange, verdicts au 02-plan ; config
+    canonique ci/quetes/7.3.json (champ documentaire hors_melange pour les items opt-in).
+  - >-
+    💎 PREMIUM — premium change ZÉRO chose au contenu (Constitution [6]) ; badge visible au
+    00-README et à l'entête de complétion.
