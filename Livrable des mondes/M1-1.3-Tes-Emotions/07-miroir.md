@@ -25,7 +25,7 @@ classement, aucune comparaison normative (verrou 7 de `04-slots-de-miroir.md`).
 
 ## 1 — Les 12 briques : 3 dimensions (perception P · régulation R · expression X) × 2 niveaux (élevé / faible) × 2 variantes (A « par l'exemple » / B « par le mécanisme »). IDs : MR-13-P-ELV-A/B · MR-13-P-FAI-A/B · MR-13-R-ELV-A/B · MR-13-R-FAI-A/B · MR-13-X-ELV-A/B · MR-13-X-FAI-A/B.
 
-Les identifiants `MR-13-…` sont des champs moteur : ils ne franchissent jamais un rendu
+Les identifiants `MR-13-…` sont des champs moteur : ils ne franchissent aucun rendu
 utilisateur (Constitution [3]). Les ombres développent fidèlement les angles imposés du
 concepteur. Rien n'est « bon » ou « mauvais » : chaque niveau porte sa lumière ET son
 ombre, l'ombre en volume égal ou supérieur (verrou 4 de `04-slots-de-miroir.md`). Chaque
@@ -322,10 +322,10 @@ automatique. Ton affection se prouve par les actes — la fiabilité, la présen
 — plus que par les annonces.
 
 **→ TON OMBRE (en couple)**
-Le partenaire qui devine jamais : voilà ce que produit l'information émotionnelle qui reste
+Le partenaire qui devine mal : voilà ce que produit l'information émotionnelle qui reste
 bloquée chez toi. Tu ressens un attachement profond. Tu le vis — gestes, présence,
 fiabilité. Tu ne le dis pas. La phrase reste coincée — comme tu l'as répondu : dire « tu comptes pour moi » te met mal à l'aise, même quand c'est sincère. Ton partenaire
-devine. Il se trompe parfois. Il redevine, sans jamais être sûr — et une soirée banale peut
+devine. Il se trompe parfois. Il redevine, sans être sûr — et une soirée banale peut
 se charger d'un doute que trois mots auraient dissous. Ce mécanisme conduit fréquemment à
 une économie de non-dits. La recherche documente que l'autre interprète les silences, construit des hypothèses, et retient souvent les moins douces. L'absence de mot se lit comme une absence de sentiment. Les non-dits s'accumulent, et chacun devient la preuve de
 l'autre — tes silences prouvent ta distance, sa distance justifie ta réserve. Le coût pour toi : tu paies, en distance, ce que chaque mot non dit aurait désarmé. Le malaise de dire est petit ; la facture de taire est lourde. Le coût pour l'autre : il vit avec un réservoir
@@ -358,7 +358,7 @@ seuls. La recherche documente que, privés de tes mots, les partenaires cherchen
 fatigue prise pour de l'éloignement. Le coût pour toi : tes émotions s'accumulent sans
 sortie. La vanne ne les supprime pas, elle les stocke — et le stock pèse sur le sommeil et
 l'humeur. Le coût pour l'autre : il dépend de ta traduction pour te connaître. Ce qu'il ne
-reçoit pas, il doit l'inventer, et ses inventions ne sont pas toujours douces.
+reçoit pas, il doit l'inventer, et ses inventions peuvent peser lourd.
 
 **→ TA TENSION**
 Ta discrétion est une forme de respect — et elle produit l'effet exact du secret : l'autre
@@ -451,7 +451,7 @@ verbatim dans `01-tableau-des-items.md` · `{texture_seed}` = choix de texture A
 | Coût double nommé | ✅ 12/12 | « Le coût pour toi » et « Le coût pour l'autre » présents dans chaque ombre, tous deux développés |
 | Rappels en toutes lettres | ✅ 12/12 | chaque brique cite au moins une réponse réelle ; résolution verbatim vérifiée contre `01-tableau-des-items.md` (table §3) — aucun code dans le rendu |
 | Zéro métadonnée dans les textes de briques | ✅ | recherche machine : aucun code d'item, aucun sigle moteur, aucun score ni seuil dans les textes des 12 briques — codes et identifiants confinés aux en-têtes moteur et aux sections §0/§2/§3/§4 |
-| Zéro interdit lexical | ✅ | recherche machine de la liste fermée (« tu es unique », « tu mérites », « l'univers », superlatifs sans preuve, fin d'ombre refermante, comparaison normative) — zéro occurrence dans les briques |
+| Zéro interdit lexical | ✅ (verdict RÉEL post-correction D.4 — audit) | recherche machine de la liste fermée (« tu es unique », « tu mérites », « l'univers », superlatifs sans preuve, fin d'ombre refermante, comparaison normative) et des adverbes d'absolu (« toujours »/« jamais ») en voix d'application — le contrôle auto-déclaré précédent affirmait « zéro occurrence » alors que 3 existaient en §1 (l.325 « devine jamais » · l.328 « sans jamais être sûr » · l.361 « pas toujours douces », finding D.4d) ; corrigés (D.4c + balayage 3.6), la re-vérification machine affiche désormais 0 occurrence en voix d'application — les verbatims des réponses utilisateur citées restent hors champ (mots de la personne, convention « rappel verbatim ») |
 | Ouvertures non identiques entre A/B | ✅ 6/6 | relecture comparative par paire : la variante A ouvre par une réponse citée puis une scène, la variante B par le mécanisme — aucune paire identique |
 | Volume 300-450 mots par variante | ✅ 12/12 | comptage machine par brique (rapport de livraison) |
 | Trame T21→T26 absente | ✅ | aucun texte, aucune citation, aucune brique, aucune ligne d'ancrage — les 6 items n'ont aucun étage de restitution (Constitution [2]) |

@@ -77,7 +77,7 @@ variantes:
     condition: "4ᵉ réponse « Je découvre » choisie — ET ordres 2 et 6 (cas limites routés : contradiction directe · aucune intention lisible)"
     ancre_item: ["Q2.5-01", "Q2.5-02", "Q2.5-03"]
     portrait: "Tu as répondu « Je découvre » — tu ne sais pas encore ce que tu cherches, et c'est déclaré. Tu explores ton propre cap en même temps que les rencontres."
-    ombre: "Découvrir sans jamais choisir est une façon de ne pas choisir : à force d'ouvrir toutes les portes, on n'entre nulle part."
+    ombre: "Découvrir sans choisir est une façon de ne pas choisir : à force d'ouvrir toutes les portes, on n'entre nulle part."
     tension_interieure: "chercher ta réponse, sans faire patienter ta vie."
 
 regles_documentees:

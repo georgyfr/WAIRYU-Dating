@@ -2,7 +2,7 @@
 
 ## Texte de l'écran (texte de production — la fonction assumée)
 
-> **Ce que tu déclares ici organise tes découvertes — jamais ton classement.**
+> **Ce que tu déclares ici organise tes découvertes — sans alimenter ton classement.**
 > **Personne ne le voit : c'est ta boussole privée pour le Mode Invisible.**
 
 ## Contrôles de conformité

@@ -46,7 +46,7 @@ variantes:
     nom: "L'Explorateur·rice chaleureux·se"
     ordre_selecteur: 3
     condition: "O ≥ 0.65 ET A ≥ 0.60"
-    lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité n'est jamais froide — elle est chaleureuse, elle veut partager. Les gens se sentent bienvenus dans ton élan."
+    lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité est chaleureuse — elle veut partager. Les gens se sentent bienvenus dans ton élan."
     ombre: "Parfois, tu choisis le nouveau par peur que le même devienne l'ennui — et ce qui compte finit par attendre."
     tension_interieure: "vivre tout, sans blesser personne."
     mots_lumiere_ombre: 68
