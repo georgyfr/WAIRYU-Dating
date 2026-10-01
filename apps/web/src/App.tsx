@@ -607,6 +607,16 @@ export default function App() {
         if (typeof d.url === 'string' && d.url.startsWith('#') && window.location.hash !== d.url) {
           window.location.hash = d.url;
         }
+        // Task 79 — accusé de réception : le postMessage du SW
+        // (notificationclick) porte un MessageChannel. Répondre prouve que la
+        // version en mémoire EST à jour — le SW ne déclenchera PAS sa
+        // navigation de secours (reload). Un vieux bundle, lui, ne répond pas :
+        // le tap répare l'app tout seul (voir sw.js Task 79).
+        try {
+          event.ports?.[0]?.postMessage({ ok: true });
+        } catch {
+          /* bénin — sans accusé le SW fera la navigation de secours */
+        }
         return;
       }
       if (d?.type === 'wairyu-push' && d.data?.kind === 'otp' && d.data.code) {

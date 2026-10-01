@@ -42,9 +42,15 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
   // 2) le tap sur la notification ouvre #/verify?e=…&d=… → devCode prérempli
   // → auto-soumission au montage.
   const submittedRef = useRef(false);
+  // Task 79 — dernier code réellement soumis : un code NOUVEAU (différent)
+  // doit TOUJOURS être resoumis même après une première tentative — côté
+  // serveur, le code actif est le DERNIER généré (l'utilisateur qui demande
+  // un 2e code rend le 1er invalide ; la notif qui arrive porte le bon).
+  const lastSubmittedRef = useRef<string | null>(null);
   useEffect(() => {
     if (!devCode || submittedRef.current) return;
     submittedRef.current = true;
+    lastSubmittedRef.current = devCode; // Task 79 : anti double-soumission du même code
     void verify(devCode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -63,9 +69,15 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
   //     (lié à l'email, frais de 10 minutes max, une seule fois).
   const lateDevRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!devCode || submittedRef.current) return;
+    if (!devCode) return;
     if (lateDevRef.current === devCode) return;
     lateDevRef.current = devCode;
+    // Task 79 : un devCode ÉGAL au dernier soumi ne se soumet PAS deux fois
+    // (montage direct ?d= : l'effet initial l'a déjà soumis) — seul un code
+    // NOUVEAU (différent) resoumet, même après une première tentative.
+    if (lastSubmittedRef.current === devCode) return;
+    submittedRef.current = true;
+    lastSubmittedRef.current = devCode;
     setCode(devCode);
     void verify(devCode);
   }, [devCode]);
@@ -74,6 +86,8 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
     if (submittedRef.current) return;
     const relayed = takeOtpRelay(email);
     if (!relayed) return;
+    submittedRef.current = true;
+    lastSubmittedRef.current = relayed; // Task 79 : anti double-soumission du même code
     setCode(relayed);
     void verify(relayed);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,8 +98,12 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
     const onMessage = (event: MessageEvent) => {
       const data = (event.data ?? {}) as { type?: string; data?: { kind?: string; code?: string } };
       if (data.type !== 'wairyu-push' || data.data?.kind !== 'otp' || !data.data.code) return;
-      if (submittedRef.current) return;
+      // Task 79 : un code NOUVEAU (différent du dernier soumi) resoumet même
+      // après une première tentative — l'utilisateur qui a redemandé un code
+      // rend le précédent invalide ; la notif qui arrive porte le BON.
+      if (submittedRef.current && data.data.code === lastSubmittedRef.current) return;
       submittedRef.current = true;
+      lastSubmittedRef.current = data.data.code;
       setCode(data.data.code); // Task 78 : le code devient VISIBLE pendant la vérification (l'utilisateur le VOIT se remplir)
       clearOtpRelay(); // Task 78 : un code consommé en direct ne doit pas survivre dans le relais
       void verify(data.data.code);
