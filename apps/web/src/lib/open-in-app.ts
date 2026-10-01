@@ -80,6 +80,31 @@ export function openInAppIfEligible(): boolean {
 }
 
 /**
+ * Task 77 (fondateur : « une notification apparaît… la personne clique…
+ * ça ouvre l'application ») — ouvre l'application INSTALLÉE par intent
+ * direct, SANS le garde-fou de session : appelé uniquement APRÈS une
+ * installation réussie (appinstalled), le moment où l'intent réussit enfin.
+ * Non-Android : navigation simple (le standalone n'a rien à basculer).
+ * Retourne true si la navigation est partie.
+ */
+export function openInstalledApp(): boolean {
+  try {
+    const target = window.location.origin + '/#/';
+    const fallback = encodeURIComponent(target);
+    if (isAndroid()) {
+      const withoutScheme = target.replace(/^https?:\/\//, '');
+      const intent = `intent://${withoutScheme}#Intent;scheme=https;package=${ANDROID_PACKAGE};S.browser_fallback_url=${fallback};end`;
+      window.location.replace(intent);
+      return true;
+    }
+    window.location.href = target;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Task 74 (fondateur : capture « la barre d'adresse est encore visible ») —
  * l'intent a-t-il DÉJÀ été tenté cette session et la page s'est retrouvée
  * ICI ? Si oui, l'application n'est pas installée (ou sa vérification a

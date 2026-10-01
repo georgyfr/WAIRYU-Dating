@@ -157,6 +157,10 @@
         <span class="way-badge">✅ RECOMMANDÉ — jamais bloqué par Play Protect</span>
         <p>Installe wairyu <b>via Chrome</b> : l'application créée est <b>signée par Google</b> — Play Protect ne peut pas la bloquer. Même plein écran, même notifications, aucun avertissement.</p>
         <a class="btn" id="btn-chrome-install" href="#" style="display:none;" role="button">📲 Installer maintenant</a>
+        <!-- Task 77 — après installation réussie : ouvrir l'application en 1 appui. -->
+        <button class="btn" id="app-open-btn" type="button" style="display:none; background:linear-gradient(135deg,#2e8b57,#1c7a43);">📲 Ouvrir l'application
+          <small>Un appui — l'application s'ouvre plein écran, sans barre d'adresse</small>
+        </button>
         <ol>
           <li>Ouvre <b>wairyu.wairyu.workers.dev</b> dans <b>Chrome</b>.</li>
           <li>Appuie sur <b>📲 Installer</b> (ou menu <b>⋮</b> → <b>« Installer l'application »</b> ou <b>« Ajouter à l'écran d'accueil »</b>).</li>
@@ -254,10 +258,54 @@
       }
       window.addEventListener('appinstalled', function () {
         if (btn) {
-          btn.textContent = '✅ Installée ! Ouvre wairyu depuis l\'écran d\'accueil';
+          btn.textContent = '✅ Installée, félicitations !';
           btn.style.display = 'block';
         }
+        // Task 77 — bouton d'ouverture directe + bulle système de félicitations
+        // (relais au service worker : seules ses notifications sont tapables).
+        var openBtn = document.getElementById('app-open-btn');
+        if (openBtn) openBtn.style.display = 'block';
+        try {
+          var p = (typeof Notification !== 'undefined') ? Notification.permission : 'denied';
+          var relay = function () {
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+              navigator.serviceWorker.ready.then(function (reg) {
+                if (reg && reg.active) {
+                  reg.active.postMessage({
+                    type: 'wairyu-installed-congrats',
+                    body: 'Félicitations ! Touche ce message pour ouvrir ton application.'
+                  });
+                }
+              }).catch(function () {});
+            }
+          };
+          if (p === 'granted') {
+            relay();
+          } else if (p === 'default' && typeof Notification !== 'undefined') {
+            Notification.requestPermission().then(function (r) {
+              if (r === 'granted') relay();
+            }).catch(function () {});
+          }
+        } catch (e) { /* bénin */ }
       });
+      // Task 77 — ouvre l'application installée (intent direct, sans le
+      // garde-fou de session : appelé UNIQUEMENT après installation réussie).
+      var openBtnEl = document.getElementById('app-open-btn');
+      if (openBtnEl) {
+        openBtnEl.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          try {
+            var target = window.location.origin + '/#/';
+            var withoutScheme = target.replace(/^https?:\/\//, '');
+            var intent = 'intent://' + withoutScheme +
+              '#Intent;scheme=https;package=com.wairyu.app;S.browser_fallback_url=' +
+              encodeURIComponent(target) + ';end';
+            window.location.replace(intent);
+          } catch (e) {
+            window.location.href = '/#/';
+          }
+        });
+      }
     })();
   </script>
 </body>

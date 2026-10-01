@@ -21,7 +21,38 @@
  */
 
 import { useEffect, useState } from 'react';
-import { isStandalone, intentAlreadyFailed } from '../lib/open-in-app';
+import { isStandalone, intentAlreadyFailed, openInstalledApp } from '../lib/open-in-app';
+
+/**
+ * Task 77 (fondateur : « une notification apparaît pour féliciter la
+ * personne… elle clique dessus, ça ouvre l'application ») — après une
+ * installation réussie, on relaie l'événement au service worker qui affiche
+ * la bulle système (tapable → notificationclick → app installée).
+ * Permission Notification exigée DÉJÀ accordée ou demandée une seule fois
+ * (best-effort : si le navigateur refuse la demande hors geste, la carte
+ * in-page avec le bouton « Ouvrir l'application » prend le relais).
+ */
+async function relayInstalledCongrats(): Promise<void> {
+  try {
+    if (typeof Notification === 'undefined') return;
+    let perm: NotificationPermission = Notification.permission;
+    if (perm === 'default') {
+      try {
+        perm = await Notification.requestPermission();
+      } catch {
+        return; /* auto-refus hors geste — bénin */
+      }
+    }
+    if (perm !== 'granted') return;
+    const reg = await navigator.serviceWorker?.ready;
+    reg?.active?.postMessage({
+      type: 'wairyu-installed-congrats',
+      body: 'Félicitations ! Touche ce message pour ouvrir ton application.',
+    });
+  } catch {
+    /* bénin — le relais échoue, la carte in-page reste */
+  }
+}
 
 type Phase =
   | 'hidden'
@@ -91,6 +122,7 @@ export default function InstallGate() {
       } catch {
         /* bénin */
       }
+      void relayInstalledCongrats(); // Task 77 — bulle système félicitations
     };
     window.addEventListener('beforeinstallprompt', onPrompt);
     window.addEventListener('appinstalled', onInstalled);
@@ -137,9 +169,9 @@ export default function InstallGate() {
   let title = '';
   let text = '';
   if (phase === 'installed') {
-    title = '🎉 Application installée !';
+    title = '🎉 Application installée, félicitations !';
     text =
-      'Ouvre wairyu depuis l’icône de ton écran d’accueil — elle s’ouvrira plein écran, sans aucune barre d’adresse.';
+      'L’icône wairyu est sur ton écran d’accueil — elle s’ouvrira plein écran, sans aucune barre d’adresse. Tu ne la trouves pas ? Touche la notification 🎉 ou le bouton ci-dessous : l’application s’ouvre.';
   } else if (phase === 'android-fallback') {
     // Task 74 — la capture du fondateur (barre d'adresse visible au-dessus de
     // l'onboarding) est le cas exact : lien ouvert dans une Custom Tab, app
@@ -221,6 +253,16 @@ export default function InstallGate() {
         {phase === 'ios' && (
           <button type="button" className="btn primary" onClick={() => setShowSteps((s) => !s)}>
             {showSteps ? 'Masquer' : 'Comment faire ?'}
+          </button>
+        )}
+        {phase === 'installed' && (
+          <button
+            type="button"
+            className="btn primary"
+            data-testid="installgate-open-app"
+            onClick={() => openInstalledApp()}
+          >
+            📲 Ouvrir l’application
           </button>
         )}
         {phase !== 'installed' && (

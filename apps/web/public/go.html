@@ -113,6 +113,9 @@
     <button class="btn hidden" id="btn-native" type="button">📲 Installer wairyu en 1 appui
       <small>Via Chrome — signée par Google, jamais bloquée par Play Protect</small>
     </button>
+    <button class="btn hidden" id="btn-open-app" type="button" style="background:linear-gradient(135deg,#2e8b57,#1c7a43);">📲 Ouvrir l'application
+      <small>Un appui — l'application s'ouvre plein écran, sans barre d'adresse</small>
+    </button>
     <ol>
       <li>Ouvre <b>Chrome</b> (pas WhatsApp ni Facebook).</li>
       <li>Tape <b>wairyu.wairyu.workers.dev/app</b> puis <b>📲 Installer</b> (ou menu <b>⋮</b> → <b>« Installer l'application »</b>).</li>
@@ -243,10 +246,55 @@
       }
       window.addEventListener('appinstalled', function () {
         if (btnNative) {
-          btnNative.innerHTML = '✅ Installée ! Ouvre wairyu depuis l\u2019écran d\u2019accueil';
+          btnNative.innerHTML = '✅ Installée, félicitations !';
           btnNative.classList.remove('hidden');
         }
+        // Task 77 — bouton « Ouvrir l'application » + bulle système de
+        // félicitations (relais au service worker ; tap → app installée).
+        var ob = document.getElementById('btn-open-app');
+        if (ob) ob.classList.remove('hidden');
+        try {
+          var p = (typeof Notification !== 'undefined') ? Notification.permission : 'denied';
+          var relay = function () {
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+              navigator.serviceWorker.ready.then(function (reg) {
+                if (reg && reg.active) {
+                  reg.active.postMessage({
+                    type: 'wairyu-installed-congrats',
+                    body: 'Félicitations ! Touche ce message pour ouvrir ton application.',
+                  });
+                }
+              }).catch(function () {});
+            }
+          };
+          if (p === 'granted') {
+            relay();
+          } else if (p === 'default' && typeof Notification !== 'undefined') {
+            // Best-effort : le navigateur peut refuser hors geste — la carte
+            // in-page et le bouton d'ouverture prennent alors le relais.
+            Notification.requestPermission().then(function (r) {
+              if (r === 'granted') relay();
+            }).catch(function () {});
+          }
+        } catch (e) { /* bénin */ }
       });
+      // Task 77 — ouvre l'application installée (intent direct — réussit
+      // désormais que l'app est là ; sinon retombe sur wairyu lui-même).
+      var openAppNow = function (ev) {
+        if (ev) ev.preventDefault();
+        try {
+          var target = window.location.origin + '/#/';
+          var withoutScheme = target.replace(/^https?:\/\//, '');
+          var intent = 'intent://' + withoutScheme +
+            '#Intent;scheme=https;package=com.wairyu.app;S.browser_fallback_url=' +
+            encodeURIComponent(target) + ';end';
+          window.location.replace(intent);
+        } catch (e) {
+          window.location.href = '/#/';
+        }
+      };
+      var openBtnEl = document.getElementById('btn-open-app');
+      if (openBtnEl) openBtnEl.addEventListener('click', openAppNow);
       var apkLink = document.getElementById('apk-link');
       var b = document.getElementById('btn-apk');
       if (b && apkLink) {

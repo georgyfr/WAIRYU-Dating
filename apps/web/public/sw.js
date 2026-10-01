@@ -64,6 +64,31 @@ self.addEventListener('push', (event) => {
   );
 });
 
+/**
+ * Task 77 (demande fondateur : « lorsque l'application est installée avec
+ * succès, une notification apparaît pour féliciter la personne… il suffit
+ * que la personne clique sur la notification, ça ouvre l'application ») —
+ * la page (InstallGate / /go / /app) capte 'appinstalled' et RELAIE ici :
+ * seules les notifications affichées PAR le service worker sont tapables
+ * (notificationclick ci-dessous) et leur tap privilégie la fenêtre
+ * standalone (Task 75) puis openWindow — qui, sur Android, ouvre la WebAPK
+ * fraîchement installée. Permission Notification déjà accordée exigée côté
+ * page (jamais de demande forcée) ; sinon les cartes in-page prennent le relais.
+ */
+self.addEventListener('message', (event) => {
+  const d = event.data || {};
+  if (d && d.type === 'wairyu-installed-congrats') {
+    self.registration.showNotification('🎉 wairyu est installée !', {
+      body: d.body || 'Félicitations ! Touche ce message pour ouvrir ton application.',
+      tag: 'wairyu-installed',
+      renotify: false,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      data: { url: d.url || '#/discover' },
+    });
+  }
+});
+
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   const url = (event.notification.data && event.notification.data.url) || '#/matches';
