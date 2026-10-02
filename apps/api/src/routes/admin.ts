@@ -42,10 +42,12 @@ type AdminCtx = Context<AppEnv>;
 // audit sans humain identifiable). Le jeton statique ADMIN_TOKEN prouve
 // l'ACCÈS ; l'en-tête X-Admin-Id NOMME la personne : sa valeur doit être un
 // user_id présent dans la liste blanche env.ADMIN_USER_IDS (« id1,id2,… »).
-// Toute action de MODÉRATION exige cette identité (403 sinon — fail-closed) :
-// chaque ligne audit_admin / reviewed_by / resolved_by est traçable à un
-// humain nommé, JAMAIS à 'token'. (env.ts hors périmètre : intersection
-// locale pour lire ADMIN_USER_IDS sans modifier le type partagé.)
+// V16 R4 (audit V1.2) : TOUTE route admin exige cette identité (403 sinon —
+// fail-closed étendu, y compris les routes non-modération 2FA et push de
+// test qui dégradaient historiquement en 'token') : chaque ligne audit_admin
+// / reviewed_by / resolved_by est traçable à un humain nommé, JAMAIS à
+// 'token'. (env.ts hors périmètre : intersection locale pour lire
+// ADMIN_USER_IDS sans modifier le type partagé.)
 // ---------------------------------------------------------------------------
 
 const ADMIN_ID_HEADER = 'x-admin-id';
@@ -63,12 +65,13 @@ function adminIdentity(c: AdminCtx): string | null {
   return allowed.includes(raw) ? raw : null;
 }
 
-/** Modération : 403 si l'identité nommée ne résout pas (jamais anonyme). */
+/** Route admin : 403 si l'identité nommée ne résout pas (jamais anonyme).
+ *  V16 R4 : s'applique à TOUTES les routes admin (plus de dégradation). */
 function requireAdminIdentity(c: AdminCtx): string {
   const id = adminIdentity(c);
   if (!id) {
     throw errors.forbidden(
-      'Action de modération : identité admin nommée requise (X-Admin-Id, user_id listé dans ADMIN_USER_IDS).',
+      'Action admin : identité admin nommée requise (X-Admin-Id, user_id listé dans ADMIN_USER_IDS).',
     );
   }
   return id;
@@ -76,10 +79,10 @@ function requireAdminIdentity(c: AdminCtx): string {
 
 /**
  * Écrit une ligne d'audit immuable (plan 7.4 — table audit_admin de 0014 :
- * colonnes admin/action/target_user/target_id/details). La modération passe
- * TOUJOURS une identité NOMMÉE (requireAdminIdentity) ; les routes
- * non-modération (2FA, push de test) dégradent en 'token' — comportement
- * historique documenté, aucune action de modération n'y passe.
+ * colonnes admin/action/target_user/target_id/details). Toute route admin
+ * passe une identité NOMMÉE (requireAdminIdentity) — V16 R4 : les routes
+ * non-modération (2FA, push de test) ne dégradent PLUS en 'token', la
+ * dégradation historique est retirée, l'audit reste traçable à un humain.
  */
 async function audit(
   c: AdminCtx,
@@ -704,7 +707,7 @@ adminRoutes.post('/2fa/setup', async (c) => {
   const secret = generateTotpSecret();
   const cfg: TotpConfig = { secret, enabled: false, createdAt: Math.floor(Date.now() / 1000) };
   await c.env.CONFIG.put(TOTP_KV_KEY, JSON.stringify(cfg));
-  await audit(c, adminIdentity(c) ?? 'token', 'totp_setup', null, null, null);
+  await audit(c, requireAdminIdentity(c), 'totp_setup', null, null, null);
   return c.json({ ok: true, secret, otpauthUri: otpauthUri(secret), note: 'Importe ce secret dans ton app authenticator puis active avec un code.' });
 });
 
@@ -717,7 +720,7 @@ adminRoutes.post('/2fa/activate', async (c) => {
     return c.json({ error: { code: 'bad_request', message: 'Code TOTP invalide.' } }, 400);
   }
   await c.env.CONFIG.put(TOTP_KV_KEY, JSON.stringify({ ...cfg, enabled: true }));
-  await audit(c, adminIdentity(c) ?? 'token', 'totp_activate', null, null, null);
+  await audit(c, requireAdminIdentity(c), 'totp_activate', null, null, null);
   const body: AdminActionResponse = { ok: true, action: 'totp_activate', note: '2FA active — ajoute l’en-tête X-Admin-TOTP à chaque appel admin.' };
   return c.json(body);
 });
@@ -734,7 +737,7 @@ adminRoutes.post('/2fa/disable', async (c) => {
     }
   }
   await c.env.CONFIG.delete(TOTP_KV_KEY);
-  await audit(c, adminIdentity(c) ?? 'token', 'totp_disable', null, null, null);
+  await audit(c, requireAdminIdentity(c), 'totp_disable', null, null, null);
   const body: AdminActionResponse = { ok: true, action: 'totp_disable', note: '2FA désactivée.' };
   return c.json(body);
 });
@@ -791,7 +794,7 @@ adminRoutes.post('/push/send', async (c) => {
     kind: 'news',
     // Task 62 : les annonces officielles respectent le toggle « Infos wairyu »
   });
-  await audit(c, adminIdentity(c) ?? 'token', 'push_send', userId, null, `sent=${sent} title="${title}"`);
+  await audit(c, requireAdminIdentity(c), 'push_send', userId, null, `sent=${sent} title="${title}"`);
   const body: AdminPushSendResponse = { ok: sent > 0, sent };
   return c.json(body);
 });
