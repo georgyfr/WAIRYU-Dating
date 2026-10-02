@@ -38,8 +38,8 @@ export const adminRoutes = new Hono<AppEnv>();
 type AdminCtx = Context<AppEnv>;
 
 // ---------------------------------------------------------------------------
-// P0 — identité admin NOMMÉE (re-audit findings : reviewed_by='token',
-// audit sans humain identifiable). Le jeton statique ADMIN_TOKEN prouve
+// P0 — identité admin NOMMÉE (re-audit findings : la valeur anonyme « token »
+// écrite dans reviewed_by, audit sans humain identifiable). Le jeton statique ADMIN_TOKEN prouve
 // l'ACCÈS ; l'en-tête X-Admin-Id NOMME la personne : sa valeur doit être un
 // user_id présent dans la liste blanche env.ADMIN_USER_IDS (« id1,id2,… »).
 // V16 R4 (audit V1.2) : TOUTE route admin exige cette identité (403 sinon —

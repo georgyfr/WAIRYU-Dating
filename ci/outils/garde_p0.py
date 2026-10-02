@@ -94,6 +94,14 @@ def normalise(txt: str) -> str:
 AIGUILLES_NORM = [normalise(f) for f in FORMULATIONS_RETIREES]
 VARIANTES_NORM = {normalise(v) for v in VARIANTES_OFFICIELLES}
 MOTIF_ETIQUETTE = re.compile(r"\[TRAME S[ÉE]CURIT[ÉE][^\]]*\]")
+# A2-bis (V16 R6.4 · P4-F6, audit V1.2) — concaténation RUNTIME des étiquettes :
+# une étiquette [TRAME SÉCURITÉ …] construite à l'exécution (collée à + ou , ou
+# interpolée ${…}) pourrait produire une variante hors des deux officielles et
+# contourner A2. Zéro occurrence tolérée (hors la garde elle-même).
+MOTIF_ETIQUETTE_RUNTIME = re.compile(
+    r"\[TRAME S[ÉE]CURIT[ÉE][^\]]*\][\"']?\s*(?:[+,]|\$\{)"   # concat/interp après fermeture
+    r"|\[TRAME S[ÉE]CURIT[ÉE][^\]]*\$\{"                        # interpolation DANS l'étiquette
+)
 SOI = Path(__file__).resolve()          # la garde ne se scanne pas elle-même
                                         # (elle PORTE les aiguilles par construction)
 
@@ -118,6 +126,7 @@ def main() -> int:
     fichiers_slot_sans_placeholder: list[str] = []
     items_dtm_inconformes: list[str] = []
     placeholders_mutés: list[str] = []
+    étiquettes_runtime: list[str] = []           # A2-bis (V16 R6.4 · P4-F6)
 
     cibles, par_format = fichiers_a_scanner()
     for rel in cibles:
@@ -141,6 +150,21 @@ def main() -> int:
             for m in MOTIF_ETIQUETTE.finditer(brut):
                 if m.group(0) not in VARIANTES_OFFICIELLES:
                     placeholders_mutés.append(f"{rel} : {m.group(0)[:60]}…")
+
+        # A2-bis (V16 R6.4 · P4-F6) — étiquette construite à l'exécution :
+        # concaténation (+ , ) ou interpolation ${…} = risque de variante
+        # hors officielles qui contournerait A2. Zéro toléré. Champ : formats
+        # EXÉCUTABLES uniquement (.ts/.tsx/.js/.mjs/.cjs/.py) — c'est là que
+        # la concaténation runtime existe ; en .sql/.md/.yaml/.json le
+        # séparateur « », » d'une VALEUR de donnée n'est pas du code et ces
+        # données restent verrouillées par A2 (variantes exactes) et H-03
+        # (sha256 du placeholder par item).
+        if (
+            chemin.resolve() != SOI
+            and chemin.suffix.lower() in (".ts", ".tsx", ".js", ".mjs", ".cjs", ".py")
+        ):
+            for m in MOTIF_ETIQUETTE_RUNTIME.finditer(brut):
+                étiquettes_runtime.append(f"{rel} : {m.group(0)[:60]}…")
 
         # A3 — slot sécurité déclaré dans les dossiers de production ⇒
         #      placeholder officiel présent (une des 2 variantes).
@@ -186,6 +210,9 @@ def main() -> int:
     print(f"Aiguille A2 (placeholder intact, sha256 canonique) : {'OK' if placeholder_intact else 'MUTÉ'} — {PLACEHOLDER_SHA256_ATTENDU}")
     if placeholders_mutés:
         print(f"    🔴 occurrences approximatives : {placeholders_mutés}")
+    print(f"Aiguille A2-bis (étiquette runtime — concaténation/interpolation, V16 R6.4) : {len(étiquettes_runtime)} occurrence(s)")
+    for rel in étiquettes_runtime:
+        print(f"    🔴 → {rel}")
     print(f"Aiguille A3 (slot sécurité ⇒ placeholder présent, ddocumentation exemptée) : {len(fichiers_slot_sans_placeholder)} manquant(s)")
     for rel in fichiers_slot_sans_placeholder:
         print(f"    🔴 → {rel}")
@@ -193,7 +220,7 @@ def main() -> int:
     for rel in items_dtm_inconformes:
         print(f"    🔴 → {rel}")
 
-    rouge = bool(trouvailles or placeholders_mutés or fichiers_slot_sans_placeholder or items_dtm_inconformes or not placeholder_intact)
+    rouge = bool(trouvailles or placeholders_mutés or étiquettes_runtime or fichiers_slot_sans_placeholder or items_dtm_inconformes or not placeholder_intact)
     print()
     print("VERDICT GARDE ÉTENDUE : 🔴 ROUGE — fuite(s) restante(s), brûlage incomplet." if rouge
           else "VERDICT GARDE ÉTENDUE : 🟢 VERT — zéro formulation de trame en clair sur tout le dépôt scanné (7 formats).")

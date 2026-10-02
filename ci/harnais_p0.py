@@ -119,10 +119,15 @@ def main() -> int:
     psy_used = "PSYCHOMETRY.FORCES_DIM_THRESHOLD" in matching and "PSYCHOMETRY.N1_MIN_ANSWERS" in personality
     # faux « vigilanceScore » (re-audit : matching.ts:290 — min de dimensions
     # qui N'ÉTAIT PAS un signal du moteur) : supprimé et renommé lowestDimScore.
+    # V16 R6.3 (P4-F7) : la regex historique ne catchait que les déclarations
+    # let/const/var — élargie aux déclarations function/class/public/private/
+    # static ET aux affectations SANS déclaration (y c. propriété obj.vigilanceScore).
     faux_vigilance = (
         not re.search(r"\b(let|const|var)\s+vigilanceScore\b", matching)
+        and not re.search(r"\b(function|class|public|private|static)\s+vigilanceScore\b", matching)
+        and not re.search(r"\bvigilanceScore\b\s*(?::\s*[\w<>\[\]|]+\s*)?=[^=]", matching)
         and "lowestDimScore" in matching
-    )  # le mot peut rester dans le commentaire de traçabilité — seules les DÉCLARATIONS comptent
+    )  # le mot peut rester dans le commentaire de traçabilité — seules les DÉCLARATIONS et AFFECTATIONS comptent
     check("H-07 B.5d seuils PSYCHOMETRY + env override + faux vigilanceScore retiré",
           override and comite and plus_72 and plus_55 and plus_10 and psy_used and faux_vigilance,
           f"override: {override} · verrou comité: {comite} · 72/55/10 retirés: {plus_72}/{plus_55}/{plus_10} · import PSYCHOMETRY: {psy_used} · faux vigilanceScore retiré: {faux_vigilance}")
@@ -143,16 +148,31 @@ def main() -> int:
           f"détecteurs: {det} · seuil en constants: {r6c} · branchés API: {branché}")
 
     # ── H-10 (F.3/F.4/C.3.1) — âge, mineur, admin nommé ──────────────
+    # V16 R6.1 (audit V1.2) : l'ancienne regex « reviewed_by = 'token' »
+    # imposait les ESPACES — elle ratait admin.ts:41 reviewed_by='token' et
+    # les usages réels. Regex élargie sans espaces obligatoires + scope
+    # safety.ts + check spécifique de la dégradation adminIdentity ?? 'token'
+    # (0 attendu après correction R4).
     auth = lit("apps/api/src/routes/auth.ts")
+    safety_ts = lit("apps/api/src/routes/safety.ts")
     inserts = grep_count(r"INSERT INTO users \([^)]*birth_year[^)]*birth_date", auth)
     age_lib = existe("apps/api/src/lib/age.ts") and "18" in lit("apps/api/src/lib/age.ts")
     m23 = lit("apps/api/migrations/0023_safety_aggregate.sql")
     trigger = "strftime('%Y','now')" in m23 and "RAISE(ABORT" in m23
     minor = "signup_minor_refused" in auth or "minor_ban" in auth or "minor_ban" in lit("apps/api/src/routes/profiles.ts")
     admin = lit("apps/api/src/routes/admin.ts")
-    no_token = grep_count(r"reviewed_by = 'token'", admin) == 0 and grep_count(r"reviewed_by = 'token'", auth) == 0
-    check("H-10 F.3/F.4/C.3.1 âge + mineur + admin nommé", inserts == 3 and age_lib and trigger and minor and no_token,
-          f"INSERT avec âge: {inserts}/3 · validateur: {age_lib} · trigger dynamique: {trigger} · chemin mineur: {minor} · 'token': {no_token}")
+    motif_token = r"reviewed_by\s*=\s*['\"]token['\"]"
+    motif_degrade = r"adminIdentity\s*\?\?\s*['\"]token['\"]"
+    no_token = (
+        grep_count(motif_token, admin) == 0
+        and grep_count(motif_token, auth) == 0
+        and grep_count(motif_token, safety_ts) == 0
+        and grep_count(motif_degrade, admin) == 0
+        and grep_count(motif_degrade, safety_ts) == 0
+        and "requireAdminIdentity" in admin
+    )
+    check("H-10 F.3/F.4/C.3.1 âge + mineur + admin nommé (élargi V16 R6.1)", inserts == 3 and age_lib and trigger and minor and no_token,
+          f"INSERT avec âge: {inserts}/3 · validateur: {age_lib} · trigger dynamique: {trigger} · chemin mineur: {minor} · 'token' (regex espaces libres + safety + dégradation adminIdentity): {no_token}")
 
     # ── H-11 (C.5.1/C.5.2/C.8.4) — agrégat, recours, purge DO ────────
     safety = lit("apps/api/src/routes/safety.ts")
@@ -163,14 +183,36 @@ def main() -> int:
     check("H-11 C.5.1/C.5.2/C.8.4 agrégat + recours + purge DO", agg and appeal and purge,
           f"report_aggregate: {agg} · POST appeal: {appeal} · purge 365j DO: {purge}")
 
-    # ── H-12 (B.5a/G.3b/G.4a) — export RGPD + a11y smoke VERT ────────
-    export = all(x in auth for x in ("doctrineAnswers", "sanctions", "conversations", "voiceNotes"))
+    # ── H-12 (B.5a/G.3b/G.4a) — export RGPD EXHAUSTIF + registre + smoke ──
+    # V16 R6.2 (audit V1.2) : l'ancien check se contentait de 4 mots-clés —
+    # il ne vérifiait ni l'ENDPOINT d'export (route définie), ni la liste
+    # EXHAUSTIVE des tables RGPD du rapport V1.2 (q_answers/doctrine +
+    # personality + swipes + matches + conversations + sanctions + appeals +
+    # sessions + consentements), ni le déploiement du registre (R1).
+    export_route = "authRoutes.get('/account/export'" in auth
+    export_tables = all(
+        x in auth
+        for x in (
+            "FROM q_answers",
+            "FROM q_doctrine_answers",
+            "FROM personality_profiles",
+            "FROM swipes",
+            "FROM matches",
+            "FROM conversations",
+            "FROM sanctions",
+            "FROM sanctions_appeals",
+            "FROM sessions",
+            "profile_consent_at",
+        )
+    )
+    registre = existe("apps/web/public/legal/registre.md")
     smoke = subprocess.run(
         [sys.executable, str(RACINE / "ci" / "outils" / "a11y_smoke.py")],
         capture_output=True, text=True, cwd=RACINE,
     )
-    check("H-12 B.5a/G.3b/G.4a export RGPD + smoke a11y", export and smoke.returncode == 0,
-          f"export augmenté: {export} · a11y_smoke exit {smoke.returncode}")
+    check("H-12 B.5a/G.3b/G.4a export RGPD exhaustif + registre + smoke a11y (élargi V16 R6.2)",
+          export_route and export_tables and registre and smoke.returncode == 0,
+          f"endpoint: {export_route} · tables RGPD exhaustives: {export_tables} · registre.md déployé: {registre} · a11y_smoke exit {smoke.returncode}")
 
     # ── Verdict ──────────────────────────────────────────────────────
     passes = sum(1 for _, ok, _ in resultats if ok)

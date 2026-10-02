@@ -947,6 +947,11 @@ type AccountExportFull = AccountExport & {
   };
   sessionsRecent: Record<string, unknown>[];
   consents: Record<string, unknown>;
+  // V16 R6.2 (audit V1.2, H-12 élargi) — liste exhaustive des tables RGPD :
+  // personnalité (0010/0011), swipes et matches (0012) couverts à leur tour.
+  personality: Record<string, unknown> | null;
+  swipes: Record<string, unknown>[];
+  matches: Record<string, unknown>[];
 };
 
 authRoutes.get('/account/export', async (c) => {
@@ -1106,6 +1111,34 @@ authRoutes.get('/account/export', async (c) => {
     .all<Record<string, unknown>>()
     .then((r) => r.results ?? []);
 
+  // ---- V16 R6.2 (audit V1.2, H-12 élargi) : personnalité, swipes, matches ----
+  // Complète la liste exhaustive des tables RGPD du rapport V1.2. Requêtes
+  // tolérantes : une table non encore déployée ne doit JAMAIS faire échouer
+  // l'export (même règle que la banque doctrine ci-dessus).
+  const personality = await c.env.DB.prepare(
+    `SELECT type, validated, suggested, pref_types, derived_from
+     FROM personality_profiles WHERE user_id = ? LIMIT 1`,
+  )
+    .bind(session.userId)
+    .first<Record<string, unknown>>()
+    .catch(() => null);
+  const swipes = await c.env.DB.prepare(
+    `SELECT target_id, action, created_at
+     FROM swipes WHERE user_id = ? ORDER BY created_at DESC LIMIT 500`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+  const matches = await c.env.DB.prepare(
+    `SELECT id, user_a_id, user_b_id, origin, created_at, unmatched_at, unmatched_by
+     FROM matches WHERE user_a_id = ? OR user_b_id = ? ORDER BY created_at DESC LIMIT 500`,
+  )
+    .bind(session.userId, session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+
   const body: AccountExportFull = {
     exportedAt: new Date().toISOString(),
     format: 'wairyu-export-v1',
@@ -1135,6 +1168,10 @@ authRoutes.get('/account/export', async (c) => {
       appeals,
     },
     sessionsRecent,
+    // V16 R6.2 : liste exhaustive des tables RGPD (personnalité + découverte).
+    personality,
+    swipes,
+    matches,
     consents: {
       profile_consent_at: user['profile_consent_at'] ?? null,
       email_verified_at: user['email_verified_at'] ?? null,
@@ -1142,7 +1179,7 @@ authRoutes.get('/account/export', async (c) => {
       note: 'Consentements et déclarations horodatées (confidentialité v1 — plan 7.7).',
     },
     audit: {
-      note: 'Export RGPD — droit d\u2019accès (art. 15) et portabilité (art. 20) : l\u2019intégralité des données personnelles traitées par wairyu est couverte ci-dessus (profil, questionnaire, doctrine, conversations, sécurité, sessions, consentements).',
+      note: 'Export RGPD — droit d\u2019accès (art. 15) et portabilité (art. 20) : l\u2019intégralité des données personnelles traitées par wairyu est couverte ci-dessus (profil, questionnaire, doctrine, personnalité, découverte — swipes et matches —, conversations, sécurité, sessions, consentements — registre : /legal/registre.md).',
     },
   };
   await bumpMetric(c.env.DB, 'gdpr_export');
