@@ -97,3 +97,7 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q6.3-12 aux 5 canaux (champs V13 étage 3).
 7. `07-miroir.md` — 4 profils respectés (gabarit MOYEN 150-250 mots).
 8. `cartes.yaml` — 4 variantes de carte (55-110 mots, ancre_item = les 14 codes).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

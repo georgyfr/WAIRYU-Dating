@@ -97,3 +97,7 @@ M8-6.2 / M9-6.3) — elle est **à DEUX**, et son gabarit diverge en conséquenc
 5. `05-ecran-d-intro.md` — l'écran d'entrée (2 phrases, gratuité évidente).
 6. `06-fiche-computation-8.1.yaml` — la fiche de computation (36 items, champs M11).
 7. `07-miroir.md` — l'exemption du miroir individuel (précédent 6.4).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

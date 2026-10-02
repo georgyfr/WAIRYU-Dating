@@ -25,3 +25,7 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'axe Q2.6-01 aux 5 canaux.
 7. `07-miroir.md` — 4 profils types (dont la friction documentée n°1), gabarit MOYEN (mission V8.B).
 8. `cartes.yaml` — 4 variantes de carte (étage 1, charte C1-C11).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

@@ -35,3 +35,7 @@ FM-019 — hors contrat de mélange : la réponse globale n'est pas un item) →
 ```
 
 > Aucun fichier du dépôt contractuel n'est modifié par ce livrable (pas de git, pas de CI).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

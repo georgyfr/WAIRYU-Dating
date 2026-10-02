@@ -74,3 +74,7 @@
 1. `01-specification-fonctionnelle.md` — les quatre services (flux, interrupteurs, garde-fous).
 2. `02-north-star-calibration.md` — comment le feedback apprend au moteur.
 3. `03-engagement-securite.md` — l'engagement manifeste (gratuit et permanent).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée selon le format de la quête (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

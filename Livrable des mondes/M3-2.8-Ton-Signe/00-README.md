@@ -24,3 +24,7 @@
 3. `05-ecran-d-intro.md` — l'écran d'intro + l'écran de badge (disclaimer visible).
 4. `cartes.yaml` — le badge miniature (12 variantes + branche silence) et ses exemptions documentées.
 5. `README.md` — vue d'ensemble, conformité, points comité.
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

@@ -94,3 +94,7 @@ la création (constat), pas en extension (aucun plan antérieur n'existait).
   INTERDITS au rendu (05, 07, cartes, écrans) — ils ne vivent que dans le présent fichier
   et les fichiers moteur. Doctrine de citation : pattern harmonisé « cadrage moteur + verrou
   rendu » (Q8, audit — en attente de tranchage comité).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée selon le format de la quête (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

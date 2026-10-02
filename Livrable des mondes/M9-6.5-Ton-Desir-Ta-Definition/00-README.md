@@ -110,3 +110,7 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — Q6.5-01 (format choix-déclaratif).
 7. `07-miroir.md` — LA BRIQUE SYN UNIQUE + conformité catégorie C.
 8. `cartes.yaml` — la variante unique digne (l'affichage choisi au profil).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

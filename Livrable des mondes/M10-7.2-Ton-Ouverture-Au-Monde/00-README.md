@@ -91,3 +91,7 @@
 4. `04-slots-de-miroir.md` — le miroir LÉGER (3 variantes) et ses verrous.
 5. `05-ecran-d-intro.md` — l'écran d'entrée (ton premium, zéro teaser).
 6. `07-miroir.md` — 3 variantes respectées (kits LÉGER 80-150 mots · SYN 41-59 mots).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

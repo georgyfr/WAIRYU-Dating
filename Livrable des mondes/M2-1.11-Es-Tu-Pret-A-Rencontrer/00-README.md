@@ -23,3 +23,7 @@
 2. `02-plan-de-passage.md` — l'ordre FIXE (sans mélange — justification scénarique).
 3. `05-ecran-d-intro.md` — l'écran d'entrée + les trois écrans de sortie (textes doux).
 4. `README.md` — vue d'ensemble, conformité, exemptions documentées, points comité.
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée selon le format de la quête (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

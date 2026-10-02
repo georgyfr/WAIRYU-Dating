@@ -49,3 +49,7 @@
 - Constitution [3] : aucun code/score/sigle rendu ; tutoiement ; phrases ≤ 22 mots dans les textes rendus ; le temps de réponse n'est jamais affiché.
 - Constitution [2] : lumière/ombre en égalité ; conditionnel fréquentiel ; coût pour soi ET pour l'autre ; aucune humiliation possible sur les énigmes (la manière décrite, jamais la performance notée).
 - Verrou [9] : produire, ne pas décider — tout seuil = PROPOSITION marquée.
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

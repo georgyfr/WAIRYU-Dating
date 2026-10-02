@@ -26,3 +26,7 @@
 > Fichiers non produits (par design — exemptions) : `03-signatures-registre.md` (aucune signature)
 > · `04-slots-de-miroir.md` (aucun miroir) · `06-fiche-computation-EXEMPLE.yaml` (aucune
 > computation rendue) · `07-miroir.md` (aucun miroir) · `cartes.yaml` (aucune carte).
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée selon le format de la quête (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

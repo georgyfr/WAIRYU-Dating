@@ -108,3 +108,7 @@
 5. `05-ecran-d-intro.md` — l'écran d'entrée (l'assertivité seule).
 6. `06-fiche-computation-8.3.yaml` — la fiche de computation (chiffrement maximal).
 7. `07-miroir.md` — la documentation de l'exemption par design.
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

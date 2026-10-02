@@ -36,3 +36,7 @@
 | `02-plan-de-melange-graine-*.md` | **ABSENT PAR DESIGN** | 1 item — aucun ordre à mélanger, graine sans-objet (ordinal 33 réservé) |
 | `07-miroir.md` | **ABSENT PAR DESIGN** | 1 item — aucun profil computable (précédents 1.7 · 1.11 · 2.8 · 3.7) |
 | `cartes.yaml` | **ABSENT À P1.5** | La carte rédigée est un produit P2 (slot documenté au 03) — aucune carte partageable à l'étape d'écoute |
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée selon le format de la quête (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.

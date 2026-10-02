@@ -58,3 +58,7 @@ fins (signatures) opèrent au Portrait M1 (étage 3), jamais dans le miroir de q
 - **Décisions comité appliquées (FM-019)** : seuils, fenêtres et conditions composées proposés
   ADOPTÉS comme valeurs de départ — provisoire concepteur — re-signature professionnelle avant
   bêta · c2×c4 sans-objet : reste en attente.
+
+## Conformité a11y
+
+Conformité a11y : WCAG 2.1 AA visée (contrastes ≥ 4,5:1, cibles tactiles ≥ 44×44 px, support lecteur d'écran, respect du mode réduit-animations). Implémentation : voir spec quête 1.1 §10 et styles.css.
