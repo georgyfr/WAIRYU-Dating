@@ -232,6 +232,8 @@ interface DoctrineRow {
   format: string;
   prompt: string;
   signal_id: string | null;
+  /** V16 : colonne paire (0021:23) — paire fiabilité R6, ex. '↔02' (null hors D/I). */
+  paire: string | null;
 }
 
 interface DoctrineAnswerRow {

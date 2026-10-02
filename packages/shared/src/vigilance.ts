@@ -172,13 +172,26 @@ export function detectRandomPattern(likertValues: number[]): boolean {
   const n = likertValues.length;
   if (n < PSYCHOMETRY.STRAIGHTLINE_MIN_ANSWERS) return false;
   // Zigzag strict : |Δ| vaut alternativement le même écart > 0.
-  const deltas = likertValues.slice(1).map((v, i) => v - likertValues[i]);
+  const deltas = likertValues.slice(1).map((v, i) => v - (likertValues[i] ?? v));
   const abs = deltas.map((d) => Math.abs(d));
-  if (abs.every((d) => d > 0) && abs.every((d) => d === abs[0]) && abs[0] >= 2) return true;
+  const first = abs[0];
+  if (
+    first !== undefined &&
+    abs.every((d) => d > 0) &&
+    abs.every((d) => d === first) &&
+    first >= 2
+  )
+    return true;
   // Triangle : montée constante puis descente constante (ou l'inverse).
   const peak = likertValues.indexOf(Math.max(...likertValues));
-  const up = likertValues.slice(1, peak + 1).every((v, i) => v > likertValues[i]);
-  const down = likertValues.slice(peak + 1).every((v, i) => v < likertValues[i + peak]);
+  const up = likertValues.slice(1, peak + 1).every((v, i) => {
+    const prev = likertValues[i];
+    return prev !== undefined && v > prev;
+  });
+  const down = likertValues.slice(peak + 1).every((v, i) => {
+    const next = likertValues[i + peak];
+    return next !== undefined && v < next;
+  });
   if (peak > 0 && peak < n - 1 && up && down) return true;
   return false;
 }

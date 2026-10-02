@@ -1,6 +1,6 @@
 /** Types partagés API ↔ Front. */
 
-import type { QItem, QAnswers, LevelInsights } from './matching';
+import type { QItem, QAnswers, LevelInsights, QItemOption } from './matching';
 
 // ---------- Étape 7 : sécurité & modération ----------
 
