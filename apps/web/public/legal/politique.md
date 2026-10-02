@@ -115,3 +115,12 @@ mineur est identifié, il est supprimé et ses données effacées.
 Toute modification substantielle de la présente politique vous sera notifiée
 in-app au moins 15 jours avant son entrée en vigueur, avec possibilité de refuser
 et supprimer votre compte.
+
+## 10. Registre des traitements
+
+Conformément à l'article 30 du RGPD et en complément de la transparence exigée
+par l'article 12, le registre des traitements de données à caractère personnel
+(finalités, catégories de données, bases légales, destinataires, sous-traitants,
+durées de conservation, mesures de sécurité) est consultable publiquement :
+[registre des traitements](/legal/registre.md). Il est mis à jour à chaque
+nouvelle finalité, conformément à la présente politique.

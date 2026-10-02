@@ -63,6 +63,11 @@ sans justification. Conformément à la Politique de confidentialité, les conte
 (photos, audio) sont effacés des serveurs et les données personnelles purgées,
 sous réserve des obligations légales de conservation.
 
+3.5. Le registre des traitements de données à caractère personnel, tenu
+conformément à l'article 30 du RGPD (finalités, bases légales, durées,
+destinataires, sécurité), est consultable publiquement :
+[registre des traitements](/legal/registre.md).
+
 ## Article 4 — Règles de conduite (charte de respect)
 
 4.1. L'utilisateur s'engage à adopter un comportement respectueux. Sont
