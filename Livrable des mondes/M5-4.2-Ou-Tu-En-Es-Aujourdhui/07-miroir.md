@@ -23,10 +23,10 @@ braise, la porte au présent), jamais en étiquette, jamais en verdict.
 ### MR-42-HER-APAISE — le chapitre refermé
 
 **TA LUMIÈRE**
-Tes chapitres passés te servent, comme tu l'as répondu — ils ne te pèsent plus. Tu sais ce
-que ces histoires t'ont appris, et le calme que tu as ramené reste. Les gens nouveaux, tu
-les regardes pour ce qu'ils sont. Cette histoire est rangée, les cartons sont faits. C'est
-une place calme, et elle s'entend quand on entre chez toi.
+Tes chapitres passés te servent — tu l'as répondu mot pour mot : « Mes chapitres passés me
+servent, ils ne me pèsent plus. » Tu sais ce que ces histoires t'ont appris, et le calme que tu
+as ramené reste. Les gens nouveaux, tu les regardes pour ce qu'ils sont. Cette histoire est
+rangée, les cartons sont faits. C'est une place calme, et elle s'entend quand on entre chez toi.
 
 **→ TON OMBRE (en couple)**
 Le calme bien installé se lit parfois comme une distance. La recherche documente que les

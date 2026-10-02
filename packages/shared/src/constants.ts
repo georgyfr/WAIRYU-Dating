@@ -269,3 +269,71 @@ export const LABELS = {
     interracial: 'Mode interracial',
   } as Record<string, string>,
 } as const;
+
+// ---------------------------------------------------------------------------
+// P0 runtime — PSYCHOMÉTRIE & VIGILANCE (findings B.5c/B.5d — BLOC 2/3)
+// ---------------------------------------------------------------------------
+
+/**
+ * Seuils psychométriques et de vigilance — VALEURS DE DÉPART PROVISOIRES.
+ * ⚠ TOUTES ces valeurs sont À VALIDER PAR LE COMITÉ (verrou [9]).
+ * Interdit de codage dur (finding B.5d) : les règles importent PSYCHOMETRY ;
+ * l'API peut les surcharger au boot via la variable d'environnement
+ * PSYCHOMETRY_OVERRIDE (JSON plat {"clé": valeur} — voir mergePsychometryOverride
+ * dans vigilance.ts ; jamais persistée, jamais loggée).
+ */
+export const PSYCHOMETRY = {
+  /** Réponses N1 minimales avant dérivation d'archétype (personality.ts). */
+  N1_MIN_ANSWERS: 10,
+  /** Seuil « force » d'une dimension (pourquoi-du-match, matching.ts). */
+  FORCES_DIM_THRESHOLD: 72,
+  /** Seuil « vigilance » d'une dimension (pourquoi-du-match, matching.ts). */
+  VIGILANCE_DIM_THRESHOLD: 55,
+  /** Poids du score MVP — renormalisés au vol sur les dimensions présentes. */
+  DIM_WEIGHTS: {
+    values: 0.24,
+    goals: 0.19,
+    communication: 0.15,
+    personality: 0.15,
+    attachment: 0.1,
+  },
+  PREF_WEIGHT: 0.09,
+  ARCH_WEIGHT: 0.08,
+  /** Temps de réponse minimal plausible (ms) — en dessous : drapeau QFI. */
+  MIN_RESPONSE_MS: 1200,
+  /** Droite-ligne : variance nulle des réponses Likert sur ≥ N items. */
+  STRAIGHTLINE_MIN_ANSWERS: 10,
+  /** Part de réponses « réflexes » (< MIN_RESPONSE_MS) tolérée avant drapeau QFI. */
+  FAST_RESPONSE_RATIO: 0.3,
+  /** R6 (fiabilité) : |D − (6−I)| ≥ 3 sur une paire → incohérence → S3 dégradé + QFI. */
+  R6_MAX_INCOHERENCE: 3,
+  /**
+   * Q1.7 — modulation TDAH : le fonctionnement attentionnel peut gonfler les
+   * réponses des trames DTM ; les seuils DTM_N/DTM_M sont RELÂCHÉS (+0.5)
+   * quand le drapeau Q1.7 est actif. À VALIDER PAR LE COMITÉ.
+   */
+  Q17_TDAH_DTM_RESET: true,
+  Q17_TDAH_THRESHOLD_SHIFT: 0.5,
+  /**
+   * Seuils par signal (moyennes d'items, échelle 1-5) — À VALIDER PAR LE COMITÉ.
+   * QFI/ECD/GEN n'ont pas de seuil ici (calculs ou données ultérieures).
+   */
+  SIGNALS: {
+    DTM_N: { moyen: 2.0, eleve: 3.0, critique: 4.0 },
+    DTM_M: { moyen: 2.0, eleve: 3.0, critique: 4.0 },
+    DGR: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    JR1: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    CSR: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    CMP: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    COC: { moyen: 2.0, eleve: 3.0, critique: 4.0 },
+    RB1: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    BLA: { moyen: 2.5, eleve: 3.5, critique: 4.0 },
+    RSQ: { moyen: 3.0, eleve: 3.8, critique: 4.5 },
+    DE: { moyen: 2.5, eleve: 3.5, critique: 4.5 },
+  },
+  /**
+   * Matrice des pièges SIG-4.4-06 — intensité minimale (écarts normalisés 0-1)
+   * pour qu'une cellule « risque » soit signalée au moteur. À VALIDER PAR LE COMITÉ.
+   */
+  PIT_MATRIX_INTENSITY: 0.6,
+} as const;

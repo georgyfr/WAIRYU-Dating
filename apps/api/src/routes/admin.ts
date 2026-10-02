@@ -11,7 +11,9 @@
  */
 import { Hono } from 'hono';
 import type { Context } from 'hono';
-import type { AppEnv } from '../env';
+import type { AppEnv, Env } from '../env';
+// P0 — erreurs typées (403 identité admin nommée, levées par les routes modération).
+import { errors } from '../lib/errors';
 import { isolateUptimeSeconds, snapshotCounters, currentStartedAt } from '../middleware/usage';
 import { createSession } from '../lib/auth';
 import { signedMediaUrl } from '../lib/cloudinary';
@@ -35,9 +37,53 @@ export const adminRoutes = new Hono<AppEnv>();
 
 type AdminCtx = Context<AppEnv>;
 
-/** Écrit une ligne d'audit immuable (plan 7.4 — audit_admin complet). */
+// ---------------------------------------------------------------------------
+// P0 — identité admin NOMMÉE (re-audit findings : reviewed_by='token',
+// audit sans humain identifiable). Le jeton statique ADMIN_TOKEN prouve
+// l'ACCÈS ; l'en-tête X-Admin-Id NOMME la personne : sa valeur doit être un
+// user_id présent dans la liste blanche env.ADMIN_USER_IDS (« id1,id2,… »).
+// Toute action de MODÉRATION exige cette identité (403 sinon — fail-closed) :
+// chaque ligne audit_admin / reviewed_by / resolved_by est traçable à un
+// humain nommé, JAMAIS à 'token'. (env.ts hors périmètre : intersection
+// locale pour lire ADMIN_USER_IDS sans modifier le type partagé.)
+// ---------------------------------------------------------------------------
+
+const ADMIN_ID_HEADER = 'x-admin-id';
+
+type EnvWithAdminIds = Env & { ADMIN_USER_IDS?: string };
+
+/** Résout l'identité admin nommée (X-Admin-Id ∈ ADMIN_USER_IDS) — null sinon. */
+function adminIdentity(c: AdminCtx): string | null {
+  const raw = (c.req.header(ADMIN_ID_HEADER) ?? '').trim();
+  if (!/^[0-9a-f-]{36}$/i.test(raw)) return null;
+  const allowed = ((c.env as EnvWithAdminIds).ADMIN_USER_IDS ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return allowed.includes(raw) ? raw : null;
+}
+
+/** Modération : 403 si l'identité nommée ne résout pas (jamais anonyme). */
+function requireAdminIdentity(c: AdminCtx): string {
+  const id = adminIdentity(c);
+  if (!id) {
+    throw errors.forbidden(
+      'Action de modération : identité admin nommée requise (X-Admin-Id, user_id listé dans ADMIN_USER_IDS).',
+    );
+  }
+  return id;
+}
+
+/**
+ * Écrit une ligne d'audit immuable (plan 7.4 — table audit_admin de 0014 :
+ * colonnes admin/action/target_user/target_id/details). La modération passe
+ * TOUJOURS une identité NOMMÉE (requireAdminIdentity) ; les routes
+ * non-modération (2FA, push de test) dégradent en 'token' — comportement
+ * historique documenté, aucune action de modération n'y passe.
+ */
 async function audit(
   c: AdminCtx,
+  adminId: string,
   action: string,
   targetUser: string | null,
   targetId: string | null,
@@ -45,9 +91,9 @@ async function audit(
 ): Promise<void> {
   await c.env.DB.prepare(
     `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
-     VALUES ('token', ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?)`,
   )
-    .bind(action, targetUser, targetId, details, Math.floor(Date.now() / 1000))
+    .bind(adminId, action, targetUser, targetId, details, Math.floor(Date.now() / 1000))
     .run();
 }
 
@@ -61,6 +107,7 @@ type SanctionAction = 'dismiss' | 'warn' | 'suspend' | 'ban' | 'unban';
  */
 async function applySanction(
   c: AdminCtx,
+  adminId: string,
   userId: string,
   action: SanctionAction,
   note: string | null,
@@ -92,7 +139,7 @@ async function applySanction(
       .run();
   }
 
-  await audit(c, `sanction_${outcome}`, userId, null, note);
+  await audit(c, adminId, `sanction_${outcome}`, userId, null, note);
   return outcome;
 }
 
@@ -280,6 +327,9 @@ adminRoutes.get('/verification-queue', async (c) => {
 });
 
 adminRoutes.post('/verification/:id/approve', async (c) => {
+  // P0 : identité admin NOMMÉE — l'approbation d'identité est une action de
+  // modération (403 si l'identité ne résout pas).
+  const adminId = requireAdminIdentity(c);
   const id = c.req.param('id');
   const now = Math.floor(Date.now() / 1000);
   const row = await c.env.DB.prepare(
@@ -291,16 +341,18 @@ adminRoutes.post('/verification/:id/approve', async (c) => {
 
   await c.env.DB.batch([
     c.env.DB.prepare(
-      `UPDATE verification_requests SET status = 'approved', reviewed_at = ?, reviewed_by = 'token' WHERE id = ?`,
-    ).bind(now, id),
+      `UPDATE verification_requests SET status = 'approved', reviewed_at = ?, reviewed_by = ? WHERE id = ?`,
+    ).bind(now, adminId, id),
     c.env.DB.prepare(`UPDATE users SET verified_at = ?, updated_at = ? WHERE id = ?`).bind(now, now, row.user_id),
   ]);
-  await audit(c, 'verification_approve', row.user_id, id, null);
+  await audit(c, adminId, 'verification_approve', row.user_id, id, null);
   const body: AdminActionResponse = { ok: true, action: 'approve', note: 'Badge « Identité vérifiée » accordé.' };
   return c.json(body);
 });
 
 adminRoutes.post('/verification/:id/reject', async (c) => {
+  // P0 : identité admin NOMMÉE obligatoire (action de modération).
+  const adminId = requireAdminIdentity(c);
   const id = c.req.param('id');
   const payload = (await c.req.json().catch(() => null)) as { reason?: unknown } | null;
   const reason = typeof payload?.reason === 'string' ? payload.reason.slice(0, 300) : 'Photos non conformes.';
@@ -312,11 +364,11 @@ adminRoutes.post('/verification/:id/reject', async (c) => {
   if (!row) return c.json({ error: { code: 'not_found', message: 'Demande introuvable ou déjà traitée.' } }, 404);
 
   await c.env.DB.prepare(
-    `UPDATE verification_requests SET status = 'rejected', rejection_reason = ?, reviewed_at = ?, reviewed_by = 'token' WHERE id = ?`,
+    `UPDATE verification_requests SET status = 'rejected', rejection_reason = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?`,
   )
-    .bind(reason, Math.floor(Date.now() / 1000), id)
+    .bind(reason, Math.floor(Date.now() / 1000), adminId, id)
     .run();
-  await audit(c, 'verification_reject', row.user_id, id, reason);
+  await audit(c, adminId, 'verification_reject', row.user_id, id, reason);
   const body: AdminActionResponse = { ok: true, action: 'reject', note: `Refusée : ${reason}` };
   return c.json(body);
 });
@@ -439,6 +491,8 @@ adminRoutes.get('/reports/:id', async (c) => {
 
 /** POST /admin/reports/:id/resolve { action: dismiss|warn|suspend|ban, note?, days? } */
 adminRoutes.post('/reports/:id/resolve', async (c) => {
+  // P0 : identité admin NOMMÉE obligatoire (action de modération).
+  const adminId = requireAdminIdentity(c);
   const id = c.req.param('id');
   const payload = (await c.req.json().catch(() => null)) as {
     action?: unknown;
@@ -459,13 +513,13 @@ adminRoutes.post('/reports/:id/resolve', async (c) => {
     .first<{ id: string; reported_id: string }>();
   if (!row) return c.json({ error: { code: 'not_found', message: 'Signalement introuvable ou déjà résolu.' } }, 404);
 
-  const outcome = await applySanction(c, row.reported_id, action as SanctionAction, note, days);
+  const outcome = await applySanction(c, adminId, row.reported_id, action as SanctionAction, note, days);
   await c.env.DB.prepare(
-    `UPDATE reports SET status = 'reviewed', resolution = ?, resolved_at = ?, resolved_by = 'token' WHERE id = ?`,
+    `UPDATE reports SET status = 'reviewed', resolution = ?, resolved_at = ?, resolved_by = ? WHERE id = ?`,
   )
-    .bind(`${outcome}${note ? ` — ${note}` : ''}`, Math.floor(Date.now() / 1000), id)
+    .bind(`${outcome}${note ? ` — ${note}` : ''}`, Math.floor(Date.now() / 1000), adminId, id)
     .run();
-  await audit(c, `report_${outcome}`, row.reported_id, id, note);
+  await audit(c, adminId, `report_${outcome}`, row.reported_id, id, note);
   const body: AdminActionResponse = { ok: true, action: outcome, note: `Signalement résolu (${outcome}).` };
   return c.json(body);
 });
@@ -512,6 +566,8 @@ adminRoutes.get('/flags', async (c) => {
 });
 
 adminRoutes.post('/flags/:id/resolve', async (c) => {
+  // P0 : identité admin NOMMÉE obligatoire (action de modération).
+  const adminId = requireAdminIdentity(c);
   const id = c.req.param('id');
   const payload = (await c.req.json().catch(() => null)) as {
     action?: unknown;
@@ -532,13 +588,13 @@ adminRoutes.post('/flags/:id/resolve', async (c) => {
     .first<{ id: string; sender: string }>();
   if (!row) return c.json({ error: { code: 'not_found', message: 'Flag introuvable ou déjà résolu.' } }, 404);
 
-  const outcome = await applySanction(c, row.sender, action as SanctionAction, note, days);
+  const outcome = await applySanction(c, adminId, row.sender, action as SanctionAction, note, days);
   await c.env.DB.prepare(
-    `UPDATE moderation_flags SET status = 'resolved', resolution = ?, resolved_at = ?, resolved_by = 'token' WHERE id = ?`,
+    `UPDATE moderation_flags SET status = 'resolved', resolution = ?, resolved_at = ?, resolved_by = ? WHERE id = ?`,
   )
-    .bind(outcome, Math.floor(Date.now() / 1000), id)
+    .bind(outcome, Math.floor(Date.now() / 1000), adminId, id)
     .run();
-  await audit(c, `flag_${outcome}`, row.sender, id, note);
+  await audit(c, adminId, `flag_${outcome}`, row.sender, id, note);
   const body: AdminActionResponse = { ok: true, action: outcome, note: `Flag résolu (${outcome}).` };
   return c.json(body);
 });
@@ -571,6 +627,8 @@ adminRoutes.get('/checkins', async (c) => {
 });
 
 adminRoutes.post('/checkins/:id/resolve', async (c) => {
+  // P0 : identité admin NOMMÉE obligatoire (action de modération).
+  const adminId = requireAdminIdentity(c);
   const id = c.req.param('id');
   const payload = (await c.req.json().catch(() => null)) as { action?: unknown; note?: unknown } | null;
   const action = typeof payload?.action === 'string' ? payload.action : '';
@@ -587,12 +645,12 @@ adminRoutes.post('/checkins/:id/resolve', async (c) => {
 
   let outcome = 'contact';
   if (action !== 'contact') {
-    outcome = await applySanction(c, row.user_id, action as SanctionAction, note, 7);
+    outcome = await applySanction(c, adminId, row.user_id, action as SanctionAction, note, 7);
   }
   await c.env.DB.prepare(`UPDATE safety_checkins SET status = 'ok', updated_at = ? WHERE id = ?`)
     .bind(Math.floor(Date.now() / 1000), id)
     .run();
-  await audit(c, `checkin_${outcome}`, row.user_id, id, note);
+  await audit(c, adminId, `checkin_${outcome}`, row.user_id, id, note);
   const body: AdminActionResponse = { ok: true, action: outcome, note: 'Check-in traité.' };
   return c.json(body);
 });
@@ -646,7 +704,7 @@ adminRoutes.post('/2fa/setup', async (c) => {
   const secret = generateTotpSecret();
   const cfg: TotpConfig = { secret, enabled: false, createdAt: Math.floor(Date.now() / 1000) };
   await c.env.CONFIG.put(TOTP_KV_KEY, JSON.stringify(cfg));
-  await audit(c, 'totp_setup', null, null, null);
+  await audit(c, adminIdentity(c) ?? 'token', 'totp_setup', null, null, null);
   return c.json({ ok: true, secret, otpauthUri: otpauthUri(secret), note: 'Importe ce secret dans ton app authenticator puis active avec un code.' });
 });
 
@@ -659,7 +717,7 @@ adminRoutes.post('/2fa/activate', async (c) => {
     return c.json({ error: { code: 'bad_request', message: 'Code TOTP invalide.' } }, 400);
   }
   await c.env.CONFIG.put(TOTP_KV_KEY, JSON.stringify({ ...cfg, enabled: true }));
-  await audit(c, 'totp_activate', null, null, null);
+  await audit(c, adminIdentity(c) ?? 'token', 'totp_activate', null, null, null);
   const body: AdminActionResponse = { ok: true, action: 'totp_activate', note: '2FA active — ajoute l’en-tête X-Admin-TOTP à chaque appel admin.' };
   return c.json(body);
 });
@@ -676,7 +734,7 @@ adminRoutes.post('/2fa/disable', async (c) => {
     }
   }
   await c.env.CONFIG.delete(TOTP_KV_KEY);
-  await audit(c, 'totp_disable', null, null, null);
+  await audit(c, adminIdentity(c) ?? 'token', 'totp_disable', null, null, null);
   const body: AdminActionResponse = { ok: true, action: 'totp_disable', note: '2FA désactivée.' };
   return c.json(body);
 });
@@ -733,7 +791,94 @@ adminRoutes.post('/push/send', async (c) => {
     kind: 'news',
     // Task 62 : les annonces officielles respectent le toggle « Infos wairyu »
   });
-  await audit(c, 'push_send', userId, null, `sent=${sent} title="${title}"`);
+  await audit(c, adminIdentity(c) ?? 'token', 'push_send', userId, null, `sent=${sent} title="${title}"`);
   const body: AdminPushSendResponse = { ok: sent > 0, sent };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// P0 — Recours (chantier D) : POST /admin/appeals/:id/review
+// { decision: 'upheld' | 'overturned', note? }
+// reviewed_by = identité admin NOMMÉE (jamais 'token') + audit_admin dédié.
+// overturned → sanction 'lifted' + débannissement du titulaire SAUF si une
+// AUTRE sanction active de type 'ban' porte encore contre lui.
+// ---------------------------------------------------------------------------
+
+adminRoutes.post('/appeals/:id/review', async (c) => {
+  const adminId = requireAdminIdentity(c);
+  const payload = (await c.req.json().catch(() => null)) as { decision?: unknown; note?: unknown } | null;
+  const decision = payload?.decision === 'upheld' || payload?.decision === 'overturned' ? payload.decision : null;
+  const note = typeof payload?.note === 'string' ? payload.note.slice(0, 500) : null;
+  if (!decision) {
+    return c.json({ error: { code: 'bad_request', message: 'decision invalide (upheld|overturned).' } }, 400);
+  }
+
+  const row = await c.env.DB.prepare(
+    `SELECT a.id, a.sanction_id, a.user_id, a.status AS appeal_status,
+            s.status AS sanction_status, s.type AS sanction_type
+     FROM sanctions_appeals a JOIN sanctions s ON s.id = a.sanction_id
+     WHERE a.id = ? LIMIT 1`,
+  )
+    .bind(c.req.param('id'))
+    .first<{
+      id: string;
+      sanction_id: string;
+      user_id: string;
+      appeal_status: string;
+      sanction_status: string;
+      sanction_type: string;
+    }>();
+  if (!row) return c.json({ error: { code: 'not_found', message: 'Recours introuvable.' } }, 404);
+  if (row.appeal_status !== 'pending') {
+    return c.json({ error: { code: 'bad_request', message: 'Recours déjà examiné.' } }, 400);
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const stmts: D1PreparedStatement[] = [
+    c.env.DB.prepare(
+      `UPDATE sanctions_appeals SET status = ?, reviewed_by = ?, reviewed_at = ? WHERE id = ?`,
+    ).bind(decision, adminId, now, row.id),
+  ];
+  let userUnbanned = false;
+  if (decision === 'overturned') {
+    // Levée de la sanction (la ligne reste : trace complète, jamais effacée).
+    stmts.push(
+      c.env.DB.prepare(`UPDATE sanctions SET status = 'lifted' WHERE id = ? AND status = 'active'`).bind(row.sanction_id),
+    );
+    // Débannit SEULEMENT si aucune autre sanction active de type 'ban' ne porte.
+    const otherBans = await c.env.DB.prepare(
+      `SELECT COUNT(*) AS n FROM sanctions
+       WHERE user_id = ? AND id != ? AND type = 'ban' AND status = 'active'`,
+    )
+      .bind(row.user_id, row.sanction_id)
+      .first<{ n: number }>();
+    if ((otherBans?.n ?? 0) === 0) {
+      stmts.push(
+        c.env.DB.prepare(
+          `UPDATE users SET status = 'active', suspended_until = NULL, updated_at = ? WHERE id = ? AND status = 'banned'`,
+        ).bind(now, row.user_id),
+      );
+      userUnbanned = true;
+    }
+  }
+  await c.env.DB.batch(stmts);
+  await audit(
+    c,
+    adminId,
+    `appeal_${decision}`,
+    row.user_id,
+    row.id,
+    JSON.stringify({ sanctionId: row.sanction_id, sanctionType: row.sanction_type, userUnbanned, note }),
+  );
+  const body: AdminActionResponse = {
+    ok: true,
+    action: `appeal_${decision}`,
+    note:
+      decision === 'overturned'
+        ? userUnbanned
+          ? 'Recours accepté — sanction levée, compte réactivé.'
+          : 'Recours accepté — sanction levée (un autre ban actif est conservé).'
+        : 'Recours rejeté — sanction maintenue.',
+  };
   return c.json(body);
 });

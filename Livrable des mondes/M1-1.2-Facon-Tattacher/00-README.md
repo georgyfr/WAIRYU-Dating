@@ -52,3 +52,16 @@ fins (signatures) opèrent au Portrait M1 (étage 3), jamais dans le miroir de q
 - **Décisions comité appliquées (FM-019)** : seuils et fenêtres proposés ADOPTÉS comme valeurs de
   départ — provisoire concepteur — re-signature professionnelle avant bêta · run max 4 borné
   ACCEPTÉ (note bêta : biais d'accordement) · c2 sans-objet : reste en attente.
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concept public** : la **théorie de l'attachement** — les styles sécurisé · anxieux ·
+  évitant (et leurs combinations), issus de l'observation de la régulation de la proximité.
+- **Références** : **Bowlby** (théorie de l'attachement) ; **Ainsworth** (typologie de la
+  base de sécurité) ; l'opérationnalisation adulte **ECR-R** — Experiences in Close
+  Relationships (**Fraley**, Waller & Brennan), dont le questionnaire de la quête
+  s'inspire structurellement.
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs et les acronymes sont INTERDITS au
+  rendu (05, 07, cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers
+  moteur. Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8,
+  audit — en attente de tranchage comité).

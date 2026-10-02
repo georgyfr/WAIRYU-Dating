@@ -108,3 +108,12 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q6.2-05 aux 5 canaux (champs V13).
 7. `07-miroir.md` — 3 profils respectés (240-260 mots).
 8. `cartes.yaml` — 3 variantes de carte (étage 2 de « Ta Carte Intime »).
+
+## Point comité ouvert (Q8 — audit) : divergence de doctrine de citation
+
+La présente quête porte la **charte TEMPÉRATURE** (« zéro nom du construit, zéro dérivé,
+zéro auteur » — 07-miroir §en-tête) : contrairement au pattern majoritaire harmonisé
+« cadrage moteur avec noms d'auteurs + verrou rendu » (précédents 5.1/5.2/5.6/5.7/3.1/8.1),
+aucun auteur n'est cité MÊME côté moteur. La divergence persiste — **EN ATTENTE DE
+TRANCHAGE COMITÉ** (question Q8 de l'auditeur : harmonisation de la doctrine de citation).
+Consignée par la mission corrections P0 conception (bloc 7.3).

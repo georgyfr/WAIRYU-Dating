@@ -12,6 +12,7 @@
  */
 
 import type { QAnswers, QItem } from './matching';
+import { PSYCHOMETRY } from './constants';
 
 // ---------------------------------------------------------------------------
 // Types & catalogue
@@ -326,7 +327,8 @@ const RULES: Rule[] = [
 ];
 
 /** Seuil de fiabilité : au moins 10 des 12 réponses N1. */
-const N1_MIN_ANSWERS = 10;
+// Seuil depuis PSYCHOMETRY (B.5d — À VALIDER PAR LE COMITÉ, surcharge env).
+const N1_MIN_ANSWERS = PSYCHOMETRY.N1_MIN_ANSWERS;
 
 export interface PersonalityScore {
   id: ArchetypeId;

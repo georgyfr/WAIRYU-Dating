@@ -17,6 +17,13 @@
  * lancer le parcours social — le fournisseur ne crée jamais un compte sans
  * le consentement wairyu (Task 57 : Google GSI désactivé tant que les cases
  * ne sont pas cochées, message explicatif sur le bouton).
+ *
+ * P0 âge (33-c) : sur les écrans d'INSCRIPTION, la date de naissance validée
+ * (18 ans révolus) accompagne le départ OAuth — query `birthDate` de
+ * /auth/{provider}/start (validée tôt et embarquée dans le cookie d'état
+ * signé par l'API) et champ `birthDate` du POST /auth/google/idtoken (GSI).
+ * Absente (écrans de connexion) : AUCUN changement — l'API ne l'exige que
+ * à la création d'un compte.
  */
 import { useEffect, useRef, useState } from 'react';
 import { api } from './api';
@@ -58,6 +65,12 @@ interface SocialButtonsProps {
   /** true = le parcours social est bloqué (consentement manquant à l'inscription). */
   requireConsent?: boolean;
   onConsentBlocked?: () => void;
+  /**
+   * P0 âge (33-c) — date de naissance (AAAA-MM-JJ) validée côté écran
+   * d'inscription ; exigée par l'API à la CRÉATION du compte. Absente =
+   * connexion d'un compte existant (aucun changement de comportement).
+   */
+  birthDate?: string;
 }
 
 // Task 56-b : verrou anti double-appui (module-level, survit aux re-rendus).
@@ -105,11 +118,17 @@ function loadGsi(): Promise<GoogleIdApi | null> {
   return gsiPromise;
 }
 
-export function SocialButtons({ config, requireConsent, onConsentBlocked }: SocialButtonsProps) {
+export function SocialButtons({ config, requireConsent, onConsentBlocked, birthDate }: SocialButtonsProps) {
   const [gsiState, setGsiState] = useState<'loading' | 'ready' | 'failed'>('loading');
   const [error, setError] = useState<string | null>(null);
   const gsiRef = useRef<HTMLDivElement | null>(null);
   const failTimer = useRef<number | null>(null);
+  /** P0 âge : dernière birthDate lisible depuis le callback GSI (effet
+   * initialisé une seule fois — le ref évite toute capture périmée). */
+  const birthRef = useRef<string | undefined>(birthDate);
+  useEffect(() => {
+    birthRef.current = birthDate;
+  }, [birthDate]);
 
   function start(provider: 'google' | 'facebook') {
     if (requireConsent) {
@@ -122,14 +141,23 @@ export function SocialButtons({ config, requireConsent, onConsentBlocked }: Soci
       socialStartLock = false;
     }, 4000);
     // Parcours OAuth complet : redirection top-level vers le worker.
-    window.location.href = `/api/auth/${provider}/start`;
+    // P0 âge (33-c) : à l'INSCRIPTION, la birthDate validée part dans la
+    // query (l'API la valide tôt et l'embarque dans son cookie d'état) ;
+    // absente (connexion) → URL inchangée.
+    const qs = birthDate ? `?birthDate=${encodeURIComponent(birthDate)}` : '';
+    window.location.href = `/api/auth/${provider}/start${qs}`;
   }
 
   // Task 57 — bouton GSI natif (popup FedCM, zéro navigation hors de la page).
   async function handleCredential(credential: string) {
     setError(null);
     try {
-      await api('/api/auth/google/idtoken', { json: { credential } });
+      // P0 âge (33-c) : birthDate postée AVEC le credential à l'inscription
+      // (l'API l'exige si le compte n'existe pas encore) ; absente sinon.
+      const bd = birthRef.current;
+      await api('/api/auth/google/idtoken', {
+        json: { credential, ...(bd ? { birthDate: bd } : {}) },
+      });
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inattendue.');

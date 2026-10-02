@@ -2,10 +2,16 @@
  * Écran de vérification du code OTP (Étape 2).
  * Saisie numérique unique (clavier mobile), auto-soumission à 6 chiffres,
  * minuteur de renvoi (60 s), affichage du code en mode dev (staging).
+ * P0 âge (33-c) : la birthDate d'INSCRIPTION voyage avec le code (paramètre
+ * « b » posé par l'écran d'inscription) et part dans le POST /otp/verify —
+ * l'API l'exige à la création du compte ; absente (connexion d'un compte
+ * existant) rien ne change, et si l'API la réclame (400), un champ date
+ * apparait proprement pour compléter l'inscription.
  */
 import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { takeOtpRelay, clearOtpRelay } from '../lib/otpRelay'; // Task 78 : relais du code quand l'écran n'était pas encore ouvert
+import { BIRTH_MIN, birthDateMax, estMajeur } from '../lib/age';
 import type { OtpRequestResponse, OtpVerifyResponse } from '@wairyu/shared';
 
 const RESEND_SECONDS = 60;
@@ -13,6 +19,8 @@ const RESEND_SECONDS = 60;
 interface Props {
   email: string;
   devCode?: string;
+  /** Date de naissance collectée à l'inscription (envoyée à la création du compte). */
+  birthDate?: string;
   /** Appelé quand la session est créée — le parent recharge /api/me puis navigue. */
   onAuthenticated: () => void;
   /**
@@ -25,12 +33,18 @@ interface Props {
   backTo?: string;
 }
 
-export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated, backTo = '#/login' }: Props) {
+export function Verify({ email, devCode, birthDate, onAuthenticated, onBeforeAuthenticated, backTo = '#/login' }: Props) {
   const [code, setCode] = useState(devCode ?? '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(devCode ? 0 : RESEND_SECONDS);
   const inputRef = useRef<HTMLInputElement>(null);
+  // P0 âge — si l'API réclame la date de naissance (inscription d'un compte
+  // nouveau engagée sans elle, ex. depuis l'écran de connexion), le champ
+  // apparait ici ; la vérification repart avec la date complétée.
+  const [needBirth, setNeedBirth] = useState(false);
+  const [extraBirth, setExtraBirth] = useState('');
+  const birthEffective = birthDate || (estMajeur(extraBirth) ? extraBirth : undefined);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -124,7 +138,13 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
     setError(null);
     try {
       await api<OtpVerifyResponse>('/api/auth/otp/verify', {
-        json: { email, code: value },
+        json: {
+          email,
+          code: value,
+          // P0 âge (33-c) : exigée par l'API à la CRÉATION du compte —
+          // ignorée sans conséquence pour une simple connexion.
+          ...(birthEffective ? { birthDate: birthEffective } : {}),
+        },
       });
       if (onBeforeAuthenticated) await onBeforeAuthenticated();
       onAuthenticated();
@@ -132,6 +152,11 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
       if (err instanceof ApiError && (err.code === 'otp_invalid' || err.code === 'otp_expired' || err.code === 'otp_locked')) {
         setCode('');
         inputRef.current?.focus();
+      }
+      // 400 « Date de naissance requise… » → champ date inline (mineur →
+      // 403 générique affiché tel quel, aucun compte créé).
+      if (err instanceof ApiError && err.status === 400 && /date de naissance/i.test(err.message)) {
+        setNeedBirth(true);
       }
       setError(err instanceof Error ? err.message : 'Erreur inattendue.');
       setBusy(false);
@@ -188,6 +213,25 @@ export function Verify({ email, devCode, onAuthenticated, onBeforeAuthenticated,
           onChange={(e) => onChange(e.target.value)}
           aria-label="Code à 6 chiffres"
         />
+
+        {needBirth && (
+          <label className="field">
+            <span>Date de naissance (première inscription)</span>
+            <input
+              type="date"
+              name="birthDate"
+              autoComplete="bday"
+              required
+              min={BIRTH_MIN}
+              max={birthDateMax()}
+              value={extraBirth}
+              onChange={(e) => {
+                setExtraBirth(e.target.value);
+                setError(null);
+              }}
+            />
+          </label>
+        )}
 
         {devCode && (
           <p className="devcode">

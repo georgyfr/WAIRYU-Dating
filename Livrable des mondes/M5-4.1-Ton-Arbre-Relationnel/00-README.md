@@ -30,3 +30,16 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q4.1-01 aux 5 canaux.
 7. `07-miroir.md` — 5 profils respectés (4 quadrants + central), gabarit MOYEN.
 8. `cartes.yaml` — 5 variantes de carte (étage 1, charte C1-C11).
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concepts publics** : la **théorie des systèmes familiaux** (différenciation de soi,
+  triangles relationnels, transmission multigénérationnelle — le génogramme comme outil de
+  lecture) ; la **loyauté familiale** et le bilan de mérite (le « livre de comptes »
+  relationnel) de la thérapie contextuelle.
+- **Références** : **Bowen** (systèmes familiaux) ; **Boszormenyi-Nagy** (thérapie
+  contextuelle, loyautés invisibles).
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs sont INTERDITS au rendu (05, 07,
+  cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers moteur.
+  Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit —
+  en attente de tranchage comité).

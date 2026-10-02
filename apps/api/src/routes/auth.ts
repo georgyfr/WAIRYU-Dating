@@ -14,6 +14,8 @@ import { Hono } from 'hono';
 import type { Context } from 'hono';
 import type { AppEnv } from '../env';
 import { errors, AppError } from '../lib/errors';
+// P0 âge — validateur strict unique (inscriptions + profil), chemin mineur 403.
+import { MinorAgeError, validateBirthDateISO } from '../lib/age';
 import {
   OTP,
   AppErrorOtpExpired,
@@ -62,6 +64,7 @@ import {
 import { signValue, verifySignature } from '../lib/session';
 import { isProfileComplete } from '../lib/profile';
 import { destroyAuthenticatedAsset } from '../lib/cloudinary';
+import { CHAT } from '@wairyu/shared';
 import type {
   AccountExport,
   AuthConfigResponse,
@@ -89,6 +92,54 @@ async function bumpMetric(db: D1Database, metric: string): Promise<void> {
     )
     .bind(day, metric)
     .run();
+}
+
+/**
+ * P0 âge — consigne un refus d'inscription SANS donnée personnelle en clair :
+ * l'identifiant (email ou pseudo) n'apparaît que HACHÉ dans target_id, le
+ * flux dans details_json. action = 'signup_minor_refused' (re-audit finding
+ * « 0 minor handling »).
+ */
+async function auditMinorRefused(
+  db: D1Database,
+  flow: 'otp' | 'oauth_google' | 'oauth_facebook' | 'password',
+  identifierHash: string | null,
+  stage: 'signup' | 'oauth_start',
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
+       VALUES ('system', 'signup_minor_refused', NULL, ?, ?, ?)`,
+    )
+    .bind(identifierHash, JSON.stringify({ flow, stage }), Math.floor(Date.now() / 1000))
+    .run();
+}
+
+/**
+ * P0 âge — TOUTE INSCRIPTION exige une date de naissance majeure, validée
+ * AVANT tout INSERT users (re-audit : 3 INSERT sans birth_date/birth_year).
+ *  - absent/vide → 400 (avant TOUT écriture) ;
+ *  - format/date impossible → 400 (lib/age.ts) ;
+ *  - âge < 18 ans → AUCUN compte créé : audit_admin 'signup_minor_refused'
+ *    (hash de l'identifiant) puis MinorAgeError = 403 générique.
+ */
+async function requireAdultBirthDate(
+  db: D1Database,
+  raw: unknown,
+  flow: 'otp' | 'oauth_google' | 'oauth_facebook' | 'password',
+  identifierHash: string | null,
+): Promise<{ birthYear: number; birthDate: string }> {
+  if (typeof raw !== 'string' || !raw.trim()) {
+    throw errors.badRequest('Date de naissance requise pour créer un compte wairyu.');
+  }
+  try {
+    return validateBirthDateISO(raw);
+  } catch (err) {
+    if (err instanceof MinorAgeError) {
+      await auditMinorRefused(db, flow, identifierHash, 'signup');
+    }
+    throw err;
+  }
 }
 
 function ipHash(c: Context<AppEnv>): Promise<string> {
@@ -228,6 +279,8 @@ authRoutes.post('/auth/otp/verify', async (c) => {
   const payload = await c.req.json().catch(() => null);
   const email = normalizeEmail((payload as { email?: unknown } | null)?.email);
   const code = (payload as { code?: unknown } | null)?.code;
+  // P0 âge : exigé UNIQUEMENT à l'INSCRIPTION (compte inexistant) — voir plus bas.
+  const rawBirthDate = (payload as { birthDate?: unknown } | null)?.birthDate;
   if (!email) throw errors.badRequest('Adresse email invalide.');
   if (typeof code !== 'string' || !/^\d{6}$/.test(code)) {
     throw errors.badRequest('Le code doit contenir 6 chiffres.');
@@ -305,12 +358,15 @@ authRoutes.post('/auth/otp/verify', async (c) => {
         .run();
     }
   } else {
+    // P0 âge : inscription → date de naissance EXIGÉE et validée AVANT
+    // l'INSERT (18 ans révolus ; mineur → AUCUN compte, audit, 403).
+    const birth = await requireAdultBirthDate(c.env.DB, rawBirthDate, 'otp', emailHash);
     userId = crypto.randomUUID();
     await c.env.DB.prepare(
-      `INSERT INTO users (id, email, email_verified_at, status, plan, created_at, updated_at)
-       VALUES (?, ?, ?, 'active', 'free', ?, ?)`,
+      `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 'active', 'free', ?, ?)`,
     )
-      .bind(userId, email, now, now, now)
+      .bind(userId, email, now, birth.birthYear, birth.birthDate, now, now)
       .run();
     wasCreated = true;
   }
@@ -335,6 +391,8 @@ interface OAuthStatePayload {
   /** PKCE verifier — Google uniquement (Meta ne supporte pas PKCE pour le web). */
   verifier?: string;
   exp: number;
+  /** P0 âge — date de naissance déclarée au /start (inscriptions OAuth uniquement). */
+  birth?: string;
 }
 
 const OAUTH_STATE_TTL_SECONDS = 600;
@@ -345,6 +403,29 @@ function oauthCookieName(provider: string): string {
 
 function oauthCookiePath(provider: string): string {
   return `/api/auth/${provider}`;
+}
+
+/**
+ * P0 âge — /auth/{google,facebook}/start : la date de naissance (si le front
+ * en fournit une) est validée TÔT et voyage dans le cookie d'état signé.
+ * Un compte EXISTANT se connecte sans (l'exigence ne frappe que l'INSERT).
+ * Mineur à ce stade → audit (stage 'oauth_start', aucun email connu) + 403.
+ */
+async function oauthStartBirthDate(
+  db: D1Database,
+  raw: string | undefined,
+  flow: 'oauth_google' | 'oauth_facebook',
+): Promise<string | undefined> {
+  if (!raw) return undefined;
+  try {
+    validateBirthDateISO(raw);
+    return raw;
+  } catch (err) {
+    if (err instanceof MinorAgeError) {
+      await auditMinorRefused(db, flow, null, 'oauth_start');
+    }
+    throw err;
+  }
 }
 
 /** Cookie d'état signé (HMAC) : anti-CSRF + porteur du verifier PKCE (Google). */
@@ -453,6 +534,7 @@ async function resolveOrCreateOAuthUser(
   db: D1Database,
   provider: 'google' | 'facebook',
   profile: { id: string; email: string; name?: string },
+  birthRaw: unknown,
 ): Promise<{ userId: string; created: boolean }> {
   const now = Math.floor(Date.now() / 1000);
   const existing = await db
@@ -468,13 +550,21 @@ async function resolveOrCreateOAuthUser(
   if (existing) {
     userId = existing.id;
   } else {
+    // P0 âge : inscription → date de naissance EXIGÉE (cookie d'état OAuth ou
+    // body GSI) et validée AVANT l'INSERT ; mineur → AUCUN compte (audit+403).
+    const birth = await requireAdultBirthDate(
+      db,
+      birthRaw,
+      provider === 'google' ? 'oauth_google' : 'oauth_facebook',
+      await sha256Hex(profile.email),
+    );
     userId = crypto.randomUUID();
     await db
       .prepare(
-        `INSERT INTO users (id, email, email_verified_at, display_name, status, plan, created_at, updated_at)
-         VALUES (?, ?, ?, ?, 'active', 'free', ?, ?)`,
+        `INSERT INTO users (id, email, email_verified_at, display_name, birth_year, birth_date, status, plan, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, 'active', 'free', ?, ?)`,
       )
-      .bind(userId, profile.email, now, profile.name?.slice(0, 40) ?? null, now, now)
+      .bind(userId, profile.email, now, profile.name?.slice(0, 40) ?? null, birth.birthYear, birth.birthDate, now, now)
       .run();
     created = true;
   }
@@ -502,10 +592,13 @@ authRoutes.get('/auth/google/start', async (c) => {
   const { verifier, challenge } = await generatePkce();
   const state = crypto.randomUUID();
   const redirectUri = new URL(c.req.url).origin + '/api/auth/google/callback';
+  // P0 âge : date de naissance (si fournie) validée tôt et embarquée dans l'état.
+  const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate'), 'oauth_google');
   await setOAuthStateCookie(c, 'google', {
     state,
     verifier,
     exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+    ...(birth ? { birth } : {}),
   });
   return c.redirect(buildAuthorizeUrl(env, redirectUri, state, challenge), 302);
 });
@@ -544,7 +637,8 @@ authRoutes.get('/auth/google/callback', async (c) => {
       id: profile.sub,
       email,
       name: profile.name,
-    });
+      // P0 âge : la date vient du cookie d'état (absent → 400 avant INSERT).
+    }, state.birth);
     await createSession(c, userId);
     if (created) await bumpMetric(c.env.DB, 'signup_completed');
     await bumpMetric(c.env.DB, 'login_google');
@@ -568,9 +662,12 @@ authRoutes.get('/auth/facebook/start', async (c) => {
   }
   const state = crypto.randomUUID();
   const redirectUri = new URL(c.req.url).origin + '/api/auth/facebook/callback';
+  // P0 âge : date de naissance (si fournie) validée tôt et embarquée dans l'état.
+  const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate'), 'oauth_facebook');
   await setOAuthStateCookie(c, 'facebook', {
     state,
     exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+    ...(birth ? { birth } : {}),
   });
   return c.redirect(buildFacebookAuthorizeUrl(env, redirectUri, state), 302);
 });
@@ -615,7 +712,8 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
       id: profile.id,
       email,
       name: profile.name,
-    });
+      // P0 âge : la date vient du cookie d'état (absent → 400 avant INSERT).
+    }, state.birth);
     await createSession(c, userId);
     if (created) await bumpMetric(c.env.DB, 'signup_completed');
     await bumpMetric(c.env.DB, 'login_facebook');
@@ -822,6 +920,35 @@ authRoutes.get('/me', async (c) => {
 // ---------------------------------------------------------------------------
 // RGPD — droit d'accès : GET /api/account/export (JSON téléchargeable)
 // ---------------------------------------------------------------------------
+/**
+ * P0 RGPD — export prolongé (re-audit finding : note « étapes 4-6 » jamais
+ * livrée). packages/shared est hors périmètre : la structure AccountExport
+ * est CONSERVÉE et prolongée par une intersection locale, sans la modifier.
+ * Conformité : droit d'accès (art. 15) + portabilité (art. 20) — l'ensemble
+ * des données personnelles traitées est couvert, en JSON structuré.
+ */
+type AccountExportFull = AccountExport & {
+  questionnaire: {
+    answers: Record<string, unknown>[];
+    doctrineAnswers: Record<string, unknown>[] | null;
+    doctrineNote: string;
+  };
+  conversations: {
+    total: number;
+    messages: Record<string, unknown>[];
+    voiceNotes: Record<string, unknown>[];
+    note: string;
+  };
+  safety: {
+    reportsEmitted: Record<string, unknown>[];
+    reportsReceived: Record<string, unknown>[];
+    sanctions: Record<string, unknown>[];
+    appeals: Record<string, unknown>[];
+  };
+  sessionsRecent: Record<string, unknown>[];
+  consents: Record<string, unknown>;
+};
+
 authRoutes.get('/account/export', async (c) => {
   const session = await requireAuth(c);
   const user = await c.env.DB.prepare(`SELECT * FROM users WHERE id = ? LIMIT 1`)
@@ -857,7 +984,129 @@ authRoutes.get('/account/export', async (c) => {
       .first(),
   ]);
 
-  const body: AccountExport = {
+  // ---- P0 RGPD : réponses questionnaire (0009) + banque doctrine (tolérante) ----
+  const qAnswers = await c.env.DB.prepare(
+    `SELECT qa.item_id, qa.value_json, qa.updated_at, qi.prompt, qi.dimension
+     FROM q_answers qa LEFT JOIN q_items qi ON qi.id = qa.item_id
+     WHERE qa.user_id = ? ORDER BY qa.updated_at ASC`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+
+  // Table q_doctrine_answers posée par un chantier PARALLÈLE (migrations
+  // 0021/0022) : requête tolérante — l'export ne doit JAMAIS échouer parce
+  // qu'une table n'est pas encore déployée sur l'environnement.
+  let doctrineAnswers: Record<string, unknown>[] | null = null;
+  let doctrineNote = 'Aucune donnée de banque doctrine pour ce compte.';
+  try {
+    const r = await c.env.DB.prepare(
+      `SELECT * FROM q_doctrine_answers WHERE user_id = ? ORDER BY updated_at ASC LIMIT 500`,
+    )
+      .bind(session.userId)
+      .all<Record<string, unknown>>();
+    doctrineAnswers = r.results ?? [];
+  } catch {
+    doctrineNote = 'Section doctrine indisponible (table non déployée sur cet environnement).';
+  }
+
+  // ---- P0 RGPD : messages (1 DO par conversation) — plafonnés aux 1000 plus récents ----
+  const MESSAGE_EXPORT_CAP = 1000;
+  const convRows = await c.env.DB.prepare(
+    `SELECT c.id FROM conversations c JOIN matches m ON m.id = c.match_id
+     WHERE m.user_a_id = ? OR m.user_b_id = ?
+     ORDER BY c.created_at DESC LIMIT 50`,
+  )
+    .bind(session.userId, session.userId)
+    .all<{ id: string }>();
+  const messages: Record<string, unknown>[] = [];
+  const voiceNotes: Record<string, unknown>[] = [];
+  for (const conv of convRows.results ?? []) {
+    if (messages.length >= MESSAGE_EXPORT_CAP) break;
+    const res = await c.env.CHAT_ROOM
+      .get(c.env.CHAT_ROOM.idFromName(conv.id))
+      .fetch(new Request(`https://do/history?userId=${session.userId}&limit=${CHAT.historyPageSize}`))
+      .catch(() => null);
+    if (!res?.ok) continue;
+    const data = (await res.json().catch(() => null)) as {
+      messages?: {
+        seq: number;
+        senderId: string;
+        kind: string;
+        body: string;
+        durationMs: number | null;
+        createdAt: number;
+      }[];
+    } | null;
+    for (const m of data?.messages ?? []) {
+      if (messages.length >= MESSAGE_EXPORT_CAP) break;
+      messages.push({
+        conversationId: conv.id,
+        seq: m.seq,
+        sender: m.senderId,
+        kind: m.kind,
+        createdAt: m.createdAt,
+        // Voice : le body est un publicId Cloudinary (sans valeur pour la
+        // personne) — seules les MÉTADONNÉES sont exportées (minimisation).
+        ...(m.kind === 'text' ? { text: m.body } : {}),
+        ...(m.kind === 'voice' ? { durationMs: m.durationMs } : {}),
+      });
+      if (m.kind === 'voice') {
+        voiceNotes.push({
+          conversationId: conv.id,
+          seq: m.seq,
+          durationMs: m.durationMs,
+          createdAt: m.createdAt,
+        });
+      }
+    }
+  }
+
+  // ---- P0 RGPD : sécurité — signalements émis/reçus, sanctions, recours ----
+  const reportsEmitted = await c.env.DB.prepare(
+    `SELECT id, category, details, status, resolution, created_at
+     FROM reports WHERE reporter_id = ? ORDER BY created_at DESC LIMIT 200`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+  const reportsReceived = await c.env.DB.prepare(
+    `SELECT id, category, status, resolution, created_at
+     FROM reports WHERE reported_id = ? ORDER BY created_at DESC LIMIT 200`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+  const sanctions = await c.env.DB.prepare(
+    `SELECT id, type, reason, status, created_by, created_at, expires_at
+     FROM sanctions WHERE user_id = ? ORDER BY created_at DESC`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+  const appeals = await c.env.DB.prepare(
+    `SELECT id, sanction_id, message, status, reviewed_by, reviewed_at, created_at
+     FROM sanctions_appeals WHERE user_id = ? ORDER BY created_at DESC`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? [])
+    .catch(() => [] as Record<string, unknown>[]);
+
+  // ---- P0 RGPD : sessions récentes + consentements ----
+  const sessionsRecent = await c.env.DB.prepare(
+    `SELECT created_at, last_seen_at, expires_at, revoked_at
+     FROM sessions WHERE user_id = ? ORDER BY created_at DESC LIMIT 20`,
+  )
+    .bind(session.userId)
+    .all<Record<string, unknown>>()
+    .then((r) => r.results ?? []);
+
+  const body: AccountExportFull = {
     exportedAt: new Date().toISOString(),
     format: 'wairyu-export-v1',
     user: user ?? {},
@@ -868,8 +1117,32 @@ authRoutes.get('/account/export', async (c) => {
       preferences: prefs ?? null,
       note: 'Les photos elles-mêmes sont hébergées chez Cloudinary (assets privés) ; leurs métadonnées sont ci-dessus.',
     },
+    questionnaire: {
+      answers: qAnswers,
+      doctrineAnswers,
+      doctrineNote,
+    },
+    conversations: {
+      total: convRows.results?.length ?? 0,
+      messages,
+      voiceNotes,
+      note: `Plafonné aux ${MESSAGE_EXPORT_CAP} messages les plus récents (${CHAT.historyPageSize} par conversation, ${convRows.results?.length ?? 0} conversations les plus récentes). Les notes vocales ne figurent qu\u2019en métadonnées — les fichiers audio restent des assets Cloudinary authentifiés.`,
+    },
+    safety: {
+      reportsEmitted,
+      reportsReceived,
+      sanctions,
+      appeals,
+    },
+    sessionsRecent,
+    consents: {
+      profile_consent_at: user['profile_consent_at'] ?? null,
+      email_verified_at: user['email_verified_at'] ?? null,
+      birth_date_declared: user['birth_date'] ?? null,
+      note: 'Consentements et déclarations horodatées (confidentialité v1 — plan 7.7).',
+    },
     audit: {
-      note: 'Export RGPD (art. 15/20). Les réponses questionnaire/messages s\u2019ajouteront ici aux étapes 4-6.',
+      note: 'Export RGPD — droit d\u2019accès (art. 15) et portabilité (art. 20) : l\u2019intégralité des données personnelles traitées par wairyu est couverte ci-dessus (profil, questionnaire, doctrine, conversations, sécurité, sessions, consentements).',
     },
   };
   await bumpMetric(c.env.DB, 'gdpr_export');
@@ -943,7 +1216,7 @@ authRoutes.delete('/account', async (c) => {
 authRoutes.post('/auth/google/idtoken', async (c) => {
   const env = c.env;
   if (!googleConfigured(env)) throw errors.notFound();
-  const body = (await c.req.json().catch(() => null)) as { credential?: unknown } | null;
+  const body = (await c.req.json().catch(() => null)) as { credential?: unknown; birthDate?: unknown } | null;
   const credential = body?.credential;
   if (typeof credential !== 'string' || credential.length < 100) {
     throw errors.badRequest('Jeton Google manquant ou invalide. Réessaie.');
@@ -956,7 +1229,8 @@ authRoutes.post('/auth/google/idtoken', async (c) => {
       id: profile.sub,
       email,
       name: profile.name,
-    });
+      // P0 âge : le front GSI poste birthDate avec le credential (inscriptions).
+    }, body?.birthDate);
     await createSession(c, userId);
     if (created) await bumpMetric(c.env.DB, 'signup_completed');
     await bumpMetric(c.env.DB, 'login_google');
@@ -1049,6 +1323,16 @@ authRoutes.post('/auth/password/register', async (c) => {
   const taken = await findPasswordByUsername(c.env.DB, username);
   if (taken) throw errors.conflict('Ce pseudo est déjà pris. Choisis-en un autre.');
 
+  // P0 âge : date de naissance EXIGÉE et validée AVANT l'INSERT users
+  // (mineur → AUCUN compte, audit 'signup_minor_refused', 403 générique).
+  // Pas d'email réel dans ce flux : l'empreinte d'audit hache le pseudo canonique.
+  const birth = await requireAdultBirthDate(
+    c.env.DB,
+    payload?.birthDate,
+    'password',
+    await sha256Hex(`pw:${username}`),
+  );
+
   const now = Math.floor(Date.now() / 1000);
   const userId = crypto.randomUUID();
   const recoveryCode = generateRecoveryCode();
@@ -1056,10 +1340,10 @@ authRoutes.post('/auth/password/register', async (c) => {
   // users d'abord (email placeholder UNIQUE) — si auth_password échoue
   // (pseudo pris entre-temps), on nettoie : AUCUN compte orphelin.
   await c.env.DB.prepare(
-    `INSERT INTO users (id, email, email_verified_at, status, plan, created_at, updated_at)
-     VALUES (?, ?, NULL, 'active', 'free', ?, ?)`,
+    `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, created_at, updated_at)
+     VALUES (?, ?, NULL, ?, ?, 'active', 'free', ?, ?)`,
   )
-    .bind(userId, placeholderEmail(), now, now)
+    .bind(userId, placeholderEmail(), birth.birthYear, birth.birthDate, now, now)
     .run();
   try {
     await c.env.DB.prepare(

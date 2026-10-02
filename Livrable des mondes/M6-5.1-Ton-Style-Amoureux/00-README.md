@@ -62,3 +62,15 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q5.1-13 aux 5 canaux.
 7. `07-miroir.md` — 7 profils respectés (gabarit MOYEN 150-250 mots).
 8. `cartes.yaml` — 7 variantes de carte (étage 1, charte C1-C11).
+
+## Cadrage moteur (moteur seul — jamais au rendu) — finding B.4e (audit : claim non sourcé)
+
+- **Concepts publics** : les composantes de l'amour (intimité · passion · engagement) et la
+  distinction entre **amour passionnel** et **amour compagnonnique** — la « lenteur choisie »
+  de la quête s'ancre dans cette distinction (la passion monte vite, le lien se construit).
+- **Références** : **Sternberg** (théorie triangulaire de l'amour) ; **Berscheid**
+  (avec E. Hatfield/Walster — passionnel vs compagnonnique).
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs sont INTERDITS au rendu (05, 07,
+  cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers moteur.
+  Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit —
+  en attente de tranchage comité).

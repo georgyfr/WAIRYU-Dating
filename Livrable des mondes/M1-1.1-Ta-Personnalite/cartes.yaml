@@ -46,7 +46,7 @@ variantes:
     nom: "L'Explorateur·rice chaleureux·se"
     ordre_selecteur: 3
     condition: "O ≥ 0.65 ET A ≥ 0.60"
-    lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité n'est jamais froide — elle est chaleureuse, elle veut partager. Les gens se sentent bienvenus dans ton élan."
+    lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité est chaleureuse — elle veut partager. Les gens se sentent bienvenus dans ton élan."
     ombre: "Parfois, tu choisis le nouveau par peur que le même devienne l'ennui — et ce qui compte finit par attendre."
     tension_interieure: "vivre tout, sans blesser personne."
     mots_lumiere_ombre: 68
@@ -115,7 +115,6 @@ variantes:
 notes_conformite:
   - "Textes et sélecteurs verbatim du source gelé (fidélité [8]) — toute retouche passerait par une Fiche de Mutation."
   - "LONGUEURS (référentiel mis à jour — AUDIT VAGUE 5, 2026-09-29) : la charte des cartes C1-C11 (mission VAGUE 5) fixe la borne C7 à 55-110 mots — l'ancienne cible « 30-60 mots » est remplacée ; recompte machine (portrait+ombre+tension, tokens avec lettres) : V1 73 · V2 71 · V3 70 · V4 66 · V5 74 · V6 67 · V7 68 — 7/7 CONFORMES C7, les « dérives > 60 mots » de l'époque sont closes ; les champs mots_lumiere_ombre historiques (portée lumière+ombre, comptage v1) restent en l'état comme record"
-  - "« jamais » en absolu présent dans le texte verbatim de V1 (« Ta curiosité n'est jamais froide ») — descriptif, non horoscope (hors liste fermée C4 de la mission VAGUE 5 : « tu es unique », « tu mérites », « l'univers », superlatifs sans preuve) — conservé, arbitrage comité hérité maintenu"
   - "Ombres verbatim : l'ancrage explicite « en situation de couple » (Constitution [2]) n'est pas littéral dans toutes les variantes du source (ex. V6) — arbitrage comité, fidélité [8] maintenue."
   - "Les seuils des sélecteurs et l'ordre d'évaluation : ADOPTÉS comme valeurs de départ (décision comité, FM-019) — provisoire concepteur — re-signature professionnelle avant bêta."
   - "Aucun code, score ou sigle dans les textes de carte (Constitution [3]) — les variables O C E A S ne vivent que dans les sélecteurs, côté moteur."

@@ -316,9 +316,12 @@ items:
   # ─── ITEMS ▲ DE TRAME (DTM_N — déguisement « valeurs en creux ») ───
   # Indiscernables des items carte · jamais rappelés en toutes lettres ·
   # jamais adjacents à BE/UN/RE/PO dans le plan de mélange.
+  # Règle 11-b (brûlage) : les formulations sont retirées du dépôt — finding F.1
+  # (audit externe, corrections P0 conception). Le document trames confidentiel
+  # reste la source unique des énoncés, hors dépôt.
 
   - id: Q2.1-21
-    enonce: "Il est normal que mes besoins passent avant ceux des autres."
+    enonce: "[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"
     orientation: D
     dimension: null
     facette: "la hiérarchie des besoins"
@@ -332,7 +335,7 @@ items:
       ancrage: "rappel INTERDIT (trame sécurité invisible)"
 
   - id: Q2.1-22
-    enonce: "Ce que je reçois reste en dessous de ce qui m'est dû."
+    enonce: "[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"
     orientation: D
     dimension: null
     facette: "le bilan des acquis"
@@ -346,14 +349,15 @@ items:
       ancrage: "rappel INTERDIT (trame sécurité invisible)"
 
   - id: Q2.1-23
-    enonce: "Dans un groupe, ma place doit être reconnue avant celle des autres."
+    enonce: "[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"
     orientation: D
     dimension: null
     facette: "la place dans le groupe"
     paire_miroir: null
     signal: DTM_N
-    correction: "v2 (2026-09-28) — v1 « les décisions importantes me reviennent naturellement »
-                 contaminée lexicalement par Q2.1-09 (revue produit, FM-013)"
+    correction: "v2 (2026-09-28) — retrait de la formulation v1, contaminée lexicalement par
+                 Q2.1-09 (revue produit, FM-013) ; les formulations v1 et v2 sont retirées du
+                 dépôt — règle 11-b (finding F.1, audit externe)"
     computation:
       carte: null
       signal: "DTM_N (entitlement — droit à la place, jamais la décision)"
@@ -362,7 +366,7 @@ items:
       ancrage: "rappel INTERDIT (trame sécurité invisible)"
 
   - id: Q2.1-24
-    enonce: "Quand on me traite comme tout le monde, je me sens invisible."
+    enonce: "[TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.]"
     orientation: D
     dimension: null
     facette: "le traitement quotidien"

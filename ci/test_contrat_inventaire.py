@@ -39,7 +39,9 @@ INVARIANTS = {
     "items_total": 570,          # INCHANGÉ — matérialisation ≠ ajout d'items
     "trame_fiabilite": 30,
     "signatures_total": 35,      # 30 M1 (déclarées) + 1 M2 (SIG_CONTRIB) + 4 M3
-    "codes_signaux": 18,
+    "codes_signaux": 14,         # 13 gelés du dictionnaire [4] + DE (FM-019) — finding A.8 :
+                                 # le « 18 » historique comptait les alias SDT ; le comptage RÉEL
+                                 # de signaux.json est vérifié par CI-17
     "quetes_materialisees": 1,   # à ce jour : la quête 2.1
 }
 SIGNATURES_M1_DECLAREES = 30   # registre M1 : maison fichier en attente (Voie B)
@@ -63,7 +65,10 @@ LIBELLES_LIKERT5 = {
     5: "Tout à fait comme moi",
 }
 # FM-018 §3 : plus aucune formulation de trame en clair dans la CI — contrôle par empreinte sha256.
-Q23_V2_SHA256 = "65973af8d031aa3640eb37f035fd444357d243125d7e8486688b10b321304a6d"
+# FM-027 (finding F.1, 2026-10-01) : la formulation v2 elle-même est BRÛLÉE — l'empreinte
+# historique ci-dessous n'est plus un contrôle ; la garde verrouille désormais le PLACEHOLDER
+# officiel (ci/outils/garde_p0.py — source unique des libellés canoniques).
+Q23_V2_SHA256_HISTORIQUE = "65973af8d031aa3640eb37f035fd444357d243125d7e8486688b10b321304a6d"
 LEXIQUE_DECISION = {"decide", "decides", "decision", "decisions", "decider",
                     "trancher", "tranche", "dirige", "diriger", "direction"}
 
@@ -426,18 +431,23 @@ def ci09():
     return ligne[0], f"{ligne[1]} · {ids_sig}"
 
 
-@check("CI-10", "garde anti-régression Q2.1-23 v2 (contamination 09×23 — FM-013 §2)")
+@check("CI-10", "garde anti-régression DTM_N — placeholder officiel sur les 4 trames (FM-027 · finding F.1)")
 def ci10():
     doc = charger_yaml("contenu/mondes/M3-boussole/2.1-valeurs/items.yaml")
-    it23 = next(it for it in doc["items"] if it["id"] == "Q2.1-23")
-    it09 = next(it for it in doc["items"] if it["id"] == "Q2.1-09")
-    exact = hashlib.sha256(it23["enonce"].encode("utf-8")).hexdigest() == Q23_V2_SHA256
-    tok23 = tokens(it23["enonce"])
-    lexique = sorted(tok23 & LEXIQUE_DECISION)
-    surface = sorted(tok23 & tokens(it09["enonce"]))
-    ok = exact and not lexique
-    return ok, (f"empreinte v2 (sha256) : {exact} · lexique décision dans 23 : {lexique or 'aucun'} · "
-                f"mots partagés avec Q2.1-09 (structurels, tolérés) : {surface or 'aucun'}")
+    import sys as _sys
+    _sys.path.insert(0, str(RACINE / "ci" / "outils"))
+    import garde_p0
+    attendu = garde_p0.PLACEHOLDER
+    attendu_sha = garde_p0.PLACEHOLDER_SHA256_ATTENDU
+    trames = [it for it in doc["items"] if (it.get("signal") or "") == "DTM_N"]
+    ids = [it["id"] for it in trames]
+    exacts = {it["id"]: hashlib.sha256(it["enonce"].encode("utf-8")).hexdigest() == attendu_sha
+              for it in trames}
+    identiques = {it["id"]: it["enonce"] == attendu for it in trames}
+    ok = len(trames) == 4 and all(exacts.values()) and all(identiques.values()) \
+        and attendu_sha == hashlib.sha256(attendu.encode("utf-8")).hexdigest()
+    return ok, (f"4 trames attendues : {ids} · sha256 == placeholder officiel : "
+                f"{exacts} · textes identiques au canonique : {identiques}")
 
 
 @check("CI-11", "en-têtes de traçabilité présents sur les 5 fichiers de contenu")
@@ -481,10 +491,20 @@ def ci14():
     dossier = RACINE / "contrat" / "registres" / "signatures"
     fichiers = sorted(dossier.glob("*.json"))
     ids, maisons, incoherences = [], [], []
+    m1_nommes, m1_sans_id, m1_note_q4 = 0, 0, False
     for f in fichiers:
         reg = json.loads(f.read_text(encoding="utf-8"))
         if reg.get("monde") != f.stem:
             incoherences.append(f"{f.name} : monde={reg.get('monde')}")
+        if f.stem == "M1":
+            # Registre M1 matérialisé post-audit (A.3, FM-028) — index du registre
+            # source verbatim : les fiches nommées + l'entrée collective des 6
+            # sécurité hors-dépôt. L'invariant 35 (30 = 7+17+6) reste en vigueur
+            # jusqu'au tranchage comité de l'écart 17/19 (question Q4).
+            m1_nommes = sum(1 for s in reg.get("signatures", []) if s.get("id"))
+            m1_sans_id = sum(1 for s in reg.get("signatures", []) if not s.get("id"))
+            m1_note_q4 = "Q4" in (reg.get("_meta", {}).get("ecart_arithmetique", ""))
+            continue
         for s in reg.get("signatures", []):
             ids.append(s["id"])
             maisons.append((s["id"], f.stem))
@@ -493,8 +513,12 @@ def ci14():
     orphelins = [s for s in pour_2_1 if s not in ids]
     total_declare = len(ids) + SIGNATURES_M1_DECLAREES
     ok = (total_declare == INVARIANTS["signatures_total"] and not doublons
-          and not incoherences and not orphelins and {"M2.json", "M3.json"} <= {f.name for f in fichiers})
-    return ok, (f"matérialisées {len(ids)} (M2:1 · M3:4) + M1 déclarées {SIGNATURES_M1_DECLAREES} (maison en attente, Voie B) "
+          and not incoherences and not orphelins
+          and m1_nommes == 28 and m1_note_q4
+          and {"M1.json", "M2.json", "M3.json"} <= {f.name for f in fichiers})
+    return ok, (f"matérialisées {len(ids)} (M2:1 · M3:4) + M1 déclarées {SIGNATURES_M1_DECLAREES} "
+                f"(Voie B réalisée post-audit A.3 : M1.json = {m1_nommes} ids nommés + {m1_sans_id} entrée(s) hors-dépôt "
+                f"[6 sécurité collectives] · écart 17/19 en attente Q4 : {'consigné' if m1_note_q4 else 'ABSENT'}) "
                 f"= {total_declare}/35 · doublons : {doublons or 'aucun'} · monde≠fichier : {incoherences or 'aucun'} · "
                 f"signatures 2.1 sans maison : {orphelins or 'aucune'}")
 
@@ -512,6 +536,30 @@ def ci15():
     doublons = sorted({i for i in TOUS_IDS_ITEMS if TOUS_IDS_ITEMS.count(i) > 1})
     ok = not doublons and total_mat <= INVARIANTS["items_total"]
     return ok, f"{total_mat} items matérialisés sur {INVARIANTS['items_total']} · codes en double : {doublons or 'aucun'}"
+
+
+@check("CI-16", "garde étendue 11-b rejouée — zéro trame en clair, 7 formats, tout le dépôt (FM-027 · finding F.1)")
+def ci16():
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, str(RACINE / "ci" / "outils" / "garde_p0.py")],
+        capture_output=True, text=True, cwd=RACINE,
+    )
+    verdict = [l for l in out.stdout.splitlines() if l.startswith("VERDICT GARDE")]
+    scanned = [l for l in out.stdout.splitlines() if l.startswith("Fichiers texte scannés")]
+    return out.returncode == 0 and any("VERT" in v for v in verdict), (
+        (scanned[0] if scanned else "compte de fichiers absent") + " · " + (verdict[0] if verdict else f"absent (rc={out.returncode})")
+    )
+
+
+@check("CI-17", "comptage RÉEL des codes de signaux.json == invariant 14 (finding A.8 — un registre vidé rend la CI rouge)")
+def ci17():
+    reg = charger_json("contrat/registres/signaux.json")
+    codes = sorted(c["code"] for c in reg.get("codes", []))
+    doublons = sorted({c for c in codes if codes.count(c) > 1})
+    ok = len(codes) == INVARIANTS["codes_signaux"] and not doublons and len(codes) > 0
+    return ok, (f"{len(codes)} codes réels (attendu {INVARIANTS['codes_signaux']} = 13 gelés + DE) : {codes}"
+                f" · doublons : {doublons or 'aucun'}")
 
 
 # ═══════════════════════════════════════════════════════════════════

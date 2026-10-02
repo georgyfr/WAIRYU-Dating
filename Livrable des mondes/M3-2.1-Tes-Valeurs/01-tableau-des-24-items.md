@@ -26,7 +26,7 @@
 | Q2.1-18 | Mon programme du jour passe avant la demande d'aide d'un proche. | **I** | Bienveillance | la demande d'aide | ↔17 | — | C: Bienveillance (recodé) · S: — · F: R6↔17 · M: idem 17 · A: rappel OK |
 | Q2.1-19 | Devant une façon de vivre très différente, je cherche d'abord à comprendre. | **D** | Universalisme | la différence de modes de vie | ↔20 | — | C: Universalisme→bloc Dépassement · S: — · F: R6↔20 · M: si BE haut → loyauté élargie · A: rappel OK |
 | Q2.1-20 | Devant une façon de vivre très différente, je me méfie d'abord. | **I** | Universalisme | la différence de modes de vie | ↔19 | — | C: Universalisme (recodé) · S: — · F: R6↔19 · M: idem 19 · A: rappel OK |
-| **Q2.1-21 à 24** | **ITEM SÉCURITÉ** : contenu fourni séparément au moment de l'implémentation (document trames, hors dépôt). Alimente le signal DTM_N. Position au mélange : 4 · 10 · 16 · 24. | **D** | — (null) | kit unique | — | **▲ DTM_N** | C: null · S: **DTM_N** (moteur seul) · F: cohérence des 4 angles · M: moteur seul · A: **rappel INTERDIT** · v2 : correction A.1 appliquée à Q2.1-23 (FM-013 §2 — contamination 09×23) |
+| **Q2.1-21 à 24** | **ITEM SÉCURITÉ** : contenu fourni séparément au moment de l'implémentation (document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal DTM_N. Position au mélange : 4 · 10 · 16 · 24. | **D** | — (null) | kit unique | — | **▲ DTM_N** | C: null · S: **DTM_N** (moteur seul) · F: cohérence des 4 angles · M: moteur seul · A: **rappel INTERDIT** · v2 : correction A.1 appliquée à Q2.1-23 (FM-013 §2 — contamination 09×23) |
 
 ## Blocs de regroupement portrait (pour les slots)
 

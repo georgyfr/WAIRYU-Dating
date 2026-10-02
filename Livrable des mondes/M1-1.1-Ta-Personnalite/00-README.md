@@ -46,3 +46,16 @@ les portraits.
   moment de l'implémentation, par canal privé.
 - **Aucun code, score ou sigle ne franchit un texte rendu** (Constitution [3]). Toute citation d'une
   réponse se fait par rappel en toutes lettres de l'énoncé ; l'`ancre_item` reste un champ moteur.
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concept public** : le modèle des **Big Five** — les cinq grands facteurs de la
+  personnalité (ouverture · conscience · extraversion · agréabilité · stabilité émotionnelle),
+  structure circulaire et dimensionnelle, aucun facteur n'étant un verdict.
+- **Références** : **Goldberg** (1992 — marque « Big Five ») ; l'inventaire **IPIP**
+  (International Personality Item Pool — domaine public), dont les items de la quête
+  s'inspirent structurellement.
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs et la marque du modèle sont INTERDITS au
+  rendu (05, 07, cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers
+  moteur. Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8,
+  audit — en attente de tranchage comité).

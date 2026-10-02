@@ -148,6 +148,7 @@ export function CreateEvent({ onPublished, onBack, onBackToDating }: Props) {
             type="text"
             className="ev-input"
             placeholder="Ex. : Afterwork interculturel à Bonanjo"
+            aria-label="Titre de l'événement"
             value={title}
             maxLength={80}
             onChange={(e) => setTitle(e.target.value)}
@@ -160,6 +161,7 @@ export function CreateEvent({ onPublished, onBack, onBackToDating }: Props) {
           <textarea
             className="ev-input ev-textarea"
             placeholder="Ambiance, déroulé, ce qui est inclus… donne envie de venir !"
+            aria-label="Description de l'événement"
             value={desc}
             rows={4}
             onChange={(e) => setDesc(e.target.value)}
@@ -195,6 +197,7 @@ export function CreateEvent({ onPublished, onBack, onBackToDating }: Props) {
             type="text"
             className="ev-input"
             placeholder="Ville · quartier — nom du lieu"
+            aria-label="Lieu de l'événement"
             value={place}
             onChange={(e) => setPlace(e.target.value)}
           />
@@ -252,6 +255,7 @@ export function CreateEvent({ onPublished, onBack, onBackToDating }: Props) {
           <textarea
             className="ev-input ev-textarea"
             placeholder="Ex. : ponctualité, respect obligatoire, dress code…"
+            aria-label="Règles de l'événement (facultatif)"
             value={rules}
             rows={2}
             onChange={(e) => setRules(e.target.value)}
@@ -268,6 +272,7 @@ export function CreateEvent({ onPublished, onBack, onBackToDating }: Props) {
               className={`ev-switch ${checkinRequired ? 'on' : ''}`}
               role="switch"
               aria-checked={checkinRequired}
+              aria-label="Check-in QR obligatoire à l'entrée"
               onClick={() => setCheckinRequired(!checkinRequired)}
             />
           </div>

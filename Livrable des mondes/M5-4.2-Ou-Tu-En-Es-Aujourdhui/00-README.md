@@ -30,3 +30,16 @@
 6. `06-fiche-computation-EXEMPLE.yaml` — l'item Q4.2-08 aux 5 canaux.
 7. `07-miroir.md` — 3 profils respectés (bandes), gabarit MOYEN.
 8. `cartes.yaml` — 3 variantes de carte (étage 1, charte C1-C11).
+
+## Cadrage moteur (moteur seul — jamais au rendu) — finding B.4d (audit : claim non sourcé)
+
+- **Concept public** : la **résilience et la récupération après séparation** — les
+  trajectoires de recovery après une perte relationnelle (la majorité des personnes
+  s'ajustent ; la trajectoire résiliente est la plus fréquente), et le travail d'ajustement
+  post-rupture.
+- **Références** : **Bonanno** (trajectoires de résilience après perte) ; **Field**
+  (l'ajustement à la rupture amoureuse — Adjusting to the breakup of a relationship).
+- **Verrou (précédent 5.6/5.7)** : les noms d'auteurs sont INTERDITS au rendu (05, 07,
+  cartes, écrans) — ils ne vivent que dans le présent fichier et les fichiers moteur.
+  Doctrine de citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit —
+  en attente de tranchage comité).

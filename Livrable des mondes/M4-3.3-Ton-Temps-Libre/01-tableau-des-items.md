@@ -34,19 +34,19 @@
 > parmi les loisirs (règle d'indiscernabilité Partie 0).
 
 **Q3.3-T09 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : les écrans du soir qui débordent.
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : les écrans du soir qui débordent.
 Positions au mélange : 3.**
 
 **Q3.3-T10 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : miser / tenter la chance.
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : miser / tenter la chance.
 Positions au mélange : 6.**
 
 **Q3.3-T11 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : les achats non prévus.
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : les achats non prévus.
 Positions au mélange : 9.**
 
 **Q3.3-T12 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt — Partie 7). Angle : le travail-refuge.
+(document trames, hors dépôt — Partie 7). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Angle : le travail-refuge.
 Positions au mélange : 12.**
 
 Propriétés communes (côté moteur, côté contrat) : dimension carte `null` · orientations **D** ·

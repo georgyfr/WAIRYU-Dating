@@ -82,3 +82,15 @@ la création (constat), pas en extension (aucun plan antérieur n'existait).
 | `05-ecran-d-intro.md` | **ABSENT PAR DESIGN** | Le bloc n'a pas d'écran — invisible par design (précédent du contrat) |
 | `07-miroir.md` | **ABSENT PAR DESIGN** | Aucun miroir individuel — le contenu éditorial vit au PORTRAIT DE MONDE M5 (section « Ton Héritage ») et dans les matrices (mission V10.D) |
 | `cartes.yaml` | **ABSENT PAR DESIGN** | Aucune carte partageable (refonte PARTIE 4 : « — (aucune carte) ») — les 12 « lectures cartes » nourrissent le portrait, elles ne se partagent pas |
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concept public** : les **schémas précoces inadaptés** — les thèmes appris tôt
+  (abandon · méfiance · privation · exclusion · imperfection…) qui se réactivent dans les
+  relations proches et se travaillent.
+- **Références** : **Young** (thérapie des schémas — Young Schema Questionnaire), dont la
+  grille de la quête s'inspire structurellement.
+- **Verrou (précédent 5.6/5.7)** : le nom d'auteur et le vocabulaire de la thérapie sont
+  INTERDITS au rendu (05, 07, cartes, écrans) — ils ne vivent que dans le présent fichier
+  et les fichiers moteur. Doctrine de citation : pattern harmonisé « cadrage moteur + verrou
+  rendu » (Q8, audit — en attente de tranchage comité).

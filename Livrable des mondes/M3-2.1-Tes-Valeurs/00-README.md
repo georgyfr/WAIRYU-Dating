@@ -44,3 +44,16 @@ scoring (fiches de computation) ──► signatures (03) ──► slots de mir
 Les énoncés des items Q2.1-21 à 24 ne figurent dans AUCUN fichier poussé : ils vivent dans le
 document trames, fourni à l'implémenteur par canal privé au moment de l'intégration
 (FM-018 / Constitution [11-b] — doctrine de brûlage). Ce dépôt reste volontairement aveugle.
+
+## Cadrage scientifique (moteur seul — jamais au rendu) — finding B.1e (audit)
+
+- **Concept public** : la théorie des **valeurs humaines fondamentales** — dix valeurs
+  (autonomie · stimulation · hédonisme · réussite · pouvoir · sécurité · conformité ·
+  tradition · bienveillance · universalisme) organisées en structure circulaire, la
+  compatibilité et la tension entre valeurs étant données par les positions.
+- **Références** : **Schwartz** (théorie des valeurs universelles et son questionnaire),
+  dont les blocs-portrait de la quête reprennent la structure.
+- **Verrou (précédent 5.6/5.7)** : le nom d'auteur est INTERDIT au rendu (05, 07, cartes,
+  écrans) — il ne vit que dans le présent fichier et les fichiers moteur. Doctrine de
+  citation : pattern harmonisé « cadrage moteur + verrou rendu » (Q8, audit — en attente de
+  tranchage comité).

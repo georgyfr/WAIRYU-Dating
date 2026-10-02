@@ -40,7 +40,7 @@
 
 **TA LUMIÈRE**
 
-Tu l'as dit : « les évocations sexuelles me détendent et m'amusent » (Q6.2-01). Chez toi, l'intimité se vit
+Tu l'as dit : « les évocations sexuelles me détendent et m'amusent ». Chez toi, l'intimité se vit
 dans la légèreté — une évidence, pas un examen. La recherche documente que cette
 aisance facilite fréquemment la parole. Le sujet circule. Tu apportes
 une détente rare : elle dédramatise avant qu'un malentendu ne s'installe.
@@ -71,7 +71,7 @@ fréquemment l'incompatibilité la plus sourde.
 
 **TA LUMIÈRE**
 
-Tu l'as dit : « l'intimité se parle chez moi comme n'importe quel sujet » (Q6.2-03). Chez toi, l'intimité
+Tu l'as dit : « l'intimité se parle chez moi comme n'importe quel sujet ». Chez toi, l'intimité
 ne brûle ni ne gêne : elle coule. Ni empressement ni évitement — un courant qui s'adapte au moment et
 à l'autre. La recherche documente que cette flexibilité facilite fréquemment l'ajustement. Tu
 peux suivre comme mener. Le fluide n'exige rien — c'est ce qui le rend apte à la rencontre.
@@ -102,7 +102,7 @@ tiédeur.
 
 **TA LUMIÈRE**
 
-Tu l'as dit : « j'ai besoin d'une confiance solide avant d'aborder l'intimité » (Q6.2-05). Chez toi,
+Tu l'as dit : « j'ai besoin d'une confiance solide avant d'aborder l'intimité ». Chez toi,
 l'intimité se construit. Un terrain préparé, une sécurité d'abord, une lenteur choisie ensuite. La
 recherche documente que la lenteur assumée renforce fréquemment la qualité du lien. Ce qui se construit
 tard se construit solide. Un besoin de cadre n'est pas un manque — c'est un besoin de cadre. Tu apportes

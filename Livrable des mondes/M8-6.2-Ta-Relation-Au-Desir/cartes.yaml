@@ -46,7 +46,7 @@ label_tension: "Ta tension intérieure :"
 pied_ecran: "📊 Ton profil de voyage : {X}% complété · 🤝 {Z} personnes attendent en ce moment un profil aussi riche que le tien. · [Partager ma carte] · [Quête suivante] · {fenêtre sur l'autre}"
 fenetre_sur_l_autre:
   - "F1 : Quelque part, quelqu'un vit le désir à sa propre température — la rencontre, c'est la traduction des deux."
-  - "F2 : Ce portrait reste le tien — il ne se montre qu'aux deux membres qui activent l'étage, jamais à un tiers."
+  - "F2 : Ce portrait reste le tien — il ne se montre qu'aux deux membres qui activent l'étage, à personne d'autre."
 
 variantes:
 

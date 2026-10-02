@@ -47,11 +47,11 @@
 > fourni à l'implémenteur uniquement au moment de l'intégration. Codes gelés à jamais.
 
 **Q1.3-T21 à T24 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt). Alimente le signal DE_U (empathie instrumentale). Positions au
+(document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal DE_U (empathie instrumentale). Positions au
 mélange : 4 · 8 · 12 · 16.**
 
 **Q1.3-T25 à T26 — ITEM SÉCURITÉ : contenu fourni séparément au moment de l'implémentation
-(document trames, hors dépôt). Alimente le signal DE_C (empathie compassionnelle, items
+(document trames, hors dépôt). Formulation au tableau : [TRAME SÉCURITÉ — formulation retirée du dépôt. Contenu fourni au document trames confidentiel, hors dépôt — règle 11-b.] Alimente le signal DE_C (empathie compassionnelle, items
 inversés ↩). Positions au mélange : 21 · 26.**
 
 Propriétés communes (côté moteur, côté contrat) : dimension carte `null` · orientations D

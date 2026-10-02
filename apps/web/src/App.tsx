@@ -75,7 +75,7 @@ type Route =
   | { name: 'login-email' } // Task 58 : connexion pseudo + mot de passe
   | { name: 'recover' } // Task 58 : retrouver son compte (code ou email)
   | { name: 'reset'; token: string } // Task 58 : lien email « nouveau mot de passe »
-  | { name: 'verify'; email: string; devCode?: string }
+  | { name: 'verify'; email: string; devCode?: string; birthDate?: string }
   | { name: 'fb-complete' }
   | { name: 'profile' }
   | { name: 'questionnaire' }
@@ -230,7 +230,11 @@ function parseHash(): Route {
       const email = params.get('e') ?? '';
       if (!email) return { name: 'login' };
       const devCode = params.get('d') ?? undefined;
-      return { name: 'verify', email, devCode };
+      // P0 âge (33-c) : la date de naissance de l'inscription voyage avec le
+      // code (paramètre « b » posé par l'écran d'inscription) → POST
+      // /otp/verify. Ignorée pour une simple connexion.
+      const birthDate = params.get('b') ?? undefined;
+      return { name: 'verify', email, devCode, birthDate };
     }
     case 'fb-complete':
       // Retour OAuth Facebook sans email exposé (callback → #/fb-complete) :
@@ -645,7 +649,14 @@ export default function App() {
   } else if (route.name === 'reset') {
     content = <Reset token={route.token} />;
   } else if (route.name === 'verify') {
-    content = <Verify email={route.email} devCode={route.devCode} onAuthenticated={onAuthenticated} />;
+    content = (
+      <Verify
+        email={route.email}
+        devCode={route.devCode}
+        birthDate={route.birthDate}
+        onAuthenticated={onAuthenticated}
+      />
+    );
   } else if (route.name === 'fb-complete') {
     content = <FacebookComplete config={config} onAuthenticated={onAuthenticated} />;
   } else if (route.name === 'app' && me) {

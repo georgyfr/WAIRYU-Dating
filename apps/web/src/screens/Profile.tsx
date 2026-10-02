@@ -774,7 +774,7 @@ export function Profile({ onDone }: Props) {
             return (
               <div key={i} className="field">
                 <span>Prompt {i + 1}</span>
-                <select value={p.key} onChange={(e) => setPromptSlot(i, { key: e.target.value })}>
+                <select value={p.key} onChange={(e) => setPromptSlot(i, { key: e.target.value })} aria-label={`Question du prompt ${i + 1}`}>
                   <option value="">— Choisir une question —</option>
                   {PROMPT_LIBRARY.filter((q) => !usedKeys.includes(q.key) || q.key === p.key).map((q) => (
                     <option key={q.key} value={q.key}>
@@ -793,6 +793,7 @@ export function Profile({ onDone }: Props) {
                       placeholder="Ta réponse…"
                       rows={2}
                       maxLength={PROFILE_LIMITS.promptAnswerMax}
+                      aria-label={`Réponse au prompt ${i + 1}`}
                     />
                     {takenByOther && <small className="hint">Question déjà choisie plus haut.</small>}
                   </>

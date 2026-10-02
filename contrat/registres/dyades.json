@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "fichier": "contrat/registres/dyades.json",
+    "role": "Registre des DYADES — les briques diadiques du Monde 8 (le rapport à deux) et leur format cadré. Le registre matérialise LE FORMAT et LES TYPES ; les instances (les dyades elles-mêmes) sont prévues, non encore produites (Monde 8 = spécifications 8.5/8.6 + 8.1-8.4 au dépôt, la production dyadique appartient au chantier d'implémentation).",
+    "provenance": "Matérialisé post-audit (finding A.7, corrections P0 conception, 2026-10-01) — format cadré repris VERBATIM du source gelé (ddocumentation/refonte des tests et outils wairyu.md §1.5, tableau des briques dyadiques) ; TROV ajouté par FM-006 (briques TROV + SIG_CONTRIB, matrice contribution × besoin).",
+    "fiche_mutation": "FM-028-RETROSPECTIVE (post-audit A.7)"
+  },
+  "types": [
+    {
+      "code": "CNV",
+      "nom": "Convergence",
+      "contenu_obligatoire": "« Vous partagesz… » : la zone commune, ce qu'elle construit, ce qu'elle permet",
+      "longueur": "80-120 mots",
+      "source_cadrage": "ddocumentation/refonte des tests et outils wairyu.md §1.5"
+    },
+    {
+      "code": "FRI",
+      "nom": "Friction",
+      "contenu_obligatoire": "« Votre divergence… » : la friction prévisible, à quoi elle ressemblera concrètement, comment la négocier — jamais de verdict",
+      "longueur": "100-150 mots",
+      "source_cadrage": "ddocumentation/refonte des tests et outils wairyu.md §1.5"
+    },
+    {
+      "code": "TROV",
+      "nom": "Trouvaille (matrice contribution × besoin)",
+      "contenu_obligatoire": "la complémentarité contribution × besoin — ce que l'apport de l'un rencontre comme besoin chez l'autre (ajout FM-006, avec la quête 1.10 et SIG_CONTRIB)",
+      "longueur": "à cadrer au moment de la production (l'ajout FM-006 ne fixe pas la fenêtre)",
+      "source_cadrage": "ddocumentation/📄 LES QUATRE PORTRAITS COMPLETS (l.2262 : matrice dyadique TROV ; l.2503 : + CNV-TROV, FRI-TROV)"
+    }
+  ],
+  "instances": [],
+  "previsions": {
+    "declarees_source": "60 prévues (30 CNV + 30 FRI couvrant les paires de dimensions les plus fréquentes — refonte §Monde 8)",
+    "ajout_fm_006": "+2 (CNV-TROV · FRI-TROV) → 62 prévues",
+    "materialisees": 0,
+    "note": "Le compte « 60 prévues » appartient au design ; le contrat d'inventaire ne les compte PAS dans les 570 (les dyades ne sont pas des items répondus). Toute instance produite passera par le registre avec son type cadré — tout autre type est refusé (la discipline : un type non spécifié est un type non contrôlé, refonte §1.5)."
+  },
+  "regles": [
+    "Tout autre type que CNV/FRI/TROV est refusé au registre (discipline du cadrage).",
+    "Une dyade ne porte jamais un verdict sur le couple — la friction documente, elle ne juge pas (FRI, cadrage verbatim).",
+    "Les instances dyadiques héritent des étages de révélation et du consentement des deux membres (Constitution [2])."
+  ]
+}
