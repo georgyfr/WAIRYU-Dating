@@ -7,7 +7,7 @@
  * révolus à aujourd'hui (UTC). L'année seule reste acceptée en écriture
  * (compat anciens clients) → birth_date complétée au 1er janvier.
  */
-import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS, INTENTS, MODE_DEFAULTS } from '@wairyu/shared';
+import { ORIENTATIONS, PROFILE_LIMITS, PROMPT_KEYS, INTENTS, MODE_DEFAULTS, RAISONS } from '@wairyu/shared';
 import { errors } from './errors';
 
 type ProfileEnv = { CLOUDINARY_CLOUD_NAME: string; CLOUDINARY_API_KEY: string; CLOUDINARY_API_SECRET: string };
@@ -79,6 +79,23 @@ export function validateEnum<T extends string>(v: unknown, allowed: readonly T[]
     bad(`${label} invalide.`);
   }
   return v as T;
+}
+
+/**
+ * Mission V18 — la raison d'être ici ('voyage' | 'rencontre' | 'indecis').
+ * Le statut réservé couple_travail est JAMAIS câblé : il est rejeté ici comme
+ * partout (absent de RAISONS et du CHECK SQL 0024 — Monde couple P3+ SUR CADRAGE).
+ */
+export function validateRaison(v: unknown): 'voyage' | 'rencontre' | 'indecis' {
+  return validateEnum(v, RAISONS, 'Raison d\'être ici');
+}
+
+/** Motif libre de la mise en pause (B.3) — optionnel, ≤ 300 caractères. */
+export function validateRaisonPauseReason(v: unknown): string | null {
+  if (v === null || v === undefined || v === '') return null;
+  const s = asString(v)!;
+  if (s.length > 300) bad('Le motif de pause est limité à 300 caractères.');
+  return s;
 }
 
 export function validateCity(v: unknown): string {
@@ -224,6 +241,8 @@ export interface ProfileBasics {
   city: string | null;
   bio: string | null;
   profile_consent_at: number | null;
+  /** Mission V18 — la raison d'être ici pilote les champs REQUIS (A.4). */
+  raison: string | null;
 }
 
 export interface ProfileCounters {
@@ -232,19 +251,30 @@ export interface ProfileCounters {
   hasPreferences: boolean;
 }
 
-/** Profil complet = tous les champs requis + ≥1 prompt + ≥1 photo + préférences. */
+/**
+ * Profil complet = tous les champs requis + ≥1 prompt + ≥1 photo (+ préférences).
+ *
+ * Mission V18 (A.4 — confidentialité par construction) : orientation,
+ * intention et préférences de découverte ne sont REQUIS QUE pour
+ * raison='rencontre'. Un voyageur (ou indecis) n'est JAMAIS forcé de
+ * déclarer une orientation ni des filtres de rencontre pour avoir un profil
+ * complet — la complétion mesure le parcours choisi, elle n'oriente pas
+ * vers la rencontre.
+ */
 export function isProfileComplete(b: ProfileBasics, c: ProfileCounters): boolean {
+  const enRencontre = b.raison === 'rencontre';
   return Boolean(
     b.display_name &&
       (b.birth_date || b.birth_year) &&
       b.gender &&
-      b.orientation &&
-      b.intent &&
+      // V18.A.4 — orientation/intention/préférences : rencontre uniquement.
+      (!enRencontre || b.orientation) &&
+      (!enRencontre || b.intent) &&
       b.city &&
       b.bio &&
       b.profile_consent_at &&
       c.photoCount >= 1 &&
       c.promptCount >= 1 &&
-      c.hasPreferences,
+      (!enRencontre || c.hasPreferences),
   );
 }

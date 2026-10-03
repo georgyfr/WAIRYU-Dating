@@ -65,6 +65,7 @@
 | URL | Écran | Notes |
 |-----|-------|-------|
 | `#/profile` | Assistant profil & photos | Protégé — redirection accueil si hors session |
+| `#/activer-rencontre` | **Mission V18** — séquence de recherche après « Oui, ouvrir la rencontre » | Protégé — retour honnête si la rencontre n'est pas ouverte |
 | `#/questionnaire` | Questionnaire de personnalité | Étape 4 |
 | `#/chat/<conversationId>` | Chat temps réel d'une conversation | Ouvrable depuis Likes, Matchs, Messages |
 | `#/app` | Paramètres du compte | Compte, confidentialité, vérification, notifications |
@@ -101,6 +102,7 @@
 #/myprofile                  Mon profil
 #/chat/<conversationId>      Chat d'une conversation
 #/profile                    Assistant profil & photos
+#/activer-rencontre          Mission V18 — séquence de recherche (après « Oui »)
 #/questionnaire              Questionnaire personnalité
 #/app                        Paramètres du compte
 ```

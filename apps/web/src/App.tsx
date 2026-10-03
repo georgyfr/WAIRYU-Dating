@@ -27,6 +27,7 @@ import { LoginEmail } from './screens/LoginEmail'; // Task 58 : connexion pseudo
 import { Recover } from './screens/Recover'; // Task 58 : retrouver son compte
 import { Reset } from './screens/Reset'; // Task 58 : lien email « nouveau mot de passe »
 import { Verify } from './screens/Verify';
+import { ActivationRecherche } from './screens/ActivationRecherche'; // Mission V18 (B.2)
 import { FacebookComplete } from './screens/FacebookComplete';
 import { Account } from './screens/Account';
 import { Profile } from './screens/Profile';
@@ -80,6 +81,7 @@ type Route =
   | { name: 'profile' }
   | { name: 'questionnaire' }
   | { name: 'heritage' }
+  | { name: 'activer-rencontre' } // Mission V18 (B.2) — séquence après « Oui »
   | { name: 'discover'; mode?: DiscoveryMode }
   | { name: 'likes'; filter?: 'all' | 'like' | 'super' }
   | { name: 'matches' }
@@ -243,6 +245,10 @@ function parseHash(): Route {
     case 'profile':
       // Étape 3 : assistant profil & photos protégées.
       return { name: 'profile' };
+    case 'activer-rencontre':
+      // Mission V18 (B.2) : séquence de recherche après « Oui, ouvrir la
+      // rencontre » (proposition posée à la fin du questionnaire).
+      return { name: 'activer-rencontre' };
     case 'questionnaire':
       // Étape 4 : questionnaire progressif.
       return { name: 'questionnaire' };
@@ -437,20 +443,28 @@ export default function App() {
     go('#/');
   }, [go]);
 
-  // Session créée (OTP vérifié) : profil incomplet → assistant ; sinon découverte
-  // (l'accueil d'une app de rencontre, c'est la découverte — jamais les réglages).
+  // Session créée (OTP vérifié) : profil incomplet → assistant ; sinon —
+  // Mission V18 — la DÉCOUVERTE n'est l'accueil QUE pour raison='rencontre' :
+  // voyage/indecis sont emmenés à leur parcours (le carnet), jamais à la
+  // rencontre. L'app ne pousse personne vers la rencontre.
   const onAuthenticated = useCallback(() => {
     api<MeResponse>('/api/me')
       .then((user) => {
         setMe(user);
-        go(user.profileComplete ? '#/discover' : '#/profile');
+        go(
+          user.profileComplete
+            ? user.raison === 'rencontre'
+              ? '#/discover'
+              : '#/questionnaire'
+            : '#/profile',
+        );
       })
       .catch(() => go('#/'));
   }, [go]);
 
-  // Les écrans compte ET profil exigent une session ; si /api/me échoue → accueil.
+  // Les écrans compte ET profil ET activation V18 exigent une session ; si /api/me échoue → accueil.
   useEffect(() => {
-    if (!checking && (route.name === 'app' || route.name === 'profile') && !me) go('#/');
+    if (!checking && (route.name === 'app' || route.name === 'profile' || route.name === 'activer-rencontre') && !me) go('#/');
   }, [checking, route, me, go]);
 
   // Task 60 (fondateur) — « l'appli s'ouvre directement sur ton compte » :
@@ -467,7 +481,7 @@ export default function App() {
     ) {
       return;
     }
-    go(me.profileComplete ? '#/discover' : '#/profile');
+    go(me.profileComplete ? (me.raison === 'rencontre' ? '#/discover' : '#/questionnaire') : '#/profile');
   }, [checking, me, route, go]);
 
   // Thème « dark premium » (Task 31 — référence fondateur) : les pages de
@@ -663,11 +677,22 @@ export default function App() {
     content = <Account me={me} onLoggedOut={onLoggedOut} />;
   } else if (route.name === 'profile' && me) {
     content = <Profile onDone={() => go('#/myprofile')} />;
+  } else if (route.name === 'activer-rencontre' && me) {
+    // Mission V18 (B.2) — séquence de recherche après « Oui, ouvrir la
+    // rencontre ». Le composant vérifie lui-même la raison (retour honnête
+    // si la rencontre n'est pas ouverte).
+    content = (
+      <ActivationRecherche
+        onDone={() => go('#/discover')}
+        onCancel={() => go('#/questionnaire')}
+      />
+    );
   } else if (route.name === 'questionnaire' && me) {
     content = (
       <Questionnaire
         onDone={() => go('#/myprofile')}
         onDiscover={() => go('#/discover')}
+        onActivate={() => go('#/activer-rencontre')}
       />
     );
   } else if (route.name === 'heritage' && me) {
@@ -760,6 +785,7 @@ export default function App() {
         onSettings={() => go('#/app')}
         onQuestionnaire={() => go('#/questionnaire')}
         onHeritage={() => go('#/heritage')}
+        onActivate={() => go('#/activer-rencontre')}
       />
     );
   } else if (route.name === 'revelation' && me) {
@@ -846,7 +872,7 @@ export default function App() {
     <main className={`app-shell ${activeTab && me ? 'tabpage' : ''}`}>
       {content}
       {activeTab && me && (
-        <TabBar active={activeTab} unread={unread} likes={likesCount} onGo={go} />
+        <TabBar active={activeTab} unread={unread} likes={likesCount} onGo={go} raison={me.raison} />
       )}
       <ToastHost />
       <UpdateToast />

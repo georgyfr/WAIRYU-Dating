@@ -179,10 +179,30 @@ export async function generateFeedPage(
   const t0 = Date.now();
 
   // --- Mon profil + mes préférences ---
-  const me = await env.DB.prepare(`SELECT birth_year, geo_region, gender, orientation FROM users WHERE id = ?`)
+  // Mission V18 (verrou D.1, 2e rideau) : un utilisateur hors bassin
+  // 'rencontre' (voyage/indecis) ne reçoit AUCUN feed — pas même vide-par-
+  // accident : la garde court-circuite avant toute requête de pool.
+  const me = await env.DB.prepare(`SELECT birth_year, geo_region, gender, orientation, raison FROM users WHERE id = ?`)
     .bind(userId)
-    .first<{ birth_year: number | null; geo_region: string | null; gender: string | null; orientation: string | null }>();
+    .first<{ birth_year: number | null; geo_region: string | null; gender: string | null; orientation: string | null; raison: string | null }>();
   if (!me) throw new Error('user_not_found');
+
+  const emptyBody: FeedResponse = {
+    page,
+    pageSize: 0,
+    hasMore: false,
+    items: [],
+    disclaimer: '',
+  };
+  if ((me.raison ?? 'indecis') !== 'rencontre') {
+    // VERROU D.1 — hors recherche de rencontre : AUCUN candidat, jamais.
+    // (Le front n'offre déjà pas la découverte aux non-rencontre ; ce
+    // rideau tient même si quelqu'un forge l'appel.)
+    return {
+      body: emptyBody,
+      debug: { pool: 0, excludedDb: 0, excludedDist: 0, feedMs: Date.now() - t0, scoreMs: 0 },
+    };
+  }
 
   const prefs = await env.DB.prepare(
     `SELECT mode_default, pref_gender, pref_orientation, min_age, max_age, distance_km, pref_intent FROM user_preferences WHERE user_id = ?`,
@@ -362,6 +382,10 @@ export async function generateFeedPage(
                 WHERE s2.user_id = u0.id AND s2.revoked_at IS NULL) AS last_seen
        FROM users u0
        WHERE u0.id != ?1 AND u0.status = 'active'
+         -- Mission V18 (verrou D.1, 1er rideau SQL) : SEUL le bassin
+         -- 'rencontre' est retourné par la découverte. voyage/indecis ne
+         -- sortent JAMAIS ici — filtre dur de bassin, jamais un score.
+         AND u0.raison = 'rencontre'
          AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u0.id AND ph.status = 'active' AND ph.deleted_at IS NULL)
          AND EXISTS (SELECT 1 FROM sessions s WHERE s.user_id = u0.id AND s.revoked_at IS NULL AND s.last_seen_at > ?2)
          AND COALESCE(u0.birth_date, CAST(u0.birth_year AS TEXT) || '-01-01') BETWEEN ?3 AND ?4
@@ -778,6 +802,9 @@ export async function countPresence(env: PresenceEnv, userId: string): Promise<P
                 WHERE s2.user_id = u0.id AND s2.revoked_at IS NULL) AS ls
        FROM users u0
        WHERE u0.id != ?1 AND u0.status = 'active'
+         -- Mission V18 (verrou D.1) : le radar compte le bassin 'rencontre'
+         -- uniquement — les voyageurs ne sont pas des candidats, jamais.
+         AND u0.raison = 'rencontre'
          AND COALESCE(u0.paused, 0) = 0
          AND COALESCE(u0.incognito, 0) = 0
          AND EXISTS (SELECT 1 FROM photos ph WHERE ph.user_id = u0.id AND ph.status = 'active' AND ph.deleted_at IS NULL)

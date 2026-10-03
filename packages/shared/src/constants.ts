@@ -245,6 +245,15 @@ export const INTENTS = [
 ] as const;
 export const ORIENTATIONS = ['straight', 'gay', 'bi', 'other'] as const;
 export const PREF_GENDERS = ['women', 'men', 'everyone'] as const;
+
+/**
+ * Mission V18 — la raison d'être ici. TROIS valeurs, visuellement
+ * équivalentes à l'écran (🪞 voyage · 💞 rencontrer · ⏸️ indecis — aucune
+ * hiérarchie). Le statut réservé couple_travail est JAMAIS câblé : il est
+ * volontairement absent de cette liste comme du CHECK SQL (migration 0024)
+ * — le câbler exigerait une décision explicite (Monde couple P3+ SUR CADRAGE).
+ */
+export const RAISONS = ['voyage', 'rencontre', 'indecis'] as const;
 /**
  * Modes de découverte — le 3e mode « interracial » (rencontres entre
  * continents, demande fondateur) rejoint Classique et Invisible.
@@ -267,6 +276,12 @@ export const LABELS = {
     classic: 'Mode Classique',
     invisible: 'Mode Invisible',
     interracial: 'Mode interracial',
+  } as Record<string, string>,
+  /** Mission V18 — libellés de « Ta raison d'être ici » (front uniquement). */
+  raison: {
+    voyage: 'Voyager en moi',
+    rencontre: 'Rencontrer',
+    indecis: 'Je ne sais pas encore',
   } as Record<string, string>,
 } as const;
 

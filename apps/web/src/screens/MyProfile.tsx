@@ -10,9 +10,10 @@
  * (URLs signées côté Worker — le propriétaire voit ses photos nettes).
  */
 import { useState, type CSSProperties } from 'react';
-import { useSwr } from '../lib/swr';
+import { api } from '../lib/api';
+import { useSwr, invalidateSwr } from '../lib/swr';
 import { PersonalityBadge, PersonalityProposal } from './PersonalityProposal';
-import { LABELS, PROMPT_LIBRARY, type LikesMeResponse, type MatchListResponse, type ProfileResponse, type HeritageProfile } from '@wairyu/shared';
+import { LABELS, PROMPT_LIBRARY, type LikesMeResponse, type MatchListResponse, type ProfileResponse, type HeritageProfile, type Raison } from '@wairyu/shared';
 import { HERITAGE_LABELS, HERITAGE_SECTIONS, sectionFilled } from '../lib/heritage-data';
 
 interface Props {
@@ -21,6 +22,9 @@ interface Props {
   onQuestionnaire: () => void;
   /** Task 52 : ouvrir l'écran « Mon héritage culturel » (#/heritage). */
   onHeritage: () => void;
+  /** Mission V18 (B.4) — ouvrir la séquence de recherche (#/activer-rencontre)
+   * quand la réactivation a besoin de la configuration B.2. */
+  onActivate: () => void;
 }
 
 /**
@@ -54,7 +58,20 @@ function ageOf(birthDate: string | null): number | null {
   return age >= 18 ? age : null;
 }
 
-export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: Props) {
+/** Mission V18 (B.6) — pictogrammes de « Ta raison d'être ici » (même trio que l'assistant). */
+const RAISON_ICONS: Record<Raison, string> = {
+  voyage: '🪞',
+  rencontre: '💞',
+  indecis: '⏸️',
+};
+
+const RAISON_DETAIL: Record<Raison, string> = {
+  voyage: 'Tu n’apparaîs dans aucune découverte — ton parcours est complet, rien ne te manque.',
+  rencontre: 'La découverte des profils est active. Tu peux la mettre en pause à tout moment.',
+  indecis: 'Ton parcours avance ; la rencontre reste une porte fermée jusqu’à ta décision.',
+};
+
+export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage, onActivate }: Props) {
   // Cache SWR : le profil s'affiche instantanément au retour sur l'onglet,
   // revalidé en arrière-plan (TTL 30 s — les modifications passent par
   // l'assistant qui invalide la clé « profile » après sauvegarde).
@@ -63,6 +80,13 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: P
   });
   const [photoIdx, setPhotoIdx] = useState(0);
   const [showPers, setShowPers] = useState(false);
+
+  // --- Mission V18 (B.6) — « Ta raison d'être ici » : la carte reste VISIBLE
+  // en permanence ; la bascule est réversible à l'infini dans les deux sens.
+  const [raisonBusy, setRaisonBusy] = useState(false);
+  const [raisonErreur, setRaisonErreur] = useState<string | null>(null);
+  const [pauseOuverte, setPauseOuverte] = useState(false);
+  const [pauseMotif, setPauseMotif] = useState('');
 
   // Stats réelles (Task 31 — référence §4.7) : mêmes caches SWR que les
   // pages Likes / Matchs — aucune requête supplémentaire (dédup du cache).
@@ -92,6 +116,41 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: P
   const main = photos[Math.min(photoIdx, photos.length - 1)] ?? null;
   const promptLabel = (key: string) => PROMPT_LIBRARY.find((p) => p.key === key)?.label ?? key;
   const prefs = prof.preferences;
+  /** Mission V18 (B.4) — la recherche a-t-elle déjà une configuration (B.2 faite) ? */
+  const rechercheDejaConfiguree = Boolean(prof.orientation && prefs);
+
+  /**
+   * Mission V18 (B.4/B.6) — la bascule de raison. RÉVERSIBLE À L'INFINI,
+   * dans les DEUX sens, sans jamais rien supprimer : conversations, matchs
+   * et messages sont conservés pendant la pause (B.3). La réactivation est
+   * un clic si la configuration de recherche existe déjà ; sinon elle passe
+   * par la séquence B.2 (#/activer-rencontre).
+   */
+  async function changerRaison(nouvelle: Raison, motif?: string) {
+    setRaisonBusy(true);
+    setRaisonErreur(null);
+    try {
+      await api('/api/profile', {
+        method: 'PUT',
+        json: { raison: nouvelle, ...(nouvelle !== 'rencontre' && motif ? { raisonPauseReason: motif } : {}) },
+      });
+      invalidateSwr('profile');
+      setPauseOuverte(false);
+      setPauseMotif('');
+    } catch (err) {
+      setRaisonErreur(err instanceof Error ? err.message : 'Erreur inattendue.');
+    }
+    setRaisonBusy(false);
+  }
+
+  /** B.4 — réactivation : un clic si la recherche est déjà configurée, sinon B.2. */
+  function reactiverRencontre() {
+    if (rechercheDejaConfiguree) {
+      void changerRaison('rencontre');
+    } else {
+      onActivate();
+    }
+  }
 
   // Complétion du profil (%, calcul local honnête sur les champs réels) :
   // photo 30 · bio 20 · prompts 20 · date de naissance 10 · lieu 10 · intention 10.
@@ -111,6 +170,82 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: P
   return (
     <div className="app page-profile">
       <header className="wizard-head plain"><h1>Mon profil</h1></header>
+
+      {/* Mission V18 (B.6) — « Ta raison d'être ici » : TOUJOURS visible,
+          en tête de profil. Bascule bidirectionnelle réversible à l'infini. */}
+      <article className="card raison-card-profile">
+        <h3>Ta raison d&apos;être ici</h3>
+        <div className={`raison-now raison-now-${prof.raison}`}>
+          <span className="raison-ico" aria-hidden="true">{RAISON_ICONS[prof.raison]}</span>
+          <div>
+            <strong>{LABELS.raison[prof.raison] ?? prof.raison}</strong>
+            <p className="hint">{RAISON_DETAIL[prof.raison]}</p>
+          </div>
+        </div>
+        {prof.raison === 'voyage' && prof.raisonPauseReason && (
+          <p className="raison-motif">
+            <span className="hint">Ton motif de pause :</span> « {prof.raisonPauseReason} »
+          </p>
+        )}
+        {raisonErreur && <p className="error">{raisonErreur}</p>}
+
+        {prof.raison === 'rencontre' && (
+          <>
+            {!pauseOuverte ? (
+              <button type="button" className="btn ghost" onClick={() => setPauseOuverte(true)} disabled={raisonBusy}>
+                Mettre la rencontre en pause
+              </button>
+            ) : (
+              <div className="raison-pause-form">
+                <label className="field">
+                  <span>Motif (optionnel — restera dans ton profil)</span>
+                  <textarea
+                    value={pauseMotif}
+                    onChange={(e) => setPauseMotif(e.target.value.slice(0, 300))}
+                    placeholder="Ex. : je me concentre sur mon parcours, rien d'autre."
+                    rows={2}
+                    maxLength={300}
+                  />
+                </label>
+                <p className="hint tiny">
+                  Tes conversations, tes matchs et tes messages sont TOUTES conservées — la pause
+                  te rend seulement invisible dans la découverte. Tu pourras réactiver en un clic.
+                </p>
+                <div className="raison-pause-actions">
+                  <button
+                    type="button"
+                    className="btn primary"
+                    disabled={raisonBusy}
+                    onClick={() => void changerRaison('voyage', pauseMotif.trim() || undefined)}
+                  >
+                    {raisonBusy ? 'Enregistrement…' : 'Confirmer la pause'}
+                  </button>
+                  <button type="button" className="btn ghost" onClick={() => setPauseOuverte(false)} disabled={raisonBusy}>
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {prof.raison === 'voyage' && (
+          <button type="button" className="btn primary" onClick={reactiverRencontre} disabled={raisonBusy}>
+            Réactiver la rencontre
+          </button>
+        )}
+
+        {prof.raison === 'indecis' && (
+          <div className="raison-pause-actions">
+            <button type="button" className="btn ghost" onClick={() => void changerRaison('voyage')} disabled={raisonBusy}>
+              🪞 Voyager en moi
+            </button>
+            <button type="button" className="btn primary" onClick={reactiverRencontre} disabled={raisonBusy}>
+              💞 Ouvrir la rencontre
+            </button>
+          </div>
+        )}
+      </article>
 
       {!prof.profileComplete && (
         <p className="hint mode-note">
@@ -254,7 +389,7 @@ export function MyProfile({ onEdit, onSettings, onQuestionnaire, onHeritage }: P
         </button>
       </article>
 
-      {prefs && (
+      {prof.raison === 'rencontre' && prefs && (
         <article className="card profile-prefs">
           <h3>Mes préférences de découverte</h3>
           <p className="hint">

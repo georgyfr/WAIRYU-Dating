@@ -30,6 +30,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, ApiError } from '../lib/api';
+import { invalidateSwr } from '../lib/swr';
 import { PersonalityProposal } from './PersonalityProposal';
 import {
   type QuestionnaireState,
@@ -43,6 +44,11 @@ interface Props {
   onDone: () => void;
   /** Navigation vers la découverte une fois le questionnaire terminé. */
   onDiscover: () => void;
+  /**
+   * Mission V18 (B.1) — réponse « Oui, ouvrir la rencontre » : ouvre la
+   * séquence de recherche (B.2, #/activer-rencontre).
+   */
+  onActivate: () => void;
 }
 
 type Phase =
@@ -79,6 +85,10 @@ interface DoctrineState {
   /** Réponses existantes par code (tolérant : champ omis si vide côté API). */
   myAnswers?: Record<string, string | string[]>;
   progress?: { done?: number; total?: number };
+  /** Mission V18 — la raison d'être ici (tolérant : absente = 'indecis'). */
+  raison?: 'voyage' | 'rencontre' | 'indecis';
+  /** Mission V18 (B.1) — la proposition d'activation peut-elle être posée ? */
+  activation?: { eligible: boolean };
 }
 
 /** Libellés du gabarit de réponse, par format doctrine. */
@@ -117,7 +127,7 @@ function togglePlafonne(prev: string[], key: string, max?: number): string[] {
   return [...prev, key];
 }
 
-export function Questionnaire({ onDone, onDiscover }: Props) {
+export function Questionnaire({ onDone, onDiscover, onActivate }: Props) {
   const [state, setState] = useState<QuestionnaireState | null>(null);
   const [phase, setPhase] = useState<Phase>({ kind: 'loading' });
   /** Index de la question affichée dans la liste triée (navigation libre). */
@@ -132,6 +142,14 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
   const [docIdx, setDocIdx] = useState(0);
   const [docValue, setDocValue] = useState(''); // option simple / texte ouvert
   const [docMulti, setDocMulti] = useState<string[]>([]); // options multiples
+  /**
+   * Mission V18 (B.1) — la proposition d'activation est-elle affichée à
+   * l'écran de fin ? Recalculée depuis les réponses de l'API (palier = de
+   * nouvelles réponses depuis la dernière proposition — au plus 1 fois par
+   * palier, jamais de spam) ; masquée après « Pas maintenant » / « Plus tard ».
+   */
+  const [proposeActivation, setProposeActivation] = useState(false);
+  const [activationBusy, setActivationBusy] = useState(false);
 
   /**
    * B.5b — chrono par item : performance.now() relevé à l'AFFICHAGE de la
@@ -205,6 +223,7 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
       const d = await api<DoctrineState>('/api/qd');
       if (d && d.bank === 'doctrine_v1' && Array.isArray(d.items) && d.items.length > 0) {
         setDoc(d);
+        setProposeActivation(d.activation?.eligible === true);
         resumeDoc(d);
         return;
       }
@@ -281,10 +300,16 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
     setBusy(true);
     setError(null);
     try {
-      await api<unknown>(`/api/qd/answers/${encodeURIComponent(item.code)}`, {
-        method: 'PUT',
-        json: { value, responseMs: responseMsNow() },
-      });
+      const res = await api<{ saved: true; activationEligible?: boolean }>(
+        `/api/qd/answers/${encodeURIComponent(item.code)}`,
+        {
+          method: 'PUT',
+          json: { value, responseMs: responseMsNow() },
+        },
+      );
+      // Mission V18 (B.1) — le palier peut être atteint avec cette réponse :
+      // l'éligibilité renvoyée par l'API fait foi.
+      if (typeof res.activationEligible === 'boolean') setProposeActivation(res.activationEligible);
       const merged: DoctrineState = {
         ...doc,
         myAnswers: { ...(doc.myAnswers ?? {}), [item.code]: value },
@@ -299,6 +324,33 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
     setBusy(false);
   }
 
+  /**
+   * Mission V18 (B.1) — la réponse à la proposition d'activation. TROIS
+   * réponses égales, posées UNE fois par palier, jamais de relance hors
+   * palier. « Oui » ouvre la séquence de recherche (B.2) — la rencontre est
+   * déjà activée côté serveur dès cette réponse.
+   */
+  async function repondreActivation(answer: 'oui' | 'pas_maintenant' | 'plus_tard') {
+    setActivationBusy(true);
+    setError(null);
+    try {
+      const res = await api<{ saved: true; raison: string; activationEligible?: boolean }>(
+        '/api/qd/activation',
+        { method: 'POST', json: { answer } },
+      );
+      setProposeActivation(res.activationEligible === true);
+      if (answer === 'oui') {
+        invalidateSwr('profile'); // la raison a changé — les caches suivent
+        setActivationBusy(false);
+        onActivate(); // séquence B.2 (#/activer-rencontre)
+        return;
+      }
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erreur inattendue.');
+    }
+    setActivationBusy(false);
+  }
+
   function submitSingle(item: QItem, key: string) {
     if (busy) return;
     setSelected([key]);
@@ -311,7 +363,10 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
   }
 
   function toggleMulti(item: QItem, key: string) {
-    setSelected((prev) => togglePlafonne(prev, key, item.maxSelect));
+    // V18 note : `?? undefined` — correction de type uniquement (maxSelect est
+    // `number | null` dans le contrat partagé, le paramètre est `number ?`) ;
+    // sémantique identique (togglePlafonne traite null et undefined pareil).
+    setSelected((prev) => togglePlafonne(prev, key, item.maxSelect ?? undefined));
   }
 
   if (phase.kind === 'loading') {
@@ -328,6 +383,10 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
   // ------------------------------------------------------------------ états
   if (phase.kind === 'finished' && doc) {
     // Fin de banque doctrine — écran sobre (pas d'insights legacy).
+    // Mission V18 : l'écran de fin est le SEUL endroit où la proposition
+    // d'activation peut apparaître (B.1) — et elle ne s'affiche que si
+    // l'API la déclare éligible (au plus 1 fois par palier).
+    const enRencontre = doc.raison === 'rencontre';
     return (
       <div className="app">
         <header className="wizard-head">
@@ -338,9 +397,55 @@ export function Questionnaire({ onDone, onDiscover }: Props) {
           Tu as répondu à tout ce qui t&apos;était proposé. Tes réponses restent enregistrées —
           tu peux les modifier quand tu veux.
         </p>
-        <button type="button" className="btn primary" onClick={onDiscover}>
-          Découvrir les profils
-        </button>
+        {proposeActivation && !enRencontre && (
+          <div className="activation-proposal" role="group" aria-label="Ouvrir la rencontre ?">
+            <p className="activation-title">Et si tu ouvrais la rencontre&nbsp;?</p>
+            <p className="hint">
+              Ton parcours continue exactement pareil dans tous les cas. Ouvrir la rencontre
+              ajoute seulement la découverte des profils — tu pourras la mettre en pause quand
+              tu veux, et tes échanges ne seraient jamais perdus.
+            </p>
+            <div className="activation-actions">
+              <button
+                type="button"
+                className="btn primary"
+                disabled={activationBusy}
+                onClick={() => void repondreActivation('oui')}
+              >
+                Oui, ouvrir la rencontre
+              </button>
+              <button
+                type="button"
+                className="btn ghost"
+                disabled={activationBusy}
+                onClick={() => void repondreActivation('pas_maintenant')}
+              >
+                Pas maintenant
+              </button>
+              <button
+                type="button"
+                className="btn ghost"
+                disabled={activationBusy}
+                onClick={() => void repondreActivation('plus_tard')}
+              >
+                Me le redemander plus tard
+              </button>
+            </div>
+            <p className="hint tiny">
+              Aucune des trois réponses n&apos;est privilégiée — et l&apos;appli ne repose la
+              question que si de nouvelles étapes de ton parcours sont franchies.
+            </p>
+          </div>
+        )}
+        {enRencontre ? (
+          <button type="button" className="btn primary" onClick={onDiscover}>
+            Découvrir les profils
+          </button>
+        ) : (
+          <button type="button" className="btn primary" onClick={onDone}>
+            Continuer mon parcours
+          </button>
+        )}
         <button type="button" className="btn ghost" onClick={onDone}>
           Retour à mon compte
         </button>

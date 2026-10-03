@@ -57,7 +57,9 @@ export type TabId =
   | 'events'
   | 'events-mine'
   | 'events-create'
-  | 'events-moments';
+  | 'events-moments'
+  // Mission V18 — navigation VOYAGE (le parcours d'abord).
+  | 'carnet';
 
 interface Props {
   active: TabId;
@@ -66,6 +68,12 @@ interface Props {
   /** Likes/supers reçus en attente — badge Likes. */
   likes: number;
   onGo: (hash: string) => void;
+  /**
+   * Mission V18 — la raison d'être ici : 'voyage'/'indecis' → navigation
+   * VOYAGE (pas d'onglets de rencontre) ; 'rencontre' → navigation historique.
+   * undefined = non chargé (navigation Classique par défaut, comme avant).
+   */
+  raison?: 'voyage' | 'rencontre' | 'indecis';
 }
 
 interface NavItem {
@@ -79,13 +87,28 @@ interface NavItem {
   create?: boolean;
 }
 
-/** Entrées Classique / Interracial — l'historique de l'app, inchangé. */
+/**
+ * Entrées Classique / Interracial — l'historique de l'app, inchangé.
+ */
 const NAV_CLASSIC: NavItem[] = [
   { id: 'discover', hash: '#/discover', icon: '🔥', label: 'Découvrir' },
   { id: 'likes', hash: '#/likes', icon: '✨', label: 'Likes', badge: 'likes' },
   { id: 'matches', hash: '#/matches', icon: '⚡', label: 'Matchs' },
   { id: 'messages', hash: '#/messages', icon: '💬', label: 'Messages', badge: 'unread' },
   { id: 'moments', hash: '#/moments', icon: '🎬', label: 'Moments' },
+  { id: 'profile', hash: '#/myprofile', icon: '👤', label: 'Profil' },
+];
+
+/**
+ * Mission V18 (inversion architecturale) — entrées VOYAGE/INDECIS : la
+ * rencontre n'est PAS le centre de gravité. Trois entrées sobres : le carnet
+ * (le parcours), les messages (les conversations existantes sont TOUJOURS
+ * conservées — B.3), le profil (où vit « Ta raison d'être ici », B.6).
+ * AUCUN onglet de rencontre : l'app ne pousse jamais vers la rencontre.
+ */
+const NAV_VOYAGE: NavItem[] = [
+  { id: 'carnet', hash: '#/questionnaire', icon: '📖', label: 'Carnet' },
+  { id: 'messages', hash: '#/messages', icon: '💬', label: 'Messages', badge: 'unread' },
   { id: 'profile', hash: '#/myprofile', icon: '👤', label: 'Profil' },
 ];
 
@@ -197,11 +220,16 @@ const MODE_MENU: ModeMenuEntry[] = [
   },
 ];
 
-export function TabBar({ active, unread, likes, onGo }: Props) {
+export function TabBar({ active, unread, likes, onGo, raison }: Props) {
   // Mode courant de la session (Task 35/37) — null tant que non chargé :
   // aucun chip inventé, la sidebar reste NEUTRE (entrées Classique) en
   // attendant les données, puis bascule vers le menu du mode.
   const mode = useSharedMode();
+
+  // Mission V18 — hors bassin 'rencontre', la navigation VOYAGE prime sur
+  // TOUT le reste (mode dating, univers Moments) : aucun onglet de rencontre
+  // n'est proposé, l'app ne pousse jamais vers la rencontre.
+  const enVoyage = raison !== undefined && raison !== 'rencontre';
 
   // Task 39 : contexte événementiel actif ? (route #/events* ou badge) —
   // il PRIME sur le mode dating : tant qu'on parcourt les événements, la
@@ -241,12 +269,17 @@ export function TabBar({ active, unread, likes, onGo }: Props) {
     if (entry.mode && eventsNav) setEventsNav(false);
     onGo(entry.hash);
   };
-  const chip = eventsNav ? { icon: '📅', label: 'Moments' } : mode ? MODE_CHIP[mode] : null;
+  const chip =
+    enVoyage
+      ? { icon: '🪞', label: 'Voyage' }
+      : eventsNav ? { icon: '📅', label: 'Moments' } : mode ? MODE_CHIP[mode] : null;
   // Task 45 : l'entrée « Découvrir » reçoit le slug du mode courant (les
   // entrées Moments/évents gardent leur hash historique).
-  const items = (eventsNav ? NAV_MOMENTS : mode === 'invisible' ? NAV_INVISIBLE : NAV_CLASSIC).map(
-    (t) => (!eventsNav && t.id === 'discover' && mode ? { ...t, hash: `#/discover/${DISCOVER_SLUGS[mode]}` } : t),
-  );
+  const items = enVoyage
+    ? NAV_VOYAGE
+    : (eventsNav ? NAV_MOMENTS : mode === 'invisible' ? NAV_INVISIBLE : NAV_CLASSIC).map(
+        (t) => (!eventsNav && t.id === 'discover' && mode ? { ...t, hash: `#/discover/${DISCOVER_SLUGS[mode]}` } : t),
+      );
   const badgeValue = (b?: NavItem['badge']) =>
     b === 'unread' ? unread : b === 'likes' ? likes : 0;
   return (

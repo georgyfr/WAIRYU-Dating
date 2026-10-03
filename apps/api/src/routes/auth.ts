@@ -841,7 +841,7 @@ authRoutes.get('/me', async (c) => {
   const user = await c.env.DB.prepare(
     `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
             u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.bio, u.profile_consent_at,
-            u.verified_at, u.suspended_until,
+            u.raison, u.verified_at, u.suspended_until,
             ap.username AS username,
             (SELECT COUNT(*) FROM photos p
               WHERE p.user_id = u.id AND p.status = 'active' AND p.deleted_at IS NULL) AS photo_count,
@@ -870,6 +870,7 @@ authRoutes.get('/me', async (c) => {
       city: string | null;
       bio: string | null;
       profile_consent_at: number | null;
+      raison: string | null;
       verified_at: number | null;
       suspended_until: number | null;
       photo_count: number;
@@ -901,6 +902,7 @@ authRoutes.get('/me', async (c) => {
         city: user.city,
         bio: user.bio,
         profile_consent_at: user.profile_consent_at,
+        raison: user.raison,
       },
       {
         photoCount: user.photo_count,
@@ -908,6 +910,8 @@ authRoutes.get('/me', async (c) => {
         hasPreferences: user.has_prefs === 1,
       },
     ),
+    // Mission V18 — la raison d'être ici (défaut 'indecis' : l'app ne présume rien).
+    raison: (user.raison as MeResponse['raison']) ?? 'indecis',
     verified: user.verified_at != null,
     suspendedUntil:
       user.suspended_until && user.suspended_until > Math.floor(Date.now() / 1000)

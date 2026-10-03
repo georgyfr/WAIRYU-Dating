@@ -1,13 +1,19 @@
 /**
  * Assistant de création/édition de profil (Étape 3 + évolutions fondateur) :
+ *  0. Mission V18 — « Ta raison d'être ici » : TROIS cartes visuellement
+ *     équivalentes (🪞 voyage · 💞 rencontrer · ⏸️ indecis — aucune hiérarchie),
+ *     AVANT toute autre question ; réversible à l'infini, dans les deux sens.
  *  1. Identité (prénom, date de naissance jour/mois/année — âge exact, genre)
  *  2. Orientation + intention (dont mariage, vie de couple, rencontre
  *     interraciale) + CONSENTEMENT EXPLICITE dédié
+ *     — Mission V18 (A.4) : CETTE étape n'existe que si raison='rencontre'
+ *       (un voyageur n'est jamais invité à déclarer une orientation) ;
  *  3. Localisation : détection auto pays/ville/quartier (GPS navigateur →
  *     géocodage inverse Nominatim côté Worker) ou saisie manuelle + bio
  *  4. 3 prompts de personnalité (bibliothèque partagée)
  *  5. Photos — pipeline client (recadrage 4:5 + WebP) → Worker → Cloudinary
  *  6. Préférences de découverte + choix du mode (écran explicatif)
+ *     — Mission V18 (A.4) : uniquement si raison='rencontre'.
  *
  * Sauvegarde à chaque étape (reprise possible en cas d'abandon — /api/profile
  * est rechargé au montage et pré-remplit tout).
@@ -23,6 +29,7 @@ import {
   PROFILE_LIMITS,
   PROMPT_LIBRARY,
   PROMPT_KEYS,
+  RAISONS,
 } from '@wairyu/shared';
 import type {
   DiscoveryMode,
@@ -33,6 +40,7 @@ import type {
   PreferencesDto,
   ProfileResponse,
   PromptInput,
+  Raison,
 } from '@wairyu/shared';
 
 interface Props {
@@ -60,6 +68,26 @@ const MONTHS_FR = [
   'décembre',
 ];
 
+/** Mission V18 (A.2) — pictogrammes des trois portes (style strictement identique). */
+const RAISON_ICONS: Record<Raison, string> = {
+  voyage: '🪞',
+  rencontre: '💞',
+  indecis: '⏸️',
+};
+
+/**
+ * Mission V18 (A.2) — descriptions des trois portes, TON ÉGAL :
+ * aucune porte n'est présentée comme meilleure, aucune comme temporaire.
+ */
+const RAISON_DESCRIPTIONS: Record<Raison, string> = {
+  voyage:
+    'Le parcours d’abord : les 11 mondes, tes portraits, ton carnet. Tu n’apparaîs dans aucune découverte.',
+  rencontre:
+    'Ouvrir la rencontre : la découverte des profils s’active — et tu peux la mettre en pause quand tu veux.',
+  indecis:
+    'Ne rien trancher encore : fais le parcours à ton rythme, décide plus tard. Tout est réversible.',
+};
+
 function daysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
 }
@@ -80,7 +108,12 @@ export function Profile({ onDone }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // --- Étapes 1-3 : basics
+  // --- Mission V18 — « Ta raison d'être ici » (étape 1 de l'assistant,
+  // AVANT toute autre question — demande fondateur : le parcours d'abord,
+  // la rencontre en option). '' tant que non chargé.
+  const [raison, setRaison] = useState<Raison | ''>('');
+
+  // --- Étapes 2-4 : basics
   const [displayName, setDisplayName] = useState('');
   // Date de naissance — 3 listes (jour/mois/année) : l'année reste facile à
   // retrouver (picker natif, années récentes en premier).
@@ -144,6 +177,8 @@ export function Profile({ onDone }: Props) {
       setGender((p.gender as Gender) ?? '');
       setOrientation((p.orientation as OrientationType) ?? '');
       setIntent((p.intent as Intent) ?? '');
+      // Mission V18 — la raison pré-remplit l'étape 1 ('indecis' = défaut).
+      setRaison((p.raison as Raison) ?? 'indecis');
       setConsentAlreadyGiven(p.profileConsentAt !== null);
       setConsent(p.profileConsentAt !== null);
       setCity(p.city ?? '');
@@ -215,12 +250,19 @@ export function Profile({ onDone }: Props) {
     setBusy(true);
     let ok = false;
 
-    if (step === 1) {
+    if (etape === 'raison') {
+      // Mission V18 (A.2) — le choix de la raison est la PREMIÈRE réponse du
+      // compte ; il est sauvegardé seul, avant toute autre question.
+      ok = await save({ raison });
+    } else if (etape === 'identite') {
       ok = await save({ displayName, birthDate: composeBirthDate(), gender });
-    } else if (step === 2) {
+    } else if (etape === 'recherches') {
+      // Mission V18 (A.4) — cette étape N'EXISTE que pour raison='rencontre'
+      // (rendu conditionné plus bas). Orientation/intention/consentement ici,
+      // « personnes montrées » déjà actives (sauvegarde immédiate).
       ok = await save({ orientation, intent, consentAccepted: consent });
       if (ok) {
-        // Task 60 — les choix de découverte de l'étape 2 sont DÉJÀ actifs :
+        // Task 60 — les choix de découverte de cette étape sont DÉJÀ actifs :
         // « personnes montrées » sauvegardée immédiatement (sauvegarde auto).
         try {
           await api('/api/profile/preferences', {
@@ -236,20 +278,20 @@ export function Profile({ onDone }: Props) {
             },
           });
         } catch {
-          /* non bloquant — l'étape 6 re-sauvegardera */
+          /* non bloquant — l'étape préférences re-sauvegardera */
         }
       }
-    } else if (step === 3) {
+    } else if (etape === 'localisation') {
       ok = await save({ city, country, neighborhood, geoRegion, bio });
-    } else if (step === 4) {
+    } else if (etape === 'prompts') {
       const filled = prompts.filter((p) => p.key && p.answer.trim());
       ok = await save({ prompts: filled });
-    } else if (step === 5) {
+    } else if (etape === 'photos') {
       ok = photos.length >= 1; // photos déjà committées une à une
     }
-    // Étape 6 → finish()
+    // Dernière étape ('prefs' en rencontre, 'photos' sinon) → finish()
 
-    if (ok) setStep((s) => Math.min(6, s + 1));
+    if (ok) setStep((s) => Math.min(wizardSteps.length, s + 1));
     setBusy(false);
   }
 
@@ -257,18 +299,23 @@ export function Profile({ onDone }: Props) {
     setError(null);
     setBusy(true);
     try {
-      await api('/api/profile/preferences', {
-        method: 'PUT',
-        json: {
-          modeDefault,
-          prefGender,
-          prefOrientation: prefOrientation || 'everyone',
-          minAge,
-          maxAge,
-          distanceKm,
-          prefIntent: prefIntent || null,
-        },
-      });
+      // Mission V18 (A.4) — les préférences de découverte n'existent que pour
+      // raison='rencontre' : un voyageur termine SANS cet appel (l'API les
+      // refuserait — verrou de confidentialité).
+      if (raison === 'rencontre') {
+        await api('/api/profile/preferences', {
+          method: 'PUT',
+          json: {
+            modeDefault,
+            prefGender,
+            prefOrientation: prefOrientation || 'everyone',
+            minAge,
+            maxAge,
+            distanceKm,
+            prefIntent: prefIntent || null,
+          },
+        });
+      }
       // Le profil vient de changer : la page « Mon profil » doit re-fetch,
       // pas resservir le cache (Task 28).
       invalidateSwr('profile');
@@ -399,14 +446,24 @@ export function Profile({ onDone }: Props) {
   const dayMax = birthYear && birthMonth ? daysInMonth(Number(birthYear), Number(birthMonth)) : 31;
   const dobValid = dobComplete && Number(birthDay) >= 1 && Number(birthDay) <= dayMax;
   const ageOk = dobValid && exactAge(Number(birthYear), Number(birthMonth), Number(birthDay)) >= 18;
-  const step1Ok =
+  // Mission V18 — étapes dynamiques : l'étape « recherches » (orientation,
+  // intention, personnes montrées) et l'étape « préférences » n'existent QUE
+  // pour raison='rencontre' (A.4 — un voyageur ne déclare jamais d'orientation,
+  // par construction : l'écran n'est pas rendu, l'étape n'existe pas).
+  const wizardSteps: string[] =
+    raison === 'rencontre'
+      ? ['raison', 'identite', 'recherches', 'localisation', 'prompts', 'photos', 'prefs']
+      : ['raison', 'identite', 'localisation', 'prompts', 'photos'];
+  const etape = wizardSteps[step - 1] ?? 'raison';
+  const step1Ok = raison !== '';
+  const step2Ok =
     displayName.trim().length >= PROFILE_LIMITS.displayNameMin && dobComplete && dobValid && ageOk && gender !== '';
-  const step2Ok = orientation !== '' && intent !== '' && (consent || consentAlreadyGiven);
-  const step3Ok = city.trim().length >= PROFILE_LIMITS.cityMin && bio.trim().length > 0 && bio.length <= PROFILE_LIMITS.bioMax;
+  const step3Ok = orientation !== '' && intent !== '' && (consent || consentAlreadyGiven);
+  const step4Ok = city.trim().length >= PROFILE_LIMITS.cityMin && bio.trim().length > 0 && bio.length <= PROFILE_LIMITS.bioMax;
   const usedKeys = prompts.map((p) => p.key);
-  const step4Ok = prompts.every((p) => p.key && p.answer.trim().length > 0) && new Set(usedKeys).size === 3;
-  const step5Ok = photos.length >= 1;
-  const step6Ok = maxAge >= minAge;
+  const step5Ok = prompts.every((p) => p.key && p.answer.trim().length > 0) && new Set(usedKeys).size === 3;
+  const step6Ok = photos.length >= 1;
+  const step7Ok = maxAge >= minAge;
 
   if (loading) {
     return (
@@ -421,26 +478,57 @@ export function Profile({ onDone }: Props) {
   return (
     <section className="card wide">
       <div className="wizard-head">
-        <div className="wizard-steps" aria-label={`Étape ${step} sur 6`}>
-          {[1, 2, 3, 4, 5, 6].map((n) => (
-            <span key={n} className={`wizard-dot ${n === step ? 'on' : ''} ${n < step ? 'done' : ''}`} />
+        <div className="wizard-steps" aria-label={`Étape ${step} sur ${wizardSteps.length}`}>
+          {wizardSteps.map((k, n) => (
+            <span key={k} className={`wizard-dot ${n + 1 === step ? 'on' : ''} ${n + 1 < step ? 'done' : ''}`} />
           ))}
         </div>
         <h2>
-          {step === 1 && 'Qui es-tu ?'}
-          {step === 2 && 'Tes recherches'}
-          {step === 3 && 'Où vis-tu ?'}
-          {step === 4 && 'Ta personnalité'}
-          {step === 5 && 'Tes photos'}
-          {step === 6 && 'Ton mode de découverte'}
+          {etape === 'raison' && 'Ta raison d’être ici'}
+          {etape === 'identite' && 'Qui es-tu ?'}
+          {etape === 'recherches' && 'Tes recherches'}
+          {etape === 'localisation' && 'Où vis-tu ?'}
+          {etape === 'prompts' && 'Ta personnalité'}
+          {etape === 'photos' && 'Tes photos'}
+          {etape === 'prefs' && 'Ton mode de découverte'}
         </h2>
-        <p className="hint">Étape {step} sur 6 — sauvegarde automatique.</p>
+        <p className="hint">Étape {step} sur {wizardSteps.length} — sauvegarde automatique.</p>
       </div>
 
       {error && <p className="error">{error}</p>}
 
-      {/* ---------------- Étape 1 : identité ---------------- */}
-      {step === 1 && (
+      {/* ---------------- Étape 1 : ta raison d'être ici (Mission V18) ---------------- */}
+      {etape === 'raison' && (
+        <div className="wizard-body">
+          <p className="hint">
+            Ici, c'est d'abord un voyage vers toi-même. La rencontre existe — elle s'ouvre seulement
+            si tu la décides un jour. Les trois portes sont égales, et tu peux en changer à tout
+            moment, dans un sens comme dans l'autre, sans jamais rien perdre.
+          </p>
+          <div className="raison-cards" role="radiogroup" aria-label="Ta raison d'être ici">
+            {RAISONS.map((r) => (
+              <button
+                key={r}
+                type="button"
+                role="radio"
+                aria-checked={raison === r}
+                className={`raison-card ${raison === r ? 'on' : ''}`}
+                onClick={() => setRaison(r)}
+              >
+                <span className="raison-ico" aria-hidden="true">{RAISON_ICONS[r]}</span>
+                <strong>{LABELS.raison[r]}</strong>
+                <span className="raison-desc">{RAISON_DESCRIPTIONS[r]}</span>
+              </button>
+            ))}
+          </div>
+          <p className="hint tiny">
+            Ce choix ne t'enferme dans rien — et l'appli ne choisira jamais à ta place.
+          </p>
+        </div>
+      )}
+
+      {/* ---------------- Étape : identité ---------------- */}
+      {etape === 'identite' && (
         <div className="wizard-body">
           <label className="field">
             <span>Prénom</span>
@@ -527,8 +615,8 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 2 : recherche + orientation + consentement ---------------- */}
-      {step === 2 && (
+      {/* ---------------- Étape : recherches + orientation + consentement (rencontre UNIQUEMENT — V18.A.4) ---------------- */}
+      {etape === 'recherches' && (
         <div className="wizard-body">
           <div className="field">
             <span>Je recherche…</span>
@@ -629,8 +717,8 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 3 : localisation + bio ---------------- */}
-      {step === 3 && (
+      {/* ---------------- Étape : localisation + bio ---------------- */}
+      {etape === 'localisation' && (
         <div className="wizard-body">
           <div className="field">
             <span>Détection automatique</span>
@@ -762,8 +850,8 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 4 : prompts ---------------- */}
-      {step === 4 && (
+      {/* ---------------- Étape : prompts ---------------- */}
+      {etape === 'prompts' && (
         <div className="wizard-body">
           <p className="hint">
             Choisis 3 questions et réponds en une ou deux phrases — c'est ce qui donne envie de te
@@ -804,8 +892,8 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 5 : photos ---------------- */}
-      {step === 5 && (
+      {/* ---------------- Étape : photos ---------------- */}
+      {etape === 'photos' && (
         <div className="wizard-body">
           <p className="hint">
             1 photo minimum, 6 maximum. Tes photos sont recadrées en 4:5 et compressées sur ton
@@ -865,8 +953,8 @@ export function Profile({ onDone }: Props) {
         </div>
       )}
 
-      {/* ---------------- Étape 6 : mode + préférences ---------------- */}
-      {step === 6 && (
+      {/* ---------------- Étape : mode + préférences (rencontre UNIQUEMENT — V18.A.4) ---------------- */}
+      {etape === 'prefs' && (
         <div className="wizard-body">
           <div className="mode-cards">
             <button
@@ -978,28 +1066,34 @@ export function Profile({ onDone }: Props) {
       {/* ---------------- Navigation ---------------- */}
       <div className="wizard-nav">
         {step > 1 && (
-          <button type="button" className="btn ghost" onClick={() => setStep((s) => s - 1)} disabled={busy}>
+          <button type="button" className="btn ghost" onClick={() => setStep((s) => Math.max(1, s - 1))} disabled={busy}>
             Retour
           </button>
         )}
-        {step < 6 ? (
+        {step < wizardSteps.length ? (
           <button
             type="button"
             className="btn primary"
             onClick={next}
             disabled={
               busy ||
-              (step === 1 && !step1Ok) ||
-              (step === 2 && !step2Ok) ||
-              (step === 3 && !step3Ok) ||
-              (step === 4 && !step4Ok) ||
-              (step === 5 && !step5Ok)
+              (etape === 'raison' && !step1Ok) ||
+              (etape === 'identite' && !step2Ok) ||
+              (etape === 'recherches' && !step3Ok) ||
+              (etape === 'localisation' && !step4Ok) ||
+              (etape === 'prompts' && !step5Ok) ||
+              (etape === 'photos' && !step6Ok)
             }
           >
             {busy ? 'Enregistrement…' : 'Continuer'}
           </button>
         ) : (
-          <button type="button" className="btn primary" onClick={finish} disabled={busy || !step6Ok}>
+          <button
+            type="button"
+            className="btn primary"
+            onClick={finish}
+            disabled={busy || (etape === 'prefs' ? !step7Ok : !step6Ok)}
+          >
             {busy ? 'Enregistrement…' : 'Terminer mon profil'}
           </button>
         )}

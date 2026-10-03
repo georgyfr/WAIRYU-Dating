@@ -242,6 +242,59 @@ interface DoctrineAnswerRow {
   value_json: string | null;
 }
 
+/** Mission V18 — état de la raison d'être ici (pour la proposition B.1). */
+interface RaisonRow {
+  raison: string | null;
+  raison_activation: string | null;
+  raison_asked_at: number | null;
+  nouvelles_reponses: number;
+}
+
+function bumpMetricFactory(db: D1Database) {
+  return async (metric: string): Promise<void> => {
+    const day = new Date().toISOString().slice(0, 10);
+    await db
+      .prepare(
+        `INSERT INTO metrics_daily (day, metric, value) VALUES (?, ?, 1)
+         ON CONFLICT (day, metric) DO UPDATE SET value = value + 1`,
+      )
+      .bind(day, metric)
+      .run();
+  };
+}
+
+/**
+ * Mission V18 (B.1) — éligibilité de la proposition d'activation :
+ *   raison ≠ 'rencontre'
+ *   ET la proposition n'a jamais été déclinée définitivement ('declined')
+ *   ET (jamais posée OU nouvelles réponses doctrine depuis la dernière
+ *       proposition — « au plus 1 proposition par palier, jamais de spam »).
+ * NOTE (D.2) : cette fonction N'INFLUE JAMAIS sur la banque servie — tous
+ * les items doctrine restent identiques pour les trois raisons.
+ */
+async function loadRaisonState(db: D1Database, userId: string): Promise<{
+  raison: 'voyage' | 'rencontre' | 'indecis';
+  activation: { eligible: boolean };
+}> {
+  const row = await db
+    .prepare(
+      `SELECT u.raison, u.raison_activation, u.raison_asked_at,
+              (SELECT COUNT(*) FROM q_doctrine_answers a
+                WHERE a.user_id = u.id
+                  AND u.raison_asked_at IS NOT NULL
+                  AND a.answered_at > u.raison_asked_at) AS nouvelles_reponses
+       FROM users u WHERE u.id = ? LIMIT 1`,
+    )
+    .bind(userId)
+    .first<RaisonRow>();
+  const raison = (row?.raison as 'voyage' | 'rencontre' | 'indecis') ?? 'indecis';
+  const eligible =
+    raison !== 'rencontre' &&
+    row?.raison_activation !== 'declined' &&
+    (row?.raison_asked_at == null || (row?.nouvelles_reponses ?? 0) > 0);
+  return { raison, activation: { eligible } };
+}
+
 /** Échelle Likert 5 niveaux (Arbitrage 2 — banque doctrine). */
 const LIKERT5: QItem['options'] = [
   { key: '1', label: 'Pas du tout comme moi' },
@@ -307,11 +360,74 @@ questionnaireRoutes.get('/qd', async (c) => {
   }));
 
   const { answers } = await loadMyDoctrineAnswers(c.env.DB, user.id);
+  // Mission V18 (B.1) — la raison voyage AVEC la banque (1 requête) ; la
+  // banque elle-même N'EST PAS filtrée par la raison (verrou D.2 : profondeur
+  // identique — 531 items — pour voyage, rencontre et indecis).
+  const raisonState = await loadRaisonState(c.env.DB, user.id);
   const body: DoctrineBankState = {
     bank: 'doctrine_v1',
     items,
     myAnswers: answers,
     progress: { done: Object.keys(answers).length, total: items.length },
+    raison: raisonState.raison,
+    activation: raisonState.activation,
+  };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// Mission V18 (B.1) — POST /api/qd/activation : la proposition d'activation,
+// posée UNE fois par palier à l'écran de fin du questionnaire. TROIS
+// réponses, aucune hiérarchie, jamais de relance hors palier :
+//   'oui'            → la rencontre s'ouvre (raison='rencontre') — la suite
+//                      (qui cherches-tu / âge / proximité) est la séquence B.2 ;
+//   'pas_maintenant' → plus AUCUNE relance automatique (retour possible via
+//                      le profil, B.6) ;
+//   'plus_tard'      → reproposée au palier suivant (nouvelles réponses).
+// ---------------------------------------------------------------------------
+questionnaireRoutes.post('/qd/activation', async (c) => {
+  const user = await requireUser(c);
+
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.qAnswerUser, user.id);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.qAnswerUser.scope);
+
+  const payload = (await c.req.json().catch(() => null)) as { answer?: unknown } | null;
+  const answer = payload?.answer;
+  if (
+    typeof answer !== 'string' ||
+    !['oui', 'pas_maintenant', 'plus_tard'].includes(answer)
+  ) {
+    throw errors.badRequest('Réponse attendue : oui | pas_maintenant | plus_tard.');
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const bump = bumpMetricFactory(c.env.DB);
+
+  if (answer === 'oui') {
+    // La décision est respectée IMMÉDIATEMENT — la séquence de recherche
+    // (B.2) complète la configuration, elle ne conditionne pas l'activation.
+    await c.env.DB.prepare(
+      `UPDATE users SET raison = 'rencontre', raison_updated_at = ?, raison_asked_at = ?,
+              raison_activation = NULL, raison_pause_reason = NULL, updated_at = ? WHERE id = ?`,
+    )
+      .bind(now, now, now, user.id)
+      .run();
+    await bump('raison.activation.oui');
+  } else {
+    await c.env.DB.prepare(
+      `UPDATE users SET raison_asked_at = ?, raison_activation = ?, updated_at = ? WHERE id = ?`,
+    )
+      .bind(now, answer === 'pas_maintenant' ? 'declined' : 'later', now, user.id)
+      .run();
+    await bump(answer === 'pas_maintenant' ? 'raison.activation.pas_maintenant' : 'raison.activation.plus_tard');
+  }
+
+  const raisonState = await loadRaisonState(c.env.DB, user.id);
+  const body: DoctrineAnswerResponse & { raison: string } = {
+    saved: true,
+    progress: { done: 0, total: 0 },
+    raison: raisonState.raison,
+    activationEligible: raisonState.activation.eligible,
   };
   return c.json(body);
 });
@@ -506,9 +622,13 @@ questionnaireRoutes.put('/qd/answers/:code', async (c) => {
 
   const rows = await loadDoctrineItems(c.env.DB);
   const { answers } = await loadMyDoctrineAnswers(c.env.DB, user.id);
+  // Mission V18 (B.1) — après une nouvelle réponse, le palier peut être
+  // atteint : l'éligibilité est recalculée (proposition à l'écran de fin).
+  const raisonState = await loadRaisonState(c.env.DB, user.id);
   const body: DoctrineAnswerResponse = {
     saved: true,
     progress: { done: Object.keys(answers).length, total: rows.length },
+    activationEligible: raisonState.activation.eligible,
   };
   return c.json(body);
 });

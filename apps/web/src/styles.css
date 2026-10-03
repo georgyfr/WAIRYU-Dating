@@ -12188,3 +12188,188 @@ body.theme-dark .w-switch.on,
   font-weight: 800;
   color: var(--c-primary-dark);
 }
+
+/* ==========================================================================
+   MISSION V18 — « Ta raison d'être ici »
+   Inversion architecturale : le parcours d'abord, la rencontre en option.
+   A.2 : trois cartes visuellement ÉQUIVALENTES (aucune hiérarchie) ;
+   B.1 : proposition d'activation sobre, jamais pressante ;
+   B.2 : séquence de recherche (sliders ≥ 44 px, a11y) ;
+   B.6 : carte profil permanente + bascule réversible.
+   ========================================================================== */
+
+/* ---- A.2 — les trois portes de l'assistant profil ---- */
+.raison-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .raison-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.raison-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 14px;
+  border: 2px solid #e5ddf2;
+  border-radius: 16px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+.raison-card:hover {
+  border-color: #cdbfe6;
+  transform: translateY(-1px);
+}
+.raison-card:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+/* ÉQUILIBRE STRICT : la sélection utilise le MÊME accent neutre pour les
+   trois portes — ni la rencontre, ni le voyage ne reçoivent de couleur
+   « forte » qui hiérarchiserait les choix. */
+.raison-card.on {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.12);
+}
+.raison-ico {
+  font-size: 28px;
+  line-height: 1;
+}
+.raison-card strong {
+  font-size: 15.5px;
+}
+.raison-desc {
+  font-size: 13px;
+  color: #6b6280;
+  line-height: 1.45;
+}
+
+/* ---- B.2 — sliders de la séquence de recherche ---- */
+.raison-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+}
+.raison-slider > span {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #4c4460;
+}
+.raison-slider input[type='range'] {
+  width: 100%;
+  min-height: 44px; /* cible tactile a11y */
+  accent-color: var(--c-primary);
+}
+
+/* ---- B.2 ④ — récapitulatif des quêtes M3 (2.5 / 2.3 / 2.4) ---- */
+.raison-recap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1.5px dashed #ddd3ec;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fbf9fd;
+}
+.raison-recap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.raison-recap-monde {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #7c5cbf;
+  text-transform: uppercase;
+  min-width: 72px;
+}
+
+/* ---- B.1 — proposition d'activation (écran de fin du questionnaire) ---- */
+.activation-proposal {
+  border: 2px solid #e5ddf2;
+  border-radius: 16px;
+  padding: 16px;
+  background: #fbf9fd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.activation-title {
+  margin: 0;
+  font-weight: 800;
+  color: var(--c-primary-dark);
+}
+.activation-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+@media (min-width: 640px) {
+  .activation-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+.activation-actions .btn {
+  min-height: 44px;
+}
+
+/* ---- B.6 — carte permanente « Ta raison d'être ici » (Mon profil) ---- */
+.raison-card-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.raison-card-profile h3 {
+  margin: 0;
+}
+.raison-now {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbf9fd;
+  border: 1.5px solid #e5ddf2;
+}
+.raison-now .raison-ico {
+  font-size: 26px;
+}
+.raison-now strong {
+  display: block;
+  margin-bottom: 2px;
+}
+.raison-now p {
+  margin: 0;
+}
+.raison-motif {
+  margin: 0;
+  font-size: 13.5px;
+  color: #4c4460;
+}
+.raison-pause-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.raison-pause-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.raison-pause-actions .btn {
+  min-height: 44px;
+}

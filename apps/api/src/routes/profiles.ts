@@ -34,6 +34,8 @@ import {
   validateBio,
   validatePrompts,
   validatePreferences,
+  validateRaison,
+  validateRaisonPauseReason,
   isProfileComplete,
   isConfigured,
 } from '../lib/profile';
@@ -51,6 +53,8 @@ import type {
   PhotoUrlResponse,
   PreferencesDto,
   ProfileResponse,
+  Raison,
+  RaisonActivation,
 } from '@wairyu/shared';
 
 export const profileRoutes = new Hono<AppEnv>();
@@ -167,6 +171,7 @@ profileRoutes.get('/profile', async (c) => {
     c.env.DB.prepare(
       `SELECT u.display_name, u.birth_year, u.birth_date, u.gender, u.orientation, u.intent, u.city, u.country,
               u.neighborhood, u.geo_region, u.bio, u.profile_consent_at, u.heritage, u.heritage_updated_at,
+              u.raison, u.raison_updated_at, u.raison_activation, u.raison_pause_reason,
               ap.username AS username
        FROM users u
        LEFT JOIN auth_password ap ON ap.user_id = u.id
@@ -189,6 +194,10 @@ profileRoutes.get('/profile', async (c) => {
         profile_consent_at: number | null;
         heritage: string | null;
         heritage_updated_at: number | null;
+        raison: string | null;
+        raison_updated_at: number | null;
+        raison_activation: string | null;
+        raison_pause_reason: string | null;
       }>(),
     c.env.DB.prepare(
       `SELECT prompt_key, answer FROM profile_prompts WHERE user_id = ? ORDER BY position ASC`,
@@ -244,6 +253,11 @@ profileRoutes.get('/profile', async (c) => {
     prompts: promptRows.map((p) => ({ key: p.prompt_key, answer: p.answer })),
     photos: await photosAsDto(c, photos, true),
     preferences: preferencesDto,
+    // Mission V18 — « Ta raison d'être ici » (voyage | rencontre | indecis).
+    raison: (basics.raison as Raison) ?? 'indecis',
+    raisonUpdatedAt: basics.raison_updated_at ?? null,
+    raisonActivation: (basics.raison_activation as RaisonActivation | null) ?? null,
+    raisonPauseReason: basics.raison_pause_reason ?? null,
     heritage: parseHeritage(basics.heritage),
     heritageUpdatedAt: basics.heritage_updated_at ?? null,
     profileComplete: isProfileComplete(
@@ -257,6 +271,7 @@ profileRoutes.get('/profile', async (c) => {
         city: basics.city,
         bio: basics.bio,
         profile_consent_at: basics.profile_consent_at,
+        raison: basics.raison,
       },
       { photoCount: photos.length, promptCount: promptRows.length, hasPreferences: prefs !== null },
     ),
@@ -274,7 +289,8 @@ profileRoutes.put('/profile', async (c) => {
 
   const current = await c.env.DB.prepare(
     `SELECT display_name, birth_year, birth_date, gender, orientation, intent, city, country,
-            neighborhood, geo_region, bio, profile_consent_at FROM users WHERE id = ? LIMIT 1`,
+            neighborhood, geo_region, bio, profile_consent_at,
+            raison, raison_updated_at, raison_pause_reason FROM users WHERE id = ? LIMIT 1`,
   )
     .bind(user.id)
     .first<{
@@ -290,8 +306,29 @@ profileRoutes.put('/profile', async (c) => {
       geo_region: string | null;
       bio: string | null;
       profile_consent_at: number | null;
+      raison: string | null;
+      raison_updated_at: number | null;
+      raison_pause_reason: string | null;
     }>();
   if (!current) throw errors.unauthorized();
+
+  // --- Mission V18 — raison effective de CETTE écriture (payload sinon actuelle).
+  const raisonCible = 'raison' in payload ? validateRaison(payload.raison) : ((current.raison as Raison) ?? 'indecis');
+  const raisonChange = raisonCible !== ((current.raison as Raison) ?? 'indecis');
+
+  // --- VERROU DE CONFIDENTIALITÉ V18 (A.4 / D.3 — par construction) :
+  // orientation et intention ne sont ÉCRIVABLES que par quelqu'un en
+  // recherche de rencontre. Un voyageur (ou indecis) ne peut pas déclarer
+  // une orientation — pas même via un appel API forgé. Le front ne rend
+  // déjà PAS la question (verrou primaire) ; celui-ci est le second rideau.
+  if (
+    ('orientation' in payload || 'intent' in payload) &&
+    raisonCible !== 'rencontre'
+  ) {
+    throw errors.badRequest(
+      'Orientation et intention ne sont proposées qu\'aux personnes en recherche de rencontre.',
+    );
+  }
 
   // --- Consentement explicite dédié : requis pour écrire orientation/intent/localisation.
   const touchesSensitive =
@@ -386,6 +423,36 @@ profileRoutes.put('/profile', async (c) => {
     sets.push('bio = ?');
     values.push(validateBio(payload.bio));
   }
+  if ('raison' in payload) {
+    // Mission V18 — bascule « Ta raison d'être ici ». RÉVERSIBLE À L'INFINI
+    // (B.4) dans les DEUX sens : aucune condition, aucun verrou de sens, et
+    // JAMAIS de suppression — les conversations, matchs et messages sont
+    // conservés pendant la pause (B.3, testé par ci/test_v18_raison.py T-3).
+    sets.push('raison = ?');
+    values.push(raisonCible);
+    sets.push('raison_updated_at = ?');
+    values.push(now);
+    if (raisonCible === 'rencontre') {
+      // Réactivation (B.4) : on efface la mémoire de la proposition et le
+      // motif de pause — la recherche repart propre.
+      sets.push('raison_activation = ?');
+      values.push(null);
+      sets.push('raison_pause_reason = ?');
+      values.push(null);
+    } else if (raisonCible === 'voyage' || raisonCible === 'indecis') {
+      // Pause (B.3) : motif libre optionnel — écrit uniquement ici.
+      if ('raisonPauseReason' in payload) {
+        sets.push('raison_pause_reason = ?');
+        values.push(validateRaisonPauseReason(payload.raisonPauseReason));
+      }
+    }
+  } else if ('raisonPauseReason' in payload) {
+    // Motif seul (sans bascule) — uniquement pour qui est déjà hors rencontre.
+    if (raisonCible !== 'rencontre') {
+      sets.push('raison_pause_reason = ?');
+      values.push(validateRaisonPauseReason(payload.raisonPauseReason));
+    }
+  }
   if ('heritage' in payload) {
     // Task 52 — héritage culturel : null = efface · objet = remplace (sanitisé).
     // JAMAIS compté comme « sensible » (il ne porte ni orientation/intention
@@ -422,6 +489,13 @@ profileRoutes.put('/profile', async (c) => {
     await c.env.DB.batch(stmts);
   }
 
+  if (raisonChange) {
+    // D.4 — métrique de conversion : COLLECTE SEULEMENT. Aucun code de
+    // découverte/matching ne lit metrics_daily (testé T-6) et la raison ne
+    // participe JAMAIS au score — la collecte n'oriente aucun produit vers
+    // une optimisation qui dégraderait le parcours.
+    await bumpMetric(c.env.DB, `raison.to.${raisonCible}`);
+  }
   await bumpMetric(c.env.DB, 'profile_saved');
   return c.json({ saved: true });
 });
@@ -465,6 +539,20 @@ profileRoutes.put('/profile/preferences', async (c) => {
   const user = await requireUser(c);
   const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
   if (!payload) throw errors.badRequest();
+
+  // VERROU DE CONFIDENTIALITÉ V18 (A.4 / D.3 — second rideau API) : les
+  // préférences de DÉCOUVERTE (genres recherchés, orientation recherchée,
+  // âge, distance) n'appartiennent qu'au bassin 'rencontre'. Un voyageur
+  // (ou indecis) ne peut pas configurer des filtres de rencontre — ni via
+  // l'écran (jamais rendu), ni via un appel API forgé.
+  const myRaison = await c.env.DB.prepare(`SELECT raison FROM users WHERE id = ? LIMIT 1`)
+    .bind(user.id)
+    .first<{ raison: string | null }>();
+  if ((myRaison?.raison ?? 'indecis') !== 'rencontre') {
+    throw errors.badRequest(
+      'Les préférences de découverte ne sont proposées qu\'aux personnes en recherche de rencontre.',
+    );
+  }
 
   const prefs = validatePreferences(payload);
   const now = Math.floor(Date.now() / 1000);

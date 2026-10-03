@@ -167,6 +167,34 @@ export type PrefGender = 'women' | 'men' | 'everyone';
 /** Task 60 — orientation déclarée (assistant étape 2) et filtre de découverte. */
 export type PrefOrientation = 'straight' | 'gay' | 'bi' | 'everyone';
 
+// ---------- Mission V18 : « Ta raison d'être ici » ----------
+
+/**
+ * Mission V18 — inversion architecturale : un parcours de connaissance de soi
+ * dont la rencontre est une destination OPTIONNELLE. La raison est choisie
+ * par l'utilisateur (3 cartes visuellement équivalentes — aucun niveau),
+ * modifiable à l'infini dans les deux sens (B.4), et ne participe JAMAIS
+ * au score de compatibilité (filtre dur de bassin uniquement — D.1).
+ *   voyage    — le parcours solo d'abord (11 mondes, portraits, carnet…) ;
+ *               ce profil n'apparaît JAMAIS dans la découverte ;
+ *   rencontre — la rencontre est activée (bassin de découverte + full pipeline) ;
+ *   indecis   — état par défaut : l'app ne présume RIEN, ni voyage ni rencontre.
+ * NOTE : le statut réservé couple_travail est JAMAIS câblé (Monde couple P3+
+ * SUR CADRAGE) — volontairement absent de ce type et du CHECK SQL (migration 0024).
+ */
+export type Raison = 'voyage' | 'rencontre' | 'indecis';
+/**
+ * Mémoire de la proposition d'activation (B.1 — posée une fois après un
+ * palier du parcours, jamais de spam) :
+ *   declined — « Pas maintenant » : plus AUCUNE relance automatique (le
+ *              retour à la rencontre reste possible via le profil, B.6) ;
+ *   later    — « Me le redemander plus tard » : reproposée au palier suivant
+ *              (nouvelles réponses doctrine depuis la dernière proposition).
+ */
+export type RaisonActivation = 'declined' | 'later';
+/** Réponses possibles de la proposition d'activation (B.1). */
+export type RaisonActivationAnswer = 'oui' | 'pas_maintenant' | 'plus_tard';
+
 /** Un prompt rempli (clé de la bibliothèque + réponse personnelle). */
 export interface PromptInput {
   key: string;
@@ -214,6 +242,14 @@ export interface ProfileResponse {
   preferences: PreferencesDto | null;
   /** Tous les champs requis sont-ils remplis (basics + ≥1 prompt + ≥1 photo + préférences) ? */
   profileComplete: boolean;
+  /** Mission V18 — « Ta raison d'être ici » : voyage | rencontre | indecis (défaut). */
+  raison: Raison;
+  /** Dernier changement de raison (epoch s) — null = jamais changé du défaut. */
+  raisonUpdatedAt: number | null;
+  /** Mémoire de la proposition d'activation (B.1) — null = jamais posée. */
+  raisonActivation: RaisonActivation | null;
+  /** Motif libre de la mise en pause (rencontre → voyage) — B.3. */
+  raisonPauseReason: string | null;
   /** Task 52 — Profil d'Héritage Enrichi (7 sections, tout optionnel). null = jamais rempli. */
   heritage: HeritageProfile | null;
   /** Dernière écriture de l'héritage (epoch s) — null = jamais écrit. */
@@ -248,6 +284,11 @@ export interface ProfileUpdate {
   bio?: string;
   /** Consentement explicite dédié — requis (true) au moins une fois. */
   consentAccepted?: boolean;
+  /** Mission V18 — change la raison d'être ici (voyage ↔ rencontre ↔ indecis,
+   * réversible à l'infini — B.4). La raison ne participe JAMAIS au score. */
+  raison?: Raison;
+  /** Motif libre de la pause (≤ 300 car.) — écrit quand on passe à 'voyage'. */
+  raisonPauseReason?: string | null;
   /** Remplace la liste des prompts (max 3). */
   prompts?: PromptInput[];
   /** Task 52 — héritage culturel : absent = inchangé · null = efface · objet = remplace (sanitisé). */
@@ -350,6 +391,9 @@ export interface MeResponse {
   sessionRenewed: boolean;
   /** Profil complet (Étape 3) : basics + ≥1 prompt + ≥1 photo + préférences. */
   profileComplete: boolean;
+  /** Mission V18 — la raison d'être ici pilote le bassin de découverte et la
+   * navigation (les voyageurs/indecis ne voient JAMAIS les onglets rencontre). */
+  raison: Raison;
   /** true = selfie approuvé — badge « Identité vérifiée » (Étape 7). */
   verified: boolean;
   /** Suspension active (backoffice) — epoch de fin (Étape 7). */
@@ -1043,9 +1087,20 @@ export interface DoctrineBankState {
   items: DoctrineQItem[];
   myAnswers: Record<string, DoctrineValue>;
   progress: DoctrineProgress;
+  /**
+   * Mission V18 — la raison d'être ici + éligibilité de la proposition
+   * d'activation (B.1). `activation.eligible` = raison ≠ 'rencontre' ET la
+   * proposition n'a jamais été déclinée définitivement ET (jamais posée OU
+   * nouvelles réponses doctrine depuis la dernière proposition — anti-spam :
+   * au plus 1 proposition par palier).
+   */
+  raison: Raison;
+  activation: { eligible: boolean };
 }
 
 export interface DoctrineAnswerResponse {
   saved: true;
   progress: DoctrineProgress;
+  /** Mission V18 — éligibilité recalculée après la réponse (palier éventuel). */
+  activationEligible?: boolean;
 }
