@@ -134,3 +134,35 @@ ces valeurs suffisent pour construire le design system du MVP.
 - [x] Marque visuelle minimale choisie (§0.6)
 
 **→ Passage à l'Étape 1 (Socle technique) autorisé.**
+
+## Annexe A — Liste WON'T + Amendement A-1 du périmètre signé (Gate 0)
+
+Ajoutée le 2026-10-04 sur tranchage du fondateur, en clôture des résultats F1 et F2 de l'audit de conformité A.2 (rapport du 2026-10-04). Append-only : le §0.1 ci-dessus n'est pas réécrit ; la présente annexe complète sa signature.
+
+### A.1 — Liste WON'T (frontière « ni plus »)
+
+Les capacités suivantes sont explicitées WON'T pour la phase signée — leur absence en production est un état conforme, non une dette :
+
+| Capacité | Statut | Source |
+|----------|--------|--------|
+| Appels audio (WebRTC) | Ne le fera pas (Phase 2) | Spécification fondatrice §12.7, l.6176 |
+| Questionnaire Niveau 3 | Ne le fera pas (Phase 2) | Spécification fondatrice §12.7, l.6178 |
+| Monétisation ACTIVE (paywall, abonnement, achat) | Ne sera pas avant l'Étape 8 | §0.1 l.23 (monétisation éteinte) + plan de réalisation, Étape 8 |
+
+Remarque : les écrans préfigurés existants (Likes, Moments, Coach, Events, Héritage, Boost) restent des extensions gratuites tracées au journal STATUS — ils ne franchissent aucune des trois frontières ci-dessus (ni paiement, ni audio temps réel, ni Questionnaire N3).
+
+### A.2 — Amendement A-1 du MUST l.23
+
+Le MUST l.23 « Monétisation câblée mais éteinte (flags à 0) » est modifié et se lit désormais :
+
+« Monétisation : éteinte — aucun paiement câblé ni exposé. Le câblage complet (tables de droits, middleware de flags, Stripe test) est un livrable de l'Étape 8 (plan de réalisation, §Étape 8). »
+
+Motif : l'état réel constaté par l'audit A.2 est « non câblée » (0 table, 0 route, 0 secret Stripe) ; l'amendement aligne le périmètre signé sur la réalité et confirme que la prévention de refonte relève de l'Étape 8.
+
+### A.3 — Portée de la signature
+
+Le §0.1 (MUST / SHOULD / COULD) et la présente annexe (WON'T + amendement A-1) forment ensemble le périmètre signé de la Gate 0. La présente annexe ne retire rien aux listes du §0.1.
+
+### A.4 — Validation
+
+Annexe A signée par le fondateur — 2026-10-04 (tranchage en clôture de l'audit A.2, constatations F1 et F2)
