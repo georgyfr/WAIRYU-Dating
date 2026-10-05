@@ -141,21 +141,25 @@ Ajoutée le 2026-10-04 sur tranchage du fondateur, en clôture des résultats F1
 
 ### A.1 — Liste WON'T (frontière « ni plus »)
 
-Les capacités suivantes sont explicitées WON'T pour la phase signée — leur absence en production est un état conforme, non une dette :
+Les capacités suivantes sont explicitement WON'T pour la phase signée — leur absence en production est un état conforme, non une dette :
 
 | Capacité | Statut | Source |
 |----------|--------|--------|
-| Appels audio (WebRTC) | Ne le fera pas (Phase 2) | Spécification fondatrice §12.7, l.6176 |
-| Questionnaire Niveau 3 | Ne le fera pas (Phase 2) | Spécification fondatrice §12.7, l.6178 |
-| Monétisation ACTIVE (paywall, abonnement, achat) | Ne sera pas avant l'Étape 8 | §0.1 l.23 (monétisation éteinte) + plan de réalisation, Étape 8 |
+| Appels audio (WebRTC) | Won't (Phase 2) | Spécification fondatrice §12.7, l.6176 |
+| Questionnaire Niveau 3 | Won't (Phase 2) | Spécification fondatrice §12.7, l.6178 |
+| Monétisation ACTIVE (paywall, abonnement, achat) | Won't avant l'Étape 8 | §0.1 l.23 (monétisation éteinte) + plan de réalisation, Étape 8 |
 
 Remarque : les écrans préfigurés existants (Likes, Moments, Coach, Events, Héritage, Boost) restent des extensions gratuites tracées au journal STATUS — ils ne franchissent aucune des trois frontières ci-dessus (ni paiement, ni audio temps réel, ni Questionnaire N3).
 
+
+> Verbatim source — spécification fondatrice v0.1, §12.7 (l.6175-6176) : « Appels audio — Won't (Phase 2) »
+
+> Verbatim source — spécification fondatrice v0.1, §12.7 (l.6177-6178) : « Questionnaire Niveau 3 — Won't (Phase 2) »
 ### A.2 — Amendement A-1 du MUST l.23
 
-Le MUST l.23 « Monétisation câblée mais éteinte (flags à 0) » est modifié et se lit désormais :
+Le MUST l.23 « Monétisation câblée mais éteinte (flags à 0) » est amendé et se lit désormais :
 
-« Monétisation : éteinte — aucun paiement câblé ni exposé. Le câblage complet (tables de droits, middleware de flags, Stripe test) est un livrable de l'Étape 8 (plan de réalisation, §Étape 8). »
+« Monétisation : éteinte — aucun paiement câblé ni exposé. Le câblage complet (tables d'entitlements, middleware de flags, Stripe test) est un livrable de l'Étape 8 (plan de réalisation, §Étape 8). »
 
 Motif : l'état réel constaté par l'audit A.2 est « non câblée » (0 table, 0 route, 0 secret Stripe) ; l'amendement aligne le périmètre signé sur la réalité et confirme que la prévention de refonte relève de l'Étape 8.
 
@@ -165,4 +169,4 @@ Le §0.1 (MUST / SHOULD / COULD) et la présente annexe (WON'T + amendement A-1)
 
 ### A.4 — Validation
 
-Annexe A signée par le fondateur — 2026-10-04 (tranchage en clôture de l'audit A.2, constatations F1 et F2)
+- [x] Annexe A signée par le fondateur — 2026-10-04 (tranchage en clôture de l'audit A.2, findings F1 et F2)
