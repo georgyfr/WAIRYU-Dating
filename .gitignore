@@ -1,0 +1,15 @@
+# Dépendances / builds
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Environnement / secrets — JAMAIS dans le dépôt
+.env
+.env.*
+*.local
+dev.vars
+
+# Éditeurs / OS
+.DS_Store
+.idea/
+.vscode/

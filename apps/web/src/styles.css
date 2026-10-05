@@ -1,0 +1,373 @@
+/* ═══════════════════════════════════════════════════════════
+   WAIRYU v2 — design system (identité extraite du logo 2026-10-05)
+   Palette validée par le fondateur :
+   crème #F5F1E6 · bleu nuit #172C3D · turquoise #45C0C6 /
+   clair #9FE0D6 · corail #FA6249 · gris-bleu #5C6670
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --c-cream: #f5f1e6;
+  --c-night: #172c3d;
+  --c-night-deep: #0f1f2c;
+  --c-turquoise: #45c0c6;
+  --c-turquoise-light: #9fe0d6;
+  --c-turquoise-deep: #2a9aa0;
+  --c-coral: #fa6249;
+  --c-coral-deep: #d94b34;
+  --c-gray-blue: #5c6670;
+  --c-white: #ffffff;
+  --c-line: #e4ddcb;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 12px rgba(23, 44, 61, 0.08);
+  --tabbar-h: 60px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/nunito-latin-var.v1.woff2') format('woff2-variations');
+  font-weight: 200 1000;
+  font-display: swap;
+}
+
+html,
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: var(--c-cream);
+  color: var(--c-night);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ── Coque applicative (mobile-first, centrée sur desktop) ── */
+.app-shell {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--c-cream);
+}
+
+@media (min-width: 520px) {
+  .app-shell {
+    box-shadow: 0 0 0 1px var(--c-line), 0 8px 40px rgba(23, 44, 61, 0.1);
+  }
+}
+
+/* ── En-tête ── */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+  background: var(--c-cream);
+  border-bottom: 1px solid var(--c-line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header .brand {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: var(--c-night);
+}
+
+.app-header .brand-accent {
+  color: var(--c-turquoise-deep);
+}
+
+/* ── Écran d'accueil ── */
+.welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 32px 28px calc(32px + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+.welcome-logo {
+  width: 168px;
+  height: 168px;
+  border-radius: 36px;
+  box-shadow: var(--shadow);
+}
+
+.welcome h1 {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.welcome h1 .accent {
+  color: var(--c-turquoise-deep);
+}
+
+.welcome p.tagline {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  max-width: 300px;
+}
+
+.welcome .promises {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.welcome .promise {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-night);
+}
+
+.welcome .promise .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-turquoise);
+  flex-shrink: 0;
+}
+
+.welcome .promise .dot.coral {
+  background: var(--c-coral);
+}
+
+/* ── Contenu d'écran ── */
+.screen {
+  flex: 1;
+  padding: 18px 20px calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.screen-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.screen-sub {
+  font-size: 14px;
+  color: var(--c-gray-blue);
+  margin-top: -10px;
+}
+
+/* ── Boutons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 800;
+  padding: 14px 22px;
+  min-height: 48px;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--c-night);
+  color: var(--c-cream);
+}
+
+.btn-primary:hover {
+  background: var(--c-night-deep);
+}
+
+.btn-accent {
+  background: var(--c-turquoise);
+  color: var(--c-night-deep);
+}
+
+.btn-accent:hover {
+  background: var(--c-turquoise-deep);
+  color: var(--c-white);
+}
+
+.btn-coral {
+  background: var(--c-coral);
+  color: var(--c-white);
+}
+
+.btn-coral:hover {
+  background: var(--c-coral-deep);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--c-night);
+  border: 2px solid var(--c-line);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ── Cartes de découverte ── */
+.card {
+  background: var(--c-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+}
+
+.profile-card .photo {
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--c-turquoise-light), var(--c-turquoise));
+  font-size: 56px;
+}
+
+.profile-card .body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-card .name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.profile-card .name {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.profile-card .age {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-turquoise-deep);
+}
+
+.profile-card .bio {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-gray-blue);
+}
+
+.profile-card .demo-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--c-coral-deep);
+  background: rgba(250, 98, 73, 0.12);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+/* ── État vide ── */
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.empty .emoji {
+  font-size: 44px;
+}
+
+.empty h2 {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.empty p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  max-width: 280px;
+}
+
+/* ── Barre d'onglets (sticky bottom, safe-area iOS) ── */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--c-white);
+  border-top: 1px solid var(--c-line);
+  display: flex;
+  z-index: 20;
+}
+
+.tabbar button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: none;
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--c-gray-blue);
+}
+
+.tabbar button .tab-icon {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.tabbar button.active {
+  color: var(--c-turquoise-deep);
+}
+
+.tabbar button:focus-visible {
+  outline: 2px solid var(--c-turquoise-deep);
+  outline-offset: -2px;
+}
