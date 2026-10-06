@@ -12,6 +12,7 @@ import { usageMiddleware } from './middleware/usage';
 import { healthRoutes } from './routes/health';
 import { adminRoutes } from './routes/admin';
 import { pushRoutes } from './routes/push';
+import { authRoutes } from './routes/auth';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -47,6 +48,7 @@ app.use('/api/*', sessionMiddleware);
 // ---- Routes ----
 app.route('/api', healthRoutes);
 app.route('/api', pushRoutes);
+app.route('/api', authRoutes);
 app.route('/admin', adminRoutes);
 
 // ---- Gestion d'erreurs unifiée ----
@@ -113,14 +115,17 @@ export default {
         const now = Math.floor(Date.now() / 1000);
         const day = new Date().toISOString().slice(0, 10);
 
-        const [sessions, windows, events, tombstones] = await Promise.all([
+        const [sessions, windows, events, tombstones, codes, resets] = await Promise.all([
           env.DB.prepare(`DELETE FROM sessions WHERE expires_at < ?`).bind(now - 86400 * 7).run(),
           // Fenêtres rate-limit clôturées depuis > 2 h
           env.DB.prepare(`DELETE FROM rate_limits WHERE window_start < ?`).bind(now - 7200).run(),
-          // Journal de notifications : 7 jours de rétention suffisants (Étape 2 reaffinera)
+          // Journal de notifications : 7 jours de rétention suffisants
           env.DB.prepare(`DELETE FROM notification_events WHERE created_at < ?`).bind(now - 7 * 86400).run(),
           // Traces de suppression > 30 j (RGPD — fin de conservation)
           env.DB.prepare(`DELETE FROM account_deletions WHERE purge_at < ?`).bind(now).run(),
+          // Codes OTP consommés/expirés depuis > 1 j + liens de reset consommés/expirés
+          env.DB.prepare(`DELETE FROM auth_codes WHERE expires_at < ?`).bind(now - 86400).run(),
+          env.DB.prepare(`DELETE FROM password_resets WHERE expires_at < ?`).bind(now - 86400).run(),
         ]);
         console.log(
           JSON.stringify({
@@ -130,6 +135,8 @@ export default {
               rate_windows: windows.meta.changes,
               notification_events: events.meta.changes,
               tombstones: tombstones.meta.changes,
+              auth_codes: codes.meta.changes,
+              password_resets: resets.meta.changes,
             },
           }),
         );

@@ -29,6 +29,8 @@ export const LIMITS = {
   maxPhotos: 6,
   /** Durée de vie d'une session en jours (glissant). */
   sessionDays: 30,
+  /** Durée de vie d'un code OTP en minutes (Étape 2). */
+  otpTtlMinutes: 10,
 } as const;
 
 /** Identifiants de métriques quotidiennes (table D1 metrics_daily). */

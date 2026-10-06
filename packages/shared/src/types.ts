@@ -14,7 +14,13 @@ export type ApiErrorCode =
   | 'not_found'
   | 'conflict'
   | 'rate_limited'
-  | 'internal';
+  | 'internal'
+  // Étape 2 — authentification
+  | 'not_configured'
+  | 'otp_invalid'
+  | 'otp_expired'
+  | 'otp_locked'
+  | 'reset_expired';
 
 export interface ApiErrorBody {
   error: {
@@ -110,4 +116,122 @@ export interface PushEventRow {
 /** GET /api/push/events — journal in-app (fonctionne sur TOUS les navigateurs). */
 export interface PushEventsResponse {
   events: PushEventRow[];
+}
+
+// ---------------------------------------------------------------------------
+// Authentification (Étape 2 — OTP email, OAuth, pseudo+mot de passe)
+// ---------------------------------------------------------------------------
+
+/** GET /api/auth/config — configuration publique d'authentification. */
+export interface AuthConfigResponse {
+  /** Clé de site Turnstile (null ⇒ widget non rendu). */
+  turnstileSiteKey: string | null;
+  googleEnabled: boolean;
+  /** client_id public requis par le bouton Google Identity Services. */
+  googleClientId: string | null;
+  facebookEnabled: boolean;
+  /** Canal d'envoi des codes : 'brevo' (prod configuré) ou 'dev' (staging sans clé). */
+  emailProvider: 'brevo' | 'dev';
+}
+
+/** POST /api/auth/otp/request. */
+export interface OtpRequestResponse {
+  sent: true;
+  channel: 'email' | 'dev';
+  /** Code en clair — UNIQUEMENT staging (mode dev ou bypass ADMIN_TOKEN). */
+  devCode?: string;
+}
+
+/** POST /api/auth/otp/verify. */
+export interface OtpVerifyResponse {
+  userId: string;
+  email: string;
+  /** true si le compte vient d'être créé (inscription). */
+  created: boolean;
+}
+
+/** GET /api/me — profil de l'utilisateur authentifié (schéma v2, Étape 3 l'étendra). */
+export interface MeResponse {
+  userId: string;
+  email: string;
+  displayName: string | null;
+  /** @pseudo de connexion (comptes classiques) — null pour les comptes email purs. */
+  username: string | null;
+  emailVerified: boolean;
+  status: UserStatus;
+  plan: 'free' | 'plus' | 'gold';
+  createdAt: number;
+  sessionRenewed: boolean;
+}
+
+/** POST /api/auth/password/register. */
+export interface PasswordRegisterResponse {
+  userId: string;
+  username: string;
+  /** Code de récupération « XXXX-XXXX-XXXX » — affiché UNE seule fois. */
+  recoveryCode: string;
+  created: true;
+}
+
+/** POST /api/auth/password/login. */
+export interface PasswordLoginResponse {
+  userId: string;
+  username: string;
+}
+
+/** POST /api/auth/password/recovery. */
+export interface PasswordRecoveryResponse {
+  ok: true;
+  /** true si le mot de passe a été remplacé (new_password fourni). */
+  reset: boolean;
+  username: string;
+}
+
+/** POST /api/auth/password/forgot. */
+export interface PasswordForgotResponse {
+  sent: true;
+  channel: 'email' | 'dev';
+  /** Lien de reset en clair — UNIQUEMENT staging (mode dev sans Brevo). */
+  devResetUrl?: string;
+}
+
+/** GET /api/auth/password/status (connecté). */
+export interface PasswordStatusResponse {
+  hasPassword: boolean;
+  hasRecoveryEmail: boolean;
+  recoveryEmailMasked: string | null;
+  username: string | null;
+  hasRecoveryCode: boolean;
+}
+
+/** POST /api/auth/facebook/link. */
+export interface FacebookLinkResponse {
+  linked: boolean;
+}
+
+/**
+ * GET /api/account/export — export RGPD (droit d'accès art. 15 + portabilité
+ * art. 20). Schéma v2 : couvre TOUTES les tables existantes à ce stade ; les
+ * étapes 3+ étendront la structure (les champs s'ajoutent, jamais cassés).
+ */
+export interface AccountExport {
+  exportedAt: string;
+  format: 'wairyu-export-v1';
+  user: Record<string, unknown>;
+  sessions: { active: number; revoked_total: number };
+  sessionsRecent: Record<string, unknown>[];
+  oauthIdentities: Record<string, unknown>[];
+  notifications: {
+    devices: Record<string, unknown>[];
+    pushSubscriptions: Record<string, unknown>[];
+    events: Record<string, unknown>[];
+    note: string;
+  };
+  credentials: {
+    hasPassword: boolean;
+    username: string | null;
+    note: string;
+  };
+  consents: Record<string, unknown>;
+  audit: { note: string };
 }

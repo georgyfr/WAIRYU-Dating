@@ -34,6 +34,24 @@ export interface Env {
    * Vide ⇒ statements vide (la TWA reste fonctionnelle avec barre d'URL).
    */
   ANDROID_CERT_FINGERPRINTS?: string;
+
+  // ---- Étape 2 : authentification (tous optionnels — dégradation gracieuse) ----
+  /** Clé de site Turnstile (PUBLIC — widget front). Absent ⇒ widget non rendu. */
+  TURNSTILE_SITE_KEY?: string;
+  /** Secret Turnstile (siteverify). En staging la vérification est SAUTÉE. */
+  TURNSTILE_SECRET?: string;
+  /** Clé API Brevo (emails OTP + reset). Absente ⇒ staging: mode dev / prod: 503. */
+  BREVO_API_KEY?: string;
+  /** Adresse expéditeur Brevo vérifiée (ex. noreply@…). */
+  EMAIL_FROM?: string;
+  /** Google OAuth — absents ⇒ connexion Google désactivée (signalé au front). */
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  /** Facebook Login — absents ⇒ connexion Facebook désactivée (signalé au front). */
+  FACEBOOK_APP_ID?: string;
+  FACEBOOK_APP_SECRET?: string;
+  /** Surcharge des scopes Meta (défaut public_profile — « email » refusé par Meta). */
+  FACEBOOK_SCOPES?: string;
 }
 
 /** Contexte de requête enrichi (Hono Variables). */
