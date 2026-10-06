@@ -5,6 +5,7 @@
  * suppression de compte (droit à l'effacement immédiat).
  */
 import { useEffect, useState } from 'react';
+import NotificationsCard from '../components/NotificationsCard';
 import {
   ApiError,
   deleteAccount,
@@ -155,6 +156,10 @@ export default function Profile() {
           )}
         </div>
       </article>
+
+      {/* Journal des notifications — y compris la félicitations de création
+          de compte : le fondateur doit POUVOIR relire l'annonce après coup. */}
+      <NotificationsCard />
 
       {error && (
         <p className="auth-error" role="alert">

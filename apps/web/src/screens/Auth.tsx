@@ -6,6 +6,7 @@
  * validée côté front ET côté serveur (double filet).
  */
 import { useCallback, useEffect, useState } from 'react';
+import BirthDatePicker from '../components/BirthDatePicker';
 import TurnstileWidget from '../components/TurnstileWidget';
 import {
   ApiError,
@@ -25,7 +26,8 @@ import type { AuthConfigResponse } from '@wairyu/shared';
 type Mode = 'choice' | 'otp-request' | 'otp-verify' | 'pwd-login' | 'pwd-register' | 'pwd-forgot' | 'pwd-recover';
 
 interface Props {
-  onAuthenticated: () => void;
+  /** congratsVia ≠ null ⇔ le compte vient d'être CRÉÉ ⇒ overlay félicitations. */
+  onAuthenticated: (congratsVia?: string | null) => void;
 }
 
 export default function Auth({ onAuthenticated }: Props) {
@@ -45,6 +47,8 @@ export default function Auth({ onAuthenticated }: Props) {
   const [password, setPassword] = useState('');
   const [identifier, setIdentifier] = useState('');
   const [recoveryCode, setRecoveryCode] = useState('');
+  /** Canal de la création (pseudo) retenu jusqu'au clic « C'est noté » — overlay félicitations. */
+  const [pwdVia, setPwdVia] = useState<string | null>(null);
 
   useEffect(() => {
     void fetchAuthConfig()
@@ -87,19 +91,17 @@ export default function Auth({ onAuthenticated }: Props) {
     setError('');
     setBusy(true);
     try {
-      await verifyOtp(email.trim(), code.trim(), needsBirth ? birthDate : null);
-      // Liaison appareil ↔ compte : cible des notifications + félicitations
-      // si le compte vient d'être créé (congrats_pending côté serveur).
-      void linkDevice(getDeviceId())
-        .then((lr) => {
-          if (lr.congrats) {
-            setMessage(
-              'Compte créé et enregistré — plus jamais besoin de te réinscrire ici. Bienvenue ! 🎉',
-            );
-          }
-        })
-        .catch(() => {});
-      onAuthenticated();
+      const r = await verifyOtp(email.trim(), code.trim(), birthDate || null);
+      // Liaison appareil ↔ compte — ATTENDUE : sa réponse (congratsVia) pilote
+      // l'overlay de félicitations VISIBLE (exigence fondateur, tous canaux).
+      let via: string | null = null;
+      try {
+        const lr = await linkDevice(getDeviceId());
+        if (lr.congrats) via = lr.congratsVia ?? 'email';
+      } catch {
+        // liaison ratée : l'overlay s'appuie sur le created du verify
+      }
+      onAuthenticated(via ?? (r.created ? 'email' : null));
     } catch (e) {
       if (e instanceof ApiError && /Date de naissance requise/.test(e.message)) {
         setNeedsBirth(true);
@@ -124,8 +126,14 @@ export default function Auth({ onAuthenticated }: Props) {
     try {
       const r = await passwordRegister(username, password, birthDate, turnstileToken);
       setRecoveryCode(r.recoveryCode);
-      // Liaison appareil + félicitations (compte créé via pseudo).
-      void linkDevice(getDeviceId()).catch(() => {});
+      // Liaison appareil + félicitations (compte créé via pseudo) — la réponse
+      // est retenue pour l'overlay affiché au clic « C'est noté — continuer ».
+      try {
+        const lr = await linkDevice(getDeviceId());
+        setPwdVia(lr.congrats ? (lr.congratsVia ?? 'password') : 'password');
+      } catch {
+        setPwdVia('password');
+      }
       go('pwd-recover'); // réutilisé comme écran « notez votre code »
       setMessage('Compte créé ! Notez précieusement ce code de récupération — il ne sera plus jamais affiché.');
     } catch (e) {
@@ -251,10 +259,11 @@ export default function Auth({ onAuthenticated }: Props) {
               </div>
             )}
             {needsBirth && (
-              <label className="field">
-                <span>Date de naissance (AAAA-MM-JJ)</span>
-                <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-              </label>
+              <BirthDatePicker
+                label="Date de naissance — 18 ans révolus requis"
+                value={birthDate}
+                onChange={setBirthDate}
+              />
             )}
           </div>
         )}
@@ -266,10 +275,12 @@ export default function Auth({ onAuthenticated }: Props) {
               <span>Email</span>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
-            <label className="field">
-              <span>Date de naissance — seulement si vous créez un compte</span>
-              <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-            </label>
+            <BirthDatePicker
+              label="Date de naissance — seulement si vous créez un compte"
+              value={birthDate}
+              onChange={setBirthDate}
+              onClear={() => setBirthDate('')}
+            />
             {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
             <button className="btn btn-primary btn-block" onClick={submitOtpRequest} disabled={busy || !email.trim()}>
               {busy ? 'Envoi…' : 'Recevoir mon code'}
@@ -296,10 +307,11 @@ export default function Auth({ onAuthenticated }: Props) {
               />
             </label>
             {needsBirth && (
-              <label className="field">
-                <span>Date de naissance (AAAA-MM-JJ) — pour vérifier que vous êtes majeur</span>
-                <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-              </label>
+              <BirthDatePicker
+                label="Date de naissance — pour vérifier que vous êtes majeur"
+                value={birthDate}
+                onChange={setBirthDate}
+              />
             )}
             <button
               className="btn btn-primary btn-block"
@@ -351,10 +363,11 @@ export default function Auth({ onAuthenticated }: Props) {
               <span>Mot de passe (8 caractères minimum)</span>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
             </label>
-            <label className="field">
-              <span>Date de naissance (AAAA-MM-JJ) — 18 ans révolus requis</span>
-              <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-            </label>
+            <BirthDatePicker
+              label="Date de naissance — 18 ans révolus requis"
+              value={birthDate}
+              onChange={setBirthDate}
+            />
             {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
             <button
               className="btn btn-primary btn-block"
@@ -395,7 +408,7 @@ export default function Auth({ onAuthenticated }: Props) {
                   <code>{recoveryCode}</code>
                   <p>Écrivez ce code sur papier ou dans vos notes. Il permet de reprendre votre compte sans email.</p>
                 </div>
-                <button className="btn btn-primary btn-block" onClick={onAuthenticated}>
+                <button className="btn btn-primary btn-block" onClick={() => onAuthenticated(pwdVia)}>
                   C'est noté — continuer
                 </button>
               </>

@@ -9,6 +9,7 @@ import OAuthComplete from './screens/OAuthComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
 import PushToast from './components/PushToast';
+import CongratsOverlay from './components/CongratsOverlay';
 import { autoArmWebPush, getDeviceId, registerDeviceOpen } from './lib/push-client';
 import { ApiError, fetchMe, linkDevice } from './lib/auth-client';
 
@@ -43,6 +44,8 @@ export default function App() {
   const [route, setRoute] = useState<Route>(() => readRoute());
   /** État de session : null = vérification en cours, false = déconnecté, true = connecté. */
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  /** Canal de la création de compte en cours ⇒ overlay félicitations (tous canaux). */
+  const [congrats, setCongrats] = useState<string | null>(null);
 
   // Boot : enregistre l'ouverture de l'appareil (première ouverture ⇒ événement
   // + push de bienvenue) puis arme le push ; vérifie la session (cookie signé).
@@ -73,31 +76,47 @@ export default function App() {
     const params = new URLSearchParams(window.location.hash.split('?')[1] ?? '');
     const google = params.get('google');
     const facebook = params.get('facebook');
-    const notice =
-      google === 'ok' || facebook === 'ok'
-        ? 'Connexion réussie — bienvenue !'
-        : google === 'retry' || facebook === 'retry'
-          ? 'La connexion sociale a été interrompue — réessayez, ou utilisez le code email.'
-          : google === 'unverified'
-            ? 'Cet email n\u2019est pas vérifié chez le fournisseur — utilisez le code email.'
-            : google === 'cancelled' || facebook === 'cancelled'
-              ? 'Connexion annulée.'
-              : google === 'error' || facebook === 'error'
-                ? params.get('msg') || 'La connexion sociale a échoué — réessayez, ou utilisez le code email.'
-                : null;
-    if (notice) window.alert(notice);
-    // Retour OAuth réussi : lie l'appareil au compte (félicitations en attente
-    // pour une CRÉATION via Google/Facebook → bulle OS + journal in-app).
-    if (google === 'ok' || facebook === 'ok') {
-      void linkDevice(getDeviceId()).catch(() => {});
+    const isOk = google === 'ok' || facebook === 'ok';
+    const notice = isOk
+      ? 'Connexion réussie — bienvenue !'
+      : google === 'retry' || facebook === 'retry'
+        ? 'La connexion sociale a été interrompue — réessayez, ou utilisez le code email.'
+        : google === 'unverified'
+          ? 'Cet email n\u2019est pas vérifié chez le fournisseur — utilisez le code email.'
+          : google === 'cancelled' || facebook === 'cancelled'
+            ? 'Connexion annulée.'
+            : google === 'error' || facebook === 'error'
+              ? params.get('msg') || 'La connexion sociale a échoué — réessayez, ou utilisez le code email.'
+              : null;
+    // Retour OAuth réussi : lie l'appareil au compte. Si le compte vient
+    // d'être CRÉÉ (congrats_pending), l'overlay félicitations s'affiche —
+    // sinon simple message de connexion.
+    if (isOk) {
+      void (async () => {
+        try {
+          const lr = await linkDevice(getDeviceId());
+          if (lr.congrats) setCongrats(lr.congratsVia ?? 'email');
+          else window.alert(notice);
+        } catch {
+          window.alert(notice);
+        }
+      })();
+    } else if (notice) {
+      window.alert(notice);
     }
     window.location.hash = '';
   }, []);
 
-  const onAuthenticated = () => {
+  const onAuthenticated = (congratsVia?: string | null) => {
     setAuthenticated(true);
+    if (congratsVia) setCongrats(congratsVia);
     if (window.location.hash) window.location.hash = '';
   };
+
+  /** Overlay félicitations — rendu au-dessus de TOUTES les vues authentifiées. */
+  const congratsOverlay = congrats ? (
+    <CongratsOverlay via={congrats} onClose={() => setCongrats(null)} />
+  ) : null;
 
   // ---- Routes spéciales (hash) — indépendantes de la session ----
   if (route.name === 'reset') {
@@ -108,6 +127,7 @@ export default function App() {
       <>
         <PushToast />
         <FbComplete onDone={onAuthenticated} />
+        {congratsOverlay}
       </>
     );
   }
@@ -116,6 +136,7 @@ export default function App() {
       <>
         <PushToast />
         <OAuthComplete via={route.via} onDone={onAuthenticated} />
+        {congratsOverlay}
       </>
     );
   }
@@ -152,6 +173,7 @@ export default function App() {
   return (
     <>
       <PushToast />
+      {congratsOverlay}
       <div className="app-shell">
         <header className="app-header">
           <img

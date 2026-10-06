@@ -12,11 +12,13 @@
  * saisie est revalidée sans renvoi d'email.
  */
 import { useState } from 'react';
+import BirthDatePicker from '../components/BirthDatePicker';
 import { ApiError, birthDateError, linkDevice, requestOtp, verifyOtp } from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
 
 interface Props {
-  onDone: () => void;
+  /** congratsVia ≠ null ⇔ compte créé pendant ce parcours ⇒ overlay félicitations. */
+  onDone: (congratsVia?: string | null) => void;
 }
 
 async function linkFacebook(): Promise<void> {
@@ -70,10 +72,17 @@ export default function FbComplete({ onDone }: Props) {
     }
     setBusy(true);
     try {
-      await verifyOtp(email.trim(), code.trim(), birthDate || null);
+      const v = await verifyOtp(email.trim(), code.trim(), birthDate || null);
       await linkFacebook();
-      void linkDevice(getDeviceId()).catch(() => {});
-      onDone();
+      // Liaison attendue : congratsVia pilote l'overlay félicitations (création).
+      let congratsVia: string | null = null;
+      try {
+        const lr = await linkDevice(getDeviceId());
+        if (lr.congrats) congratsVia = lr.congratsVia ?? 'facebook';
+      } catch {
+        // liaison ratée : repli sur le created du verify
+      }
+      onDone(congratsVia ?? (v.created ? 'facebook' : null));
     } catch (e) {
       if (e instanceof ApiError && /Date de naissance requise/.test(e.message)) {
         // Le code reste VALABLE (validation serveur avant consommation) :
@@ -106,10 +115,12 @@ export default function FbComplete({ onDone }: Props) {
                 <span>Email</span>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
-              <label className="field">
-                <span>Date de naissance — seulement si vous créez un compte</span>
-                <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-              </label>
+              <BirthDatePicker
+                label="Date de naissance — seulement si vous créez un compte"
+                value={birthDate}
+                onChange={setBirthDate}
+                onClear={() => setBirthDate('')}
+              />
               <button className="btn btn-primary btn-block" onClick={requestCode} disabled={busy || !email.trim()}>
                 {busy ? 'Envoi…' : 'Recevoir mon code'}
               </button>
@@ -127,10 +138,11 @@ export default function FbComplete({ onDone }: Props) {
                 />
               </label>
               {needsBirth && (
-                <label className="field">
-                  <span>Date de naissance (AAAA-MM-JJ) — pour vérifier que vous êtes majeur</span>
-                  <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-                </label>
+                <BirthDatePicker
+                  label="Date de naissance — pour vérifier que vous êtes majeur"
+                  value={birthDate}
+                  onChange={setBirthDate}
+                />
               )}
               <button
                 className="btn btn-primary btn-block"

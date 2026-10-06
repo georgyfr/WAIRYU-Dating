@@ -9,13 +9,15 @@
  * parcours que les inscriptions email / pseudo.
  */
 import { useState } from 'react';
+import BirthDatePicker from '../components/BirthDatePicker';
 import { ApiError, birthDateError, linkDevice, oauthComplete } from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
 
 interface Props {
   /** Fournisseur détecté dans le hash (#/oauth-complete?via=…) — purement décoratif. */
   via: 'google' | 'facebook' | null;
-  onDone: () => void;
+  /** congratsVia ≠ null ⇔ compte créé ⇒ overlay félicitations côté App. */
+  onDone: (congratsVia?: string | null) => void;
 }
 
 export default function OAuthComplete({ via, onDone }: Props) {
@@ -24,6 +26,7 @@ export default function OAuthComplete({ via, onDone }: Props) {
   const [stale, setStale] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  const providerKey = via === 'facebook' ? 'facebook' : 'google';
   const providerLabel = via === 'facebook' ? 'Facebook' : 'Google';
 
   const submit = async () => {
@@ -35,19 +38,27 @@ export default function OAuthComplete({ via, onDone }: Props) {
     }
     setBusy(true);
     try {
-      await oauthComplete(birthDate);
-      // Liaison appareil ↔ compte : notification de félicitations (compte
-      // créé via Google/Facebook → congrats_pending posé à la création).
-      void linkDevice(getDeviceId())
-        .then((lr) => {
-          if (lr.congrats) {
-            // Petit délai : laisse la bulle OS partir avant d'entrer dans l'app.
-            window.setTimeout(onDone, 600);
-            return;
-          }
-          onDone();
-        })
-        .catch(() => onDone());
+      const resp = await oauthComplete(birthDate);
+      // Liaison appareil ↔ compte — ATTENDUE : sa réponse (congrats) pilote
+      // l'overlay de félicitations visible côté App (tous canaux).
+      let congratsVia: string | null = null;
+      let pushOk = false;
+      try {
+        const lr = await linkDevice(getDeviceId());
+        if (lr.congrats) {
+          congratsVia = lr.congratsVia ?? providerKey;
+          pushOk = lr.congrats === 'push';
+        }
+      } catch {
+        // liaison ratée : l'overlay s'appuie sur le created de la complétion
+      }
+      const next = congratsVia ?? (resp.created ? providerKey : null);
+      if (pushOk) {
+        // Petit délai : laisse la bulle OS partir avant d'entrer dans l'app.
+        window.setTimeout(() => onDone(next), 600);
+        return;
+      }
+      onDone(next);
     } catch (e) {
       if (e instanceof ApiError && e.status === 400 && /en attente/i.test(e.message)) {
         // Cookie absent/expiré : le lien a vécu (> 10 min) ou navigation directe.
@@ -91,10 +102,11 @@ export default function OAuthComplete({ via, onDone }: Props) {
               avez 18 ans révolus.
             </p>
             <div className="auth-form">
-              <label className="field">
-                <span>Date de naissance (AAAA-MM-JJ)</span>
-                <input type="date" value={birthDate} min="1930-01-01" onChange={(e) => setBirthDate(e.target.value)} />
-              </label>
+              <BirthDatePicker
+                label="Date de naissance — 18 ans révolus requis"
+                value={birthDate}
+                onChange={setBirthDate}
+              />
               <button className="btn btn-primary btn-block" onClick={submit} disabled={busy || !birthDate}>
                 {busy ? 'Création…' : 'Créer mon compte'}
               </button>

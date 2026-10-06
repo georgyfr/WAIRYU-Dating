@@ -791,3 +791,227 @@ button {
     transform: translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Sélecteur de date de naissance — popup molettes (Jour /
+   Mois / Année) : chaque colonne défile librement avec
+   accrochage central. Remplace l'input date natif.
+   ═══════════════════════════════════════════════════════════ */
+
+.dp-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid var(--c-line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--c-night);
+  background: var(--c-cream);
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dp-trigger em {
+  font-style: normal;
+  color: var(--c-gray-blue);
+  opacity: 0.75;
+}
+
+.dp-trigger svg {
+  color: var(--c-turquoise-deep);
+  flex: 0 0 auto;
+}
+
+.dp-trigger:focus {
+  outline: none;
+  border-color: var(--c-turquoise);
+  background: var(--c-white);
+}
+
+.dp-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100; /* au-dessus de PushToast (1000) */
+  background: rgba(15, 31, 44, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: dp-fade 0.2s ease-out;
+}
+
+@media (min-width: 520px) {
+  .dp-backdrop {
+    align-items: center;
+  }
+}
+
+@keyframes dp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dp-sheet {
+  background: var(--c-white);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px 24px 0 0;
+  padding: 16px 18px calc(18px + env(safe-area-inset-bottom));
+  box-shadow: 0 -12px 48px rgba(15, 31, 44, 0.3);
+  animation: dp-slide-up 0.28s cubic-bezier(0.2, 1, 0.4, 1);
+}
+
+@media (min-width: 520px) {
+  .dp-sheet {
+    max-width: 420px;
+    border-radius: 24px;
+    padding-bottom: 18px;
+    animation-name: dp-pop;
+  }
+}
+
+@keyframes dp-slide-up {
+  from {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dp-pop {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.dp-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.dp-close {
+  border: none;
+  background: var(--c-cream);
+  color: var(--c-gray-blue);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+}
+
+.dp-close:hover {
+  background: var(--c-line);
+  color: var(--c-night);
+}
+
+.dp-cols {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.8fr 1.3fr 1fr;
+  gap: 6px;
+}
+
+/* Bande de sélection centrale */
+.dp-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+  border-top: 2px solid var(--c-turquoise);
+  border-bottom: 2px solid var(--c-turquoise);
+  background: rgba(69, 192, 198, 0.1);
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dp-wheel {
+  height: calc(44px * 5);
+  /* 2 lignes de marge haut/bas : la PREMIÈRE et la DERNIÈRE valeur peuvent
+     se centrer — sans ça, la bande surlignerait une valeur ≠ sélection. */
+  padding: calc(44px * 2) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  list-style: none;
+  text-align: center;
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  outline: none;
+  /* fondu haut/bas */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+}
+
+.dp-wheel::-webkit-scrollbar {
+  display: none;
+}
+
+.dp-wheel li {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-gray-blue);
+  opacity: 0.55;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.12s ease, opacity 0.12s ease, font-size 0.12s ease;
+}
+
+.dp-wheel li.sel {
+  color: var(--c-night);
+  font-weight: 900;
+  font-size: 18px;
+  opacity: 1;
+}
+
+.dp-error {
+  color: var(--c-coral-deep);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.dp-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.dp-actions .btn-primary {
+  flex: 1;
+}

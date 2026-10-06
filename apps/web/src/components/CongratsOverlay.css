@@ -1,0 +1,120 @@
+/* ═══════════════════════════════════════════════════════════
+   CongratsOverlay — félicitations à la création de compte
+   (tous canaux) : confettis + carte centrale.
+   ═══════════════════════════════════════════════════════════ */
+
+.cg-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200; /* au-dessus de PushToast (1000) */
+  background: rgba(15, 31, 44, 0.62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: cg-fade 0.25s ease-out;
+  overflow: hidden;
+}
+
+@keyframes cg-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cg-card {
+  position: relative;
+  z-index: 2;
+  background: var(--c-white);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(15, 31, 44, 0.35);
+  padding: 30px 24px calc(26px);
+  width: 100%;
+  max-width: 400px;
+  max-height: min(86dvh, 640px);
+  overflow-y: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: cg-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes cg-pop {
+  from {
+    transform: scale(0.85) translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.cg-logo {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.cg-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.2;
+}
+
+.cg-text {
+  font-size: 15px;
+  color: var(--c-gray-blue);
+  line-height: 1.55;
+}
+
+/* ── Confettis ── */
+.cg-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cg-confetti i {
+  position: absolute;
+  top: -48px;
+  font-style: normal;
+  font-size: 22px;
+  opacity: 0;
+  animation-name: cg-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes cg-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(110dvh) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg-confetti i,
+  .cg-card,
+  .cg-backdrop {
+    animation: none;
+  }
+}
