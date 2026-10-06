@@ -5,6 +5,7 @@ import Messages from './screens/Messages';
 import Profile from './screens/Profile';
 import Auth from './screens/Auth';
 import FbComplete from './screens/FbComplete';
+import OAuthComplete from './screens/OAuthComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
 import PushToast from './components/PushToast';
@@ -13,9 +14,13 @@ import { ApiError, fetchMe, linkDevice } from './lib/auth-client';
 
 type Stage = 'welcome' | Tab;
 /** Routes spéciales portées par le hash (OAuth, reset email, Meta). */
-type Route = { name: 'reset'; token: string } | { name: 'fb-complete' } | { name: 'default' };
+type Route =
+  | { name: 'reset'; token: string }
+  | { name: 'fb-complete' }
+  | { name: 'oauth-complete'; via: 'google' | 'facebook' | null }
+  | { name: 'default' };
 
-/** Lit le hash de navigation : #/reset?t=…, #/fb-complete, ou l'app. */
+/** Lit le hash de navigation : #/reset?t=…, #/fb-complete, #/oauth-complete?via=…, ou l'app. */
 function readRoute(): Route {
   const hash = window.location.hash;
   if (hash.startsWith('#/reset')) {
@@ -23,6 +28,13 @@ function readRoute(): Route {
     if (/^[0-9a-f]{64}$/.test(token)) return { name: 'reset', token };
   }
   if (hash.startsWith('#/fb-complete')) return { name: 'fb-complete' };
+  if (hash.startsWith('#/oauth-complete')) {
+    const via = new URLSearchParams(hash.split('?')[1] ?? '').get('via');
+    return {
+      name: 'oauth-complete',
+      via: via === 'facebook' ? 'facebook' : via === 'google' ? 'google' : null,
+    };
+  }
   return { name: 'default' };
 }
 
@@ -70,7 +82,9 @@ export default function App() {
             ? 'Cet email n\u2019est pas vérifié chez le fournisseur — utilisez le code email.'
             : google === 'cancelled' || facebook === 'cancelled'
               ? 'Connexion annulée.'
-              : null;
+              : google === 'error' || facebook === 'error'
+                ? params.get('msg') || 'La connexion sociale a échoué — réessayez, ou utilisez le code email.'
+                : null;
     if (notice) window.alert(notice);
     // Retour OAuth réussi : lie l'appareil au compte (félicitations en attente
     // pour une CRÉATION via Google/Facebook → bulle OS + journal in-app).
@@ -94,6 +108,14 @@ export default function App() {
       <>
         <PushToast />
         <FbComplete onDone={onAuthenticated} />
+      </>
+    );
+  }
+  if (route.name === 'oauth-complete') {
+    return (
+      <>
+        <PushToast />
+        <OAuthComplete via={route.via} onDone={onAuthenticated} />
       </>
     );
   }

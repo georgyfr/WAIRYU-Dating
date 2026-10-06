@@ -181,12 +181,13 @@ export default function Auth({ onAuthenticated }: Props) {
   };
 
   // ----------------------------------------------------------------- OAuth --
-  const oauthBirth = () => {
-    if (birthDateError(birthDate) === null) return `?birthDate=${encodeURIComponent(birthDate)}`;
-    setError('Renseignez d\u2019abord votre date de naissance (champ ci-dessous), puis recliquez.');
-    setNeedsBirth(true);
-    return null;
-  };
+  // Date déjà déclarée (écrans OTP) → transmise au /start : l'inscription se
+  // fait SANS étape intermédiaire. Sinon → lien simple : le serveur détecte
+  // les nouvelles inscriptions et propose l'écran #/oauth-complete (jamais
+  // de JSON brut, aucune friction pour les connexions). AUCUN effet de bord
+  // au rendu (l'ancien oauthBirth() faisait setState pendant le rendu).
+  const oauthQuery =
+    birthDate && birthDateError(birthDate) === null ? `?birthDate=${encodeURIComponent(birthDate)}` : '';
 
   // ------------------------------------------------------------------ Vue --
   return (
@@ -238,12 +239,12 @@ export default function Auth({ onAuthenticated }: Props) {
             {(config?.googleEnabled || config?.facebookEnabled) && (
               <div className="auth-alt">
                 {config.googleEnabled && (
-                  <a className="btn btn-ghost btn-block" href={`/api/auth/google/start${birthDate ? oauthBirth() ?? '' : ''}`}>
+                  <a className="btn btn-ghost btn-block" href={`/api/auth/google/start${oauthQuery}`}>
                     Continuer avec Google
                   </a>
                 )}
                 {config.facebookEnabled && (
-                  <a className="btn btn-ghost btn-block" href={`/api/auth/facebook/start${birthDate ? oauthBirth() ?? '' : ''}`}>
+                  <a className="btn btn-ghost btn-block" href={`/api/auth/facebook/start${oauthQuery}`}>
                     Continuer avec Facebook
                   </a>
                 )}

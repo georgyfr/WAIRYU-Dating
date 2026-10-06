@@ -7,6 +7,7 @@ import type {
   AuthConfigResponse,
   LinkDeviceResponse,
   MeResponse,
+  OAuthCompleteResponse,
   OtpRequestResponse,
   OtpVerifyResponse,
   PasswordForgotResponse,
@@ -79,6 +80,19 @@ export function verifyOtp(
   return api<OtpVerifyResponse>('/api/auth/otp/verify', {
     method: 'POST',
     body: JSON.stringify({ email, code, birthDate }),
+  });
+}
+
+/**
+ * POST /api/auth/oauth/complete — complétion différée d'une inscription
+ * Google/Facebook (écran #/oauth-complete) : la date de naissance validée
+ * côté serveur crée le compte, lie l'identité en attente (cookie signé)
+ * et ouvre la session. La félicitations part ensuite via linkDevice().
+ */
+export function oauthComplete(birthDate: string): Promise<OAuthCompleteResponse> {
+  return api<OAuthCompleteResponse>('/api/auth/oauth/complete', {
+    method: 'POST',
+    body: JSON.stringify({ birthDate }),
   });
 }
 

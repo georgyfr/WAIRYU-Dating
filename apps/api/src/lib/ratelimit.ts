@@ -112,6 +112,9 @@ export const RATE_RULES = {
   // --- Task 73 (fondateur) : mot de passe optionnel pour les comptes email ---
   /** Créations de mot de passe (connecté) par IP : 5 / heure (l'utilisateur est déjà authentifié, c'est surtout anti-abus). */
   pwSetIp: { scope: 'pw:set:ip', windowSeconds: 3600, max: 5 },
+  // --- Complétion d'inscription sociale différée (#/oauth-complete) ---
+  /** POST /auth/oauth/complete : 20 / h par IP (cookie signé requis en amont, l'IP est le seul vecteur libre). */
+  oauthCompleteIp: { scope: 'oauth:complete:ip', windowSeconds: 3600, max: 20 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

@@ -230,6 +230,20 @@ export interface FacebookLinkResponse {
 }
 
 /**
+ * POST /api/auth/oauth/complete — complétion d'inscription sociale différée.
+ * Le callback Google/Facebook a découvert un email SANS compte existant et
+ * SANS date de naissance déclarée : l'identité attend dans un cookie signé,
+ * l'utilisateur saisit sa date (18+ validé côté serveur) puis ce endpoint
+ * crée le compte, lie l'identité et ouvre la session.
+ */
+export interface OAuthCompleteResponse {
+  ok: true;
+  provider: 'google' | 'facebook';
+  /** true si le compte vient d'être créé (inscription), false = connexion/fusion. */
+  created: boolean;
+}
+
+/**
  * GET /api/account/export — export RGPD (droit d'accès art. 15 + portabilité
  * art. 20). Schéma v2 : couvre TOUTES les tables existantes à ce stade ; les
  * étapes 3+ étendront la structure (les champs s'ajoutent, jamais cassés).

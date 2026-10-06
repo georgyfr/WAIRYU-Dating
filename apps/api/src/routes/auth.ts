@@ -74,6 +74,7 @@ import type {
   AuthConfigResponse,
   FacebookLinkResponse,
   MeResponse,
+  OAuthCompleteResponse,
   OtpRequestResponse,
   OtpVerifyResponse,
   PasswordForgotResponse,
@@ -356,13 +357,11 @@ authRoutes.post('/auth/otp/verify', async (c) => {
     throw err;
   }
 
-  // 4) Consommation du code (+ hygiène : purge des autres lignes de cet email).
-  const now = Math.floor(Date.now() / 1000);
-  await c.env.DB.prepare(`UPDATE auth_codes SET consumed_at = ? WHERE email_hash = ?`)
-    .bind(now, emailHash)
-    .run();
-
-  // 5) Utilisateur : connexion OU création (fusion OTP/Google par email).
+  // 4) P0 âge — la validation de la date de naissance PRÉCÈDE la consommation
+  //    du code : un refus (absente ou mineur) laisse le code VALABLE, l'écran
+  //    affiche le champ et la MÊME saisie est revalidée (aucun renvoi requis).
+  //    Améliore aussi le rattrapage Facebook (#/fb-complete), qui repose sur
+  //    ce endpoint pour créer le compte.
   const existing = await c.env.DB.prepare(
     `SELECT id, email, display_name, status, plan, created_at, email_verified_at FROM users WHERE email = ? LIMIT 1`,
   )
@@ -376,12 +375,20 @@ authRoutes.post('/auth/otp/verify', async (c) => {
       created_at: number;
       email_verified_at: number | null;
     }>();
+  if (existing?.status === 'banned') throw errors.forbidden('Ce compte ne peut pas se connecter.');
+  const birth = existing ? null : await requireAdultBirthDate(c.env.DB, rawBirthDate, 'otp', emailHash);
 
+  // 5) Consommation du code (+ hygiène : purge des autres lignes de cet email).
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(`UPDATE auth_codes SET consumed_at = ? WHERE email_hash = ?`)
+    .bind(now, emailHash)
+    .run();
+
+  // 6) Utilisateur : connexion OU création (fusion OTP/Google par email).
   let userId: string;
   let wasCreated = false;
 
   if (existing) {
-    if (existing.status === 'banned') throw errors.forbidden('Ce compte ne peut pas se connecter.');
     userId = existing.id;
     if (!existing.email_verified_at) {
       await c.env.DB.prepare(`UPDATE users SET email_verified_at = ?, updated_at = ? WHERE id = ?`)
@@ -389,20 +396,17 @@ authRoutes.post('/auth/otp/verify', async (c) => {
         .run();
     }
   } else {
-    // P0 âge : inscription → date de naissance EXIGÉE et validée AVANT
-    // l'INSERT (18 ans révolus ; mineur → AUCUN compte, audit, 403).
-    const birth = await requireAdultBirthDate(c.env.DB, rawBirthDate, 'otp', emailHash);
     userId = crypto.randomUUID();
     await c.env.DB.prepare(
       `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, congrats_pending, congrats_via, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 'active', 'free', 1, 'email', ?, ?)`,
     )
-      .bind(userId, email, now, birth.birthYear, birth.birthDate, now, now)
+      .bind(userId, email, now, birth!.birthYear, birth!.birthDate, now, now)
       .run();
     wasCreated = true;
   }
 
-  // 6) Session + cookie signé.
+  // 7) Session + cookie signé.
   await createSession(c, userId);
   await bumpMetric(c.env.DB, 'otp_verified');
   if (wasCreated) await bumpMetric(c.env.DB, 'signup_completed');
@@ -556,6 +560,97 @@ function clearFacebookLinkCookie(c: Context<AppEnv>): void {
   );
 }
 
+// ---- Complétion différée des inscriptions sociales (Google/Facebook AVEC email) ----
+// P0 âge : une INSCRIPTION sociale exige une date de naissance, mais le
+// fondateur ne veut NI JSON brut NI friction pour les connexions. Quand le
+// callback découvre un email sans compte existant et sans date déclarée au
+// /start, il pose ce cookie signé court-lived (10 min) et renvoie vers
+// l'écran #/oauth-complete : l'utilisateur saisit sa date, puis
+// POST /auth/oauth/complete valide (18+), crée le compte, lie l'identité et
+// ouvre la session. Les comptes EXISTANTS ne passent jamais par là.
+
+const PENDING_OAUTH_COOKIE = 'wairyu_oauth_pending';
+const PENDING_OAUTH_TTL_SECONDS = 600;
+
+interface PendingOAuthPayload {
+  provider: 'google' | 'facebook';
+  /** ID utilisateur chez le fournisseur (sub Google / id Facebook). */
+  pid: string;
+  email: string;
+  name?: string;
+  exp: number;
+}
+
+function encodeSignedPayload(payload: unknown): string {
+  return btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_');
+}
+
+function decodeSignedPayload<T>(raw: string): T | null {
+  try {
+    return JSON.parse(atob(raw.replace(/-/g, '+').replace(/_/g, '/'))) as T;
+  } catch {
+    return null;
+  }
+}
+
+async function setPendingOAuthCookie(c: Context<AppEnv>, payload: PendingOAuthPayload): Promise<void> {
+  const raw = encodeSignedPayload(payload);
+  const sig = await signValue(raw, c.env.SESSION_HMAC_KEY);
+  c.header(
+    'Set-Cookie',
+    `${PENDING_OAUTH_COOKIE}=${raw}.${sig}; Path=/api/auth; Max-Age=${PENDING_OAUTH_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+    { append: true },
+  );
+}
+
+async function readPendingOAuthCookie(c: Context<AppEnv>): Promise<PendingOAuthPayload | null> {
+  const cookie = c.req.header('cookie') ?? '';
+  const match = cookie
+    .split(';')
+    .map((s) => s.trim())
+    .find((s) => s.startsWith(`${PENDING_OAUTH_COOKIE}=`));
+  if (!match) return null;
+  const [raw, sig] = match.slice(PENDING_OAUTH_COOKIE.length + 1).split('.');
+  if (!raw || !sig) return null;
+  if (!(await verifySignature(raw, sig, c.env.SESSION_HMAC_KEY))) return null;
+  const payload = decodeSignedPayload<PendingOAuthPayload>(raw);
+  if (!payload?.pid || !payload.email || payload.exp < Date.now() / 1000) return null;
+  if (payload.provider !== 'google' && payload.provider !== 'facebook') return null;
+  return payload;
+}
+
+function clearPendingOAuthCookie(c: Context<AppEnv>): void {
+  c.header(
+    'Set-Cookie',
+    `${PENDING_OAUTH_COOKIE}=; Path=/api/auth; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+    { append: true },
+  );
+}
+
+/**
+ * Retour OAuth convivial : l'utilisateur ne doit JAMAIS voir de JSON brut sur
+ * un callback (bug fondateur « Date de naissance requise » en clair). Chaque
+ * erreur connue revient dans l'app avec un message lisible (#/?provider=…).
+ */
+function oauthBack(provider: 'google' | 'facebook', kind: string, message?: string): string {
+  const p = new URLSearchParams({ [provider]: kind });
+  if (message) p.set('msg', message.slice(0, 200));
+  return `/#/?${p.toString()}`;
+}
+
+/**
+ * Le compte existe-t-il déjà pour cet email vérifié par le fournisseur ?
+ * Pré-contrôle des callbacks : il décide entre connexion directe (aucune
+ * friction) et inscription différée (complétion de la date de naissance).
+ */
+async function oauthEmailExists(db: D1Database, email: string): Promise<boolean> {
+  const row = await db
+    .prepare(`SELECT id FROM users WHERE email = ? LIMIT 1`)
+    .bind(email)
+    .first<{ id: string }>();
+  return !!row;
+}
+
 /**
  * Résout l'utilisateur pour un profil social : connexion si l'email existe déjà
  * (fusion OTP/social — aucune duplication), sinon création ; puis lie
@@ -634,14 +729,20 @@ authRoutes.get('/auth/google/start', async (c) => {
   const state = crypto.randomUUID();
   const redirectUri = new URL(c.req.url).origin + '/api/auth/google/callback';
   // P0 âge : date de naissance (si fournie) validée tôt et embarquée dans l'état.
-  const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate') ?? undefined, 'oauth_google');
-  await setOAuthStateCookie(c, 'google', {
-    state,
-    verifier,
-    exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
-    ...(birth ? { birth } : {}),
-  });
-  return c.redirect(buildAuthorizeUrl(env, redirectUri, state, challenge), 302);
+  // Un refus (mineur) ne doit pas non plus finir en JSON brut → retour app.
+  try {
+    const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate') ?? undefined, 'oauth_google');
+    await setOAuthStateCookie(c, 'google', {
+      state,
+      verifier,
+      exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+      ...(birth ? { birth } : {}),
+    });
+    return c.redirect(buildAuthorizeUrl(env, redirectUri, state, challenge), 302);
+  } catch (e) {
+    if (e instanceof AppError) return c.redirect(oauthBack('google', 'error', e.message), 302);
+    throw e;
+  }
 });
 
 authRoutes.get('/auth/google/callback', async (c) => {
@@ -653,15 +754,16 @@ authRoutes.get('/auth/google/callback', async (c) => {
 
   const state = await readOAuthStateCookie(c, 'google');
   if (!state || url.searchParams.get('state') !== state.state) {
-    throw errors.badRequest('Session Google invalide ou expirée. Recommencez.');
+    // Récupérable (cookie expiré, double callback) → retour app, jamais de JSON brut.
+    return c.redirect('/#/?google=retry', 302);
   }
 
   // L'échange du code (réseau Google) et la résolution du compte ne doivent
   // JAMAIS tuer le parcours d'un 500 JSON brut. Sur téléphone (réseau mobile
   // capricieux, double appui qui ré-émis le callback, code à usage unique
   // consommé), l'échec est RÉCUPÉRABLE → message doux + relance via
-  // #/?google=retry. Les AppError intentionnelles (compte banni, email
-  // invalide) gardent leur message propre en étant relancées telles quelles.
+  // #/?google=retry. Les AppError intentionnelles (compte banni, mineur,
+  // email invalide) reviennent dans l'app avec LEUR message lisible.
   try {
     const redirectUri = url.origin + '/api/auth/google/callback';
     const profile = await exchangeCodeForProfile(
@@ -674,11 +776,29 @@ authRoutes.get('/auth/google/callback', async (c) => {
     const email = normalizeEmail(profile.email);
     if (!email) throw errors.badRequest('Email Google invalide.');
 
+    // Inscription différée : nouvel email SANS date déclarée au /start →
+    // écran #/oauth-complete (l'identité attend dans un cookie signé) au lieu
+    // d'un 400 « Date de naissance requise » en JSON brut (bug fondateur).
+    // Un compte EXISTANT se connecte toujours sans friction.
+    if (!state.birth && !(await oauthEmailExists(c.env.DB, email))) {
+      await setPendingOAuthCookie(c, {
+        provider: 'google',
+        pid: profile.sub,
+        email,
+        ...(profile.name ? { name: profile.name } : {}),
+        exp: Math.floor(Date.now() / 1000) + PENDING_OAUTH_TTL_SECONDS,
+      });
+      clearOAuthStateCookie(c, 'google');
+      await bumpMetric(c.env.DB, 'oauth_signup_deferred');
+      return c.redirect('/#/oauth-complete?via=google', 302);
+    }
+
     const { userId, created } = await resolveOrCreateOAuthUser(
       c.env.DB,
       'google',
       { id: profile.sub, email, name: profile.name },
-      // P0 âge : la date vient du cookie d'état (absent → 400 avant INSERT).
+      // P0 âge : la date vient du cookie d'état (présente ici ou l'email
+      // existait déjà — sinon la branche ci-dessus a déjà détourné le flux).
       state.birth,
     );
     await createSession(c, userId);
@@ -687,7 +807,7 @@ authRoutes.get('/auth/google/callback', async (c) => {
     clearOAuthStateCookie(c, 'google');
     return c.redirect('/#/?google=ok', 302);
   } catch (e) {
-    if (e instanceof AppError) throw e;
+    if (e instanceof AppError) return c.redirect(oauthBack('google', 'error', e.message), 302);
     console.error(
       `[oauth:google] échange/résolution échoués (récupérable) : ${e instanceof Error ? e.message : String(e)}`,
     );
@@ -705,13 +825,19 @@ authRoutes.get('/auth/facebook/start', async (c) => {
   const state = crypto.randomUUID();
   const redirectUri = new URL(c.req.url).origin + '/api/auth/facebook/callback';
   // P0 âge : date de naissance (si fournie) validée tôt et embarquée dans l'état.
-  const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate') ?? undefined, 'oauth_facebook');
-  await setOAuthStateCookie(c, 'facebook', {
-    state,
-    exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
-    ...(birth ? { birth } : {}),
-  });
-  return c.redirect(buildFacebookAuthorizeUrl(env, redirectUri, state), 302);
+  // Un refus (mineur) ne doit pas non plus finir en JSON brut → retour app.
+  try {
+    const birth = await oauthStartBirthDate(c.env.DB, c.req.query('birthDate') ?? undefined, 'oauth_facebook');
+    await setOAuthStateCookie(c, 'facebook', {
+      state,
+      exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+      ...(birth ? { birth } : {}),
+    });
+    return c.redirect(buildFacebookAuthorizeUrl(env, redirectUri, state), 302);
+  } catch (e) {
+    if (e instanceof AppError) return c.redirect(oauthBack('facebook', 'error', e.message), 302);
+    throw e;
+  }
 });
 
 authRoutes.get('/auth/facebook/callback', async (c) => {
@@ -723,11 +849,13 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
 
   const state = await readOAuthStateCookie(c, 'facebook');
   if (!state || url.searchParams.get('state') !== state.state) {
-    throw errors.badRequest('Session Facebook invalide ou expirée. Recommencez.');
+    // Récupérable (cookie expiré, double callback) → retour app, jamais de JSON brut.
+    return c.redirect('/#/?facebook=retry', 302);
   }
 
   // Même blindage que Google — les échecs récupérables (code consommé par un
-  // callback rejoué, coupure réseau) renvoient vers #/?facebook=retry.
+  // callback rejoué, coupure réseau) renvoient vers #/?facebook=retry ; les
+  // AppError intentionnelles reviennent dans l'app avec LEUR message lisible.
   try {
     const redirectUri = url.origin + '/api/auth/facebook/callback';
     const profile = await exchangeFacebookCodeForProfile(
@@ -749,11 +877,27 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
       return c.redirect('/#/fb-complete', 302);
     }
 
+    // Inscription différée — MÊME CORRECTIF que Google (aucun JSON brut) :
+    // nouvel email SANS date déclarée → écran #/oauth-complete.
+    if (!state.birth && !(await oauthEmailExists(c.env.DB, email))) {
+      await setPendingOAuthCookie(c, {
+        provider: 'facebook',
+        pid: profile.id,
+        email,
+        ...(profile.name ? { name: profile.name } : {}),
+        exp: Math.floor(Date.now() / 1000) + PENDING_OAUTH_TTL_SECONDS,
+      });
+      clearOAuthStateCookie(c, 'facebook');
+      await bumpMetric(c.env.DB, 'oauth_signup_deferred');
+      return c.redirect('/#/oauth-complete?via=facebook', 302);
+    }
+
     const { userId, created } = await resolveOrCreateOAuthUser(
       c.env.DB,
       'facebook',
       { id: profile.id, email, name: profile.name },
-      // P0 âge : la date vient du cookie d'état (absent → 400 avant INSERT).
+      // P0 âge : la date vient du cookie d'état (présente ici ou l'email
+      // existait déjà — sinon la branche ci-dessus a déjà détourné le flux).
       state.birth,
     );
     await createSession(c, userId);
@@ -762,12 +906,77 @@ authRoutes.get('/auth/facebook/callback', async (c) => {
     clearOAuthStateCookie(c, 'facebook');
     return c.redirect('/#/?facebook=ok', 302);
   } catch (e) {
-    if (e instanceof AppError) throw e;
+    if (e instanceof AppError) return c.redirect(oauthBack('facebook', 'error', e.message), 302);
     console.error(
       `[oauth:facebook] échange/résolution échoués (récupérable) : ${e instanceof Error ? e.message : String(e)}`,
     );
     return c.redirect('/#/?facebook=retry', 302);
   }
+});
+
+// ---- Complétion différée de l'inscription sociale (#/oauth-complete) ----
+// Suite du correctif « Date de naissance requise » en JSON brut : le callback
+// Google/Facebook a détourné les NOUVELLES inscriptions sans date vers cet
+// écran. L'identité attend dans le cookie signé wairyu_oauth_pending ; la
+// validation 18+ (requireAdultBirthDate) reste LE garde-fou avant INSERT.
+// Fusion inchangée : si l'email existe déjà (compte créé entre-temps), le
+// endpoint se comporte en connexion + liaison d'identité, sans exiger la date.
+
+authRoutes.post('/auth/oauth/complete', async (c) => {
+  const pending = await readPendingOAuthCookie(c);
+  if (!pending) {
+    throw errors.badRequest(
+      'Aucune connexion Google/Facebook en attente (lien expiré). Recommencez depuis le bouton Google ou Facebook.',
+    );
+  }
+
+  // Anti-abus : le cookie signé prouve le passage OAuth, l'IP reste le seul
+  // vecteur libre → fenêtre D1 dédiée.
+  const ip = await ipHash(c);
+  const perIp = await hitRateLimit(c.env.DB, RATE_RULES.oauthCompleteIp, ip);
+  if (!perIp.allowed) throw rateLimitedError(perIp.retryAfterSeconds, RATE_RULES.oauthCompleteIp.scope);
+
+  const payload = await c.req.json().catch(() => null);
+  const birthRaw = (payload as { birthDate?: unknown } | null)?.birthDate;
+
+  // resolveOrCreateOAuthUser valide la date UNIQUEMENT sur la branche
+  // création (mineur → audit + 403 générique) ; branche connexion = fusion.
+  const { userId, created } = await resolveOrCreateOAuthUser(
+    c.env.DB,
+    pending.provider,
+    { id: pending.pid, email: pending.email, name: pending.name },
+    birthRaw,
+  );
+
+  await createSession(c, userId);
+  if (created) await bumpMetric(c.env.DB, 'signup_completed');
+  await bumpMetric(c.env.DB, pending.provider === 'google' ? 'login_google' : 'login_facebook');
+  clearPendingOAuthCookie(c);
+
+  const body: OAuthCompleteResponse = { ok: true, provider: pending.provider, created };
+  return c.json(body);
+});
+
+// ---- Seed smoke (STAGING UNIQUEMENT) : pose un cookie pending factice ----
+// Même politique que le bypass ADMIN_TOKEN de l'OTP : permet de tester
+// /auth/oauth/complete de bout en bout (création, 403 mineur, 400 sans date)
+// sans compte Google/Facebook réel. En production : 404 (endpoint absent).
+authRoutes.post('/auth/oauth/seed', async (c) => {
+  const authHeader = c.req.header('authorization') ?? '';
+  if (c.env.ENVIRONMENT !== 'staging' || !c.env.ADMIN_TOKEN || authHeader !== `Bearer ${c.env.ADMIN_TOKEN}`) {
+    throw errors.notFound();
+  }
+  const payload = (await c.req.json().catch(() => ({}))) as { provider?: string; email?: string; pid?: string };
+  const provider = payload.provider === 'facebook' ? 'facebook' : 'google';
+  const email = normalizeEmail(payload.email ?? '');
+  if (!email) throw errors.badRequest('email requis pour le seed smoke.');
+  await setPendingOAuthCookie(c, {
+    provider,
+    pid: payload.pid ?? `smoke-${provider}-${Date.now()}`,
+    email,
+    exp: Math.floor(Date.now() / 1000) + PENDING_OAUTH_TTL_SECONDS,
+  });
+  return c.json({ seeded: true, provider, email });
 });
 
 // ---- Rattachement d'une identité Facebook en attente (complétion email) ----
