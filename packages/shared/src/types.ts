@@ -137,9 +137,29 @@ export interface AuthConfigResponse {
 /** POST /api/auth/otp/request. */
 export interface OtpRequestResponse {
   sent: true;
-  channel: 'email' | 'dev';
+  /**
+   * 'email' : code envoyé par email (filet systématique).
+   * 'email+push' : le code a AUSSI été relayé en notification sur les appareils
+   *   déjà liés à ce compte (plus besoin de fouiller la boîte mail).
+   * 'dev' : staging sans clé Brevo — le code revient en clair (devCode).
+   */
+  channel: 'email' | 'email+push' | 'dev';
   /** Code en clair — UNIQUEMENT staging (mode dev ou bypass ADMIN_TOKEN). */
   devCode?: string;
+}
+
+/** POST /api/push/link-device — liaison appareil ↔ compte + félicitations. */
+export interface LinkDeviceResponse {
+  linked: true;
+  /**
+   * 'push' : félicitations envoyées en notification OS + journal.
+   * 'inapp' : félicitations consignées au journal in-app seulement
+   *   (appareil sans abonnement push — canal universel 2016/2017).
+   * null : rien à fêter (connexion d'un compte existant, ou déjà fêté).
+   */
+  congrats: 'push' | 'inapp' | null;
+  /** Canal de création du compte fêté (email/google/facebook/password). */
+  congratsVia: string | null;
 }
 
 /** POST /api/auth/otp/verify. */

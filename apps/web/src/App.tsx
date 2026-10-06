@@ -7,8 +7,9 @@ import Auth from './screens/Auth';
 import FbComplete from './screens/FbComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
-import { autoArmWebPush, registerDeviceOpen } from './lib/push-client';
-import { ApiError, fetchMe } from './lib/auth-client';
+import PushToast from './components/PushToast';
+import { autoArmWebPush, getDeviceId, registerDeviceOpen } from './lib/push-client';
+import { ApiError, fetchMe, linkDevice } from './lib/auth-client';
 
 type Stage = 'welcome' | Tab;
 /** Routes spéciales portées par le hash (OAuth, reset email, Meta). */
@@ -38,7 +39,12 @@ export default function App() {
     void autoArmWebPush();
 
     void fetchMe()
-      .then(() => setAuthenticated(true))
+      .then(() => {
+        setAuthenticated(true);
+        // Session existante : (re)lie l'appareil au compte — cible des
+        // notifications + félicitations en attente éventuelle.
+        void linkDevice(getDeviceId()).catch(() => {});
+      })
       .catch((e: unknown) => {
         if (e instanceof ApiError && e.status === 401) setAuthenticated(false);
         else setAuthenticated(false); // erreur réseau → écran d'auth, retentera
@@ -66,6 +72,11 @@ export default function App() {
               ? 'Connexion annulée.'
               : null;
     if (notice) window.alert(notice);
+    // Retour OAuth réussi : lie l'appareil au compte (félicitations en attente
+    // pour une CRÉATION via Google/Facebook → bulle OS + journal in-app).
+    if (google === 'ok' || facebook === 'ok') {
+      void linkDevice(getDeviceId()).catch(() => {});
+    }
     window.location.hash = '';
   }, []);
 
@@ -79,7 +90,12 @@ export default function App() {
     return <ResetPassword token={route.token} onDone={onAuthenticated} />;
   }
   if (route.name === 'fb-complete') {
-    return <FbComplete onDone={onAuthenticated} />;
+    return (
+      <>
+        <PushToast />
+        <FbComplete onDone={onAuthenticated} />
+      </>
+    );
   }
 
   // ---- Session en cours de vérification : écran d'accueil statique ----
@@ -102,27 +118,35 @@ export default function App() {
     if (stage === 'welcome') {
       return <Welcome onStart={() => setStage('discover')} />;
     }
-    return <Auth onAuthenticated={onAuthenticated} />;
+    return (
+      <>
+        <PushToast />
+        <Auth onAuthenticated={onAuthenticated} />
+      </>
+    );
   }
 
   // ---- Connecté : app ----
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <img
-          src="/icons/favicon-48.png"
-          alt="Logo Wairyu — deux bulles de dialogue reliées"
-          width={28}
-          height={28}
-        />
-        <span className="brand">
-          Wai<span className="brand-accent">ryu</span>
-        </span>
-      </header>
-      {stage === 'discover' && <Discover />}
-      {stage === 'messages' && <Messages />}
-      {stage === 'profile' && <Profile />}
-      <TabBar active={stage as Tab} onSelect={setStage} />
-    </div>
+    <>
+      <PushToast />
+      <div className="app-shell">
+        <header className="app-header">
+          <img
+            src="/icons/favicon-48.png"
+            alt="Logo Wairyu — deux bulles de dialogue reliées"
+            width={28}
+            height={28}
+          />
+          <span className="brand">
+            Wai<span className="brand-accent">ryu</span>
+          </span>
+        </header>
+        {stage === 'discover' && <Discover />}
+        {stage === 'messages' && <Messages />}
+        {stage === 'profile' && <Profile />}
+        <TabBar active={stage as Tab} onSelect={setStage} />
+      </div>
+    </>
   );
 }

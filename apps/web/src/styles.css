@@ -742,3 +742,52 @@ button {
   color: var(--c-coral-deep);
   border-color: var(--c-coral);
 }
+
+/* ---------------------------------------------------------------------------
+   PushToast — relais visible des pushes page au premier plan (code OTP,
+   activité). Position fixe au-dessus de la TabBar, z-index élevé.
+--------------------------------------------------------------------------- */
+.push-toasts {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.push-toast {
+  background: var(--c-night, #172c3d);
+  color: var(--c-cream, #f5f1e6);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 24px rgba(23, 44, 61, 0.35);
+  animation: push-toast-in 0.25s ease-out;
+}
+
+.push-toast strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.push-toast p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.92;
+  white-space: pre-wrap;
+}
+
+@keyframes push-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

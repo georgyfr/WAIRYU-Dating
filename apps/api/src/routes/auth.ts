@@ -67,6 +67,8 @@ import {
   revokeCurrentSession,
 } from '../lib/auth';
 import { signValue, verifySignature } from '../lib/session';
+import { sendPushToDevice } from '../lib/push';
+import { LIMITS } from '@wairyu/shared';
 import type {
   AccountExport,
   AuthConfigResponse,
@@ -173,6 +175,11 @@ authRoutes.get('/auth/config', (c) => {
 
 // ---------------------------------------------------------------------------
 // POST /api/auth/otp/request — demande d'un code (inscription OU connexion)
+// Relais fondateur : le code est AUSSI poussé en notification sur les appareils
+// DÉJÀ liés au compte (devices liés par session) — l'utilisateur n'a plus à
+// fouiller sa boîte mail. L'email reste TOUJOURS envoyé (filet systématique).
+// Anti-abus : un appareil NON lié ne reçoit JAMAIS le code d'un autre compte
+// (l'appareil demandeur n'est pas considéré tant qu'il n'a pas de session liée).
 // ---------------------------------------------------------------------------
 authRoutes.post('/auth/otp/request', async (c) => {
   const payload = await c.req.json().catch(() => null);
@@ -240,10 +247,57 @@ authRoutes.post('/auth/otp/request', async (c) => {
   // 6) Envoi (Brevo ou mode dev staging).
   const sent = await sendOtpEmail(c.env, email, code, created);
   await bumpMetric(c.env.DB, 'otp_sent');
-  // NB : le relais du code par notification push (v1 Task 73) suivra — il
-  // demande la liaison device→user_id, livrée avec le ciblage utilisateur.
 
-  const body: OtpRequestResponse = { sent: true, channel: sent.channel };
+  // 7) Relais du code en notification (fondateur) — UNIQUEMENT pour une
+  //    CONNEXION (compte existant) et uniquement vers les appareils déjà
+  //    liés à ce compte via une session (jamais l'appareil anonyme demandeur).
+  let pushRelayed = false;
+  if (user) {
+    const linked = await c.env.DB.prepare(
+      `SELECT device_id FROM device_push_subscriptions WHERE user_id = ?`,
+    )
+      .bind(user.id)
+      .all<{ device_id: string }>();
+    for (const row of linked.results ?? []) {
+      const r = await sendPushToDevice(c.env, row.device_id, {
+        title: 'WAIRYU — ton code de connexion',
+        body: `Code : ${code} (valable ${LIMITS.otpTtlMinutes} minutes). Personne ne te demandera ce code.`,
+        tag: 'wairyu-otp',
+        url: '/',
+        force: false,
+        kind: 'auth',
+      });
+      const pushOk = r.sent > 0;
+      pushRelayed = pushRelayed || pushOk;
+      await c.env.DB
+        .prepare(
+          `INSERT INTO notification_events (id, device_id, user_id, kind, title, body, channel, delivered, error, created_at)
+           VALUES (?, ?, ?, 'otp', ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          crypto.randomUUID(),
+          row.device_id,
+          user.id,
+          pushOk ? 'WAIRYU — ton code de connexion' : 'Code de connexion disponible',
+          `Code : ${code} (valable ${LIMITS.otpTtlMinutes} minutes).`,
+          pushOk ? 'push' : 'inapp',
+          1,
+          r.error ?? null,
+          Math.floor(Date.now() / 1000),
+        )
+        .run();
+      if (r.gone) {
+        await c.env.DB.prepare(`DELETE FROM device_push_subscriptions WHERE device_id = ?`)
+          .bind(row.device_id)
+          .run();
+      }
+    }
+  }
+
+  const body: OtpRequestResponse = {
+    sent: true,
+    channel: sent.channel === 'dev' ? 'dev' : pushRelayed ? 'email+push' : 'email',
+  };
   if (smokeBypassOtp) body.devCode = code; // staging + ADMIN_TOKEN uniquement
   else if (sent.devCode) body.devCode = sent.devCode; // staging-dev sans clé Brevo
   return c.json(body);
@@ -340,8 +394,8 @@ authRoutes.post('/auth/otp/verify', async (c) => {
     const birth = await requireAdultBirthDate(c.env.DB, rawBirthDate, 'otp', emailHash);
     userId = crypto.randomUUID();
     await c.env.DB.prepare(
-      `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 'active', 'free', ?, ?)`,
+      `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, congrats_pending, congrats_via, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 'active', 'free', 1, 'email', ?, ?)`,
     )
       .bind(userId, email, now, birth.birthYear, birth.birthDate, now, now)
       .run();
@@ -538,10 +592,20 @@ async function resolveOrCreateOAuthUser(
     userId = crypto.randomUUID();
     await db
       .prepare(
-        `INSERT INTO users (id, email, email_verified_at, display_name, birth_year, birth_date, status, plan, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, 'active', 'free', ?, ?)`,
+        `INSERT INTO users (id, email, email_verified_at, display_name, birth_year, birth_date, status, plan, congrats_pending, congrats_via, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, 'active', 'free', 1, ?, ?, ?)`,
       )
-      .bind(userId, profile.email, now, profile.name?.slice(0, 40) ?? null, birth.birthYear, birth.birthDate, now, now)
+      .bind(
+        userId,
+        profile.email,
+        now,
+        profile.name?.slice(0, 40) ?? null,
+        birth.birthYear,
+        birth.birthDate,
+        provider,
+        now,
+        now,
+      )
       .run();
     created = true;
   }
@@ -1131,8 +1195,8 @@ authRoutes.post('/auth/password/register', async (c) => {
   // users d'abord (email placeholder UNIQUE) — si auth_password échoue
   // (pseudo pris entre-temps), on nettoie : AUCUN compte orphelin.
   await c.env.DB.prepare(
-    `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, created_at, updated_at)
-     VALUES (?, ?, NULL, ?, ?, 'active', 'free', ?, ?)`,
+    `INSERT INTO users (id, email, email_verified_at, birth_year, birth_date, status, plan, congrats_pending, congrats_via, created_at, updated_at)
+     VALUES (?, ?, NULL, ?, ?, 'active', 'free', 1, 'password', ?, ?)`,
   )
     .bind(userId, placeholderEmail(), birth.birthYear, birth.birthDate, now, now)
     .run();

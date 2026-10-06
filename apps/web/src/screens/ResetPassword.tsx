@@ -4,7 +4,8 @@
  * serveur ne stocke que son SHA-256 et la consommation est unique.
  */
 import { useState } from 'react';
-import { ApiError, passwordReset } from '../lib/auth-client';
+import { ApiError, linkDevice, passwordReset } from '../lib/auth-client';
+import { getDeviceId } from '../lib/push-client';
 
 interface Props {
   token: string;
@@ -25,6 +26,7 @@ export default function ResetPassword({ token, onDone }: Props) {
     setBusy(true);
     try {
       await passwordReset(token, password);
+      void linkDevice(getDeviceId()).catch(() => {});
       onDone();
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');

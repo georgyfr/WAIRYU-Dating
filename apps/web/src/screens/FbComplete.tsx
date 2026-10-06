@@ -6,7 +6,8 @@
  * à son compte via POST /api/auth/facebook/link.
  */
 import { useState } from 'react';
-import { ApiError, requestOtp, verifyOtp } from '../lib/auth-client';
+import { ApiError, linkDevice, requestOtp, verifyOtp } from '../lib/auth-client';
+import { getDeviceId } from '../lib/push-client';
 
 interface Props {
   onDone: () => void;
@@ -50,6 +51,7 @@ export default function FbComplete({ onDone }: Props) {
     try {
       await verifyOtp(email.trim(), code.trim(), null);
       await linkFacebook();
+      void linkDevice(getDeviceId()).catch(() => {});
       onDone();
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');

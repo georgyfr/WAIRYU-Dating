@@ -1,13 +1,20 @@
 /**
  * Middleware de session (Étape 1 — vérification seule ; la CRÉATION arrive
  * avec lib/auth.ts à l'Étape 2). Lit le cookie signé, vérifie en D1
- * (révocation, expiry, statut du compte), prolonge glissant (30 j plafonné
- * 29 j, au plus 1 écriture/heure), expose c.get('session').
+ * (révocation, expiry, statut du compte), prolonge glissant (365 j — décision
+ * fondateur « auto-login permanent », au plus 1 écriture/heure), expose
+ * c.get('session').
  */
 import type { Context, Next } from 'hono';
 import type { AppEnv } from '../env';
 import { SESSION_COOKIE_NAME, verifySessionCookie } from '../lib/session';
+import { LIMITS } from '@wairyu/shared';
 import { getCookie } from 'hono/cookie';
+
+/** TTL plein d'une session (secondes) — source unique : LIMITS.sessionDays. */
+const SESSION_TTL_S = LIMITS.sessionDays * 86400;
+/** Prolonge dès qu'il reste moins de 90 jours (garde 1 écriture/heure). */
+const RENEW_THRESHOLD_S = 90 * 86400;
 
 export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
   c.set('session', null);
@@ -34,16 +41,17 @@ export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
       if (row.user_status !== 'banned' && row.user_status !== 'deleted') {
         c.set('session', { sessionId: signed.sid, userId: row.user_id });
 
-        // TTL glissant : si moins de 7 jours restants, prolonge à now+29 j,
-        // au plus 1 écriture/heure par session (last_seen_at comme garde).
+        // TTL glissant (décision fondateur : compte reste connecté) — si
+        // moins de 90 jours restants, prolonge au TTL plein (365 j - 1 j de
+        // marge), au plus 1 écriture/heure par session (last_seen_at garde).
         const now = Math.floor(Date.now() / 1000);
-        if (row.expires_at - now < 7 * 86400) {
+        if (row.expires_at - now < RENEW_THRESHOLD_S) {
           try {
             await c.env.DB.prepare(
               `UPDATE sessions SET expires_at = ?, last_seen_at = ?
                WHERE id = ? AND last_seen_at < ?`,
             )
-              .bind(now + 29 * 86400, now, signed.sid, now - 3600)
+              .bind(now + SESSION_TTL_S - 86400, now, signed.sid, now - 3600)
               .run();
             c.set('sessionRenewed', true);
           } catch {

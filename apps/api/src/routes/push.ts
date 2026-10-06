@@ -24,6 +24,7 @@ import { errors, errorBody, reqId } from '../lib/errors';
 import { pushEnabled, sendPushToDevice } from '../lib/push';
 import { kvRateLimit } from '../lib/kvrate';
 import type {
+  LinkDeviceResponse,
   PushConfigResponse,
   PushEventRow,
   PushEventsResponse,
@@ -76,15 +77,17 @@ async function logEvent(
   channel: 'push' | 'inapp' | 'local',
   delivered: boolean,
   error: string | null,
+  userId: string | null = null,
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO notification_events (id, device_id, kind, title, body, channel, delivered, error, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO notification_events (id, device_id, user_id, kind, title, body, channel, delivered, error, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       crypto.randomUUID(),
       deviceId,
+      userId,
       kind.slice(0, 40),
       title.slice(0, 120),
       body.slice(0, 500),
@@ -379,6 +382,113 @@ pushRoutes.post('/push/subscribe', async (c) => {
   }
 
   const body: PushSubscribeResponse = { ok: true, welcomeSent, confirmSent };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// POST /push/link-device — liaison appareil ↔ compte (session requise)
+// Appelé par le front après chaque authentification réussie (OTP, mot de
+// passe, OAuth, retour de callback) et à l'ouverture d'une session existante.
+// Effets :
+//  1. devices.user_id + device_push_subscriptions.user_id = compte courant
+//     (base du ciblage utilisateur des notifications, Étape 2+) ;
+//  2. si le compte porte congrats_pending (création TOUT CANAL : email /
+//     Google / Facebook / pseudo) → notification de FÉLICITATIONS délivrée
+//     sur cet appareil : bulle OS (force) + entrée journal in-app ;
+//  3. garde anti-détournement : refus si l'appareil est déjà lié à un AUTRE
+//     compte (se déconnecter pour rendre l'appareil disponible).
+// ---------------------------------------------------------------------------
+
+pushRoutes.post('/push/link-device', async (c) => {
+  const session = c.get('session');
+  if (!session) throw errors.unauthorized();
+  const payload = (await c.req.json().catch(() => null)) as { deviceId?: unknown } | null;
+  const deviceId = parseDeviceId(payload?.deviceId);
+
+  // Anti-abus : 12 liaisons/min/appareil.
+  const rl = await kvRateLimit(c.env.CONFIG, 'push_link', deviceId, 12, 60);
+  if (!rl.allowed) throw errors.rateLimited('Trop de demandes, réessayez dans un instant.');
+
+  const now = Math.floor(Date.now() / 1000);
+  const userId = session.userId;
+
+  // Garde : l'appareil lié à un autre compte ne peut pas être détourné.
+  const owner = await c.env.DB.prepare(`SELECT user_id FROM devices WHERE id = ? LIMIT 1`)
+    .bind(deviceId)
+    .first<{ user_id: string | null }>();
+  if (owner && owner.user_id && owner.user_id !== userId) {
+    throw errors.forbidden(
+      'Cet appareil est déjà associé à un autre compte. Déconnecte-toi sur cet appareil avant de le lier.',
+    );
+  }
+
+  // 1) Liaison (idempotente).
+  await c.env.DB.prepare(`UPDATE devices SET user_id = ?, updated_at = ? WHERE id = ?`)
+    .bind(userId, now, deviceId)
+    .run();
+  await c.env.DB.prepare(
+    `UPDATE device_push_subscriptions SET user_id = ?, updated_at = ? WHERE device_id = ?`,
+  )
+    .bind(userId, now, deviceId)
+    .run();
+
+  // 2) Félicitations en attente (création de compte, quel que soit le canal).
+  let congrats: 'push' | 'inapp' | null = null;
+  let congratsVia: string | null = null;
+  const user = await c.env.DB.prepare(
+    `SELECT congrats_pending, congrats_via FROM users WHERE id = ? LIMIT 1`,
+  )
+    .bind(userId)
+    .first<{ congrats_pending: number; congrats_via: string | null }>();
+  if (user?.congrats_pending === 1) {
+    congratsVia = user.congrats_via;
+    const via = congratsVia ?? 'email';
+    const title = 'Bienvenue sur WAIRYU 🎉';
+    const bodyText =
+      via === 'google'
+        ? 'Ton compte a été créé via Google. Inscription enregistrée — ta session reste active, plus besoin de te réinscrire.'
+        : via === 'facebook'
+          ? 'Ton compte a été créé via Facebook. Inscription enregistrée — ta session reste active, plus besoin de te réinscrire.'
+          : via === 'password'
+            ? 'Ton compte a été créé avec ton pseudo. Inscription enregistrée — ta session reste active, plus besoin de te réinscrire.'
+            : 'Ton compte a été créé avec ton adresse email. Inscription enregistrée — ta session reste active, plus besoin de te réinscrire.';
+
+    // Push OS (force : le fondateur VOIT la bulle même page ouverte). Échec
+    // gracieux — le journal in-app reste écrit (canal universel 2016/2017).
+    const r = await sendPushToDevice(c.env, deviceId, {
+      title,
+      body: bodyText,
+      tag: 'wairyu-congrats',
+      url: '/',
+      force: true,
+      kind: 'news',
+    });
+    const pushOk = r.sent > 0;
+    await logEvent(
+      c.env.DB,
+      deviceId,
+      'account_created',
+      title,
+      bodyText,
+      pushOk ? 'push' : 'inapp',
+      true,
+      r.error ?? null,
+      userId,
+    );
+    if (r.gone) {
+      await c.env.DB.prepare(`DELETE FROM device_push_subscriptions WHERE device_id = ?`)
+        .bind(deviceId)
+        .run();
+    }
+    congrats = pushOk ? 'push' : 'inapp';
+    await c.env.DB.prepare(
+      `UPDATE users SET congrats_pending = 0, updated_at = ? WHERE id = ? AND congrats_pending = 1`,
+    )
+      .bind(now, userId)
+      .run();
+  }
+
+  const body: LinkDeviceResponse = { linked: true, congrats, congratsVia };
   return c.json(body);
 });
 

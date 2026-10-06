@@ -5,6 +5,7 @@
  */
 import type {
   AuthConfigResponse,
+  LinkDeviceResponse,
   MeResponse,
   OtpRequestResponse,
   OtpVerifyResponse,
@@ -47,10 +48,26 @@ export function fetchAuthConfig(): Promise<AuthConfigResponse> {
   return api<AuthConfigResponse>('/api/auth/config');
 }
 
-export function requestOtp(email: string, turnstileToken: string | null): Promise<OtpRequestResponse> {
+export function requestOtp(
+  email: string,
+  turnstileToken: string | null,
+  deviceId?: string,
+): Promise<OtpRequestResponse> {
   return api<OtpRequestResponse>('/api/auth/otp/request', {
     method: 'POST',
-    body: JSON.stringify({ email, turnstile_token: turnstileToken }),
+    body: JSON.stringify({ email, turnstile_token: turnstileToken, deviceId }),
+  });
+}
+
+/**
+ * Lie l'appareil courant au compte authentifié (cookie de session) — base du
+ * ciblage des notifications et déclencheur de la notification de félicitations
+ * à la création de compte (tous canaux). Échec gracieux côté appelant.
+ */
+export function linkDevice(deviceId: string): Promise<LinkDeviceResponse> {
+  return api<LinkDeviceResponse>('/api/push/link-device', {
+    method: 'POST',
+    body: JSON.stringify({ deviceId }),
   });
 }
 

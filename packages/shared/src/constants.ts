@@ -27,8 +27,12 @@ export const LIMITS = {
   apiCallsPerUserPerDay: 70,
   /** Nombre maximal de photos par profil. */
   maxPhotos: 6,
-  /** Durée de vie d'une session en jours (glissant). */
-  sessionDays: 30,
+  /**
+   * Durée de vie d'une session en jours (glissant). Décision fondateur :
+   * après inscription, le compte reste connecté (365 j glissants, prolongés
+   * à chaque visite) — il ne revient jamais repasser par l'inscription.
+   */
+  sessionDays: 365,
   /** Durée de vie d'un code OTP en minutes (Étape 2). */
   otpTtlMinutes: 10,
 } as const;

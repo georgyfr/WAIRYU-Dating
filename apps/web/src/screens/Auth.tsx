@@ -11,6 +11,7 @@ import {
   ApiError,
   birthDateError,
   fetchAuthConfig,
+  linkDevice,
   passwordForgot,
   passwordLogin,
   passwordRegister,
@@ -18,6 +19,7 @@ import {
   requestOtp,
   verifyOtp,
 } from '../lib/auth-client';
+import { getDeviceId } from '../lib/push-client';
 import type { AuthConfigResponse } from '@wairyu/shared';
 
 type Mode = 'choice' | 'otp-request' | 'otp-verify' | 'pwd-login' | 'pwd-register' | 'pwd-forgot' | 'pwd-recover';
@@ -63,13 +65,15 @@ export default function Auth({ onAuthenticated }: Props) {
     setError('');
     setBusy(true);
     try {
-      const r = await requestOtp(email.trim(), turnstileToken);
+      const r = await requestOtp(email.trim(), turnstileToken, getDeviceId());
       setNeedsBirth(false);
       setCode(r.devCode ?? '');
       setMessage(
         r.channel === 'dev'
           ? 'Mode test : le code est prérempli ci-dessous.'
-          : 'Code envoyé par email — il est valable 10 minutes.',
+          : r.channel === 'email+push'
+            ? 'Code envoyé par email ET en notification sur tes appareils wairyu — regarde tes notifications, pas besoin de fouiller ta boîte mail.'
+            : 'Code envoyé par email — il est valable 10 minutes.',
       );
       go('otp-verify');
     } catch (e) {
@@ -84,6 +88,17 @@ export default function Auth({ onAuthenticated }: Props) {
     setBusy(true);
     try {
       await verifyOtp(email.trim(), code.trim(), needsBirth ? birthDate : null);
+      // Liaison appareil ↔ compte : cible des notifications + félicitations
+      // si le compte vient d'être créé (congrats_pending côté serveur).
+      void linkDevice(getDeviceId())
+        .then((lr) => {
+          if (lr.congrats) {
+            setMessage(
+              'Compte créé et enregistré — plus jamais besoin de te réinscrire ici. Bienvenue ! 🎉',
+            );
+          }
+        })
+        .catch(() => {});
       onAuthenticated();
     } catch (e) {
       if (e instanceof ApiError && /Date de naissance requise/.test(e.message)) {
@@ -109,6 +124,8 @@ export default function Auth({ onAuthenticated }: Props) {
     try {
       const r = await passwordRegister(username, password, birthDate, turnstileToken);
       setRecoveryCode(r.recoveryCode);
+      // Liaison appareil + félicitations (compte créé via pseudo).
+      void linkDevice(getDeviceId()).catch(() => {});
       go('pwd-recover'); // réutilisé comme écran « notez votre code »
       setMessage('Compte créé ! Notez précieusement ce code de récupération — il ne sera plus jamais affiché.');
     } catch (e) {
@@ -123,6 +140,7 @@ export default function Auth({ onAuthenticated }: Props) {
     setBusy(true);
     try {
       await passwordLogin(identifier.trim(), password);
+      void linkDevice(getDeviceId()).catch(() => {});
       onAuthenticated();
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
@@ -153,6 +171,7 @@ export default function Auth({ onAuthenticated }: Props) {
     setBusy(true);
     try {
       await passwordRecovery(identifier.trim(), recoveryCode.trim(), newPassword);
+      void linkDevice(getDeviceId()).catch(() => {});
       onAuthenticated();
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
