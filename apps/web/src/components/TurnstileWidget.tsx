@@ -32,28 +32,39 @@ declare global {
 const SCRIPT_ID = 'cf-turnstile-script';
 const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
+/**
+ * Charge le script Turnstile UNE fois par page ; en cas d'échec réseau, le
+ * <script> mort est retiré du DOM et le cache est réinitialisé afin qu'une
+ * relance (« Réessayer la vérification ») reparte sur un chargement frais
+ * — sinon l'écouteur resterait collé à l'élément mort et bloquerait à jamais.
+ */
+let scriptPromise: Promise<TurnstileApi> | null = null;
+
 function loadTurnstileScript(): Promise<TurnstileApi> {
-  return new Promise((resolve, reject) => {
-    if (window.turnstile) return resolve(window.turnstile);
-    const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
-    const onReady = () => {
-      if (window.turnstile) resolve(window.turnstile);
-      else reject(new Error('turnstile_missing'));
-    };
-    if (existing) {
-      existing.addEventListener('load', onReady);
-      existing.addEventListener('error', () => reject(new Error('turnstile_load_failed')));
-      return;
-    }
+  if (window.turnstile) return Promise.resolve(window.turnstile);
+  if (scriptPromise) return scriptPromise;
+  scriptPromise = new Promise<TurnstileApi>((resolve, reject) => {
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
     script.src = TURNSTILE_SRC;
     script.async = true;
     script.defer = true;
-    script.addEventListener('load', onReady);
-    script.addEventListener('error', () => reject(new Error('turnstile_load_failed')));
+    script.addEventListener('load', () => {
+      if (window.turnstile) resolve(window.turnstile);
+      else {
+        script.remove();
+        scriptPromise = null;
+        reject(new Error('turnstile_missing'));
+      }
+    });
+    script.addEventListener('error', () => {
+      script.remove();
+      scriptPromise = null;
+      reject(new Error('turnstile_load_failed'));
+    });
     document.head.appendChild(script);
   });
+  return scriptPromise;
 }
 
 interface Props {
@@ -66,6 +77,7 @@ export default function TurnstileWidget({ siteKey, onToken }: Props) {
   const holderRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -95,8 +107,26 @@ export default function TurnstileWidget({ siteKey, onToken }: Props) {
         widgetIdRef.current = null;
       }
     };
-  }, [siteKey, onToken]);
+  }, [siteKey, onToken, attempt]);
 
-  if (failed) return null; // Dégradation silencieuse : le serveur décidera.
+  if (failed) {
+    // Dégradation visible : sans jeton le serveur refusera la demande
+    // (fail-closed) — mieux vaut un retry explicite qu'une impasse muette.
+    return (
+      <div className="turnstile-retry" role="alert">
+        <p className="turnstile-retry-text">Vérification anti-robot indisponible (connexion instable&nbsp;?).</p>
+        <button
+          type="button"
+          className="btn btn-ghost btn-block"
+          onClick={() => {
+            setFailed(false);
+            setAttempt((a) => a + 1);
+          }}
+        >
+          Réessayer la vérification
+        </button>
+      </div>
+    );
+  }
   return <div ref={holderRef} className="turnstile-holder" aria-label="Vérification anti-robot" />;
 }

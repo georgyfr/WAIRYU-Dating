@@ -10,11 +10,25 @@
  * révélé automatiquement si le serveur le réclame ; le code reste valable
  * (la validation serveur précède désormais la consommation) : la même
  * saisie est revalidée sans renvoi d'email.
+ *
+ * Anti-robot : la demande d'OTP est soumise à Turnstile en production
+ * (fail-closed) — même contrat que l'écran Auth : le widget est rendu dès
+ * que /api/auth/config sert une clé de site, et le jeton obtenu accompagne
+ * la requête (sinon le serveur refuse « Validation anti-robot requise »).
  */
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
-import { ApiError, birthDateError, linkDevice, requestOtp, verifyOtp } from '../lib/auth-client';
+import TurnstileWidget from '../components/TurnstileWidget';
+import {
+  ApiError,
+  birthDateError,
+  fetchAuthConfig,
+  linkDevice,
+  requestOtp,
+  verifyOtp,
+} from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
+import type { AuthConfigResponse } from '@wairyu/shared';
 
 interface Props {
   /** congratsVia ≠ null ⇔ compte créé pendant ce parcours ⇒ overlay félicitations. */
@@ -41,6 +55,16 @@ export default function FbComplete({ onDone }: Props) {
   const [stage, setStage] = useState<'email' | 'code'>('email');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [config, setConfig] = useState<AuthConfigResponse | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchAuthConfig()
+      .then(setConfig)
+      .catch(() => setConfig(null));
+  }, []);
+
+  const onToken = useCallback((token: string | null) => setTurnstileToken(token), []);
 
   const requestCode = async () => {
     setError('');
@@ -51,7 +75,7 @@ export default function FbComplete({ onDone }: Props) {
     }
     setBusy(true);
     try {
-      await requestOtp(email.trim(), null);
+      await requestOtp(email.trim(), turnstileToken, getDeviceId());
       setStage('code');
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
@@ -121,6 +145,7 @@ export default function FbComplete({ onDone }: Props) {
                 onChange={setBirthDate}
                 onClear={() => setBirthDate('')}
               />
+              {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
               <button className="btn btn-primary btn-block" onClick={requestCode} disabled={busy || !email.trim()}>
                 {busy ? 'Envoi…' : 'Recevoir mon code'}
               </button>
