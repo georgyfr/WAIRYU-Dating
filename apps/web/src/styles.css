@@ -598,6 +598,52 @@ button {
   background: var(--c-white);
 }
 
+/* ---- Mot de passe : bascule œil (afficher/masquer) — demande fondateur ---- */
+.field-password .pw-wrap {
+  position: relative;
+  display: block;
+}
+
+.field-password .pw-wrap input {
+  width: 100%;
+  /* Place pour le bouton œil à droite (saisie lisible jusqu'au bouton). */
+  padding-right: 54px;
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--c-gray-blue);
+  cursor: pointer;
+  padding: 0;
+}
+
+.pw-toggle:hover {
+  background: rgba(23, 44, 61, 0.06);
+  color: var(--c-night);
+}
+
+.pw-toggle:focus-visible {
+  outline: 2px solid var(--c-turquoise);
+  outline-offset: 2px;
+}
+
+.pw-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
 .auth-code {
   letter-spacing: 8px;
   font-size: 22px !important;

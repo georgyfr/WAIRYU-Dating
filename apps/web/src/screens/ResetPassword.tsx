@@ -4,6 +4,7 @@
  * serveur ne stocke que son SHA-256 et la consommation est unique.
  */
 import { useState } from 'react';
+import PasswordField from '../components/PasswordField';
 import { ApiError, linkDevice, passwordReset } from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
 
@@ -43,10 +44,12 @@ export default function ResetPassword({ token, onDone }: Props) {
         </h1>
         <p className="auth-sub">Choisissez un nouveau mot de passe.</p>
         <div className="auth-form">
-          <label className="field">
-            <span>Nouveau mot de passe (8 caractères minimum)</span>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
-          </label>
+          <PasswordField
+            label="Nouveau mot de passe (8 caractères minimum)"
+            value={password}
+            onChange={setPassword}
+            autoComplete="new-password"
+          />
           <button className="btn btn-primary btn-block" onClick={submit} disabled={busy || password.length < 8}>
             {busy ? 'Enregistrement…' : 'Enregistrer'}
           </button>

@@ -7,6 +7,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
+import PasswordField from '../components/PasswordField';
 import TurnstileWidget from '../components/TurnstileWidget';
 import {
   ApiError,
@@ -333,10 +334,7 @@ export default function Auth({ onAuthenticated }: Props) {
               <span>Pseudo ou email</span>
               <input value={identifier} onChange={(e) => setIdentifier(e.target.value)} autoComplete="username" />
             </label>
-            <label className="field">
-              <span>Mot de passe</span>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
-            </label>
+            <PasswordField value={password} onChange={setPassword} autoComplete="current-password" />
             <button className="btn btn-primary btn-block" onClick={submitPwdLogin} disabled={busy || !identifier || !password}>
               {busy ? 'Connexion…' : 'Se connecter'}
             </button>
@@ -359,10 +357,12 @@ export default function Auth({ onAuthenticated }: Props) {
               <span>Pseudo (3-20 caractères, espaces et accents acceptés)</span>
               <input value={username} onChange={(e) => setUsername(e.target.value)} maxLength={20} autoComplete="username" />
             </label>
-            <label className="field">
-              <span>Mot de passe (8 caractères minimum)</span>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
-            </label>
+            <PasswordField
+              label="Mot de passe (8 caractères minimum)"
+              value={password}
+              onChange={setPassword}
+              autoComplete="new-password"
+            />
             <BirthDatePicker
               label="Date de naissance — 18 ans révolus requis"
               value={birthDate}

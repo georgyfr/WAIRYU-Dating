@@ -6,6 +6,7 @@
  */
 import { useEffect, useState } from 'react';
 import NotificationsCard from '../components/NotificationsCard';
+import PasswordField from '../components/PasswordField';
 import {
   ApiError,
   deleteAccount,
@@ -106,15 +107,12 @@ export default function Profile() {
               <p className="account-hint">
                 Ajoutez un mot de passe pour vous connecter sans fouiller votre boîte email.
               </p>
-              <label className="field">
-                <span>Nouveau mot de passe (8 caractères min.)</span>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  autoComplete="new-password"
-                />
-              </label>
+              <PasswordField
+                label="Nouveau mot de passe (8 caractères min.)"
+                value={newPassword}
+                onChange={setNewPassword}
+                autoComplete="new-password"
+              />
               <button className="btn btn-accent" onClick={onSetPassword} disabled={busy || newPassword.length < 8}>
                 Activer le mot de passe
               </button>
