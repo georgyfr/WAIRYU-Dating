@@ -113,6 +113,27 @@ async function vapid(env: {
       ext: true,
     };
     const key = await crypto.subtle.importKey('jwk', jwk, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+    // Auto-test de cohérence de la paire : on signe une sonde avec la clé
+    // privée et on vérifie la signature avec la clé PUBLIQUE dérivée du
+    // point 0x04||X||Y. Une paire incohérente (clé publique servie ≠ clé
+    // privée qui signe) est la cause n°1 des 403 renvoyés par les services
+    // push (FCM/Mozilla/Apple) — on échoue ici, AVANT d'envoyer quoi que
+    // ce soit : pushEnabled() = false et le client dégrade proprement.
+    const verifyKey = await crypto.subtle.importKey(
+      'jwk',
+      { kty: 'EC', crv: 'P-256', x: jwk.x, y: jwk.y, ext: true } as JsonWebKey,
+      { name: 'ECDSA', namedCurve: 'P-256' },
+      false,
+      ['verify'],
+    );
+    const probe = enc.encode('wairyu-vapid-selftest');
+    const probeSig = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, key, probe);
+    const pairOk = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, verifyKey, probeSig, probe);
+    if (!pairOk) {
+      console.error(JSON.stringify({ push: 'vapid_pair_mismatch', hint: 'VAPID_PUBLIC_KEY ne correspond pas à VAPID_PRIVATE_KEY' }));
+      vapidCache = null;
+      return null;
+    }
     vapidCache = { publicKey: pubB64, privateKey: key, subject: env.VAPID_SUBJECT ?? 'mailto:admin@wairyu.app' };
   } catch (err) {
     console.error(JSON.stringify({ push: 'vapid_import_failed', err: String(err) }));

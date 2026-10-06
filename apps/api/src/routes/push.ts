@@ -420,7 +420,9 @@ pushRoutes.post('/push/test', async (c) => {
     'WAIRYU — notification de test',
     r.sent > 0
       ? `Pipeline push vérifié le ${when}.`
-      : `Tentative du ${when} — pas encore d\u2019abonnement push sur cet appareil.`,
+      : r.error === 'no_subscription'
+        ? `Tentative du ${when} — pas encore d\u2019abonnement push sur cet appareil.`
+        : `Tentative du ${when} — le service push a refusé l\u2019envoi (${r.error ?? 'erreur inconnue'}).`,
     'push',
     r.sent > 0,
     r.error,

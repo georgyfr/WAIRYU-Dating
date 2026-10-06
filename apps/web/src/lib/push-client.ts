@@ -18,10 +18,12 @@ import type {
   PushConfigResponse,
   PushEventsResponse,
   PushOpenResponse,
+  PushSubscribeResponse,
   PushTestResponse,
 } from '@wairyu/shared';
 
 const DEVICE_KEY = 'wairyu_device_id';
+const SERVER_PUBKEY_KEY = 'wairyu_push_server_key';
 const AUTO_SESSION_KEY = 'wairyu_push_auto_session';
 const AUTO_TS_KEY = 'wairyu_push_auto_ts';
 const AUTO_KIND_KEY = 'wairyu_push_auto_kind';
@@ -151,6 +153,47 @@ async function logLocalEvent(kind: string, title: string, body: string): Promise
 // Activation (permission + abonnement + enregistrement serveur)
 // ---------------------------------------------------------------------------
 
+/**
+ * Garantit un abonnement lié à la clé serveur ACTUELLE.
+ *
+ * Un abonnement créé sous une ANCIENNE clé VAPID (rotation, re-provisioning)
+ * produit des 403 éternels : le service push refuse l'identité. On mémorise
+ * donc la clé publique servie ; si elle change — ou si elle est inconnue
+ * localement — on désabonne l'ancien endpoint et on réabonne à neuf.
+ */
+async function ensureSubscription(
+  reg: ServiceWorkerRegistration,
+  publicKey: string,
+): Promise<PushSubscription> {
+  let existing = await reg.pushManager.getSubscription();
+  let storedKey: string | null = null;
+  try {
+    storedKey = localStorage.getItem(SERVER_PUBKEY_KEY);
+  } catch {
+    /* bénin */
+  }
+  if (existing && storedKey !== publicKey) {
+    try {
+      await existing.unsubscribe();
+    } catch {
+      /* bénin */
+    }
+    existing = null;
+  }
+  const sub =
+    existing ??
+    (await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey) as unknown as BufferSource,
+    }));
+  try {
+    localStorage.setItem(SERVER_PUBKEY_KEY, publicKey);
+  } catch {
+    /* bénin */
+  }
+  return sub;
+}
+
 export type PushActivateResult =
   | 'granted' // abonné et enregistré côté serveur
   | 'denied' // permission refusée (ou bloquée site → réglages navigateur)
@@ -158,28 +201,29 @@ export type PushActivateResult =
   | 'server-off' // serveur sans secrets VAPID (dégradation gracieuse)
   | 'error'; // échec réseau / subscribe
 
-/** Active les notifications. À appeler DEPUIS UN CLIC. Idempotent. */
-export async function activateWebPush(): Promise<PushActivateResult> {
-  if (!pushSupported()) return 'unsupported';
+export interface ActivateDetail {
+  status: PushActivateResult;
+  /** true si le serveur confirme l'envoi effectif du push (bienvenue/confirmation). */
+  welcomeSent?: boolean;
+  confirmSent?: boolean;
+}
+
+/** Version détaillée : le statut RÉEL d'envoi renvoyé par le serveur. */
+export async function activateWebPushDetailed(): Promise<ActivateDetail> {
+  if (!pushSupported()) return { status: 'unsupported' };
   try {
     const cfg = await fetchPushConfig();
-    if (!cfg?.enabled || !cfg.publicKey) return 'server-off';
+    if (!cfg?.enabled || !cfg.publicKey) return { status: 'server-off' };
 
     const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return 'denied';
+    if (permission !== 'granted') return { status: 'denied' };
 
     const reg = await navigator.serviceWorker.register('/sw.js');
     await navigator.serviceWorker.ready;
 
-    const existing = await reg.pushManager.getSubscription();
-    const sub =
-      existing ??
-      (await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(cfg.publicKey) as unknown as BufferSource,
-      }));
+    const sub = await ensureSubscription(reg, cfg.publicKey);
     const j = sub.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } };
-    await api('/api/push/subscribe', {
+    const res = await api<PushSubscribeResponse>('/api/push/subscribe', {
       method: 'POST',
       body: JSON.stringify({
         deviceId: getDeviceId(),
@@ -187,10 +231,15 @@ export async function activateWebPush(): Promise<PushActivateResult> {
         keys: { p256dh: j.keys?.p256dh, auth: j.keys?.auth },
       }),
     });
-    return 'granted';
+    return { status: 'granted', welcomeSent: res.welcomeSent, confirmSent: res.confirmSent };
   } catch {
-    return 'error';
+    return { status: 'error' };
   }
+}
+
+/** Active les notifications. À appeler DEPUIS UN CLIC. Idempotent. */
+export async function activateWebPush(): Promise<PushActivateResult> {
+  return (await activateWebPushDetailed()).status;
 }
 
 // ---------------------------------------------------------------------------
@@ -296,15 +345,8 @@ export async function autoArmWebPush(): Promise<'subscribed' | 'armed' | 'skippe
       if (!cfg?.enabled || !cfg.publicKey) return 'error';
       const reg = await navigator.serviceWorker.register('/sw.js');
       await navigator.serviceWorker.ready;
-      const existing = await reg.pushManager.getSubscription();
-      if (!existing) {
-        await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(cfg.publicKey) as unknown as BufferSource,
-        });
-      }
-      const sub = await reg.pushManager.getSubscription();
-      const j = sub?.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } } | null;
+      const sub = await ensureSubscription(reg, cfg.publicKey);
+      const j = sub.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } };
       await api('/api/push/subscribe', {
         method: 'POST',
         body: JSON.stringify({

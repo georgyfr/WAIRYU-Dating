@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
   PUSH_ARMED_EVENT,
-  activateWebPush,
+  activateWebPushDetailed,
   fetchEvents,
   fetchPushConfig,
   getDeviceId,
@@ -73,16 +73,21 @@ export default function NotificationsCard() {
   const onActivate = async () => {
     setBusy('activate');
     setMessage('');
-    const r = await activateWebPush();
+    const r = await activateWebPushDetailed();
     setBusy(null);
-    if (r === 'granted') {
+    if (r.status === 'granted') {
       setPerm('granted');
-      setMessage('Notifications activées — le push de bienvenue vient d\u2019être envoyé par le serveur.');
-    } else if (r === 'denied') {
+      // Véridicité : on n'affiche « envoyé » que si le serveur le confirme.
+      setMessage(
+        r.welcomeSent || r.confirmSent
+          ? 'Notifications activées — le serveur a bien envoyé le push (la bulle du système devrait apparaître).'
+          : 'Notifications activées et enregistrées — l\u2019issue réelle de l\u2019envoi figure dans le journal ci-dessous.',
+      );
+    } else if (r.status === 'denied') {
       setMessage('Permission refusée. Débloquez le site dans les réglages du navigateur pour réessayer.');
-    } else if (r === 'server-off') {
+    } else if (r.status === 'server-off') {
       setMessage('Le serveur n\u2019a pas encore ses clés VAPID — réessayez plus tard.');
-    } else if (r === 'unsupported') {
+    } else if (r.status === 'unsupported') {
       setMessage('Ce navigateur ne supporte pas le push — le journal in-app ci-dessous reste disponible.');
     } else {
       setMessage('Échec réseau — réessayez.');
