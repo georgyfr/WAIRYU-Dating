@@ -704,6 +704,33 @@ button {
   text-align: center;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+  color: var(--c-gray-blue, #64748b);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(100, 116, 139, 0.25);
+}
+
+.auth-hint {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--c-gray-blue, #64748b);
+  text-align: center;
+}
+
 /* ── Carte compte (Profil, Étape 2) ─────────────────────────── */
 .account-card .body {
   padding: 16px;

@@ -15,6 +15,12 @@
  * (fail-closed) — même contrat que l'écran Auth : le widget est rendu dès
  * que /api/auth/config sert une clé de site, et le jeton obtenu accompagne
  * la requête (sinon le serveur refuse « Validation anti-robot requise »).
+ *
+ * Alternative SANS email (demande fondateur) : si la boîte mail est
+ * inaccessible (mot de passe perdu…), l'identité Facebook en attente SUFFIT —
+ * « Continuer sans email » crée le compte avec la seule date de naissance
+ * (18+ validé côté serveur). Un email de récupération pourra être ajouté
+ * plus tard dans Réglages.
  */
 import { useCallback, useEffect, useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
@@ -22,6 +28,7 @@ import TurnstileWidget from '../components/TurnstileWidget';
 import {
   ApiError,
   birthDateError,
+  facebookComplete,
   fetchAuthConfig,
   linkDevice,
   requestOtp,
@@ -121,6 +128,40 @@ export default function FbComplete({ onDone }: Props) {
     }
   };
 
+  /**
+   * Inscription/connexion SANS email : l'identité Facebook en attente suffit.
+   * La date est exigée uniquement si le serveur crée le compte (18+ côté
+   * serveur aussi) ; la félicitations suit la même chaîne que l'OTP.
+   */
+  const continueWithoutEmail = async () => {
+    setError('');
+    if (!birthDate) {
+      setError('Ajoutez votre date de naissance ci-dessus pour créer votre compte sans email.');
+      return;
+    }
+    const localBirth = birthDateError(birthDate);
+    if (localBirth) {
+      setError(localBirth);
+      return;
+    }
+    setBusy(true);
+    try {
+      const r = await facebookComplete(birthDate);
+      let congratsVia: string | null = null;
+      try {
+        const lr = await linkDevice(getDeviceId());
+        if (lr.congrats) congratsVia = lr.congratsVia ?? 'facebook';
+      } catch {
+        // liaison ratée : repli sur le created du complete
+      }
+      onDone(congratsVia ?? (r.created ? 'facebook' : null));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="app-shell">
       <main className="auth">
@@ -149,6 +190,16 @@ export default function FbComplete({ onDone }: Props) {
               <button className="btn btn-primary btn-block" onClick={requestCode} disabled={busy || !email.trim()}>
                 {busy ? 'Envoi…' : 'Recevoir mon code'}
               </button>
+              <div className="auth-divider" role="separator">
+                <span>ou</span>
+              </div>
+              <button className="btn btn-ghost btn-block" onClick={continueWithoutEmail} disabled={busy}>
+                Continuer sans email — via Facebook
+              </button>
+              <p className="auth-hint">
+                Boîte mail inaccessible&nbsp;? Votre compte sera créé avec votre profil Facebook seul (la date de
+                naissance ci-dessus est requise). Un email de récupération pourra être ajouté plus tard.
+              </p>
             </>
           ) : (
             <>

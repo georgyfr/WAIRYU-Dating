@@ -230,6 +230,19 @@ export interface FacebookLinkResponse {
 }
 
 /**
+ * POST /api/auth/facebook/complete — inscription/connexion Facebook SANS email
+ * (alternative à l'OTP quand la boîte mail est inaccessible : l'identité
+ * Facebook du cookie signé SUFFIT). Le compte est créé avec un email
+ * placeholder (jamais affiché, même domaine masqué que les comptes pseudo) ;
+ * un email de récupération peut être ajouté plus tard dans Réglages.
+ */
+export interface FacebookCompleteResponse {
+  ok: true;
+  /** true = compte créé (inscription), false = connexion au compte déjà relié à ce Facebook. */
+  created: boolean;
+}
+
+/**
  * POST /api/auth/oauth/complete — complétion d'inscription sociale différée.
  * Le callback Google/Facebook a découvert un email SANS compte existant et
  * SANS date de naissance déclarée : l'identité attend dans un cookie signé,

@@ -5,6 +5,7 @@
  */
 import type {
   AuthConfigResponse,
+  FacebookCompleteResponse,
   LinkDeviceResponse,
   MeResponse,
   OAuthCompleteResponse,
@@ -91,6 +92,18 @@ export function verifyOtp(
  */
 export function oauthComplete(birthDate: string): Promise<OAuthCompleteResponse> {
   return api<OAuthCompleteResponse>('/api/auth/oauth/complete', {
+    method: 'POST',
+    body: JSON.stringify({ birthDate }),
+  });
+}
+
+/**
+ * Inscription/connexion Facebook SANS email (alternative OTP) : l'identité
+ * Facebook en attente (cookie signé posé par le callback) suffit ; la date
+ * de naissance n'est exigée QUE sur la branche création (18+ côté serveur).
+ */
+export function facebookComplete(birthDate: string): Promise<FacebookCompleteResponse> {
+  return api<FacebookCompleteResponse>('/api/auth/facebook/complete', {
     method: 'POST',
     body: JSON.stringify({ birthDate }),
   });
