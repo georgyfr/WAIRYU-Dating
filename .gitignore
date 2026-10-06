@@ -33,3 +33,6 @@ apps/twa/app/build/
 apps/twa/.gradle/
 apps/twa/local.properties
 apps/twa/.project
+
+# Captures E2E locales
+.e2e-*.png
