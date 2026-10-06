@@ -8,12 +8,14 @@ import FbComplete from './screens/FbComplete';
 import OAuthComplete from './screens/OAuthComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
+import Voyage from './screens/Voyage';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
 import { autoArmWebPush, getDeviceId, registerDeviceOpen } from './lib/push-client';
 import { ApiError, fetchMe, linkDevice } from './lib/auth-client';
 
 type Stage = 'welcome' | Tab;
+
 /** Routes spéciales portées par le hash (OAuth, reset email, Meta). */
 type Route =
   | { name: 'reset'; token: string }
@@ -176,7 +178,8 @@ export default function App() {
     );
   }
 
-  // ---- Connecté : app ----
+  // ---- Connecté : app — L'ACCUEIL EST LE VOYAGE (demande fondateur) ----
+  const view: Tab = stage === 'welcome' ? 'voyage' : (stage as Tab);
   return (
     <>
       <PushToast />
@@ -193,10 +196,11 @@ export default function App() {
             Wai<span className="brand-accent">ryu</span>
           </span>
         </header>
-        {stage === 'discover' && <Discover />}
-        {stage === 'messages' && <Messages />}
-        {stage === 'profile' && <Profile />}
-        <TabBar active={stage as Tab} onSelect={setStage} />
+        {view === 'voyage' && <Voyage onDiscover={() => setStage('discover')} />}
+        {view === 'discover' && <Discover />}
+        {view === 'messages' && <Messages />}
+        {view === 'profile' && <Profile />}
+        <TabBar active={view} onSelect={setStage} />
       </div>
     </>
   );

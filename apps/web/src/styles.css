@@ -1102,3 +1102,327 @@ button {
 .dp-actions .btn-primary {
   flex: 1;
 }
+
+/* ==========================================================================
+   LE VOYAGE — écran d'accueil connecté (demande fondateur)
+   Présentation du voyage : objectifs, gains, carte des 11 mondes.
+   Vocabulaire du voyage (jamais « jeu ») ; premium marqué, jamais vendu.
+   ========================================================================== */
+
+.voyage {
+  padding: 20px 16px 28px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ---------- Héros ---------- */
+
+.voyage-hero {
+  background: linear-gradient(160deg, var(--c-night) 0%, var(--c-night-deep) 62%, #14344a 100%);
+  color: var(--c-cream);
+  border-radius: 20px;
+  padding: 26px 20px 22px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.voyage-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto -40px -60px auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(69, 192, 198, 0.35), transparent 70%);
+  pointer-events: none;
+}
+
+.voyage-hero-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-turquoise-light);
+  background: rgba(69, 192, 198, 0.14);
+  border: 1px solid rgba(69, 192, 198, 0.35);
+  border-radius: 999px;
+  padding: 5px 12px;
+  margin-bottom: 12px;
+}
+
+.voyage-title {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.voyage-title .accent {
+  color: var(--c-turquoise);
+}
+
+.voyage-sub {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-turquoise-light);
+  margin: 0 0 10px;
+}
+
+.voyage-lede {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(245, 241, 230, 0.88);
+  margin: 0 auto 16px;
+  max-width: 520px;
+}
+
+.voyage-hero-cta {
+  display: inline-block;
+  color: var(--c-night-deep);
+  background: var(--c-turquoise);
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 11px 20px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.voyage-hero-cta:hover {
+  background: var(--c-turquoise-light);
+  transform: translateY(-1px);
+}
+
+/* ---------- Sections communes ---------- */
+
+.voyage-section {
+  margin-top: 30px;
+}
+
+.voyage-h2 {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.voyage-section-sub {
+  font-size: 13.5px;
+  color: var(--c-gray-blue);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.voyage-card {
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(23, 44, 61, 0.04);
+}
+
+/* ---------- Objectifs (grille 3) ---------- */
+
+.voyage-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .voyage-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.voyage-card-objectif h3 {
+  font-size: 15.5px;
+  font-weight: 800;
+  margin: 8px 0 6px;
+}
+
+.voyage-card-objectif p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  margin: 0;
+}
+
+.voyage-card-emoji {
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* ---------- Gains (liste ordonnée) ---------- */
+
+.voyage-gains {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  counter-reset: gain;
+}
+
+.voyage-gain {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.voyage-gain-emoji {
+  font-size: 24px;
+  line-height: 1.2;
+  flex: none;
+}
+
+.voyage-gain h3 {
+  font-size: 15px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.voyage-gain h3 small {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--c-turquoise-deep);
+}
+
+.voyage-gain p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  margin: 0;
+}
+
+/* ---------- Carte des mondes (chemin vertical) ---------- */
+
+.voyage-worlds {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.voyage-world {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  padding-bottom: 18px;
+}
+
+/* La ligne du chemin reliant les mondes */
+.voyage-world::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 52px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--c-line);
+}
+
+.voyage-world:last-child::before {
+  display: none;
+}
+
+.voyage-world-node {
+  flex: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: var(--c-white);
+  border: 2px solid var(--c-line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 1px 2px rgba(23, 44, 61, 0.05);
+}
+
+.voyage-world-first .voyage-world-node {
+  border-color: var(--c-turquoise);
+  background: rgba(69, 192, 198, 0.1);
+}
+
+.voyage-world-body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.voyage-world h3 {
+  font-size: 15.5px;
+  font-weight: 900;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.voyage-world-num {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-turquoise-deep);
+  background: rgba(69, 192, 198, 0.12);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+.voyage-chip {
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.voyage-chip-premium {
+  color: #8a5a00;
+  background: rgba(250, 190, 80, 0.22);
+}
+
+.voyage-chip-free {
+  color: var(--c-turquoise-deep);
+  background: rgba(69, 192, 198, 0.14);
+}
+
+.voyage-world-tagline {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-night);
+  margin: 0 0 3px;
+}
+
+.voyage-world-meta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-gray-blue);
+  margin: 0;
+}
+
+/* ---------- Outro ---------- */
+
+.voyage-outro-card {
+  text-align: center;
+  padding: 20px 16px;
+}
+
+.voyage-outro-card h3 {
+  font-size: 17px;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.voyage-outro-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  margin: 0 0 14px;
+}

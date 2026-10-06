@@ -1,6 +1,7 @@
-export type Tab = 'discover' | 'messages' | 'profile';
+export type Tab = 'voyage' | 'discover' | 'messages' | 'profile';
 
 const TABS: { id: Tab; icon: string; label: string }[] = [
+  { id: 'voyage', icon: '🗺️', label: 'Voyage' },
   { id: 'discover', icon: '🧭', label: 'Découvrir' },
   { id: 'messages', icon: '💬', label: 'Messages' },
   { id: 'profile', icon: '👤', label: 'Profil' },
