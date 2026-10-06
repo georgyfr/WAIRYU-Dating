@@ -57,8 +57,15 @@ export default function App() {
       .then(() => {
         setAuthenticated(true);
         // Session existante : (re)lie l'appareil au compte — cible des
-        // notifications + félicitations en attente éventuelle.
-        void linkDevice(getDeviceId()).catch(() => {});
+        // notifications. Si une félicitations est EN ATTENTE (création dont
+        // la liaison avait échoué — ex. 2ᵉ compte sur le même appareil avant
+        // le correctif rebind), l'overlay s'affiche à cette ouverture ; la
+        // bulle OS part par ailleurs (force:true côté serveur).
+        void linkDevice(getDeviceId())
+          .then((lr) => {
+            if (lr.congrats) setCongrats(lr.congratsVia ?? 'email');
+          })
+          .catch(() => {});
       })
       .catch((e: unknown) => {
         if (e instanceof ApiError && e.status === 401) setAuthenticated(false);

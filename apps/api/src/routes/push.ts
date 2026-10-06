@@ -68,6 +68,17 @@ function parsePlatform(raw: unknown): 'web' | 'android' | 'ios' {
   return raw === 'android' || raw === 'ios' ? raw : 'web';
 }
 
+async function bumpMetric(db: D1Database, metric: string): Promise<void> {
+  const day = new Date().toISOString().slice(0, 10);
+  await db
+    .prepare(
+      `INSERT INTO metrics_daily (day, metric, value) VALUES (?, ?, 1)
+       ON CONFLICT (day, metric) DO UPDATE SET value = value + 1`,
+    )
+    .bind(day, metric)
+    .run();
+}
+
 async function logEvent(
   db: D1Database,
   deviceId: string | null,
@@ -395,8 +406,15 @@ pushRoutes.post('/push/subscribe', async (c) => {
 //  2. si le compte porte congrats_pending (création TOUT CANAL : email /
 //     Google / Facebook / pseudo) → notification de FÉLICITATIONS délivrée
 //     sur cet appareil : bulle OS (force) + entrée journal in-app ;
-//  3. garde anti-détournement : refus si l'appareil est déjà lié à un AUTRE
-//     compte (se déconnecter pour rendre l'appareil disponible).
+//  3. l'appareil suit la session authentifiée COURANTE (« dernier connecté
+//     gagne », standard FCM) : si l'appareil était lié à un AUTRE compte, il
+//     est rebasculé — l'ancienne garde 403 créait un deadlock réel (prod
+//     2026-10-06) : la création d'un 2ᵉ compte sur le même appareil écrase
+//     le cookie de session précédent, « déconnecte-toi d'abord » devenait
+//     impossible et la félicitations restait orpheline à jamais. Le
+//     deviceId est un UUID 128 bits en localStorage, non devinable : le
+//     rebinding authentifié n'ouvre pas de vecteur exploitable, et chaque
+//     rebasculement est tracé dans metrics_daily (device_rebound).
 // ---------------------------------------------------------------------------
 
 pushRoutes.post('/push/link-device', async (c) => {
@@ -412,14 +430,15 @@ pushRoutes.post('/push/link-device', async (c) => {
   const now = Math.floor(Date.now() / 1000);
   const userId = session.userId;
 
-  // Garde : l'appareil lié à un autre compte ne peut pas être détourné.
+  // Liaison : l'appareil suit la session authentifiée courante (voir en-tête).
+  // Rebasculement tracé quand l'appareil était lié à un autre compte —
+  // c'est le cas légitime « 2ᵉ compte créé sur le même appareil » dont le
+  // blocage total privait la félicitations (deadlock prod 2026-10-06).
   const owner = await c.env.DB.prepare(`SELECT user_id FROM devices WHERE id = ? LIMIT 1`)
     .bind(deviceId)
     .first<{ user_id: string | null }>();
-  if (owner && owner.user_id && owner.user_id !== userId) {
-    throw errors.forbidden(
-      'Cet appareil est déjà associé à un autre compte. Déconnecte-toi sur cet appareil avant de le lier.',
-    );
+  if (owner?.user_id && owner.user_id !== userId) {
+    await bumpMetric(c.env.DB, 'device_rebound');
   }
 
   // 1) Liaison (idempotente).
