@@ -109,3 +109,13 @@ Secrets Google (client 961903691270-…) et Facebook (app 3696617487160524) four
 **Reste fondateur** : coller les redirect URIs dans les consoles (Google : {prod,staging}/api/auth/google/callback ; Meta : {prod,staging}/api/auth/facebook/callback) — les boutons sont déjà en ligne.
 
 **Prochaine** : Étape 3 — Profils & photos protégées.
+
+## 2026-10-06 — Correctif : connexion Google/Facebook sans JSON brut (fondateur)
+
+Bug signalé : « Continuer avec Google » sur un nouvel email → `{"error":"Date de naissance requise pour créer un compte wairyu."}` en page brute. Cause : inscription sociale sans date déclarée → 400 rejeté par le callback. Facebook avait la même faille (avec email) + une 2ᵉ instance dans le rattrapage sans email (#/fb-complete sans champ date).
+
+**Correctif (complétion différée, 2 phases)** : les callbacks détectent « nouvel email sans date » → identité mise en attente dans un cookie signé 10 min (`wairyu_oauth_pending`) + écran `#/oauth-complete` (explication 18+, saisie de la date) → `POST /api/auth/oauth/complete` valide, crée le compte, lie l'identité, ouvre la session. Connexion d'un compte existant : zéro friction (fusion email prouvée par gate). Plus AUCUN JSON brut sur les callbacks (state invalide/banni/mineur → retours app avec messages lisibles). Bonus : `otp/verify` valide la naissance AVANT de consommer le code (rattrapage en une saisie) ; `Auth.tsx` ne fait plus de setState au rendu.
+
+**Preuves** : staging — seed smoke (staging-only) → 400 sans date / 403 mineur sans création / 200 `created:true` google+facebook / `/me` 200 / fusion `created:false` même userId / D1 `congrats_pending=1, congrats_via=google|facebook` + identités liées / purge 0-0-0. Prod — callbacks 302 amicaux, `complete` 400 amical, seed 404. agent-browser — écran rendu, état « expiré » + retour propres, boutons OAuth intègres, 0 erreur console, mobile OK. Typecheck ×3 VERT. Déploiements : staging 01f672d5, prod 5726d81d, commit 5ebf2e5.
+
+**Prochaine** : Étape 3 — Profils & photos protégées.
