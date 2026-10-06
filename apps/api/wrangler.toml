@@ -1,0 +1,95 @@
+# wairyu API — Worker unique : API Hono + assets statiques du front (PWA)
+# Environnements : default = production (wairyu.wairyu.workers.dev) · [env.staging]
+# IDs D1/KV réels (provisioning 2026-10-06, reconstitués depuis l'API Cloudflare).
+
+name = "wairyu"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ---------- Assets du front (React+Vite buildé) ----------
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# Ces routes passent TOUJOURS par le Worker (assetlinks sert la TWA Android)
+run_worker_first = ["/api/*", "/admin/*", "/.well-known/assetlinks.json"]
+
+# ---------- D1 (prod) ----------
+[[d1_databases]]
+binding = "DB"
+database_name = "wairyu-prod"
+database_id = "b93cf0d0-11ad-4720-848b-86a0dc0d85e3"
+
+# ---------- KV (config + rate limits push) ----------
+[[kv_namespaces]]
+binding = "CONFIG"
+id = "583f084a0d834cd9adc8711270857170"
+
+# ---------- Durable Objects (1 conversation = 1 DO SQLite, Étape 6) ----------
+[[durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatRoom"]
+
+# ---------- Cron : purge quotidienne ----------
+[triggers]
+crons = ["10 3 * * *"]
+
+# ---------- Observabilité (free tier) ----------
+[observability]
+enabled = true
+
+# ---------- Variables non sensibles (production) ----------
+[vars]
+ENVIRONMENT = "production"
+USAGE_SAMPLE_RATE = "1"
+
+# ---------- Secrets (à poser via `wrangler secret put`) ----------
+# SESSION_HMAC_KEY            — clé HMAC 64 hex (sessions cookies) — déjà posé
+# ADMIN_TOKEN                 — jeton /admin/* — déjà posé
+# VAPID_PUBLIC_KEY            — Web Push VAPID, point brut 65 o base64url
+# VAPID_PRIVATE_KEY           — scalaire 32 o base64url
+# VAPID_SUBJECT               — mailto:… (sujet VAPID)
+# ANDROID_CERT_FINGERPRINTS   — empreintes SHA-256 APK (séparées par virgules) pour assetlinks.json
+
+# =====================================================================
+# STAGING — base D1 et KV séparées, worker wairyu-staging.workers.dev
+# =====================================================================
+[env.staging]
+name = "wairyu-staging"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.staging.assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/admin/*", "/.well-known/assetlinks.json"]
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "wairyu-staging"
+database_id = "27c676b7-f55d-48a8-8aea-881fd8c05cbe"
+
+[[env.staging.kv_namespaces]]
+binding = "CONFIG"
+id = "f07ee4cd03984d15b8a7fc70ca3ace80"
+
+[[env.staging.durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+[env.staging.triggers]
+crons = ["40 3 * * *"]
+
+[env.staging.observability]
+enabled = true
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+USAGE_SAMPLE_RATE = "1"

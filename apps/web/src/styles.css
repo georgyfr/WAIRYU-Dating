@@ -371,3 +371,150 @@ button {
   outline: 2px solid var(--c-turquoise-deep);
   outline-offset: -2px;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Console de notifications (mission socle push)
+   ═══════════════════════════════════════════════════════════ */
+
+.push-card {
+  margin-top: 28px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-white);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+.push-title {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--c-night);
+  margin: 0;
+}
+
+.push-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.push-chip {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--c-line);
+  background: var(--c-cream);
+  color: var(--c-gray-blue);
+}
+
+.push-chip.ok {
+  background: rgba(69, 192, 198, 0.15);
+  color: var(--c-turquoise-deep);
+  border-color: rgba(69, 192, 198, 0.4);
+}
+
+.push-chip.warn {
+  background: rgba(250, 98, 73, 0.1);
+  color: var(--c-coral-deep);
+  border-color: rgba(250, 98, 73, 0.35);
+}
+
+.push-chip-sm {
+  font-size: 10px;
+  padding: 2px 8px;
+}
+
+.push-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.push-actions .btn {
+  flex: 0 1 auto;
+  padding: 10px 14px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+.push-note {
+  font-size: 12px;
+  color: var(--c-gray-blue);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.push-note code {
+  font-size: 11px;
+  background: var(--c-cream);
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+
+.push-message {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-turquoise-deep);
+  background: rgba(69, 192, 198, 0.1);
+  border: 1px solid rgba(69, 192, 198, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.push-log {
+  max-height: 240px;
+  overflow-y: auto;
+  border-top: 1px solid var(--c-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.push-log-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.push-log-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--c-night);
+}
+
+.push-log-body {
+  font-size: 12px;
+  color: var(--c-gray-blue);
+  margin: 4px 0 0;
+  line-height: 1.45;
+}
+
+.push-log-meta {
+  font-size: 11px;
+  color: var(--c-gray-blue);
+  margin: 4px 0 0;
+}
+
+.push-log-empty {
+  font-size: 12px;
+  color: var(--c-gray-blue);
+  padding: 12px 0;
+  margin: 0;
+}
+
+/* Barre de défilement discrète (WebKit) */
+.push-log::-webkit-scrollbar {
+  width: 6px;
+}
+
+.push-log::-webkit-scrollbar-thumb {
+  background: var(--c-line);
+  border-radius: 999px;
+}

@@ -1,15 +1,35 @@
-# Dépendances / builds
+# Dépendances
 node_modules/
-dist/
-*.tsbuildinfo
 
-# Environnement / secrets — JAMAIS dans le dépôt
+# Builds
+dist/
+.wrangler/
+*.worker.js
+
+# Environnement & secrets — NE JAMAIS COMMITTER
 .env
 .env.*
+!.env.example
 *.local
-dev.vars
+secrets/
+*.jks
+*.keystore
+keystores/
 
-# Éditeurs / OS
+# Logs & OS
+*.log
+npm-debug.log*
 .DS_Store
+Thumbs.db
+
+# Éditeurs
 .idea/
 .vscode/
+*.swp
+*.tsbuildinfo
+
+# TWA — artefacts de build et SDK local (le gradle wrapper RESTE committé)
+apps/twa/app/build/
+apps/twa/.gradle/
+apps/twa/local.properties
+apps/twa/.project

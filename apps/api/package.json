@@ -1,0 +1,20 @@
+{
+  "name": "@wairyu/api",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "@wairyu/shared": "0.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250914.0",
+    "typescript": "~5.6.3",
+    "wrangler": "^4.0.0"
+  }
+}

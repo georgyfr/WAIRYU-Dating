@@ -1,3 +1,5 @@
+import NotificationsCard from '../components/NotificationsCard';
+
 export default function Welcome({ onStart }: { onStart: () => void }) {
   return (
     <div className="app-shell">
@@ -31,6 +33,7 @@ export default function Welcome({ onStart }: { onStart: () => void }) {
         <button className="btn btn-primary btn-block" onClick={onStart}>
           Commencer
         </button>
+        <NotificationsCard />
       </main>
     </div>
   );
