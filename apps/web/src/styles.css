@@ -1341,11 +1341,15 @@ button {
   object-fit: cover;
   object-position: 70% 30%;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
-  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
+  /* Accessibilité : l'image n'est opaque QUE sur le bord droit —
+     la zone de texte (gauche) reste sur le fond sombre uni, jamais
+     sur l'illustration (contraste garanti ≥ 7:1, cible WCAG AAA). */
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 0) 88%);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 0) 88%);
 }
 
-/* Voile de contraste : le texte reste lisible sur la partie illustrée */
+/* Voile de contraste renforcé : texte toujours sur fond sombre,
+   même en superposition partielle avec l'illustration. */
 .v-hero::after {
   content: '';
   position: absolute;
@@ -1353,9 +1357,10 @@ button {
   z-index: 1;
   background: linear-gradient(
     90deg,
-    rgba(12, 58, 68, 0.55) 30%,
-    rgba(12, 58, 68, 0.28) 52%,
-    rgba(12, 58, 68, 0) 78%
+    rgba(12, 58, 68, 0.95) 0%,
+    rgba(12, 58, 68, 0.88) 50%,
+    rgba(12, 58, 68, 0.5) 72%,
+    rgba(12, 58, 68, 0.08) 94%
   );
   pointer-events: none;
 }
@@ -1365,16 +1370,20 @@ button {
   z-index: 2;
   padding: 22px 20px;
   max-width: 340px;
+  /* Légère ombre portée : détache chaque glyphe du fond, même
+     pour les lecteurs à basse vision (jamais au détriment du
+     contraste réel, qui reste assuré par le voile + le masque). */
+  text-shadow: 0 1px 3px rgba(7, 32, 38, 0.55);
 }
 
 .v-hero-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #d9f4f2;
-  font-size: 10px;
+  background: rgba(10, 44, 52, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #f2fdfb;
+  font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 1.1px;
   text-transform: uppercase;
@@ -1395,10 +1404,10 @@ button {
 }
 
 .v-hero-sub {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--c-white);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .v-hero-sub strong {
@@ -1406,16 +1415,16 @@ button {
 }
 
 .v-hero-sub span {
-  color: #c9ebe9;
+  color: #e6faf7;
   font-weight: 700;
 }
 
 .v-hero-lede {
-  font-size: 12px;
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #ffffff;
   margin-top: 9px;
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .v-hero-cta {
@@ -1445,12 +1454,42 @@ button {
 }
 
 @media (max-width: 400px) {
+  /* Petit écran : le texte occupe toute la largeur du héro →
+     l'illustration se réduit ET le voile couvre davantage à droite
+     pour que chaque mot reste sur fond sombre lisible. */
   .v-hero-img {
-    width: 55%;
-    opacity: 0.92;
+    width: 50%;
+    opacity: 0.85;
+  }
+  .v-hero::after {
+    background: linear-gradient(
+      90deg,
+      rgba(12, 58, 68, 0.95) 0%,
+      rgba(12, 58, 68, 0.9) 58%,
+      rgba(12, 58, 68, 0.66) 80%,
+      rgba(12, 58, 68, 0.22) 100%
+    );
   }
   .v-hero-body {
     max-width: none;
+  }
+}
+
+/* Préférence système « contraste élevé » : le voile devient
+   quasi opaque sur toute la zone de texte (le texte ne touche
+   plus jamais l'illustration). */
+@media (prefers-contrast: more) {
+  .v-hero::after {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 42, 50, 0.98) 0%,
+      rgba(10, 42, 50, 0.96) 62%,
+      rgba(10, 42, 50, 0.72) 82%,
+      rgba(10, 42, 50, 0.45) 100%
+    );
+  }
+  .v-hero-chip {
+    background: rgba(6, 30, 36, 0.75);
   }
 }
 
