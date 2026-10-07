@@ -6,9 +6,17 @@
  * en cours (anneau de progression + prochaine étape), les 6 étapes jalons,
  * les 11 thèmes en pastilles, bannière « Premier arrêt : Le Miroir ».
  *
+ * Redesign 2026-10-08 (retour fondateur) : hiérarchie et interlignage du
+ * héro, icône voyageur (panneau directionnel), CTA plus visible, icônes
+ * uniformisées (bibliothèque SVG dédiée), cartes objectifs centrées avec
+ * VRAIS boutons (fini la flèche décorative), barre de récolte segmentée en
+ * 11 mondes, « Prochaine étape » attrayante, étapes en cartes espacées avec
+ * labels « En cours / Verrouillé », thèmes avec icônes mémorables distinctes
+ * et badge Premium élégant (gemme, plus de couronne).
+ *
  * Esprit : ludique SANS jamais dire « jeu » — pas de score, pas de niveau,
  * pas de classement. Le vocabulaire est celui du voyage (mondes, étapes,
- * portraits). Les thèmes premium (👑) sont marqués mais JAMAIS vendus ici.
+ * portraits). Les thèmes premium (gemme) sont marqués mais JAMAIS vendus ici.
  *
  * Les mondes s'ouvriront un à un (status 'open' quand les quêtes sont
  * jouables) ; aujourd'hui la page PRÉSENTE le voyage dans son ensemble et
@@ -16,62 +24,25 @@
  */
 import { FREE_WORLDS, MILESTONES, OBJECTIVES, TOTAL_QUESTS, WORLDS } from '../lib/voyage';
 import type { VoyageObjective } from '../lib/voyage';
+import VoyageIcon from '../components/VoyageIcons';
+import type { VoyageIconName } from '../components/VoyageIcons';
 
 interface Props {
   /** Ouvrir l'onglet Découvrir (en attendant l'ouverture du Monde 1). */
   onDiscover: () => void;
 }
 
-/* ── Petites icônes SVG (traits, currentColor — zéro dépendance) ── */
+/* ── Petites icônes utilitaires (traits, currentColor) ── */
 
-function Icon({ d, filled = false }: { d: string; filled?: boolean }) {
+function ClockIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      fill={filled ? 'currentColor' : 'none'}
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={d} />
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
     </svg>
   );
 }
 
-/** Icônes des objectifs : boussole, cœur, cible, étoile (maquette). */
-function ObjectiveIcon({ name }: { name: VoyageObjective['icon'] }) {
-  if (name === 'compass') {
-    return (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" />
-        <polygon points="15.2,8.8 13.2,13.2 8.8,15.2 10.8,10.8" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  }
-  if (name === 'heart') {
-    return <Icon d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />;
-  }
-  if (name === 'target') {
-    return (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" />
-        <circle cx="12" cy="12" r="4.5" />
-        <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  }
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 2.5l2.6 6.3 6.9.5-5.2 4.4 1.6 6.7L12 16.8l-5.9 3.6 1.6-6.7L2.5 9.3l6.9-.5z" />
-    </svg>
-  );
-}
-
-/** Étoile 4 branches (en-tête de section objectifs). */
 function SparkIcon() {
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
@@ -90,6 +61,14 @@ export default function Voyage({ onDiscover }: Props) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const runAction = (target: VoyageObjective['action']['target']) => {
+    if (target === 'discover') {
+      onDiscover();
+      return;
+    }
+    scrollTo(target === 'etapes' ? 'v-etapes' : target === 'themes' ? 'v-themes' : 'v-recolte');
+  };
+
   return (
     <div className="voyage">
       {/* ---------- Héro : la présentation brève ---------- */}
@@ -102,7 +81,7 @@ export default function Voyage({ onDiscover }: Props) {
         />
         <div className="v-hero-body">
           <span className="v-hero-chip">
-            <Icon d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M16 8l-2.5 5.5L8 16l2.5-5.5z" />
+            <VoyageIcon name="signpost" size={13} strokeWidth={2.2} />
             Ton voyage commence ici
           </span>
           <h1 id="v-title" className="v-hero-title">
@@ -121,7 +100,12 @@ export default function Voyage({ onDiscover }: Props) {
             choisis ce qui se voit.
           </p>
           <button className="v-hero-cta" onClick={() => scrollTo('v-etapes')}>
-            Voir la carte du voyage <span aria-hidden="true">→</span>
+            Voir la carte du voyage
+            <span className="v-hero-cta-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
           </button>
         </div>
       </section>
@@ -130,7 +114,7 @@ export default function Voyage({ onDiscover }: Props) {
       <section className="v-section" aria-labelledby="v-obj-title">
         <div className="v-section-head">
           <h2 id="v-obj-title" className="v-h2">
-            <span className="v-h2-ico" style={{ color: '#e8a312' }}>
+            <span className="v-h2-ico" style={{ color: '#d68f06' }}>
               <SparkIcon />
             </span>
             Ce que ce voyage fait pour toi
@@ -143,18 +127,21 @@ export default function Voyage({ onDiscover }: Props) {
           {OBJECTIVES.map((o) => (
             <article key={o.title} className="v-obj">
               <span className="v-obj-ico" style={{ background: o.tile.bg, color: o.tile.fg }}>
-                <ObjectiveIcon name={o.icon} />
+                <VoyageIcon name={o.icon as VoyageIconName} size={22} />
               </span>
               <h3>{o.title}</h3>
               <p>{o.text}</p>
               <div className="v-obj-foot">
                 <span className="v-time">
-                  <Icon d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 6v6l4 2" />
+                  <ClockIcon />
                   {o.time}
                 </span>
-                <span className="v-arrow" aria-hidden="true">
-                  →
-                </span>
+                <button className="v-obj-btn" onClick={() => runAction(o.action.target)}>
+                  {o.action.label}
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </button>
               </div>
             </article>
           ))}
@@ -162,7 +149,7 @@ export default function Voyage({ onDiscover }: Props) {
       </section>
 
       {/* ---------- Ta récolte en cours ---------- */}
-      <section className="v-section" aria-labelledby="v-recolte-title">
+      <section className="v-section" id="v-recolte" aria-labelledby="v-recolte-title">
         <div className="v-recolte">
           <div
             className="v-ring"
@@ -182,7 +169,7 @@ export default function Voyage({ onDiscover }: Props) {
               )}
             </svg>
             <div className="v-ring-center">
-              <img src="/icons/favicon-48.png" alt="" width={20} height={20} />
+              <img src="/icons/favicon-48.png" alt="" width={22} height={22} />
               <strong>
                 {done}/{total}
               </strong>
@@ -191,7 +178,6 @@ export default function Voyage({ onDiscover }: Props) {
           </div>
           <div className="v-recolte-mid">
             <h2 id="v-recolte-title" className="v-recolte-title">
-              <Icon d="M12 21v-7 M12 14c0-3.2-2.6-5.5-6-5.5 0 3.4 2.6 5.5 6 5.5z M12 14c0-3.2 2.6-5.5 6-5.5 0 3.4-2.6 5.5-6 5.5z" />
               Ta récolte en cours
             </h2>
             <p>Tu es au début de ton voyage. Continue, chaque étape te rapproche de ta destination.</p>
@@ -201,21 +187,28 @@ export default function Voyage({ onDiscover }: Props) {
               aria-valuenow={pct}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label="Progression du voyage"
+              aria-label="Progression du voyage : mondes franchis"
             >
-              <span style={{ width: `${pct}%` }} />
+              {WORLDS.map((w, i) => (
+                <span key={w.code} className={i < done ? 'v-seg v-seg-done' : 'v-seg'} aria-hidden="true" />
+              ))}
             </div>
+            <small className="v-bar-label">
+              {done} monde{done > 1 ? 's' : ''} franchi{done > 1 ? 's' : ''} sur {total}
+            </small>
           </div>
           <button className="v-next" onClick={() => scrollTo('v-etapes')}>
             <span className="v-next-ico" aria-hidden="true">
-              🏆
+              <VoyageIcon name="map" size={19} />
             </span>
             <span className="v-next-text">
               <small>Prochaine étape</small>
               <strong>{MILESTONES[0]?.name}</strong>
             </span>
             <span className="v-next-chev" aria-hidden="true">
-              ›
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 5 7 7-7 7" />
+              </svg>
             </span>
           </button>
         </div>
@@ -226,7 +219,7 @@ export default function Voyage({ onDiscover }: Props) {
         <div className="v-section-head">
           <h2 id="v-etapes-title" className="v-h2">
             <span className="v-h2-ico" style={{ color: '#2a9aa0' }}>
-              <Icon d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z M9 4v14 M15 6v14" />
+              <VoyageIcon name="map" size={19} />
             </span>
             Les étapes du voyage
           </h2>
@@ -236,25 +229,30 @@ export default function Voyage({ onDiscover }: Props) {
         </div>
         <ol className="v-steps">
           {MILESTONES.map((m) => (
-            <li key={m.num} className="v-step">
+            <li key={m.num} className={m.status === 'now' ? 'v-step v-step-now' : 'v-step'}>
               <span className="v-step-num" aria-hidden="true">
                 {m.num}
               </span>
               <span className="v-step-ico" style={{ background: m.tile.bg, color: m.tile.fg }} aria-hidden="true">
-                {m.emoji}
+                <VoyageIcon name={m.icon as VoyageIconName} size={22} />
               </span>
               <div className="v-step-body">
                 <h3>
                   {m.name}
-                  <span className={m.status === 'now' ? 'v-chip v-chip-now' : 'v-chip v-chip-soon'}>
-                    {m.status === 'now' ? 'En cours' : 'À venir'}
-                  </span>
+                  {m.status === 'now' ? (
+                    <span className="v-chip v-chip-now">
+                      <span className="v-chip-dot" aria-hidden="true" />
+                      En cours
+                    </span>
+                  ) : (
+                    <span className="v-chip v-chip-locked">
+                      <VoyageIcon name="lock" size={10} strokeWidth={2.4} />
+                      Verrouillé
+                    </span>
+                  )}
                 </h3>
                 <p>{m.desc}</p>
               </div>
-              <span className="v-step-chev" aria-hidden="true">
-                ›
-              </span>
             </li>
           ))}
         </ol>
@@ -265,7 +263,7 @@ export default function Voyage({ onDiscover }: Props) {
         <div className="v-section-head">
           <h2 id="v-themes-title" className="v-h2">
             <span className="v-h2-ico" style={{ color: '#33809e' }}>
-              <Icon d="M22 9L12 4 2 9l10 5 10-5z M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5" />
+              <VoyageIcon name="globe" size={19} />
             </span>
             Les thèmes du voyage
           </h2>
@@ -278,14 +276,15 @@ export default function Voyage({ onDiscover }: Props) {
           {WORLDS.map((w) => (
             <li key={w.code} className="v-theme" title={w.note}>
               <span className="v-theme-ico" style={{ background: w.tile.bg, color: w.tile.fg }} aria-hidden="true">
-                {w.emoji}
+                <VoyageIcon name={w.icon as VoyageIconName} size={18} />
               </span>
               <div className="v-theme-body">
                 <h3>
                   {w.shortName}{' '}
                   {!w.free && (
                     <span className="v-prem">
-                      👑 <em>Premium</em>
+                      <VoyageIcon name="gem" size={10} strokeWidth={2.2} />
+                      <em>Premium</em>
                     </span>
                   )}
                   {w.free && w.num === total && <span className="v-free">Toujours gratuit</span>}
@@ -315,7 +314,7 @@ export default function Voyage({ onDiscover }: Props) {
             </p>
             <div className="v-arret-row">
               <span className="v-arret-ico" aria-hidden="true">
-                🧭
+                <VoyageIcon name="mirror" size={17} />
               </span>
               <button className="v-arret-btn" onClick={onDiscover}>
                 Explorer le Miroir <span aria-hidden="true">→</span>

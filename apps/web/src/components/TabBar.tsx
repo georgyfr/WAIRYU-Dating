@@ -9,8 +9,8 @@ export type Tab = 'voyage' | 'discover' | 'messages' | 'profile';
 function TabIcon({ id }: { id: Tab }) {
   const common = {
     viewBox: '0 0 24 24',
-    width: 21,
-    height: 21,
+    width: 23,
+    height: 23,
     fill: 'none' as const,
     stroke: 'currentColor',
     strokeWidth: 2,
@@ -19,10 +19,11 @@ function TabIcon({ id }: { id: Tab }) {
     'aria-hidden': true,
   };
   if (id === 'voyage') {
+    // Carte pliée : le voyage se lit comme un itinéraire.
     return (
       <svg {...common}>
-        <circle cx="12" cy="12" r="9" />
-        <polygon points="15.2,8.8 13.2,13.2 8.8,15.2 10.8,10.8" fill="currentColor" stroke="none" />
+        <path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" />
+        <path d="M9 4v14M15 6v14" />
       </svg>
     );
   }
@@ -34,9 +35,13 @@ function TabIcon({ id }: { id: Tab }) {
     );
   }
   if (id === 'messages') {
+    // Bulle avec trois points : la conversation vivante.
     return (
       <svg {...common}>
         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+        <circle cx="8.5" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
+        <circle cx="12" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
+        <circle cx="15.5" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
       </svg>
     );
   }

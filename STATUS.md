@@ -191,3 +191,27 @@ Le fondateur a signalé que les deux textes du héro — « 11 mondes · 50 éta
 **Contraste calculé** : blanc sur le fond dégradé #0f5b63 = 7,8:1 (WCAG AAA ≥7:1) ; #e6faf7 ≈ 7,0:1 — et l'arrière-plan effectif sous le voile renforcé est plus sombre encore. **Preuves (agent-browser, staging, inscription réelle « Lecture Test »)** : héro 540 px — textes blancs pleins sur fond sombre quasi uni, illustration confinée au bord droit ; héro 390 px — idem après renforcement du breakpoint ; mesures DOM : bodyRight 340 px < début zone opaque 362 px (540 px), zéro erreur console. Purge D1 staging du compte de test (6 DELETE séparés, users/devices/sessions/auth_password/subscriptions/events = 0 ligne résiduelle) — compte réel du fondateur préservé. Déploiements : staging ed3daaf9 puis bd7b24ac, prod 89723bfc (health 200, index 200).
 
 **Prochaine** : validation fondateur, puis développement des mondes un à un (Monde 1 « Le Miroir »).
+
+## 2026-10-08 — Redesign UX complet de l'accueil « Le Voyage » (retour fondateur structuré)
+
+Le fondateur a transmis une feuille de corrections design en 8 points (esthétique, ergonomie, lisibilité). Tout est appliqué :
+
+**En-tête** : logo 38→46 px avec ombre douce, marque 19,5 px, baseline « Apprendre aujourd'hui, explorer demain » en bleu nuit 10 px (contraste nettement supérieur au gris clair), cloche redessinée (42 px, cercle blanc bord 1,5 px + icône 21 px), avatar 38 px avec double anneau blanc/turquoise, écart bonjour↔avatar 8→12 px.
+
+**Héro** : hiérarchie renforcée (titre 36 px, interlignage 1,05), corps de texte 13,5→15 px avec interligne 1,7, chip avec NOUVELLE icône voyageur (panneau directionnel — remplace le cercle-aiguille ambigu), CTA plus visible : 14 px, flèche dans une pastille turquoise dégradée, ombre portée renforcée + contour lumineux.
+
+**Objectifs** : icônes UNIFORMISÉES (style traits 2 px, tuiles carrées arrondies 48 px — fin des mélanges plein/contour), contenu centré verticalement et horizontalement, chips « 5 min » plus claires (fond blanc + bordure + horloge turquoise), flèches décoratives REMPLACÉES par de vrais boutons explicites : « Voir les étapes » / « Voir les thèmes » / « Voir ta récolte » / « Explorer les profils » — chacun conduit réellement à sa section (scroll ou onglet Découvrir).
+
+**Récolte** : anneau agrandi 92→104 px (compteur 18 px), titre 16,5 px, barre de progression REDISENDEE en 11 segments = les 11 mondes (segments remplis en dégradé turquoise au fil du voyage) + libellé « N monde(s) franchi(s) sur 11 », carte « Prochaine étape » plus attrayante (bordure turquoise 1,5 px, tuile dorée dégradée avec icône carte, chevron en pastille).
+
+**Étapes** : cartes espacées (12→16 px), icônes SVG distinctes par jalon (carte, miroir, montagne, strates, parchemin, anneaux — fin des emoji incohérents entre appareils), labels d'état sans ambiguïté : « En cours » (pastille turquoise + point pulsant) / « Verrouillé » (pastille grise + cadanet), carte active soulignée (bordure + ombre turquoise).
+
+**Thèmes** : 11 icônes SVG mémorables et distinctes (miroir, volant, boussole, tente, arbre, cœur, parapluie, lune, cadenas, globe, anneaux entrelacés), pastilles 38 px à fond tendre + icône saturée, badge 👑 Premium REMPLACÉ par une gemme dorée élégante (dégradé + bordure fine or), « Toujours gratuit » bordé.
+
+**TabBar** : icônes 21→23 px redessinées (Voyage = carte pliée, Messages = bulle à 3 points), libellés 10,5→11,5 px, hauteur 66→72 px + padding accru (cibles tactiles ≈ +10 %), inactif #8b9791→#66736d (contraste), pilule active sophistiquée : dégradé 3 tons + liseré lumineux intérieur + ombre profonde.
+
+**Global** : police principale = pile système (SF Pro Display sur iOS, Roboto sur Android, Nunito en repli — demande fondateur « police système plus moderne »), espacements harmonisés (sections 28 px, gouttières 12 px, rayons cohérents 16-22 px), gris de texte unifiés #4d565e. Nouveau composant `components/VoyageIcons.tsx` (19 icônes) ; `lib/voyage.ts` enrichi (champ icon par monde/jalon + action par objectif). NOTE : le texte « TON VOYAGE COMMENCE ICI » était déjà correct dans le code — la faute « ITI » n'existait que dans l'image de maquette IA.
+
+**Preuves (agent-browser, staging, inscription réelle « Style Test »)** : héro avec nouvelle hiérarchie + CTA pastille flèche ; bouton « Voir les étapes » → scrollY 1380 (ancre OK) ; « Explorer les profils » → onglet Découvrir ; étapes 2 col (540 px) / 1 col (390 px) ; 11 thèmes avec gemmes Premium ; zéro erreur console. Purge D1 staging du compte test (6 DELETE, 0 résidu — compte fondateur préservé). Build 65,38 Ko gzip JS. Déploiements : staging 234980f7, prod e1917c5c (health 200).
+
+**Prochaine** : validation fondateur, puis Monde 1 « Le Miroir ».
