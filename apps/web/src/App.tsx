@@ -293,7 +293,7 @@ export default function App() {
             </>
           )}
         </header>
-        {view === 'voyage' && <Voyage onDiscover={() => setStage('discover')} />}
+        {view === 'voyage' && <Voyage />}
         {view === 'discover' && <Discover />}
         {view === 'messages' && <Messages />}
         {view === 'profile' && <Profile />}

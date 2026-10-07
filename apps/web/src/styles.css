@@ -1392,8 +1392,8 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(10, 44, 52, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  /* Pastille turquoise de la maquette — blanc dessus ≥ 4.5:1 (AA). */
+  background: linear-gradient(135deg, #0d746c, #13837b);
   color: #f2fdfb;
   font-size: 10.5px;
   font-weight: 800;
@@ -1428,8 +1428,8 @@ button {
 }
 
 .v-hero-sub span {
-  color: #e6faf7;
-  font-weight: 700;
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .v-hero-lede {
@@ -1445,32 +1445,20 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--c-white);
-  color: #0c4f57;
+  background: linear-gradient(135deg, #0d746c, #13837b);
+  color: var(--c-white);
   font-size: 14px;
   font-weight: 900;
   border: none;
   padding: 13px 18px 13px 20px;
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 22px rgba(4, 34, 32, 0.42);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.v-hero-cta-arrow {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #23979e, #45c0c6);
-  color: var(--c-white);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 .v-hero-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 11px 28px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 11px 26px rgba(4, 34, 32, 0.48);
 }
 
 .v-hero-cta:focus-visible {
@@ -1514,7 +1502,8 @@ button {
     );
   }
   .v-hero-chip {
-    background: rgba(6, 30, 36, 0.75);
+    background: #0b4a45;
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
 }
 
@@ -1570,24 +1559,6 @@ button {
   margin: -4px 0 14px;
 }
 
-.v-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  border: none;
-  background: transparent;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #2a9aa0;
-  padding: 4px 2px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.v-link:hover {
-  text-decoration: underline;
-}
-
 /* ---------- Objectifs (4 cartes « 5 min ») ---------- */
 
 .v-obj-grid {
@@ -1633,14 +1604,6 @@ button {
   flex-grow: 1;
 }
 
-.v-obj-foot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-}
-
 .v-time {
   display: inline-flex;
   align-items: center;
@@ -1661,31 +1624,6 @@ button {
 .v-time svg {
   width: 11px;
   height: 11px;
-}
-
-.v-obj-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  background: #eaf6f2;
-  color: #0b6a72;
-  font-size: 11.5px;
-  font-weight: 900;
-  border: 1px solid #cde9e0;
-  border-radius: 999px;
-  padding: 9px 12px;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.v-obj-btn:hover {
-  background: #d9efe8;
-  transform: translateY(-1px);
-}
-
-.v-obj-btn svg {
-  flex-shrink: 0;
 }
 
 /* ---------- Récolte en cours ---------- */
@@ -1809,6 +1747,8 @@ button {
   color: #4d565e;
 }
 
+/* Carte informative — plus un bouton : aucun bouton de navigation
+   n'est visible durant le voyage (demande fondateur 2026-10-08). */
 .v-next {
   display: flex;
   align-items: center;
@@ -1820,20 +1760,6 @@ button {
   flex: 1 1 180px;
   text-align: left;
   box-shadow: 0 3px 12px rgba(42, 154, 160, 0.12);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
-}
-
-.v-next:hover {
-  box-shadow: 0 6px 18px rgba(42, 154, 160, 0.22);
-  transform: translateY(-1px);
-}
-
-.v-next:focus-visible,
-.v-link:focus-visible,
-.v-hero-cta:focus-visible,
-.v-arret-btn:focus-visible {
-  outline: 2px solid var(--c-turquoise-deep);
-  outline-offset: 2px;
 }
 
 .v-next-ico {
@@ -1865,19 +1791,6 @@ button {
   font-size: 13.5px;
   font-weight: 900;
   color: #0b6a72;
-}
-
-.v-next-chev {
-  margin-left: auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #eaf6f2;
-  color: #0b6a72;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 /* ---------- Étapes jalons ---------- */
@@ -2139,46 +2052,8 @@ button {
   font-size: 11.5px;
   line-height: 1.5;
   color: var(--c-gray-blue);
-  margin: 4px 0 10px;
+  margin: 4px 0 2px;
   flex-grow: 1;
-}
-
-.v-arret-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.v-arret-ico {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: #eaf6f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  flex-shrink: 0;
-}
-
-.v-arret-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: linear-gradient(135deg, #8b4dd3, #7a3fc0);
-  color: var(--c-white);
-  font-size: 12px;
-  font-weight: 900;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(139, 77, 211, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.v-arret-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(139, 77, 211, 0.45);
 }
 
 @media (max-width: 400px) {

@@ -215,3 +215,24 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Preuves (agent-browser, staging, inscription réelle « Style Test »)** : héro avec nouvelle hiérarchie + CTA pastille flèche ; bouton « Voir les étapes » → scrollY 1380 (ancre OK) ; « Explorer les profils » → onglet Découvrir ; étapes 2 col (540 px) / 1 col (390 px) ; 11 thèmes avec gemmes Premium ; zéro erreur console. Purge D1 staging du compte test (6 DELETE, 0 résidu — compte fondateur préservé). Build 65,38 Ko gzip JS. Déploiements : staging 234980f7, prod e1917c5c (health 200).
 
 **Prochaine** : validation fondateur, puis Monde 1 « Le Miroir ».
+
+## 2026-10-08 — Le Voyage : héro conforme au mockup fondateur + zéro bouton de navigation
+
+**Demande fondateur** (mockup ibb.co/LzjgQmS9) : « c'est comme ça que cette section doit être… et tous ces boutons ne doivent pas être visibles durant le voyage. »
+
+**Héro = EXACTEMENT le mockup** : chip repassée en pastille turquoise PLEINE avec icône boussole (fini le panneau sombre bordé), CTA « Voir la carte du voyage » en pilule turquoise avec boussole + flèche, texte blanc — blanc sur turquoise #0d746c→#13837b = 4,6:1 à 5,6:1 (WCAG AA, cohérent avec l'exigence a11y du fondateur). Sous-titre repassé en blanc uni gras (le mockup montre toute la ligne en gras). Les protections a11y de la passe précédente (voile, masque image, ombre de texte) restent intactes — mesuré : colonne de texte 386 px < zone opaque 423 px à 540 px ; 374 px à 390 px.
+
+**Zéro bouton de navigation durant le voyage** : la page se lit, la SEULE action est la carte du voyage elle-même.
+- Cartes objectifs : boutons « Voir les étapes/thèmes/récolte/profils » SUPPRIMÉS (retour à la carte pure + pastille « 5 min »)
+- « Prochaine étape » : redevient une carte informative statique (plus de chevron, plus de clic)
+- Lien « Voir tous les thèmes → » SUPPRIMÉ de l'en-tête des étapes
+- Bannière « Premier arrêt » : bouton « Explorer le Miroir → » SUPPRIMÉ (la navigation passe par la tabbar)
+- Vérifié au DOM : `document.querySelectorAll('.voyage button').length === 1` (le CTA du héro)
+
+**Nettoyage** : styles orphelins retirés (.v-obj-btn, .v-obj-foot, .v-link, .v-next-chev, .v-hero-cta-arrow, .v-arret-row/.v-arret-ico/.v-arret-btn) ; prop `onDiscover` retirée de Voyage.tsx (App.tsx mis à jour — la navigation Découvrir reste portée par la tabbar). La boussole remplace le panneau directionnel sur le chip ET le CTA, comme sur le mockup.
+
+**Preuves (agent-browser, staging, inscription réelle « Design Test »)** : snapshot accessible = 1 seul bouton dans « Le Voyage » ; CTA → scrollY 1284 (ancre étapes OK) ; héro 540 px et 390 px conformes au mockup (captures) ; récolte/bannière sans aucun bouton ; zéro erreur page (seul un warning Turnstile 600010 bénin pendant l'inscription). Purge D1 staging du compte test (6 DELETE, 0 résidu — compte fondateur fouretout2018 préservé).
+
+**Déploiements** : staging 6110c6d0, prod ebc0c402 (health 200, index 200, héro 200).
+
+**Prochaine** : validation fondateur, puis Monde 1 « Le Miroir ».
