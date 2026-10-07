@@ -71,29 +71,222 @@ button {
   }
 }
 
-/* ── En-tête ── */
+/* ── En-tête (maquette fondateur : marque + baseline, cloche, bonjour) ── */
 .app-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 14px 20px;
-  padding-top: calc(14px + env(safe-area-inset-top));
-  background: var(--c-cream);
+  padding: 10px 14px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  background: var(--c-white);
   border-bottom: 1px solid var(--c-line);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
+.ah-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.ah-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+}
+
+.ah-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .app-header .brand {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
   letter-spacing: 0.2px;
   color: var(--c-night);
+  line-height: 1.1;
 }
 
 .app-header .brand-accent {
   color: var(--c-turquoise-deep);
+}
+
+.ah-tagline {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--c-gray-blue);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.ah-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ah-bell {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--c-line);
+  background: var(--c-cream);
+  color: var(--c-night);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.ah-bell:hover {
+  background: #eef4f2;
+}
+
+.ah-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--c-coral);
+  color: var(--c-white);
+  font-size: 9.5px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--c-white);
+}
+
+.ah-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.ah-user:hover {
+  background: #eef4f2;
+}
+
+.ah-user:focus-visible,
+.ah-bell:focus-visible {
+  outline: 2px solid var(--c-turquoise-deep);
+  outline-offset: 2px;
+}
+
+.ah-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-turquoise-deep), var(--c-turquoise-light));
+  color: var(--c-white);
+  font-size: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ah-hello {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.15;
+}
+
+.ah-hello small {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--c-gray-blue);
+}
+
+.ah-hello strong {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.ah-chev {
+  color: var(--c-gray-blue);
+}
+
+/* Panneau notifications (cloche de l'en-tête) */
+.ah-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  background: transparent;
+  border: none;
+}
+
+.ah-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 10px;
+  width: min(320px, calc(100vw - 20px));
+  max-height: 340px;
+  overflow-y: auto;
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(23, 44, 61, 0.18);
+  z-index: 30;
+  padding: 6px 0;
+}
+
+.ah-panel h3 {
+  font-size: 11.5px;
+  font-weight: 900;
+  color: var(--c-gray-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 10px 14px 6px;
+}
+
+.ah-empty {
+  font-size: 12px;
+  color: var(--c-gray-blue);
+  padding: 8px 14px 12px;
+}
+
+.ah-ev {
+  padding: 9px 14px;
+  border-top: 1px solid #f0ece0;
+}
+
+.ah-ev strong {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--c-night);
+}
+
+.ah-ev p {
+  font-size: 11.5px;
+  color: var(--c-gray-blue);
+  margin: 2px 0;
+  line-height: 1.45;
+}
+
+.ah-ev time {
+  font-size: 10px;
+  color: #9aa5a0;
+  font-weight: 700;
 }
 
 /* ── Écran d'accueil ── */
@@ -328,7 +521,7 @@ button {
   max-width: 280px;
 }
 
-/* ── Barre d'onglets (sticky bottom, safe-area iOS) ── */
+/* ── Barre d'onglets — pilule active turquoise (maquette fondateur) ── */
 .tabbar {
   position: fixed;
   bottom: 0;
@@ -336,11 +529,13 @@ button {
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
-  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
+  height: calc(66px + env(safe-area-inset-bottom));
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
   background: var(--c-white);
   border-top: 1px solid var(--c-line);
   display: flex;
+  align-items: stretch;
+  gap: 2px;
   z-index: 20;
 }
 
@@ -353,18 +548,30 @@ button {
   gap: 3px;
   border: none;
   background: transparent;
-  font-size: 11.5px;
+  border-radius: 999px;
+  font-size: 10.5px;
   font-weight: 800;
-  color: var(--c-gray-blue);
+  color: #8b9791;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.tabbar button .tab-icon {
-  font-size: 21px;
-  line-height: 1;
+.tabbar button .tab-ico {
+  display: flex;
+  line-height: 0;
+}
+
+.tabbar button:hover {
+  color: var(--c-turquoise-deep);
 }
 
 .tabbar button.active {
-  color: var(--c-turquoise-deep);
+  background: linear-gradient(135deg, #2aa4aa 0%, #45c0c6 100%);
+  color: var(--c-white);
+  box-shadow: 0 4px 14px rgba(42, 154, 160, 0.4);
+}
+
+.tabbar button.active:hover {
+  color: var(--c-white);
 }
 
 .tabbar button:focus-visible {
@@ -1104,325 +1311,735 @@ button {
 }
 
 /* ==========================================================================
-   LE VOYAGE — écran d'accueil connecté (demande fondateur)
-   Présentation du voyage : objectifs, gains, carte des 11 mondes.
+   LE VOYAGE — écran d'accueil connecté (maquette fondateur 2026-10-07)
+   Héro illustré · 4 objectifs · récolte · 6 étapes jalons · 11 thèmes · arrêt.
    Vocabulaire du voyage (jamais « jeu ») ; premium marqué, jamais vendu.
    ========================================================================== */
 
 .voyage {
-  padding: 20px 16px 28px;
-  max-width: 720px;
-  margin: 0 auto;
+  padding-bottom: calc(var(--tabbar-h) + 26px + env(safe-area-inset-bottom));
 }
 
-/* ---------- Héros ---------- */
+/* ---------- Héro illustré ---------- */
 
-.voyage-hero {
-  background: linear-gradient(160deg, var(--c-night) 0%, var(--c-night-deep) 62%, #14344a 100%);
-  color: var(--c-cream);
-  border-radius: 20px;
-  padding: 26px 20px 22px;
-  text-align: center;
+.v-hero {
   position: relative;
   overflow: hidden;
+  margin: 10px 14px 0;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #0c3a44 0%, #0f5b63 55%, #137a80 100%);
+  color: var(--c-white);
+  min-height: 252px;
 }
 
-.voyage-hero::after {
+.v-hero-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 62%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 30%;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0) 98%);
+}
+
+/* Voile de contraste : le texte reste lisible sur la partie illustrée */
+.v-hero::after {
   content: '';
   position: absolute;
-  inset: auto -40px -60px auto;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(69, 192, 198, 0.35), transparent 70%);
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(12, 58, 68, 0.55) 30%,
+    rgba(12, 58, 68, 0.28) 52%,
+    rgba(12, 58, 68, 0) 78%
+  );
   pointer-events: none;
 }
 
-.voyage-hero-kicker {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-turquoise-light);
-  background: rgba(69, 192, 198, 0.14);
-  border: 1px solid rgba(69, 192, 198, 0.35);
-  border-radius: 999px;
-  padding: 5px 12px;
-  margin-bottom: 12px;
+.v-hero-body {
+  position: relative;
+  z-index: 2;
+  padding: 22px 20px;
+  max-width: 340px;
 }
 
-.voyage-title {
+.v-hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #d9f4f2;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  padding: 6px 11px;
+  border-radius: 999px;
+}
+
+.v-hero-chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+.v-hero-title {
   font-size: 34px;
   font-weight: 900;
-  letter-spacing: -0.02em;
-  margin: 0 0 6px;
+  letter-spacing: 0.3px;
+  margin: 12px 0 6px;
 }
 
-.voyage-title .accent {
-  color: var(--c-turquoise);
-}
-
-.voyage-sub {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--c-turquoise-light);
-  margin: 0 0 10px;
-}
-
-.voyage-lede {
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: rgba(245, 241, 230, 0.88);
-  margin: 0 auto 16px;
-  max-width: 520px;
-}
-
-.voyage-hero-cta {
-  display: inline-block;
-  color: var(--c-night-deep);
-  background: var(--c-turquoise);
-  font-weight: 800;
-  font-size: 14px;
-  text-decoration: none;
-  border-radius: 999px;
-  padding: 11px 20px;
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-
-.voyage-hero-cta:hover {
-  background: var(--c-turquoise-light);
-  transform: translateY(-1px);
-}
-
-/* ---------- Sections communes ---------- */
-
-.voyage-section {
-  margin-top: 30px;
-}
-
-.voyage-h2 {
-  font-size: 21px;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  margin: 0 0 4px;
-}
-
-.voyage-section-sub {
+.v-hero-sub {
   font-size: 13.5px;
-  color: var(--c-gray-blue);
-  margin: 0 0 14px;
-  line-height: 1.5;
+  font-weight: 800;
+  color: var(--c-white);
+  line-height: 1.45;
 }
 
-.voyage-card {
+.v-hero-sub strong {
+  font-weight: 900;
+}
+
+.v-hero-sub span {
+  color: #c9ebe9;
+  font-weight: 700;
+}
+
+.v-hero-lede {
+  font-size: 12px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 9px;
+  max-width: 300px;
+}
+
+.v-hero-cta {
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: var(--c-white);
-  border: 1px solid var(--c-line);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 1px 2px rgba(23, 44, 61, 0.04);
+  color: #0c4f57;
+  font-size: 13px;
+  font-weight: 900;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* ---------- Objectifs (grille 3) ---------- */
-
-.voyage-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+.v-hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 9px 22px rgba(0, 0, 0, 0.28);
 }
 
-@media (min-width: 640px) {
-  .voyage-grid {
-    grid-template-columns: repeat(3, 1fr);
+.v-hero-cta:focus-visible {
+  outline: 2px solid var(--c-white);
+  outline-offset: 2px;
+}
+
+@media (max-width: 400px) {
+  .v-hero-img {
+    width: 55%;
+    opacity: 0.92;
+  }
+  .v-hero-body {
+    max-width: none;
   }
 }
 
-.voyage-card-objectif h3 {
-  font-size: 15.5px;
-  font-weight: 800;
-  margin: 8px 0 6px;
+/* ---------- Sections ---------- */
+
+.v-section {
+  margin: 24px 14px 0;
 }
 
-.voyage-card-objectif p {
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--c-gray-blue);
-  margin: 0;
-}
-
-.voyage-card-emoji {
-  font-size: 26px;
-  line-height: 1;
-}
-
-/* ---------- Gains (liste ordonnée) ---------- */
-
-.voyage-gains {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.v-section-head {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  counter-reset: gain;
+  margin-bottom: 12px;
 }
 
-.voyage-gain {
+.v-h2 {
   display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  align-items: center;
+  gap: 8px;
+  font-size: 16.5px;
+  font-weight: 900;
+  color: var(--c-night);
 }
 
-.voyage-gain-emoji {
-  font-size: 24px;
-  line-height: 1.2;
-  flex: none;
+.v-h2-ico {
+  display: flex;
+  line-height: 0;
 }
 
-.voyage-gain h3 {
-  font-size: 15px;
+.v-note-script {
+  font-size: 11.5px;
+  font-style: italic;
   font-weight: 800;
-  margin: 0 0 4px;
+  color: #7bc1d7;
+  transform: rotate(-4deg);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.voyage-gain h3 small {
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--c-turquoise-deep);
+@media (max-width: 430px) {
+  .v-note-script {
+    display: none;
+  }
 }
 
-.voyage-gain p {
-  font-size: 13.5px;
-  line-height: 1.55;
+.v-section-sub {
+  font-size: 12px;
   color: var(--c-gray-blue);
-  margin: 0;
+  margin: -4px 0 12px;
 }
 
-/* ---------- Carte des mondes (chemin vertical) ---------- */
-
-.voyage-worlds {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-
-.voyage-world {
-  display: flex;
-  gap: 14px;
-  position: relative;
-  padding-bottom: 18px;
-}
-
-/* La ligne du chemin reliant les mondes */
-.voyage-world::before {
-  content: '';
-  position: absolute;
-  left: 24px;
-  top: 52px;
-  bottom: -2px;
-  width: 2px;
-  background: var(--c-line);
-}
-
-.voyage-world:last-child::before {
-  display: none;
-}
-
-.voyage-world-node {
-  flex: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 16px;
-  background: var(--c-white);
-  border: 2px solid var(--c-line);
+.v-link {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #2a9aa0;
+  padding: 4px 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.v-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Objectifs (4 cartes « 5 min ») ---------- */
+
+.v-obj-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.v-obj {
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  padding: 14px 13px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  box-shadow: 0 1px 4px rgba(23, 44, 61, 0.04);
+}
+
+.v-obj-ico {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 1px 2px rgba(23, 44, 61, 0.05);
 }
 
-.voyage-world-first .voyage-world-node {
-  border-color: var(--c-turquoise);
-  background: rgba(69, 192, 198, 0.1);
+.v-obj h3 {
+  font-size: 13.5px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.25;
 }
 
-.voyage-world-body {
+.v-obj p {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--c-gray-blue);
+  flex-grow: 1;
+}
+
+.v-obj-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.v-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--c-gray-blue);
+  background: #f1f6f4;
+  border-radius: 999px;
+  padding: 4px 9px;
+}
+
+.v-time svg {
+  width: 11px;
+  height: 11px;
+}
+
+.v-arrow {
+  color: var(--c-night);
+  font-weight: 900;
+  font-size: 14px;
+}
+
+/* ---------- Récolte en cours ---------- */
+
+.v-recolte {
+  background: #eaf6f2;
+  border: 1px solid #d7ebe3;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.v-ring {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+}
+
+.v-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.v-ring-track {
+  fill: none;
+  stroke: #d2e9e0;
+  stroke-width: 7;
+}
+
+.v-ring-arc {
+  fill: none;
+  stroke: #2fb0b6;
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+}
+
+.v-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-ring-center img {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 1px;
+}
+
+.v-ring-center strong {
+  font-size: 16.5px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.05;
+}
+
+.v-ring-center span {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--c-gray-blue);
+}
+
+.v-recolte-mid {
+  flex: 1;
+  min-width: 170px;
+}
+
+.v-recolte-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14.5px;
+  font-weight: 900;
+  color: #0e7c85;
+}
+
+.v-recolte-title svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.v-recolte-mid p {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--c-gray-blue);
+  margin: 5px 0 11px;
+}
+
+.v-bar {
+  height: 7px;
+  background: #d2e9e0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.v-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2a9aa0, #45c0c6);
+  transition: width 0.5s ease;
+}
+
+.v-next {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--c-white);
+  border: 1px solid #d7ebe3;
+  border-radius: 14px;
+  padding: 10px 12px;
+  flex: 1 1 175px;
+  text-align: left;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.v-next:hover {
+  box-shadow: 0 4px 14px rgba(23, 44, 61, 0.1);
+  transform: translateY(-1px);
+}
+
+.v-next:focus-visible,
+.v-link:focus-visible,
+.v-hero-cta:focus-visible,
+.v-arret-btn:focus-visible {
+  outline: 2px solid var(--c-turquoise-deep);
+  outline-offset: 2px;
+}
+
+.v-next-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff3d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.v-next-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.v-next-text small {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--c-gray-blue);
+}
+
+.v-next-text strong {
+  font-size: 13px;
+  font-weight: 900;
+  color: #0e7c85;
+}
+
+.v-next-chev {
+  margin-left: auto;
+  color: #9aa5a0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* ---------- Étapes jalons ---------- */
+
+.v-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 460px) {
+  .v-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.v-step {
+  position: relative;
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  padding: 13px 10px 13px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  box-shadow: 0 1px 4px rgba(23, 44, 61, 0.04);
+}
+
+.v-step-num {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: var(--c-night);
+  color: var(--c-white);
+  font-size: 10.5px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--c-cream);
+}
+
+.v-step-ico {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.v-step-body {
   flex: 1;
   min-width: 0;
-  padding-top: 2px;
 }
 
-.voyage-world h3 {
-  font-size: 15.5px;
-  font-weight: 900;
-  margin: 0 0 4px;
+.v-step-body h3 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--c-night);
 }
 
-.voyage-world-num {
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--c-turquoise-deep);
-  background: rgba(69, 192, 198, 0.12);
-  border-radius: 999px;
-  padding: 3px 9px;
+.v-step-body p {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--c-gray-blue);
+  margin-top: 3px;
 }
 
-.voyage-chip {
-  font-size: 11px;
-  font-weight: 800;
+.v-step-chev {
+  align-self: center;
+  color: #b9c4c2;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.v-chip {
+  font-size: 9px;
+  font-weight: 900;
+  padding: 2.5px 7px;
   border-radius: 999px;
-  padding: 3px 9px;
   white-space: nowrap;
 }
 
-.voyage-chip-premium {
-  color: #8a5a00;
-  background: rgba(250, 190, 80, 0.22);
+.v-chip-now {
+  background: #0e7c85;
+  color: var(--c-white);
 }
 
-.voyage-chip-free {
-  color: var(--c-turquoise-deep);
-  background: rgba(69, 192, 198, 0.14);
+.v-chip-soon {
+  background: #f1f6f4;
+  color: var(--c-gray-blue);
+  border: 1px solid var(--c-line);
 }
 
-.voyage-world-tagline {
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--c-night);
-  margin: 0 0 3px;
+/* ---------- Thèmes (les 11 mondes) ---------- */
+
+.v-themes {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+  margin: 0;
+  padding: 0;
 }
 
-.voyage-world-meta {
+.v-theme {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  padding: 9px 10px;
+  box-shadow: 0 1px 4px rgba(23, 44, 61, 0.04);
+}
+
+.v-theme-ico {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.v-theme-body {
+  min-width: 0;
+}
+
+.v-theme-body h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
   font-size: 12px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.25;
+}
+
+.v-theme-body p {
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--c-gray-blue);
-  margin: 0;
+  margin-top: 1px;
 }
 
-/* ---------- Outro ---------- */
-
-.voyage-outro-card {
-  text-align: center;
-  padding: 20px 16px;
-}
-
-.voyage-outro-card h3 {
-  font-size: 17px;
+.v-prem {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 8.5px;
   font-weight: 900;
-  margin: 0 0 6px;
+  color: #a97b0c;
+  background: #fff6dc;
+  border-radius: 999px;
+  padding: 2px 6px;
 }
 
-.voyage-outro-card p {
-  font-size: 13.5px;
-  line-height: 1.55;
+.v-prem em {
+  font-style: normal;
+}
+
+.v-free {
+  display: inline-flex;
+  font-size: 8.5px;
+  font-weight: 900;
+  color: #12876f;
+  background: #dcf5ec;
+  border-radius: 999px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+/* ---------- Premier arrêt ---------- */
+
+.v-arret {
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: 20px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  box-shadow: 0 2px 10px rgba(23, 44, 61, 0.06);
+}
+
+.v-arret-img {
+  width: 104px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  min-height: 120px;
+}
+
+.v-arret-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.v-arret-body h3 {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--c-night);
+}
+
+.v-arret-body p {
+  font-size: 11.5px;
+  line-height: 1.5;
   color: var(--c-gray-blue);
-  margin: 0 0 14px;
+  margin: 4px 0 10px;
+  flex-grow: 1;
+}
+
+.v-arret-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.v-arret-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #eaf6f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.v-arret-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #8b4dd3, #7a3fc0);
+  color: var(--c-white);
+  font-size: 12px;
+  font-weight: 900;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(139, 77, 211, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.v-arret-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 77, 211, 0.45);
+}
+
+@media (max-width: 400px) {
+  .v-arret {
+    flex-direction: column;
+  }
+  .v-arret-img {
+    width: 100%;
+    height: 92px;
+    min-height: 0;
+  }
 }
