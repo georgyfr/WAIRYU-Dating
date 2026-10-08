@@ -2,31 +2,31 @@
  * Le document personnel des résultats — jsPDF en import DYNAMIQUE (le bundle
  * principal reste intact ; le module ne se charge qu'au clic).
  *
- * Task 33/34 — réorientation fondateur (l'archétype d'abord) : Ma carte → Ton
- * archétype (félicitations + le nom, puis la DÉFINITION générale — « qu'est-ce
- * que c'est ? » —, à quoi ce type renvoie, sa lumière, son ombre, en relation,
- * son point d'équilibre) → Mon profil, tendance par tendance (« place à toi »,
- * QUALITATIF d'abord : « Très présente », « 78/100 — tendance actuelle » en
- * secondaire) + levier de progression par dimension → Mon langage relationnel
- * (moteur de matching) → Comment utiliser cette quête → La suite de ton
- * voyage (cliffhanger) → note de pied honnête + pagination.
+ * Task 35 — GABARIT FONDATEUR (identique à l'écran, même ordre, mêmes mots) :
+ * Ma carte (verbatim) → 🎉 Ton profil : {nom} → intro (« Ton archétype révèle
+ * une personne qui… » + point de vigilance) → En résumé : « {devise} » → Ce
+ * que tu apportes → Ce qui peut te freiner → En couple → Ton équilibre →
+ * 🪞 Tes N tendances (d'après tes réponses) : « {nom} — {score}/100
+ * ({palier}) » + barre + texte → À noter → La suite de ton voyage
+ * (cliffhanger) → note de pied honnête + pagination.
  *
- * Les sections personnelles de la formule 32 (preuves, question à emporter,
- * ce que l'autre ressent, besoins) ne sont plus imprimées : elles affirmaient
- * des vérités intimes que la passation ne mesure pas — les données restent
- * dans quete-1-*-plus.ts pour le matching futur.
+ * L'algorithme (cf. quetes-plus.ts) : un gabarit unique en code, les mots en
+ * registre d'archétypes (ARCHE, 2ᵉ personne), les mesures calculées
+ * (scorer → 0-100 → palier). Les sections de la formule 33 (langage
+ * relationnel, leviers, conseils) ne sont plus imprimées — les données
+ * restent dans quete-1-*-plus.ts pour le matching futur.
  *
  * Gabarit A4 (unités mm) : en-tête Wairyu bicolore + date. WinAnsi (police
  * Helvetica) : œ é « » · — vérifiés dans le flux ; pas d'emoji (police non
  * couverte) — les titres de section restent en texte.
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au chunk staging
- * pdf-resultats-DJPOSrQf.js (Task 27), structure Tasks 32/33.
+ * pdf-resultats-DJPOSrQf.js (Task 27), gabarit 35 selon les retours.
  */
 
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
-import { construireApercuResultats, nomFichierPdf, PALIER_LABELS } from './quetes';
-import { ARCHE, PLUS } from './quetes-plus';
+import { construireApercuResultats, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
+import { ARCHE } from './quetes-plus';
 
 // Palette (RGB 0-255) — tokens de l'identité visuelle.
 const BLEU_NUIT: RGB = [23, 44, 61];
@@ -75,8 +75,6 @@ export async function telechargerResultatsPdf(
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const apercu: ApercuResultats = construireApercuResultats(quete, reponses);
   const arche = ARCHE[quete.id][carte.id];
-  const plusCarte = PLUS[quete.id].cartes[carte.id];
-  const plus = PLUS[quete.id];
   const curseur = { y: 0 };
 
   const assurerPlace = (hauteur: number): void => {
@@ -111,16 +109,6 @@ export async function telechargerResultatsPdf(
       curseur.y += hauteurLigne;
     }
     curseur.y += 2.4;
-  };
-
-  /** Une liste à puces (points turquoise). */
-  const puces = (items: readonly string[], size = 10): void => {
-    for (const it of items) {
-      assurerPlace(size * 0.52 + 3);
-      doc.setFillColor(...TURQUOISE);
-      doc.circle(MARGE + 1.6, curseur.y - 1.2, 0.9, 'F');
-      para(it, { size });
-    }
   };
 
   // ---- en-tête
@@ -165,54 +153,31 @@ export async function telechargerResultatsPdf(
   para(quete.completion.labelTension, { size: 9.5, couleur: CORAIL, gras: true });
   para(carte.tension, { size: 10.5, italique: true });
 
-  // ---- Ton archétype (présentation GÉNÉRALE du type — Tasks 33/34)
-  section('Ton archétype');
-  para('Félicitations — ta quête est accomplie. Ton archétype :', { size: 10, couleur: ENCRE_DOUCE });
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14.5);
-  doc.setTextColor(...TURQUOISE);
-  doc.text(carte.nom, MARGE, curseur.y);
-  curseur.y += 7.4;
-  para(`${carte.nom}, qu'est-ce que c'est ?`, { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(arche.presentation, { size: 10 });
-  para('À quoi renvoie ce type de personnalité ?', { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(arche.accroche, { size: 10.5, gras: true });
-  para(`« ${arche.devise} »`, { size: 11, italique: true, couleur: TURQUOISE });
-  para('Sa lumière — ce que ce type peut généralement apporter', { size: 9.5, couleur: TURQUOISE, gras: true });
-  puces(arche.lumiere);
-  para(arche.lumiereNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
-  para('Son ombre — quand cette lumière déborde', { size: 9.5, couleur: CORAIL, gras: true });
-  puces(arche.ombre);
-  para(arche.ombreNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
-  para('En relation — ce que ce type peut généralement apprécier', { size: 9.5, couleur: TURQUOISE, gras: true });
-  puces(arche.relation);
-  para(arche.relationNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
-  para('Son point d\'équilibre', { size: 9.5, couleur: CORAIL, gras: true });
-  para(arche.equilibreQuestion, { size: 11, italique: true });
-  para(arche.equilibreNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  // ---- Ton profil (gabarit fondateur — mots du registre ARCHE, Task 35)
+  section(`Ton profil : ${carte.nom}`);
+  para(arche.intro, { size: 10 });
+  para(`En résumé : « ${arche.devise} »`, { size: 10.5, italique: true, couleur: TURQUOISE, gras: true });
+  para('Ce que tu apportes', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(arche.apportes, { size: 10 });
+  para('Ce qui peut te freiner', { size: 9.5, couleur: CORAIL, gras: true });
+  para(arche.freines, { size: 10 });
+  para('En couple', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(arche.couple, { size: 10 });
+  para('Ton équilibre', { size: 9.5, couleur: CORAIL, gras: true });
+  para(arche.equilibre, { size: 10 });
 
-  // ---- Mon profil, tendance par tendance (qualitatif d'abord)
-  section('Mon profil, tendance par tendance');
-  para(
-    'Et maintenant, place à toi : voici exactement ton profil de personnalité dans cet archétype — tendance par tendance, d\'après ce que tes réponses ont montré. Aucune personne ne colle parfaitement à un type : regarde où tu te rapproches de ce portrait, et où tu t\'en éloignes.',
-    { size: 9.5, couleur: ENCRE_DOUCE, italique: true },
-  );
-  para(apercu.commentLire, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  // ---- Tes N tendances (d'après tes réponses) — les mesures réelles
+  section(titreTendances(apercu.bars.length));
   for (const barre of apercu.bars) {
-    assurerPlace(30);
+    assurerPlace(26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11.5);
     doc.setTextColor(...BLEU_NUIT);
     doc.text(barre.nom, MARGE, curseur.y);
     doc.setFontSize(10.5);
     doc.setTextColor(...TURQUOISE);
-    doc.text(PALIER_LABELS[barre.palier], 210 - MARGE, curseur.y, { align: 'right' });
+    doc.text(`— ${barre.pct}/100 (${barre.palierLabel})`, 210 - MARGE, curseur.y, { align: 'right' });
     curseur.y += 3.6;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.8);
-    doc.setTextColor(...ENCRE_DOUCE);
-    doc.text(`${barre.sousLigne} · ${barre.pct}/100 — tendance actuelle`, MARGE, curseur.y);
-    curseur.y += 2.6;
     const yBarre = curseur.y;
     doc.setFillColor(...CREME);
     doc.setDrawColor(...SABLE);
@@ -222,42 +187,10 @@ export async function telechargerResultatsPdf(
       doc.roundedRect(MARGE, yBarre, Math.max(4.4, (LARGEUR * barre.pct) / 100), 4.4, 2.2, 2.2, 'F');
     }
     curseur.y += 8;
-    para(barre.lecture, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
     para(barre.texte, { size: 10 });
-    const lev = plus.leviers[barre.key];
-    if (lev) {
-      assurerPlace(22);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9.5);
-      doc.setTextColor(...CORAIL);
-      doc.text('Ton levier de progression', MARGE, curseur.y);
-      curseur.y += 4.6;
-      para(`Ta force. ${lev.force}`, { size: 9.8 });
-      para(`Ton risque. ${lev.risque}`, { size: 9.8 });
-      para(`Ton levier. ${lev.levier}`, { size: 9.8 });
-    }
     curseur.y += 1.4;
   }
-
-  // ---- Mon langage relationnel (moteur de matching)
-  section('Mon langage relationnel');
-  para('Ce que Wairyu retiendra pour te proposer des personnes qui parlent la même langue que toi.', {
-    size: 9.5,
-    couleur: ENCRE_DOUCE,
-    italique: true,
-  });
-  para('Tu donnes', { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(plusCarte.langage.donnes, { size: 10 });
-  para('Tu recherches probablement', { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(plusCarte.langage.recherches, { size: 10 });
-  para('Tu dois surveiller', { size: 9.5, couleur: CORAIL, gras: true });
-  para(plusCarte.langage.surveilles, { size: 10 });
-  para('Tu pourrais particulièrement apprécier', { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(plusCarte.langage.apprecierais, { size: 10 });
-
-  // ---- Comment utiliser cette quête
-  section('Comment utiliser cette quête');
-  puces(apercu.conseils);
+  para(NOTA_BARRES, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
 
   // ---- La suite de ton voyage (cliffhanger)
   section('La suite de ton voyage');

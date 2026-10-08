@@ -31,8 +31,12 @@ export interface DimDef {
   key: string;
   nom: string;
   sousLigne: string;
+  /** Genre grammatical du nom — pour l'accord des libellés de palier
+   *  (« très présente » / « très présent », gabarit fondateur Task 35). */
+  genre: 'f' | 'm';
   /** Ce que cette barre regarde — l'explication de la tendance (couche app,
-   *  demande fondateur : « apporte plus d'explication des résultats »). */
+   *  demande fondateur : « apporte plus d'explication des résultats »).
+   *  Donnée conservée (carnet de bord futur) — non rendue au gabarit 35. */
   lecture: string;
 }
 
@@ -131,6 +135,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'O',
         nom: 'Ton ouverture',
         sousLigne: 'le nouveau, les idées, la curiosité',
+        genre: 'f',
         lecture:
           'Cette barre dit combien le nouveau t\'appelle : idées inattendues, lieux inconnus, gens qui pensent autrement. Pleine : tu explores et tu entraînes les autres dans ton élan. Légère : tu aimes ce qui dure, et ta constance est une force pour ceux qui t\'entourent.',
       },
@@ -138,6 +143,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'C',
         nom: 'Ton organisation',
         sousLigne: 'ce que tu promets, ce que tu finis',
+        genre: 'f',
         lecture:
           'Cette barre dit ce que tu tiens : promesses gardées, choses finies, plans suivis. Pleine : les gens peuvent compter sur toi, et ils le savent. Légère : tu improvises, et ta souplesse a juste besoin d\'une colonne vertébrale les semaines où tout arrive en même temps.',
       },
@@ -145,6 +151,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'E',
         nom: 'Ton énergie sociale',
         sousLigne: 'les gens, le bruit, le silence',
+        genre: 'f',
         lecture:
           'Cette barre dit d\'où vient ton énergie : la foule ou le calme. Pleine : les gens te rechargent et tu rayonnes en groupe. Légère : le silence te reconstruit, avec peu de gens mais des vrais. Ni l\'un ni l\'autre n\'est mieux — ce sont deux moteurs différents.',
       },
@@ -155,6 +162,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         // lecture dit déjà « la confiance se mérite chez toi »).
         nom: 'Ta confiance',
         sousLigne: 'le lien, la confiance, la franchise',
+        genre: 'f',
         lecture:
           'Cette barre dit comment tu donnes : confiance rapide ou prudence attentive. Pleine : le lien passe avant la victoire, tu écoutes et tu donnes sans compter. Légère : la confiance se mérite chez toi — et ta franchise, bien dosée, protège tes relations.',
       },
@@ -162,33 +170,38 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'S',
         nom: 'Ta stabilité émotionnelle',
         sousLigne: 'les vagues, le calme, le retour',
+        genre: 'f',
         lecture:
           'Cette barre dit comment tu traverses les vagues : retombé·e vite ou porté·e longtemps. Pleine : les autres s\'appuient sur ton calme, souvent sans le dire. Légère : tu ressens fort et longtemps — une antenne fine, pas une faiblesse.',
       },
     ],
     accompagnement: {
+      // Task 35 : les 5 textes aux paliers atteints par le gabarit fondateur
+      // (O-fort, C-équilibre, E-fort, A-doux, S-fort) viennent du fondateur
+      // LUI-MÊME — reprise verbatim, coquilles corrigées. Les autres paliers
+      // gardent la même voix.
       O: {
-        fort: 'Le nouveau t\'attire — idées, lieux, gens qui pensent autrement. Tu essaies, tu goûtes, tu changes d\'avis quand quelque chose de mieux apparaît. Ton garde-fou : garder une chose stable quelque part te donne la base pour explorer le reste sans te disperser.',
+        fort: 'Le nouveau t\'attire : idées, lieux, rencontres différentes. Tu explores et tu adaptes facilement ton point de vue. Ton garde-fou : garder au moins un repère stable pour ne pas te disperser.',
         equilibre: 'Tu peux aimer le nouveau sans courir après lui : tu explores quand ça vaut la peine, tu restes quand ça compte. C\'est un équilibre qui se règle au cas par cas — de temps en temps, ose l\'inconnu juste pour voir ce qu\'il fait en toi.',
         doux: 'Tu aimes ce qui dure : les mêmes visages, les mêmes repères, les choses qu\'on connaît par cœur. Ce n\'est pas de la fermeture — c\'est de la constance. Une petite nouveauté par mois, choisie par toi, suffit à garder la porte entrouverte.',
       },
       C: {
         fort: 'Ce que tu promets, tu le tiens. Tu aimes quand les choses sont en ordre, prévues, finies — et les gens le savent : ils te confient ce qui compte. Ta vigilance : quand l\'imprévu arrive, lui laisser une place sans te le vivre comme un manquement.',
-        equilibre: 'Tu organises ce qui doit l\'être et tu laisses le reste respirer. Tes journées ont une colonne vertébrale, pas de grille. Vigilance douce : les grandes échéances méritent parfois plus de structure que tu ne leur en donnes spontanément.',
+        equilibre: 'Tu structures l\'essentiel et laisses le reste vivre. Tes journées ont une colonne vertébrale, pas de carcan. Attention juste aux grosses échéances, qui méritent parfois plus de cadre.',
         doux: 'Tu préfères improviser : tu t\'organises quand c\'est obligatoire, pas par plaisir. Ça marche, jusqu\'au jour où tout arrive en même temps. Un seul rendez-vous avec toi-même par semaine — dix minutes, une liste — change la tension du reste.',
       },
       E: {
-        fort: 'Les gens te rechargent. Tu lances les conversations, tu connectes, tu animes sans le vouloir. Ta vigilance : garder des temps calmes rien que pour toi — c\'est ce qui rend ton énergie durable au lieu de la brûler.',
+        fort: 'Les gens te rechargent. Tu lances les conversations et animes naturellement. Vigilance : préserve des temps calmes pour toi — c\'est ce qui rend ton énergie tenable sur la durée.',
         equilibre: 'Tu es sociable quand ça a du sens et silencieux quand il le faut. Les grands groupes t\'amusent, les tête-à-tête te nourrissent. Tu n\'as rien à corriger — juste à repérer ce dont tu as besoin après une longue journée de monde.',
         doux: 'Le calme te reconstruit : peu de gens, mais des vrais. Tu préfères écouter que remplir le silence — et ceux qui te connaissent savent la valeur de ce que tu dis. Un petit pas spontané de temps en temps ouvre des portes que l\'attente ne verrait pas.',
       },
       A: {
         fort: 'Tu fais passer le lien avant la victoire : tu écoutes, tu attends avant de juger, tu donnes sans compter. Ta vigilance : la franchise a aussi un cadeau à offrir — dire un non clair rend tes oui plus vrais.',
         equilibre: 'Tu es chaleureux·se mais tu ne te laisses pas marcher dessus : tu donnes beaucoup et tu sais poser des limites. C\'est un équilibre sain — garde juste l\'œil sur les personnes avec qui tu te forces à être doux·ce.',
-        doux: 'Tu gardes tes distances : la confiance se mérite, et tu l\'as appris pour de bonnes raisons. Ta vigilance : quelques personnes méritent d\'entrer plus vite — teste en petit, regarde ce qui se passe.',
+        doux: 'La confiance se mérite chez toi, et tu as de bonnes raisons d\'avoir appris ça. Ta piste : tester la confiance par petites touches plutôt que d\'attendre une certitude totale, et oser dire non clairement.',
       },
       S: {
-        fort: 'Les vagues passent et tu restes. Tu retrouves ton calme vite, tu dors, tu avances — les autres s\'appuient sur toi sans toujours le dire. Ta vigilance : ta stabilité ne doit pas devenir une armure — accueillir ce qui remue fait partie du voyage.',
+        fort: 'Les vagues passent et tu restes debout. Tu retrouves ton calme rapidement et les autres s\'appuient sur toi, souvent sans le dire. Vigilance : que ta stabilité ne devienne pas une armure — accueillir ce qui remue fait aussi partie de l\'équilibre.',
         equilibre: 'Tu as des jours calmes et des jours de tempête — c\'est humain et c\'est ton rythme. Tu connais déjà ce qui t\'apaise ; le jeu, c\'est de le faire assez tôt, avant que la fatigue ne décide pour toi.',
         doux: 'Tu ressens fort et longtemps — les remarques, les attentes, les scénarios. Ce n\'est pas une faiblesse : c\'est une antenne fine. Ton levier : des gestes simples et répétables — un souffle, une marche, une note écrite — qui raccourcissent le retour au calme.',
       },
@@ -257,6 +270,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'A',
         nom: 'Ton besoin de réassurance',
         sousLigne: 'ce que ton cœur cherche quand quelqu\'un compte',
+        genre: 'm',
         lecture:
           'Cette barre dit ce que ton cœur demande quand quelqu\'un compte pour toi : des preuves fréquentes et tôt (pleine), ou une tranquillité qui vient de toi (légère). Aucun point n\'est plus solide que l\'autre — ce qui compte, c\'est de connaître le tien pour pouvoir le dire.',
       },
@@ -264,6 +278,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'E',
         nom: 'Ton besoin d\'espace',
         sousLigne: 'ton air, ton rythme, ton monde intérieur',
+        genre: 'm',
         lecture:
           'Cette barre dit combien d\'air tu as besoin dans la proximité : beaucoup (pleine), ou le contact qui te nourrit sans peser (légère). Connaître ton rythme t\'évite de le vivre comme un défaut — et de le faire deviner à l\'autre.',
       },
@@ -340,6 +355,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'P',
         nom: 'Ta perception',
         sousLigne: 'savoir ce que tu ressens, même mêlé',
+        genre: 'f',
         lecture:
           'Cette barre dit si ce qui se passe en toi s\'annonce tôt et clairement (pleine) ou se découvre après coup, par le corps ou les réactions (légère). C\'est la première marche : on ne peut nommer que ce qu\'on remarque — et tout le reste s\'appuie dessus.',
       },
@@ -347,6 +363,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'R',
         nom: 'Ta régulation',
         sousLigne: 'ce que tu fais quand ça monte',
+        genre: 'f',
         lecture:
           'Cette barre dit comment ça redescend quand ça monte : tu connais ton chemin de retour (pleine), ou la vague te porte plus vite que tu ne la portes (légère). Bonne nouvelle : c\'est la plus entraînable des trois — un geste répété dans le calme devient disponible dans la tempête.',
       },
@@ -354,6 +371,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         key: 'X',
         nom: 'Ton expression',
         sousLigne: 'ce qui se voit et se dit de toi',
+        genre: 'f',
         lecture:
           'Cette barre dit ce qui se voit de toi : les émotions se lisent dehors (pleine), ou tout travaille en dedans (légère). Les deux sont des styles — le bon, c\'est celui que tu sais expliquer à l\'autre : « je ressens beaucoup, je montre peu » est une information précieuse à donner.',
       },
@@ -416,17 +434,31 @@ export const LIKERT: readonly LikertNiveau[] = Q11.LIKERT;
 /** Paliers de lecture des barres (couche app — distincts des verrous [9]). */
 export type Palier = 'fort' | 'equilibre' | 'doux';
 
-export const PALIER_LABELS: Record<Palier, string> = {
-  // Task 32 (critique fondateur §7) : le qualitatif D'ABORD, le chiffre en
-  // secondaire — « Très présente » + « 78/100 — tendance actuelle », pas
-  // « 78 % » qui pousse score → comparaison → classement.
-  doux: 'Plus discrète',
-  equilibre: 'Équilibrée',
-  fort: 'Très présente',
-};
-
 export function palierDe(pct: number): Palier {
   return pct >= 0.65 ? 'fort' : pct >= 0.4 ? 'equilibre' : 'doux';
+}
+
+/** Le libellé de palier, accordé au genre du nom de la tendance — format
+ *  fondateur Task 35 : « Ton ouverture — 78/100 (très présente) ». Le
+ *  qualitatif reste premier, le chiffre secondaire (leçon Task 32 : pas de
+ *  « 78 % » qui pousse score → comparaison → classement). */
+export function labelPalier(palier: Palier, genre: 'f' | 'm'): string {
+  if (palier === 'fort') return genre === 'f' ? 'très présente' : 'très présent';
+  if (palier === 'equilibre') return genre === 'f' ? 'équilibrée' : 'équilibré';
+  return genre === 'f' ? 'plus discrète' : 'plus discret';
+}
+
+/** « À noter » — la passe d'honnêteté du gabarit fondateur (Task 35),
+ *  refermée après les tendances (écran + PDF, texte identique). */
+export const NOTA_BARRES =
+  'À noter : ces barres sont un instantané de tes réponses du jour, pas des notes ni des verdicts. Chaque tendance a sa force et son risque — l\'important est de choisir consciemment où placer le curseur.';
+
+const MOTS_NOMBRE: Record<number, string> = { 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq' };
+
+/** Le titre de la section tendances, pluriel justement accordé —
+ *  « 🪞 Tes cinq tendances (d'après tes réponses) » (5 dims en 1.1). */
+export function titreTendances(nb: number): string {
+  return `Tes ${MOTS_NOMBRE[nb] ?? String(nb)} tendances (d'après tes réponses)`;
 }
 
 export interface RepartitionLigne {
@@ -442,8 +474,11 @@ export interface BarreDetail {
   /** 0-100 — la valeur RÉELLE produite par le scorer du Livrable. */
   pct: number;
   palier: Palier;
+  /** Le libellé du palier, accordé au genre (gabarit fondateur Task 35). */
+  palierLabel: string;
   texte: string;
-  /** Ce que cette barre regarde — l'explication de la tendance (demande fondateur). */
+  /** Ce que cette barre regarde — l'explication de la tendance (demande fondateur).
+   *  Donnée conservée — non rendue au gabarit 35. */
   lecture: string;
 }
 
@@ -470,6 +505,7 @@ export function construireApercuResultats(quete: QueteDef, reponses: Record<stri
       sousLigne: d.sousLigne,
       pct: Math.round(valeur * 100),
       palier,
+      palierLabel: labelPalier(palier, d.genre),
       texte: quete.accompagnement[d.key]?.[palier] ?? '',
       lecture: d.lecture,
     };

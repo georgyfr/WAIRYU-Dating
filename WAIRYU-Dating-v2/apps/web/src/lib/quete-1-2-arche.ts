@@ -1,213 +1,100 @@
 /**
- * Archétypes de la quête 1.2 — Ta façon de t'attacher (Task 33, demande fondateur).
- * Présentation GÉNÉRALE de chaque type : ce que ce type peut généralement apporter,
- * son ombre, en relation, son point d'équilibre.
+ * Archétypes de la quête 1.2 — Ta façon de t'attacher (Task 35, gabarit
+ * fondateur). Même algorithme que la quête 1.1 : chaque type est écrit à la
+ * 2ᵉ personne, simple et littéral, dans les 6 champs du gabarit (intro +
+ * point de vigilance, devise, ce que tu apportes, ce qui peut te freiner,
+ * en couple, ton équilibre). Le gabarit de référence (V3 de la quête 1.1)
+ * vient du fondateur lui-même.
  *
- * RÉORIENTATION (suite du malaise Task 32) : la révélation ne doit plus affirmer
- * des vérités personnelles que la quête ne mesure pas. Ici on parle du TYPE
- * d'abord — « ce type de personnalité peut généralement… », « certaines
- * personnes… », « elles… » — sans tutoiement, sans révélation intime, sans
- * répéter le nom de la carte. Le profil personnalisé (preuves, besoins,
- * ressenti, langage — quete-1-2-plus.ts) vient ENSUITE, tendance par tendance.
+ * SENSIBILITÉ ATTACHEMENT : l'archétype décrit une façon d'aimer et de
+ * s'attacher (réassurance, espace, rythme du lien), jamais un diagnostic.
+ * « Ce qui peut te freiner » décrit des situations de lien qui peuvent
+ * apparaître — pas des défauts ni des blessures. « En couple » reste une
+ * dynamique possible (« À garder en tête »), jamais une prédiction sur
+ * l'autre.
  *
- * SENSIBILITÉ ATTACHEMENT : la quête parle d'une façon d'aimer et de s'attacher
- * (réassurance, espace, rythme du lien), jamais d'un diagnostic. L'ombre décrit
- * des situations de lien qui peuvent apparaître (silences lus comme de la
- * distance, pauses prises en silence, signaux contradictoires), pas des défauts
- * ni des blessures. L'équilibre se pose comme une question, pas une prescription.
+ * Ancrage : les cartes VERBATIM restent dans quete-1-2.ts, la couche « plus »
+ * (langage matching, leviers) dans quete-1-2-plus.ts. Aucun segment ≥ 60
+ * caractères n'est recopié d'un module à l'autre.
  *
- * TYPO : apostrophe ASCII uniquement, espaces normales, zéro emoji,
- * items de listes en minuscule initiale et sans point final.
+ * Typo : apostrophe ASCII uniquement, écriture inclusive, pas de mélange
+ * tu/vous.
  */
 import type { ArchetypeCarte } from './quetes-plus';
 
 export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
+  // V1 — L'Ancrage : le lien qui dure, sans paniquer.
   V1: {
-    accroche: 'Une personnalité qui installe le lien dans la durée, sans paniquer',
+    intro:
+      'Ton archétype révèle une personne qui installe le lien dans la durée. Tu es de celles et ceux qui restent quand ça grince, disent les choses simples et réparent tôt ce qui frotte. La proximité te nourrit, la distance ne t\'effraie pas — ta force tient à peu : une présence régulière, un calme qui se vérifie. Ton point de vigilance : ce qui est évident pour toi ne se lit pas toujours de l\'extérieur — les preuves qu\'on oublie de donner peuvent créer des doutes qui n\'existent pas.',
     devise: 'Je reste, je répare, je fais confiance au lien.',
-    presentation:
-      "Certaines personnes vivent le lien comme une évidence tranquille : la proximité les nourrit, la distance ne les effraie pas. Elles restent quand ça grince, elles disent les choses simples, elles réparent tôt ce qui frotte. Leur force tient souvent à peu : une présence régulière, un calme qui se vérifie. Généralement, elles offrent au lien un terrain où l'autre peut poser ses doutes sans que tout tremble.",
-    lumiere: [
-      'un calme qui repose',
-      'des accrocs vite réparés',
-      'une présence régulière',
-      'une confiance qui ne surveille pas',
-      'des moments ordinaires qui font lien',
-      'un attachement dit et vérifié',
-    ],
-    lumiereNote:
-      "Généralement, ce type apporte au lien un socle : on sait d'où l'on part, on sait qui reste.",
-    ombre: [
-      "les preuves qu'on oublie de donner",
-      "les mots simples qu'on croit inutiles de dire",
-      "les doutes de l'autre corrigés trop vite",
-      'les petits malentendus laissés en attente',
-      "la routine qui s'installe quand tout va bien",
-    ],
-    ombreNote:
-      "L'ombre n'est pas un défaut : c'est ce qui peut apparaître quand le calme est si solide qu'il devient silencieux.",
-    relation: [
-      'une sincérité dite simplement',
-      'un quotidien qui a du goût',
-      'des rapports clairs, sans devinettes',
-      'un lien qui survit aux accrocs',
-      'des projets construits sans bruit',
-    ],
-    relationNote:
-      "Une possibilité à garder en tête : avec un calme aussi stable, l'autre peut parfois douter que son inquiétude trouve une place — et garder ce doute pour lui plutôt que d'en parler.",
-    equilibreQuestion:
-      "Est-ce que je dis mon attachement assez souvent pour qu'il s'entende dehors ?",
-    equilibreNote:
-      "Ce qui se vit comme évident ne se lit pas toujours de l'extérieur : nommer son attachement reste un choix, pas une obligation.",
+    apportes:
+      'Un socle : on sait d\'où l\'on part, on sait qui reste. Ton calme repose, tes accrocs se réparent vite, tes moments ordinaires font lien.',
+    freines:
+      'Les mots simples qu\'on croit inutiles de dire, les doutes de l\'autre corrigés trop vite, la routine qui s\'installe quand tout va bien. Ce ne sont pas des défauts — juste ce qui apparaît quand le calme est si solide qu\'il devient silencieux.',
+    couple:
+      'Tu construis un lien qui survit aux accrocs : sincérité dite simplement, rapports clairs, projets construits sans bruit. À garder en tête : avec un calme aussi stable, l\'autre peut douter que son inquiétude trouve une place — et garder ce doute pour lui plutôt que d\'en parler.',
+    equilibre:
+      'Dire ton attachement assez souvent pour qu\'il s\'entende dehors. Non parce que ton calme manquerait de fond, mais parce que ce qui se vit comme évident a besoin d\'être dit pour être vécu pareil par l\'autre.',
   },
+
+  // V2 — La Vigie : l'antenne du lien, qui aime fort et veille.
   V2: {
-    accroche: 'Une personnalité qui aime fort, qui veille et qui donne sans compter',
-    devise: "J'aime fort, je veille, je donne sans compter.",
-    presentation:
-      "Certaines personnes aiment avec une antenne permanente : quand quelqu'un compte pour elles, elles repèrent les variations d'humeur avant tout le monde. Elles veillent par petits gestes, elles donnent sans compter, elles sont là les jours difficiles. Leur attention traverse aussi les jours ordinaires. L'imagination, elle, peut travailler plus fort que nécessaire quand le silence s'installe.",
-    lumiere: [
-      'une attention de chaque instant',
-      'une loyauté entière',
-      'un don sans calcul',
-      "des signes d'amour réguliers",
-      'une mémoire des petites choses',
-      'une présence aux jours difficiles',
-    ],
-    lumiereNote:
-      "Ce type fait généralement du lien un lieu où l'on se sent remarqué, attendu, compté.",
-    ombre: [
-      'les silences qui durent',
-      'les messages qui tardent',
-      "les réponses plus courtes qu'à l'habitude",
-      'les demandes de preuves répétées',
-      'les soirées occupées par un détail',
-      'les questions remplacées par des lectures',
-    ],
-    ombreNote:
-      "L'ombre n'est pas un défaut : c'est la vigilance qui déborde quand le silence parle trop fort — la même antenne, à l'envers.",
-    relation: [
-      "des signes réguliers que le lien tient",
-      "de la clarté sur où l'on en est",
-      "des mots dits au moment où le doute arrive",
-      'une fidélité qui ne se négocie pas',
-      'de la profondeur plutôt que de la légèreté',
-    ],
-    relationNote:
-      "Une possibilité à garder en tête : l'antenne peut, à force, lire des intentions là où il n'y a qu'une soirée chargée — et le lien avancer sur des hypothèses plutôt que sur des mots.",
-    equilibreQuestion:
-      "Est-ce que je demande, au lieu de décoder, ce qui m'inquiète dans le lien ?",
-    equilibreNote:
-      "Demander n'est pas manquer de confiance : une question dite à voix haute remplace généralement des heures d'interprétation.",
+    intro:
+      'Ton archétype révèle une personne qui aime avec une antenne permanente. Tu es de celles et ceux qui repèrent les variations d\'humeur avant tout le monde, qui veillent par petits gestes et sont là les jours difficiles — ton attention traverse aussi les jours ordinaires. Ton point de vigilance : quand le silence s\'installe, ton imagination peut travailler plus fort que nécessaire et lire des intentions là où il n\'y a qu\'une soirée chargée.',
+    devise: 'J\'aime fort, je veille, je donne sans compter.',
+    apportes:
+      'Un lien où l\'on se sent remarqué, attendu, compté : une loyauté entière, des signes d\'amour réguliers, une mémoire des petites choses.',
+    freines:
+      'Les silences qui durent, les messages qui tardent, les demandes de preuves répétées. Ce ne sont pas des défauts — juste la même antenne, à l\'envers : la vigilance qui déborde quand le silence parle trop fort.',
+    couple:
+      'Tu donnes de la profondeur plutôt que de la légèreté, une fidélité qui ne se négocie pas, des mots dits au moment où le doute arrive. À garder en tête : ton antenne peut faire avancer le lien sur des hypothèses plutôt que sur des mots — demander vaut mieux que décoder.',
+    equilibre:
+      'Demander, au lieu de décoder, ce qui t\'inquiète dans le lien. Non parce que ta vigilance serait fausse, mais parce qu\'une question dite à voix haute remplace des heures d\'interprétation.',
   },
+
+  // V3 — L'Autonome : le lien à son rythme, avec de l'air.
   V3: {
-    accroche: 'Une personnalité qui aime sans se perdre et qui garde son air',
-    devise: "J'appartiens à ma vie, et j'aime avec de l'air.",
-    presentation:
-      "Certaines personnes vivent le lien à leur rythme : elles s'appartiennent d'abord, et elles aiment sans vouloir s'y perdre. Elles traversent leurs tempêtes de leur côté, elles prennent l'air quand ça devient dense, elles reviennent quand elles ont respiré. Généralement, leur amour est calme et stable, sans drame. De l'extérieur, cette façon d'être peut se lire comme une distance — elle est surtout une respiration.",
-    lumiere: [
-      'un amour sans drame',
-      'une présence qui choisit',
-      'des retours fidèles',
-      'un espace respecté pour deux',
-      'un calme qui tient les jours denses',
-      'une vie à soi qui nourrit le lien',
-    ],
-    lumiereNote:
-      "Ce type apporte généralement un lien où personne n'a à jouer un rôle pour rester.",
-    ombre: [
-      'les pauses prises en silence',
-      'les distances prises sans un mot',
-      "les échanges raccourcis quand ça devient dense",
-      'les soucis traversés à voix basse',
-      "les questions de l'autre restées en attente",
-    ],
-    ombreNote:
-      "L'ombre n'est pas un défaut : c'est le besoin d'air qui peut ressembler à une fuite pour qui ne connaît pas ce langage.",
-    relation: [
-      'un respect du rythme de chacun',
-      'une confiance sans contrôle',
-      "une proximité qui garde de l'air",
-      'une relation où chacun garde son monde',
-      'des retrouvailles choisies',
-    ],
-    relationNote:
-      "Une possibilité à garder en tête : à force de pauses non annoncées, l'autre peut se mettre à inventer les raisons du silence — alors qu'un mot simple aurait suffi à l'apaiser.",
-    equilibreQuestion: 'Est-ce que j\'annonce mes pauses avant de les prendre ?',
-    equilibreNote:
-      "Le besoin d'air n'est pas le problème : la façon de le prendre décide si l'autre reste invité ou se sent exclu.",
+    intro:
+      'Ton archétype révèle une personne qui vit le lien à son rythme : tu t\'appartiens d\'abord, et tu aimes sans vouloir t\'y perdre. Tu es de celles et ceux qui traversent leurs tempêtes de leur côté, prennent l\'air quand ça devient dense, et reviennent quand elles ont respiré. Ton amour est calme et stable, sans drame. Ton point de vigilance : de l\'extérieur, ce besoin d\'air peut se lire comme une distance — alors qu\'il est surtout une respiration.',
+    devise: 'J\'appartiens à ma vie, et j\'aime avec de l\'air.',
+    apportes:
+      'Un lien où personne n\'a à jouer un rôle pour rester : un amour sans drame, des retours fidèles, une vie à toi qui nourrit la relation.',
+    freines:
+      'Les pauses prises en silence, les distances prises sans un mot, les soucis traversés à voix basse. Ce ne sont pas des défauts — juste ton besoin d\'air qui peut ressembler à une fuite pour qui ne connaît pas ce langage.',
+    couple:
+      'Tu apportes un respect du rythme de chacun, une confiance sans contrôle, une relation où chacun garde son monde. À garder en tête : à force de pauses non annoncées, l\'autre peut se mettre à inventer les raisons du silence — alors qu\'un mot simple aurait suffi à l\'apaiser.',
+    equilibre:
+      'Annoncer tes pauses avant de les prendre. Non parce que ton air serait un problème, mais parce que la façon de le prendre décide si l\'autre reste invité ou se sent exclu.',
   },
+
+  // V4 — Le Va-et-vient : deux vitesses, une seule façon d'aimer.
   V4: {
-    accroche: 'Une personnalité qui aime à deux vitesses, intense puis en retrait',
-    devise: "Je m'y donne entier, je respire, je reviens.",
-    presentation:
-      "Certaines personnes vivent le lien en deux temps : quand ça compte, elles s'investissent vite et fort ; puis, la proximité installée, une partie d'elles cherche à reprendre de l'air. Ce rythme n'est ni de la légèreté ni de la bizarrerie : c'est souvent une façon d'avoir appris à aimer. Généralement, les retrouvailles les rechargent — après une respiration, l'envie revient entière.",
-    lumiere: [
-      'une intensité qui revient',
-      'des retrouvailles vivantes',
-      'du profond quand ça compte',
-      'une honnêteté en mouvement',
-      'un cœur qui se raconte',
-      'une présence entière quand elle est là',
-    ],
-    lumiereNote:
-      "Ce type fait généralement exister le lien avec du relief : rien n'y devient un fond habituel.",
-    ombre: [
-      'les signaux contradictoires',
-      "les éloignements agis avant d'être dits",
-      'les débuts plus rapides que la suite',
-      'les allers-retours à deviner',
-      "les doutes dits le soir même de l'évidence",
-    ],
-    ombreNote:
-      "L'ombre n'est pas un défaut : c'est le rythme qui change de vitesse sans prévenir — non dit, il devient un message que l'autre interprète à sa place.",
-    relation: [
-      'une personne stable et douce',
-      'une sécurité qui ne compte pas les allers-retours',
-      'du rythme accepté sans chantage',
-      'des retours reçus comme des fidélités',
-      "des pauses qui n'ont pas l'air de fuir",
-    ],
-    relationNote:
-      'Une possibilité à garder en tête : sans parole sur le rythme, chaque pause peut ressembler à un départ et chaque retour à un don trop grand — le lien vit alors au rythme des malentendus.',
-    equilibreQuestion: "Est-ce que je nomme mes deux vitesses avant que l'autre les invente ?",
-    equilibreNote:
-      "Deux vitesses, une seule façon d'aimer : le dire transforme généralement un malentendu en terrain connu.",
+    intro:
+      'Ton archétype révèle une personne qui aime en deux temps : quand ça compte, tu t\'investis vite et fort ; puis, la proximité installée, une partie de toi cherche à reprendre de l\'air. Ce rythme n\'est ni de la légèreté ni de la bizarrerie — c\'est une façon d\'avoir appris à aimer. Ton point de vigilance : non dit, ce rythme devient un message que l\'autre interprète à ta place — chaque pause peut ressembler à un départ.',
+    devise: 'Je m\'y donne entier, je respire, je reviens.',
+    apportes:
+      'Un lien avec du relief : une intensité qui revient, des retrouvailles vivantes, une présence entière quand elle est là — rien n\'y devient un fond habituel.',
+    freines:
+      'Les signaux contradictoires, les éloignements agis avant d\'être dits, les débuts plus rapides que la suite. Ce ne sont pas des défauts — juste ton rythme qui change de vitesse sans prévenir.',
+    couple:
+      'Tu fais exister le lien avec du profond quand ça compte et des retours reçus comme des fidélités. À garder en tête : sans parole sur ton rythme, chaque pause peut ressembler à un départ et chaque retour à un don trop grand — le lien vit alors au rythme des malentendus.',
+    equilibre:
+      'Nommer tes deux vitesses avant que l\'autre ne les invente. Non parce que ton rythme serait à corriger, mais parce que le dire transforme un malentendu en terrain connu.',
   },
+
+  // V5 — L'Équilibre en mouvement : s'ajuste au lien sans s'y effacer.
   V5: {
-    accroche: "Une personnalité qui s'ajuste au lien sans jamais s'y effacer",
-    devise: "Je m'ajuste à l'autre, et je garde ma voix.",
-    presentation:
-      "Certaines personnes ne sont ni dans la veille permanente, ni dans l'envol systématique : leur façon d'aimer s'ajuste à la personne en face. Proches quand c'est le besoin, discrètes quand c'est l'air, elles traversent les deux mouvements sans drame. Généralement, cette souplesse est rare — elle donne au lien un confort que beaucoup voient. Elle demande seulement que les envies de l'autre n'écrasent pas les siennes.",
-    lumiere: [
-      'une souplesse rare',
-      "une lecture fine de l'autre",
-      'une adaptation sans drame',
-      'une présence ajustée',
-      'du confort dans le lien',
-      'des transitions traversées sans secousse',
-    ],
-    lumiereNote:
-      "Ce type apporte généralement un lien qui respire avec les deux personnes, pas seulement avec l'une.",
-    ombre: [
-      'les choix laissés sans voix',
-      'les envies formulées trop tard',
-      "les décisions prises au seul goût de l'autre",
-      "l'effacement qui passe pour de la facilité",
-      'les besoins qui attendent une occasion',
-    ],
-    ombreNote:
-      "L'ombre n'est pas un défaut : c'est la souplesse qui a un prix — l'adaptation peut se confondre avec l'effacement, de l'extérieur comme de l'intérieur.",
-    relation: [
-      'des initiatives partagées',
-      "de l'échange plutôt que de l'adaptation à sens unique",
-      'un lien qui accueille ses propres mouvements',
-      'des décisions prises à deux voix',
-      'une personne qui demande son envie vraiment',
-    ],
-    relationNote:
-      "Une possibilité à garder en tête : avec quelqu'un qui choisit beaucoup, la fluidité peut suivre un seul fil — la relation devient plus douce que réciproque, sans que personne l'ait voulu.",
-    equilibreQuestion: "Saurais-je nommer aujourd'hui trois envies que j'ai pour ma relation ?",
-    equilibreNote:
-      "La souplesse reste une force : il s'agit seulement de garder sa voix dans les choix, même petits, même quand tout va bien.",
+    intro:
+      'Ton archétype révèle une personne dont la façon d\'aimer s\'ajuste à la personne en face : proche quand c\'est le besoin, discret·e quand c\'est l\'air. Tu es de celles et ceux qui traversent les deux mouvements sans drame — et cette souplesse est rare : elle donne au lien un confort que beaucoup voient. Ton point de vigilance : tes envies propres peuvent arriver en deuxième, derrière l\'adaptation.',
+    devise: 'Je m\'ajuste à l\'autre, et je garde ma voix.',
+    apportes:
+      'Un lien qui respire avec les deux personnes : une lecture fine de l\'autre, une adaptation sans drame, des transitions traversées sans secousse.',
+    freines:
+      'Les choix laissés sans voix, les envies formulées trop tard, les décisions prises au seul goût de l\'autre. Ce ne sont pas des défauts — juste ta souplesse qui a un prix : l\'adaptation peut se confondre avec l\'effacement.',
+    couple:
+      'Tu apportes des initiatives partagées, des décisions prises à deux voix, un lien qui accueille ses propres mouvements. À garder en tête : avec quelqu\'un qui choisit beaucoup, la fluidité peut suivre un seul fil — la relation devient plus douce que réciproque, sans que personne l\'ait voulu.',
+    equilibre:
+      'Garder ta voix dans les choix, même petits, même quand tout va bien. Non parce que t\'ajuster serait faux, mais parce que ta souplesse vaut encore plus quand elle part d\'un centre visible.',
   },
 };

@@ -1,48 +1,44 @@
 /**
- * L'ARCHÉTYPE d'une carte (Task 33 — demande fondateur, réorientation
- * éditoriale) : la présentation GÉNÉRALE du type de personnalité, qui vient
- * AVANT le profil personnalisé à l'écran.
+ * L'ARCHÉTYPE d'une carte (Task 35 — demande fondateur, gabarit final).
  *
- * POURQUOI (le malaise fondateur) : la révélation Task 32 affirmait des
- * vérités personnelles (« Tu entres dans une pièce et l'air change ») que la
- * première quête ne peut pas mesurer — et l'utilisateur n'y reconnaissait
- * pas toujours. La correction : parler du TYPE d'abord (« ce type de
- * personnalité peut généralement… »), puis laisser le profil tendance par
- * tendance porter le personnalisé — avec auto-validation par l'utilisateur
- * (« Est-ce que ça te ressemble ? »).
+ * L'ALGORITHME (réponse à « comment répondre exactement de cette manière,
+ * quel que soit le type d'archétype ? ») tient en trois pièces :
+ *  1. Le GABARIT est du code (Quete.tsx / pdf-resultats.ts) : les 9 blocs —
+ *     🎉 Ton profil : {nom} → intro → En résumé : « {devise} » → Ce que tu
+ *     apportes → Ce qui peut te freiner → En couple → Ton équilibre →
+ *     🪞 Tes N tendances (d'après tes réponses) → À noter — sont TOUJOURS
+ *     rendus dans le même ordre, avec la même typographie ;
+ *  2. Les MOTS sont des DONNÉES : chaque archétype = un objet de 6 champs
+ *     ci-dessous, écrit à la 2ᵉ personne, littéral et chaleureux. Ajouter
+ *     un archétype = remplir un objet — le gabarit garantit la forme exacte ;
+ *  3. Les MESURES sont CALCULÉES : scorer du Livrable → 0-100 par tendance
+ *     → palier déterministe → texte du registre dim × palier (quetes.ts).
  *
  * RÈGLES DE TON (non négociables) :
- *  - GÉNÉRAL : « ce type », « ces personnes », « peut généralement », « souvent »
- *    — JAMAIS « tu es », jamais une vérité intime ; l'équilibre se pose comme
- *    une question que le type peut se poser, pas une prescription ;
- *  - l'ombre reste « ce qui peut apparaître quand la lumière déborde », pas
- *    un défaut ;
- *  - la note relation est une « possibilité à garder en tête » — une
- *    dynamique possible, jamais « ton partenaire ressentira ».
+ *  - SIMPLE ET LITTÉRAL : « Tu es de celles et ceux qui… », pas de
+ *    simulation de profondeur — l'archétype décrit le TYPE auquel les
+ *    réponses rapprochent, et l'intro le dit (« Ton archétype révèle… ») ;
+ *  - le point de vigilance clôt l'intro (« Ton point de vigilance : … ») —
+ *    une conséquence du mouvement du type, pas un défaut ;
+ *  - « Ce qui peut te freiner » se referme sur « Ce ne sont pas des
+ *    défauts — juste ce qui émerge quand… » ;
+ *  - « En couple » = ce que tu apprécies + « À garder en tête : … » — une
+ *    dynamique possible, jamais une prédiction sur l'autre ;
+ *  - « Ton équilibre » = un geste + « Non parce que…, mais parce que… ».
  */
 export interface ArchetypeCarte {
-  /** L'accroche sous le nom — une ligne qui résume le mouvement du type. */
-  accroche: string;
-  /** La devise du type, à la première personne — « Je découvre, je partage… ». */
+  /** L'intro — « Ton archétype révèle une personne qui… » + le point de vigilance. */
+  intro: string;
+  /** La devise du type, à la première personne — « En résumé : « … » ». */
   devise: string;
-  /** La présentation générale (3-4 phrases) — sans répéter le nom de la carte. */
-  presentation: string;
-  /** ☀️ Sa lumière — ce que ce type peut généralement apporter (5-7 items courts). */
-  lumiere: readonly string[];
-  /** La phrase qui referme la liste lumière. */
-  lumiereNote: string;
-  /** 🌘 Son ombre — ce qui peut apparaître quand la tendance déborde (4-6 items courts). */
-  ombre: readonly string[];
-  /** La phrase qui referme la liste ombre (l'ombre n'est pas un défaut). */
-  ombreNote: string;
-  /** ❤️ En relation — ce que ce type peut généralement rechercher ou apprécier (4-6 items courts). */
-  relation: readonly string[];
-  /** « Une possibilité à garder en tête » — la dynamique relationnelle possible, neutre. */
-  relationNote: string;
-  /** 🌱 Son point d'équilibre — la question que le type peut se poser (première personne). */
-  equilibreQuestion: string;
-  /** La note d'équilibre — pourquoi cette question, non normative. */
-  equilibreNote: string;
+  /** « Ce que tu apportes ». */
+  apportes: string;
+  /** « Ce qui peut te freiner » — pas des défauts, ce qui émerge quand la lumière déborde. */
+  freines: string;
+  /** « En couple » — ce que tu apprécies + « À garder en tête : … ». */
+  couple: string;
+  /** « Ton équilibre » — un geste, non normatif. */
+  equilibre: string;
 }
 
 /** « Ton levier de progression » — par dimension (critique §10). */
@@ -72,10 +68,10 @@ export interface LangageRelationnel {
  *  Task 33 (réorientation fondateur) : les champs PERSONNELS (preuves,
  *  ressenti, besoins, question) ne sont PLUS rendus à l'écran ni dans le PDF
  *  — ils affirmaient des vérités intimes que la passation ne mesure pas.
- *  Les DONNÉES restent dans les modules quete-1-*-plus.ts (non destructif) :
- *  elles nourriront le matching et le carnet de bord plus tard. Seuls
- *  `langage` (base du moteur de matching) et les `leviers` restent rendus,
- *  après l'archétype général et le profil tendance par tendance. */
+ *  Task 35 (gabarit final) : le résultat ne rend plus QUE le gabarit
+ *  fondateur (archétype 2ᵉ personne + tendances mesurées). Les DONNÉES de ce
+ *  module restent dans quete-1-*-plus.ts (non destructif) : le `langage`
+ *  nourrira le moteur de matching, les `leviers` le carnet de bord. */
 export interface CartePlus {
   /** « Ce que cela peut donner chez toi » — preuves comportementales (~5). */
   preuves: readonly string[];
