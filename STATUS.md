@@ -365,3 +365,17 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Purge** : compte e2etask36 supprimé de D1 staging (device_push_subscriptions 0, sessions 1, notification_events 1, devices 1, auth_codes 1, users 1 — vérif post-purge : 0 users / 0 sessions / 0 devices / 0 notifs ; compte fondateur préservé).
 
 **Prochaine** : validation fondateur sur STAGING (https://wairyu-staging.wairyu.workers.dev — l'app mobile y verra DÉSORMAIS les détails d'une quête terminée à 1 tap + le PDF) → mise en prod DES TASKS 27→36 SUR AUTORISATION EXPLICITE (c'est elle que sert l'application Android aujourd'hui, toujours Task 26 sans détails) → monde 2.
+
+## 2026-10-08 (9) — FEU VERT fondateur : PROD déployée — les Tasks 27→36 sont EN LIGNE
+
+**Autorisation** : « feu vert » explicite du fondateur (règle 17-b honorée — staging validé la session précédente).
+
+**Déploiement PRODUCTION** : `deploy.sh production` OK — typecheck vert, build Vite, migrations D1 prod, Worker `wairyu` **Version ID `117b37f1-7f77-42a1-aad1-877c6a08493b`**, 8 assets uploadés. Bundle servi `index-Dsp4yqkQ.js` — IDENTIQUE au staging validé (même hash = même code).
+
+**Preuves (curl + agent-browser, prod)** : `/api/health` 200 (`env:"production"`) ; bundle prod contient « Voir mes résultats en détail » (×2), route `/resultats`, « Ton profil » (×2), « Télécharger le PDF » (×1) ; chunk lazy `pdf-resultats-CgIA6YGo.js` référencé ×2 dans le bundle et servi 200 ; `/.well-known/assetlinks.json` 200 (TWA Android intacte). Browser smoke mobile 390×844 : accueil rendu (logo, « Commencer », carte notifications « Serveur push : prêt »), **zéro erreur page, zéro overflow**, capture .e2e-prod-accueil-390.png.
+
+**Pas de compte de test sur prod** (assumé) : le bypass OTP admin n'existe qu'en staging et la création d'un compte réel polluerait D1/Brevo prod — le flux complet (détails 1 tap + PDF + deep-link froid + Parcourus) a été prouvé E2E sur staging avec le bundle identique (entrée précédente). L'app Android TWA servira le correctif SANS mise à jour du store (PWA wrapper — l'app charge prod en direct).
+
+**Conséquence fondateur** : sur l'application mobile, après une quête terminée, Parcourus « Tes résultats » offre désormais « Voir mes résultats en détail » (1 tap → détails complets : profil, tendances/barres, document personnel) + « Relire ma carte » + « Télécharger le PDF ». Relancer l'app suffit — aucune installation requise.
+
+**Prochaine** : monde 2 (reprise du plan) ; Cloudinary reste provisionné (non branché).
