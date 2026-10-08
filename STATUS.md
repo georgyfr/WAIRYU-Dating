@@ -335,3 +335,15 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Git** : main `998d3ad` + archive `archive/v1-2026-10-05` `11b09dc` — triple sauvegarde à jour (miroir vérifié vide : git diff main archive:WAIRYU-Dating-v2 = ∅).
 
 **Prochaine** : validation fondateur sur STAGING → prod SUR AUTORISATION (17-b) → monde 2.
+
+## 2026-10-08 (7) — Task 36 : les détails d'une quête terminée à UN tap (deep-link #/quete/{id}/resultats)
+
+**Constat fondateur** : « sur application mobile, lorsque nous terminons une quête, nous n'avons pas les détails de cette quête, mais le bouton de téléchargement PDF de cette quête [est là] ». Diagnostic confirmé sur les bundles déployés : PROD = Task 26 (aucun bouton « Voir mes résultats en détail », aucun PDF — tout ce qui a été construit Tasks 27→35 n'existe QUE sur staging) ; et sur staging même, depuis Parcourus « Tes résultats », les détails exigeaient deux étapes (Relire ma carte → Voir mes résultats en détail).
+
+**Correctif (Task 36, staging-first)** : 1. **Deep-link `#/quete/{id}/resultats`** (App.tsx readRoute + Route.resultats, Quete.tsx prop `resultatsInitiale`) : une quête TERMINÉE s'ouvre DIRECTEMENT sur la vue détaillée « 🎉 Ton profil : {nom} » — sans effet si la quête n'est pas terminée (cours normal) ; 2. **Parcourus « Tes résultats »** : chaque quête porte désormais « Voir mes résultats en détail » en action PRINCIPALE (accent, deep-link), avec « Relire ma carte » et « Télécharger le PDF » conservés — les détails complets sont au même endroit que le bouton PDF, en un tap. L'onglet Quête conserve la reprise au point d'arrêt (jamais les détails d'office).
+
+**Preuves (E2E local complet, wrangler dev --local, mobile 390×844, compte jetable DetailsMobile36 — base LOCALE uniquement)** : passation 1.1 (50 réponses) → carte « L'Équilibriste » (V7 conforme) → détails en 1 tap depuis la carte (6 sections) → PDF généré sans erreur → Parcourus : 3 boutons (Voir mes résultats en détail / Relire ma carte / Télécharger le PDF, href #/quete/1.1/resultats) → clic → détails DIRECTS (detailsVisible=true, carteVisible=false) → deep-link à FROID (reload) → détails directs → « Relire ma carte » → carte intacte → onglet Quête → briefing 1.2 (reprise normale préservée) → desktop 1280 identique → zéro overflow 390/1280, zéro erreur page.
+
+**Git** : commit `8b2b93a` (local — PAT perdu au reset, push à reprendre dès token). STAGING NON redéployée (credentials Cloudflare perdus au 6ᵉ reset) — PROD NON TOUCHÉE (17-b).
+
+**Prochaine** : token Cloudflare temporaire → deploy staging (Task 36 + Tasks 28-35 y sont) → validation fondateur → mise en prod DES TASKS 27→36 SUR AUTORISATION EXPLICITE (c'est LA correction que voit l'application mobile, qui sert aujourd'hui la Task 26 sans détails ni PDF) → push GitHub dès PAT.
