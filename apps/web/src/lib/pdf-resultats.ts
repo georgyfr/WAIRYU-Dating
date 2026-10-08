@@ -56,7 +56,7 @@ function couleurPalier(palier: Palier): RGB {
  */
 export async function telechargerResultatsPdf(
   quete: QueteDef,
-  carte: { nom: string; lumiere: string; ombre: string; tension: string },
+  carte: { id: string; nom: string; lumiere: string; ombre: string; tension: string },
   reponses: Record<string, number>,
 ): Promise<void> {
   const { jsPDF } = await import('jspdf');
@@ -121,7 +121,7 @@ export async function telechargerResultatsPdf(
   doc.setTextColor(...BLEU_NUIT);
   doc.text(`Mes résultats — « ${quete.titre} »`, MARGE, curseur.y);
   curseur.y += 6.5;
-  para('Ton document personnel du voyage Wairyu : ta carte, tes tendances réelles, ta manière de répondre et tes conseils d\'utilisation.', {
+  para('Ton document personnel du voyage Wairyu : ta carte, tes tendances réelles, ton volet d\'ombre côté relation et tes conseils d\'utilisation.', {
     size: 10,
     couleur: ENCRE_DOUCE,
     italique: true,
@@ -139,10 +139,13 @@ export async function telechargerResultatsPdf(
   para(carte.ombre, { size: 10.5 });
   para(quete.completion.labelTension, { size: 9.5, couleur: CORAIL, gras: true });
   para(carte.tension, { size: 10.5, italique: true });
+  para('Côté relation', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(quete.ombreRelationnel[carte.id] ?? '', { size: 10 });
 
   // ---- Mon profil, tendance par tendance
   section('Mon profil, tendance par tendance');
   para(apercu.intro, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  para(apercu.commentLire, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
   for (const barre of apercu.bars) {
     assurerPlace(26);
     doc.setFont('helvetica', 'bold');
@@ -167,15 +170,10 @@ export async function telechargerResultatsPdf(
       doc.roundedRect(MARGE, yBarre, Math.max(4.4, (LARGEUR * barre.pct) / 100), 4.4, 2.2, 2.2, 'F');
     }
     curseur.y += 8;
+    para(barre.lecture, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
     para(barre.texte, { size: 10 });
     curseur.y += 1.4;
   }
-
-  // ---- Ma manière de répondre
-  section('Ma manière de répondre');
-  const ligne = apercu.repartition.map((r) => `${r.label} × ${r.n}`).join('   ·   ');
-  para(ligne, { size: 10 });
-  if (apercu.signature) para(apercu.signature, { size: 10 });
 
   // ---- Comment utiliser cette quête
   section('Comment utiliser cette quête');

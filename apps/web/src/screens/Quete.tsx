@@ -37,6 +37,7 @@ import { enregistrerReponse, marquerTerminee, reinitialiserQuete, useEtatQuete }
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import { PROGRESS, TOTAL_STEPS } from '../lib/voyage';
 import PartageCarteModal from '../components/PartageCarteModal';
+import type { CartePartageable } from '../components/CarteTypes';
 
 type Phase = 'briefing' | 'passation' | 'details' | 'carte';
 
@@ -86,7 +87,7 @@ function profilPct(queteTerminees: number): number {
 }
 
 /** Le texte de partage de la carte (Web Share OU presse-papiers). */
-function texteCarte(quete: QueteDef, carte: { nom: string; lumiere: string; ombre: string; tension: string }): string {
+function texteCarte(quete: QueteDef, carte: CartePartageable): string {
   return `${carte.nom}\n\n${carte.lumiere}\n\n${quete.completion.labelOmbre} ${carte.ombre}\n\n${quete.completion.labelTension} ${carte.tension}`;
 }
 
@@ -183,7 +184,7 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
     if (phase === 'passation') questionRef.current?.focus();
   }, [idx, phase]);
 
-  const partager = async (carte: { nom: string; lumiere: string; ombre: string; tension: string }) => {
+  const partager = async (carte: CartePartageable) => {
     const texte = texteCarte(quete, carte);
     try {
       if (typeof navigator.share === 'function') {
@@ -197,7 +198,7 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
     }
   };
 
-  const telechargerPdf = async (carte: { nom: string; lumiere: string; ombre: string; tension: string }) => {
+  const telechargerPdf = async (carte: CartePartageable) => {
     setPdfEnCours(true);
     try {
       const { telechargerResultatsPdf } = await import('../lib/pdf-resultats');
@@ -394,6 +395,7 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
         <section className="q-sec" aria-label="Ton profil, tendance par tendance">
           <h3>Ton profil, tendance par tendance</h3>
           <p className="q-det-intro">{apercu.intro}</p>
+          <p className="q-det-lire">{apercu.commentLire}</p>
           <div className="q-det-bars">
             {apercu.bars.map((b) => (
               <div key={b.key} className="q-det-dim">
@@ -407,21 +409,26 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
                 <div className="q-bar" role="img" aria-label={`${b.nom} : ${b.pct} pour cent`}>
                   <span className="q-bar-fill" data-palier={b.palier} style={{ width: `${Math.max(b.pct, 2)}%` }} />
                 </div>
+                <p className="q-det-dim-lecture">{b.lecture}</p>
                 <p className="q-det-dim-texte">{b.texte}</p>
               </div>
             ))}
           </div>
         </section>
-        <section className="q-sec" aria-label="Ta manière de répondre">
-          <h3>Ta manière de répondre</h3>
-          <div className="q-repart" role="list" aria-label="La répartition de tes réponses">
-            {apercu.repartition.map((r) => (
-              <span key={r.value} className="q-repart-chip" role="listitem">
-                {r.label} <strong>× {r.n}</strong>
-              </span>
-            ))}
+        <section className="q-sec" aria-label="Ton volet d'ombre — et ce qu'il fait dans une relation">
+          <h3>Ton volet d'ombre</h3>
+          <div className="q-ombre-bloc">
+            <p className="q-ombre-label">{quete.completion.labelOmbre}</p>
+            <p className="q-ombre-texte">{carte.ombre}</p>
+            <p className="q-ombre-rel-label">Côté relation</p>
+            <p className="q-ombre-texte">{quete.ombreRelationnel[carte.id]}</p>
+            <p className="q-ombre-label">{quete.completion.labelTension}</p>
+            <p className="q-ombre-texte q-ombre-tension">{carte.tension}</p>
+            <p className="q-ombre-note">
+              Une lecture d'app pour t'aider à cogiter ta carte — pas une étiquette, pas un diagnostic. Le miroir de ce
+              monde reprendra tout cela en toutes lettres.
+            </p>
           </div>
-          {apercu.signature && <p className="q-det-dim-texte">{apercu.signature}</p>}
         </section>
         <section className="q-sec" aria-label="Comment utiliser cette quête">
           <h3>Comment utiliser cette quête</h3>

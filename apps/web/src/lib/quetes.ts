@@ -31,6 +31,9 @@ export interface DimDef {
   key: string;
   nom: string;
   sousLigne: string;
+  /** Ce que cette barre regarde — l'explication de la tendance (couche app,
+   *  demande fondateur : « apporte plus d'explication des résultats »). */
+  lecture: string;
 }
 
 export interface AccompagnementDim {
@@ -68,6 +71,13 @@ export interface QueteDef {
   dims: readonly DimDef[];
   accompagnement: Record<string, AccompagnementDim>;
   conseils: readonly string[];
+  /** Comment lire les barres — la passe d'explication globale (couche app, demande fondateur). */
+  commentLire: string;
+  /** Le volet ombre en relation : par VARIANTE de carte, ce que la zone d'ombre
+   *  peut donner avec les gens qu'on aime + le geste qui aide (couche app,
+   *  demande fondateur — « le volet ombre avec ses conséquences sur le plan
+   *  relationnel »). Lecture d'app : jamais une étiquette, jamais un diagnostic. */
+  ombreRelationnel: Record<string, string>;
   /** La quête suivante de la chaîne du monde (null = dernière quête ouverte). */
   suivante: IdQuete | null;
 }
@@ -108,11 +118,41 @@ export const QUETES: Record<IdQuete, QueteDef> = {
     cartes: Q11.CARTES,
     completion: Q11.COMPLETION,
     dims: [
-      { key: 'O', nom: 'Ton ouverture', sousLigne: 'le nouveau, les idées, la curiosité' },
-      { key: 'C', nom: 'Ton organisation', sousLigne: 'ce que tu promets, ce que tu finis' },
-      { key: 'E', nom: 'Ton énergie sociale', sousLigne: 'les gens, le bruit, le silence' },
-      { key: 'A', nom: 'Ta bienveillance', sousLigne: 'le lien, la confiance, la franchise' },
-      { key: 'S', nom: 'Ta stabilité émotionnelle', sousLigne: 'les vagues, le calme, le retour' },
+      {
+        key: 'O',
+        nom: 'Ton ouverture',
+        sousLigne: 'le nouveau, les idées, la curiosité',
+        lecture:
+          'Cette barre dit combien le nouveau t\'appelle : idées inattendues, lieux inconnus, gens qui pensent autrement. Pleine : tu explores et tu entraînes les autres dans ton élan. Légère : tu aimes ce qui dure, et ta constance est une force pour ceux qui t\'entourent.',
+      },
+      {
+        key: 'C',
+        nom: 'Ton organisation',
+        sousLigne: 'ce que tu promets, ce que tu finis',
+        lecture:
+          'Cette barre dit ce que tu tiens : promesses gardées, choses finies, plans suivis. Pleine : les gens peuvent compter sur toi, et ils le savent. Légère : tu improvises, et ta souplesse a juste besoin d\'une colonne vertébrale les semaines où tout arrive en même temps.',
+      },
+      {
+        key: 'E',
+        nom: 'Ton énergie sociale',
+        sousLigne: 'les gens, le bruit, le silence',
+        lecture:
+          'Cette barre dit d\'où vient ton énergie : la foule ou le calme. Pleine : les gens te rechargent et tu rayonnes en groupe. Légère : le silence te reconstruit, avec peu de gens mais des vrais. Ni l\'un ni l\'autre n\'est mieux — ce sont deux moteurs différents.',
+      },
+      {
+        key: 'A',
+        nom: 'Ta bienveillance',
+        sousLigne: 'le lien, la confiance, la franchise',
+        lecture:
+          'Cette barre dit comment tu donnes : confiance rapide ou prudence attentive. Pleine : le lien passe avant la victoire, tu écoutes et tu donnes sans compter. Légère : la confiance se mérite chez toi — et ta franchise, bien dosée, protège tes relations.',
+      },
+      {
+        key: 'S',
+        nom: 'Ta stabilité émotionnelle',
+        sousLigne: 'les vagues, le calme, le retour',
+        lecture:
+          'Cette barre dit comment tu traverses les vagues : retombé·e vite ou porté·e longtemps. Pleine : les autres s\'appuient sur ton calme, souvent sans le dire. Légère : tu ressens fort et longtemps — une antenne fine, pas une faiblesse.',
+      },
     ],
     accompagnement: {
       O: {
@@ -148,6 +188,24 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       'Ne te colle pas une étiquette — les profils complets changent lentement : vérifie que tu changes encore.',
       'Garde tes réponses sur cet appareil : la quête suivante s\'appuiera sur ce que tu viens de découvrir.',
     ],
+    commentLire:
+      'Les cinq barres viennent de TES réponses, à l\'instant. Chacune va de 0 à 100 : plus la barre est pleine, plus tes réponses penchent de ce côté — et rien d\'autre. Ce ne sont ni des notes, ni des cases : c\'est un instantané, celui de la personne qui a répondu aujourd\'hui. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi — relis-les comme un portrait qui parle, pas comme un bulletin.',
+    ombreRelationnel: {
+      V1:
+        'En relation, ta zone d\'ombre peut donner : des projets lancés à deux puis remplacés par le suivant — et l\'autre qui se demande s\'il comptait vraiment dans l\'élan. Ce qui aide : dire quand une chose continue de compter même après que tu as bougé. Un retour, un rappel, une promesse tenue : l\'autre cesse de suivre tes envies et se met à te suivre, toi.',
+      V2:
+        'En relation, ta zone d\'ombre peut donner : une maison impeccable et l\'autre qui se sent noté·e à chaque chose mal posée — ou toi, accablé·e par un imprévu que tu vis comme ta faute. Ce qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à SA façon de temps en temps — sans garder la note.',
+      V3:
+        'En relation, ta zone d\'ombre peut donner : des soirées brillantes et des silences mal supportés — l\'autre peut confondre ta vitesse avec une indisponibilité à ce qui est lent. Ce qui aide : choisir une personne ET un moment où tu restes sans remplir. C\'est là, dans ce silence choisi, que le lien descend d\'un étage.',
+      V4:
+        'En relation, ta zone d\'ombre peut donner : ta patience qui devient une demeure — tu restes là où d\'autres seraient déjà partis, et le temps investi finit par peser plus lourd que la réalité. Ce qui aide : un point régulier avec toi-même : « est-ce que je reste parce que c\'est bon, ou parce que je sais rester ? » La réponse, honnête, protège ton bien le plus précieux : ta présence.',
+      V5:
+        'En relation, ta zone d\'ombre peut donner : des hauts magnifiques et des bas qui emportent la conversation — l\'autre peut avoir peur de la tempête sans savoir qu\'elle passe. Ce qui aide : prévenir quand tu la sens monter : « ce n\'est pas toi, c\'est la vague » — quatre mots qui changent tout, et un retour au calme que l\'autre apprend à ne plus redouter.',
+      V6:
+        'En relation, ta zone d\'ombre peut donner : ton monde intérieur si confortable que l\'autre frappe longtemps sans savoir s\'il est invité. Ce qui aide : ouvrir par petites portes — partager un morceau de ton monde EN PREMIER, même maladroitement. Pour qui t\'aime, c\'est une invitation que cette personne attend peut-être depuis longtemps.',
+      V7:
+        'En relation, ta zone d\'ombre peut donner : une adaptabilité si large que l\'autre ne sait parfois plus ce que TU veux, toi. Ce qui aide : prendre position à voix haute une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, personne n\'aime deviner à l\'aveugle.',
+    },
     suivante: '1.2',
   },
   '1.2': {
@@ -172,8 +230,20 @@ export const QUETES: Record<IdQuete, QueteDef> = {
     cartes: Q12.CARTES,
     completion: Q12.COMPLETION,
     dims: [
-      { key: 'A', nom: 'Ton besoin de réassurance', sousLigne: 'ce que ton cœur cherche quand quelqu\'un compte' },
-      { key: 'E', nom: 'Ton besoin d\'espace', sousLigne: 'ton air, ton rythme, ton monde intérieur' },
+      {
+        key: 'A',
+        nom: 'Ton besoin de réassurance',
+        sousLigne: 'ce que ton cœur cherche quand quelqu\'un compte',
+        lecture:
+          'Cette barre dit ce que ton cœur demande quand quelqu\'un compte pour toi : des preuves fréquentes et tôt (pleine), ou une tranquillité qui vient de toi (légère). Aucun point n\'est plus solide que l\'autre — ce qui compte, c\'est de connaître le tien pour pouvoir le dire.',
+      },
+      {
+        key: 'E',
+        nom: 'Ton besoin d\'espace',
+        sousLigne: 'ton air, ton rythme, ton monde intérieur',
+        lecture:
+          'Cette barre dit combien d\'air tu as besoin dans la proximité : beaucoup (pleine), ou le contact qui te nourrit sans peser (légère). Connaître ton rythme t\'évite de le vivre comme un défaut — et de le faire deviner à l\'autre.',
+      },
     ],
     accompagnement: {
       A: {
@@ -194,6 +264,20 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       'Aucune façon d\'aimer n\'est la bonne : la tienne s\'observe, elle ne se juge pas.',
       'Garde tes réponses : le miroir de cette quête s\'appuiera dessus à la prochaine étape.',
     ],
+    commentLire:
+      'Deux barres, deux mouvements de ton cœur : le besoin de réassurance et le besoin d\'espace. Chacune va de 0 à 100, tirée de tes réponses d\'aujourd\'hui — plus elle est pleine, plus tes réponses penchent de ce côté. Elles ne s\'opposent pas : elles dansent ensemble, et c\'est leur équilibre qui dessine ta façon d\'aimer. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi.',
+    ombreRelationnel: {
+      V1:
+        'En relation, ta zone d\'ombre peut donner : ta sérénité lue comme de la distance — l\'autre a peut-être besoin de plus de preuves que tu n\'en produis naturellement. Ce qui aide : dire ta stabilité à voix haute (« je suis bien, je reste »). Ce que toi tu vis tranquillement, l\'autre a besoin de l\'entendre pour le vivre pareil.',
+      V2:
+        'En relation, ta zone d\'ombre peut donner : une antenne si tendue vers l\'autre que son silence devient un événement — tu interroges, tu vérifies, tu attends un signe qui n\'arrive pas. Ce qui aide : demander clairement plutôt que décoder : « j\'ai besoin d\'entendre que tout va bien » est une force. C\'est la demande qui apaise, pas la réponse devinée.',
+      V3:
+        'En relation, ta zone d\'ombre peut donner : des pauses prises en silence que l\'autre vit comme un départ — ton besoin d\'air est légitime, son incertitude aussi. Ce qui aide : annoncer le mouvement avant de le faire : « je prends l\'air, je reviens. » La porte reste ouverte pendant que tu respires — et l\'autre cesse de compter les minutes.',
+      V4:
+        'En relation, ta zone d\'ombre peut donner : des signaux contradictoires — tout, puis de l\'air, puis tout — que l\'autre peut vivre comme de l\'instabilité alors que c\'est ta façon d\'avoir appris à aimer. Ce qui aide : nommer ta vitesse UNE fois : « quand je m\'éloigne, ce n\'est pas la fin — c\'est mon rythme. » La moitié du chemin est faite.',
+      V5:
+        'En relation, ta zone d\'ombre peut donner : une adaptation si fluide que tes propres besoins passent derrière ceux de l\'autre — et toi, tu finis par ne plus savoir ce que toi tu voulais. Ce qui aide : choisir à voix haute de temps en temps — le restau, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre.',
+    },
     suivante: '1.3',
   },
   '1.3': {
@@ -218,9 +302,27 @@ export const QUETES: Record<IdQuete, QueteDef> = {
     cartes: Q13.CARTES,
     completion: Q13.COMPLETION,
     dims: [
-      { key: 'P', nom: 'Ta perception', sousLigne: 'savoir ce que tu ressens, même mêlé' },
-      { key: 'R', nom: 'Ta régulation', sousLigne: 'ce que tu fais quand ça monte' },
-      { key: 'X', nom: 'Ton expression', sousLigne: 'ce qui se voit et se dit de toi' },
+      {
+        key: 'P',
+        nom: 'Ta perception',
+        sousLigne: 'savoir ce que tu ressens, même mêlé',
+        lecture:
+          'Cette barre dit si ce qui se passe en toi s\'annonce tôt et clairement (pleine) ou se découvre après coup, par le corps ou les réactions (légère). C\'est la première marche : on ne peut nommer que ce qu\'on remarque — et tout le reste s\'appuie dessus.',
+      },
+      {
+        key: 'R',
+        nom: 'Ta régulation',
+        sousLigne: 'ce que tu fais quand ça monte',
+        lecture:
+          'Cette barre dit comment ça redescend quand ça monte : tu connais ton chemin de retour (pleine), ou la vague te porte plus vite que tu ne la portes (légère). Bonne nouvelle : c\'est la plus entraînable des trois — un geste répété dans le calme devient disponible dans la tempête.',
+      },
+      {
+        key: 'X',
+        nom: 'Ton expression',
+        sousLigne: 'ce qui se voit et se dit de toi',
+        lecture:
+          'Cette barre dit ce qui se voit de toi : les émotions se lisent dehors (pleine), ou tout travaille en dedans (légère). Les deux sont des styles — le bon, c\'est celui que tu sais expliquer à l\'autre : « je ressens beaucoup, je montre peu » est une information précieuse à donner.',
+      },
     ],
     accompagnement: {
       P: {
@@ -246,6 +348,22 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       'Ta perception, ta régulation, ton expression : trois muscles, pas trois destins — chaque semaine, un petit pas sur l\'un d\'eux.',
       'Garde tes réponses : le miroir de cette quête s\'appuiera dessus à la prochaine étape.',
     ],
+    commentLire:
+      'Trois barres, trois muscles de ta vie émotionnelle : percevoir, apaiser, exprimer. Chacune va de 0 à 100, tirée de tes réponses d\'aujourd\'hui — plus elle est pleine, plus tes réponses penchent de ce côté. Un muscle léger n\'est pas une condamnation : c\'est simplement le prochain à entraîner. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi.',
+    ombreRelationnel: {
+      V1:
+        'En relation, ta zone d\'ombre peut donner : l\'impression que tu gères toujours seul·e — ton aisance peut masquer que toi aussi tu as besoin d\'aide sur certaines vagues. Ce qui aide : laisser entrer quelqu\'un sur UNE émotion que tu maîtrises mal. La clarté se renforce quand elle accepte un regard.',
+      V2:
+        'En relation, ta zone d\'ombre peut donner : des éclats qui effraient plus qu\'ils ne disent — l\'autre retient le ton et peut manquer le fond. Ce qui aide : prévenir tôt (« ça monte, ce n\'est pas toi ») et revenir après : une réparation rapide vaut mille préventions parfaites.',
+      V3:
+        'En relation, ta zone d\'ombre peut donner : une profondeur silencieuse que l\'autre ne sait pas lire — il peut croire à de l\'indifférence là où tout est vivant. Ce qui aide : convenir d\'un petit signe extérieur (un mot, un geste) qui dit « tout va bien en dedans ». Ta profondeur devient partageable sans que tu changes.',
+      V4:
+        'En relation, ta zone d\'ombre peut donner : un entourage qui s\'appuie tant sur toi que tes propres vagues n\'ont plus de place pour se montrer. Ce qui aide : choisir UNE personne à qui dire tes vrais états, une fois par semaine. Renverser le sens du radiateur — c\'est ce qui le rend durable.',
+      V5:
+        'En relation, ta zone d\'ombre peut donner : une pudeur lue comme de la froideur — l\'autre imagine mal tout ce qui vit derrière. Ce qui aide : l\'écrit d\'abord : un message long, une carte — la voix viendra. Et dis à l\'autre que c\'est ton style : ce que tu ouvres, choisi, vaut de l\'or.',
+      V6:
+        'En relation, ta zone d\'ombre peut donner : des moments où tu dis « je ne sais pas ce que je ressens » et l\'autre le vit comme un mur — alors que c\'est un chantier en cours. Ce qui aide : partager la recherche à voix haute : « je ne sais pas encore, mais je creuse. » C\'est une présence, pas une absence.',
+    },
     suivante: null,
   },
 };
@@ -268,6 +386,12 @@ export function palierDe(pct: number): Palier {
   return pct >= 0.65 ? 'fort' : pct >= 0.4 ? 'equilibre' : 'doux';
 }
 
+export interface RepartitionLigne {
+  value: 1 | 2 | 3 | 4 | 5;
+  label: string;
+  n: number;
+}
+
 export interface BarreDetail {
   key: string;
   nom: string;
@@ -276,26 +400,22 @@ export interface BarreDetail {
   pct: number;
   palier: Palier;
   texte: string;
-}
-
-export interface RepartitionLigne {
-  value: 1 | 2 | 3 | 4 | 5;
-  label: string;
-  n: number;
+  /** Ce que cette barre regarde — l'explication de la tendance (demande fondateur). */
+  lecture: string;
 }
 
 export interface ApercuResultats {
   titre: string;
   intro: string;
+  /** Comment lire ces barres — la passe d'explication globale (demande fondateur). */
+  commentLire: string;
   bars: BarreDetail[];
-  /** La répartition des réponses Likert (comptage réel). */
-  repartition: RepartitionLigne[];
-  /** La signature de réponse (tranché·e / nuancé·e / dosé) — chaîne vide si aucune réponse. */
-  signature: string;
   conseils: readonly string[];
 }
 
-/** Construit l'aperçu « résultats en détail » à partir des réponses réelles. */
+/** Construit l'aperçu « résultats en détail » à partir des réponses réelles.
+ *  (Task 28 — demande fondateur : plus d'explications [commentLire + lecture]
+ *  et suppression du chapitre « Ta manière de répondre ».) */
 export function construireApercuResultats(quete: QueteDef, reponses: Record<string, number>): ApercuResultats {
   const score = quete.scorer(reponses);
   const bars: BarreDetail[] = quete.dims.map((d) => {
@@ -308,31 +428,14 @@ export function construireApercuResultats(quete: QueteDef, reponses: Record<stri
       pct: Math.round(valeur * 100),
       palier,
       texte: quete.accompagnement[d.key]?.[palier] ?? '',
+      lecture: d.lecture,
     };
   });
-  const deck = quete.deck();
-  const repartition = LIKERT.map((n) => ({
-    value: n.value,
-    label: n.label,
-    n: deck.filter((it) => reponses[it.code] === n.value).length,
-  }));
-  const tranches = repartition[0].n + repartition[4].n;
-  const nuance = repartition[1].n + repartition[2].n + repartition[3].n;
-  const total = tranches + nuance;
-  const signature =
-    total === 0
-      ? ''
-      : tranches / total >= 0.6
-        ? 'Tu réponds tranché·e : tu sais quand quelque chose est toi — ou ne l\'est pas. Bonne nouvelle pour la lisibilité de ta carte ; garde juste l\'œil sur le milieu : c\'est parfois là que vivent les nuances les plus vraies.'
-        : nuance / total >= 0.6
-          ? 'Tu réponds nuancé·e : tu vis des « parfois » plus que des « toujours ». Ta carte gagne en finesse ce qu\'elle perd en lignes nettes — les deux façons de répondre disent quelque chose de vrai.'
-          : 'Tu doses : des réponses franches et des réponses nuancées, selon les affirmations. C\'est le signe d\'une lecture attentive — tu as pris le temps de te poser la question.';
   return {
     titre: `${quete.titre} — tes résultats en détail`,
     intro: 'Voici ce que tes réponses dessinent aujourd\'hui. Aucune barre ne te réduit : chacune décrit une tendance — un lieu d\'où tu pars, pas une case où tu restes.',
+    commentLire: quete.commentLire,
     bars,
-    repartition,
-    signature,
     conseils: quete.conseils,
   };
 }

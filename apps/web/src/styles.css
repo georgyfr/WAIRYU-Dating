@@ -4212,27 +4212,83 @@ body.no-scroll {
     color: #31414f
 }
 
-.q-repart {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px
+/* Task 28 — demande fondateur : plus d'explications des résultats.
+   .q-det-lire : la passe « comment lire ces barres » (fond menthe, lisible). */
+.q-det-lire {
+    margin: 12px 0 0;
+    background: #eef7f3;
+    border: 1px solid #d8e9e1;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #22423a
 }
 
-.q-repart-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--c-white);
-    border: 1px solid var(--c-line);
-    border-radius: 999px;
-    padding: 7px 12px;
-    font-size: 13.5px;
+/* Task 28 — l'explication de chaque barre (ce qu'elle regarde), avant le texte
+   d'accompagnement proprement dit. */
+.q-det-dim-lecture {
+    margin: 12px 0 0;
+    padding: 8px 12px;
+    background: #f2f8f6;
+    border-left: 3px solid var(--c-turquoise-deep);
+    border-radius: 0 10px 10px 0;
+    font-size: 14.5px;
+    line-height: 1.6;
     color: #31414f
 }
 
-.q-repart-chip strong {
+/* Task 28 — le volet ombre dans les résultats détaillés : la zone d'ombre,
+   ses conséquences « côté relation » et la tension intérieure. */
+.q-ombre-bloc {
+    margin: 12px 0 0;
+    background: var(--c-white);
+    border: 1px solid #f0d9d2;
+    border-radius: 16px;
+    padding: 16px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.q-ombre-label {
+    margin: 6px 0 0;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--c-coral-deep)
+}
+
+.q-ombre-rel-label {
+    margin: 12px 0 0;
+    padding-left: 10px;
+    border-left: 3px solid var(--c-turquoise-deep);
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .7px;
     color: var(--c-turquoise-deep)
+}
+
+.q-ombre-texte {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #31414f
+}
+
+.q-ombre-tension {
+    font-style: italic
+}
+
+.q-ombre-note {
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--c-line);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--c-gray-blue)
 }
 
 .q-conseils {
@@ -4421,7 +4477,8 @@ body.no-scroll {
 
     .q-next,
     .q-det-dim,
-    .q-repart-chip,
+    .q-det-lire,
+    .q-ombre-bloc,
     .sh-modal {
         border: 2px solid #9aa4ac
     }
