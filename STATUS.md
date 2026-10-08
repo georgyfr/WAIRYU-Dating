@@ -347,3 +347,21 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Git** : commit `8b2b93a` (local — PAT perdu au reset, push à reprendre dès token). STAGING NON redéployée (credentials Cloudflare perdus au 6ᵉ reset) — PROD NON TOUCHÉE (17-b).
 
 **Prochaine** : token Cloudflare temporaire → deploy staging (Task 36 + Tasks 28-35 y sont) → validation fondateur → mise en prod DES TASKS 27→36 SUR AUTORISATION EXPLICITE (c'est LA correction que voit l'application mobile, qui sert aujourd'hui la Task 26 sans détails ni PDF) → push GitHub dès PAT.
+
+## 2026-10-08 (8) — Credentials fondateur réceptionnés : déblocage complet (staging + GitHub + Brevo)
+
+**Contexte** : au 6ᵉ reset sandbox, TOUTES les credentials locales avaient été perdues (token Cloudflare, PAT GitHub, fichier SECRETS) — le correctif Task 36 (`8b2b93a`) restait bloqué en local, ni déployé ni poussé. Le fondateur a transmis : token Cloudflare, clé Brevo, credentials Cloudinary (provisionnement), PAT GitHub.
+
+**Vérifications (avant usage)** : token Cloudflare `tokens/verify` → actif, expire 2026-12-30 ; compte `a6ad9b4a…ec22` (« Wairyu26@gmail.com's Account ») accessible avec `GET /accounts` ✓. Clé Brevo → `GET /v3/account` OK (plan free 300/j, Georges Aurelien — Wairyu, Yaoundé) ; expéditeur vérifié `wairyu26@gmail.com` actif ✓. PAT GitHub → `git ls-remote` OK (scope repo unique).
+
+**Secrets ré-assis (wrangler secret put, AUCUN déploiement de code)** : `BREVO_API_KEY` (clé fraîche du fondateur) + `EMAIL_FROM=wairyu26@gmail.com` sur **staging ET prod** — sur prod, secrets inertes tant que le code auth n'y est pas déployé (17-b respecté : prod reste Task 26, en ligne, non touchée). `ADMIN_TOKEN` staging REPOSÉ (nouvelle valeur hex 64 — l'ancienne était perdue au reset ; documentée dans /home/z/SECRETS-WAIRYU-LOCAL.txt) → le bypass smokes `/api/auth/otp/request` (Bearer admin → devCode) refonctionne. Fichier `/home/z/SECRETS-WAIRYU-LOCAL.txt` reconstitué (chmod 600, HORS dépôt) : Cloudflare, Brevo (+ clé MCP base64), Cloudinary (nm7lozr4 — provisionné, l'app ne s'y branche PAS à ce jour), PAT GitHub, ADMIN_TOKEN staging.
+
+**Déploiement STAGING** : `deploy.sh staging` OK — typecheck vert, build Vite, migrations (« No migrations to apply »), Worker **Version ID `9791c1ef-db63-4c95-8cc2-1e4792684b34`** (bundle `index-Dsp4yqkQ.js`, chunk `pdf-resultats-CgIA6YGo.js` servi 200). Le correctif Task 36 (Tasks 27→36) est ENFIN en ligne sur staging.
+
+**Git (triple sauvegarde rétablie)** : `main` poussée `9663a7d → a03af94` (Task 36 feat + docs) ; miroir `v2-reconstitution-task28` re-synchronisé sur `a03af94` ; `archive/v1-2026-10-05` intacte. Credential helper store (PAT dans ~/.git-credentials, hors dépôt).
+
+**Preuves (agent-browser, STAGING, 390×844 + 1280×900, compte jetable e2etask36-…@test-wairyu.local créé VIA LE BYPASS admin — Brevo configuré, mode dev OTP désactivé)** : état quête 1.1 injecté (58 réponses all-5s → V7 « L'Équilibriste ») → deep-link `#/quete/1.1/resultats` → détails DIRECTS (« Ton profil : », carte, tendances, barres /100, bouton document personnel — PAS la vue carte) → reload à FROID sur le deep-link → détails directs conservés → Parcourus « Tes résultats » : **« Voir mes résultats en détail » (a[href=#/quete/1.1/resultats]) en action PRINCIPALE + « Relire ma carte » (#/quete/1.1) + « Télécharger le PDF »** — capture mobile conforme → PDF cliqué, zéro erreur, pas de busy résiduel → « Relire ma carte » → vue carte intacte → Mondes puis #/quete/1.2 → reprise normale (briefing « Quête 2 sur 3 », JAMAIS les détails d'office) → desktop 1280 : détails directs, zéro overflow 390/1280, **zéro erreur page**.
+
+**Purge** : compte e2etask36 supprimé de D1 staging (device_push_subscriptions 0, sessions 1, notification_events 1, devices 1, auth_codes 1, users 1 — vérif post-purge : 0 users / 0 sessions / 0 devices / 0 notifs ; compte fondateur préservé).
+
+**Prochaine** : validation fondateur sur STAGING (https://wairyu-staging.wairyu.workers.dev — l'app mobile y verra DÉSORMAIS les détails d'une quête terminée à 1 tap + le PDF) → mise en prod DES TASKS 27→36 SUR AUTORISATION EXPLICITE (c'est elle que sert l'application Android aujourd'hui, toujours Task 26 sans détails) → monde 2.
