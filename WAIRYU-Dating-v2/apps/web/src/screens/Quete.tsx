@@ -15,13 +15,17 @@
  *    en détail] · [Partager ma carte] (avertissement PartageCarteModal) ·
  *    [Retour à mon voyage], fenêtre sur l'autre, puis la PROCHAINE QUÊTE
  *    (chaîne du Monde 1 : on enchaîne, rien ne se remet à zéro).
- *  - DÉTAILS (Task 33 — réorientation fondateur) : l'ARCHÉTYPE GÉNÉRAL d'abord
- *    (ce que ce type de personnalité peut généralement apporter, son ombre, en
- *    relation, son point d'équilibre), puis le profil personnalisé tendance par
- *    tendance (scorer du Livrable) avec auto-validation « Est-ce que ça te
- *    ressemble ? », le langage relationnel, les conseils et l'export PDF
- *    (lib/pdf-resultats.ts, import dynamique). L'écran n'affirme plus de
- *    vérités intimes que la passation ne mesure pas.
+ *  - DÉTAILS (Tasks 33/34 — réorientation fondateur) : FÉLICITATIONS + annonce
+ *    de l'archétype (« ton archétype est … »), puis le TYPE présenté
+ *    GÉNÉRALEMENT — définition (« {nom}, qu'est-ce que c'est ? »), à quoi il
+ *    renvoie (accroche + devise), sa lumière, son ombre, en relation, son point
+ *    d'équilibre — puis seulement le profil personnalisé tendance par tendance
+ *    (« place à toi », scorer du Livrable) avec auto-validation « Est-ce que ça
+ *    te ressemble ? », le langage relationnel, les conseils et l'export PDF
+ *    (lib/pdf-resultats.ts, import dynamique). Chaque « Continuer » tease
+ *    l'étape d'après : la lecture doit donner envie d'aller jusqu'à la quête
+ *    suivante. L'écran n'affirme plus de vérités intimes que la passation ne
+ *    mesure pas : il décrit un TYPE, l'utilisateur valide.
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au bundle staging Task 27
  * (écran validé par le fondateur), révélations 32/33 selon ses retours.
@@ -62,6 +66,16 @@ const VALEURS_LECTURE: readonly { valeur: Lecture; symbole: string; label: strin
   { valeur: 1, symbole: '✓', label: 'Ça me ressemble' },
   { valeur: 2, symbole: '≈', label: 'Ça me ressemble parfois' },
   { valeur: 3, symbole: '✕', label: 'Je ne me reconnais pas' },
+];
+
+/** L'accroche du pas d'après — chaque « Continuer » donne envie de la suite (Task 34). */
+const TEASERS: readonly string[] = [
+  '',
+  'La suite : ce qui peut apparaître quand cette lumière déborde — son ombre.',
+  'La suite : ton profil à toi, tendance par tendance, dessiné par tes réponses.',
+  'La suite : ce que tu emportes dans tes rencontres.',
+  'La suite : comment utiliser cette lecture sans te coller d\'étiquette.',
+  'La suite : ce que cette quête ouvre — et ta prochaine étape.',
 ];
 
 /** Flèche droite (icône locale de la quête). */
@@ -445,13 +459,20 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
           <section
             className="q-sec q-rev"
             data-pas="1"
-            aria-label="Ton archétype — ce que représente ce type de personnalité"
+            aria-label="Félicitations — ton archétype, sa définition et sa lumière"
           >
-            <p className="q-rev-kicker">☀️ Ton archétype</p>
+            <p className="q-rev-kicker">🎉 Félicitations — ta quête est accomplie</p>
+            <p className="q-arch-annonce">Ton archétype :</p>
             <h3 className="q-arch-nom">{carte.nom}</h3>
-            <p className="q-arch-accroche">{arche.accroche}</p>
-            <p className="q-arch-devise">« {arche.devise} »</p>
-            <p className="q-rev-texte">{arche.presentation}</p>
+            <div className="q-rev-bloc">
+              <p className="q-rev-soustitre">{carte.nom}, qu'est-ce que c'est ?</p>
+              <p className="q-rev-texte">{arche.presentation}</p>
+            </div>
+            <div className="q-rev-bloc">
+              <p className="q-rev-soustitre">À quoi renvoie ce type de personnalité ?</p>
+              <p className="q-arch-accroche">{arche.accroche}</p>
+              <p className="q-arch-devise">« {arche.devise} »</p>
+            </div>
             <div className="q-rev-bloc">
               <p className="q-rev-soustitre">Sa lumière — ce que ce type peut généralement apporter</p>
               <ul className="q-rev-puces">
@@ -500,8 +521,9 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
           <section className="q-sec q-rev" data-pas="3" aria-label="Ton profil, tendance par tendance">
             <p className="q-rev-kicker">🪞 Ton profil, tendance par tendance</p>
             <p className="q-det-intro">
-              L'archétype donne une vue d'ensemble. Aucune personne ne correspond parfaitement à un type : tes réponses
-              permettent maintenant de voir où tu te rapproches de ce portrait — et où tu t'en éloignes.
+              Et maintenant, place à toi : voici exactement ton profil de personnalité dans cet archétype — tendance
+              par tendance, d'après ce que tes réponses ont montré. Aucune personne ne colle parfaitement à un type :
+              regarde où tu te rapproches de ce portrait, et où tu t'en éloignes.
             </p>
             <p className="q-det-lire">{apercu.commentLire}</p>
             <div className="q-det-bars">
@@ -661,6 +683,7 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
             <button type="button" className="q-rev-tout" onClick={() => setPas(PAS_TOTAL)}>
               Tout afficher
             </button>
+            <p className="q-rev-teaser">{TEASERS[pas]}</p>
           </div>
         )}
       </main>
