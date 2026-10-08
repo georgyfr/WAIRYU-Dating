@@ -15,12 +15,16 @@
  *    en détail] · [Partager ma carte] (avertissement PartageCarteModal) ·
  *    [Retour à mon voyage], fenêtre sur l'autre, puis la PROCHAINE QUÊTE
  *    (chaîne du Monde 1 : on enchaîne, rien ne se remet à zéro).
- *  - DÉTAILS : le profil RÉEL tendance par tendance (scorer du Livrable) avec
- *    textes d'accompagnement, la manière de répondre, les conseils, et
- *    l'export PDF (lib/pdf-resultats.ts, import dynamique).
+ *  - DÉTAILS (Task 33 — réorientation fondateur) : l'ARCHÉTYPE GÉNÉRAL d'abord
+ *    (ce que ce type de personnalité peut généralement apporter, son ombre, en
+ *    relation, son point d'équilibre), puis le profil personnalisé tendance par
+ *    tendance (scorer du Livrable) avec auto-validation « Est-ce que ça te
+ *    ressemble ? », le langage relationnel, les conseils et l'export PDF
+ *    (lib/pdf-resultats.ts, import dynamique). L'écran n'affirme plus de
+ *    vérités intimes que la passation ne mesure pas.
  *
- * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging Task 27
- * (écran validé par le fondateur), en attendant ses retours d'amélioration.
+ * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au bundle staging Task 27
+ * (écran validé par le fondateur), révélations 32/33 selon ses retours.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -34,8 +38,15 @@ import {
   type ItemQuete,
   type QueteDef,
 } from '../lib/quetes';
-import { PLUS } from '../lib/quetes-plus';
-import { enregistrerReponse, marquerTerminee, reinitialiserQuete, useEtatQuete } from '../lib/quete-state';
+import { ARCHE, PLUS } from '../lib/quetes-plus';
+import {
+  enregistrerLecture,
+  enregistrerReponse,
+  marquerTerminee,
+  reinitialiserQuete,
+  useEtatQuete,
+  type Lecture,
+} from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import { PROGRESS, TOTAL_STEPS } from '../lib/voyage';
 import PartageCarteModal from '../components/PartageCarteModal';
@@ -43,8 +54,15 @@ import type { CartePartageable } from '../components/CarteTypes';
 
 type Phase = 'briefing' | 'passation' | 'details' | 'carte';
 
-/** La révélation (Task 32) : 8 pas, un à la fois — l'écran n'est pas un PDF condensé. */
-const PAS_TOTAL = 8;
+/** La révélation (Task 33) : 6 pas, un à la fois — archétype d'abord, profil ensuite. */
+const PAS_TOTAL = 6;
+
+/** Les trois réponses de l'auto-validation (Task 33 — « Est-ce que ça te ressemble ? »). */
+const VALEURS_LECTURE: readonly { valeur: Lecture; symbole: string; label: string }[] = [
+  { valeur: 1, symbole: '✓', label: 'Ça me ressemble' },
+  { valeur: 2, symbole: '≈', label: 'Ça me ressemble parfois' },
+  { valeur: 3, symbole: '✕', label: 'Je ne me reconnais pas' },
+];
 
 /** Flèche droite (icône locale de la quête). */
 function Fleche({ dir = 'right' }: { dir?: 'right' | 'left' }) {
@@ -389,16 +407,17 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
     );
   }
 
-  // -------------------------------------------- détails — la révélation (8 pas)
-  // Task 32 (critique fondateur) : l'écran n'est PAS un PDF condensé — c'est
-  // une révélation interactive, un pas à la fois, dans l'ordre émotionnel :
-  // lumière (+ preuves) → ombre (quand ta lumière déborde + côté relation) →
-  // tension + question à emporter → ce que l'autre ressent → dans une relation
-  // (besoin / apporter / apprendre) → profil qualitatif + leviers → ce que tu
-  // emportes (langage relationnel) → la suite (cliffhanger). Le document
-  // personnel ne vient qu'à la toute fin.
+  // -------------------------------------------- détails — la révélation (6 pas)
+  // Task 33 (réorientation fondateur) : l'ARCHÉTYPE GÉNÉRAL d'abord — ce que
+  // ce type de personnalité peut généralement apporter, son ombre, en relation,
+  // son point d'équilibre — puis seulement le profil personnalisé tendance par
+  // tendance, avec auto-validation (« Est-ce que ça te ressemble ? »), le
+  // langage relationnel, les conseils, la suite (cliffhanger) et le document
+  // personnel en toute fin. L'écran n'affirme plus de vérités intimes que la
+  // passation ne mesure pas : il décrit un TYPE, l'utilisateur valide.
   if (phase === 'details' && apercu) {
     const carte = etat.carteId && quete.cartes[etat.carteId] ? quete.cartes[etat.carteId] : quete.cartes[quete.choisirVariante(quete.scorer(etat.reponses))];
+    const arche = ARCHE[queteId][carte.id];
     const plusCarte = PLUS[queteId].cartes[carte.id];
     const plusLeviers = PLUS[queteId].leviers;
     const suivante = quete.suivante ? QUETES[quete.suivante] : null;
@@ -423,111 +442,72 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
         <p className="screen-sub">{quete.titre}</p>
 
         {pas >= 1 && (
-          <section className="q-sec q-rev" data-pas="1" aria-label="Ta lumière — ce que tu apportes">
-            <p className="q-rev-kicker">✨ Ta lumière</p>
-            <h3>Ce que tu apportes</h3>
-            <p className="q-rev-texte">{carte.lumiere}</p>
+          <section
+            className="q-sec q-rev"
+            data-pas="1"
+            aria-label="Ton archétype — ce que représente ce type de personnalité"
+          >
+            <p className="q-rev-kicker">☀️ Ton archétype</p>
+            <h3 className="q-arch-nom">{carte.nom}</h3>
+            <p className="q-arch-accroche">{arche.accroche}</p>
+            <p className="q-arch-devise">« {arche.devise} »</p>
+            <p className="q-rev-texte">{arche.presentation}</p>
             <div className="q-rev-bloc">
-              <p className="q-rev-soustitre">Ce que cela peut donner chez toi</p>
-              <ul className="q-rev-liste">
-                {plusCarte.preuves.map((p) => (
-                  <li key={p}>{p}</li>
+              <p className="q-rev-soustitre">Sa lumière — ce que ce type peut généralement apporter</p>
+              <ul className="q-rev-puces">
+                {arche.lumiere.map((l) => (
+                  <li key={l}>{l}</li>
                 ))}
               </ul>
-              <p className="q-rev-note">
-                Repère ce qui te ressemble — c'est souvent la troisième phrase qui fait « oui, c'est moi ».
-              </p>
+              <p className="q-rev-note">{arche.lumiereNote}</p>
             </div>
+            <p className="q-rev-note">
+              Un archétype décrit une famille de tendances — pas une étiquette, pas un verdict. Regarde maintenant ce
+              qui, dans ce portrait, te ressemble vraiment.
+            </p>
           </section>
         )}
 
         {pas >= 2 && (
-          <section className="q-sec q-rev" data-pas="2" aria-label="Ton ombre — quand ta lumière déborde">
-            <p className="q-rev-kicker">🌘 Ton ombre</p>
-            <h3>Quand ta lumière déborde</h3>
-            <p className="q-rev-intro">
-              Ton ombre n'est pas un défaut : c'est ce qui peut arriver quand ta force va trop loin. C'est là que se
-              joue ta marge de progression.
-            </p>
-            <div className="q-ombre-bloc">
-              <p className="q-ombre-label">{quete.completion.labelOmbre}</p>
-              <p className="q-ombre-texte">{carte.ombre}</p>
-              <p className="q-ombre-rel-label">Côté relation</p>
-              <p className="q-ombre-texte">{quete.ombreRelationnel[carte.id]}</p>
-              <p className="q-ombre-note">
-                Une lecture d'app pour t'aider à cogiter ta carte — pas une étiquette, pas un diagnostic. Le miroir de
-                ce monde reprendra tout cela en toutes lettres.
-              </p>
+          <section className="q-sec q-rev" data-pas="2" aria-label="Son ombre, en relation, son point d'équilibre">
+            <div className="q-rev-bloc">
+              <p className="q-rev-soustitre">Son ombre — quand cette lumière déborde</p>
+              <ul className="q-rev-puces">
+                {arche.ombre.map((o) => (
+                  <li key={o}>{o}</li>
+                ))}
+              </ul>
+              <p className="q-rev-note">{arche.ombreNote}</p>
+            </div>
+            <div className="q-rev-bloc">
+              <p className="q-rev-soustitre">En relation — ce que ce type peut généralement apprécier</p>
+              <ul className="q-rev-puces">
+                {arche.relation.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+              <p className="q-rev-note">{arche.relationNote}</p>
+            </div>
+            <div className="q-question">
+              <p className="q-question-label">Son point d'équilibre</p>
+              <p className="q-question-texte">{arche.equilibreQuestion}</p>
+              <p className="q-question-note">{arche.equilibreNote}</p>
             </div>
           </section>
         )}
 
         {pas >= 3 && (
-          <section className="q-sec q-rev" data-pas="3" aria-label="Ta tension intérieure — et une question à emporter">
-            <p className="q-rev-kicker">⚡ Ta tension intérieure</p>
-            <h3>Le paradoxe qui t'habite</h3>
-            <p className="q-rev-texte q-ombre-tension">{carte.tension}</p>
-            <div className="q-question">
-              <p className="q-question-label">Une question à emporter</p>
-              <p className="q-question-texte">{plusCarte.question}</p>
-              <p className="q-question-note">
-                Pas un test, pas un verdict — une question à cogiter, aujourd'hui ou dans six mois.
-              </p>
-            </div>
-          </section>
-        )}
-
-        {pas >= 4 && (
-          <section className="q-sec q-rev" data-pas="4" aria-label="Ce que l'autre peut parfois ressentir">
-            <p className="q-rev-kicker">👀 Ce que l'autre peut parfois ressentir</p>
-            <h3>Deux voix, dans la même pièce</h3>
-            <blockquote className="q-ressenti">{plusCarte.ressenti[0]}</blockquote>
-            <blockquote className="q-ressenti q-ressenti-besoin">{plusCarte.ressenti[1]}</blockquote>
-            <p className="q-rev-note">
-              Ce que tu vis comme une force peut être vécu autrement par quelqu'un — pas un verdict : un éclairage,
-              pour mieux se parler.
+          <section className="q-sec q-rev" data-pas="3" aria-label="Ton profil, tendance par tendance">
+            <p className="q-rev-kicker">🪞 Ton profil, tendance par tendance</p>
+            <p className="q-det-intro">
+              L'archétype donne une vue d'ensemble. Aucune personne ne correspond parfaitement à un type : tes réponses
+              permettent maintenant de voir où tu te rapproches de ce portrait — et où tu t'en éloignes.
             </p>
-          </section>
-        )}
-
-        {pas >= 5 && (
-          <section className="q-sec q-rev" data-pas="5" aria-label="Dans une relation">
-            <p className="q-rev-kicker">❤️ Dans une relation</p>
-            <h3>Ce dont tu as besoin</h3>
-            <ul className="q-rev-liste">
-              {plusCarte.besoins.map((b) => (
-                <li key={b}>{b}</li>
-              ))}
-            </ul>
-            <div className="q-rev-deux">
-              <div className="q-rev-bloc">
-                <p className="q-rev-soustitre">Ce que tu peux apporter</p>
-                <ul className="q-rev-puces">
-                  {plusCarte.apportes.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="q-rev-bloc">
-                <p className="q-rev-soustitre">Ce que tu peux apprendre</p>
-                <ul className="q-rev-puces">
-                  {plusCarte.apprendre.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {pas >= 6 && (
-          <section className="q-sec q-rev" data-pas="6" aria-label="Ton profil, tendance par tendance">
-            <p className="q-rev-kicker">🌱 Ton profil, tendance par tendance</p>
-            <p className="q-det-intro">{apercu.intro}</p>
             <p className="q-det-lire">{apercu.commentLire}</p>
             <div className="q-det-bars">
               {apercu.bars.map((b) => {
                 const lev = plusLeviers[b.key];
+                const lecture = etat.lectures[b.key];
                 return (
                   <div key={b.key} className="q-det-dim">
                     <div className="q-det-dim-head">
@@ -557,6 +537,26 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
                         </p>
                       </div>
                     )}
+                    <div className="q-val" role="group" aria-label={`Cette description te ressemble-t-elle — ${b.nom}`}>
+                      <p className="q-val-q">Cela correspond-il à ton expérience ?</p>
+                      <div className="q-val-btns">
+                        {VALEURS_LECTURE.map((v) => (
+                          <button
+                            key={v.valeur}
+                            type="button"
+                            className={lecture === v.valeur ? 'q-val-btn q-val-btn-on' : 'q-val-btn'}
+                            aria-pressed={lecture === v.valeur}
+                            onClick={() => enregistrerLecture(queteId, b.key, v.valeur)}
+                          >
+                            <span className="q-val-symbole" aria-hidden="true">
+                              {v.symbole}
+                            </span>
+                            {v.label}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="q-val-note">Ton avis affine la lecture — aucune bonne réponse.</p>
+                    </div>
                   </div>
                 );
               })}
@@ -564,8 +564,8 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
           </section>
         )}
 
-        {pas >= 7 && (
-          <section className="q-sec q-rev" data-pas="7" aria-label="Ce que tu emportes">
+        {pas >= 4 && (
+          <section className="q-sec q-rev" data-pas="4" aria-label="Ce que tu emportes">
             <p className="q-rev-kicker">🧩 Ce que tu emportes</p>
             <h3>Ton langage relationnel</h3>
             <p className="q-rev-intro">
@@ -589,7 +589,15 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
                 {plusCarte.langage.apprecierais}
               </p>
             </div>
-            <h3 className="q-rev-h3-2">Comment utiliser cette quête</h3>
+          </section>
+        )}
+
+        {pas >= 5 && (
+          <section className="q-sec q-rev" data-pas="5" aria-label="Comment utiliser cette quête">
+            <p className="q-rev-kicker">🧭 Comment utiliser cette quête</p>
+            <p className="q-det-lire">
+              Pas comme une vérité sur toi — comme un outil. Si cette lecture t'aide, voici comment l'utiliser.
+            </p>
             <ul className="q-conseils">
               {apercu.conseils.map((c) => (
                 <li key={c}>{c}</li>
@@ -598,8 +606,8 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
           </section>
         )}
 
-        {pas >= 8 && (
-          <section className="q-sec q-rev" data-pas="8" aria-label="La suite de ton voyage">
+        {pas >= 6 && (
+          <section className="q-sec q-rev" data-pas="6" aria-label="La suite de ton voyage">
             <p className="q-rev-kicker">🧭 La suite de ton voyage</p>
             <h3>{quete.suite.titre}</h3>
             <p className="q-rev-texte">{quete.suite.intro}</p>
@@ -637,8 +645,8 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
                 Revenir à ma carte
               </button>
               <p className="q-carte-hint">
-                Le document reprend toute ta révélation : ta carte, ta lumière, ton ombre, ta tension, ta question à
-                emporter, ta vie relationnelle, tes leviers. Il reste sur ton appareil — rien n'est envoyé.
+                Le document reprend ton archétype, ton profil tendance par tendance et ton langage relationnel. Il
+                reste sur ton appareil — rien n'est envoyé.
               </p>
             </div>
           </section>

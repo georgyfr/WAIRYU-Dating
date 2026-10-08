@@ -2,27 +2,30 @@
  * Le document personnel des résultats — jsPDF en import DYNAMIQUE (le bundle
  * principal reste intact ; le module ne se charge qu'au clic).
  *
- * Task 32 — restructuré selon la critique du fondateur (la formule en 10
- * blocs) : Ma carte → Ce que cela peut donner chez toi (preuves) → Une
- * question à emporter → Ce que l'autre peut parfois ressentir → Dans une
- * relation (besoin / apporter / apprendre) → Mon profil, tendance par
- * tendance (QUALITATIF d'abord : « Très présente », « 78/100 — tendance
- * actuelle » ; le chiffre devient secondaire) + levier de progression par
- * dimension → Ton langage relationnel (moteur de matching) → Comment
- * utiliser cette quête → La suite de ton voyage (cliffhanger) → note de
- * pied honnête + pagination.
+ * Task 33 — réorientation fondateur (l'archétype d'abord) : Ma carte → Ton
+ * archétype (présentation GÉNÉRALE du type : sa lumière, son ombre, en
+ * relation, son point d'équilibre) → Mon profil, tendance par tendance
+ * (QUALITATIF d'abord : « Très présente », « 78/100 — tendance actuelle » en
+ * secondaire) + levier de progression par dimension → Mon langage relationnel
+ * (moteur de matching) → Comment utiliser cette quête → La suite de ton
+ * voyage (cliffhanger) → note de pied honnête + pagination.
+ *
+ * Les sections personnelles de la formule 32 (preuves, question à emporter,
+ * ce que l'autre ressent, besoins) ne sont plus imprimées : elles affirmaient
+ * des vérités intimes que la passation ne mesure pas — les données restent
+ * dans quete-1-*-plus.ts pour le matching futur.
  *
  * Gabarit A4 (unités mm) : en-tête Wairyu bicolore + date. WinAnsi (police
  * Helvetica) : œ é « » · — vérifiés dans le flux ; pas d'emoji (police non
  * couverte) — les titres de section restent en texte.
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au chunk staging
- * pdf-resultats-DJPOSrQf.js (Task 27), structure Task 32.
+ * pdf-resultats-DJPOSrQf.js (Task 27), structure Tasks 32/33.
  */
 
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
 import { construireApercuResultats, nomFichierPdf, PALIER_LABELS } from './quetes';
-import { PLUS } from './quetes-plus';
+import { ARCHE, PLUS } from './quetes-plus';
 
 // Palette (RGB 0-255) — tokens de l'identité visuelle.
 const BLEU_NUIT: RGB = [23, 44, 61];
@@ -70,8 +73,9 @@ export async function telechargerResultatsPdf(
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const apercu: ApercuResultats = construireApercuResultats(quete, reponses);
+  const arche = ARCHE[quete.id][carte.id];
+  const plusCarte = PLUS[quete.id].cartes[carte.id];
   const plus = PLUS[quete.id];
-  const plusCarte = plus.cartes[carte.id];
   const curseur = { y: 0 };
 
   const assurerPlace = (hauteur: number): void => {
@@ -141,13 +145,13 @@ export async function telechargerResultatsPdf(
   doc.setTextColor(...BLEU_NUIT);
   doc.text(`Mon document personnel — « ${quete.titre} »`, MARGE, curseur.y);
   curseur.y += 6.5;
-  para('Ta carte, ce qu\'elle dit vraiment de toi, ce qu\'elle peut provoquer dans une relation — et ce que tu peux en faire. Généré depuis tes réponses, il reste le tien.', {
+  para('Ta carte, ce que représente ton type de personnalité, ce que tes réponses dessinent — et ce que tu peux en faire. Généré depuis tes réponses, il reste le tien.', {
     size: 10,
     couleur: ENCRE_DOUCE,
     italique: true,
   });
 
-  // ---- Ma carte
+  // ---- Ma carte (verbatim — la carte elle-même, validée)
   section('Ma carte');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14.5);
@@ -159,49 +163,34 @@ export async function telechargerResultatsPdf(
   para(carte.ombre, { size: 10.5 });
   para(quete.completion.labelTension, { size: 9.5, couleur: CORAIL, gras: true });
   para(carte.tension, { size: 10.5, italique: true });
-  para('Côté relation', { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(quete.ombreRelationnel[carte.id] ?? '', { size: 10 });
 
-  // ---- Ce que cela peut donner chez toi (preuves comportementales)
-  section('Ce que cela peut donner chez toi');
-  para('Des scènes que tu reconnais peut-être — coche mentalement celles qui te ressemblent.', {
-    size: 9.5,
-    couleur: ENCRE_DOUCE,
-    italique: true,
-  });
-  puces(plusCarte.preuves);
-
-  // ---- Une question à emporter
-  section('Une question à emporter');
-  para(plusCarte.question, { size: 11.5, italique: true });
-  para('Pas un test, pas un verdict — une question à cogiter, aujourd\'hui ou dans six mois.', {
-    size: 9.5,
-    couleur: ENCRE_DOUCE,
-    italique: true,
-  });
-
-  // ---- Ce que l'autre peut parfois ressentir
-  section('Ce que l\'autre peut parfois ressentir');
-  para(plusCarte.ressenti[0], { size: 10.5, italique: true });
-  para(plusCarte.ressenti[1], { size: 10.5, italique: true });
-  para('Ce que tu vis comme une force peut être vécu autrement par quelqu\'un — pas un verdict : un éclairage, pour mieux se parler.', {
-    size: 9.5,
-    couleur: ENCRE_DOUCE,
-    italique: true,
-  });
-
-  // ---- Dans une relation
-  section('Dans une relation');
-  para('Ce dont tu as besoin', { size: 9.5, couleur: CORAIL, gras: true });
-  puces(plusCarte.besoins);
-  para('Ce que tu peux apporter', { size: 9.5, couleur: TURQUOISE, gras: true });
-  puces(plusCarte.apportes);
-  para('Ce que tu peux apprendre', { size: 9.5, couleur: TURQUOISE, gras: true });
-  puces(plusCarte.apprendre);
+  // ---- Ton archétype (présentation GÉNÉRALE du type — Task 33)
+  section('Ton archétype');
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(11);
+  doc.setTextColor(...TURQUOISE);
+  doc.text(`« ${arche.devise} »`, MARGE, curseur.y);
+  curseur.y += 6;
+  para(arche.presentation, { size: 10 });
+  para('Sa lumière — ce que ce type peut généralement apporter', { size: 9.5, couleur: TURQUOISE, gras: true });
+  puces(arche.lumiere);
+  para(arche.lumiereNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  para('Son ombre — quand cette lumière déborde', { size: 9.5, couleur: CORAIL, gras: true });
+  puces(arche.ombre);
+  para(arche.ombreNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  para('En relation — ce que ce type peut généralement apprécier', { size: 9.5, couleur: TURQUOISE, gras: true });
+  puces(arche.relation);
+  para(arche.relationNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  para('Son point d\'équilibre', { size: 9.5, couleur: CORAIL, gras: true });
+  para(arche.equilibreQuestion, { size: 11, italique: true });
+  para(arche.equilibreNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
 
   // ---- Mon profil, tendance par tendance (qualitatif d'abord)
   section('Mon profil, tendance par tendance');
-  para(apercu.intro, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
+  para(
+    'L\'archétype donne une vue d\'ensemble. Tes réponses permettent maintenant de voir où tu te rapproches de ce portrait — et où tu t\'en éloignes.',
+    { size: 9.5, couleur: ENCRE_DOUCE, italique: true },
+  );
   para(apercu.commentLire, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
   for (const barre of apercu.bars) {
     assurerPlace(30);
@@ -244,8 +233,8 @@ export async function telechargerResultatsPdf(
     curseur.y += 1.4;
   }
 
-  // ---- Ton langage relationnel (moteur de matching)
-  section('Ton langage relationnel');
+  // ---- Mon langage relationnel (moteur de matching)
+  section('Mon langage relationnel');
   para('Ce que Wairyu retiendra pour te proposer des personnes qui parlent la même langue que toi.', {
     size: 9.5,
     couleur: ENCRE_DOUCE,
