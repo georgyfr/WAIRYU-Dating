@@ -1,0 +1,39 @@
+{
+  "packageId": "com.wairyu.app",
+  "host": "wairyu.wairyu.workers.dev",
+  "name": "wairyu — rencontres sincères",
+  "launcherName": "wairyu",
+  "display": "standalone",
+  "themeColor": "#172c3d",
+  "themeColorDark": "#172c3d",
+  "navigationColor": "#172c3d",
+  "navigationColorDark": "#172c3d",
+  "navigationDividerColor": "#172c3d",
+  "navigationDividerColorDark": "#172c3d",
+  "backgroundColor": "#F5F1E6",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://wairyu.wairyu.workers.dev/icons/icon-512.png",
+  "maskableIconUrl": "https://wairyu.wairyu.workers.dev/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/home/z/keys-wairyu-twa/android.keystore",
+    "alias": "wairyu"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "Bubblewrap",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "minSdkVersion": 21,
+  "targetSdkVersion": 35,
+  "orientation": "portrait"
+}

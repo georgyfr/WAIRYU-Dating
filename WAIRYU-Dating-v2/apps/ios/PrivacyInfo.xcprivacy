@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  PrivacyInfo.xcprivacy — WAIRYU Dating (com.wairyu.app)
+  Manifeste de confidentialité exigé par Apple (privacy manifest).
+  Déclarations alignées sur les privacy nutrition labels de l'App Store
+  (voir docs/app-store-conformite.md).
+
+  Principe : WAIRYU ne fait AUCUN tracking publicitaire. Toutes les données
+  listées le sont pour la fonctionnalité de l'application uniquement.
+-->
+<plist version="1.0">
+  <dict>
+    <!-- Aucun suivi des utilisateurs à des fins publicitaires/mesure tiers. -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+
+    <!-- Aucun domaine de suivi : pas de SDK publicitaire, pas de trackers. -->
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+
+    <!-- Données collectées (à refléter exactement dans les labels App Store). -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array>
+      <!-- Adresse email : création de compte / authentification OTP. -->
+      <dict>
+        <key>NSPrivacyCollectedDataType</key>
+        <string>NSPrivacyCollectedDataTypeEmailAddress</string>
+        <key>NSPrivacyCollectedDataTypeLinked</key>
+        <true/>
+        <key>NSPrivacyCollectedDataTypeTracking</key>
+        <false/>
+        <key>NSPrivacyCollectedDataTypePurposes</key>
+        <array>
+          <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+        </array>
+      </dict>
+
+      <!-- Photos et vidéos : photos de profil envoyées par l'utilisateur. -->
+      <dict>
+        <key>NSPrivacyCollectedDataType</key>
+        <string>NSPrivacyCollectedDataTypePhotosorVideos</string>
+        <key>NSPrivacyCollectedDataTypeLinked</key>
+        <true/>
+        <key>NSPrivacyCollectedDataTypeTracking</key>
+        <false/>
+        <key>NSPrivacyCollectedDataTypePurposes</key>
+        <array>
+          <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+        </array>
+      </dict>
+
+      <!-- Autre contenu utilisateur : messages, réponses au questionnaire. -->
+      <dict>
+        <key>NSPrivacyCollectedDataType</key>
+        <string>NSPrivacyCollectedDataTypeOtherUserContent</string>
+        <key>NSPrivacyCollectedDataTypeLinked</key>
+        <true/>
+        <key>NSPrivacyCollectedDataTypeTracking</key>
+        <false/>
+        <key>NSPrivacyCollectedDataTypePurposes</key>
+        <array>
+          <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+        </array>
+      </dict>
+
+      <!-- Localisation approximative : tri des profils par distance.
+           Non liée à l'identité : servie côté Worker, jamais stockée liée au compte. -->
+      <dict>
+        <key>NSPrivacyCollectedDataType</key>
+        <string>NSPrivacyCollectedDataTypeCoarseLocation</string>
+        <key>NSPrivacyCollectedDataTypeLinked</key>
+        <false/>
+        <key>NSPrivacyCollectedDataTypeTracking</key>
+        <false/>
+        <key>NSPrivacyCollectedDataTypePurposes</key>
+        <array>
+          <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+        </array>
+      </dict>
+    </array>
+
+    <!-- API Apple à reasons requises (required reason API). -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+      <!-- UserDefaults : préférences locales de l'app (thème, état de session). -->
+      <dict>
+        <key>NSPrivacyAccessedAPIType</key>
+        <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+        <key>NSPrivacyAccessedAPITypeReasons</key>
+        <array>
+          <string>CA92.1</string>
+        </array>
+      </dict>
+
+      <!-- Horodatage de fichiers : dates de création/modification des fichiers
+           du conteneur de l'app (cache, journaux internes). -->
+      <dict>
+        <key>NSPrivacyAccessedAPIType</key>
+        <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+        <key>NSPrivacyAccessedAPITypeReasons</key>
+        <array>
+          <string>C617.1</string>
+        </array>
+      </dict>
+    </array>
+  </dict>
+</plist>
