@@ -36,3 +36,5 @@ apps/twa/.project
 
 # Captures E2E locales
 .e2e-*.png
+.dev.vars
+.recovery/

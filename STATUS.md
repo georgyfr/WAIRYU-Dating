@@ -236,3 +236,20 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Déploiements** : staging 6110c6d0, prod ebc0c402 (health 200, index 200, héro 200).
 
 **Prochaine** : validation fondateur, puis Monde 1 « Le Miroir ».
+
+## 2026-10-08 — Reconstitution Tasks 18→27 (5ᵉ reset sandbox) + résultats détaillés amplifiés (volet ombre)
+
+**Constat** : la sandbox a été réinitialisée — `/home/z/wairyu` + `SECRETS-WAIRYU-LOCAL.txt` perdus (worklog intact). Le dépôt GitHub (`main` = Task 17, `a73ad6f`) ne contenait PAS les Tasks 18→27 (jamais poussées — PAT perdu).
+
+**Reconstitution** (commit `cb06312`) : la vérité terrain = le bundle staging déployé `index-BvGGhSXl.js` (Task 27, audité octet par octet contre `archive/v1-2026-10-05` c3f9d2c2). Extraction programmatique : 3 quêtes (50+12+20 items verbatim, 58+20+26 positions gelées, 7+5+6 cartes, sélecteurs, accompagnement ×3 paliers, conseils), WORLDS/MILESTONES/BUILDS/PROGRESS/WORLD_DETAILS, écrans (Quête, Mondes+WorldModal, Parcourus, Recolte, Masque, Portrait, Rencontres, Voyage), TabBar 5 onglets, App (routes quête + masquage dating + menu compte), styles.css = CSS servi exact, images CDN restaurées à l'octet. **Règle 11-b re-vérifiée : 22 codes T01→T26 exacts, zéro formulation.** tsc ×3 VERT ; 17+ chaînes de contrôle = staging à l'identique.
+
+**Demande fondateur sur « Tes résultats en détail »** (commit `2c0fdba`) :
+1. **Plus d'explications** — bloc « comment lire ces barres » (0-100 = tendance d'aujourd'hui, ni notes ni cases) + explication par dimension (« ce que cette barre regarde », 5+2+3 textes) sous chaque barre, repris dans le PDF.
+2. **Le volet ombre avec ses conséquences relationnelles** — nouvelle section « Ton volet d'ombre » : zone d'ombre (verbatim carte) + **« Côté relation »** (18 textes par VARIANTE : ce que l'ombre peut donner avec les gens qu'on aime + le geste qui aide) + tension intérieure + note honnête (lecture d'app, pas un diagnostic). PDF : « Côté relation » ajouté dans Ma carte.
+3. **Chapitre « Ta manière de répondre » supprimé** (vue + PDF) — répartition Likert et signature retirées, phrase d'intro du PDF mise à jour, styles `.q-repart*` retirés.
+
+**Preuves (agent-browser, LOCAL wrangler dev + D1 local, compte « Recup Test », code récup jetable wairyu.H5N9-TUGP-R3SY — base LOCALE, rien en staging/prod)** : inscription → Voyage (5 onglets) → Mondes (M1 Commencer, autres verrouillés) → fiche M1 → #/quete/1.1 (annonce verbatim, briefing 4 sections) → passation 50 réponses (premier item Q1.1-17 = position 1 gelée) → carte « L'Équilibriste » (all-5s → V7 conforme aux sélecteurs) → détails : barres 70/70/70/70/40 EXACTES, volet d'ombre avec le texte V7 correct, ZÉRO « Ta manière de répondre » → PDF déclenché sans erreur → modale partage (« Avant de partager », focus sur « Non », Échap OK) → « Attaquer la quête suivante » → 1.2 → deep-link 1.1 → carte intacte → « Retour à mon voyage » → onglet Quête → reprise directe 1.2 ; zéro erreur page ; zéro overflow 390px ; captures 390 + 1280.
+
+**Déploiement : EN ATTENTE** — les credentials Cloudflare ont été perdus au reset (5ᵉ). Staging non déployé ; PROD NON TOUCHÉE (règle 17-b). Il faut le token Cloudflare temporaire du fondateur (comme après le 4ᵉ reset) pour déployer staging via `deploy.sh staging`.
+
+**Prochaine** : credentials Cloudflare → déploiement STAGING → validation fondateur → prod SUR AUTORISATION → miroirs (étage 2).
