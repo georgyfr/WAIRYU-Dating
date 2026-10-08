@@ -4458,9 +4458,19 @@ body.no-scroll {
     font-style: italic
 }
 
-/* L'archétype (Task 33) — le nom du type, son accroche, sa devise. */
+/* L'archétype (Tasks 33/34) — félicitations, annonce « Ton archétype : », le nom
+   du type, sa définition (« qu'est-ce que c'est ? »), puis ce à quoi il renvoie
+   (accroche + devise) et sa lumière. */
+.q-arch-annonce {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: var(--c-gray-blue)
+}
+
 .q-arch-nom {
-    margin: 0 0 4px;
+    margin: 0 0 10px;
     font-size: 22px;
     font-weight: 900;
     color: var(--c-turquoise-deep)
@@ -4468,13 +4478,14 @@ body.no-scroll {
 
 .q-arch-accroche {
     margin: 0;
-    font-size: 14.5px;
+    font-size: 15px;
     line-height: 1.6;
-    color: var(--c-gray-blue)
+    font-weight: 700;
+    color: #2a3a48
 }
 
 .q-arch-devise {
-    margin: 10px 0 12px;
+    margin: 8px 0 0;
     padding: 10px 14px;
     border-left: 3px solid var(--c-turquoise);
     background: #f4fbf8;
@@ -4685,6 +4696,16 @@ body.no-scroll {
     color: var(--c-turquoise-deep);
     text-decoration: underline;
     cursor: pointer
+}
+
+/* L'accroche du pas d'après (Task 34) — sous les boutons Continuer / Tout afficher. */
+.q-rev-teaser {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--c-gray-blue)
 }
 
 .q-det-dim-sub {

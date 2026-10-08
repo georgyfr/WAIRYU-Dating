@@ -2,10 +2,11 @@
  * Le document personnel des résultats — jsPDF en import DYNAMIQUE (le bundle
  * principal reste intact ; le module ne se charge qu'au clic).
  *
- * Task 33 — réorientation fondateur (l'archétype d'abord) : Ma carte → Ton
- * archétype (présentation GÉNÉRALE du type : sa lumière, son ombre, en
- * relation, son point d'équilibre) → Mon profil, tendance par tendance
- * (QUALITATIF d'abord : « Très présente », « 78/100 — tendance actuelle » en
+ * Task 33/34 — réorientation fondateur (l'archétype d'abord) : Ma carte → Ton
+ * archétype (félicitations + le nom, puis la DÉFINITION générale — « qu'est-ce
+ * que c'est ? » —, à quoi ce type renvoie, sa lumière, son ombre, en relation,
+ * son point d'équilibre) → Mon profil, tendance par tendance (« place à toi »,
+ * QUALITATIF d'abord : « Très présente », « 78/100 — tendance actuelle » en
  * secondaire) + levier de progression par dimension → Mon langage relationnel
  * (moteur de matching) → Comment utiliser cette quête → La suite de ton
  * voyage (cliffhanger) → note de pied honnête + pagination.
@@ -164,14 +165,19 @@ export async function telechargerResultatsPdf(
   para(quete.completion.labelTension, { size: 9.5, couleur: CORAIL, gras: true });
   para(carte.tension, { size: 10.5, italique: true });
 
-  // ---- Ton archétype (présentation GÉNÉRALE du type — Task 33)
+  // ---- Ton archétype (présentation GÉNÉRALE du type — Tasks 33/34)
   section('Ton archétype');
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(11);
+  para('Félicitations — ta quête est accomplie. Ton archétype :', { size: 10, couleur: ENCRE_DOUCE });
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14.5);
   doc.setTextColor(...TURQUOISE);
-  doc.text(`« ${arche.devise} »`, MARGE, curseur.y);
-  curseur.y += 6;
+  doc.text(carte.nom, MARGE, curseur.y);
+  curseur.y += 7.4;
+  para(`${carte.nom}, qu'est-ce que c'est ?`, { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.presentation, { size: 10 });
+  para('À quoi renvoie ce type de personnalité ?', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(arche.accroche, { size: 10.5, gras: true });
+  para(`« ${arche.devise} »`, { size: 11, italique: true, couleur: TURQUOISE });
   para('Sa lumière — ce que ce type peut généralement apporter', { size: 9.5, couleur: TURQUOISE, gras: true });
   puces(arche.lumiere);
   para(arche.lumiereNote, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
@@ -188,7 +194,7 @@ export async function telechargerResultatsPdf(
   // ---- Mon profil, tendance par tendance (qualitatif d'abord)
   section('Mon profil, tendance par tendance');
   para(
-    'L\'archétype donne une vue d\'ensemble. Tes réponses permettent maintenant de voir où tu te rapproches de ce portrait — et où tu t\'en éloignes.',
+    'Et maintenant, place à toi : voici exactement ton profil de personnalité dans cet archétype — tendance par tendance, d\'après ce que tes réponses ont montré. Aucune personne ne colle parfaitement à un type : regarde où tu te rapproches de ce portrait, et où tu t\'en éloignes.',
     { size: 9.5, couleur: ENCRE_DOUCE, italique: true },
   );
   para(apercu.commentLire, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
