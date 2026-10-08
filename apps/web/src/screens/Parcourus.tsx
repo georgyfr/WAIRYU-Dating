@@ -12,11 +12,14 @@
  *
  * COUCHE APP (demande fondateur, Task 31) : une section « Tes résultats »
  * liste les quêtes TERMINÉES (état réel wairyu.quete.{id}) pour qu'on puisse
- * RELIRE sa carte (#/quete/{id} — la vue carte d'origine, intacte) et
- * TÉLÉCHARGER le PDF des résultats — sans refaire la quête. Le PDF est régénéré
- * depuis les réponses stockées (scorer + variante déterministes : même carte,
- * mêmes barres que le jour de la passation). Le journal du bundle n'est PAS
- * modifié — les chaînes reconstituées restent verbatim (règle 11-b).
+ * relire ses résultats et TÉLÉCHARGER le PDF des résultats — sans refaire la
+ * quête. Le PDF est régénéré depuis les réponses stockées (scorer + variante
+ * déterministes : même carte, mêmes barres que le jour de la passation).
+ * Task 36 : chaque quête porte AUSSI « Voir mes résultats en détail » (action
+ * principale, deep-link #/quete/{id}/resultats) — les détails complets sont à
+ * UN tap, au même endroit que le bouton PDF ; « Relire ma carte » reste là.
+ * Le journal du bundle n'est PAS modifié — les chaînes reconstituées restent
+ * verbatim (règle 11-b).
  *
  * Aucune prop (bundle : s.jsx(Uh, {})). Apostrophes U+0027 (audit Task 25).
  */
@@ -163,8 +166,8 @@ export default function Parcourus() {
         <section className="m-res" aria-label="Tes résultats de quêtes">
           <h2 className="m-res-titre">Tes résultats</h2>
           <p className="m-res-sub">
-            Chaque quête franchie te laisse une carte. Relis-la quand tu veux, ou garde-la avec
-            toi en PDF — elle t'attend ici, intacte.
+            Chaque quête franchie te laisse une carte et tes résultats détaillés. Relis-les quand
+            tu veux, ou garde-les avec toi en PDF — tout t'attend ici, intact.
           </p>
           <ol className="m-res-list">
             {terminees.map(({ id, etat }) => {
@@ -183,8 +186,8 @@ export default function Parcourus() {
                   </p>
                   {date && <p className="m-res-date">Carte obtenue le {date}</p>}
                   <div className="m-res-actions">
-                    <a className="btn btn-accent" href={`#/quete/${id}`}>
-                      Relire ma carte
+                    <a className="btn btn-accent" href={`#/quete/${id}/resultats`}>
+                      Voir mes résultats en détail
                       <svg
                         viewBox="0 0 24 24"
                         width={16}
@@ -198,6 +201,9 @@ export default function Parcourus() {
                       >
                         <path d="M5 12h14M13 6l6 6-6 6" />
                       </svg>
+                    </a>
+                    <a className="btn btn-ghost" href={`#/quete/${id}`}>
+                      Relire ma carte
                     </a>
                     <button
                       type="button"

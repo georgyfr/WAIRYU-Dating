@@ -27,6 +27,10 @@
  *    et littérale, V3 1.1 écrite par le fondateur) ; les mesures du scorer
  *    du Livrable. La page doit donner envie d'aller jusqu'à la quête
  *    suivante, jamais décourager.
+ *  - DEEP-LINK #/quete/{id}/resultats (demande fondateur) : une quête terminée
+ *    s'ouvre DIRECTEMENT sur cette vue détails — depuis Parcourus (« Voir mes
+ *    résultats en détail », au niveau du bouton PDF), les résultats sont à UN
+ *    tap, sans repasser par la carte.
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au bundle staging Task 27
  * (écran validé par le fondateur), révélations 32/33/35 selon ses retours.
@@ -110,6 +114,11 @@ function texteCarte(quete: QueteDef, carte: CartePartageable): string {
 
 interface Props {
   queteId: IdQuete;
+  /** Deep-link #/quete/{id}/resultats : une quête TERMINÉE s'ouvre DIRECTEMENT
+   *  sur les résultats détaillés — les détails en un tap, au même endroit que
+   *  le bouton PDF (demande fondateur). Sans effet si la quête n'est pas
+   *  terminée (la page suit alors son cours normal). */
+  resultatsInitiale?: boolean;
   /** Retour aux mondes (briefing / pause). */
   onExit: () => void;
   /** Retour au voyage (fin de chaîne). */
@@ -118,7 +127,7 @@ interface Props {
   onAllerQuete: (id: IdQuete) => void;
 }
 
-export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) {
+export default function Quete({ queteId, resultatsInitiale = false, onExit, onHome, onAllerQuete }: Props) {
   const quete = QUETES[queteId];
   const etat = useEtatQuete(queteId);
   // Les terminaisons des trois quêtes du monde — le profil de voyage de la carte.
@@ -131,9 +140,18 @@ export default function Quete({ queteId, onExit, onHome, onAllerQuete }: Props) 
   const repondues = deck.filter((it) => etat.reponses[it.code] !== undefined).length;
   const aDesReponses = Object.keys(etat.reponses).length > 0;
 
-  // Phase initiale = état RÉEL (terminée → carte ; engagée → passation directe ;
+  // Phase initiale = état RÉEL (terminée → carte — ou DIRECTEMENT les détails
+  // sur le deep-link #/quete/{id}/resultats ; engagée → passation directe ;
   // sinon briefing). Jamais de remise à zéro d'un travail existant.
-  const [phase, setPhase] = useState<Phase>(() => (etat.terminee ? 'carte' : aDesReponses ? 'passation' : 'briefing'));
+  const [phase, setPhase] = useState<Phase>(() =>
+    etat.terminee && resultatsInitiale
+      ? 'details'
+      : etat.terminee
+        ? 'carte'
+        : aDesReponses
+          ? 'passation'
+          : 'briefing',
+  );
   const [idx, setIdx] = useState<number>(() => {
     const premiere = deck.findIndex((it) => etat.reponses[it.code] === undefined);
     return premiere === -1 ? 0 : premiere;

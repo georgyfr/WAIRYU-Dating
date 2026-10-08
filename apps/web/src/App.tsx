@@ -75,7 +75,7 @@ const DEST_HASH: Record<Exclude<TabRoute, 'masked'>, string> = {
 /** Routes spéciales portées par le hash (tabs, quête, OAuth, reset email, Meta). */
 type Route =
   | { name: 'tab'; tab: TabRoute }
-  | { name: 'quete'; id: IdQuete }
+  | { name: 'quete'; id: IdQuete; /** #/quete/{id}/resultats — quête terminée ouverte DIRECTEMENT sur les résultats détaillés. */ resultats: boolean }
   | { name: 'reset'; token: string }
   | { name: 'fb-complete' }
   | { name: 'oauth-complete'; via: 'google' | 'facebook' | null }
@@ -106,10 +106,13 @@ function readRoute(): Route {
   }
   if (hash.startsWith('#/fb-complete')) return { name: 'fb-complete' };
   if (hash === '#/quete' || hash.startsWith('#/quete/')) {
-    const id = hash.slice(8);
+    const reste = hash.slice(8); // '' | '{id}' | '{id}/resultats'
+    const [idBrut, suffixe] = reste.split('/');
+    const idValide = (QUETE_IDS as readonly string[]).includes(idBrut) ? (idBrut as IdQuete) : null;
     return {
       name: 'quete',
-      id: (QUETE_IDS as readonly string[]).includes(id) ? (id as IdQuete) : prochaineQuete(),
+      id: idValide ?? prochaineQuete(),
+      resultats: idValide !== null && suffixe === 'resultats',
     };
   }
   if (hash.startsWith('#/oauth-complete')) {
@@ -154,6 +157,10 @@ export default function App() {
 
   // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
   const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
+  /** Deep-link #/quete/{id}/resultats : la page s'ouvre DIRECTEMENT sur les
+   *  résultats détaillés (quête terminée) — au niveau du bouton PDF, sans
+   *  repasser par la carte (demande fondateur : les détails en un tap). */
+  const [queteResultats, setQueteResultats] = useState<boolean>(false);
 
   // Boot : enregistre l'ouverture de l'appareil (première ouverture ⇒ événement
   // + push de bienvenue) puis arme le push ; vérifie la session (cookie signé).
@@ -200,6 +207,7 @@ export default function App() {
     if (route.name === 'quete') {
       setStage('quete');
       setQueteCourante(route.id);
+      setQueteResultats(route.resultats);
     }
   }, [route]);
 
@@ -253,6 +261,7 @@ export default function App() {
       if (window.location.hash === hash) {
         setStage('quete');
         setQueteCourante(id);
+        setQueteResultats(false); // l'onglet Quête reprend au point d'arrêt, pas sur les détails
       } else {
         window.location.hash = hash; // le hashchange relira la route
       }
@@ -556,8 +565,9 @@ export default function App() {
         {view === 'masked' && <Masque />}
         {view === 'quete' && (
           <Quete
-            key={queteCourante}
+            key={queteResultats ? `${queteCourante}-resultats` : queteCourante}
             queteId={queteCourante}
+            resultatsInitiale={queteResultats}
             onExit={() => go('mondes')}
             onHome={() => go('voyage')}
             onAllerQuete={(id) => {
