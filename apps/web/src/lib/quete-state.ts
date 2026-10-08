@@ -13,6 +13,10 @@
 
 import { useSyncExternalStore } from 'react';
 
+/** La validation d'une tendance par l'utilisateur (Task 33 — « Est-ce que ça
+ *  te ressemble ? ») : 1 = ça me ressemble · 2 = parfois · 3 = pas. */
+export type Lecture = 1 | 2 | 3;
+
 export interface EtatQuete {
   /** Réponses par code d'item (1-5 — Likert verbatim). */
   reponses: Record<string, number>;
@@ -20,12 +24,16 @@ export interface EtatQuete {
   /** L'id de variante de carte obtenue ('V1'…), posé à la complétion. */
   carteId: string | null;
   termineeA: string | null;
+  /** L'auto-validation par dimension (clé O/C/E/A/S…) — l'utilisateur devient
+   *  acteur de la lecture de son profil. Rétrocompatible : absent = pas encore
+   *  posé (l'utilisateur peut le laisser vide). */
+  lectures: Record<string, Lecture>;
 }
 
 const cle = (id: string): string => `wairyu.quete.${id}`;
 
 function etatInitial(): EtatQuete {
-  return { reponses: {}, terminee: false, carteId: null, termineeA: null };
+  return { reponses: {}, terminee: false, carteId: null, termineeA: null, lectures: {} };
 }
 
 function lire(id: string): EtatQuete {
@@ -36,11 +44,18 @@ function lire(id: string): EtatQuete {
     const p = JSON.parse(brut) as unknown;
     if (p && typeof p === 'object' && !Array.isArray(p)) {
       const o = p as Record<string, unknown>;
+      const lectures: Record<string, Lecture> = {};
+      if (o.lectures && typeof o.lectures === 'object' && !Array.isArray(o.lectures)) {
+        for (const [k, v] of Object.entries(o.lectures as Record<string, unknown>)) {
+          if (v === 1 || v === 2 || v === 3) lectures[k] = v;
+        }
+      }
       return {
         reponses: o.reponses && typeof o.reponses === 'object' ? (o.reponses as Record<string, number>) : {},
         terminee: o.terminee === true,
         carteId: typeof o.carteId === 'string' ? o.carteId : null,
         termineeA: typeof o.termineeA === 'string' ? o.termineeA : null,
+        lectures,
       };
     }
     return vide;
@@ -82,6 +97,13 @@ function persiste(id: string): void {
 export function enregistrerReponse(id: string, code: string, valeur: number): void {
   const e = etatDe(id);
   etats.set(id, { ...e, reponses: { ...e.reponses, [code]: valeur } });
+  persiste(id);
+}
+
+/** Enregistre (ou remplace) la validation d'une tendance (« ça me ressemble »). */
+export function enregistrerLecture(id: string, dimKey: string, lecture: Lecture): void {
+  const e = etatDe(id);
+  etats.set(id, { ...e, lectures: { ...e.lectures, [dimKey]: lecture } });
   persiste(id);
 }
 
