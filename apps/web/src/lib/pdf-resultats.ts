@@ -1,20 +1,28 @@
 /**
- * Export PDF des résultats détaillés — jsPDF en import DYNAMIQUE (le bundle
+ * Le document personnel des résultats — jsPDF en import DYNAMIQUE (le bundle
  * principal reste intact ; le module ne se charge qu'au clic).
  *
- * Gabarit A4 (unités mm) : en-tête Wairyu bicolore + date, « Mes résultats —
- * « {titre} » », Ma carte, Mon profil tendance par tendance (barres RÉELLES du
- * scorer du Livrable), Ma manière de répondre, Comment utiliser cette quête,
- * note de pied honnête (lecture d'app, rien n'est envoyé) + pagination.
+ * Task 32 — restructuré selon la critique du fondateur (la formule en 10
+ * blocs) : Ma carte → Ce que cela peut donner chez toi (preuves) → Une
+ * question à emporter → Ce que l'autre peut parfois ressentir → Dans une
+ * relation (besoin / apporter / apprendre) → Mon profil, tendance par
+ * tendance (QUALITATIF d'abord : « Très présente », « 78/100 — tendance
+ * actuelle » ; le chiffre devient secondaire) + levier de progression par
+ * dimension → Ton langage relationnel (moteur de matching) → Comment
+ * utiliser cette quête → La suite de ton voyage (cliffhanger) → note de
+ * pied honnête + pagination.
  *
- * WinAnsi (police Helvetica) : œ é « » vérifiés dans le flux.
+ * Gabarit A4 (unités mm) : en-tête Wairyu bicolore + date. WinAnsi (police
+ * Helvetica) : œ é « » · — vérifiés dans le flux ; pas d'emoji (police non
+ * couverte) — les titres de section restent en texte.
  *
- * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au chunk staging
- * pdf-resultats-DJPOSrQf.js (Task 27).
+ * RECONSTITUTION (5ᵉ reset sandbox) — base fidèle au chunk staging
+ * pdf-resultats-DJPOSrQf.js (Task 27), structure Task 32.
  */
 
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
 import { construireApercuResultats, nomFichierPdf, PALIER_LABELS } from './quetes';
+import { PLUS } from './quetes-plus';
 
 // Palette (RGB 0-255) — tokens de l'identité visuelle.
 const BLEU_NUIT: RGB = [23, 44, 61];
@@ -51,8 +59,8 @@ function couleurPalier(palier: Palier): RGB {
 }
 
 /**
- * Télécharge le PDF des résultats (déclenché au clic sur
- * « Télécharger mes résultats en PDF »).
+ * Télécharge le document personnel (déclenché au clic sur
+ * « Télécharger mon document personnel »).
  */
 export async function telechargerResultatsPdf(
   quete: QueteDef,
@@ -62,6 +70,8 @@ export async function telechargerResultatsPdf(
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const apercu: ApercuResultats = construireApercuResultats(quete, reponses);
+  const plus = PLUS[quete.id];
+  const plusCarte = plus.cartes[carte.id];
   const curseur = { y: 0 };
 
   const assurerPlace = (hauteur: number): void => {
@@ -98,6 +108,16 @@ export async function telechargerResultatsPdf(
     curseur.y += 2.4;
   };
 
+  /** Une liste à puces (points turquoise). */
+  const puces = (items: readonly string[], size = 10): void => {
+    for (const it of items) {
+      assurerPlace(size * 0.52 + 3);
+      doc.setFillColor(...TURQUOISE);
+      doc.circle(MARGE + 1.6, curseur.y - 1.2, 0.9, 'F');
+      para(it, { size });
+    }
+  };
+
   // ---- en-tête
   curseur.y = MARGE + 2;
   doc.setFont('helvetica', 'bold');
@@ -119,9 +139,9 @@ export async function telechargerResultatsPdf(
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
   doc.setTextColor(...BLEU_NUIT);
-  doc.text(`Mes résultats — « ${quete.titre} »`, MARGE, curseur.y);
+  doc.text(`Mon document personnel — « ${quete.titre} »`, MARGE, curseur.y);
   curseur.y += 6.5;
-  para('Ton document personnel du voyage Wairyu : ta carte, tes tendances réelles, ton volet d\'ombre côté relation et tes conseils d\'utilisation.', {
+  para('Ta carte, ce qu\'elle dit vraiment de toi, ce qu\'elle peut provoquer dans une relation — et ce que tu peux en faire. Généré depuis tes réponses, il reste le tien.', {
     size: 10,
     couleur: ENCRE_DOUCE,
     italique: true,
@@ -142,24 +162,61 @@ export async function telechargerResultatsPdf(
   para('Côté relation', { size: 9.5, couleur: TURQUOISE, gras: true });
   para(quete.ombreRelationnel[carte.id] ?? '', { size: 10 });
 
-  // ---- Mon profil, tendance par tendance
+  // ---- Ce que cela peut donner chez toi (preuves comportementales)
+  section('Ce que cela peut donner chez toi');
+  para('Des scènes que tu reconnais peut-être — coche mentalement celles qui te ressemblent.', {
+    size: 9.5,
+    couleur: ENCRE_DOUCE,
+    italique: true,
+  });
+  puces(plusCarte.preuves);
+
+  // ---- Une question à emporter
+  section('Une question à emporter');
+  para(plusCarte.question, { size: 11.5, italique: true });
+  para('Pas un test, pas un verdict — une question à cogiter, aujourd\'hui ou dans six mois.', {
+    size: 9.5,
+    couleur: ENCRE_DOUCE,
+    italique: true,
+  });
+
+  // ---- Ce que l'autre peut parfois ressentir
+  section('Ce que l\'autre peut parfois ressentir');
+  para(plusCarte.ressenti[0], { size: 10.5, italique: true });
+  para(plusCarte.ressenti[1], { size: 10.5, italique: true });
+  para('Ce que tu vis comme une force peut être vécu autrement par quelqu\'un — pas un verdict : un éclairage, pour mieux se parler.', {
+    size: 9.5,
+    couleur: ENCRE_DOUCE,
+    italique: true,
+  });
+
+  // ---- Dans une relation
+  section('Dans une relation');
+  para('Ce dont tu as besoin', { size: 9.5, couleur: CORAIL, gras: true });
+  puces(plusCarte.besoins);
+  para('Ce que tu peux apporter', { size: 9.5, couleur: TURQUOISE, gras: true });
+  puces(plusCarte.apportes);
+  para('Ce que tu peux apprendre', { size: 9.5, couleur: TURQUOISE, gras: true });
+  puces(plusCarte.apprendre);
+
+  // ---- Mon profil, tendance par tendance (qualitatif d'abord)
   section('Mon profil, tendance par tendance');
   para(apercu.intro, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
   para(apercu.commentLire, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
   for (const barre of apercu.bars) {
-    assurerPlace(26);
+    assurerPlace(30);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11.5);
     doc.setTextColor(...BLEU_NUIT);
     doc.text(barre.nom, MARGE, curseur.y);
-    doc.setFont('helvetica', 'normal');
     doc.setFontSize(10.5);
     doc.setTextColor(...TURQUOISE);
-    doc.text(`${barre.pct} %`, 210 - MARGE, curseur.y, { align: 'right' });
+    doc.text(PALIER_LABELS[barre.palier], 210 - MARGE, curseur.y, { align: 'right' });
     curseur.y += 3.6;
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.8);
     doc.setTextColor(...ENCRE_DOUCE);
-    doc.text(`${barre.sousLigne} · ${PALIER_LABELS[barre.palier]}`, MARGE, curseur.y);
+    doc.text(`${barre.sousLigne} · ${barre.pct}/100 — tendance actuelle`, MARGE, curseur.y);
     curseur.y += 2.6;
     const yBarre = curseur.y;
     doc.setFillColor(...CREME);
@@ -172,16 +229,51 @@ export async function telechargerResultatsPdf(
     curseur.y += 8;
     para(barre.lecture, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
     para(barre.texte, { size: 10 });
+    const lev = plus.leviers[barre.key];
+    if (lev) {
+      assurerPlace(22);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.5);
+      doc.setTextColor(...CORAIL);
+      doc.text('Ton levier de progression', MARGE, curseur.y);
+      curseur.y += 4.6;
+      para(`Ta force. ${lev.force}`, { size: 9.8 });
+      para(`Ton risque. ${lev.risque}`, { size: 9.8 });
+      para(`Ton levier. ${lev.levier}`, { size: 9.8 });
+    }
     curseur.y += 1.4;
   }
 
+  // ---- Ton langage relationnel (moteur de matching)
+  section('Ton langage relationnel');
+  para('Ce que Wairyu retiendra pour te proposer des personnes qui parlent la même langue que toi.', {
+    size: 9.5,
+    couleur: ENCRE_DOUCE,
+    italique: true,
+  });
+  para('Tu donnes', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(plusCarte.langage.donnes, { size: 10 });
+  para('Tu recherches probablement', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(plusCarte.langage.recherches, { size: 10 });
+  para('Tu dois surveiller', { size: 9.5, couleur: CORAIL, gras: true });
+  para(plusCarte.langage.surveilles, { size: 10 });
+  para('Tu pourrais particulièrement apprécier', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(plusCarte.langage.apprecierais, { size: 10 });
+
   // ---- Comment utiliser cette quête
   section('Comment utiliser cette quête');
-  for (const conseil of apercu.conseils) {
-    assurerPlace(14);
-    doc.setFillColor(...TURQUOISE);
-    doc.circle(MARGE + 1.6, curseur.y - 1.2, 0.9, 'F');
-    para(conseil, { size: 10 });
+  puces(apercu.conseils);
+
+  // ---- La suite de ton voyage (cliffhanger)
+  section('La suite de ton voyage');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11.5);
+  doc.setTextColor(...BLEU_NUIT);
+  doc.text(quete.suite.titre, MARGE, curseur.y);
+  curseur.y += 5.6;
+  para(quete.suite.intro, { size: 10 });
+  for (const q of quete.suite.questions) {
+    para(q, { size: 10.5, italique: true });
   }
 
   // ---- pied de document

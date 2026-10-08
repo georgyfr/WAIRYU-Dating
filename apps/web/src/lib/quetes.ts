@@ -80,6 +80,15 @@ export interface QueteDef {
   ombreRelationnel: Record<string, string>;
   /** La quête suivante de la chaîne du monde (null = dernière quête ouverte). */
   suivante: IdQuete | null;
+  /** La fin émotionnelle (critique §13) — le cliffhanger qui donne envie de
+   *  découvrir la suite. questions vide = dernière quête du monde. */
+  suite: {
+    titre: string;
+    intro: string;
+    questions: readonly string[];
+    /** Le CTA du cliffhanger (absent pour la dernière quête du monde). */
+    cta?: string;
+  };
 }
 
 /** Les textes communs du briefing (verbatim 05-ecran-d-intro). */
@@ -141,7 +150,10 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       },
       {
         key: 'A',
-        nom: 'Ta bienveillance',
+        // Task 32 (critique fondateur §8) : « bienveillance » à 38 % se lit
+        // « peu bienveillant » — l'axe réel est la confiance accordée (la
+        // lecture dit déjà « la confiance se mérite chez toi »).
+        nom: 'Ta confiance',
         sousLigne: 'le lien, la confiance, la franchise',
         lecture:
           'Cette barre dit comment tu donnes : confiance rapide ou prudence attentive. Pleine : le lien passe avant la victoire, tu écoutes et tu donnes sans compter. Légère : la confiance se mérite chez toi — et ta franchise, bien dosée, protège tes relations.',
@@ -207,6 +219,17 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         'En relation, ta zone d\'ombre peut donner : une adaptabilité si large que l\'autre ne sait parfois plus ce que TU veux, toi. Ce qui aide : prendre position à voix haute une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, personne n\'aime deviner à l\'aveugle.',
     },
     suivante: '1.2',
+    suite: {
+      titre: 'Ton premier miroir est posé.',
+      intro:
+        'Tu viens de découvrir une partie de toi. Mais ta personnalité n\'est pas toute ton histoire — le cœur a ses propres questions.',
+      questions: [
+        'Comment aimes-tu ?',
+        'Comment t\'attaches-tu ?',
+        'Que se passe-t-il lorsque tes émotions prennent le dessus ?',
+      ],
+      cta: 'Découvrir ma façon de m\'attacher',
+    },
   },
   '1.2': {
     id: '1.2',
@@ -279,6 +302,17 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         'En relation, ta zone d\'ombre peut donner : une adaptation si fluide que tes propres besoins passent derrière ceux de l\'autre — et toi, tu finis par ne plus savoir ce que toi tu voulais. Ce qui aide : choisir à voix haute de temps en temps — le restau, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre.',
     },
     suivante: '1.3',
+    suite: {
+      titre: 'Ta façon d\'aimer est posée.',
+      intro:
+        'Tu sais maintenant comment ton cœur s\'attache — et de quel air il a besoin. Reste le plus vivant de tous : ce que tu ressens, et ce que tu en fais.',
+      questions: [
+        'Que fais-tu quand une émotion monte en toi ?',
+        'Comment nommes-tu ce que tu ressens ?',
+        'Ce qui se passe en toi, cela se voit-il de dehors ?',
+      ],
+      cta: 'Découvrir ma façon de ressentir',
+    },
   },
   '1.3': {
     id: '1.3',
@@ -365,6 +399,12 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         'En relation, ta zone d\'ombre peut donner : des moments où tu dis « je ne sais pas ce que je ressens » et l\'autre le vit comme un mur — alors que c\'est un chantier en cours. Ce qui aide : partager la recherche à voix haute : « je ne sais pas encore, mais je creuse. » C\'est une présence, pas une absence.',
     },
     suivante: null,
+    suite: {
+      titre: 'Ton premier monde est complet.',
+      intro:
+        'Ta personnalité, ton attachement, tes émotions — trois miroirs, trois éclairages. C\'est déjà une carte rare : la tienne.',
+      questions: [],
+    },
   },
 };
 
@@ -377,9 +417,12 @@ export const LIKERT: readonly LikertNiveau[] = Q11.LIKERT;
 export type Palier = 'fort' | 'equilibre' | 'doux';
 
 export const PALIER_LABELS: Record<Palier, string> = {
-  doux: 'Tendance douce',
-  equilibre: 'Tendance équilibrée',
-  fort: 'Tendance forte',
+  // Task 32 (critique fondateur §7) : le qualitatif D'ABORD, le chiffre en
+  // secondaire — « Très présente » + « 78/100 — tendance actuelle », pas
+  // « 78 % » qui pousse score → comparaison → classement.
+  doux: 'Plus discrète',
+  equilibre: 'Équilibrée',
+  fort: 'Très présente',
 };
 
 export function palierDe(pct: number): Palier {
