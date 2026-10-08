@@ -108,7 +108,7 @@ export function enregistrerLecture(id: string, dimKey: string, lecture: Lecture)
 }
 
 /** Marque la quête terminée (une seule fois — la carte obtenue ne bouge plus). */
-export function marquerTerminee(id: string, carteId: string): void {
+export function marquerTerminee(id: string, carteId: string | null): void {
   const e = etatDe(id);
   if (e.terminee) return;
   etats.set(id, { ...e, terminee: true, carteId, termineeA: new Date().toISOString() });

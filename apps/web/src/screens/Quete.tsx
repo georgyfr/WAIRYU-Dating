@@ -40,27 +40,51 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   construireApercuResultats,
   COMMUN,
+  mondeDeQuete,
   NOTA_BARRES,
   QUETES,
+  QUETE_IDS,
   LIKERT,
   titreTendances,
   type IdQuete,
-  type ItemQuete,
+  type ItemPassation,
   type QueteDef,
 } from '../lib/quetes';
 import { ARCHE } from '../lib/quetes-plus';
+import { ECRAN_17, decode17 } from '../lib/quete-1-7';
+import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
 import {
   enregistrerReponse,
   marquerTerminee,
   reinitialiserQuete,
   useEtatQuete,
+  type EtatQuete,
 } from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import { PROGRESS, TOTAL_STEPS } from '../lib/voyage';
 import PartageCarteModal from '../components/PartageCarteModal';
 import type { CartePartageable } from '../components/CarteTypes';
 
-type Phase = 'briefing' | 'passation' | 'details' | 'carte';
+type Phase = 'briefing' | 'passation' | 'details' | 'carte' | 'ecran';
+
+/** Les textes « comment tu vas répondre » par format (couche app — les textes
+ *  Likert verbatim restent dans COMMUN). */
+const COMMENT_REPONDRE_FORMAT: Record<QueteDef['format'], readonly string[]> = {
+  likert: COMMUN.commentRepondre,
+  'likert-enigmes': [
+    ...COMMUN.commentRepondre,
+    'À la fin, trois petites énigmes. Elles ne sont pas une note : on regarde comment tu y vas, jamais si tu trouves.',
+  ],
+  choix: [
+    "Six situations s'affichent une à une. À chaque fois, deux options : celle de maintenant, celle qui attend.",
+    "Pas de bonne réponse — chaque option vaut la même. C'est ton rapport au temps qui se dessine, jamais une note.",
+    'Réponds avec ta première impulsion, puis laisse la suivante arriver.',
+  ],
+  ecran: [
+    "Des questions à options, rien à réussir : tu coches ce qui est juste pour toi — ou tu ne dis rien, c'est une réponse complète.",
+    'Tes réponses restent modifiables et effaçables à tout moment, depuis cet écran.',
+  ],
+};
 
 /** Flèche droite (icône locale de la quête). */
 function Fleche({ dir = 'right' }: { dir?: 'right' | 'left' }) {
@@ -130,27 +154,49 @@ interface Props {
 export default function Quete({ queteId, resultatsInitiale = false, onExit, onHome, onAllerQuete }: Props) {
   const quete = QUETES[queteId];
   const etat = useEtatQuete(queteId);
-  // Les terminaisons des trois quêtes du monde — le profil de voyage de la carte.
-  const e11 = useEtatQuete('1.1');
-  const e12 = useEtatQuete('1.2');
-  const e13 = useEtatQuete('1.3');
-  const termineesDuMonde = [e11, e12, e13].filter((e) => e.terminee).length;
+  // Les terminaisons de TOUTES les quêtes ouvertes — le profil de voyage.
+  const et11 = useEtatQuete('1.1');
+  const et12 = useEtatQuete('1.2');
+  const et13 = useEtatQuete('1.3');
+  const et14 = useEtatQuete('1.4');
+  const et15 = useEtatQuete('1.5');
+  const et16 = useEtatQuete('1.6');
+  const et17 = useEtatQuete('1.7');
+  const et19 = useEtatQuete('1.9');
+  const et110 = useEtatQuete('1.10');
+  const et111 = useEtatQuete('1.11');
+  const etatsTous: Record<IdQuete, EtatQuete> = {
+    '1.1': et11,
+    '1.2': et12,
+    '1.3': et13,
+    '1.4': et14,
+    '1.5': et15,
+    '1.6': et16,
+    '1.7': et17,
+    '1.9': et19,
+    '1.10': et110,
+    '1.11': et111,
+  };
+  const termineesTotal = QUETE_IDS.filter((id) => etatsTous[id].terminee).length;
+  const monde = mondeDeQuete(queteId);
 
-  const deck = useMemo<ItemQuete[]>(() => quete.deck(), [quete]);
+  const deck = useMemo<ItemPassation[]>(() => quete.deck(), [quete]);
   const repondues = deck.filter((it) => etat.reponses[it.code] !== undefined).length;
   const aDesReponses = Object.keys(etat.reponses).length > 0;
 
   // Phase initiale = état RÉEL (terminée → carte — ou DIRECTEMENT les détails
   // sur le deep-link #/quete/{id}/resultats ; engagée → passation directe ;
-  // sinon briefing). Jamais de remise à zéro d'un travail existant.
+  // sinon briefing). Les quêtes SANS carte (1.7/1.11) ouvrent leur écran final.
   const [phase, setPhase] = useState<Phase>(() =>
-    etat.terminee && resultatsInitiale
-      ? 'details'
-      : etat.terminee
-        ? 'carte'
-        : aDesReponses
-          ? 'passation'
-          : 'briefing',
+    etat.terminee && quete.sansCarte
+      ? 'ecran'
+      : etat.terminee && resultatsInitiale
+        ? 'details'
+        : etat.terminee
+          ? 'carte'
+          : aDesReponses
+            ? 'passation'
+            : 'briefing',
   );
   const [idx, setIdx] = useState<number>(() => {
     const premiere = deck.findIndex((it) => etat.reponses[it.code] === undefined);
@@ -172,8 +218,8 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
 
   // La reprise re-marque le monde en cours (idempotent) — le point corail suit.
   useEffect(() => {
-    if (reprise) marquerMondeEnCours('M1');
-  }, [reprise]);
+    if (reprise) marquerMondeEnCours(monde.code);
+  }, [reprise, monde.code]);
 
   // Le bandeau de reprise s'efface seul (6 s).
   useEffect(() => {
@@ -183,8 +229,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   }, [montreReprise]);
 
   // Complétion : toutes les réponses posées → la carte (une seule fois).
+  // Quêtes SANS carte (1.7/1.11) : aucun score, aucun choix de variante —
+  // l'écran final (ECRAN_17 / SORTIES_111). 1.11 attend en plus le choix du
+  // chemin (Q1.11-chemin), posé APRÈS les 3 questions (Livrable).
   useEffect(() => {
     if (phase === 'passation' && repondues === deck.length) {
+      if (quete.sansCarte) {
+        if (queteId === '1.11' && etat.reponses['Q1.11-chemin'] === undefined) return;
+        marquerTerminee(queteId, null);
+        setPhase('ecran');
+        return;
+      }
       const carteId = etat.carteId ?? quete.choisirVariante(quete.scorer(etat.reponses));
       marquerTerminee(queteId, carteId);
       setPhase('carte');
@@ -200,11 +255,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   );
 
   const reprendre = useCallback(() => {
-    marquerMondeEnCours('M1');
+    marquerMondeEnCours(monde.code);
     const premiere = deck.findIndex((it) => etat.reponses[it.code] === undefined);
     setIdx(premiere === -1 ? deck.length - 1 : premiere);
     setPhase('passation');
-  }, [deck, etat.reponses]);
+  }, [deck, etat.reponses, monde.code]);
 
   const repondre = (code: string, valeur: number) => {
     enregistrerReponse(queteId, code, valeur);
@@ -257,7 +312,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <div className="q-head">
           <span className="v-chip v-chip-now">
             <span className="v-chip-dot" aria-hidden="true" />
-            Monde 1 — Le Miroir
+            {monde.nom}
           </span>
           <span className="v-chip v-chip-soon">
             Quête {quete.numero} sur {quete.totalDuMonde}
@@ -279,20 +334,22 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         </section>
         <section className="q-sec" aria-label="Comment tu vas répondre">
           <h3>Comment tu vas répondre</h3>
-          {COMMUN.commentRepondre.map((p) => (
+          {COMMENT_REPONDRE_FORMAT[quete.format].map((p) => (
             <p key={p}>{p}</p>
           ))}
-          <div
-            className="q-scale"
-            role="img"
-            aria-label="L'échelle de réponse : 5 niveaux, de « Pas du tout moi » à « Tout à fait moi »"
-          >
-            {LIKERT.map((n, i) => (
-              <span key={n.value} className="q-scale-step" data-level={i + 1}>
-                {n.label}
-              </span>
-            ))}
-          </div>
+          {(quete.format === 'likert' || quete.format === 'likert-enigmes') && (
+            <div
+              className="q-scale"
+              role="img"
+              aria-label="L'échelle de réponse : 5 niveaux, de « Pas du tout moi » à « Tout à fait moi »"
+            >
+              {LIKERT.map((n, i) => (
+                <span key={n.value} className="q-scale-step" data-level={i + 1}>
+                  {n.label}
+                </span>
+              ))}
+            </div>
+          )}
         </section>
         <section className="q-sec" aria-label="Ce qu'on attend de toi pendant la quête">
           <h3>Ce qu'on attend de toi</h3>
@@ -313,8 +370,12 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <div className="q-actions">
             {etat.terminee ? (
               <>
-                <button type="button" className="btn btn-accent" onClick={() => setPhase('carte')}>
-                  Revoir ma carte
+                <button
+                  type="button"
+                  className="btn btn-accent"
+                  onClick={() => setPhase(quete.sansCarte ? 'ecran' : 'carte')}
+                >
+                  {quete.sansCarte ? 'Revoir mon écran' : 'Revoir ma carte'}
                   <Fleche />
                 </button>
                 <button type="button" className="btn btn-ghost" onClick={onExit}>
@@ -354,6 +415,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   if (phase === 'passation') {
     const item = deck[Math.min(idx, deck.length - 1)];
     const valeur = etat.reponses[item.code];
+    // 1.11 : les 3 questions posées → le membre CHOISIT son chemin (Livrable :
+    // trois chemins de sortie, tous dignes — jamais bloquant). Le choix est
+    // enregistré puis l'effet de complétion bascule sur l'écran final.
+    const choixChemin =
+      queteId === '1.11' && repondues === deck.length && etat.reponses['Q1.11-chemin'] === undefined;
     return (
       <main className="screen q-screen q-run" aria-labelledby="q-run-label">
         {montreReprise && (
@@ -374,24 +440,123 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <p className="q-run-count" aria-hidden="true">
           {quete.titre}
         </p>
-        <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-          {item.text}
-        </h1>
-        <div className="q-likert" role="group" aria-label="Ta réponse — 5 niveaux">
-          {LIKERT.map((n) => (
+        {choixChemin ? (
+          <div className="q-choix" role="group" aria-label="Ton chemin — trois sorties, toutes dignes">
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              Alors, tu pars d'où ?
+            </h1>
             <button
-              key={n.value}
               type="button"
-              className={valeur === n.value ? 'q-likert-btn q-likert-btn-on' : 'q-likert-btn'}
-              data-level={n.value}
-              onClick={() => repondre(item.code, n.value)}
+              className="q-choix-btn"
+              onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 1)}
             >
-              {n.label}
+              Je suis prêt·e
             </button>
-          ))}
-        </div>
+            <button
+              type="button"
+              className="q-choix-btn"
+              onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 2)}
+            >
+              D'abord une quête recommandée
+            </button>
+            <button
+              type="button"
+              className="q-choix-btn"
+              onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 3)}
+            >
+              Je commence quand même
+            </button>
+            <p className="q-ecran-note">Aucun chemin n'est le bon — et tu pourras changer d'avis quand tu veux.</p>
+          </div>
+        ) : (
+          <>
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              {item.text}
+            </h1>
+            {item.format === 'likert' && (
+              <div className="q-likert" role="group" aria-label="Ta réponse — 5 niveaux">
+                {LIKERT.map((n) => (
+                  <button
+                    key={n.value}
+                    type="button"
+                    className={valeur === n.value ? 'q-likert-btn q-likert-btn-on' : 'q-likert-btn'}
+                    data-level={n.value}
+                    onClick={() => repondre(item.code, n.value)}
+                  >
+                    {n.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {item.format === 'choix' && (
+              <div className="q-choix" role="group" aria-label="Ton choix — deux options, la même valeur">
+                <button
+                  type="button"
+                  className={valeur === 1 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                  onClick={() => repondre(item.code, 1)}
+                >
+                  <span className="q-choix-tag">Maintenant</span>
+                  {item.choixA}
+                </button>
+                <button
+                  type="button"
+                  className={valeur === 2 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                  onClick={() => repondre(item.code, 2)}
+                >
+                  <span className="q-choix-tag">Plus tard</span>
+                  {item.choixB}
+                </button>
+              </div>
+            )}
+            {item.format === 'question' && item.multi && (
+              <div
+                className="q-choix q-choix-multi"
+                role="group"
+                aria-label="Ta réponse — choisis autant d'options que tu veux, ou aucune"
+              >
+                {(item.options ?? []).map((opt, i) => {
+                  const bit = 1 << i;
+                  const on = ((valeur ?? 0) & bit) !== 0;
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={on ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                      aria-pressed={on}
+                      onClick={() => enregistrerReponse(queteId, item.code, (valeur ?? 0) ^ bit)}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="btn btn-accent q-choix-valider"
+                  onClick={() => setIdx((i) => Math.min(i + 1, deck.length - 1))}
+                >
+                  Valider ma sélection
+                  <Fleche />
+                </button>
+              </div>
+            )}
+            {item.format === 'question' && !item.multi && (
+              <div className="q-choix" role="group" aria-label="Ta réponse">
+                {(item.options ?? []).map((opt, i) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    className={valeur === i + 1 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                    onClick={() => repondre(item.code, i + 1)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )}
         <div className="q-run-foot">
-          {idx > 0 && (
+          {idx > 0 && !choixChemin && (
             <button type="button" className="q-run-prev" onClick={() => setIdx((i) => Math.max(0, i - 1))}>
               <Fleche dir="left" />
               Question précédente
@@ -400,6 +565,59 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <button type="button" className="q-run-pause" onClick={() => setPhase('briefing')}>
             Faire une pause — tes réponses restent
           </button>
+        </div>
+      </main>
+    );
+  }
+
+  // -------------------------------------- écran final — quêtes SANS carte
+  // 1.7 « écran de confiance » (ECRAN_17) · 1.11 « écran de passage » (le
+  // chemin choisi → SORTIES_111 — verbatim Livrable). Aucune carte, aucun
+  // score, aucun PDF : la quête se clôt sur son écran, digne et modifiable.
+  if (phase === 'ecran') {
+    const ecran = queteId === '1.7' ? ECRAN_17 : SORTIES_111[chemin111(etat.reponses)];
+    const laSuite = quete.suivante ? QUETES[quete.suivante] : null;
+    return (
+      <main className="screen q-screen" aria-labelledby="q-ecran-title">
+        <div className="q-carte" role="region" aria-label="Ton écran">
+          <p className="q-carte-entete">{quete.completion.entete}</p>
+          <h1 className="q-carte-nom" id="q-ecran-title">
+            {ecran.titre}
+          </h1>
+          <p className="q-carte-lumiere">{ecran.texte}</p>
+          {queteId === '1.7' && (
+            <div className="q-ecran-recap">
+              {deck.map((it) => {
+                const labels = decode17(it.code as 'Q1.7-01' | 'Q1.7-02', etat.reponses[it.code] ?? 0);
+                return (
+                  <p key={it.code} className="q-ecran-ligne">
+                    <strong>{it.text}</strong>
+                    <br />
+                    {labels.length > 0
+                      ? labels.join(' · ')
+                      : "Tu n'as rien coché pour le moment — c'est une réponse complète."}
+                  </p>
+                );
+              })}
+            </div>
+          )}
+          <div className="q-carte-actions">
+            {laSuite ? (
+              <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite.id)}>
+                {quete.suite.cta ?? 'Continuer le voyage'}
+                <Fleche />
+              </button>
+            ) : (
+              <button type="button" className="btn btn-accent" onClick={onHome}>
+                {quete.suite.cta ?? 'Retour à mon voyage'}
+                <Fleche />
+              </button>
+            )}
+            <button type="button" className="btn btn-ghost" onClick={onExit}>
+              Retour aux mondes
+            </button>
+          </div>
+          <p className="q-carte-hint">Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».</p>
         </div>
       </main>
     );
@@ -424,7 +642,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <div className="q-head">
           <span className="v-chip v-chip-now">
             <span className="v-chip-dot" aria-hidden="true" />
-            Monde 1 — Le Miroir
+            {monde.nom}
           </span>
           <span className="v-chip v-chip-soon">
             Quête {quete.numero} sur {quete.totalDuMonde}
@@ -550,7 +768,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p>{carte.tension}</p>
         </div>
         <p className="q-carte-pied">
-          Ton profil de voyage : <strong>{profilPct(termineesDuMonde)} %</strong> complété
+          Ton profil de voyage : <strong>{profilPct(termineesTotal)} %</strong> complété
         </p>
         <div className="q-carte-actions">
           <button type="button" className="btn btn-accent" onClick={() => setPhase('details')}>

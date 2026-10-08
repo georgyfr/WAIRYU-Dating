@@ -103,18 +103,40 @@ import { PLUS_1_3 } from './quete-1-3-plus';
 import { ARCHES_1_1 } from './quete-1-1-arche';
 import { ARCHES_1_2 } from './quete-1-2-arche';
 import { ARCHES_1_3 } from './quete-1-3-arche';
+import { ARCHES_1_4 } from './quete-1-4-arche';
+import { ARCHES_1_5 } from './quete-1-5-arche';
+import { ARCHES_1_6 } from './quete-1-6-arche';
+import { ARCHES_1_9 } from './quete-1-9-arche';
+import { ARCHES_1_10 } from './quete-1-10-arche';
 import type { IdQuete } from './quetes';
 
-/** Le registre de la couche « plus », par identifiant de quête. */
+/** Le registre de la couche « plus », par identifiant de quête.
+ *  Monde 2 : données NON rédigées à ce stade (couches conservées pour le
+ *  matching/carnet futurs — les écrans M2 n'en rendent aucune, gabarit 35). */
 export const PLUS: Record<IdQuete, CouchePlus> = {
   '1.1': PLUS_1_1,
   '1.2': PLUS_1_2,
   '1.3': PLUS_1_3,
+  '1.4': { cartes: {}, leviers: {} },
+  '1.5': { cartes: {}, leviers: {} },
+  '1.6': { cartes: {}, leviers: {} },
+  '1.7': { cartes: {}, leviers: {} },
+  '1.9': { cartes: {}, leviers: {} },
+  '1.10': { cartes: {}, leviers: {} },
+  '1.11': { cartes: {}, leviers: {} },
 };
 
-/** Les archétypes GÉNÉRAUX (Task 33), par identifiant de quête, clés = variantes. */
+/** Les archétypes GÉNÉRAUX (Task 33), par identifiant de quête, clés = variantes.
+ *  1.7 et 1.11 n'ont AUCUNE carte (écrans spéciaux — Livrable) : registres vides. */
 export const ARCHE: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '1.1': ARCHES_1_1,
   '1.2': ARCHES_1_2,
   '1.3': ARCHES_1_3,
+  '1.4': ARCHES_1_4,
+  '1.5': ARCHES_1_5,
+  '1.6': ARCHES_1_6,
+  '1.7': {},
+  '1.9': ARCHES_1_9,
+  '1.10': ARCHES_1_10,
+  '1.11': {},
 };

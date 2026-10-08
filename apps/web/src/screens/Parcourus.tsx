@@ -26,15 +26,15 @@
 
 import { useCallback, useState } from 'react';
 import { PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
-import { QUETES, QUETE_IDS } from '../lib/quetes';
+import { QUETES, QUETE_IDS, mondeDeQuete } from '../lib/quetes';
 import type { IdQuete } from '../lib/quetes';
 import { useEtatQuete } from '../lib/quete-state';
 import type { EtatQuete } from '../lib/quete-state';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 
-/** Le monde des quêtes ouvertes (M1 — Le Miroir) pour la tuile et le libellé. */
-const MONDE_QUETES = WORLDS.find((w) => w.code === 'M1');
+/** Le libellé du monde d'une quête (la série 1.x traverse M1/M2). */
+const nomMonde = (id: IdQuete): string => mondeDeQuete(id).nom;
 
 interface QueteTerminee {
   id: IdQuete;
@@ -54,11 +54,30 @@ function dateCourte(iso: string): string {
 }
 
 export default function Parcourus() {
-  // Ordre FIXE et inconditionnel (règles des hooks) — les 3 quêtes ouvertes.
+  // Ordre FIXE et inconditionnel (règles des hooks) — les 10 quêtes ouvertes
+  // (Monde 1 + Monde 2 « Le Volant »).
   const etat11 = useEtatQuete('1.1');
   const etat12 = useEtatQuete('1.2');
   const etat13 = useEtatQuete('1.3');
-  const etatsParId: Record<IdQuete, EtatQuete> = { '1.1': etat11, '1.2': etat12, '1.3': etat13 };
+  const etat14 = useEtatQuete('1.4');
+  const etat15 = useEtatQuete('1.5');
+  const etat16 = useEtatQuete('1.6');
+  const etat17 = useEtatQuete('1.7');
+  const etat19 = useEtatQuete('1.9');
+  const etat110 = useEtatQuete('1.10');
+  const etat111 = useEtatQuete('1.11');
+  const etatsParId: Record<IdQuete, EtatQuete> = {
+    '1.1': etat11,
+    '1.2': etat12,
+    '1.3': etat13,
+    '1.4': etat14,
+    '1.5': etat15,
+    '1.6': etat16,
+    '1.7': etat17,
+    '1.9': etat19,
+    '1.10': etat110,
+    '1.11': etat111,
+  };
   const [pdfEnCours, setPdfEnCours] = useState<IdQuete | null>(null);
 
   /** Régénère le PDF depuis les réponses stockées — même carte, mêmes barres. */
@@ -82,10 +101,13 @@ export default function Parcourus() {
     [etatsParId],
   );
 
-  // Les quêtes réellement terminées, dans l'ordre de la chaîne du monde.
+  // Les quêtes réellement terminées, dans l'ordre de la chaîne — y compris les
+  // écrans SANS carte (1.7 « écran de confiance », 1.11 « écran de passage »).
   const terminees: QueteTerminee[] = QUETE_IDS.filter((id) => {
     const e = etatsParId[id];
-    return e.terminee && !!e.carteId && !!QUETES[id].cartes[e.carteId as string];
+    if (!e.terminee) return false;
+    if (QUETES[id].sansCarte) return true;
+    return !!e.carteId && !!QUETES[id].cartes[e.carteId as string];
   }).map((id) => ({ id, etat: etatsParId[id] }));
 
   const worldsDone = PROGRESS.worldsDone;
@@ -172,48 +194,75 @@ export default function Parcourus() {
           <ol className="m-res-list">
             {terminees.map(({ id, etat }) => {
               const quete = QUETES[id];
-              const carte = quete.cartes[etat.carteId as string];
+              const sansCarte = !!quete.sansCarte;
+              const carte = etat.carteId ? quete.cartes[etat.carteId] : undefined;
               const date = etat.termineeA ? dateCourte(etat.termineeA) : '';
               return (
                 <li key={id} className="m-res-item">
                   <small className="m-res-num">
                     Quête {quete.numero} sur {quete.totalDuMonde}
-                    {MONDE_QUETES ? ` · ${MONDE_QUETES.name}` : ''}
+                    {' · '}
+                    {nomMonde(id)}
                   </small>
                   <h3>{quete.titre}</h3>
-                  <p className="m-res-carte">
-                    Ta carte&nbsp;: <strong>{carte.nom}</strong>
-                  </p>
-                  {date && <p className="m-res-date">Carte obtenue le {date}</p>}
+                  {sansCarte ? (
+                    <p className="m-res-carte">Un écran de passage — rien à mesurer, tout reste modifiable.</p>
+                  ) : carte ? (
+                    <p className="m-res-carte">
+                      Ta carte&nbsp;: <strong>{carte.nom}</strong>
+                    </p>
+                  ) : null}
+                  {date && <p className="m-res-date">{sansCarte ? 'Fait le' : 'Carte obtenue le'} {date}</p>}
                   <div className="m-res-actions">
-                    <a className="btn btn-accent" href={`#/quete/${id}/resultats`}>
-                      Voir mes résultats en détail
-                      <svg
-                        viewBox="0 0 24 24"
-                        width={16}
-                        height={16}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2.4}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 12h14M13 6l6 6-6 6" />
-                      </svg>
-                    </a>
-                    <a className="btn btn-ghost" href={`#/quete/${id}`}>
-                      Relire ma carte
-                    </a>
-                    <button
-                      type="button"
-                      className="btn btn-ghost"
-                      onClick={() => void telechargerPdf(id)}
-                      disabled={pdfEnCours !== null}
-                      aria-busy={pdfEnCours === id}
-                    >
-                      {pdfEnCours === id ? 'Préparation…' : 'Télécharger le PDF'}
-                    </button>
+                    {sansCarte ? (
+                      <a className="btn btn-accent" href={`#/quete/${id}`}>
+                        Revoir mon écran
+                        <svg
+                          viewBox="0 0 24 24"
+                          width={16}
+                          height={16}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.4}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </a>
+                    ) : (
+                      <>
+                        <a className="btn btn-accent" href={`#/quete/${id}/resultats`}>
+                          Voir mes résultats en détail
+                          <svg
+                            viewBox="0 0 24 24"
+                            width={16}
+                            height={16}
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.4}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                          </svg>
+                        </a>
+                        <a className="btn btn-ghost" href={`#/quete/${id}`}>
+                          Relire ma carte
+                        </a>
+                        <button
+                          type="button"
+                          className="btn btn-ghost"
+                          onClick={() => void telechargerPdf(id)}
+                          disabled={pdfEnCours !== null}
+                          aria-busy={pdfEnCours === id}
+                        >
+                          {pdfEnCours === id ? 'Préparation…' : 'Télécharger le PDF'}
+                        </button>
+                      </>
+                    )}
                   </div>
                 </li>
               );

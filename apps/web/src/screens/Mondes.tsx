@@ -23,6 +23,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import WorldModal from '../components/WorldModal';
 import { useStatutsMondes } from '../lib/mondes-state';
+import { useEtatQuete } from '../lib/quete-state';
 import { FREE_WORLDS, PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
@@ -67,6 +68,10 @@ function Di() {
 export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }: MondesProps) {
   const worldsDone = PROGRESS.worldsDone;
   const statuts = useStatutsMondes();
+  // L'accès aux mondes reste SÉQUENTIEL : le Monde 2 « Le Volant » ne se
+  // déverrouille qu'une fois les trois quêtes du Monde 1 terminées.
+  const et13 = useEtatQuete('1.3');
+  const monde1Fini = useEtatQuete('1.1').terminee && useEtatQuete('1.2').terminee && et13.terminee;
   const [openCode, setOpenCode] = useState<string | null>(null);
   const openWorld = openCode ? (WORLDS.find((w) => w.code === openCode) ?? null) : null;
   const fermerFiche = useCallback(() => setOpenCode(null), []);
@@ -214,7 +219,11 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           done={worldsDone}
           started={estEnCours(statuts, openWorld.code)}
           onClose={fermerFiche}
-          onEnterQuest={openWorld.code === 'M1' ? onEnterQuest : undefined}
+          // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé.
+          deverrouille={openWorld.code === 'M1' ? true : openWorld.code === 'M2' ? monde1Fini : false}
+          onEnterQuest={
+            openWorld.code === 'M1' || (openWorld.code === 'M2' && monde1Fini) ? onEnterQuest : undefined
+          }
         />
       )}
     </main>

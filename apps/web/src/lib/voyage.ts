@@ -87,7 +87,9 @@ export const WORLDS: VoyageWorld[] = [
     tagline: "Tu reprends la main : ton contrôle, ta façon de penser, ce que tu apportes, ton élan du moment.",
     quests: 7,
     free: true,
-    status: "soon",
+    // Monde 2 OUVERT (quêtes 1.4 → 1.11 livrées) — l'accès reste séquentiel :
+    // l'écran Mondes ne le déverrouille qu'une fois le Monde 1 terminé.
+    status: "open",
   },
   {
     num: 3,

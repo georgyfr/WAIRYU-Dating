@@ -25,7 +25,7 @@
  */
 
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
-import { construireApercuResultats, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
+import { construireApercuResultats, mondeDeQuete, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
 import { ARCHE } from './quetes-plus';
 
 // Palette (RGB 0-255) — tokens de l'identité visuelle.
@@ -211,7 +211,11 @@ export async function telechargerResultatsPdf(
   doc.line(MARGE, curseur.y, 210 - MARGE, curseur.y);
   curseur.y += 5.5;
   para(
-    'Ce document vient de tes réponses à la quête « ' + quete.titre + ' » du Monde 1 — Le Miroir. Il reste le tien : rien n\'est publié sur Wairyu sans ton action. Les textes d\'accompagnement sont une lecture d\'app — ils ne remplacent ni un professionnel, ni une étiquette.',
+    'Ce document vient de tes réponses à la quête « ' +
+      quete.titre +
+      ' » du ' +
+      mondeDeQuete(quete.id).nom +
+      ". Il reste le tien : rien n'est publié sur Wairyu sans ton action. Les textes d'accompagnement sont une lecture d'app — ils ne remplacent ni un professionnel, ni une étiquette.",
     { size: 8.8, couleur: ENCRE_DOUCE, italique: true },
   );
 

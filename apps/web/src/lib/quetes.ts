@@ -19,12 +19,61 @@
 import * as Q11 from './quete-1-1';
 import * as Q12 from './quete-1-2';
 import * as Q13 from './quete-1-3';
+import * as Q14 from './quete-1-4';
+import * as Q15 from './quete-1-5';
+import * as Q16 from './quete-1-6';
+import * as Q17 from './quete-1-7';
+import * as Q19 from './quete-1-9';
+import * as Q110 from './quete-1-10';
+import * as Q111 from './quete-1-11';
+import { DEF_14 } from './quete-1-4-def';
+import { DEF_15 } from './quete-1-5-def';
+import { DEF_16 } from './quete-1-6-def';
+import { DEF_17 } from './quete-1-7-def';
+import { DEF_19 } from './quete-1-9-def';
+import { DEF_110 } from './quete-1-10-def';
+import { DEF_111 } from './quete-1-11-def';
 import type { LikertNiveau } from './quete-1-1';
 
-/** Un item de passation (les trames n'y figurent jamais — règle 11-b). */
+/** Un item de passation Likert (les trames n'y figurent jamais — règle 11-b). */
 export type ItemQuete = Q11.QueteItem | Q12.QueteItem12 | Q13.QueteItem13;
 
-export type IdQuete = '1.1' | '1.2' | '1.3';
+/**
+ * Un item de passation UNIFIÉ (Monde 2 — formats variés du Livrable) :
+ *  - 'likert'   : énoncé + échelle 5 (Monde 1 + 1.4/1.6/1.9/1.10) ;
+ *  - 'choix'    : tâche comportementale 1.5 — phrase-cadre + 2 options A/B ;
+ *  - 'question' : écrans spéciaux 1.7/1.11 — question + options (multi possible).
+ */
+export interface ItemPassation {
+  code: string;
+  /** Likert : l'énoncé · choix : la phrase-cadre · question : la question. */
+  text: string;
+  format: 'likert' | 'choix' | 'question';
+  /** Choix binaire 1.5 — option A (immédiat) puis B (différé). */
+  choixA?: string;
+  choixB?: string;
+  /** Écran spécial (1.7/1.11) — les options, dans l'ordre du Livrable. */
+  options?: readonly string[];
+  /** Sélection multiple autorisée (checklist 1.7-01). */
+  multi?: boolean;
+}
+
+/** Adapte un item Likert des modules M1/M2 au contrat unifié. */
+export function itemLikert(it: { code: string; text: string }): ItemPassation {
+  return { code: it.code, text: it.text, format: 'likert' };
+}
+
+export type IdQuete =
+  | '1.1'
+  | '1.2'
+  | '1.3'
+  | '1.4'
+  | '1.5'
+  | '1.6'
+  | '1.7'
+  | '1.9'
+  | '1.10'
+  | '1.11';
 
 export interface DimDef {
   /** Clé de dimension dans le score du scorer de la quête. */
@@ -67,10 +116,16 @@ export interface QueteDef {
     resultats: readonly string[];
   };
   /** Le deck réel de passation (trames sautées, jamais affichées). */
-  deck: () => ItemQuete[];
+  deck: () => ItemPassation[];
+  /** Le format de passation (tous les items d'une quête partagent le format —
+   *  sauf 1.6 qui mêle Likert + énigmes : 'likert-énigmes'). */
+  format: 'likert' | 'choix' | 'ecran' | 'likert-enigmes';
   scorer: (reponses: Record<string, number>) => Record<string, number>;
   choisirVariante: (score: Record<string, number>) => string;
   cartes: Record<string, { id: string; nom: string; lumiere: string; ombre: string; tension: string }>;
+  /** Quêtes SANS carte (1.7 « écran de confiance », 1.11 « écran de passage ») —
+   *  la complétion rend l'écran spécial verbatim, jamais une carte. */
+  sansCarte?: boolean;
   completion: Completion;
   dims: readonly DimDef[];
   accompagnement: Record<string, AccompagnementDim>;
@@ -109,8 +164,26 @@ export const COMMUN = {
   ],
 } as const;
 
-/** La chaîne des quêtes ouvertes du Monde 1. */
-export const QUETE_IDS: readonly IdQuete[] = ['1.1', '1.2', '1.3'];
+/** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »).
+ *  1.8 n'existe pas au Livrable (série 1.x : la numérotation traverse M1/M2). */
+export const QUETE_IDS: readonly IdQuete[] = [
+  '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
+];
+
+/** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
+ *  Livrable), ton Task 35 : tutoiement, simple et littéral, phrases courtes,
+ *  jamais un diagnostic. Écrites par les agents quête, assemblées ici. */
+export type EntreeRegistre = Pick<
+  QueteDef,
+  | 'dims'
+  | 'accompagnement'
+  | 'conseils'
+  | 'commentLire'
+  | 'ombreRelationnel'
+  | 'suivante'
+  | 'suite'
+  | 'sousTitre'
+>;
 
 /** Le registre — les trois quêtes ouvertes du Monde 1 « Le Miroir ». */
 export const QUETES: Record<IdQuete, QueteDef> = {
@@ -125,7 +198,8 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       aQuoiCaSert: Q11.BRIEFING.aQuoiCaSert,
       resultats: Q11.BRIEFING.resultats,
     },
-    deck: Q11.deckQuete,
+    deck: () => Q11.deckQuete().map(itemLikert),
+    format: 'likert',
     scorer: Q11.scorer,
     choisirVariante: (s) => Q11.choisirVariante(s as Q11.Score11),
     cartes: Q11.CARTES,
@@ -260,7 +334,8 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         'Les pierres suivantes de ton portrait — ta façon d\'aimer nourrit tout ce qui vient.',
       ],
     },
-    deck: Q12.deckQuete,
+    deck: () => Q12.deckQuete().map(itemLikert),
+    format: 'likert',
     scorer: Q12.scorer,
     choisirVariante: (s) => Q12.choisirVariante(s as Q12.Score12),
     cartes: Q12.CARTES,
@@ -345,7 +420,8 @@ export const QUETES: Record<IdQuete, QueteDef> = {
         'Les pierres suivantes de ton portrait — ta vie émotionnelle nourrit tout ce qui vient.',
       ],
     },
-    deck: Q13.deckQuete,
+    deck: () => Q13.deckQuete().map(itemLikert),
+    format: 'likert',
     scorer: Q13.scorer,
     choisirVariante: (s) => Q13.choisirVariante(s as Q13.Score13),
     cartes: Q13.CARTES,
@@ -424,7 +500,150 @@ export const QUETES: Record<IdQuete, QueteDef> = {
       questions: [],
     },
   },
+
+  // ------------------------------------------------- Monde 2 « Le Volant »
+  // Quêtes 1.4 → 1.11 (la série 1.x traverse M1/M2 — le code reste la clé).
+  // Contenu VERBATIM des Livrables M2 (branche archive/v1-2026-10-05) ;
+  // couches APP (dims/accompagnement/conseils/suite) rédigées ton Task 35.
+  '1.4': {
+    id: '1.4',
+    numero: 1,
+    totalDuMonde: 7,
+    titre: 'Ton contrôle sur toi-même',
+    ...DEF_14,
+    annonce: Q14.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q14.BRIEFING.aQuoiCaSert,
+      resultats: Q14.BRIEFING.resultats,
+    },
+    deck: () => Q14.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q14.scorer,
+    choisirVariante: (s) => Q14.choisirVariante(s as Q14.Score14),
+    cartes: Q14.CARTES,
+    completion: Q14.COMPLETION,
+  },
+  '1.5': {
+    id: '1.5',
+    numero: 2,
+    totalDuMonde: 7,
+    titre: "L'épreuve du temps",
+    ...DEF_15,
+    annonce: Q15.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q15.BRIEFING.aQuoiCaSert,
+      resultats: Q15.BRIEFING.resultats,
+    },
+    deck: Q15.deckChoix,
+    format: 'choix',
+    scorer: Q15.scorer,
+    choisirVariante: (s) => Q15.choisirVariante(s as Q15.Score15),
+    cartes: Q15.CARTES,
+    completion: Q15.COMPLETION,
+  },
+  '1.6': {
+    id: '1.6',
+    numero: 3,
+    totalDuMonde: 7,
+    titre: 'Ta façon de penser',
+    ...DEF_16,
+    annonce: Q16.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q16.BRIEFING.aQuoiCaSert,
+      resultats: Q16.BRIEFING.resultats,
+    },
+    // Le deck mêle les 7 items Likert (mélange graine 216427) ET les 3 énigmes
+    // (hors mélange, ordre source É1 → É2 → É3 — contrat du Livrable).
+    deck: () => [...Q16.deckQuete().map(itemLikert), ...Q16.deckEnigmes()],
+    format: 'likert-enigmes',
+    scorer: Q16.scorer,
+    choisirVariante: (s) => Q16.choisirVariante(s as Q16.Score16),
+    cartes: Q16.CARTES,
+    completion: Q16.COMPLETION,
+  },
+  '1.7': {
+    id: '1.7',
+    numero: 4,
+    totalDuMonde: 7,
+    titre: 'Ton fonctionnement',
+    ...DEF_17,
+    annonce: Q17.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q17.BRIEFING.aQuoiCaSert,
+      resultats: Q17.BRIEFING.resultats,
+    },
+    deck: Q17.deck17,
+    format: 'ecran',
+    scorer: Q17.scorerNul,
+    choisirVariante: Q17.choisirVariante,
+    cartes: {},
+    sansCarte: true,
+    completion: Q17.COMPLETION,
+  },
+  '1.9': {
+    id: '1.9',
+    numero: 5,
+    totalDuMonde: 7,
+    titre: 'Ton élan du moment',
+    ...DEF_19,
+    annonce: Q19.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q19.BRIEFING.aQuoiCaSert,
+      resultats: Q19.BRIEFING.resultats,
+    },
+    deck: () => Q19.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q19.scorer,
+    choisirVariante: (s) => Q19.choisirVariante(s as Q19.Score19),
+    cartes: Q19.CARTES,
+    completion: Q19.COMPLETION,
+  },
+  '1.10': {
+    id: '1.10',
+    numero: 6,
+    totalDuMonde: 7,
+    titre: 'Ce que tu apportes',
+    ...DEF_110,
+    annonce: Q110.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q110.BRIEFING.aQuoiCaSert,
+      resultats: Q110.BRIEFING.resultats,
+    },
+    deck: () => Q110.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q110.scorer,
+    choisirVariante: (s) => Q110.choisirVariante(s as unknown as Q110.Score110),
+    cartes: Q110.CARTES,
+    completion: Q110.COMPLETION,
+  },
+  '1.11': {
+    id: '1.11',
+    numero: 7,
+    totalDuMonde: 7,
+    titre: 'Es-tu prêt·e à rencontrer ?',
+    ...DEF_111,
+    annonce: Q111.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q111.BRIEFING.aQuoiCaSert,
+      resultats: Q111.BRIEFING.resultats,
+    },
+    deck: Q111.deck111,
+    format: 'ecran',
+    scorer: Q111.scorerNul111,
+    choisirVariante: Q111.choisirVariante,
+    cartes: {},
+    sansCarte: true,
+    completion: Q111.COMPLETION,
+  },
 };
+
+/** Le monde d'une quête (la série 1.x traverse M1/M2 — le code reste la clé).
+ *  Utilisé par les écrans : chip d'entête, marquerMondeEnCours, libellés. */
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2'; nom: string } {
+  return id === '1.1' || id === '1.2' || id === '1.3'
+    ? { code: 'M1', nom: 'Monde 1 — Le Miroir' }
+    : { code: 'M2', nom: 'Monde 2 — Le Volant' };
+}
 
 /** Le niveau Likert (labels verbatim) — utilisé par la passation et le briefing. */
 export const LIKERT: readonly LikertNiveau[] = Q11.LIKERT;
@@ -456,8 +675,10 @@ export const NOTA_BARRES =
 const MOTS_NOMBRE: Record<number, string> = { 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq' };
 
 /** Le titre de la section tendances, pluriel justement accordé —
- *  « 🪞 Tes cinq tendances (d'après tes réponses) » (5 dims en 1.1). */
+ *  « 🪞 Tes cinq tendances (d'après tes réponses) » (5 dims en 1.1) ;
+ *  singulier accordé pour les quêtes mono-dimension (« Ta tendance »). */
 export function titreTendances(nb: number): string {
+  if (nb === 1) return "Ta tendance (d'après tes réponses)";
   return `Tes ${MOTS_NOMBRE[nb] ?? String(nb)} tendances (d'après tes réponses)`;
 }
 

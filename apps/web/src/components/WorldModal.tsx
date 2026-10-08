@@ -43,9 +43,12 @@ interface Props {
   started: boolean;
   /** Fermeture (bouton ×, Échap, clic fond). */
   onClose: () => void;
-  /** Présent seulement pour le monde à quête ouverte (M1) : après
+  /** Présent seulement pour le monde à quête ouverte (M1, M2 après M1) : après
    * marquerMondeEnCours, atterrir sur la première quête. */
   onEnterQuest?: () => void;
+  /** L'accès aux mondes reste séquentiel : absent/true = jouable, false = le
+   * monde précédent n'est pas fini (la fiche reste lisible, CTA verrouillé). */
+  deverrouille?: boolean;
 }
 
 /** Flèche droite du bouton « Commencer/Continuer le monde ». */
@@ -67,7 +70,7 @@ function Fleche() {
   );
 }
 
-export default function WorldModal({ world, done, started, onClose, onEnterQuest }: Props) {
+export default function WorldModal({ world, done, started, onClose, onEnterQuest, deverrouille }: Props) {
   const refModal = useRef<HTMLDivElement | null>(null);
   const [confirme, setConfirme] = useState(false);
 
@@ -113,7 +116,9 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
 
   const detail = WORLD_DETAILS[world.code];
   const termine = world.num <= done;
-  const ouvert = !termine && world.status === 'open';
+  // L'accès séquentiel : un monde 'open' reste lisible, mais son CTA ne s'active
+  // que si le monde précédent est terminé (M2 attend la fin du Monde 1).
+  const ouvert = !termine && world.status === 'open' && deverrouille !== false;
   const precedent = WORLDS.find((w) => w.num === world.num - 1);
   const texteVerrou =
     world.num === 11 && world.note
