@@ -1,10 +1,16 @@
 /**
- * Barre d'onglets — 4 destinations (maquette fondateur 2026-10-07) :
- * Voyage · Découvrir · Messages · Profil. L'onglet actif est une pilule
- * turquoise dégradée contenant l'icône et le libellé (comme la maquette) ;
- * les icônes sont des SVG traits (zéro dépendance, lisibles partout).
+ * Barre d'onglets — 5 destinations (Task 24, ordre fondateur) :
+ * Voyage · Mondes · QUÊTE · Parcourus · Récolte.
+ *
+ * L'onglet Quête est l'ENDROIT où l'on se retrouve : quand une quête est
+ * engagée (des réponses, pas encore terminée), un point corail s'allume sur
+ * son icône et l'aria-label l'annonce — il s'éteint seul à la complétion.
+ * Les icônes sont des SVG traits inline (zéro dépendance).
+ *
+ * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging (fonctions
+ * Hf/Jf/Kf), classes CSS du CSS servi exact (.tabbar button.active, .tab-dot).
  */
-export type Tab = 'voyage' | 'discover' | 'messages' | 'profile';
+export type Tab = 'voyage' | 'mondes' | 'quete' | 'parcourus' | 'recolte';
 
 function TabIcon({ id }: { id: Tab }) {
   const common = {
@@ -27,45 +33,63 @@ function TabIcon({ id }: { id: Tab }) {
       </svg>
     );
   }
-  if (id === 'discover') {
+  if (id === 'mondes') {
+    // Globe : les 11 mondes du voyage.
     return (
       <svg {...common}>
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18" />
+        <path d="M12 3a14.2 14.2 0 0 1 0 18M12 3a14.2 14.2 0 0 0 0 18" />
       </svg>
     );
   }
-  if (id === 'messages') {
-    // Bulle avec trois points : la conversation vivante.
+  if (id === 'quete') {
+    // Drapeau planté : la quête en cours, le point où l'on se retrouve.
     return (
       <svg {...common}>
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        <circle cx="8.5" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
-        <circle cx="12" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
-        <circle cx="15.5" cy="11.5" r="0.6" fill="currentColor" stroke="none" />
+        <path d="M6 21V3.5" />
+        <path d="M6 4.5h11l-2.6 3.5L17 11.5H6" />
       </svg>
     );
   }
+  if (id === 'parcourus') {
+    // Itinéraire franchi : deux jalons reliés par la route.
+    return (
+      <svg {...common}>
+        <circle cx="6" cy="19" r="3" />
+        <circle cx="18" cy="5" r="3" />
+        <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+      </svg>
+    );
+  }
+  // Panier de récolte : ce que le voyage construit.
   return (
     <svg {...common}>
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
+      <path d="M4.5 9.5h15l-1.4 8.3a2 2 0 0 1-2 1.7H7.9a2 2 0 0 1-2-1.7L4.5 9.5z" />
+      <path d="M8.5 9.5 12 4l3.5 5.5" />
+      <path d="M9.8 13.2v2.6M14.2 13.2v2.6" />
     </svg>
   );
 }
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'voyage', label: 'Voyage' },
-  { id: 'discover', label: 'Découvrir' },
-  { id: 'messages', label: 'Messages' },
-  { id: 'profile', label: 'Profil' },
+  { id: 'mondes', label: 'Mondes' },
+  { id: 'quete', label: 'Quête' },
+  { id: 'parcourus', label: 'Parcourus' },
+  { id: 'recolte', label: 'Récolte' },
 ];
 
 export default function TabBar({
   active,
   onSelect,
+  queteEnCours = false,
 }: {
-  active: Tab;
+  /** L'onglet allumé — ou une vue hors tabs (portes/masquées : aucun onglet allumé). */
+  active: Tab | 'portrait' | 'matchs' | 'masked' | 'quete';
   onSelect: (t: Tab) => void;
+  /** Une quête est engagée ⇒ point corail + aria-label sur l'onglet Quête. */
+  queteEnCours: boolean;
 }) {
   return (
     <nav className="tabbar" aria-label="Navigation principale">
@@ -75,9 +99,11 @@ export default function TabBar({
           className={active === t.id ? 'active' : undefined}
           onClick={() => onSelect(t.id)}
           aria-current={active === t.id ? 'page' : undefined}
+          aria-label={t.id === 'quete' && queteEnCours ? 'Quête — une quête est en cours' : undefined}
         >
           <span className="tab-ico" aria-hidden="true">
             <TabIcon id={t.id} />
+            {t.id === 'quete' && queteEnCours && <span className="tab-dot" />}
           </span>
           {t.label}
         </button>

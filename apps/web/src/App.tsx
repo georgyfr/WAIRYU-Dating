@@ -1,30 +1,103 @@
 import { useEffect, useState } from 'react';
 import Welcome from './screens/Welcome';
-import Discover from './screens/Discover';
-import Messages from './screens/Messages';
-import Profile from './screens/Profile';
+import Voyage from './screens/Voyage';
+import Mondes from './screens/Mondes';
+import Parcourus from './screens/Parcourus';
+import Recolte from './screens/Recolte';
+import Portrait from './screens/Portrait';
+import Rencontres from './screens/Rencontres';
+import Masque from './screens/Masque';
+import Quete from './screens/Quete';
 import Auth from './screens/Auth';
 import FbComplete from './screens/FbComplete';
 import OAuthComplete from './screens/OAuthComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
-import Voyage from './screens/Voyage';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
 import { autoArmWebPush, fetchEvents, getDeviceId, registerDeviceOpen } from './lib/push-client';
-import { ApiError, fetchMe, linkDevice } from './lib/auth-client';
+import {
+  ApiError,
+  deleteAccount,
+  exportAccount,
+  fetchMe,
+  linkDevice,
+  logout,
+} from './lib/auth-client';
+import { lireEtatQuete, useEtatQuete, type EtatQuete } from './lib/quete-state';
+import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import type { MeResponse, PushEventRow } from '@wairyu/shared';
 
-type Stage = 'welcome' | Tab;
+/**
+ * L'app À CE NIVEAU est 100 % Voyage : les 5 onglets Voyage · Mondes · Quête ·
+ * Parcourus · Récolte ; les espaces dating (#/decouvrir, #/messages, #/profil)
+ * sont MASQUÉS — la page d'attente les remplace, les anciens écrans restent
+ * dans le dépôt prêts à rouvrir (demande fondateur, réversible).
+ *
+ * La navigation est HASH-driven : l'URL est synchronisée avec la vue et les
+ * routes sont deep-linkables au chargement (#/quete/1.1, #/reset?t=…, etc.).
+ *
+ * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging Task 27
+ * (readRoute `au`, Tn → lireEtatQuete, App `Xh`).
+ */
 
-/** Routes spéciales portées par le hash (OAuth, reset email, Meta). */
+type Stage = 'welcome' | Tab | 'portrait' | 'matchs' | 'masked';
+
+/** Destinations de go() — l'onglet Quête ne passe PAS par DEST_HASH : #/quete est une Route dédiée. */
+type Dest = Tab | 'portrait' | 'matchs' | 'masked';
+
+/** Les vues adressables par le hash des tabs (les dating → 'masked'). */
+type TabRoute = 'voyage' | 'mondes' | 'parcourus' | 'recolte' | 'portrait' | 'matchs' | 'masked';
+
+/** Hash → vue (l'onglet Quête n'y figure pas : #/quete a SA route). */
+const TAB_HASHES: Record<string, TabRoute> = {
+  '#/voyage': 'voyage',
+  '#/mondes': 'mondes',
+  '#/parcourus': 'parcourus',
+  '#/recolte': 'recolte',
+  '#/portrait': 'portrait',
+  '#/matchs': 'matchs',
+  '#/decouvrir': 'masked',
+  '#/messages': 'masked',
+  '#/profil': 'masked',
+};
+
+/** Vue → hash (inverse, destinations réellement adressables par go()). */
+const DEST_HASH: Record<Exclude<TabRoute, 'masked'>, string> = {
+  voyage: '#/voyage',
+  mondes: '#/mondes',
+  parcourus: '#/parcourus',
+  recolte: '#/recolte',
+  portrait: '#/portrait',
+  matchs: '#/matchs',
+};
+
+/** Routes spéciales portées par le hash (tabs, quête, OAuth, reset email, Meta). */
 type Route =
+  | { name: 'tab'; tab: TabRoute }
+  | { name: 'quete'; id: IdQuete }
   | { name: 'reset'; token: string }
   | { name: 'fb-complete' }
   | { name: 'oauth-complete'; via: 'google' | 'facebook' | null }
   | { name: 'default' };
 
-/** Lit le hash de navigation : #/reset?t=…, #/fb-complete, #/oauth-complete?via=…, ou l'app. */
+/** Une quête engagée = non terminée avec au moins une réponse (bundle Mh). */
+function queteEngagee(e: EtatQuete): boolean {
+  return !e.terminee && Object.keys(e.reponses).length > 0;
+}
+
+/**
+ * La prochaine quête (bundle Io) : première non terminée AYANT des réponses
+ * (là où l'on s'est arrêté), sinon première non terminée, sinon la dernière.
+ */
+function prochaineQuete(): IdQuete {
+  const engagee = QUETE_IDS.find((id) => queteEngagee(lireEtatQuete(id)));
+  if (engagee) return engagee;
+  const libre = QUETE_IDS.find((id) => !lireEtatQuete(id).terminee);
+  return libre ?? QUETE_IDS[QUETE_IDS.length - 1];
+}
+
+/** Lit le hash de navigation : #/quete[/id], #/reset?t=…, #/fb-complete, #/oauth-complete?via=…, tabs, ou l'app. */
 function readRoute(): Route {
   const hash = window.location.hash;
   if (hash.startsWith('#/reset')) {
@@ -32,6 +105,13 @@ function readRoute(): Route {
     if (/^[0-9a-f]{64}$/.test(token)) return { name: 'reset', token };
   }
   if (hash.startsWith('#/fb-complete')) return { name: 'fb-complete' };
+  if (hash === '#/quete' || hash.startsWith('#/quete/')) {
+    const id = hash.slice(8);
+    return {
+      name: 'quete',
+      id: (QUETE_IDS as readonly string[]).includes(id) ? (id as IdQuete) : prochaineQuete(),
+    };
+  }
   if (hash.startsWith('#/oauth-complete')) {
     const via = new URLSearchParams(hash.split('?')[1] ?? '').get('via');
     return {
@@ -39,7 +119,8 @@ function readRoute(): Route {
       via: via === 'facebook' ? 'facebook' : via === 'google' ? 'google' : null,
     };
   }
-  return { name: 'default' };
+  const tab = TAB_HASHES[hash];
+  return tab ? { name: 'tab', tab } : { name: 'default' };
 }
 
 export default function App() {
@@ -54,6 +135,25 @@ export default function App() {
   /** Journal in-app (cloche de l'en-tête). */
   const [events, setEvents] = useState<PushEventRow[]>([]);
   const [bellOpen, setBellOpen] = useState(false);
+  /** Menu « MON COMPTE » (avatar) — l'essentiel RGPD reste accessible SANS le Profil masqué. */
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [busy, setBusy] = useState(false);
+  /** Monde demandé depuis la carte du Voyage ⇒ fiche auto-ouverte dans Mondes (consommée une fois). */
+  const [pendingWorld, setPendingWorld] = useState<string | null>(null);
+
+  // L'état de CHACUNE des 3 quêtes est relu au rendu (hooks du store) : le
+  // point corail s'allume dès qu'une quête est engagée, depuis n'importe quel
+  // onglet, et s'éteint seul à la complétion.
+  const etat11 = useEtatQuete('1.1');
+  const etat12 = useEtatQuete('1.2');
+  const etat13 = useEtatQuete('1.3');
+  const queteEnCours = QUETE_IDS.some((id) =>
+    queteEngagee(id === '1.1' ? etat11 : id === '1.2' ? etat12 : etat13),
+  );
+
+  // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
+  const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
 
   // Boot : enregistre l'ouverture de l'appareil (première ouverture ⇒ événement
   // + push de bienvenue) puis arme le push ; vérifie la session (cookie signé).
@@ -94,6 +194,20 @@ export default function App() {
       .catch(() => setEvents([]));
   }, [authenticated]);
 
+  // La route résout vers la vue : tab → onglet, quête → page Quête (id posé).
+  useEffect(() => {
+    if (route.name === 'tab') setStage(route.tab);
+    if (route.name === 'quete') {
+      setStage('quete');
+      setQueteCourante(route.id);
+    }
+  }, [route]);
+
+  // Chaque changement de vue repart du haut de page.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [stage]);
+
   // Retour OAuth (#/?google=ok, #/?facebook=retry…) → message + nettoyage du hash.
   useEffect(() => {
     if (!window.location.hash.startsWith('#/?')) return;
@@ -131,10 +245,75 @@ export default function App() {
     window.location.hash = '';
   }, []);
 
+  /** Synchronise l'URL ↔ l'état : l'onglet Quête calcule SA quête à retrouver. */
+  const go = (dest: Exclude<Dest, 'masked'>): void => {
+    if (dest === 'quete') {
+      const id = prochaineQuete();
+      const hash = `#/quete/${id}`;
+      if (window.location.hash === hash) {
+        setStage('quete');
+        setQueteCourante(id);
+      } else {
+        window.location.hash = hash; // le hashchange relira la route
+      }
+      return;
+    }
+    const h = DEST_HASH[dest];
+    if (window.location.hash === h) setStage(dest);
+    else window.location.hash = h;
+  };
+
+  /** Monde demandé depuis la carte du Voyage ⇒ pendingWorld + ouverture des Mondes. */
+  const openWorld = (code: string): void => {
+    setPendingWorld(code);
+    go('mondes');
+  };
+
+  /** « Commencer/Continuer le monde » ⇒ les Mondes s'effacent, la quête atterrit. */
+  const enterQuest = (): void => {
+    setPendingWorld(null);
+    go('quete');
+  };
+
+  const handleLogout = (): void => {
+    void (async () => {
+      setBusy(true);
+      try {
+        await logout();
+        window.location.hash = '';
+        window.location.reload();
+      } catch {
+        window.alert('La déconnexion n’a pas abouti — réessaie.');
+        setBusy(false);
+      }
+    })();
+  };
+
+  const handleExport = (): void => {
+    try {
+      exportAccount();
+    } catch {
+      window.alert('L’export n’a pas abouti — réessaie.');
+    }
+  };
+
+  const handleDelete = (): void => {
+    void (async () => {
+      setBusy(true);
+      try {
+        await deleteAccount();
+        window.location.hash = '';
+        window.location.reload();
+      } catch {
+        window.alert('La suppression n’a pas abouti — réessaie.');
+        setBusy(false);
+      }
+    })();
+  };
+
   const onAuthenticated = (congratsVia?: string | null) => {
     // L'ACCUEIL EST LE VOYAGE : après une inscription/connexion, on repart
-    // sur 'welcome' ⇒ la vue connectée résout vers le Voyage (jamais
-    // Découvrir, même si le parcours passait par « Commencer »).
+    // sur 'welcome' ⇒ la vue connectée résout vers le Voyage.
     setStage('welcome');
     setAuthenticated(true);
     // Recharge le profil pour le bonjour de l'en-tête (post-inscription, le
@@ -192,7 +371,8 @@ export default function App() {
   // ---- Déconnecté : écran d'accueil OU authentification ----
   if (!authenticated) {
     if (stage === 'welcome') {
-      return <Welcome onStart={() => setStage('discover')} />;
+      // L'atterrissage après inscription = LES MONDES (plus 'discover').
+      return <Welcome onStart={() => setStage('mondes')} />;
     }
     return (
       <>
@@ -203,7 +383,7 @@ export default function App() {
   }
 
   // ---- Connecté : app — L'ACCUEIL EST LE VOYAGE (demande fondateur) ----
-  const view: Tab = stage === 'welcome' ? 'voyage' : (stage as Tab);
+  const view: Exclude<Stage, 'welcome'> = stage === 'welcome' ? 'voyage' : stage;
   const rawName = (me?.displayName ?? '').trim() || (me?.username ?? '').trim();
   const firstName = (rawName.split(/\s+/)[0] || 'Voyageur').slice(0, 14);
   const initial = firstName.charAt(0).toUpperCase();
@@ -227,7 +407,7 @@ export default function App() {
                 Wai<span className="brand-accent">ryu</span>
               </span>
               <span className="ah-tagline">
-                Apprendre aujourd’hui,
+                Apprendre aujourd'hui,
                 <br />
                 explorer demain
               </span>
@@ -240,7 +420,10 @@ export default function App() {
               aria-label={badge > 0 ? `Notifications (${badge} nouvelles)` : 'Notifications'}
               aria-expanded={bellOpen}
               aria-haspopup="dialog"
-              onClick={() => setBellOpen((v) => !v)}
+              onClick={() => {
+                setBellOpen((v) => !v);
+                setAccountOpen(false);
+              }}
             >
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -248,7 +431,17 @@ export default function App() {
               </svg>
               {badge > 0 && <span className="ah-badge">{badge}</span>}
             </button>
-            <button type="button" className="ah-user" onClick={() => setStage('profile')} aria-label="Ouvrir mon profil">
+            <button
+              type="button"
+              className="ah-user"
+              onClick={() => {
+                setAccountOpen((v) => !v);
+                setBellOpen(false);
+              }}
+              aria-label="Mon compte"
+              aria-expanded={accountOpen}
+              aria-haspopup="dialog"
+            >
               <span className="ah-avatar" aria-hidden="true">
                 {initial}
               </span>
@@ -292,12 +485,87 @@ export default function App() {
               </div>
             </>
           )}
+          {accountOpen && (
+            <>
+              <button
+                type="button"
+                className="ah-overlay"
+                aria-label="Fermer mon compte"
+                onClick={() => {
+                  setAccountOpen(false);
+                  setDeleteConfirm(false);
+                }}
+              />
+              <div className="ah-panel ah-account" role="dialog" aria-label="Mon compte">
+                <div className="ah-account-head">
+                  <span className="ah-avatar ah-avatar-lg" aria-hidden="true">
+                    {initial}
+                  </span>
+                  <span className="ah-account-name">
+                    <small>Mon compte</small>
+                    <strong>{firstName}</strong>
+                  </span>
+                </div>
+                <button type="button" className="ah-account-item" onClick={handleExport} disabled={busy}>
+                  Exporter mes données (RGPD)
+                </button>
+                <button type="button" className="ah-account-item" onClick={handleLogout} disabled={busy}>
+                  Se déconnecter
+                </button>
+                {deleteConfirm ? (
+                  <div className="ah-account-danger">
+                    <p>Supprimer ton compte efface immédiatement tes données personnelles. Cette action est définitive.</p>
+                    <button type="button" className="ah-account-item danger-text" onClick={handleDelete} disabled={busy}>
+                      Oui, supprimer définitivement
+                    </button>
+                    <button
+                      type="button"
+                      className="ah-account-item"
+                      onClick={() => setDeleteConfirm(false)}
+                      disabled={busy}
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="ah-account-item danger-text"
+                    onClick={() => setDeleteConfirm(true)}
+                    disabled={busy}
+                  >
+                    Supprimer mon compte (RGPD)
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </header>
-        {view === 'voyage' && <Voyage />}
-        {view === 'discover' && <Discover />}
-        {view === 'messages' && <Messages />}
-        {view === 'profile' && <Profile />}
-        <TabBar active={view} onSelect={setStage} />
+        {view === 'voyage' && <Voyage onExplore={() => go('mondes')} onOpenWorld={openWorld} />}
+        {view === 'mondes' && (
+          <Mondes
+            pendingWorld={pendingWorld}
+            onPendingConsumed={() => setPendingWorld(null)}
+            onEnterQuest={enterQuest}
+          />
+        )}
+        {view === 'parcourus' && <Parcourus />}
+        {view === 'recolte' && <Recolte />}
+        {view === 'portrait' && <Portrait />}
+        {view === 'matchs' && <Rencontres />}
+        {view === 'masked' && <Masque />}
+        {view === 'quete' && (
+          <Quete
+            key={queteCourante}
+            queteId={queteCourante}
+            onExit={() => go('mondes')}
+            onHome={() => go('voyage')}
+            onAllerQuete={(id) => {
+              window.location.hash = `#/quete/${id}`;
+            }}
+          />
+        )}
+        <TabBar active={view} onSelect={go} queteEnCours={queteEnCours} />
       </div>
     </>
   );
