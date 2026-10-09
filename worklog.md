@@ -325,3 +325,33 @@ Stage Summary:
 - L'atlas #/mondes (liste + fiches) reflète désormais la clôture RÉELLE : avancement par monde dès la première quête posée, compteurs vivants, date de clôture sur les mondes traversés — FR et EN.
 - PROD NON TOUCHÉE (17-b) — le fix partira avec le prochain feu vert (Monde 2 + Monde 3 + i18n + fixes progression/mondes).
 - Le même angle mort existe sur le panneau de la carte #/voyage (chip « Ouvert » sans compteur) — mineur, non bloquant, à harmoniser si le fondateur le souhaite.
+
+---
+Task ID: 41
+Agent: orchestrateur (Z.ai Code)
+Task: #/mondes — FIX déblocage séquentiel visible (La Boussole « s'ouvrait » avant la fin du Volant) + réorganisation ergonomique de la page (demande fondateur : « pas intuitive, ni ergonomique, ni bien designée »).
+
+Work Log:
+- Diagnostic sur la CAPTURE du fondateur (ibb.co, état réel : M1 3/3 · M2 5/7 · 8 cartes) : M3 « La Boussole » (status open) affichait l'accent « Commencer » ALORS QUE M2 n'était pas fini — l'accès séquentiel ne vivait que DANS le WorldModal (deverrouille), la liste l'ignorait. Comptes E2E précédents : le mystère « 7/7 » lu de loin était un « 5/7 » réel — les données du fondateur sont cohérentes (8/51 = 3+5).
+- FIX (Mondes.tsx) : etatDeMonde() — machine à états honnête par monde : termine | en_cours | a_commencer | verrouille | a_venir. M3 open && M2 non fini = VERROUILLÉ : chip cadenas (v-chip-lock + Cadenas) + note « Ce monde s'ouvrira quand tu auras terminé Le Volant. » + bouton GRIS « Découvrir » — zéro accent, zéro CTA start sur un monde fermé. La fiche (modal) reste verrouillée de son côté (inchangé).
+- RÉORGANISATION de l'atlas :
+  · HÉROS « Tu es ici » (m-hero) : l'arrêt ACTUEL = premier monde livré non traversé — barre de progression réelle (role=progressbar aria min/max/now) + « 5/7 étapes » + compteurs vivants (x/11 mondes traversés · y/51 étapes · z cartes) + CTA Commencer/Continuer (la fiche reste la porte d'entrée) ; variante « Tous les mondes ouverts sont traversés » quand tout est fait.
+  · « Ton chemin » (m-sec-title) : M1→M3 en COLONNE UNIQUE — la grille 2-col en zigzag (media 760px) est SUPPRIMÉE, la séquence du voyage se lit de haut en bas ; états visuels distincts (m-world-done vert · barre teal pour En cours · m-world-locked grisé + icône désaturée).
+  · « La suite du voyage » : M4→M10 en cartes COMPACTES (m-soon-grid, 2 col ≥760px, icône 38px, nom, N étapes, chip À venir, gem Premium) — le jouable n'est plus enterré sous le bientôt.
+  · « La destination » : M11 en carte dédiée (m-world-dest, dégradé rose, note « premier match », Toujours gratuit).
+  · PIED dynamique : « Le premier arrêt — Le Miroir — t'attend. » (0 monde) / « Le voyage continue — {frontière} t'attend. » / « Un monde à la fois… » (tout fait) — le headline ne ment plus.
+- styles.css : bloc Task 41 (m-hero/-ico/-body/-label/-row/-count/-meta/-cta, m-bar/-fill, m-sec-title, m-world-locked, v-chip-lock, m-world-dest, m-soon-grid/-soon/-ico/-body/-meta, responsive 479/759px) ; suppression de la règle 760px .m-list 2-col.
+- i18n : clés EN (Tu es ici · Ton arrêt actuel · Progression du monde · La suite du voyage · La destination · Verrouillé · Tous les mondes ouverts sont traversés · Le voyage continue… · Un monde à la fois… ; doublon 'Ton chemin' réutilisé, pas dupliqué).
+- Typecheck tsc --noEmit : 0 erreur. Commit 707c10d, push main. Déployé staging version 4181f819-37a8-4937-bd64-6ce3f401df6b.
+- E2E agent-browser (390×844 + 1280×900, compte jetable e2e-atlas, purgé RGPD) :
+  · État EXACT du fondateur (M1 3/3 + M2 5/7 sans statuts) : héros « TU ES ICI / Le Volant » barre ~71 % + 5/7 étapes + chips 1/11 · 8/51 · 8 cartes ; M1 Terminé/Revoir ; M2 En cours/Continuer accent ; M3 « Verrouillé » + note Le Volant + Découvrir gris (LE FIX) ; M11 À venir/Toujours gratuit ; pied « Le voyage continue — Le Volant t'attend. »
+  · Fiche M3 verrouillée depuis la liste : bloc w-lock « Ce monde s'ouvrira quand tu auras terminé Le Volant. » — aucun CTA.
+  · M2 complété (1.7+1.11) → M3 devient l'arrêt du héros + « Commencer » accent ; M1/M2 Terminé ; pied suit.
+  · État VIERGE : héros Le Miroir + Commencer + 0/11 · 0/51 · 0 cartes ; M2 ET M3 Verrouillés ; pied « Le premier arrêt… » (à nouveau correct).
+  · Héros CTA → fiche M1 « Ouvert » ; rangée compacte → fiche Ton terrain « À venir ». EN : You are here · Your path · The rest of the journey · The destination · The journey continues — The Compass awaits you.
+  · Zéro erreur console ; captures .png mobile+desktop.
+
+Stage Summary:
+- L'atlas #/mondes est honnête (verrou séquentiel VISIBLE) et organisé : héros « Tu es ici » → chemin (colonne) → suite compacte → destination ; le pied suit l'état réel. FR/EN complets.
+- PROD NON TOUCHÉE (17-b) — partira au prochain feu vert avec M2+M3+i18n+fixes 39/40/41.
+- Reste noté (hors page) : les deep-links #/quete/{id} ne vérifient pas le verrou séquentiel (surface de test assumée) — à porter côté App si le fondateur le souhaite.
