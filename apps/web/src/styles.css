@@ -5993,7 +5993,8 @@ body.no-scroll {
     font-weight: 800;
     letter-spacing: .07em;
     text-transform: uppercase;
-    color: var(--c-gray-blue)
+    color: var(--c-gray-blue);
+    white-space: nowrap
 }
 
 .r-cm-titre h3 {
