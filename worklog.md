@@ -283,3 +283,25 @@ Stage Summary:
 - Monde 3 « La Boussole » COMPLET (8 quêtes) en ligne sur STAGING version e4eb9320 — PROD NON TOUCHÉE (17-b).
 - Audit M1/M2 : CONFORMES (0 bloquant) ; fixes appliqués (2 segments 1.5, titre 1.7, commentaires trames) ; points « arbitrage fondateur » restants documentés (labels Likert 1.2/1.3 « comme moi », pied {Z} personnes, préfixes V1, deck tronqué sans document trames).
 - Nit UX hérité de M2 noté : la quête sansCarte terminée rouvre son écran directement — le briefing « Voulez-vous commencer ? » (avec le bouton Effacer) n'est plus atteignable ; renvoi fondateur.
+
+---
+Task ID: 39
+Agent: orchestrateur (Z.ai Code)
+Task: Fix #/parcourus — le journal de bord ne bougeait jamais malgré les quêtes terminées (remontée fondateur).
+
+Work Log:
+- Diagnostic : le constant PROGRESS de lib/voyage.ts (mondesDone/stepsDone/recolte) était FIGÉ à zéro — placeholder « INTERIMAIRE » jamais raccordé à l'état des quêtes. #/parcourus affichait donc 0/11 · 0/51 + état vide 🪞 en permanence (stats + liste des mondes) ; #/voyage, #/mondes, #/portrait, #/recolte et le « profil de voyage % » de la carte étaient touchés pareil.
+- Créé lib/progression.ts : useProgression() — progression RÉELLE dérivée de wairyu.quete.{id} via le MÊME bus d'abonnés que useEtatQuete (snapshot mis en cache par signature primitive — exigence useSyncExternalStore). worldsDone = mondes dont TOUTES les quêtes livrées sont terminées (M1 1.1→1.3 · M2 1.4→1.11 · M3 2.1→2.8) ; stepsDone = quêtes terminées ; recolte = cartes obtenues (écrans sans carte exclus).
+- quete-state.ts : export etatDe (lecture en cache) + souscrireEtat (bus partagé).
+- 6 écrans raccordés : Parcourus (stats + liste mondes + état vide honnête 🧭 quand des quêtes sont faites mais aucun monde complet), Mondes, Recolte (copie du journal suit l'état réel, verbatim U+2019 conservé à zéro monde), Portrait, Voyage, Quete (profilPct — les 18 hooks useEtatQuete remplacés par useProgression, double comptage (PROGRESS + terminees) corrigé).
+- voyage.ts : PROGRESS supprimé (interface Progression conservée) ; commentaire WorldModal mis à jour.
+- i18n : clés EN des nouveaux libellés (screens-a.ts).
+- Test mécanique bun (bun test, mock react) : 8/8 — dérivation 0→1→3 mondes, écrans sans carte exclus de la récolte, reset décompte, bus réactif (19 notifications).
+- Déployé staging (version ba60801c, bundle index-DnT2CLMu.js) ; ADMIN_TOKEN staging reposé (wairyu-admin-staging-2026, SECRETS-WAIRYU-LOCAL.txt nettoyé — 3 lignes obsolètes supprimées).
+- E2E agent-browser (staging) : session OTP backdoor (birthDate exigé à l'inscription) → état vide correct (🪞, 0/11 · 0/51) → injection localStorage (M1 complet + 1.4) → reload : « 1/11 worlds crossed · 4/51 steps », Le Miroir listé « Completed », 4 résultats avec cartes EN + dates. Puis quête 1.5 COMPLÉTÉE DANS L'UI (6 binômes) → carte « The Hand that Plucks » + pied « Your journey progress: 10% complete » (5/51) EN DIRECT → #/parcourus : 5/51 étapes · 5 résultats. #/voyage : tuiles 1/11 · 4/51 · récolte 4 · 1 segment allumé. #/mondes + #/portrait : M1 « Terminé », meta « 1 world traveled of 11 ».
+- Mobile 390 : rendu propre, zéro erreur console.
+
+Stage Summary:
+- Le journal de bord est VIVANT partout : compteur mondes/étapes, liste des mondes traversés, récolte, % de profil — tous dérivés de l'état réel, réactifs sans rechargement.
+- PROD NON TOUCHÉE (17-b) — le fix partira avec le prochain feu vert (Monde 2 + Monde 3 + i18n + ce fix).
+- Note : état des quêtes toujours en localStorage (interimaire documenté) — la migration D1 (moteur serveur) reste la suite logique.
