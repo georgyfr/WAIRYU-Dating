@@ -15,6 +15,17 @@
  *                 sont terminées (M1 : 1.1→1.3 · M2 : 1.4→1.11 · M3 : 2.1→2.8).
  *  - recolte    : les cartes OBTENUES — les écrans sans carte (1.7, 1.11,
  *                 2.8) ne produisent pas de carte.
+ *  - parMonde   : le progrès RÉEL PAR MONDE livré ({faites, total,
+ *                 derniereA}) — l'atlas (#/mondes) montre l'avancement
+ *                 DÈS LA PREMIÈRE quête terminée, pas seulement à la
+ *                 clôture complète du monde (remontée fondateur : un monde
+ *                 engagé restait muet — aucun chip, bouton « Commencer »
+ *                 comme vierge — tant que toutes ses quêtes n'étaient pas
+ *                 posées).
+ *
+ * derniereA = la complétion la plus récente du monde (max des termineeA,
+ * ISO 8601 ⇒ la comparaison lexicale est sûre) — la DATE de clôture réelle,
+ * affichée sur la fiche du monde traversé.
  *
  * Réactivité : le MÊME bus d'abonnés que useEtatQuete — chaque réponse
  * enregistrée ou quête terminée recalcule la progression partout. Le
@@ -36,16 +47,47 @@ const QUIDS_PAR_MONDE: ReadonlyArray<readonly IdQuete[]> = [
   ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8'], // M3 « La Boussole »
 ];
 
-function calculer(): Progression {
+/** Les CODES de mondes livrés, alignés sur QUIDS_PAR_MONDE (M1, M2, M3). */
+const CODES_PAR_MONDE: readonly string[] = ['M1', 'M2', 'M3'];
+
+/** Le progrès RÉEL d'un monde livré — compté depuis l'état des quêtes. */
+export interface ProgresMonde {
+  /** Les quêtes TERMINÉES du monde. */
+  faites: number;
+  /** Les quêtes LIVRÉES du monde (la fiche du monde en affiche autant). */
+  total: number;
+  /** La complétion la plus récente (max des termineeA) — la date de clôture
+   *  réelle du monde (affichée sur sa fiche quand TOUTES les quêtes y sont). */
+  derniereA: string | null;
+}
+
+export interface ProgressionDetail extends Progression {
+  /** Le progrès par monde livré, par CODE ('M1'…) — absent = monde non livré
+   *  (M4-M11 : rien n'est jouable, aucun progrès possible). */
+  parMonde: Record<string, ProgresMonde>;
+}
+
+function calculer(): ProgressionDetail {
   const terminees = QUETE_IDS.filter((id) => etatDe(id).terminee);
   const recolte = terminees.filter((id) => {
     const e = etatDe(id);
     return !QUETES[id].sansCarte && !!e.carteId && !!QUETES[id].cartes[e.carteId];
   }).length;
+  const parMonde: Record<string, ProgresMonde> = {};
+  QUIDS_PAR_MONDE.forEach((ids, i) => {
+    const faites = ids.filter((id) => etatDe(id).terminee);
+    let derniereA: string | null = null;
+    for (const id of faites) {
+      const a = etatDe(id).termineeA;
+      if (a && (!derniereA || a > derniereA)) derniereA = a;
+    }
+    parMonde[CODES_PAR_MONDE[i]] = { faites: faites.length, total: ids.length, derniereA };
+  });
   return {
     worldsDone: QUIDS_PAR_MONDE.filter((ids) => ids.every((id) => etatDe(id).terminee)).length,
     stepsDone: terminees.length,
     recolte,
+    parMonde,
   };
 }
 
@@ -54,9 +96,9 @@ function signature(): string {
   return QUETE_IDS.map((id) => (etatDe(id).terminee ? '1' : '0')).join('');
 }
 
-let cache: { sig: string; valeur: Progression } | null = null;
+let cache: { sig: string; valeur: ProgressionDetail } | null = null;
 
-function snapshot(): Progression {
+function snapshot(): ProgressionDetail {
   const sig = signature();
   if (cache === null || cache.sig !== sig) cache = { sig, valeur: calculer() };
   return cache.valeur;
@@ -64,5 +106,11 @@ function snapshot(): Progression {
 
 /** La progression RÉELLE du voyageur — réactive, partagée par tous les écrans. */
 export function useProgression(): Progression {
+  return useSyncExternalStore(souscrireEtat, snapshot, snapshot);
+}
+
+/** La progression RÉELLE + le détail PAR MONDE (l'atlas #/mondes, la fiche
+ *  WorldModal) — même bus, même cache que useProgression. */
+export function useProgressionDetail(): ProgressionDetail {
   return useSyncExternalStore(souscrireEtat, snapshot, snapshot);
 }

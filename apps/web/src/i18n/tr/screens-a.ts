@@ -102,6 +102,9 @@ export const SCREENS_A: Record<string, string> = {
   'Le voyage en chiffres': 'The journey in numbers',
   mondes: 'worlds',
   offerts: 'free',
+  'mondes traversés': 'worlds crossed',
+  cartes: 'cards',
+  '{{faites}}/{{total}} étapes': '{{faites}}/{{total}} steps',
   étapes: 'steps',
   'Les 11 mondes du voyage — touche un monde pour le découvrir':
     'The 11 worlds of the journey — touch a world to discover it',
@@ -120,6 +123,9 @@ export const SCREENS_A: Record<string, string> = {
   'Monde {{n}} sur 11': 'World {{n}} of 11',
   'Fermer la fiche du monde {{nom}}': 'Close the card of {{nom}}',
   '{{n}} quête{{s}}': '{{n}} quest{{s}}',
+  '{{faites}}/{{total}} quêtes': '{{faites}}/{{total}} quests',
+  'Tu as traversé ce monde le {{date}} — sa récolte est dans ton portrait.':
+    'You traveled through this world on {{date}} — its harvest is in your portrait.',
   'Présentation du monde': 'World overview',
   'Ce monde': 'This world',
   'Objectif du monde': 'Purpose of the world',

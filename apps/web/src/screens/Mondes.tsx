@@ -25,8 +25,8 @@ import { useCallback, useEffect, useState } from 'react';
 import WorldModal from '../components/WorldModal';
 import { useStatutsMondes } from '../lib/mondes-state';
 import { useEtatQuete } from '../lib/quete-state';
-import { useProgression } from '../lib/progression';
-import { FREE_WORLDS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { useProgressionDetail } from '../lib/progression';
+import { TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
@@ -70,8 +70,12 @@ function Di() {
 
 export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }: MondesProps) {
   const { tx } = useI18n();
-  // Les mondes franchis — RÉELS (calculés depuis l'état des quêtes).
-  const { worldsDone } = useProgression();
+  // Les mondes franchis + le progrès RÉEL par monde (quêtes terminées) —
+  // l'atlas reflète l'avancement DÈS LA PREMIÈRE quête posée (remontée
+  // fondateur : un monde engagé restait muet ici — aucun chip, bouton
+  // « Commencer » comme vierge — tant que TOUTES ses quêtes n'étaient pas
+  // terminées).
+  const { worldsDone, stepsDone, recolte, parMonde } = useProgressionDetail();
   const statuts = useStatutsMondes();
   // L'accès aux mondes reste SÉQUENTIEL : le Monde 2 « Le Volant » ne se
   // déverrouille qu'une fois les trois quêtes du Monde 1 terminées ; le Monde 3
@@ -107,13 +111,13 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
       </p>
       <div className="m-stats" role="list" aria-label={tx('Le voyage en chiffres')}>
         <span role="listitem">
-          <strong>{WORLDS.length}</strong> {tx('mondes')}
+          <strong>{worldsDone}/{WORLDS.length}</strong> {tx('mondes traversés')}
         </span>
         <span role="listitem">
-          <strong>{FREE_WORLDS}</strong> {tx('offerts')}
+          <strong>{stepsDone}/{TOTAL_STEPS}</strong> {tx('étapes')}
         </span>
         <span role="listitem">
-          <strong>{TOTAL_STEPS}</strong> {tx('étapes')}
+          <strong>{recolte}</strong> {tx('cartes')}
         </span>
         <span role="listitem">
           <strong>1</strong> destination
@@ -123,6 +127,12 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
         {WORLDS.map((w) => {
           const franchi = w.num <= worldsDone;
           const enCours = estEnCours(statuts, w.code);
+          // Le progrès RÉEL du monde (quêtes terminées) — la vérité de base :
+          // un monde avec AU MOINS une quête posée est ENGAGÉ, même sans
+          // clic « Commencer le monde » (deep-link, reprise, flux félicitations).
+          const progres = parMonde[w.code] ?? null;
+          const faites = progres?.faites ?? 0;
+          const engage = franchi || enCours || faites > 0;
           const ouvert = !franchi && w.status === 'open';
           return (
             <li
@@ -145,7 +155,9 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                 <p>{w.tagline}</p>
                 <div className="m-world-meta">
                   <span className="m-world-steps">
-                    {tx('{{n}} étape{{s}}', { n: w.quests, s: w.quests > 1 ? 's' : '' })}
+                    {faites > 0
+                      ? tx('{{faites}}/{{total}} étapes', { faites, total: w.quests })
+                      : tx('{{n}} étape{{s}}', { n: w.quests, s: w.quests > 1 ? 's' : '' })}
                   </span>
                   {franchi ? (
                     <span className="v-chip v-chip-done">
@@ -164,7 +176,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                       </svg>
                       {tx('Terminé')}
                     </span>
-                  ) : enCours ? (
+                  ) : engage ? (
                     <span className="v-chip v-chip-now">
                       <span className="v-chip-dot" aria-hidden="true" />
                       {tx('En cours')}
@@ -187,12 +199,12 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                       className="m-world-btn m-world-btn-accent"
                       onClick={() => ouvrirFiche(w)}
                       aria-label={
-                        enCours
+                        engage
                           ? tx('Continuer le monde {{nom}} — ouvrir sa fiche', { nom: w.name })
                           : tx('Commencer le monde {{nom}} — ouvrir sa fiche', { nom: w.name })
                       }
                     >
-                      {enCours ? tx('Continuer') : tx('Commencer')}
+                      {engage ? tx('Continuer') : tx('Commencer')}
                       <Di />
                     </button>
                   ) : (
@@ -237,6 +249,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           key={openWorld.code}
           world={openWorld}
           done={worldsDone}
+          progres={parMonde[openWorld.code] ?? null}
           started={estEnCours(statuts, openWorld.code)}
           onClose={fermerFiche}
           // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé ;

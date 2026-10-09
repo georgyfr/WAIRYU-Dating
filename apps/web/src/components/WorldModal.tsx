@@ -31,6 +31,7 @@ import { useEffect, useRef, useState } from 'react';
 import { WORLDS, WORLD_DETAILS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import { marquerMondeEnCours } from '../lib/mondes-state';
+import type { ProgresMonde } from '../lib/progression';
 import VoyageIcon from './VoyageIcons';
 import type { VoyageIconName } from './VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
@@ -40,6 +41,10 @@ interface Props {
   world: VoyageWorld;
   /** Mondes franchis (useProgression().worldsDone) — world.num <= done ⇒ Terminé. */
   done: number;
+  /** Le progrès RÉEL du monde (quêtes terminées + clôture) — absent pour les
+   *  mondes non livrés (M4-M11). La fiche montre l'avancement dès la première
+   *  quête posée et la DATE de clôture d'un monde traversé. */
+  progres?: ProgresMonde | null;
   /** Le monde est déjà « en cours » (état réel posé par l'utilisateur). */
   started: boolean;
   /** Fermeture (bouton ×, Échap, clic fond). */
@@ -71,10 +76,15 @@ function Fleche() {
   );
 }
 
-export default function WorldModal({ world, done, started, onClose, onEnterQuest, deverrouille }: Props) {
-  const { tx } = useI18n();
+export default function WorldModal({ world, done, progres, started, onClose, onEnterQuest, deverrouille }: Props) {
+  const { tx, lang } = useI18n();
   const refModal = useRef<HTMLDivElement | null>(null);
   const [confirme, setConfirme] = useState(false);
+
+  // Le progrès RÉEL du monde — la fiche reflète l'avancement dès la première
+  // quête terminée, et porte la date de CLÔTURE d'un monde traversé.
+  const faites = progres?.faites ?? 0;
+  const engage = started || faites > 0;
 
   useEffect(() => {
     const declencheur = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -137,6 +147,21 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
     setConfirme(true);
   };
 
+  /** La date de clôture du monde traversé — la complétion la plus récente,
+   *  au format long de la langue de l'utilisateur (même format que le journal). */
+  const cloture = (() => {
+    if (!(termine && progres?.derniereA)) return null;
+    try {
+      return new Date(progres.derniereA).toLocaleDateString(lang === 'en' ? 'en-IE' : 'fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    } catch {
+      return null;
+    }
+  })();
+
   return (
     <div className="w-overlay" onClick={onClose} role="presentation">
       <div
@@ -185,7 +210,9 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
         <div className="w-modal-body">
           <div className="w-modal-meta">
             <span className="m-world-steps">
-              {tx('{{n}} quête{{s}}', { n: world.quests, s: world.quests > 1 ? 's' : '' })}
+              {faites > 0
+                ? tx('{{faites}}/{{total}} quêtes', { faites, total: world.quests })
+                : tx('{{n}} quête{{s}}', { n: world.quests, s: world.quests > 1 ? 's' : '' })}
             </span>
             {termine ? (
               <span className="v-chip v-chip-done">
@@ -204,7 +231,7 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
                 </svg>
                 {tx('Terminé')}
               </span>
-            ) : started || confirme ? (
+            ) : engage || confirme ? (
               <span className="v-chip v-chip-now">
                 <span className="v-chip-dot" aria-hidden="true" />
                 {tx('En cours')}
@@ -281,7 +308,11 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
 
         <div className="w-modal-foot">
           {termine ? (
-            <p className="w-modal-footnote">{tx('Tu as traversé ce monde — sa récolte est dans ton portrait.')}</p>
+            <p className="w-modal-footnote">
+              {cloture
+                ? tx('Tu as traversé ce monde le {{date}} — sa récolte est dans ton portrait.', { date: cloture })
+                : tx('Tu as traversé ce monde — sa récolte est dans ton portrait.')}
+            </p>
           ) : ouvert ? (
             <>
               {confirme && (
