@@ -235,7 +235,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                   <strong>{stepsDone}/{TOTAL_STEPS}</strong> {tx('étapes')}
                 </span>
                 <span role="listitem">
-                  <strong>{recolte}</strong> {tx('cartes')}
+                  <strong>{recolte}</strong> {recolte > 1 ? tx('cartes') : tx('carte')}
                 </span>
               </div>
             </div>
@@ -272,7 +272,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                   <strong>{stepsDone}/{TOTAL_STEPS}</strong> {tx('étapes')}
                 </span>
                 <span role="listitem">
-                  <strong>{recolte}</strong> {tx('cartes')}
+                  <strong>{recolte}</strong> {recolte > 1 ? tx('cartes') : tx('carte')}
                 </span>
               </div>
             </div>

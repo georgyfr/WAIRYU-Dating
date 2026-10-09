@@ -6478,3 +6478,471 @@ body.no-scroll {
         height: 48px
     }
 }
+
+/* ============================================================
+   Task 45 — notifications de récolte · mois par mois · pop-up
+   explicatif (« à quoi ça sert dans les rencontres »)
+   ============================================================ */
+
+/* --- reset bouton universel des items de récolte cliquables --- */
+.r-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent
+}
+
+.r-btn:focus-visible,
+.r-info-btn:focus-visible,
+.r-mois-row:focus-visible,
+.r-frag:focus-visible,
+.r-sceau:focus-visible {
+    outline: 2px solid #2a9aa0;
+    outline-offset: 2px
+}
+
+/* --- une découverte (collection) : le corps devient cliquable --- */
+.r-cm-dec-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    border-radius: 10px
+}
+
+.r-cm-dec-btn:hover strong {
+    color: #2a9aa0
+}
+
+/* --- bouton discret « À quoi ça sert ? » (jalons, pass, crédits) --- */
+.r-info-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--c-line);
+    background: #fff;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #2a9aa0;
+    cursor: pointer;
+    transition: background .18s ease, transform .18s ease
+}
+
+.r-info-btn:hover {
+    background: #eff8f8;
+    transform: translateY(-1px)
+}
+
+/* --- mosaïque : les fragments deviennent des boutons --- */
+button.r-frag {
+    cursor: pointer;
+    font: inherit
+}
+
+button.r-frag-done:hover,
+button.r-frag-now:hover {
+    transform: translateY(-3px) scale(1.05)
+}
+
+button.r-frag-off {
+    cursor: default;
+    opacity: .55
+}
+
+/* --- sceaux : les médailles deviennent des boutons --- */
+button.r-sceau {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer
+}
+
+button.r-sceau:hover .r-sceau-medal {
+    transform: translateY(-3px)
+}
+
+button.r-sceau:not(.r-sceau-done):not(.r-sceau-now) {
+    opacity: .6
+}
+
+/* --- chips de timeline cliquables (héritent de .r-tl-chip) --- */
+button.r-tl-chip {
+    cursor: pointer;
+    font: inherit;
+    transition: transform .18s ease, border-color .18s ease
+}
+
+button.r-tl-chip:hover {
+    transform: translateY(-1px);
+    border-color: #2a9aa0
+}
+
+/* --- LE POP-UP EXPLICATIF d'une récolte (ri-*) --- */
+.ri-modal {
+    max-width: 480px
+}
+
+.ri-body {
+    display: flex;
+    flex-direction: column;
+    gap: 11px
+}
+
+.ri-meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2a9aa0
+}
+
+.ri-meta-mois {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eff8f8;
+    font-size: 11px
+}
+
+.ri-sources {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--c-gray-blue)
+}
+
+.ri-intro {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--c-night)
+}
+
+.ri-h3 {
+    margin: 4px 0 0;
+    font-size: 13px;
+    font-weight: 800;
+    color: #2a9aa0;
+    text-transform: uppercase;
+    letter-spacing: .04em
+}
+
+.ri-points {
+    margin: 0;
+    padding: 0 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #33424b
+}
+
+.ri-points-contenu {
+    font-size: 13px
+}
+
+.ri-premium {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 11px 13px;
+    border-radius: 13px;
+    background: #fdf6e3;
+    border: 1px solid #f2e3bd
+}
+
+.ri-premium p {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #7a5c10
+}
+
+.ri-premium .ri-premium-note {
+    font-weight: 400;
+    font-size: 12px;
+    color: #8a7a52
+}
+
+.ri-garde {
+    margin: 0;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--c-gray-blue);
+    border-top: 1px dashed var(--c-line);
+    padding-top: 9px
+}
+
+.ri-lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #2a9aa0;
+    text-decoration: none
+}
+
+.ri-lien:hover {
+    text-decoration: underline
+}
+
+/* --- la vue MOIS PAR MOIS (r-mois-*) --- */
+.r-mois {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.r-mois-item {
+    border-radius: 16px;
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    box-shadow: 0 1px 4px #172c3d0a;
+    overflow: hidden
+}
+
+.r-mois-item.r-mois-done {
+    border-color: #d9ecdd;
+    background: #f7fcf7
+}
+
+.r-mois-item.r-mois-now {
+    border-color: #2a9aa05c
+}
+
+.r-mois-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 11px 13px;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer
+}
+
+.r-mois-row:hover {
+    background: #fbfbf7
+}
+
+.r-mois-ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none
+}
+
+.r-mois-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px
+}
+
+.r-mois-body small {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #9a9384
+}
+
+.r-mois-body strong {
+    font-size: 14px;
+    color: var(--c-night)
+}
+
+.r-mois-sub {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--c-gray-blue)
+}
+
+/* --- le PANNEAU de la cloche : section récolte (ah-harvest, ah-hn) --- */
+.ah-harvest {
+    border-bottom: 1px solid #f0ece0;
+    padding-bottom: 5px;
+    margin-bottom: 4px
+}
+
+.ah-harvest-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px 2px
+}
+
+.ah-harvest-head h3 {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #2a9aa0
+}
+
+.ah-harvest-lu {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9a9384;
+    cursor: pointer;
+    text-decoration: underline
+}
+
+.ah-hn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 8px 14px;
+    background: none;
+    border: 0;
+    border-top: 1px solid #f7f3e8;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer
+}
+
+.ah-hn:hover {
+    background: #fbfaf5
+}
+
+.ah-hn-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #2a9aa0;
+    flex: none
+}
+
+.ah-hn-lu .ah-hn-dot {
+    background: #dcd6c6
+}
+
+.ah-hn-lu {
+    opacity: .72
+}
+
+.ah-hn-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px
+}
+
+.ah-hn-body strong {
+    font-size: 12.5px;
+    color: var(--c-night)
+}
+
+.ah-hn-body small {
+    font-size: 11px;
+    color: var(--c-gray-blue)
+}
+
+.ah-hn time {
+    font-size: 10.5px;
+    color: #b3ac9c;
+    flex: none
+}
+
+.ah-hn-plus {
+    margin: 0;
+    padding: 6px 14px 4px;
+    font-size: 11px;
+    color: #b3ac9c
+}
+
+/* --- le TOAST de récolte (r-toast-*) — une lumière douce, sans confettis --- */
+.r-toast-wrap {
+    position: fixed;
+    left: 50%;
+    bottom: calc(78px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: min(430px, calc(100vw - 24px));
+    z-index: 1300;
+    animation: r-toast-in .3s cubic-bezier(.2, .9, .3, 1)
+}
+
+@keyframes r-toast-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 14px)
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0)
+    }
+}
+
+.r-toast {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 11px 14px;
+    border: 0;
+    border-radius: 16px;
+    background: #0d2b26f2;
+    color: #fdfaf3;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 10px 30px #09201d59
+}
+
+.r-toast-ico {
+    font-size: 19px;
+    flex: none
+}
+
+.r-toast-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0
+}
+
+.r-toast-body strong {
+    font-size: 13.5px
+}
+
+.r-toast-body small {
+    font-size: 11.5px;
+    color: #cfe3df
+}

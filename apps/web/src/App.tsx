@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Welcome from './screens/Welcome';
 import Voyage from './screens/Voyage';
 import Mondes from './screens/Mondes';
@@ -15,6 +15,18 @@ import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
+import InfoRecolteModal, { itemDeNotif, type ItemRecolte } from './components/InfoRecolte';
+import {
+  libelleNotif,
+  marquerLu,
+  marquerToutLu,
+  synchroniserNotifs,
+  useNotifs,
+} from './lib/notifs';
+import type { NotifRecolte } from './lib/notifs';
+import { WORLDS } from './lib/voyage';
+import { useProgressionDetail } from './lib/progression';
+import { mondeDeQuete } from './lib/quetes';
 import { autoArmWebPush, fetchEvents, getDeviceId, registerDeviceOpen } from './lib/push-client';
 import {
   ApiError,
@@ -24,7 +36,7 @@ import {
   linkDevice,
   logout,
 } from './lib/auth-client';
-import { lireEtatQuete, useEtatQuete, type EtatQuete } from './lib/quete-state';
+import { lireEtatQuete, souscrireEtat, type EtatQuete } from './lib/quete-state';
 import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import { useI18n } from './i18n/I18nProvider';
 import { DEVISES, type CurrencyCode } from './i18n/currency';
@@ -100,6 +112,24 @@ function prochaineQuete(): IdQuete {
   return libre ?? QUETE_IDS[QUETE_IDS.length - 1];
 }
 
+/**
+ * L'accès séquentiel des DEEP-LINKS (#/quete/{id}) — la même règle que
+ * l'atlas (#/mondes, Task 41) : une quête est accessible si elle est déjà
+ * terminée (relecture des résultats) ou si son monde est ouvert (le monde
+ * précédent est traversé). Task 45 : le verrou est porté côté App — un
+ * deep-link verrouillé retombe sur l'atlas, où le verrou est VISIBLE.
+ */
+function queteAccessible(id: IdQuete): boolean {
+  if (lireEtatQuete(id).terminee) return true;
+  const code = mondeDeQuete(id).code;
+  if (code === 'M1') return true;
+  const prec: readonly IdQuete[] =
+    code === 'M2'
+      ? ['1.1', '1.2', '1.3']
+      : ['1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11'];
+  return prec.every((x) => lireEtatQuete(x).terminee);
+}
+
 /** Lit le hash de navigation : #/quete[/id], #/reset?t=…, #/fb-complete, #/oauth-complete?via=…, tabs, ou l'app. */
 function readRoute(): Route {
   const hash = window.location.hash;
@@ -112,6 +142,9 @@ function readRoute(): Route {
     const reste = hash.slice(8); // '' | '{id}' | '{id}/resultats'
     const [idBrut, suffixe] = reste.split('/');
     const idValide = (QUETE_IDS as readonly string[]).includes(idBrut) ? (idBrut as IdQuete) : null;
+    // Le verrou séquentiel des deep-links (Task 45) : une quête non accessible
+    // retombe sur l'atlas — jamais d'accès direct par l'URL.
+    if (idValide && !queteAccessible(idValide)) return { name: 'tab', tab: 'mondes' };
     return {
       name: 'quete',
       id: idValide ?? prochaineQuete(),
@@ -142,6 +175,13 @@ export default function App() {
   /** Journal in-app (cloche de l'en-tête). */
   const [events, setEvents] = useState<PushEventRow[]>([]);
   const [bellOpen, setBellOpen] = useState(false);
+  /** Les NOTIFICATIONS DE RÉCOLTE (Task 45) — journal dérivé de l'état réel
+   *  des quêtes, groupé par mois dans le panneau de la cloche. */
+  const { liste: notifsRecolte, nonLues: notifsNonLues } = useNotifs();
+  /** Le pop-up explicatif d'une récolte (« à quoi ça sert » — cloche + toast). */
+  const [infoItem, setInfoItem] = useState<ItemRecolte | null>(null);
+  /** Le toast « nouvelle récolte » — sobre, une pièce à la fois, sans confettis. */
+  const [toastRecolte, setToastRecolte] = useState<NotifRecolte | null>(null);
   /** Menu « MON COMPTE » (avatar) — l'essentiel RGPD reste accessible SANS le Profil masqué. */
   const [accountOpen, setAccountOpen] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
@@ -149,15 +189,9 @@ export default function App() {
   /** Monde demandé depuis la carte du Voyage ⇒ fiche auto-ouverte dans Mondes (consommée une fois). */
   const [pendingWorld, setPendingWorld] = useState<string | null>(null);
 
-  // L'état de CHACUNE des 3 quêtes est relu au rendu (hooks du store) : le
-  // point corail s'allume dès qu'une quête est engagée, depuis n'importe quel
-  // onglet, et s'éteint seul à la complétion.
-  const etat11 = useEtatQuete('1.1');
-  const etat12 = useEtatQuete('1.2');
-  const etat13 = useEtatQuete('1.3');
-  const queteEnCours = QUETE_IDS.some((id) =>
-    queteEngagee(id === '1.1' ? etat11 : id === '1.2' ? etat12 : etat13),
-  );
+  // Le point corail de l'onglet Quête — dérivé de la progression RÉELLE
+  // (Task 45 : couvre LES 18 quêtes ouvertes, plus seulement le Monde 1).
+  const queteEnCours = useProgressionDetail().engagee;
 
   // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
   const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
@@ -204,6 +238,31 @@ export default function App() {
       .then((r) => setEvents(r?.events ?? []))
       .catch(() => setEvents([]));
   }, [authenticated]);
+
+  // Les NOTIFICATIONS DE RÉCOLTE (Task 45) : synchronisées au boot puis à
+  // CHAQUE changement d'état des quêtes (idempotent — id déterministe).
+  useEffect(() => {
+    if (authenticated !== true) return;
+    synchroniserNotifs();
+    return souscrireEtat(synchroniserNotifs);
+  }, [authenticated]);
+
+  // Le toast : la récolte a GROSSI pendant la session → une pièce s'annonce.
+  const prevNonLues = useRef(-1);
+  useEffect(() => {
+    if (prevNonLues.current >= 0 && notifsNonLues > prevNonLues.current) {
+      const nouvelle = notifsRecolte.find((n) => !n.lu);
+      if (nouvelle) setToastRecolte(nouvelle);
+    }
+    prevNonLues.current = notifsNonLues;
+  }, [notifsNonLues, notifsRecolte]);
+
+  // Le toast s'efface seul — une lumière douce, pas un meuble.
+  useEffect(() => {
+    if (!toastRecolte) return;
+    const t = window.setTimeout(() => setToastRecolte(null), 6500);
+    return () => window.clearTimeout(t);
+  }, [toastRecolte]);
 
   // La route résout vers la vue : tab → onglet, quête → page Quête (id posé).
   useEffect(() => {
@@ -400,11 +459,38 @@ export default function App() {
   const rawName = (me?.displayName ?? '').trim() || (me?.username ?? '').trim();
   const firstName = (rawName.split(/\s+/)[0] || tx('Voyageur')).slice(0, 14);
   const initial = firstName.charAt(0).toUpperCase();
-  const badge = Math.min(events.length, 9);
+  const badge = Math.min(notifsNonLues, 9);
   return (
     <>
       <PushToast />
       {congratsOverlay}
+      {/* LE TOAST DE RÉCOLTE — une lumière douce quand une pièce apparaît
+          (demande fondateur : « des notifications apparaissent »). Cliquer
+          ouvre l'explication de la récolte. */}
+      {toastRecolte && (
+        <div className="r-toast-wrap" role="status" aria-live="polite">
+          <button
+            type="button"
+            className="r-toast"
+            onClick={() => {
+              marquerLu(toastRecolte.id);
+              setInfoItem(itemDeNotif(toastRecolte));
+              setToastRecolte(null);
+            }}
+            aria-label={`${libelleNotif(toastRecolte, tx)} — ${tx('Voir à quoi ça sert')}`}
+          >
+            <span className="r-toast-ico" aria-hidden="true">
+              ✨
+            </span>
+            <span className="r-toast-body">
+              <strong>{libelleNotif(toastRecolte, tx)}</strong>
+              <small>{tx('Touche pour voir à quoi ça sert.')}</small>
+            </span>
+          </button>
+        </div>
+      )}
+      {/* LE POP-UP EXPLICATIF d'une récolte — ouvert depuis la cloche ou le toast. */}
+      {infoItem && <InfoRecolteModal item={infoItem} onClose={() => setInfoItem(null)} />}
       <div className="app-shell">
         <header className="app-header">
           <div className="ah-brand">
@@ -479,6 +565,62 @@ export default function App() {
                 onClick={() => setBellOpen(false)}
               />
               <div className="ah-panel" role="dialog" aria-label={tx('Notifications récentes')}>
+                {/* TA RÉCOLTE — les notifications de récolte, groupées PAR MOIS
+                    (demande fondateur Task 45). Chaque entrée est cliquable et
+                    ouvre l'explication « à quoi ça sert dans les rencontres ». */}
+                {notifsRecolte.length > 0 && (
+                  <div className="ah-harvest">
+                    <div className="ah-harvest-head">
+                      <h3>{tx('Ta récolte')}</h3>
+                      {notifsNonLues > 0 && (
+                        <button type="button" className="ah-harvest-lu" onClick={marquerToutLu}>
+                          {tx('Tout marquer comme lu')}
+                        </button>
+                      )}
+                    </div>
+                    {notifsRecolte.slice(0, 12).map((n) => {
+                      const mondeN = WORLDS[n.mois - 1];
+                      return (
+                        <button
+                          key={n.id}
+                          type="button"
+                          className={`ah-hn ${n.lu ? 'ah-hn-lu' : 'ah-hn-new'}`}
+                          onClick={() => {
+                            marquerLu(n.id);
+                            setInfoItem(itemDeNotif(n));
+                            setBellOpen(false);
+                          }}
+                          aria-label={`${libelleNotif(n, tx)} — ${tx('Monde {{n}} — {{nom}}', { n: n.mois, nom: mondeN?.name ?? '' })} — ${tx('À quoi ça sert ?')}`}
+                        >
+                          <span className="ah-hn-dot" aria-hidden="true" />
+                          <span className="ah-hn-body">
+                            <strong>{libelleNotif(n, tx)}</strong>
+                            <small>
+                              {tx('Mois {{n}} — {{nom}}', { n: n.mois, nom: mondeN?.name ?? '' })}
+                            </small>
+                          </span>
+                          <time dateTime={n.date}>
+                            {(() => {
+                              try {
+                                return new Date(n.date).toLocaleDateString(lang === 'en' ? 'en-IE' : 'fr-FR', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                });
+                              } catch {
+                                return '';
+                              }
+                            })()}
+                          </time>
+                        </button>
+                      );
+                    })}
+                    {notifsRecolte.length > 12 && (
+                      <p className="ah-hn-plus">
+                        {tx('+ {{n}} récoltes plus anciennes — la liste complète vit dans Ma récolte.', { n: notifsRecolte.length - 12 })}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <h3>{tx('Notifications')}</h3>
                 {events.length === 0 ? (
                   <p className="ah-empty">{tx('Rien pour le moment — tes notifications apparaîtront ici.')}</p>

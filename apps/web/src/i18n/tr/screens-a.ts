@@ -308,4 +308,145 @@ export const SCREENS_A: Record<string, string> = {
   "Ton portrait t'appartient.": 'Your portrait belongs to you.',
   "Tu choisis ce qui se voit : rien n'apparaît sur ton profil sans ta décision — et l'espace pour gérer ce que tu montres s'ouvrira plus tard dans ton voyage.":
     'You choose what is visible: nothing appears on your profile without your decision — and the space to manage what you show will open later in your journey.',
+
+  // ---- Task 45 — notifications de récolte, mois par mois, pop-up explicatif
+  'Nouvelle découverte : {{nom}}': 'New discovery: {{nom}}',
+  'Nouvelle découverte': 'New discovery',
+  'Écran de passage franchi': 'Passage screen crossed',
+  'Fragment de portrait ajouté': 'Portrait fragment added',
+  'Sceau du monde posé': 'World seal placed',
+  'Mois {{n}} ouvert': 'Month {{n}} open',
+  "Mois {{n}} terminé — ta récolte t'attend": 'Month {{n}} completed — your harvest awaits',
+  'Nouveau pass': 'New pass',
+  'Nouveaux crédits': 'New credits',
+  'Tout marquer comme lu': 'Mark all as read',
+  'Monde {{n}} — {{nom}}': 'World {{n}} — {{nom}}',
+  'Mois {{n}} — {{nom}}': 'Month {{n}} — {{nom}}',
+  'À quoi ça sert ?': 'What is it for?',
+  '+ {{n}} récoltes plus anciennes — la liste complète vit dans Ma récolte.':
+    '+ {{n}} older harvest items — the full list lives in My harvest.',
+  'Voir à quoi ça sert': 'See what it is for',
+  'Touche pour voir à quoi ça sert.': 'Tap to see what it is for.',
+
+  // ---- Task 45 — le pop-up explicatif (« à quoi ça sert dans les rencontres »)
+  'Carte-découverte': 'Discovery card',
+  'La réponse de ton voyage à une question sur toi — ta lumière, ton ombre, ta tension.':
+    "Your journey's answer to one question about you — your light, your shadow, your tension.",
+  'Elle nourrit ton Portrait : c\'est lui qui travaille tes compatibilités — de façon expliquée, jamais notée.':
+    'It feeds your Portrait: your Portrait is what works your compatibility — explained, never scored.',
+  'Elle donne à l\'autre un vrai point de départ pour t\'aborder : une tendance à te ressembler, pas une étiquette.':
+    'It gives the other person a real starting point to reach out: a tendency to resemble you, not a label.',
+  'Tu décides de ce qui est visible et du moment — rien n\'apparaît sans toi.':
+    'You decide what is visible and when — nothing appears without you.',
+  'Ce n\'est ni un score, ni un diagnostic : une tendance mesurée sur tes réponses.':
+    'It is neither a score nor a diagnosis: a tendency measured from your answers.',
+  'Une étape du parcours qui ne produit pas de carte — elle produit de la confiance.':
+    'A step of the journey that produces no card — it produces confidence.',
+  'Ces écrans jalonnent le chemin entre deux découvertes.':
+    'These screens mark the path between two discoveries.',
+  'Ce que tu y poses prépare la suite de ton portrait — et reste à toi.':
+    'What you put there prepares the rest of your portrait — and stays yours.',
+  'Un écran de passage ne juge rien : il te fait avancer.':
+    'A passage screen judges nothing: it moves you forward.',
+  'La pièce du portrait que ce mois du voyage t\'a donnée.':
+    'The piece of the portrait this month of the journey gave you.',
+  'Assemblés, tes fragments composent ton Portrait — ce que voient en premier les personnes compatibles avec toi.':
+    'Assembled, your fragments compose your Portrait — the first thing compatible people see.',
+  'Chaque mois traversé ajoute une pièce : plus tu avances, plus ton portrait te ressemble.':
+    'Each traveled month adds a piece: the further you go, the more your portrait looks like you.',
+  'Ton portrait se lit comme une histoire — jamais comme une fiche à cocher.':
+    'Your portrait reads like a story — never like a checklist.',
+  'La marque du mois que tu as traversé.': 'The mark of the month you traveled through.',
+  'Permanent et non consommable : il reste à toi, sans jamais révéler tes réponses.':
+    'Permanent and non-consumable: it stays yours, without ever revealing your answers.',
+  'Sur la plateforme, il témoigne de ton parcours — un profil qui voyage inspire confiance.':
+    'On the platform, it testifies to your journey — a profile that travels inspires trust.',
+  'Un sceau ne s\'achète pas et ne se perd pas : il se traverse.':
+    'A seal cannot be bought and cannot be lost: it is traveled through.',
+  'Un pass facilite une action précise de la plateforme.':
+    'A pass makes one specific platform action easier.',
+  'Exemple : explorer une possibilité supplémentaire dans Découvrir.':
+    'Example: exploring one extra possibility in Discover.',
+  'Chaque pass affichera ce qu\'il permet et combien il en reste.':
+    'Each pass will show what it allows and how many are left.',
+  'Un pass n\'achète jamais une meilleure compatibilité — les rencontres se construisent par le voyage.':
+    'A pass never buys better compatibility — encounters are built through the journey.',
+  'Une réserve d\'actions pour la plateforme.': 'A reserve of actions for the platform.',
+  'Certaines interactions se paieront en crédits — gagnés en voyageant.':
+    'Some interactions will be paid in credits — earned by traveling.',
+  'Ton solde, tes gains et tes usages s\'afficheront dans ta récolte.':
+    'Your balance, gains and usage will show in your harvest.',
+  'Les crédits ne s\'échangent jamais contre une meilleure compatibilité.':
+    'Credits are never exchanged for better compatibility.',
+  'Récolte du mois': 'Harvest of the month',
+  'Récolte du mois {{n}}': 'Harvest of month {{n}}',
+  'Un mois du voyage — ses découvertes, son fragment, son sceau.':
+    'A month of the journey — its discoveries, its fragment, its seal.',
+  'Chaque mois construit une pièce de ton portrait — la vraie monnaie de tes rencontres.':
+    'Each month builds a piece of your portrait — the real currency of your encounters.',
+  'Traversé, un mois te laisse des cartes, un fragment et un sceau.':
+    'Traveled through, a month leaves you cards, a fragment and a seal.',
+  'Un mois s\'ouvre après l\'autre : le voyage reste la clé de tout.':
+    'Months open one after another: the journey remains the key to everything.',
+  'Niveau du voyage': 'Journey level',
+  'Niveau {{n}} du voyage': 'Level {{n}} of the journey',
+  'Un niveau de ta récolte — ce qu\'il débloque pour toi.':
+    'A level of your harvest — what it unlocks for you.',
+  'Un niveau se franchit en voyageant — il ne s\'achète pas.':
+    'A level is traveled through — it cannot be bought.',
+  'Ta Carte du voyage — le tableau de bord de ton parcours.':
+    'Your Travel Map — the dashboard of your journey.',
+  'Elle te montre où tu en es et ce que chaque mois t\'a donné.':
+    'It shows where you stand and what each month gave you.',
+  'Ton premier portrait : ton fonctionnement renvoyé en toutes lettres.':
+    'Your first portrait: how you work, spelled out.',
+  'C\'est la base que le reste du voyage vient préciser.':
+    'It is the base the rest of the journey refines.',
+  'La synthèse d\'un mois entier de découvertes.':
+    'The synthesis of a whole month of discoveries.',
+  'Le portrait d\'un territoire de toi, lisible d\'un coup d\'œil.':
+    'The portrait of one territory of you, readable at a glance.',
+  'Les grandes zones de ta vie relationnelle, domaine par domaine.':
+    'The big areas of your relational life, domain by domain.',
+  'Chaque domaine approfondit ce que le matching peut comprendre de toi.':
+    'Each domain deepens what matching can understand about you.',
+  'Le portrait complet — celui qui travaille pour toi dans les rencontres.':
+    'The complete portrait — the one that works for you in encounters.',
+  'La pièce maîtresse : ton parcours entier, assemblé.':
+    'The centerpiece: your whole journey, assembled.',
+  'La destination : rencontrer des personnes avec qui ça a du sens.':
+    'The destination: meeting people it makes sense with.',
+  'La Rencontre n\'est jamais payante — elle se franchit en voyageant.':
+    'The Encounter is never paid — it is reached by traveling.',
+  'Fermer l\'explication': 'Close the explanation',
+  'Mois {{n}} sur 11': 'Month {{n}} of 11',
+  'Obtenu le {{date}}': 'Earned on {{date}}',
+  'À quoi ça sert dans les rencontres': 'What it does in your encounters',
+  'Ce que ce mois t\'a donné :': 'What this month gave you:',
+  'Ce que ce mois te réserve :': 'What this month holds for you:',
+  'Ce mois s\'ouvrira avec l\'abonnement mensuel — {{prix}}/mois.':
+    'This month will open with the monthly subscription — {{prix}}/month.',
+  'L\'ouverture des paiements arrive bientôt : quand tu ouvriras un mois, sa récolte sera annoncée ici, par notification.':
+    'Payments are coming soon: when you open a month, its harvest will be announced here, by notification.',
+
+  // ---- Task 45 — récolte cliquable + vue mensuelle (Recolte.tsx)
+  'À quoi sert {{nom}} ?': 'What is {{nom}} for?',
+  'Niveau {{n}} — à quoi ça sert ?': 'Level {{n}} — what is it for?',
+  'À quoi sert un pass ?': 'What is a pass for?',
+  'À quoi servent les crédits ?': 'What are credits for?',
+  'Fragment du portrait — {{nom}} : à quoi ça sert ?':
+    'Portrait fragment — {{nom}}: what is it for?',
+  'Sceau — {{nom}} : à quoi ça sert ?': 'Seal — {{nom}}: what is it for?',
+  'Écran de passage — à quoi ça sert ?': 'Passage screen — what is it for?',
+  'Ta récolte, mois par mois': 'Your harvest, month by month',
+  'Onze mois, onze récoltes — ce que chaque mois du voyage met dans ton coffre.':
+    'Eleven months, eleven harvests — what each month of the journey puts in your chest.',
+  'La récolte de chaque mois du voyage': 'The harvest of each month of the journey',
+  '{{x}} carte{{s}} · 1 fragment · 1 sceau': '{{x}} card{{s}} · 1 fragment · 1 seal',
+  '{{n}} étapes à venir': '{{n}} steps to come',
+  'La récolte du mois {{n}} — {{nom}}': 'The harvest of month {{n}} — {{nom}}',
+  '🃏 {{nom}} — {{titre}}': '🃏 {{nom}} — {{titre}}',
+  '🪧 Écran de passage': '🪧 Passage screen',
+  '🧩 Fragment du portrait': '🧩 Portrait fragment',
+  '🏅 Sceau du monde': '🏅 World seal',
 };

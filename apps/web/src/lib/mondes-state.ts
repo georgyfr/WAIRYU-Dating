@@ -63,3 +63,8 @@ export function useStatutsMondes(): StatutsMondes {
     () => statuts,
   );
 }
+
+/** Lecture BRUTE (hors React) — pour les dérivations hors hook (lib/notifs). */
+export function statutsBruts(): StatutsMondes {
+  return statuts;
+}

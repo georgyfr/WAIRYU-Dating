@@ -44,13 +44,15 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { MILESTONES, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { MILESTONES, TOTAL_STEPS, WORLDS, WORLD_DETAILS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import { QUETES, QUETE_IDS, mondeDeQuete } from '../lib/quetes';
 import type { IdQuete } from '../lib/quetes';
 import { useEtatQuete } from '../lib/quete-state';
 import type { EtatQuete } from '../lib/quete-state';
 import { useProgressionDetail } from '../lib/progression';
+import InfoRecolteModal from '../components/InfoRecolte';
+import type { ItemRecolte } from '../components/InfoRecolte';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
@@ -200,6 +202,11 @@ export default function Recolte() {
   // La progression RÉELLE — les compteurs et les jalons suivent l'état des
   // quêtes, réactifs (même bus que l'atlas et le journal).
   const { worldsDone, stepsDone, recolte, parMonde } = useProgressionDetail();
+
+  // LE POP-UP EXPLICATIF (Task 45) : chaque récolte est cliquable et ouvre
+  // son explication — « à quoi ça sert dans les rencontres ».
+  const [info, setInfo] = useState<ItemRecolte | null>(null);
+  const ouvrirInfo = (item: ItemRecolte): void => setInfo(item);
 
   // La récolte RÉELLE par monde — cartes et écrans de passage dérivés de
   // l'état des quêtes (même filtre que le journal : sansCarte et carteId
@@ -443,7 +450,7 @@ export default function Recolte() {
                   </span>
                   <div className="r-cm-titre">
                     <small>
-                      {tx('0{{num}} — Monde {{num}}', { num: w.num })}
+                      {tx('Mois {{num}} sur 11', { num: w.num })}
                     </small>
                     <h3>{w.name}</h3>
                   </div>
@@ -465,16 +472,33 @@ export default function Recolte() {
                   <ul className="r-cm-list">
                     {m.cartes.map((c) => (
                       <li key={c.id} className="r-cm-dec">
-                        <span className="r-cm-dec-ico" aria-hidden="true">
-                          <VoyageIcon name="gem" size={14} />
-                        </span>
-                        <div className="r-cm-dec-body">
-                          <strong>{c.nom}</strong>
-                          <small>
-                            {c.titre}
-                            {c.date ? ` · ${dateCourte(c.date, lang)}` : ''}
-                          </small>
-                        </div>
+                        <button
+                          type="button"
+                          className="r-btn r-cm-dec-btn"
+                          onClick={() =>
+                            ouvrirInfo({
+                              type: 'carte',
+                              nom: c.nom,
+                              titre: c.titre,
+                              date: c.date,
+                              mondeNum: w.num,
+                              mondeCode: w.code,
+                              queteId: c.id,
+                            })
+                          }
+                          aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
+                        >
+                          <span className="r-cm-dec-ico" aria-hidden="true">
+                            <VoyageIcon name="gem" size={14} />
+                          </span>
+                          <span className="r-cm-dec-body">
+                            <strong>{c.nom}</strong>
+                            <small>
+                              {c.titre}
+                              {c.date ? ` · ${dateCourte(c.date, lang)}` : ''}
+                            </small>
+                          </span>
+                        </button>
                         <a
                           className="r-cm-lien"
                           href={`#/quete/${c.id}/resultats`}
@@ -585,6 +609,14 @@ export default function Recolte() {
                     )}
                   </h3>
                   <p>{jalon.desc}</p>
+                  <button
+                    type="button"
+                    className="r-info-btn"
+                    onClick={() => ouvrirInfo({ type: 'jalon', jalonNum: jalon.num })}
+                    aria-label={tx('Niveau {{n}} — à quoi ça sert ?', { n: jalon.num })}
+                  >
+                    {tx('À quoi ça sert ?')}
+                  </button>
                 </div>
               </li>
             );
@@ -600,15 +632,16 @@ export default function Recolte() {
         <p className="r-sec-sub">
           {tx('Onze mondes, onze fragments — chaque monde complété ajoute une pièce au portrait.')}
         </p>
-        <div className="r-mosaic" role="img" aria-label={tx('Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}', { a: worldsDone, s: worldsDone > 1 ? 's' : '', b: WORLDS.length, s2: worldsDone > 1 ? 's' : '' })}>
+        <div className="r-mosaic" role="list" aria-label={tx('Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}', { a: worldsDone, s: worldsDone > 1 ? 's' : '', b: WORLDS.length, s2: worldsDone > 1 ? 's' : '' })}>
           {worldsDone > 0 && (
             <span className="r-mosaic-spark" aria-hidden="true">
               {tx('✨')}
             </span>
           )}
           {recolteMondes.map((m) => (
-            <span
+            <button
               key={m.monde.code}
+              type="button"
               className={`r-frag ${m.termine ? 'r-frag-done' : m.livree ? 'r-frag-now' : 'r-frag-off'}`}
               style={
                 m.termine
@@ -618,10 +651,18 @@ export default function Recolte() {
                     : undefined
               }
               title={m.monde.name}
-              aria-hidden="true"
+              onClick={() =>
+                ouvrirInfo({
+                  type: 'fragment',
+                  mondeNum: m.monde.num,
+                  mondeCode: m.monde.code,
+                  date: m.termine ? (parMonde[m.monde.code]?.derniereA ?? null) : null,
+                })
+              }
+              aria-label={tx('Fragment du portrait — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
             >
               <VoyageIcon name={m.monde.icon as VoyageIconName} size={22} />
-            </span>
+            </button>
           ))}
         </div>
         <p className="r-mosaic-count">
@@ -658,6 +699,14 @@ export default function Recolte() {
             <p className="r-suche-note">
               {tx('Un pass facilite une action — il n\'achète jamais une meilleure compatibilité.')}
             </p>
+            <button
+              type="button"
+              className="r-info-btn"
+              onClick={() => ouvrirInfo({ type: 'pass' })}
+              aria-label={tx('À quoi sert un pass ?')}
+            >
+              {tx('À quoi ça sert ?')}
+            </button>
           </div>
         </article>
       </section>
@@ -682,6 +731,14 @@ export default function Recolte() {
             <p>
               {tx('Ton solde s\'affichera ici dès tes premiers crédits — avec ce que tu as obtenu et ce que tu as utilisé. Les façons d\'en obtenir arriveront avec la suite du voyage.')}
             </p>
+            <button
+              type="button"
+              className="r-info-btn"
+              onClick={() => ouvrirInfo({ type: 'credit' })}
+              aria-label={tx('À quoi servent les crédits ?')}
+            >
+              {tx('À quoi ça sert ?')}
+            </button>
           </div>
         </article>
       </section>
@@ -700,19 +757,20 @@ export default function Recolte() {
           {recolteMondes.map((m) => {
             const cloture = parMonde[m.monde.code]?.derniereA ?? null;
             return (
-              <div
-                key={m.monde.code}
-                role="listitem"
-                className={`r-sceau ${m.termine ? 'r-sceau-done' : m.livree && m.faites > 0 ? 'r-sceau-now' : ''}`}
-                aria-label={tx('Sceau — {{nom}} : {{etat}}', {
-                  nom: m.monde.name,
-                  etat: m.termine
-                    ? tx('traversé')
-                    : m.livree && m.faites > 0
-                      ? tx('en cours')
-                      : tx('à venir'),
-                })}
-              >
+              <div key={m.monde.code} role="listitem">
+                <button
+                  type="button"
+                  className={`r-sceau ${m.termine ? 'r-sceau-done' : m.livree && m.faites > 0 ? 'r-sceau-now' : ''}`}
+                  onClick={() =>
+                    ouvrirInfo({
+                      type: 'sceau',
+                      mondeNum: m.monde.num,
+                      mondeCode: m.monde.code,
+                      date: m.termine ? cloture : null,
+                    })
+                  }
+                  aria-label={tx('Sceau — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
+                >
                 <span
                   className="r-sceau-medal"
                   style={
@@ -739,6 +797,7 @@ export default function Recolte() {
                 ) : (
                   <span className="r-sceau-etat">{tx('à venir')}</span>
                 )}
+                </button>
               </div>
             );
           })}
@@ -778,9 +837,27 @@ export default function Recolte() {
                       <p className="r-tl-label">{tx('Tu as découvert :')}</p>
                       <ul className="r-tl-chips">
                         {m.cartes.map((c) => (
-                          <li key={c.id} className="r-tl-chip" title={c.titre}>
-                            <VoyageIcon name="gem" size={12} />
-                            {c.nom}
+                          <li key={c.id}>
+                            <button
+                              type="button"
+                              className="r-btn r-tl-chip"
+                              title={c.titre}
+                              onClick={() =>
+                                ouvrirInfo({
+                                  type: 'carte',
+                                  nom: c.nom,
+                                  titre: c.titre,
+                                  date: c.date,
+                                  mondeNum: m.monde.num,
+                                  mondeCode: m.monde.code,
+                                  queteId: c.id,
+                                })
+                              }
+                              aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
+                            >
+                              <VoyageIcon name="gem" size={12} />
+                              {c.nom}
+                            </button>
                           </li>
                         ))}
                       </ul>
@@ -789,22 +866,66 @@ export default function Recolte() {
                   {m.ecrans.length > 0 && (
                     <ul className="r-tl-chips">
                       {m.ecrans.map((e) => (
-                        <li key={e.id} className="r-tl-chip r-tl-chip-soft" title={e.titre}>
-                          <VoyageIcon name="signpost" size={12} />
-                          {tx('Écran de passage')}
+                        <li key={e.id}>
+                          <button
+                            type="button"
+                            className="r-btn r-tl-chip r-tl-chip-soft"
+                            title={e.titre}
+                            onClick={() =>
+                              ouvrirInfo({
+                                type: 'ecran',
+                                titre: e.titre,
+                                date: e.date,
+                                mondeNum: m.monde.num,
+                                mondeCode: m.monde.code,
+                              })
+                            }
+                            aria-label={tx('Écran de passage — à quoi ça sert ?')}
+                          >
+                            <VoyageIcon name="signpost" size={12} />
+                            {tx('Écran de passage')}
+                          </button>
                         </li>
                       ))}
                     </ul>
                   )}
                   {m.termine && (
                     <ul className="r-tl-chips">
-                      <li className="r-tl-chip r-tl-chip-soft">
-                        <VoyageIcon name="layers" size={12} />
-                        {tx('Fragment du portrait')}
+                      <li>
+                        <button
+                          type="button"
+                          className="r-btn r-tl-chip r-tl-chip-soft"
+                          onClick={() =>
+                            ouvrirInfo({
+                              type: 'fragment',
+                              mondeNum: m.monde.num,
+                              mondeCode: m.monde.code,
+                              date: parMonde[m.monde.code]?.derniereA ?? null,
+                            })
+                          }
+                          aria-label={tx('Fragment du portrait — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
+                        >
+                          <VoyageIcon name="layers" size={12} />
+                          {tx('Fragment du portrait')}
+                        </button>
                       </li>
-                      <li className="r-tl-chip r-tl-chip-soft">
-                        <VoyageIcon name="star" size={12} />
-                        {tx('Sceau du monde')}
+                      <li>
+                        <button
+                          type="button"
+                          className="r-btn r-tl-chip r-tl-chip-soft"
+                          onClick={() =>
+                            ouvrirInfo({
+                              type: 'sceau',
+                              mondeNum: m.monde.num,
+                              mondeCode: m.monde.code,
+                              date: parMonde[m.monde.code]?.derniereA ?? null,
+                            })
+                          }
+                          aria-label={tx('Sceau — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
+                        >
+                          <VoyageIcon name="star" size={12} />
+                          {tx('Sceau du monde')}
+                        </button>
                       </li>
                     </ul>
                   )}
@@ -826,6 +947,92 @@ export default function Recolte() {
               </div>
             </li>
           )}
+        </ol>
+      </section>
+
+      {/* TA RÉCOLTE, MOIS PAR MOIS — la vue mensuelle (demande fondateur Task 45 :
+          « organiser les récoltes par mois ») : un mois = un monde du voyage,
+          sa récolte RÉELLE ou sa promesse (WORLD_DETAILS), et la fiche
+          « récolte du mois » cliquable — avec le raccord premium honnête
+          (PRIX_PREMIUM, i18n/currency.ts) pour les mois payants. */}
+      <section aria-labelledby="r-mois-title">
+        <h2 id="r-mois-title" className="m-sec-title">
+          {tx('Ta récolte, mois par mois')}
+        </h2>
+        <p className="r-sec-sub">
+          {tx('Onze mois, onze récoltes — ce que chaque mois du voyage met dans ton coffre.')}
+        </p>
+        <ol className="r-mois" aria-label={tx('La récolte de chaque mois du voyage')}>
+          {recolteMondes.map((m) => {
+            const w = m.monde;
+            const sousTitre = m.termine
+              ? tx('{{x}} carte{{s}} · 1 fragment · 1 sceau', {
+                  x: m.cartes.length,
+                  s: m.cartes.length > 1 ? 's' : '',
+                })
+              : m.livree && m.faites > 0
+                ? tx('{{faites}}/{{total}} étapes', { faites: m.faites, total: m.total })
+                : tx('{{n}} étapes à venir', { n: w.quests });
+            return (
+              <li
+                key={w.code}
+                className={
+                  m.termine
+                    ? 'r-mois-item r-mois-done'
+                    : m.livree && m.faites > 0
+                      ? 'r-mois-item r-mois-now'
+                      : 'r-mois-item'
+                }
+              >
+                <button
+                  type="button"
+                  className="r-mois-row"
+                  onClick={() =>
+                    ouvrirInfo({
+                      type: 'mois',
+                      mondeNum: w.num,
+                      mondeCode: w.code,
+                      traverse: m.termine,
+                      date: m.termine ? (parMonde[w.code]?.derniereA ?? null) : null,
+                      contenu: m.termine
+                        ? [
+                            ...m.cartes.map((c) =>
+                              tx('🃏 {{nom}} — {{titre}}', { nom: c.nom, titre: c.titre }),
+                            ),
+                            ...m.ecrans.map(() => tx('🪧 Écran de passage')),
+                            tx('🧩 Fragment du portrait'),
+                            tx('🏅 Sceau du monde'),
+                          ]
+                        : (WORLD_DETAILS[w.code]?.resultats.map((x) => x) ?? undefined),
+                    })
+                  }
+                  aria-label={tx('La récolte du mois {{n}} — {{nom}}', { n: w.num, nom: w.name })}
+                >
+                  <span
+                    className="r-mois-ico"
+                    style={{ background: w.tile.bg, color: w.tile.fg }}
+                    aria-hidden="true"
+                  >
+                    <VoyageIcon name={w.icon as VoyageIconName} size={19} />
+                  </span>
+                  <span className="r-mois-body">
+                    <small>{tx('Mois {{n}} sur 11', { n: w.num })}</small>
+                    <strong>{w.name}</strong>
+                    <span className="r-mois-sub">
+                      {sousTitre}
+                      {!w.free && (
+                        <span className="v-prem" aria-label="Premium">
+                          <VoyageIcon name="gem" size={10} strokeWidth={2.2} />
+                          <em>Premium</em>
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                  <Fleche />
+                </button>
+              </li>
+            );
+          })}
         </ol>
       </section>
 
@@ -895,6 +1102,9 @@ export default function Recolte() {
           </p>
         </div>
       </article>
+
+      {/* LE POP-UP EXPLICATIF — « à quoi ça sert dans les rencontres ». */}
+      {info && <InfoRecolteModal item={info} onClose={() => setInfo(null)} />}
     </main>
   );
 }

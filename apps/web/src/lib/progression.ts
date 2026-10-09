@@ -65,6 +65,10 @@ export interface ProgressionDetail extends Progression {
   /** Le progrès par monde livré, par CODE ('M1'…) — absent = monde non livré
    *  (M4-M11 : rien n'est jouable, aucun progrès possible). */
   parMonde: Record<string, ProgresMonde>;
+  /** Une quête est ENGAGÉE (non terminée avec au moins une réponse) — le
+   *  point corail de l'onglet Quête, couvrant LES 18 quêtes ouvertes
+   *  (Task 45 : la détection ne couvrait que les 3 quêtes du Monde 1). */
+  engagee: boolean;
 }
 
 function calculer(): ProgressionDetail {
@@ -88,12 +92,21 @@ function calculer(): ProgressionDetail {
     stepsDone: terminees.length,
     recolte,
     parMonde,
+    engagee: QUETE_IDS.some((id) => {
+      const e = etatDe(id);
+      return !e.terminee && Object.keys(e.reponses).length > 0;
+    }),
   };
 }
 
-/** Signature PRIMITIVE de l'état (stable par Object.is — exigence du store). */
+/** Signature PRIMITIVE de l'état (stable par Object.is — exigence du store).
+ *  '1' = terminée · 'r' = engagée (des réponses, pas encore terminée) ·
+ *  '0' = vierge — le point « quête en cours » est réactif à la 1ʳᵉ réponse. */
 function signature(): string {
-  return QUETE_IDS.map((id) => (etatDe(id).terminee ? '1' : '0')).join('');
+  return QUETE_IDS.map((id) => {
+    const e = etatDe(id);
+    return e.terminee ? '1' : Object.keys(e.reponses).length > 0 ? 'r' : '0';
+  }).join('');
 }
 
 let cache: { sig: string; valeur: ProgressionDetail } | null = null;

@@ -36,7 +36,7 @@
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import { BUILDS, FREE_WORLDS, MILESTONES, TOTAL_STEPS, WORLDS } from '../lib/voyage';
-import { useProgression } from '../lib/progression';
+import { useProgressionDetail } from '../lib/progression';
 import type { VoyageBuild, VoyageWorld } from '../lib/voyage';
 import { useStatutsMondes } from '../lib/mondes-state';
 import VoyageIcon from '../components/VoyageIcons';
@@ -239,7 +239,7 @@ function styleTuile(b: VoyageBuild): CSSProperties {
 export default function Voyage({ onExplore, onOpenWorld }: Props) {
   const { tx } = useI18n();
   // La progression RÉELLE — calculée depuis l'état des quêtes, réactive.
-  const { worldsDone: franchis, stepsDone: etapes, recolte } = useProgression();
+  const { worldsDone: franchis, stepsDone: etapes, recolte, parMonde } = useProgressionDetail();
   const total = WORLDS.length;
   const [selection, setSelection] = useState<string>(() => WORLDS[0].code);
   // État RÉEL « monde en cours » (localStorage ; le bundle stockait la chaîne
@@ -249,6 +249,10 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
   const mondeFranchi = monde.num <= franchis;
   const mondeOuvert = monde.status === 'open' && !mondeFranchi;
   const mondeEnCours = statuts[monde.code] === true;
+  // Le progrès RÉEL du monde sélectionné — le panneau affiche le compteur
+  // vivant dès la première quête posée (harmonisation Task 45 : le chip
+  // « Ouvert/En cours » n'est plus muet).
+  const pMonde = parMonde[monde.code] ?? null;
   const versAncre = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -449,7 +453,9 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <p className="v-map-panel-tag">{monde.tagline}</p>
             <div className="v-map-panel-meta">
               <span className="v-map-panel-steps">
-                {tx('{{n}} étape{{s}}', { n: monde.quests, s: monde.quests > 1 ? 's' : '' })}
+                {pMonde && pMonde.faites > 0
+                  ? tx('{{faites}}/{{total}} étapes', { faites: pMonde.faites, total: pMonde.total })
+                  : tx('{{n}} étape{{s}}', { n: monde.quests, s: monde.quests > 1 ? 's' : '' })}
               </span>
               {mondeFranchi ? (
                 <span className="v-chip v-chip-done">
