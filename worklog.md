@@ -305,3 +305,23 @@ Stage Summary:
 - Le journal de bord est VIVANT partout : compteur mondes/étapes, liste des mondes traversés, récolte, % de profil — tous dérivés de l'état réel, réactifs sans rechargement.
 - PROD NON TOUCHÉE (17-b) — le fix partira avec le prochain feu vert (Monde 2 + Monde 3 + i18n + ce fix).
 - Note : état des quêtes toujours en localStorage (interimaire documenté) — la migration D1 (moteur serveur) reste la suite logique.
+
+---
+Task ID: 40
+Agent: orchestrateur (Z.ai Code)
+Task: Fix #/mondes — les mondes engagés/clôturés ne montraient pas leur clôture (remontée fondateur).
+
+Work Log:
+- Diagnostic E2E sur staging (agent-browser, compte jetable OTP backdoor + injection localStorage) : le mécanisme « Terminé » fonctionnait (injection M1+M2 complets → chips corrects), MAIS le cas INTERMÉDIAIRE était muet — un monde avec des quêtes terminées sans clic « Commencer le monde » (deep-link, reprise, flux félicitations) affichait AUCUN chip + bouton « Commencer » comme vierge (reproduit : M1 fait + 1.4/1.5 → M2 sans chip, « Start »). L'affichage ne dépendait que de worldsDone (toutes quêtes) + mondes.statuts (clic utilisateur), jamais du progrès intermédiaire. Deuxième angle mort : les stats d'en-tête étaient FIXES (11 mondes · 6 offerts · 51 étapes) — aucun chiffre vivant.
+- lib/progression.ts : useProgressionDetail() — parMonde {faites, total, derniereA} par monde livré (M1/M2/M3, codes alignés sur QUIDS_PAR_MONDE) ; derniereA = complétion la plus récente (max des termineeA, ISO ⇒ comparaison lexicale sûre) = la DATE de clôture réelle. Même bus d'abonnés, même cache par signature primitive ; useProgression() conservé (autres écrans intacts).
+- Mondes.tsx : chip « En cours » dès la 1ʳᵉ quête posée (engage = franchi || statuts || faites>0) ; compteur réel « X/N étapes » (3/3 · 2/7 · 8/8) à la place du fixe « N étapes » quand faites>0 ; CTA « Continuer » (au lieu de « Commencer ») pour tout monde engagé ; stats d'en-tête VIVANTES : x/11 mondes traversés · y/51 étapes · z cartes · 1 destination (le fixe « 6 offerts » cède la place — Premium/Toujours gratuit restent visibles par carte).
+- WorldModal.tsx : nouvelle prop progres (ProgresMonde|null) ; méta « X/N quêtes » réels ; chip « En cours » sur progrès réel (engage || confirme) ; fiche d'un monde traversé affiche la date de clôture : « Tu as traversé ce monde le 5 octobre 2026 — sa récolte est dans ton portrait. » (fr-FR / en-IE, même format que le journal).
+- i18n : clés EN ajoutées (mondes traversés · cartes · {{faites}}/{{total}} étapes · {{faites}}/{{total}} quêtes · Tu as traversé ce monde le {{date}}…).
+- Typecheck tsc --noEmit : 0 erreur. Commit 42aab4c, push main. Déployé staging version e463423f-f59e-48cc-a3b0-e7cf43f741fb.
+- E2E agent-browser sur le nouveau bundle : cas muet → M2 « 2/7 étapes | En cours | Continuer » ; complet → M1/M2/M3 « 3/3 | Terminé » + stats « 3/11 mondes traversés · 18/51 étapes · 8 cartes » ; fiche traversée → date de clôture FR (5 octobre 2026) ; EN → « 3/11 worlds crossed · 18/51 steps · 8 cards », « You traveled through this world on 8 October 2026… » ; vierge M3 → « Commencer » inchangé, M4+ « À venir » inchangés ; capture mobile 390 ; zéro erreur console.
+- Compte jetable e2emondes supprimé via la route RGPD DELETE /api/account (deleted:true), stockages navigateur purgés.
+
+Stage Summary:
+- L'atlas #/mondes (liste + fiches) reflète désormais la clôture RÉELLE : avancement par monde dès la première quête posée, compteurs vivants, date de clôture sur les mondes traversés — FR et EN.
+- PROD NON TOUCHÉE (17-b) — le fix partira avec le prochain feu vert (Monde 2 + Monde 3 + i18n + fixes progression/mondes).
+- Le même angle mort existe sur le panneau de la carte #/voyage (chip « Ouvert » sans compteur) — mineur, non bloquant, à harmoniser si le fondateur le souhaite.

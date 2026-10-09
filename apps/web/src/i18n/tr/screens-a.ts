@@ -100,6 +100,21 @@ export const SCREENS_A: Record<string, string> = {
   '{{n}} mondes jalonnent ton chemin — chacun révèle un territoire de toi. Touche un monde pour découvrir son objectif, sa récolte et comment ça se passe.':
     '{{n}} worlds line your path — each one reveals a territory of you. Touch a world to discover its purpose, its harvest and how it works.',
   'Le voyage en chiffres': 'The journey in numbers',
+  'Tu es ici': 'You are here',
+  'Ton arrêt actuel': 'Your current stop',
+  'Progression du monde {{nom}}': 'Progress of the world {{nom}}',
+  'Les mondes du chemin — touche un monde pour le découvrir':
+    'The worlds of your path — touch a world to discover it',
+  'La suite du voyage': 'The rest of the journey',
+  'La destination': 'The destination',
+  'La destination du voyage': 'The destination of the journey',
+  Verrouillé: 'Locked',
+  'Tous les mondes ouverts sont traversés': 'Every open world has been crossed',
+  "La suite du voyage arrive — les prochains mondes s'ouvriront bientôt.":
+    'The rest of the journey is coming — new worlds will open soon.',
+  "Le voyage continue — {{nom}} t'attend.": 'The journey continues — {{nom}} awaits you.',
+  'Un monde à la fois — chaque monde franchi éclaire le suivant.':
+    'One world at a time — each world you cross lights up the next.',
   mondes: 'worlds',
   offerts: 'free',
   'mondes traversés': 'worlds crossed',

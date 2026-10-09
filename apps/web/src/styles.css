@@ -3009,7 +3009,9 @@ button {
 }
 
 @media (min-width: 760px) {
-    .m-list {
+    /* Task 41 : le chemin des mondes livrés reste UNE colonne — la séquence
+       du voyage se lit de haut en bas (la grille en zigzag disparaît). */
+    .m-soon-grid {
         grid-template-columns: 1fr 1fr
     }
 }
@@ -3048,6 +3050,245 @@ button {
 
 .m-foot-cta {
     align-self: flex-start
+}
+
+/* Task 41 (demande fondateur) : réorganisation de l'atlas — héros « Tu es
+   ici », chemin des mondes livrés en colonne, suite compacte, destination,
+   états VERROUILLÉ honnêtes. Même langage visuel (carte, filet, ombre,
+   chips, tapis de couleurs des tuiles). */
+.m-hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #ffffff 0%, #eefaf7 100%);
+    border: 1px solid #cfe8e2;
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow)
+}
+
+.m-hero-ico {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(23, 44, 61, .06)
+}
+
+.m-hero-ico-end {
+    background: #dff3f4;
+    color: var(--c-turquoise-deep)
+}
+
+.m-hero-body {
+    min-width: 0;
+    flex: 1
+}
+
+.m-hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--c-turquoise-deep)
+}
+
+.m-hero-label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-turquoise);
+    animation: v-pulse 1.6s ease-in-out infinite
+}
+
+.m-hero-body h2 {
+    margin: 3px 0 8px;
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.m-hero-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px
+}
+
+.m-bar {
+    flex: 1;
+    min-width: 90px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    overflow: hidden
+}
+
+.m-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--c-turquoise), var(--c-turquoise-deep));
+    transition: width .5s ease
+}
+
+.m-bar-in-card {
+    margin-top: 10px
+}
+
+.m-hero-count {
+    font-size: 11.5px;
+    font-weight: 900;
+    color: var(--c-night);
+    white-space: nowrap
+}
+
+.m-hero-meta {
+    margin: 0 0 10px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+.m-hero-cta {
+    flex-shrink: 0;
+    align-self: center
+}
+
+@media (max-width: 479px) {
+    .m-hero-cta {
+        flex-basis: 100%;
+        justify-content: center
+    }
+}
+
+.m-sec-title {
+    margin: 24px 0 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-gray-blue)
+}
+
+.m-world-locked {
+    background: #fbfaf6
+}
+
+.m-world-locked .m-world-ico {
+    filter: grayscale(.45);
+    opacity: .8
+}
+
+.v-chip-lock {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #f1f4f2;
+    color: #5c6670;
+    border: 1px solid #e0e6e2;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap
+}
+
+.m-world-dest {
+    border-color: #f3d7de;
+    background: linear-gradient(135deg, #ffffff 0%, #fdf4f6 100%)
+}
+
+.m-soon-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px
+}
+
+.m-soon {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 11px 13px;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    box-shadow: var(--shadow)
+}
+
+.m-soon:hover {
+    border-color: #d3c9b2
+}
+
+.m-soon:focus-visible {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 2px
+}
+
+.m-soon-ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0
+}
+
+.m-soon-body {
+    min-width: 0;
+    flex: 1
+}
+
+.m-soon-body small {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--c-gray-blue)
+}
+
+.m-soon-body strong {
+    display: block;
+    margin: 1px 0 3px;
+    font-size: 13.5px;
+    font-weight: 900;
+    color: var(--c-night);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.m-soon-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-blue)
+}
+
+@media (max-width: 759px) {
+    .m-hero-ico {
+        width: 46px;
+        height: 46px
+    }
 }
 
 /* Task 31 (demande fondateur) : la section « Tes résultats » de Parcourus —
