@@ -446,3 +446,21 @@ langue de l'utilisateur ».
 
 **En attente** : feu vert fondateur (17-b) pour PROD — poussera Monde 2 +
 Monde 3 + i18n/devise ensemble (prod est restée en Monde 1).
+
+## Task 39 (2026-02-11) — FIX : journal de bord vivant (#/parcourus)
+
+**Le bug** : les compteurs de progression (X/11 mondes · X/51 étapes), la liste
+des mondes traversés et le % de profil restaient FIGÉS à zéro malgré les quêtes
+terminées — l'ancien constant PROGRESS (voyage.ts) n'était qu'un placeholder
+jamais raccordé à l'état des quêtes.
+
+**Le fix (commit 67acfc4, staging version ba60801c)** : `useProgression()`
+(lib/progression.ts) calcule la progression RÉELLE depuis `wairyu.quete.{id}` —
+même bus réactif que l'état des quêtes. Raccordé aux 6 écrans : Parcourus,
+Voyage, Mondes, Portrait, Recolte, Quete (profil %). Définitions : un monde est
+« franchi » quand toutes ses quêtes livrées sont terminées ; la récolte compte
+les cartes (écrans sans carte exclus).
+
+**E2E staging vérifié** : état vide honnête → M1+1.4 injectés → « 1/11 · 4/51 »,
+Le Miroir « Completed », 4 résultats → quête 1.5 terminée DANS L'UI → « 10%
+complete » en direct → journal 5/51 · 5 résultats. Mobile OK, 0 erreur console.
