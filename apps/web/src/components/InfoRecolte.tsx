@@ -83,11 +83,11 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     label: 'Carte-découverte',
     intro: 'La réponse de ton voyage à une question sur toi — ta lumière, ton ombre, ta tension.',
     points: [
-      'Elle nourrit ton Portrait : c\u2019est lui qui travaille tes compatibilités — de façon expliquée, jamais notée.',
-      'Elle donne à l\u2019autre un vrai point de départ pour t\u2019aborder : une tendance à te ressembler, pas une étiquette.',
-      'Tu décides de ce qui est visible et du moment — rien n\u2019apparaît sans toi.',
+      'Elle nourrit ton Portrait : c\x27est lui qui travaille tes compatibilités — de façon expliquée, jamais notée.',
+      'Elle donne à l\x27autre un vrai point de départ pour t\x27aborder : une tendance à te ressembler, pas une étiquette.',
+      'Tu décides de ce qui est visible et du moment — rien n\x27apparaît sans toi.',
     ],
-    garde: 'Ce n\u2019est ni un score, ni un diagnostic : une tendance mesurée sur tes réponses.',
+    garde: 'Ce n\x27est ni un score, ni un diagnostic : une tendance mesurée sur tes réponses.',
   },
   ecran: {
     ico: 'signpost',
@@ -106,7 +106,7 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     bg: '#dff3f4',
     fg: '#2a9aa0',
     label: 'Fragment de portrait',
-    intro: 'La pièce du portrait que ce mois du voyage t\u2019a donnée.',
+    intro: 'La pièce du portrait que ce mois du voyage t\x27a donnée.',
     points: [
       'Assemblés, tes fragments composent ton Portrait — ce que voient en premier les personnes compatibles avec toi.',
       'Chaque mois traversé ajoute une pièce : plus tu avances, plus ton portrait te ressemble.',
@@ -123,7 +123,7 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Permanent et non consommable : il reste à toi, sans jamais révéler tes réponses.',
       'Sur la plateforme, il témoigne de ton parcours — un profil qui voyage inspire confiance.',
     ],
-    garde: 'Un sceau ne s\u2019achète pas et ne se perd pas : il se traverse.',
+    garde: 'Un sceau ne s\x27achète pas et ne se perd pas : il se traverse.',
   },
   pass: {
     ico: 'signpost',
@@ -133,21 +133,21 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     intro: 'Un pass facilite une action précise de la plateforme.',
     points: [
       'Exemple : explorer une possibilité supplémentaire dans Découvrir.',
-      'Chaque pass affichera ce qu\u2019il permet et combien il en reste.',
+      'Chaque pass affichera ce qu\x27il permet et combien il en reste.',
     ],
-    garde: 'Un pass n\u2019achète jamais une meilleure compatibilité — les rencontres se construisent par le voyage.',
+    garde: 'Un pass n\x27achète jamais une meilleure compatibilité — les rencontres se construisent par le voyage.',
   },
   credit: {
     ico: 'star',
     bg: '#fff3d6',
     fg: '#e8a312',
     label: 'Crédits',
-    intro: 'Une réserve d\u2019actions pour la plateforme.',
+    intro: 'Une réserve d\x27actions pour la plateforme.',
     points: [
       'Certaines interactions se paieront en crédits — gagnés en voyageant.',
-      'Ton solde, tes gains et tes usages s\u2019afficheront dans ta récolte.',
+      'Ton solde, tes gains et tes usages s\x27afficheront dans ta récolte.',
     ],
-    garde: 'Les crédits ne s\u2019échangent jamais contre une meilleure compatibilité.',
+    garde: 'Les crédits ne s\x27échangent jamais contre une meilleure compatibilité.',
   },
   mois: {
     ico: 'map',
@@ -159,16 +159,16 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Chaque mois construit une pièce de ton portrait — la vraie monnaie de tes rencontres.',
       'Traversé, un mois te laisse des cartes, un fragment et un sceau.',
     ],
-    garde: 'Un mois s\u2019ouvre après l\u2019autre : le voyage reste la clé de tout.',
+    garde: 'Un mois s\x27ouvre après l\x27autre : le voyage reste la clé de tout.',
   },
   jalon: {
     ico: 'star',
     bg: '#fde9e6',
     fg: '#f56b53',
     label: 'Niveau du voyage',
-    intro: 'Un niveau de ta récolte — ce qu\u2019il débloque pour toi.',
+    intro: 'Un niveau de ta récolte — ce qu\x27il débloque pour toi.',
     points: [],
-    garde: 'Un niveau se franchit en voyageant — il ne s\u2019achète pas.',
+    garde: 'Un niveau se franchit en voyageant — il ne s\x27achète pas.',
   },
 };
 
@@ -176,19 +176,19 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
 const JALON_INTRO: Record<number, string> = {
   1: 'Ta Carte du voyage — le tableau de bord de ton parcours.',
   2: 'Ton premier portrait : ton fonctionnement renvoyé en toutes lettres.',
-  3: 'La synthèse d\u2019un mois entier de découvertes.',
+  3: 'La synthèse d\x27un mois entier de découvertes.',
   4: 'Les grandes zones de ta vie relationnelle, domaine par domaine.',
   5: 'Le portrait complet — celui qui travaille pour toi dans les rencontres.',
   6: 'La destination : rencontrer des personnes avec qui ça a du sens.',
 };
 
 const JALON_POINT: Record<number, string> = {
-  1: 'Elle te montre où tu en es et ce que chaque mois t\u2019a donné.',
-  2: 'C\u2019est la base que le reste du voyage vient préciser.',
-  3: 'Le portrait d\u2019un territoire de toi, lisible d\u2019un coup d\u2019œil.',
+  1: 'Elle te montre où tu en es et ce que chaque mois t\x27a donné.',
+  2: 'C\x27est la base que le reste du voyage vient préciser.',
+  3: 'Le portrait d\x27un territoire de toi, lisible d\x27un coup d\x27œil.',
   4: 'Chaque domaine approfondit ce que le matching peut comprendre de toi.',
   5: 'La pièce maîtresse : ton parcours entier, assemblé.',
-  6: 'La Rencontre n\u2019est jamais payante — elle se franchit en voyageant.',
+  6: 'La Rencontre n\x27est jamais payante — elle se franchit en voyageant.',
 };
 
 /** Traduit une notification du journal en élément expliquable (panneau cloche). */
@@ -279,7 +279,7 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
   const points =
     item.type === 'jalon'
       ? [tx(JALON_POINT[Math.min(6, Math.max(1, item.jalonNum ?? 1))])]
-      : r.points;
+      : r.points.map((p) => tx(p));
 
   const premium = item.type === 'mois' && item.mondeCode ? !item.traverse : false;
 
@@ -309,7 +309,7 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
             type="button"
             className="w-modal-close ri-fermer"
             onClick={onClose}
-            aria-label={tx('Fermer l\u2019explication')}
+            aria-label={tx('Fermer l\x27explication')}
           >
             <svg
               viewBox="0 0 24 24"
@@ -350,7 +350,7 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
             <>
               <h3 className="ri-h3">
                 {item.traverse
-                  ? tx('Ce que ce mois t\u2019a donné :')
+                  ? tx('Ce que ce mois t\x27a donné :')
                   : tx('Ce que ce mois te réserve :')}
               </h3>
               <ul className="ri-points ri-points-contenu">
@@ -368,12 +368,12 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
                 <em>Premium</em>
               </span>
               <p>
-                {tx('Ce mois s\u2019ouvrira avec l\u2019abonnement mensuel — {{prix}}/mois.', {
+                {tx('Ce mois s\x27ouvrira avec l\x27abonnement mensuel — {{prix}}/mois.', {
                   prix: formaterPrixFacturation('mensuel', devise, lang),
                 })}
               </p>
               <p className="ri-premium-note">
-                {tx('L\u2019ouverture des paiements arrive bientôt : quand tu ouvriras un mois, sa récolte sera annoncée ici, par notification.')}
+                {tx('L\x27ouverture des paiements arrive bientôt : quand tu ouvriras un mois, sa récolte sera annoncée ici, par notification.')}
               </p>
             </div>
           )}
