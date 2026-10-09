@@ -40,6 +40,13 @@ export const CORE: Record<string, string> = {
   'La connexion sociale a échoué — réessayez, ou utilisez le code email.':
     'Social sign-in failed — try again, or use the email code.',
   'Logo Wairyu — deux bulles de dialogue reliées': 'Wairyu logo — two connected speech bubbles',
+  'Logo Wairyu — deux bulles de dialogue reliées par trois points':
+    'Wairyu logo — two speech bubbles connected by three dots',
+  'Des rencontres sincères, à votre rythme. Photos consenties, messages réels, matching explicable.':
+    'Genuine connections, at your own pace. Consented photos, real messages, explainable matching.',
+  'Photos consenties, jamais volées': 'Consented photos, never stolen',
+  'Matching explicable, jamais opaque': 'Explainable matching, never a black box',
+  "La rencontre n'est jamais payante": 'Meeting someone is never behind a paywall',
   'Chargement…': 'Loading…',
 
   // ---- TabBar
