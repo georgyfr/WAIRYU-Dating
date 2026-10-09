@@ -419,3 +419,23 @@ Stage Summary:
 - Aucune récompense inventée (règle §16) ; aucune donnée/logique modifiée (règle §19) ; l'existant conservé (3 portes, échelle des jalons, privacy, verbatim U+2019).
 - PROD NON TOUCHÉE (17-b) — partira au prochain feu vert avec M2+M3+i18n+fixes 39→43.
 - Noté (hors périmètre) : Mondes.tsx affiche aussi « n cartes » invariable dans son héros (même nit pluriel, non touché ici) ; l'échelle des jalons reste indicative au-delà du Niveau 3 tant que Portraits de Domaine/Intégral/Rencontre n'existent pas (chips basculeront quand ces restitutions seront livrées).
+
+---
+Task ID: 44
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT PROD — mise en production de M2 + M3 + i18n FR/EN + fixes 39→43 (déploiement + vérification post-déploiement).
+
+Work Log:
+- État pré-déploiement : main = f997886 + worklog Task 43 committé (1358419, pushé) ; staging servait le MÊME bundle (index-B-Q2cRy-.js) E2E-vérifié Tasks 39→43 — zéro diff de code.
+- `bash deploy.sh production` : typecheck API OK → build Vite (30 assets) → migrations D1 wairyu-prod : « No migrations to apply » (schéma déjà à jour) → wrangler deploy default env.
+- PROD EN LIGNE : version 6414f645-1c81-4608-afe6-5944d8cb2d79 — https://wairyu.wairyu.workers.dev — 6 assets nouveaux uploadés dont index-B-Q2cRy-.js (HASH IDENTIQUE au bundle staging E2E-vérifié : exactement le code testé en 39→43).
+- Smoke prod : /api/health {ok:true, env:production} · / → 200 · /api/auth/config (Turnstile + Google + Facebook + Brevo) · /api/push/events & /api/push/key → 200.
+- agent-browser mobile 390×844 sur prod : landing rendue (PWA, console notifications), écran connexion + écran OTP (widget Turnstile présent), routes protégées #/mondes et #/recolte → redirection connexion propre (garde OK, pas d'écran blanc), zéro erreur JS.
+- E2E comportemental COMPLET sur prod bloqué par Turnstile (fail-closed strict : 2 essais headless refusés — rôle assumé de l'anti-robot) : couvert par l'identité du bundle (staging = prod, hash égal) déjà E2E-vérifié sur 3 états de progression, FR/EN, mobile+desktop.
+- Sanity D1 prod (lecture seule) : 4 users (ère M1), 0 auth_codes résiduel, 15 tables. AUCUN compte créé, AUCUNE écriture prod pendant la vérification (OTP jamais demandé).
+- Worklog committé + pushé (main).
+
+Stage Summary:
+- PROD passe de M1 (Task 36) à M1+M2+M3 (18 quêtes) + i18n FR/EN + fixes 39/40/41/42/43 : journal de bord vivant partout, atlas honnête avec verrou séquentiel VISIBLE (La Boussole ne s'ouvre qu'après la fin du Volant), #/recolte & #/parcourus réorganisés, « Ma récolte » = coffre du voyageur complet (Task 43).
+- Restes mineurs notés (non bloquants, à la demande du fondateur) : nit pluriel « n cartes » dans le héros #/mondes · deep-links #/quete/{id} sans vérif du verrou séquentiel · chip « Ouvert » sans compteur sur la carte #/voyage · jalons indicatifs au-delà du Niveau 3.
+- Prochain feu vert prod seulement après livraison + E2E staging des prochains changements.
