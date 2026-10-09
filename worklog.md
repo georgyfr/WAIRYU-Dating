@@ -697,3 +697,33 @@ Stage Summary:
 - 12 chaînes chrome ajoutées à screens-a.ts (section « Task 46 ») — clés = FR exact du code, valeurs EN U+0027.
 - tsc --noEmit : 0 erreur · U+2019 : 0 dans tout fichier créé/modifié (hors clés FR verbatim préexistantes, documentées) · NOTA_BARRES_EN re-affadé au U+0027 au passage.
 - Reste à l'orchestrateur : commit + E2E EN (briefing/cartes/badge/amorces/écran privé 3.7 en EN, chip « World 4 — Your Terrain »), puis feu vert prod (avec l'intégration 46-b déjà dans l'arbre).
+
+---
+Task ID: 46
+Agent: orchestrateur (Z.ai Code)
+Task: MONDE 4 « Ton Terrain » — construction des 7 quêtes 3.1→3.7 (demande fondateur : « démarre le Monde 4 »), du livrable verbatim à l'E2E staging.
+
+Work Log:
+- Recon : livrables M4 dans /tmp/livrables (archive/v1-2026-10-05, 51 dossiers) · pattern M3 étudié (quete-2-1.ts/-def/-arche + i18n EN + registre).
+- Task 46-a (audit-M4) : /tmp/m4-audit.md (1154 l.) — fiches d'extraction par quête, verbatim intégral (24 items, 22 cartes, 8 amorces, passations gelées, signatures, 18 ambiguïtés consignées non tranchées).
+- Task 46-b (contrat) : /tmp/m4-integration.md (306 l.) — cartographie M3 en 20 points de contact, checklist fichier par fichier, formats 3.6/3.7, 3 risques (ternaires de déblocage, branches en dur Quete.tsx, compteurs).
+- Tasks 46-c1→c7 (7 agents parallèles) : 33 fichiers, ~5 000 l. — quete-3-{1..7}.ts (computation : ITEMS verbatim, PASSATION gelée, scorer, sélecteurs, CARTES verbatim, BRIEFING/COMPLETION) + -def (accompagnement neutre, ombreRelationnel, suite) + -arche ×6 + miroirs EN. Trames ▲ T07-T08/T09-T12 SAUTÉES (règle 11-b — formulations hors dépôt). Vérifications agents : tsc 0 erreur, verbatim byte-à-byte, 0 segment ≥ 60 c repris du miroir, 0 U+2019.
+- Task 46 (intégration) : quetes.ts (IdQuete 3.1-3.7, QUETE_IDS 25, 7 entrées REGISTRE_FR, mondeDeQuete→M4, format 'images' + ItemPassation.images) · quetes-plus (PLUS + ARCHE_FR 3.x) · quete-2-8-def (pont suivante '3.1') · voyage.ts (M4 'open') · progression (QUIDS/CODES M4) · Mondes.tsx (monde3Fini + 3 ternaires M4) · App.tsx (queteAccessible M3/M4 — bug latent du ternaire corrigé) · Parcourus/Recolte (7 hooks 3.x chacun) · Quete.tsx (commentRepondreFormat 'images' + copie 3.7 dédiée, branche 'images' sans tags ni abstention, garde multi 1-3 (4ᵉ toggle désactivé), écran final PRIVÉ 3.7 sans restitution, badge 3.1 🌅/🦉 sur carte, amorces brise-glaces 3.6, fix q-next-end : texte M1 conditionnel quête 1.3) · styles.css (q-img-*, q-carte-badge, q-amorces-*) · miroir EN (Task 46-e : registre-m4.ts 761 l., arches-m4.ts 336 l. fusion des 6 temporaires, MONDES_NOMS.M4, 12 clés chrome).
+- Typecheck 0 erreur. Commit 7e8f5b8 (45 fichiers, +6 003 l.). Staging 54c1a15b.
+- E2E agent-browser (staging, EN puis FR, compte jetable e2e-m4 OTP backdoor, 390 + desktop) :
+  · Atlas vierge : M4 « Locked — This world will open once you have finished The Compass. » (ternaires corrigés) ; deep-link #/quete/3.1 verrouillé → retombe sur l'atlas.
+  · Injection M1-M3 (18 quêtes, carteIds réels) → reload : héros « Your Terrain · 3/11 · 18/51 · 15 cards », M4 « Start » déverrouillé, M5+ « Coming soon ».
+  · Briefing 3.1 EN (« World 4 — Your Terrain · Quest 1 of 7 · Free ») puis 3.2 FR (« Monde 4 — Ton Terrain · Quête 2 sur 7 · Ton quotidien ») — zéro repli FR/EN.
+  · Passation 3.1 dans l'UI (5 Likert) → carte « The Tide Between Two Hours » (entre-deux SANS badge — conforme) + TOAST live « New discovery ».
+  · 3.6 : branche 'images' rend thème + 2 libellés A/B (assets à venir), SANS tags Maintenant/Plus tard, avance au toucher.
+  · 3.7 : multi 1-3 — garde vérifiée (3 cochées → 4ᵉ/5ᵉ toggle désactivés) ; écran final PRIVÉ « Your attractions stay yours. » sans AUCUNE restitution des choix.
+  · Notifications : panneau groupé « Month 4 — Your Terrain » (carte:3.1 + ecran:3.7 + mois-ouvert:M4 au 1ᵉʳ engagement) ; clic entrée → pop-up « Month 4 of 11 · Earned on 9 October 2026 · WHAT IT DOES IN YOUR ENCOUNTERS ».
+  · Recolte : « MOIS 4 SUR 11 · Ton terrain · En cours · 2/7 étapes », collection par mois, révélation 3.1.
+  · Régression : 1.3 garde son bloc « Et maintenant ? » + texte M1 ; 2.3/2.6 cartes OK ; mobile 390 sans débordement ; 0 erreur console.
+  · Purge RGPD : DELETE /api/account 200 — D1 : 0 user e2e-m4 restant.
+
+Stage Summary:
+- LE MONDE 4 EST LIVRÉ SUR STAGING : 7 quêtes verbatim (rythme de vie · quotidien · temps libre · argent · entourage · choix visuel · attirances), formats likert ×5 + images A/B ×1 + déclaratif privé ×1, 22 cartes + badge 🌅/🦉 + 8 amorces brise-glaces, chaîne 2.8→3.1→…→3.7 verrouillée séquentiellement, notifications/notifs/recolte/portrait dérivés automatiquement (mondeDeQuete → M4).
+- 25 quêtes ouvertes sur 50 · TOTAL_STEPS reste 51 (25/51 ≈ 49 % max — voulu) · phrase héros Recolte basculera seule à 4 mondes.
+- PROD NON TOUCHÉE — déploiera au prochain feu vert (avec Task 45 déjà en prod).
+- Noté : assets graphiques 3.6 à venir (le format 'images' les allumera sans refonte) · bornes garde 3.7 « À VALIDER PAR LE COMITÉ » · écarts R6 3.1/3.2/3.4 documentés · seuils FM-019 provisoires.
