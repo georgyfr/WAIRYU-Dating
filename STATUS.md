@@ -417,3 +417,32 @@ Le fondateur a transmis une feuille de corrections design en 8 points (esthétiq
 **Nit UX hérité de M2 (renvoi fondateur)** : une quête sansCarte terminée rouvre DIRECTEMENT son écran — le briefing « Voulez-vous commencer ? » (qui porte « Effacer mes réponses ») n'est plus atteignable pour 1.7/1.11/2.8 ; à arbitrer.
 
 **Prochaine** : validation fondateur sur STAGING (le Monde 3 complet est jouable après le Monde 2) → mise en prod M2+M3 SUR AUTORISATION → monde 4 « Ton terrain » (3.1 → 3.7, même méthode).
+
+---
+
+## 2026-10-09 — i18n FR/EN + devise par utilisateur (demande fondateur)
+
+**Demande** : « la devise varie selon la monnaie de l'utilisateur (valable aussi
+pour les paiements premium) + ajouter l'anglais, l'app fonctionne selon la
+langue de l'utilisateur ».
+
+**Livré (commit f4640f7 + fixes, staging version cfb585d0)** :
+- **Devise** : 14 devises (EUR/USD/GBP/CHF/CAD/MAD/DZD/TND/XAF/XOF/CDF/GNF/NGN/AED),
+  détection auto par région navigateur, modifiable en 2 taps (menu compte + Profil).
+  Montants des quêtes = base EUR du Livrable convertis AU RENDU avec arrondis
+  propres (120 € → 78 500 FCFA · $130 · £105) — le FR+EUR reste verbatim.
+- **Paiements premium (prêt)** : `PRIX_PREMIUM` (mensuel/annuel × devise, points
+  de prix psychologiques par marché) + `formaterPrixFacturation` — contrat PSP.
+- **Anglais** : architecture « le français n'est jamais touché » — miroirs EN
+  fusionnés au chargement, repli FR silencieux. Chrome complet (en-tête, tabs,
+  quête, auth, RGPD…), contenus des 3 mondes (items, cartes, archétypes,
+  briefings, suites), voyage (11 mondes), PDF en langue utilisateur. Détection
+  auto (fr→FR, en→EN), ~2 300 chaînes EN.
+- **E2E vérifié** (agent-browser, staging) : détection auto, OTP backdoor,
+  switching langue (rechargement) et devise (à chaud), « 78 500 FCFA » /
+  « 120 € », mobile OK, 0 erreur console.
+- ADMIN_TOKEN staging reposé (ancien perdu au reset sandbox) — valeur dans
+  SECRETS-WAIRYU-LOCAL.txt.
+
+**En attente** : feu vert fondateur (17-b) pour PROD — poussera Monde 2 +
+Monde 3 + i18n/devise ensemble (prod est restée en Monde 1).
