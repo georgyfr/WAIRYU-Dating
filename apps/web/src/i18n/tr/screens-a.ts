@@ -164,6 +164,12 @@ export const SCREENS_A: Record<string, string> = {
 
   // ---- écran Parcourus (journal de bord)
   'Mes Mondes parcourus': 'My Traveled Worlds',
+  '{{p}} % de ton voyage parcouru': '{{p}}% of your journey traveled',
+  'Progression du voyage': 'Journey progress',
+  'Continuer le voyage': 'Continue the journey',
+  'Là où tu en es': 'Where you stand',
+  'Prochain monde': 'Next world',
+  'Traversé le {{date}}': 'Traveled on {{date}}',
   "Ton journal de bord — les mondes traversés et ce qu'ils t'ont révélé.":
     'Your logbook — the worlds you have traveled and what they revealed about you.',
   'Ton parcours en chiffres': 'Your journey in numbers',
@@ -190,6 +196,11 @@ export const SCREENS_A: Record<string, string> = {
 
   // ---- écran Recolte
   'Ma récolte': 'My harvest',
+  'Ton avancement': 'Your progress',
+  '{{n}} cartes récoltées': '{{n}} cards gathered',
+  'Ta récolte commence avec ta première quête.': 'Your harvest begins with your first quest.',
+  'Tes espaces': 'Your spaces',
+  Atteint: 'Unlocked',
   'Ton Portrait': 'Your portrait',
   'Dès tes premières réponses, ton portrait commence à se construire.':
     'From your first answers, your portrait begins to take shape.',
