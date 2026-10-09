@@ -727,3 +727,20 @@ Stage Summary:
 - 25 quêtes ouvertes sur 50 · TOTAL_STEPS reste 51 (25/51 ≈ 49 % max — voulu) · phrase héros Recolte basculera seule à 4 mondes.
 - PROD NON TOUCHÉE — déploiera au prochain feu vert (avec Task 45 déjà en prod).
 - Noté : assets graphiques 3.6 à venir (le format 'images' les allumera sans refonte) · bornes garde 3.7 « À VALIDER PAR LE COMITÉ » · écarts R6 3.1/3.2/3.4 documentés · seuils FM-019 provisoires.
+
+---
+Task ID: 46-prod
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT PROD fondateur — mise en production de Task 46 (Monde 4 « Ton Terrain »). Session ouverte APRÈS un 8ᵉ reset sandbox.
+
+Work Log:
+- Constat de reset : /home/z/wairyu, SECRETS-WAIRYU-LOCAL.txt et .wrangler ABSENTS ; survivants : my-project (worklog Task 37 + PLAN) et /tmp/my-project (template) — procédure de reconstitution réappliquée.
+- Repo re-cloné github.com/georgyfr/WAIRYU-Dating → main 91b5ba6 (clone anonyme possible, dépôt public), working tree propre. DÉCOUVERTE : Task 46 (Monde 4) DÉJÀ construite, intégrée, E2E staging OK (commit 7e8f5b8, worklog 91b5ba6) — le feu vert porte sur la PROD, gabarit Task 45-prod.
+- Audit worklog Task 46 relu (46-a audit 1154 l. ; 46-c1→c7 sept quêtes ; 46-e miroir EN 528 contrôles ; 46 final : staging 54c1a15b, E2E FR/EN + mobile + régression + purge RGPD) ; worklog my-project (époques 37) relus pour contexte.
+- Pré-vol prod SANS credentials : bun install OK (258 paquets) · tsc --noEmit apps/api → 0 erreur · vite build → index-BmyWVmEY.js, BYTE-IDENTIQUE au bundle staging actuellement servi (build déterministe — l'artefact prod sera exactement l'artefact E2E-vérifié) · commit 7e8f5b8 = 45 fichiers apps/web UNIQUEMENT (aucune migration D1, aucun changement API — migrations seront no-op).
+- Environnements en ligne vérifiés : prod health 200 env=production (bundle index-CPxwtyEA.js = Task 45, version de537171) · staging health 200 env=staging · bundle staging téléchargé et scanné : chaînes M4 présentes FR (« Ton Terrain », « Ton rythme de vie », « Tes attirances », « Le choix visuel ») et EN (« World 4 — Your Terrain », « Your attractions »).
+- BLOCAGE DÉPLOYEMENT : CLOUDFLARE_API_TOKEN et CLOUDFLARE_ACCOUNT_ID perdus avec le reset (recherches locales exhaustives : tool-results, /tmp, env, wrangler.toml — aucune valeur retrouvée ; les valeurs ne furent jamais écrites dans un dépôt, discipline 17-b respectée). deploy.sh exige les deux variables. Pattern établi (7ᵉ reset, Task 37-setup) : le fondateur re-fournit les secrets, qui sont écrits hors dépôt.
+
+Stage Summary:
+- Task 46 (Monde 4 « Ton Terrain ») PRÊTE POUR LA PROD : pré-vol intégralement vert, artefact de build = bundle staging E2E-vérifié, périmètre front-only.
+- DÉPLOIEMENT EN ATTENTE des secrets fondateur (CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID, cf. /home/z/SECRETS-WAIRYU-LOCAL.txt — hors dépôt, chmod 600). Au reçu : bash deploy.sh production → smoke (health, bundle, VAPID) → agent-browser prod (rendu, garde de route, mobile 390 ; E2E authentifié reste impossible headless — Turnstile fail-closed, couverture par staging même bundle) → worklog final + push (PAT requise).
