@@ -402,7 +402,7 @@ export default function Recolte() {
             </span>
             <span role="listitem">
               <strong>{recolte}</strong>{' '}
-              {tx('{{n}} carte{{s}}', { n: recolte, s: recolte > 1 ? 's' : '' })}
+              {recolte > 1 ? tx('cartes') : tx('carte')}
             </span>
           </div>
           {/* LA PHRASE DYNAMIQUE — elle évolue avec la progression. */}

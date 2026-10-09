@@ -218,7 +218,7 @@ export const SCREENS_A: Record<string, string> = {
     'Your harvest is yours: you choose what you share, when you share it — and the space to manage what you show will open later in your journey.',
   // ---- Refonte « Ma récolte » (Task 43) — le coffre du voyageur
   '{{n}} carte{{s}} récoltée{{s2}}': '{{n}} card{{s}} gathered',
-  '{{n}} carte{{s}}': '{{n}} card{{s}}',
+  carte: 'card',
   "Ce que ton voyage t'a déjà apporté.": 'What your journey has already brought you.',
   'Mon voyage': 'My journey',
   'Le chemin du voyage — {{a}} monde{{s}} sur {{b}} traversé{{s2}}':
