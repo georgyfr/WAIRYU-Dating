@@ -336,7 +336,11 @@ export default function Recolte() {
           <small className="m-hero-label">{tx('Mon voyage')}</small>
           <h2>
             {recolte > 0
-              ? tx('{{n}} cartes récoltées', { n: recolte })
+              ? tx('{{n}} carte{{s}} récoltée{{s2}}', {
+                  n: recolte,
+                  s: recolte > 1 ? 's' : '',
+                  s2: recolte > 1 ? 's' : '',
+                })
               : tx('Ta récolte commence avec ta première quête.')}
           </h2>
           {/* LE CHEMIN — 11 arrêts, pas une barre XP : chaque monde traversé
@@ -397,7 +401,8 @@ export default function Recolte() {
               <strong>{stepsDone}/{TOTAL_STEPS}</strong> {tx('étapes')}
             </span>
             <span role="listitem">
-              <strong>{recolte}</strong> {tx('cartes')}
+              <strong>{recolte}</strong>{' '}
+              {tx('{{n}} carte{{s}}', { n: recolte, s: recolte > 1 ? 's' : '' })}
             </span>
           </div>
           {/* LA PHRASE DYNAMIQUE — elle évolue avec la progression. */}
