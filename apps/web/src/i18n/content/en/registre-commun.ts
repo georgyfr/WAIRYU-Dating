@@ -11,11 +11,13 @@
  * Repli FR garanti par avecEN si ce fichier est incomplet.
  */
 
-/** Le libellé des mondes (mondeDeQuete — chip d'entête des écrans). */
+/** Le libellé des mondes (mondeDeQuete — chip d'entête des écrans).
+ *  M4 : nom EN déjà posé dans en/voyage.ts (« Your Terrain »). */
 export const MONDES_NOMS: Record<string, string> = {
   M1: 'World 1 — The Mirror',
   M2: 'World 2 — The Wheel',
   M3: 'World 3 — The Compass',
+  M4: 'World 4 — Your Terrain',
 };
 
 /** Les mots-nombre de titreTendances (2 → 5). */
@@ -68,4 +70,4 @@ export const COMMUN_EN = {
 
 /** « À noter » — la passe d'honnêteté du gabarit fondateur. */
 export const NOTA_BARRES_EN =
-  'Please note: these bars are a snapshot of today’s answers, not grades or verdicts. Every tendency has its strength and its risk — what matters is consciously choosing where to place the cursor.';
+  'Please note: these bars are a snapshot of today\'s answers, not grades or verdicts. Every tendency has its strength and its risk — what matters is consciously choosing where to place the cursor.';

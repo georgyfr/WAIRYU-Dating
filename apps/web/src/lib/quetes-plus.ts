@@ -115,6 +115,12 @@ import { ARCHES_2_4 } from './quete-2-4-arche';
 import { ARCHES_2_5 } from './quete-2-5-arche';
 import { ARCHES_2_6 } from './quete-2-6-arche';
 import { ARCHES_2_7 } from './quete-2-7-arche';
+import { ARCHES_31 } from './quete-3-1-arche';
+import { ARCHES_32 } from './quete-3-2-arche';
+import { ARCHES_33 } from './quete-3-3-arche';
+import { ARCHES_34 } from './quete-3-4-arche';
+import { ARCHES_35 } from './quete-3-5-arche';
+import { ARCHES_36 } from './quete-3-6-arche';
 import type { IdQuete } from './quetes';
 import { avecEN } from '../i18n/apply';
 import * as EN_ARCHE from '../i18n/content/en/arches';
@@ -141,6 +147,13 @@ export const PLUS: Record<IdQuete, CouchePlus> = {
   '2.6': { cartes: {}, leviers: {} },
   '2.7': { cartes: {}, leviers: {} },
   '2.8': { cartes: {}, leviers: {} },
+  '3.1': { cartes: {}, leviers: {} },
+  '3.2': { cartes: {}, leviers: {} },
+  '3.3': { cartes: {}, leviers: {} },
+  '3.4': { cartes: {}, leviers: {} },
+  '3.5': { cartes: {}, leviers: {} },
+  '3.6': { cartes: {}, leviers: {} },
+  '3.7': { cartes: {}, leviers: {} },
 };
 
 /** Les archétypes GÉNÉRAUX (Task 33), par identifiant de quête, clés = variantes.
@@ -166,5 +179,12 @@ const ARCHE_FR: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '2.6': ARCHES_2_6,
   '2.7': ARCHES_2_7,
   '2.8': {},
+  '3.1': ARCHES_31,
+  '3.2': ARCHES_32,
+  '3.3': ARCHES_33,
+  '3.4': ARCHES_34,
+  '3.5': ARCHES_35,
+  '3.6': ARCHES_36,
+  '3.7': {},
 };
 export const ARCHE = avecEN(ARCHE_FR, EN_ARCHE.ARCHE);

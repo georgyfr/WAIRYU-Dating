@@ -138,8 +138,17 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const et19 = useEtatQuete('1.9');
   const et110 = useEtatQuete('1.10');
   const et111 = useEtatQuete('1.11');
+  const et21 = useEtatQuete('2.1');
+  const et22 = useEtatQuete('2.2');
+  const et23 = useEtatQuete('2.3');
+  const et24 = useEtatQuete('2.4');
+  const et25 = useEtatQuete('2.5');
+  const et26 = useEtatQuete('2.6');
+  const et27 = useEtatQuete('2.7');
+  const et28 = useEtatQuete('2.8');
   const monde1Fini = useEtatQuete('1.1').terminee && useEtatQuete('1.2').terminee && et13.terminee;
   const monde2Fini = [et14, et15, et16, et17, et19, et110, et111].every((e) => e.terminee);
+  const monde3Fini = [et21, et22, et23, et24, et25, et26, et27, et28].every((e) => e.terminee);
   const [openCode, setOpenCode] = useState<string | null>(null);
   const openWorld = openCode ? (WORLDS.find((w) => w.code === openCode) ?? null) : null;
   const fermerFiche = useCallback(() => setOpenCode(null), []);
@@ -159,7 +168,15 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const etatDeMonde = (w: VoyageWorld): EtatMonde => {
     if (w.num <= worldsDone) return 'termine';
     const ouvrable =
-      w.code === 'M1' ? true : w.code === 'M2' ? monde1Fini : w.code === 'M3' ? monde2Fini : false;
+      w.code === 'M1'
+        ? true
+        : w.code === 'M2'
+          ? monde1Fini
+          : w.code === 'M3'
+            ? monde2Fini
+            : w.code === 'M4'
+              ? monde3Fini
+              : false;
     if (w.status === 'open' && !ouvrable) return 'verrouille';
     const faites = parMonde[w.code]?.faites ?? 0;
     if (estEnCours(statuts, w.code) || faites > 0) return 'en_cours';
@@ -168,7 +185,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   };
 
   // La géographie de l'atlas : mondes LIVRÉS (un progrès est possible),
-  // mondes À VENIR (M4→M10, compact) et LA DESTINATION (M11, carte dédiée).
+  // mondes À VENIR (M5→M10, compact) et LA DESTINATION (M11, carte dédiée).
   const livrees = WORLDS.filter((w) => !!parMonde[w.code]);
   const destination = WORLDS[WORLDS.length - 1];
   const aVenir = WORLDS.filter((w) => w.status === 'soon' && w !== destination);
@@ -514,12 +531,15 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                 ? monde1Fini
                 : openWorld.code === 'M3'
                   ? monde2Fini
-                  : false
+                  : openWorld.code === 'M4'
+                    ? monde3Fini
+                    : false
           }
           onEnterQuest={
             openWorld.code === 'M1' ||
             (openWorld.code === 'M2' && monde1Fini) ||
-            (openWorld.code === 'M3' && monde2Fini)
+            (openWorld.code === 'M3' && monde2Fini) ||
+            (openWorld.code === 'M4' && monde3Fini)
               ? onEnterQuest
               : undefined
           }

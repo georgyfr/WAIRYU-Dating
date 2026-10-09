@@ -49,8 +49,9 @@ export const DEF_28: EntreeRegistre = {
   // precedent 1.7, ratification comité — exemptions documentées au Livrable).
   ombreRelationnel: {},
 
-  // Dernière quête du Monde 3 « La Boussole » — la chaîne se referme ici.
-  suivante: null,
+  // Le pont vers le Monde 4 « Ton Terrain » (série 3.x — Task 46) : la chaîne
+  // continue au-delà de La Boussole.
+  suivante: '3.1',
 
   suite: {
     titre: 'La suite de ton voyage',

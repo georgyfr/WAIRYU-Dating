@@ -126,7 +126,9 @@ function queteAccessible(id: IdQuete): boolean {
   const prec: readonly IdQuete[] =
     code === 'M2'
       ? ['1.1', '1.2', '1.3']
-      : ['1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11'];
+      : code === 'M3'
+        ? ['1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11']
+        : ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8'];
   return prec.every((x) => lireEtatQuete(x).terminee);
 }
 

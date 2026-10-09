@@ -6946,3 +6946,95 @@ button.r-tl-chip:hover {
     font-size: 11.5px;
     color: #cfe3df
 }
+
+/* ── Task 46 · Monde 4 « Ton Terrain » ────────────────────────────────────
+   3.6 « Le choix visuel » — format 'images' : deux scènes A/B par écran,
+   libellés seuls tant que les assets design n'arrivent (item.images les
+   allumera) ; réponse PAR PÔLE (ancre/horizon), jamais par côté d'écran ;
+   pas d'abstention — un toucher avance. Même exigence tactile que
+   q-choix-btn (≥ 44 px). Aussi : badge de conversation 3.1 (🌅/🦉) et
+   amorces brise-glaces 3.6 (rendu carte). */
+.q-img {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px
+}
+
+.q-img-btn {
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--c-line);
+    background: var(--c-white);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-night);
+    text-align: left;
+    line-height: 1.45;
+    cursor: pointer;
+    transition: border-color .12s ease, background .12s ease, transform .08s ease
+}
+
+.q-img-btn:hover {
+    border-color: var(--c-turquoise-deep)
+}
+
+.q-img-btn:active {
+    transform: scale(.985)
+}
+
+.q-img-btn-on {
+    border-color: var(--c-turquoise-deep);
+    background: var(--c-turquoise-soft)
+}
+
+.q-img-visuel {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius-sm) - 4px);
+    display: block
+}
+
+.q-img-label {
+    display: block
+}
+
+/* Le badge de conversation 3.1 — 🌅/🦉 sous le nom de carte (les extrêmes
+   seulement ; l'entre-deux n'en porte pas — Livrable). */
+.q-carte-badge {
+    margin: 10px 0 0;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--c-cream-deep, #f5f1e6);
+    border: 1px solid var(--c-line);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--c-night);
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.q-carte-badge-emo {
+    font-size: 20px;
+    line-height: 1
+}
+
+/* Les amorces brise-glaces 3.6 — 8 débuts de conversation, jamais un test. */
+.q-amorces-liste {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 6px
+}
+
+.q-amorces-note {
+    margin: 8px 0 0;
+    font-size: 12.5px;
+    color: var(--c-ink-soft, #5a6b78)
+}

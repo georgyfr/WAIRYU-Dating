@@ -56,6 +56,9 @@ import { LIBRE_CODE } from '../lib/quete-2-3';
 import { INTENTION_CODE, intentionAffichee, MESSAGE_DOUX } from '../lib/quete-2-5';
 import { AXES as AXES_26 } from '../lib/quete-2-6';
 import { DISCLAIMER_28, PIED_ECRAN_28, titreBadge28, choisirVariante as choisirVariante28 } from '../lib/quete-2-8';
+import { BADGES_31 } from '../lib/quete-3-1';
+import { AMORCES } from '../lib/quete-3-6';
+import { ECRAN_FINAL_37, compteSelections37, GARDE_MAX_37 } from '../lib/quete-3-7';
 import {
   enregistrerReponse,
   enregistrerTexte,
@@ -79,7 +82,17 @@ type Phase = 'briefing' | 'passation' | 'details' | 'carte' | 'ecran';
 function commentRepondreFormat(
   format: QueteDef['format'],
   tx: (fr: string, vars?: Record<string, string | number>) => string,
+  queteId?: string,
 ): readonly string[] {
+  // 3.7 « Tes attirances » — le déclaratif PRIVÉ a SA copie (le générique
+  // 'ecran' dit « tu ne dis rien » : faux ici, la garde 1-3 s'applique).
+  if (queteId === '3.7') {
+    return [
+      tx("Cinq déclarations s'affichent une à une : tu coches de une à trois options — jamais plus."),
+      tx("Rien ne se déduit et rien ne se note : tes choix organisent tes découvertes, ils ne te classent pas."),
+      tx("Personne ne voit tes déclarations : ni sur ton profil, ni ailleurs. Modifiable quand tu veux."),
+    ];
+  }
   switch (format) {
     case 'likert':
       return COMMUN.commentRepondre.map((p) => tx(p));
@@ -127,6 +140,12 @@ function commentRepondreFormat(
       return [
         tx("Une question, une sélection : ton signe, si tu veux le jouer — ou « Je préfère ne pas dire », et la route continue sans le demander."),
         tx("Le zodiaque ne dit rien de toi : ici, c'est un badge pour la conversation, jamais un profil."),
+      ];
+    case 'images':
+      return [
+        tx("Huit paires s'affichent une à une : deux scènes, tu touches celle qui te parle. Pas d'abstention — on choisit toujours."),
+        tx("Pas de bonne réponse : la scène choisie dit quelque chose de toi, jamais une note."),
+        tx("Réponds avec ta première impulsion : l'image qui appelle est souvent la bonne."),
       ];
   }
 }
@@ -372,7 +391,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         </section>
         <section className="q-sec" aria-label={tx('Comment tu vas répondre')}>
           <h3>{tx('Comment tu vas répondre')}</h3>
-          {commentRepondreFormat(quete.format, tx).map((p) => (
+          {commentRepondreFormat(quete.format, tx, queteId).map((p) => (
             <p key={p}>{p}</p>
           ))}
           {(quete.format === 'likert' || quete.format === 'likert-enigmes') && (
@@ -673,6 +692,26 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 </button>
               </div>
             )}
+            {item.format === 'images' && (
+              <div className="q-img" role="group" aria-label={tx('Ton choix — deux scènes, la même valeur')}>
+                {([
+                  [1, item.choixA, item.images?.[0]] as const,
+                  [2, item.choixB, item.images?.[1]] as const,
+                ]).map(([reponse, label, visuel]) => (
+                  <button
+                    key={reponse}
+                    type="button"
+                    className={valeur === reponse ? 'q-img-btn q-img-btn-on' : 'q-img-btn'}
+                    onClick={() => repondre(item.code, reponse)}
+                  >
+                    {visuel && (
+                      <img src={visuel} alt="" aria-hidden="true" loading="lazy" className="q-img-visuel" />
+                    )}
+                    <span className="q-img-label">{interpolerMontants(label ?? '', money)}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             {item.format === 'question' && item.multi && (
               <div
                 className="q-choix q-choix-multi"
@@ -682,12 +721,18 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 {(item.options ?? []).map((opt, i) => {
                   const bit = 1 << i;
                   const on = ((valeur ?? 0) & bit) !== 0;
+                  // Garde 3.7 (1-3 options) : quand trois options sont posées,
+                  // les autres se désactivent — le 4ᵉ toggle ne répond plus
+                  // (jamais une validation punitive).
+                  const plein =
+                    queteId === '3.7' && !on && compteSelections37(valeur ?? 0) >= GARDE_MAX_37;
                   return (
                     <button
                       key={opt}
                       type="button"
                       className={on ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
                       aria-pressed={on}
+                      disabled={plein}
                       onClick={() => enregistrerReponse(queteId, item.code, (valeur ?? 0) ^ bit)}
                     >
                       {interpolerMontants(opt, money)}
@@ -789,6 +834,41 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             </div>
             <p className="q-carte-hint">
               {tx('Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».')}            </p>
+          </div>
+        </main>
+      );
+    }
+    // 3.7 « Tes attirances » — l'écran final PRIVÉ (aucune restitution des
+    // choix — contrairement à l'écran de confiance 1.7 ; doctrine gravée).
+    if (queteId === '3.7') {
+      const laSuite37 = quete.suivante ? QUETES[quete.suivante] : null;
+      return (
+        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+          <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
+            <p className="q-carte-entete">{quete.completion.entete}</p>
+            <h1 className="q-carte-nom" id="q-ecran-title">
+              {ECRAN_FINAL_37.titre}
+            </h1>
+            <p className="q-carte-lumiere">{ECRAN_FINAL_37.texte}</p>
+            <div className="q-carte-actions">
+              {laSuite37 ? (
+                <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite37.id)}>
+                  {quete.suite.cta ?? tx('Continuer le voyage')}
+                  <Fleche />
+                </button>
+              ) : (
+                <button type="button" className="btn btn-accent" onClick={onHome}>
+                  {tx('Retour à mon voyage')}
+                  <Fleche />
+                </button>
+              )}
+              <button type="button" className="btn btn-ghost" onClick={onExit}>
+                {tx('Retour aux mondes')}
+              </button>
+            </div>
+            <p className="q-carte-hint">
+              {tx('Tes déclarations restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».')}
+            </p>
           </div>
         </main>
       );
@@ -975,11 +1055,30 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <h1 className="q-carte-nom" id="q-carte-title">
           {carte.nom}
         </h1>
+        {queteId === '3.1' && (BADGES_31[carte.id as keyof typeof BADGES_31] ?? '') !== '' && (
+          <p className="q-carte-badge" role="note" aria-label={tx('Badge de conversation')}>
+            <span className="q-carte-badge-emo" aria-hidden="true">
+              {BADGES_31[carte.id as keyof typeof BADGES_31]}
+            </span>{' '}
+            {tx('Ton badge de conversation — un pont pour en parler, jamais un grade.')}
+          </p>
+        )}
         <p className="q-carte-lumiere">{carte.lumiere}</p>
         <div className="q-carte-sec">
           <h3>{quete.completion.labelOmbre}</h3>
           <p>{carte.ombre}</p>
         </div>
+        {queteId === '3.6' && (
+          <div className="q-carte-sec q-amorces" role="region" aria-label={tx('Tes amorces de conversation')}>
+            <h3>{tx('Tes amorces de conversation')}</h3>
+            <ul className="q-amorces-liste">
+              {AMORCES.map((a) => (
+                <li key={a.id}>{a.texte}</li>
+              ))}
+            </ul>
+            <p className="q-amorces-note">{tx('Des débuts de conversation, si tu veux — jamais un test.')}</p>
+          </div>
+        )}
         <div className="q-carte-sec">
           <h3>{quete.completion.labelTension}</h3>
           <p>{carte.tension}</p>
@@ -1024,11 +1123,19 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       ) : (
         <div className="q-next q-next-end" role="region" aria-label={tx('Et maintenant ?')}>
           <p className="q-next-kicker">{tx('Et maintenant ?')}</p>
-          <h2 className="q-next-titre">{tx('Le miroir — la suite de ton monde')}</h2>
-          <p className="q-next-note">{quete.completion.miroirNote}</p>
-          <p className="q-next-note">
-            {tx("Tu as terminé les trois quêtes ouvertes du Miroir : ta personnalité, ta façon de t'attacher, tes émotions — trois cartes qui se répondent.")}
-          </p>
+          <h2 className="q-next-titre">
+            {quete.id === '1.3'
+              ? tx('Le miroir — la suite de ton monde')
+              : tx(quete.suite.titre)}
+          </h2>
+          {quete.completion.miroirNote && <p className="q-next-note">{quete.completion.miroirNote}</p>}
+          {quete.id === '1.3' ? (
+            <p className="q-next-note">
+              {tx("Tu as terminé les trois quêtes ouvertes du Miroir : ta personnalité, ta façon de t'attacher, tes émotions — trois cartes qui se répondent.")}
+            </p>
+          ) : (
+            <p className="q-next-note">{quete.suite.intro}</p>
+          )}
         </div>
       )}
       {partageOuvert && (

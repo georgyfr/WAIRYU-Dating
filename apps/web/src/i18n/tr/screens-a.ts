@@ -449,4 +449,30 @@ export const SCREENS_A: Record<string, string> = {
   '🪧 Écran de passage': '🪧 Passage screen',
   '🧩 Fragment du portrait': '🧩 Portrait fragment',
   '🏅 Sceau du monde': '🏅 World seal',
+
+  // ---- Task 46 — écran Quête, Monde 4 « Ton Terrain » (chrome tx()) :
+  // format 'images' (3.6) · badge 🌅/🦉 (3.1) · amorces (3.6) · écran privé
+  // 3.7 + sa copie « comment tu vas répondre » dédiée. Clés = chaînes FR
+  // exactes de Quete.tsx · apostrophe ASCII U+0027 dans les valeurs.
+  "Cinq déclarations s'affichent une à une : tu coches de une à trois options — jamais plus.":
+    'Five statements appear one at a time: you tick one to three options — never more.',
+  'Rien ne se déduit et rien ne se note : tes choix organisent tes découvertes, ils ne te classent pas.':
+    'Nothing is inferred and nothing is scored: your choices organize your discoveries, they do not rank you.',
+  'Personne ne voit tes déclarations : ni sur ton profil, ni ailleurs. Modifiable quand tu veux.':
+    'Nobody sees your declarations: not on your profile, not anywhere. Change them whenever you like.',
+  "Huit paires s'affichent une à une : deux scènes, tu touches celle qui te parle. Pas d'abstention — on choisit toujours.":
+    'Eight pairs appear one at a time: two scenes, you touch the one that speaks to you. No skipping — you always pick.',
+  'Pas de bonne réponse : la scène choisie dit quelque chose de toi, jamais une note.':
+    'No right answer: the scene you pick says something about you, never a grade.',
+  "Réponds avec ta première impulsion : l'image qui appelle est souvent la bonne.":
+    'Answer with your first impulse: the image that calls you is usually the right one.',
+  'Ton choix — deux scènes, la même valeur': 'Your choice — two scenes, same value',
+  'Badge de conversation': 'Conversation badge',
+  'Ton badge de conversation — un pont pour en parler, jamais un grade.':
+    'Your conversation badge — a bridge to talk about it, never a grade.',
+  'Tes amorces de conversation': 'Your conversation starters',
+  'Des débuts de conversation, si tu veux — jamais un test.':
+    'Conversation openers, if you want them — never a test.',
+  'Tes déclarations restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».':
+    'Your declarations stay on this device — you can change or erase everything from “Do you want to start?”.',
 };

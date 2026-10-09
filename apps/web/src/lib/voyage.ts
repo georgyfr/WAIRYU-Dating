@@ -130,7 +130,9 @@ export const WORLDS: VoyageWorld[] = avecEN([
     tagline: "Ton quotidien réel : rythme de vie, temps libre, rapport à l'argent, entourage, attirances.",
     quests: 7,
     free: true,
-    status: "soon",
+    // Monde 4 OUVERT (quêtes 3.1 → 3.7 livrées) — l'accès reste séquentiel :
+    // l'écran Mondes ne le déverrouille qu'une fois le Monde 3 terminé.
+    status: "open",
   },
   {
     num: 5,

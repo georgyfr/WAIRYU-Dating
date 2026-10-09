@@ -34,6 +34,13 @@ import * as Q25 from './quete-2-5';
 import * as Q26 from './quete-2-6';
 import * as Q27 from './quete-2-7';
 import * as Q28 from './quete-2-8';
+import * as Q31 from './quete-3-1';
+import * as Q32 from './quete-3-2';
+import * as Q33 from './quete-3-3';
+import * as Q34 from './quete-3-4';
+import * as Q35 from './quete-3-5';
+import * as Q36 from './quete-3-6';
+import * as Q37 from './quete-3-7';
 import { DEF_14 } from './quete-1-4-def';
 import { DEF_15 } from './quete-1-5-def';
 import { DEF_16 } from './quete-1-6-def';
@@ -49,6 +56,13 @@ import { DEF_25 } from './quete-2-5-def';
 import { DEF_26 } from './quete-2-6-def';
 import { DEF_27 } from './quete-2-7-def';
 import { DEF_28 } from './quete-2-8-def';
+import { DEF_31 } from './quete-3-1-def';
+import { DEF_32 } from './quete-3-2-def';
+import { DEF_33 } from './quete-3-3-def';
+import { DEF_34 } from './quete-3-4-def';
+import { DEF_35 } from './quete-3-5-def';
+import { DEF_36 } from './quete-3-6-def';
+import { DEF_37 } from './quete-3-7-def';
 import type { LikertNiveau } from './quete-1-1';
 import { avecEN } from '../i18n/apply';
 import { getLang } from '../i18n/current';
@@ -78,7 +92,7 @@ export interface ItemPassation {
   code: string;
   /** Likert : l'énoncé · choix : la phrase-cadre · question : la question. */
   text: string;
-  format: 'likert' | 'choix' | 'question';
+  format: 'likert' | 'choix' | 'question' | 'images';
   /** Choix binaire 1.5 — option A (immédiat) puis B (différé). */
   choixA?: string;
   choixB?: string;
@@ -86,6 +100,9 @@ export interface ItemPassation {
   options?: readonly string[];
   /** Sélection multiple autorisée (checklist 1.7-01). */
   multi?: boolean;
+  /** Tâche visuelle 3.6 — chemins des deux visuels (assets design à venir :
+   *  absent aujourd'hui, l'écran rend alors les libellés A/B seuls). */
+  images?: readonly [string, string];
 }
 
 /** Adapte un item Likert des modules M1/M2 au contrat unifié. */
@@ -111,7 +128,14 @@ export type IdQuete =
   | '2.5'
   | '2.6'
   | '2.7'
-  | '2.8';
+  | '2.8'
+  | '3.1'
+  | '3.2'
+  | '3.3'
+  | '3.4'
+  | '3.5'
+  | '3.6'
+  | '3.7';
 
 export interface DimDef {
   /** Clé de dimension dans le score du scorer de la quête. */
@@ -164,7 +188,9 @@ export interface QueteDef {
    *  - 'clic'           : 2.4 — 8 déclarations à un toucher (options) ;
    *  - 'binaire'        : 2.5 — 3 binaires Oui/Non + 4ᵉ réponse « Je découvre » ;
    *  - 'arbitrage'      : 2.6 — UN écran, 100 points sur 5 curseurs, somme verrouillée ;
-   *  - 'jeu'            : 2.8 — 1 sélection opt-in, badge miniature (hors score). */
+   *  - 'jeu'            : 2.8 — 1 sélection opt-in, badge miniature (hors score) ;
+   *  - 'images'         : 3.6 — 8 paires A/B, réponse par pôle (libellés seuls tant
+   *    que les assets design n'arrivent — le champ item.images les allumera). */
   format:
     | 'likert'
     | 'choix'
@@ -174,7 +200,8 @@ export interface QueteDef {
     | 'clic'
     | 'binaire'
     | 'arbitrage'
-    | 'jeu';
+    | 'jeu'
+    | 'images';
   scorer: (reponses: Record<string, number>) => Record<string, number>;
   choisirVariante: (score: Record<string, number>) => string;
   cartes: Record<string, { id: string; nom: string; lumiere: string; ombre: string; tension: string }>;
@@ -224,11 +251,13 @@ export const COMMUN = avecEN(
 );
 
 /** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
- *  + Monde 3 « La Boussole »). 1.8 n'existe pas au Livrable (série 1.x : la
- *  numérotation traverse M1/M2) ; la série 2.x traverse M3. */
+ *  + Monde 3 « La Boussole » + Monde 4 « Ton Terrain »). 1.8 n'existe pas au
+ *  Livrable (série 1.x : la numérotation traverse M1/M2) ; la série 2.x
+ *  traverse M3 ; la série 3.x traverse M4. */
 export const QUETE_IDS: readonly IdQuete[] = [
   '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
   '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8',
+  '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7',
 ];
 
 /** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
@@ -855,6 +884,137 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     sansCarte: true,
     completion: Q28.COMPLETION,
   },
+  // ─── Monde 4 « Ton Terrain » — les 7 quêtes 3.1 → 3.7 (Livrable verbatim) ───
+  '3.1': {
+    id: '3.1',
+    numero: 1,
+    totalDuMonde: 7,
+    titre: 'Ton rythme de vie',
+    ...DEF_31,
+    annonce: Q31.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q31.BRIEFING.aQuoiCaSert,
+      resultats: Q31.BRIEFING.resultats,
+    },
+    deck: () => Q31.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q31.scorer,
+    choisirVariante: (s) => Q31.choisirVariante(s as Q31.Score31),
+    cartes: Q31.CARTES,
+    completion: Q31.COMPLETION,
+  },
+  '3.2': {
+    id: '3.2',
+    numero: 2,
+    totalDuMonde: 7,
+    titre: 'Ton quotidien',
+    ...DEF_32,
+    annonce: Q32.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q32.BRIEFING.aQuoiCaSert,
+      resultats: Q32.BRIEFING.resultats,
+    },
+    deck: () => Q32.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q32.scorer,
+    choisirVariante: (s) => Q32.choisirVariante(s as Q32.Score32),
+    cartes: Q32.CARTES,
+    completion: Q32.COMPLETION,
+  },
+  '3.3': {
+    id: '3.3',
+    numero: 3,
+    totalDuMonde: 7,
+    titre: 'Ton temps libre',
+    ...DEF_33,
+    annonce: Q33.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q33.BRIEFING.aQuoiCaSert,
+      resultats: Q33.BRIEFING.resultats,
+    },
+    deck: () => Q33.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q33.scorer,
+    choisirVariante: (s) => Q33.choisirVariante(s as Q33.Score33),
+    cartes: Q33.CARTES,
+    completion: Q33.COMPLETION,
+  },
+  '3.4': {
+    id: '3.4',
+    numero: 4,
+    totalDuMonde: 7,
+    titre: 'Ton rapport à l\'argent',
+    ...DEF_34,
+    annonce: Q34.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q34.BRIEFING.aQuoiCaSert,
+      resultats: Q34.BRIEFING.resultats,
+    },
+    deck: () => Q34.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q34.scorer,
+    choisirVariante: (s) => Q34.choisirVariante(s as Q34.Score34),
+    cartes: Q34.CARTES,
+    completion: Q34.COMPLETION,
+  },
+  '3.5': {
+    id: '3.5',
+    numero: 5,
+    totalDuMonde: 7,
+    titre: 'Ton entourage',
+    ...DEF_35,
+    annonce: Q35.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q35.BRIEFING.aQuoiCaSert,
+      resultats: Q35.BRIEFING.resultats,
+    },
+    deck: () => Q35.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q35.scorer,
+    choisirVariante: (s) => Q35.choisirVariante(s as Q35.Score35),
+    cartes: Q35.CARTES,
+    completion: Q35.COMPLETION,
+  },
+  '3.6': {
+    id: '3.6',
+    numero: 6,
+    totalDuMonde: 7,
+    titre: 'Le choix visuel',
+    ...DEF_36,
+    annonce: Q36.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q36.BRIEFING.aQuoiCaSert,
+      resultats: Q36.BRIEFING.resultats,
+    },
+    // Tâche visuelle A/B — réponse PAR PÔLE (quete-3-6.poleChoisi), jamais
+    // par côté ; pas d'abstention ; les tags « Maintenant/Plus tard » de la
+    // tâche 1.5 ne s'appliquent PAS ici (format 'images' dédié).
+    deck: () => Q36.deckQuete().map((it) => ({ ...it, format: 'images' as const })),
+    format: 'images',
+    scorer: Q36.scorer,
+    choisirVariante: (s) => Q36.choisirVariante(s as Q36.Score36),
+    cartes: Q36.CARTES,
+    completion: Q36.COMPLETION,
+  },
+  '3.7': {
+    id: '3.7',
+    numero: 7,
+    totalDuMonde: 7,
+    titre: 'Tes attirances',
+    ...DEF_37,
+    annonce: Q37.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q37.BRIEFING.aQuoiCaSert,
+      resultats: Q37.BRIEFING.resultats,
+    },
+    deck: Q37.deckQuete,
+    format: 'ecran',
+    scorer: Q37.scorer,
+    choisirVariante: () => Q37.choisirVariante(),
+    cartes: Q37.CARTES,
+    sansCarte: true,
+    completion: Q37.COMPLETION,
+  },
 };
 
 /** Le registre LOCALISÉ — fusion FR × miroir EN au chargement (repli FR
@@ -864,12 +1024,14 @@ export const QUETES: Record<IdQuete, QueteDef> = avecEN(REGISTRE_FR, REGISTRE_EN
 /** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
  *  code reste la clé). Utilisé par les écrans : chip d'entête,
  *  marquerMondeEnCours, libellés. */
-export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3'; nom: string } {
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4'; nom: string } {
   if (id === '1.1' || id === '1.2' || id === '1.3')
     return { code: 'M1', nom: getLang() === 'en' ? MONDES_NOMS.M1 : 'Monde 1 — Le Miroir' };
   if (id.startsWith('1.'))
     return { code: 'M2', nom: getLang() === 'en' ? MONDES_NOMS.M2 : 'Monde 2 — Le Volant' };
-  return { code: 'M3', nom: getLang() === 'en' ? MONDES_NOMS.M3 : 'Monde 3 — La Boussole' };
+  if (id.startsWith('2.'))
+    return { code: 'M3', nom: getLang() === 'en' ? MONDES_NOMS.M3 : 'Monde 3 — La Boussole' };
+  return { code: 'M4', nom: getLang() === 'en' ? MONDES_NOMS.M4 : 'Monde 4 — Ton Terrain' };
 }
 
 /** Le niveau Likert (labels verbatim FR — miroir EN dans registre-commun). */

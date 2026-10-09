@@ -62,8 +62,9 @@ function dateCourte(iso: string, lang: 'fr' | 'en'): string {
 
 export default function Parcourus() {
   const { tx, lang } = useI18n();
-  // Ordre FIXE et inconditionnel (règles des hooks) — les 18 quêtes ouvertes
-  // (Monde 1 + Monde 2 « Le Volant » + Monde 3 « La Boussole »).
+  // Ordre FIXE et inconditionnel (règles des hooks) — les 25 quêtes ouvertes
+  // (Monde 1 + Monde 2 « Le Volant » + Monde 3 « La Boussole » + Monde 4
+  // « Ton Terrain »).
   const etat11 = useEtatQuete('1.1');
   const etat12 = useEtatQuete('1.2');
   const etat13 = useEtatQuete('1.3');
@@ -82,6 +83,13 @@ export default function Parcourus() {
   const etat26 = useEtatQuete('2.6');
   const etat27 = useEtatQuete('2.7');
   const etat28 = useEtatQuete('2.8');
+  const etat31 = useEtatQuete('3.1');
+  const etat32 = useEtatQuete('3.2');
+  const etat33 = useEtatQuete('3.3');
+  const etat34 = useEtatQuete('3.4');
+  const etat35 = useEtatQuete('3.5');
+  const etat36 = useEtatQuete('3.6');
+  const etat37 = useEtatQuete('3.7');
   const etatsParId: Record<IdQuete, EtatQuete> = {
     '1.1': etat11,
     '1.2': etat12,
@@ -101,6 +109,13 @@ export default function Parcourus() {
     '2.6': etat26,
     '2.7': etat27,
     '2.8': etat28,
+    '3.1': etat31,
+    '3.2': etat32,
+    '3.3': etat33,
+    '3.4': etat34,
+    '3.5': etat35,
+    '3.6': etat36,
+    '3.7': etat37,
   };
   const [pdfEnCours, setPdfEnCours] = useState<IdQuete | null>(null);
   // La progression RÉELLE + le détail par monde (dates de clôture, compteurs).
