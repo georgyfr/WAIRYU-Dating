@@ -5746,3 +5746,734 @@ body.no-scroll {
     outline: 2.5px solid var(--c-teal, #2a9aa0);
     outline-offset: 1px
 }
+
+/* ============================================================
+   Task 43 — REFONTE « Ma récolte » : le coffre du voyageur.
+   Chemin des 11 mondes · collection Mes cartes · portrait en
+   construction · pass/crédits (architecture honnête) · sceaux ·
+   timeline · révélation douce. Mobile-first, coque 480px.
+   ============================================================ */
+
+/* --- La révélation (micro-interaction §15) : une lumière douce,
+       PAS de confettis — une seule fois par nouvelle pièce. --- */
+.r-reveal {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 14px 0 4px;
+    padding: 14px 15px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #fff8e2 0%, #fffdf4 70%);
+    border: 1px solid #f0dfae;
+    box-shadow: 0 6px 22px rgba(232, 163, 18, .16);
+    animation: r-reveal-in .55s cubic-bezier(.2, 1.2, .4, 1)
+}
+
+@keyframes r-reveal-in {
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(.97)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+.r-reveal-ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+    background: #fff3d6;
+    color: #e8a312;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(232, 163, 18, .22)
+}
+
+.r-reveal-body {
+    min-width: 0;
+    flex: 1
+}
+
+.r-reveal-titre {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #8a6a14;
+    margin: 0 0 3px
+}
+
+.r-reveal-carte {
+    font-size: 14.5px;
+    color: var(--c-night);
+    margin: 0 0 3px
+}
+
+.r-reveal-carte strong {
+    font-weight: 900
+}
+
+.r-reveal-meta {
+    font-size: 11.5px;
+    color: var(--c-gray-blue);
+    font-weight: 600
+}
+
+.r-reveal-suite {
+    font-size: 12px;
+    color: var(--c-gray-blue);
+    margin: 0
+}
+
+.r-reveal-fermer {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #b09a55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer
+}
+
+.r-reveal-fermer:hover,
+.r-reveal-fermer:focus-visible {
+    background: #fff3d6;
+    color: #8a6a14
+}
+
+/* --- Le chemin des 11 mondes (héros) : des arrêts, pas une barre XP. --- */
+.r-chemin {
+    display: flex;
+    align-items: center;
+    margin: 2px 0 12px
+}
+
+.r-chemin-stop-wrap {
+    display: flex;
+    align-items: center;
+    min-width: 0
+}
+
+.r-chemin-liaison {
+    width: clamp(6px, 3.2vw, 16px);
+    height: 2px;
+    border-radius: 2px;
+    background: #e4ddcb;
+    flex-shrink: 0
+}
+
+.r-chemin-liaison-done {
+    background: var(--c-turquoise-light)
+}
+
+.r-chemin-stop {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #fff;
+    border: 2px solid #d9d2c0
+}
+
+.r-chemin-done {
+    border-color: transparent
+}
+
+.r-chemin-now {
+    border: 2px solid var(--c-turquoise-deep);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(69, 192, 198, .22);
+    animation: v-pulse 1.8s ease-in-out infinite
+}
+
+.r-phrase {
+    margin: 8px 0 2px;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--c-gray-blue)
+}
+
+/* --- Sous-titres et notes de section. --- */
+.r-sec-sub {
+    margin: -4px 0 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--c-gray-blue)
+}
+
+.r-note {
+    margin: 0 0 12px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    background: #fbfaf6;
+    border: 1px solid #efe9da;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+/* --- La collection « Mes cartes » : bandeau scrollable (mobile-first,
+       prompt §18), cartes douces aux coins arrondis. --- */
+.r-cartes {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 2px 14px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: #ddd5c2 transparent
+}
+
+.r-cartes::-webkit-scrollbar {
+    height: 8px
+}
+
+.r-cartes::-webkit-scrollbar-thumb {
+    background: #ddd5c2;
+    border-radius: 999px
+}
+
+.r-cm {
+    flex: 0 0 min(78%, 262px);
+    scroll-snap-align: start;
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.r-cm-done {
+    border-color: #cfe4cd;
+    background: linear-gradient(160deg, #ffffff 55%, #f2f9ef 100%)
+}
+
+.r-cm-now {
+    border-color: #cfe8e2
+}
+
+.r-cm-head {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.r-cm-ico {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(23, 44, 61, .06)
+}
+
+.r-cm-titre {
+    min-width: 0;
+    flex: 1
+}
+
+.r-cm-titre small {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--c-gray-blue)
+}
+
+.r-cm-titre h3 {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--c-night);
+    line-height: 1.25
+}
+
+.r-cm-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px
+}
+
+.r-cm-dec {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 13px;
+    background: #fbfaf6;
+    border: 1px solid #efe9da
+}
+
+.r-cm-dec-ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: #fff3d6;
+    color: #e8a312;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0
+}
+
+.r-cm-dec-body {
+    min-width: 0;
+    flex: 1
+}
+
+.r-cm-dec-body strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 900;
+    color: var(--c-night);
+    line-height: 1.3
+}
+
+.r-cm-dec-body small {
+    display: block;
+    font-size: 11px;
+    color: var(--c-gray-blue)
+}
+
+.r-cm-lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--c-turquoise-deep);
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0
+}
+
+.r-cm-lien:hover,
+.r-cm-lien:focus-visible {
+    text-decoration: underline
+}
+
+.r-cm-soft {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+.r-cm-meta {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--c-gray-blue)
+}
+
+.r-disamb {
+    margin: 2px 0 0;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+.r-disamb a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    font-weight: 800;
+    color: var(--c-turquoise-deep);
+    text-decoration: none;
+    white-space: nowrap
+}
+
+.r-disamb a:hover,
+.r-disamb a:focus-visible {
+    text-decoration: underline
+}
+
+/* --- Le marqueur « Niveau n » de l'échelle des grandes récoltes. --- */
+.r-niveau {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #a09a8e;
+    margin-bottom: 1px
+}
+
+/* --- Le portrait en construction : mosaïque organique décalée. --- */
+.r-mosaic {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 11px;
+    padding: 22px 12px 18px;
+    border-radius: 18px;
+    background: linear-gradient(150deg, #ffffff 0%, #f2f7f6 100%);
+    border: 1px solid var(--c-line);
+    box-shadow: var(--shadow);
+    overflow: hidden
+}
+
+.r-mosaic-spark {
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    font-size: 15px;
+    opacity: .85;
+    animation: r-scintille 2.8s ease-in-out infinite
+}
+
+@keyframes r-scintille {
+
+    0%,
+    100% {
+        opacity: .45;
+        transform: scale(.92)
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.08)
+    }
+}
+
+.r-frag {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .25s ease
+}
+
+.r-frag:hover {
+    transform: scale(1.07)
+}
+
+.r-frag:nth-child(4n+1) {
+    transform: translateY(-4px)
+}
+
+.r-frag:nth-child(4n+3) {
+    transform: translateY(4px)
+}
+
+.r-frag:nth-child(4n+1):hover {
+    transform: translateY(-4px) scale(1.07)
+}
+
+.r-frag:nth-child(4n+3):hover {
+    transform: translateY(4px) scale(1.07)
+}
+
+.r-frag-done {
+    box-shadow: inset 0 0 0 1px rgba(23, 44, 61, .07), 0 5px 14px rgba(23, 44, 61, .1)
+}
+
+.r-frag-now {
+    background: #fff;
+    border: 2px dashed currentColor
+}
+
+.r-frag-off {
+    background: transparent;
+    border: 2px dashed #ddd5c2;
+    color: #b7b0a0
+}
+
+.r-mosaic-count {
+    margin: 8px 0 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--c-gray-blue)
+}
+
+/* --- Pass / crédits : familles secondaires, cartes compactes honnêtes. --- */
+.r-suche {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px
+}
+
+.r-suche-ico {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(23, 44, 61, .06)
+}
+
+.r-suche-body {
+    min-width: 0;
+    flex: 1
+}
+
+.r-suche-body h3 {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--c-night);
+    margin: 0 0 4px
+}
+
+.r-suche-body p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+.r-suche-note {
+    margin-top: 6px !important;
+    font-weight: 700;
+    color: #8a6a14
+}
+
+/* --- Les sceaux : médailles symboliques (jamais des trophées dorés). --- */
+.r-sceaux {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 14px
+}
+
+.r-sceau {
+    width: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-align: center
+}
+
+.r-sceau-medal {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 2px dashed #ddd5c2;
+    color: #b7b0a0
+}
+
+.r-sceau-now .r-sceau-medal {
+    border-style: dashed;
+    background: #fff
+}
+
+.r-sceau-done .r-sceau-medal {
+    border: 0;
+    box-shadow: inset 0 0 0 1px rgba(23, 44, 61, .07), 0 4px 12px rgba(23, 44, 61, .12)
+}
+
+.r-sceau-check {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--c-turquoise-deep);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2.5px #fff
+}
+
+.r-sceau-name {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--c-night);
+    line-height: 1.25
+}
+
+.r-sceau:not(.r-sceau-done) .r-sceau-name {
+    color: #9a9384
+}
+
+.r-sceau-date,
+.r-sceau-etat {
+    font-size: 10px;
+    color: var(--c-gray-blue)
+}
+
+/* --- La timeline « Mon histoire de voyage ». --- */
+.r-tl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative
+}
+
+.r-tl::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    border-radius: 2px;
+    background: #e9e3d3
+}
+
+.r-tl-item {
+    position: relative;
+    padding: 0 0 20px 50px
+}
+
+.r-tl-item:last-child {
+    padding-bottom: 4px
+}
+
+.r-tl-node {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(23, 44, 61, .12)
+}
+
+.r-tl-node-off {
+    background: #fbfaf6;
+    color: #b7b0a0;
+    border: 2px dashed #ddd5c2;
+    box-shadow: none
+}
+
+.r-tl-body {
+    min-width: 0
+}
+
+.r-tl-etape {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--c-gray-blue)
+}
+
+.r-tl-fait {
+    color: #3e9d5b
+}
+
+.r-tl-body h3 {
+    margin: 2px 0 6px;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.r-tl-label {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-night)
+}
+
+.r-tl-chips {
+    list-style: none;
+    margin: 0 0 6px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px
+}
+
+.r-tl-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    box-shadow: var(--shadow);
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.r-tl-chip svg {
+    color: #e8a312;
+    flex-shrink: 0
+}
+
+.r-tl-chip-soft {
+    background: #fbfaf6;
+    border-style: dashed;
+    color: var(--c-gray-blue);
+    box-shadow: none
+}
+
+.r-tl-chip-soft svg {
+    color: #a09a8e
+}
+
+.r-tl-attente {
+    margin: 0;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--c-gray-blue)
+}
+
+.r-tl-next .r-tl-body h3 {
+    color: #9a9384
+}
+
+@media (max-width: 400px) {
+    .r-cm {
+        flex-basis: 84%
+    }
+
+    .r-chemin-stop {
+        width: 11px;
+        height: 11px
+    }
+
+    .r-sceau {
+        width: 66px
+    }
+
+    .r-sceau-medal {
+        width: 48px;
+        height: 48px
+    }
+}

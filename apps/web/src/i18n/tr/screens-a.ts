@@ -216,6 +216,84 @@ export const SCREENS_A: Record<string, string> = {
   'Les étapes de ta récolte': 'The steps of your harvest',
   "Ta récolte t'appartient : tu choisis ce que tu partages, quand tu le partages — et l'espace pour gérer ce que tu montres s'ouvrira plus tard dans ton voyage.":
     'Your harvest is yours: you choose what you share, when you share it — and the space to manage what you show will open later in your journey.',
+  // ---- Refonte « Ma récolte » (Task 43) — le coffre du voyageur
+  "Ce que ton voyage t'a déjà apporté.": 'What your journey has already brought you.',
+  'Mon voyage': 'My journey',
+  'Le chemin du voyage — {{a}} mondes sur {{b}} traversés':
+    'The journey path — {{a}} of {{b}} worlds crossed',
+  'mondes explorés': 'worlds explored',
+  'Ton voyage commence ici.': 'Your journey begins here.',
+  'Les premières pièces de ton portrait apparaissent.':
+    'The first pieces of your portrait are appearing.',
+  'Ton portrait devient de plus en plus précis.':
+    'Your portrait is becoming more and more precise.',
+  'Ton histoire prend forme.': 'Your story is taking shape.',
+  'Ton voyage est complet. Ton portrait peut maintenant raconter ton parcours.':
+    'Your journey is complete. Your portrait can now tell your story.',
+  "Une nouvelle pièce de ton portrait vient d'apparaître.":
+    'A new piece of your portrait has just appeared.',
+  '🃏': '🃏',
+  'Cette découverte rejoint ta Récolte.': 'This discovery joins your Harvest.',
+  'Fermer la révélation': 'Close the reveal',
+  'Mes cartes': 'My cards',
+  'Les découvertes que ton voyage a révélées sur toi.':
+    'The discoveries your journey has revealed about you.',
+  "Ce que ton voyage construit, étape après étape — chaque découverte reste à toi. Tes cartes décrivent des tendances, jamais des étiquettes : tu es toujours plus qu'un profil.":
+    'What your journey builds, step after step — every discovery stays yours. Your cards describe tendencies, never labels: you are always more than a profile.',
+  'La collection des 11 mondes': 'The collection of the 11 worlds',
+  '0{{num}} — Monde {{num}}': '0{{num}} — World {{num}}',
+  Découverte: 'Discovery',
+  'À découvrir': 'Awaiting discovery',
+  'Les découvertes de ce monde apparaîtront au fil de tes quêtes.':
+    'The discoveries of this world will appear as you complete your quests.',
+  'Cette pièce de ton portrait apparaîtra pendant ton voyage.':
+    'This piece of your portrait will appear during your journey.',
+  'À découvrir dans le Monde {{n}}': 'To be discovered in World {{n}}',
+  'Voir mes résultats en détail — {{nom}}': 'See my detailed results — {{nom}}',
+  'Voir en détail': 'See details',
+  'À ne pas confondre : la Carte du voyage trace ton chemin — tes cartes racontent ce que tu as découvert.':
+    'Not to be confused: the Journey Map traces your path — your cards tell what you have discovered.',
+  'Voir la Carte du voyage': 'See the Journey Map',
+  'Niveau {{n}} sur {{total}}': 'Level {{n}} of {{total}}',
+  'Ton portrait prend forme': 'Your portrait is taking shape',
+  'Onze mondes, onze fragments — chaque monde complété ajoute une pièce au portrait.':
+    'Eleven worlds, eleven fragments — each completed world adds a piece to the portrait.',
+  'Le portrait en construction — {{a}} pièces sur {{b}} assemblées':
+    'The portrait in progress — {{a}} of {{b}} pieces assembled',
+  '✨': '✨',
+  '{{a}} pièce{{s}} sur {{b}} assemblée{{s2}}': '{{a}} piece{{s}} of {{b}} assembled{{s2}}',
+  'Mes pass': 'My passes',
+  'Des possibilités débloquées grâce à ton parcours.':
+    'Possibilities unlocked thanks to your journey.',
+  "Aucun pass pour l'instant": 'No pass for now',
+  "Ton parcours ouvrira des possibilités : explorer plus loin, être mieux vu, découvrir autrement. Chaque pass s'affichera ici avec ce qu'il permet et combien il en reste.":
+    'Your journey will open possibilities: explore further, be better seen, discover differently. Each pass will appear here with what it allows and how many uses remain.',
+  "Un pass facilite une action — il n'achète jamais une meilleure compatibilité.":
+    'A pass facilitates an action — it never buys better compatibility.',
+  'Mes crédits': 'My credits',
+  'Ce que tu peux utiliser au fil du voyage.': 'What you can use along the journey.',
+  'Comment obtenir des crédits ?': 'How do you earn credits?',
+  "Ton solde s'affichera ici dès tes premiers crédits — avec ce que tu as obtenu et ce que tu as utilisé. Les façons d'en obtenir arriveront avec la suite du voyage.":
+    'Your balance will appear here as soon as you receive your first credits — with what you earned and what you used. Ways to earn them will arrive with the rest of the journey.',
+  'Mes sceaux': 'My seals',
+  'Les étapes que tu as traversées.': 'The stages you have crossed.',
+  'Permanents et non consommables — chaque sceau marque un territoire que tu as traversé, et il reste à toi.':
+    'Permanent and non-consumable — each seal marks a territory you have crossed, and it stays yours.',
+  'Les sceaux de ton parcours': 'The seals of your journey',
+  'Sceau — {{nom}} : {{etat}}': 'Seal — {{nom}}: {{etat}}',
+  traversé: 'crossed',
+  'en cours': 'in progress',
+  'à venir': 'to come',
+  'Mon histoire de voyage': 'My travel story',
+  "Comment ta récolte s'est construite, monde après monde.":
+    'How your harvest was built, world after world.',
+  terminé: 'completed',
+  'Tu as découvert :': 'You discovered:',
+  'Écran de passage': 'Passage screen',
+  'Fragment du portrait': 'Portrait fragment',
+  'Sceau du monde': 'World seal',
+  bientôt: 'soon',
+  "Ta prochaine découverte t'attend ici.": 'Your next discovery awaits here.',
 
   // ---- écran Portrait
   'Ce que ton voyage révèle de toi, dimension après dimension.':
