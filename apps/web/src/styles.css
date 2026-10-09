@@ -3228,16 +3228,13 @@ button {
     color: var(--c-gray-blue)
 }
 
+/* Task 42 : le CTA du héros vit sur SA PROPRE ligne, pleine largeur — la
+   coque fait 480px, un CTA à droite comprimait le corps du héros (~170px)
+   et faisait tout se replier (label sur 2 lignes, chips empilées). */
 .m-hero-cta {
-    flex-shrink: 0;
-    align-self: center
-}
-
-@media (max-width: 479px) {
-    .m-hero-cta {
-        flex-basis: 100%;
-        justify-content: center
-    }
+    flex-basis: 100%;
+    justify-content: center;
+    flex-shrink: 0
 }
 
 .m-sec-title {

@@ -355,3 +355,30 @@ Stage Summary:
 - L'atlas #/mondes est honnête (verrou séquentiel VISIBLE) et organisé : héros « Tu es ici » → chemin (colonne) → suite compacte → destination ; le pied suit l'état réel. FR/EN complets.
 - PROD NON TOUCHÉE (17-b) — partira au prochain feu vert avec M2+M3+i18n+fixes 39/40/41.
 - Reste noté (hors page) : les deep-links #/quete/{id} ne vérifient pas le verrou séquentiel (surface de test assumée) — à porter côté App si le fondateur le souhaite.
+
+---
+Task ID: 42
+Agent: orchestrateur (Z.ai Code)
+Task: Réorganisation de #/recolte et #/parcourus (demande fondateur : « organise aussi bien ces pages » — même traitement que l'atlas Task 41).
+
+Work Log:
+- ÉTAT DES LIEUX (captures avant, staging, compte e2e-orga) : #/recolte — les 3 portes s'écrasaient en 3 colonnes ≥760px (coque 480px : chips sur les titres, un mot par ligne), jalons figés (tout « À venir » malgré 1 monde traversé), zéro chiffre vivant, AUCUN retour vers le jouable ; #/parcourus — résultats en grille 2-col écrasée (boutons sur 3 lignes), « MONDE X — … » répété dans chaque carte, journal muet sur le monde EN COURS, pas de date de clôture, stats réduites à 2 chips.
+- Recolte.tsx réécrit : HÉROS « Ton avancement » (gem) — h2 réel (« 5 cartes récoltées » / « Ta récolte commence avec ta première quête. »), barre du voyage + x/51, compteurs vivants (x/11 · y/51 · z cartes), CTA « Continuer le voyage » → #/mondes ; « Tes espaces » (les 3 portes en colonne) ; jalons à chips DÉRIVÉES : La Carte Atteint dès la 1ʳᵉ carte · Le Miroir Atteint au 1ᵉʳ monde traversé (En cours dès sa 1ʳᵉ quête) · Le Portrait du Monde En cours dès le 1ᵉʳ monde (les synthèses s'accumulent) · suivants À venir (rien n'existe — honnêteté) ; classe v-rec-done (teinte verte). Bloc « Tu gardes le contrôle. » inchangé (verbatim).
+- Parcourus.tsx réécrit : HÉROS « Ton journal » — « {{p}} % de ton voyage parcouru » (barre 0→51, % réel) + compteurs + CTA ; « Là où tu en es » : l'arrêt ACTUEL (1ᵉʳ monde livré non traversé) avec barre X/N + chip En cours/Prochain monde + CTA Continuer/Commencer → #/mondes (masqué si tout est fini ou compte vierge) ; journal : DATE DE CLÔTURE réelle sur chaque monde traversé (parMonde.derniereA → « Traversé le 4 octobre 2026 ») ; « Tes résultats » GROUPÉS PAR MONDE : en-tête (tuile + Monde n/11 + nom + compteur X/N quêtes via parMonde) puis les quêtes — la répétition « MONDE X » disparaît des cartes (m-res-num ne garde que « Quête n sur total ») ; PDF/résultats détaillés/relecture INCHANGÉS (Task 31/36).
+- styles.css : SUPPRESSION des grilles ≥760px (rec-states ×3, m-res-list ×2, m-soon-grid ×2 — la coque fait 480px, tout vit en colonne unique) ; .m-hero-cta passe sur SA PROPRE ligne pleine largeur à TOUTES les largeurs (un CTA à droite comprimait le corps du héros à ~170px — Mondes inclus, harmonisé) ; nouvelles classes .m-world-date, .v-rec-done, .m-res-groupe/-titre/-ico/-body/-count.
+- i18n (screens-a.ts) : EN — Your progress · {{n}} cards gathered · Ta récolte commence… · Journey progress · Continue the journey · Your spaces · Unlocked · {{p}}% of your journey traveled · Where you stand · Next world · Traveled on {{date}}. (Doublon 'Ton journal' évité — clé existante réutilisée.)
+- Typecheck tsc --noEmit : 0 erreur. Commits 8e72ac3 + fix hero CTA, push main. Déployé staging 2× (versions cec10566 puis 6ed397dc).
+- E2E agent-browser (staging, 390×844 + 1280×900) :
+  · État A (M1 3/3 + 1.4/1.5) : Recolte — héros « 5 cartes récoltées » barre 5/51 · 1/11 · 5 cartes ; jalons Atteint/Atteint/En cours/À venir×3 ; espaces propres. Parcourus — « 10 % de ton voyage parcouru » ; Là où tu en es « Le Volant 2/7 étapes | En cours | Continuer | barre 29 % » ; journal « Le Miroir — Traversé le 4 octobre 2026 » ; groupes Le Miroir 3/3 (3 items) + Le Volant 2/7 (2 items), zéro « MONDE » redondant, 3 actions/item.
+  · Desktop 1280 : grilles écrasées DISPARUES (portes + résultats pleine largeur, chips alignées) ; héros aérés après fix CTA pleine largeur.
+  · EN : My Traveled Worlds · Your journal · 10% of your journey traveled · Continue the journey · Where you stand · The Wheel/In progress/Continue · Traveled on 4 October 2026 · The Mirror 3/3 quests ; My harvest · Your progress · 5 cards gathered · 1/11 worlds crossed · Your spaces · The Card Unlocked · The World Portrait In progress.
+  · État VIERGE : Recolte « Ta récolte commence avec ta première quête. » 0/11 · 0/51 · 0 cartes, La Carte En cours, reste À venir ; Parcourus « 0 % », PAS d'arrêt courant, empty 🪞, pas de résultats.
+  · État TOUT FAIT (18/18, cartes réelles M3 CARTE-2.x-… requis — V1 rejeté par le filtre carteId, preuve du garde-fou) : 35 % · 3/11 · 18/51 · 15 cartes ; PAS d'arrêt courant ; journal 3 mondes datés ; groupes 3/3 · 7/7 · 8/8 ; Recolte « 15 cartes récoltées », jalons Atteint/Atteint/En cours.
+  · Mondes (harmonisation héros) : état tout-fait → « Tous les mondes ouverts sont traversés » + chips aérées — aucun retour en arrière visuel.
+  · Zéro erreur console. Compte e2e-orga SUPPRIMÉ via DELETE /api/account (deleted:true) + localStorage purgé.
+
+Stage Summary:
+- #/recolte et #/parcourus sont organisés comme l'atlas : héros aux chiffres réels en tête, sections ordonnées (arrêt courant → journal daté → résultats par monde), chips honnêtes dérivées de la progression, colonne unique (plus de grilles écrasées), FR/EN complets.
+- Le correctif .m-hero-cta pleine largeur profite AUSSI au héros de #/mondes (même classe) — vérifié sans régression.
+- PROD NON TOUCHÉE (17-b) — partira au prochain feu vert avec M2+M3+i18n+fixes 39/40/41/42.
+- Noté (hors périmètre) : l'échelle des jalons reste indicative au-delà du jalon 3 (Portraits de Domaine/Intégral/Rencontre) — les chips basculeront quand ces restitutions existeront.
