@@ -219,8 +219,8 @@ export const SCREENS_A: Record<string, string> = {
   // ---- Refonte « Ma récolte » (Task 43) — le coffre du voyageur
   "Ce que ton voyage t'a déjà apporté.": 'What your journey has already brought you.',
   'Mon voyage': 'My journey',
-  'Le chemin du voyage — {{a}} mondes sur {{b}} traversés':
-    'The journey path — {{a}} of {{b}} worlds crossed',
+  'Le chemin du voyage — {{a}} monde{{s}} sur {{b}} traversé{{s2}}':
+    'The journey path — {{a}} world{{s}} of {{b}} crossed{{s2}}',
   'mondes explorés': 'worlds explored',
   'Ton voyage commence ici.': 'Your journey begins here.',
   'Les premières pièces de ton portrait apparaissent.':
@@ -258,8 +258,8 @@ export const SCREENS_A: Record<string, string> = {
   'Ton portrait prend forme': 'Your portrait is taking shape',
   'Onze mondes, onze fragments — chaque monde complété ajoute une pièce au portrait.':
     'Eleven worlds, eleven fragments — each completed world adds a piece to the portrait.',
-  'Le portrait en construction — {{a}} pièces sur {{b}} assemblées':
-    'The portrait in progress — {{a}} of {{b}} pieces assembled',
+  'Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}':
+    'The portrait in progress — {{a}} piece{{s}} of {{b}} assembled{{s2}}',
   '✨': '✨',
   '{{a}} pièce{{s}} sur {{b}} assemblée{{s2}}': '{{a}} piece{{s}} of {{b}} assembled{{s2}}',
   'Mes pass': 'My passes',

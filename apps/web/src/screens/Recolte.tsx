@@ -344,9 +344,11 @@ export default function Recolte() {
           <div
             className="r-chemin"
             role="img"
-            aria-label={tx('Le chemin du voyage — {{a}} mondes sur {{b}} traversés', {
+            aria-label={tx('Le chemin du voyage — {{a}} monde{{s}} sur {{b}} traversé{{s2}}', {
               a: worldsDone,
+              s: worldsDone > 1 ? 's' : '',
               b: WORLDS.length,
+              s2: worldsDone > 1 ? 's' : '',
             })}
           >
             {recolteMondes.map((m, i) => {
@@ -593,7 +595,7 @@ export default function Recolte() {
         <p className="r-sec-sub">
           {tx('Onze mondes, onze fragments — chaque monde complété ajoute une pièce au portrait.')}
         </p>
-        <div className="r-mosaic" role="img" aria-label={tx('Le portrait en construction — {{a}} pièces sur {{b}} assemblées', { a: worldsDone, b: WORLDS.length })}>
+        <div className="r-mosaic" role="img" aria-label={tx('Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}', { a: worldsDone, s: worldsDone > 1 ? 's' : '', b: WORLDS.length, s2: worldsDone > 1 ? 's' : '' })}>
           {worldsDone > 0 && (
             <span className="r-mosaic-spark" aria-hidden="true">
               {tx('✨')}
