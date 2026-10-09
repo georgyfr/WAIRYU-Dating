@@ -27,6 +27,8 @@ import {
 import { lireEtatQuete, useEtatQuete, type EtatQuete } from './lib/quete-state';
 import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import { useI18n } from './i18n/I18nProvider';
+import { DEVISES, type CurrencyCode } from './i18n/currency';
+import type { Lang } from './i18n/current';
 import type { MeResponse, PushEventRow } from '@wairyu/shared';
 
 /**
@@ -128,7 +130,7 @@ function readRoute(): Route {
 }
 
 export default function App() {
-  const { tx, lang } = useI18n();
+  const { tx, lang, devise, setLangue, setDevise } = useI18n();
   const [stage, setStage] = useState<Stage>('welcome');
   const [route, setRoute] = useState<Route>(() => readRoute());
   /** État de session : null = vérification en cours, false = déconnecté, true = connecté. */
@@ -519,6 +521,32 @@ export default function App() {
                     <small>{tx('Mon compte')}</small>
                     <strong>{firstName}</strong>
                   </span>
+                </div>
+                {/* Langue & devise — accessibles depuis TOUT l'app (le Profil
+                    est derrière la porte Étape 3) : la langue recharge la page
+                    (les contenus se reconstruisent), la devise s'applique à chaud. */}
+                <div className="ah-i18n">
+                  <label className="ah-i18n-field">
+                    <span>{tx('Langue')}</span>
+                    <select value={lang} onChange={(e) => setLangue(e.target.value as Lang)} aria-label={tx('Langue')}>
+                      <option value="fr">Français</option>
+                      <option value="en">English</option>
+                    </select>
+                  </label>
+                  <label className="ah-i18n-field">
+                    <span>{tx('Devise')}</span>
+                    <select
+                      value={devise}
+                      onChange={(e) => setDevise(e.target.value as CurrencyCode)}
+                      aria-label={tx('Devise')}
+                    >
+                      {DEVISES.map((d) => (
+                        <option key={d.code} value={d.code}>
+                          {lang === 'en' ? d.label.en : d.label.fr}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                 </div>
                 <button type="button" className="ah-account-item" onClick={handleExport} disabled={busy}>
                   {tx('Exporter mes données (RGPD)')}

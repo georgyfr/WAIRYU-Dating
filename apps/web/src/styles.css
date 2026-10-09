@@ -5411,3 +5411,42 @@ body.no-scroll {
     font-size: 12.5px;
     color: var(--c-ink-soft, #5c6670)
 }
+
+/* ---- i18n : Langue & Devise dans le menu compte (en-tête) ---- */
+.ah-i18n {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px 14px 2px
+}
+
+.ah-i18n-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.ah-i18n-field span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--c-ink-soft, #5c6670)
+}
+
+.ah-i18n-field select {
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: var(--c-night);
+    background: var(--c-white);
+    border: 1.5px solid var(--c-line);
+    border-radius: 8px;
+    cursor: pointer
+}
+
+.ah-i18n-field select:focus-visible {
+    outline: 2.5px solid var(--c-teal, #2a9aa0);
+    outline-offset: 1px
+}
