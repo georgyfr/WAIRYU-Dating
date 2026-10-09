@@ -4,7 +4,7 @@
  * Contenu FIDÈLE au Livrable M1-1.2-Facon-Tattacher (branche archive/v1-2026-10-05) :
  *  - ITEMS : les 12 items carte (verbatim, ordre du tableau) ;
  *  - PASSATION : l'ordre de passation GELÉ (mélange graine 212427, 20 positions) ;
- *  - les 8 codes Q1.2-T… (T09→T16) sont des trames de fiabilité (règle 11-b : AUCUN
+ *  - les 8 codes Q1.2-T… (T09→T16) sont des trames SÉCURITÉ (DTM_M + RSQ — règle 11-b : AUCUN
  *    contenu au dépôt, le deck les saute) — dont les doublons de fiabilité hors passation ;
  *  - CARTES : les 5 variantes verbatim (corrections VAGUE 5 intégrées) ;
  *  - choisirVariante : sélecteurs verbatim, évalués dans l'ordre 1 → 5.

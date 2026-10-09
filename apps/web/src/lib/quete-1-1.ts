@@ -4,7 +4,7 @@
  * Contenu FIDÈLE au Livrable M1-1.1-Ta-Personnalite (branche archive/v1-2026-10-05) :
  *  - ITEMS : les 50 items carte (verbatim 01-tableau-des-items, ordre du tableau) ;
  *  - PASSATION : l'ordre de passation GELÉ (mélange graine 211427, 02-plan-de-melange) ;
- *  - les 8 codes Q1.1-T… sont des trames de fiabilité (règle 11-b : AUCUN contenu au
+ *  - les 8 codes Q1.1-T… sont des trames SÉCURITÉ (DTM_N — règle 11-b : AUCUN contenu au
  *    dépôt, le deck les saute — aucune formulation n'apparaît jamais à l'écran) ;
  *  - CARTES : les 7 variantes verbatim (cartes.yaml) ;
  *  - choisirVariante : les sélecteurs verbatim (FM-019), évalués dans l'ordre 1 → 7 ;

@@ -18,7 +18,8 @@ import { useSyncExternalStore } from 'react';
 export type Lecture = 1 | 2 | 3;
 
 export interface EtatQuete {
-  /** Réponses par code d'item (1-5 — Likert verbatim). */
+  /** Réponses par code d'item (1-5 — Likert verbatim ; index d'option pour les
+   *  formats à options ; points pour le jeu d'arbitrage 2.6). */
   reponses: Record<string, number>;
   terminee: boolean;
   /** L'id de variante de carte obtenue ('V1'…), posé à la complétion. */
@@ -28,6 +29,11 @@ export interface EtatQuete {
    *  acteur de la lecture de son profil. Rétrocompatible : absent = pas encore
    *  posé (l'utilisateur peut le laisser vide). */
   lectures: Record<string, Lecture>;
+  /** Les textes libres par code d'item (Monde 3 — Q2.3-10 « Une autre ligne
+   *  rouge, dans tes mots. ») : les mots de la personne, JAMAIS reformulés,
+   *  hors computation (Livrable 2.3 — jamais parsé par les filtres).
+   *  Rétrocompatible : absent = pas encore posé. */
+  textes?: Record<string, string>;
 }
 
 const cle = (id: string): string => `wairyu.quete.${id}`;
@@ -50,12 +56,19 @@ function lire(id: string): EtatQuete {
           if (v === 1 || v === 2 || v === 3) lectures[k] = v;
         }
       }
+      const textes: Record<string, string> = {};
+      if (o.textes && typeof o.textes === 'object' && !Array.isArray(o.textes)) {
+        for (const [k, v] of Object.entries(o.textes as Record<string, unknown>)) {
+          if (typeof v === 'string' && v.length <= 500) textes[k] = v;
+        }
+      }
       return {
         reponses: o.reponses && typeof o.reponses === 'object' ? (o.reponses as Record<string, number>) : {},
         terminee: o.terminee === true,
         carteId: typeof o.carteId === 'string' ? o.carteId : null,
         termineeA: typeof o.termineeA === 'string' ? o.termineeA : null,
         lectures,
+        ...(Object.keys(textes).length > 0 ? { textes } : {}),
       };
     }
     return vide;
@@ -104,6 +117,20 @@ export function enregistrerReponse(id: string, code: string, valeur: number): vo
 export function enregistrerLecture(id: string, dimKey: string, lecture: Lecture): void {
   const e = etatDe(id);
   etats.set(id, { ...e, lectures: { ...e.lectures, [dimKey]: lecture } });
+  persiste(id);
+}
+
+/** Enregistre (ou remplace) un texte libre (Q2.3-10 — les mots de la personne,
+ *  jamais reformulés, jamais parsés). Vide = retire la clé. */
+export function enregistrerTexte(id: string, code: string, texte: string): void {
+  const e = etatDe(id);
+  const textes = { ...(e.textes ?? {}) };
+  if (texte.trim().length > 0) {
+    textes[code] = texte.slice(0, 500);
+  } else {
+    delete textes[code];
+  }
+  etats.set(id, { ...e, textes });
   persiste(id);
 }
 

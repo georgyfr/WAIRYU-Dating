@@ -62,7 +62,7 @@ export const DEF_15: EntreeRegistre = {
     V4:
       'À deux, l\'attente qui calibre peut laisser la fenêtre se fermer avant la décision — et l\'autre se demander s\'il vaut le risque de ta main. Ce qui aide : garder une porte par mois où tu entres sans lire l\'étiquette.',
     V5:
-      'À deux, un « plus tard » répété peut se vivre comme un « pas toi » : l\'autre attend sa part de maintenant. Ce qui aide : nommer un plaisir « pour maintenant » chaque semaine — l\'attente garde du goût quand elle n\'est pas totale.',
+      'À deux, un « plus tard » répété peut se vivre comme un « pas toi » : l\'autre attend sa part de maintenant. Ce qui aide : choisir ensemble un plaisir de maintenant par semaine — l\'attente retrouve son goût quand elle n\'est pas totale.',
   },
 
   suivante: '1.6',

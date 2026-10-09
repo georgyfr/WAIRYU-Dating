@@ -108,11 +108,18 @@ import { ARCHES_1_5 } from './quete-1-5-arche';
 import { ARCHES_1_6 } from './quete-1-6-arche';
 import { ARCHES_1_9 } from './quete-1-9-arche';
 import { ARCHES_1_10 } from './quete-1-10-arche';
+import { ARCHES_2_1 } from './quete-2-1-arche';
+import { ARCHES_2_2 } from './quete-2-2-arche';
+import { ARCHES_2_3 } from './quete-2-3-arche';
+import { ARCHES_2_4 } from './quete-2-4-arche';
+import { ARCHES_2_5 } from './quete-2-5-arche';
+import { ARCHES_2_6 } from './quete-2-6-arche';
+import { ARCHES_2_7 } from './quete-2-7-arche';
 import type { IdQuete } from './quetes';
 
 /** Le registre de la couche « plus », par identifiant de quête.
- *  Monde 2 : données NON rédigées à ce stade (couches conservées pour le
- *  matching/carnet futurs — les écrans M2 n'en rendent aucune, gabarit 35). */
+ *  Monde 2 et Monde 3 : données NON rédigées à ce stade (couches conservées
+ *  pour le matching/carnet futurs — les écrans n'en rendent aucune, gabarit 35). */
 export const PLUS: Record<IdQuete, CouchePlus> = {
   '1.1': PLUS_1_1,
   '1.2': PLUS_1_2,
@@ -124,10 +131,20 @@ export const PLUS: Record<IdQuete, CouchePlus> = {
   '1.9': { cartes: {}, leviers: {} },
   '1.10': { cartes: {}, leviers: {} },
   '1.11': { cartes: {}, leviers: {} },
+  '2.1': { cartes: {}, leviers: {} },
+  '2.2': { cartes: {}, leviers: {} },
+  '2.3': { cartes: {}, leviers: {} },
+  '2.4': { cartes: {}, leviers: {} },
+  '2.5': { cartes: {}, leviers: {} },
+  '2.6': { cartes: {}, leviers: {} },
+  '2.7': { cartes: {}, leviers: {} },
+  '2.8': { cartes: {}, leviers: {} },
 };
 
 /** Les archétypes GÉNÉRAUX (Task 33), par identifiant de quête, clés = variantes.
- *  1.7 et 1.11 n'ont AUCUNE carte (écrans spéciaux — Livrable) : registres vides. */
+ *  1.7 et 1.11 n'ont AUCUNE carte (écrans spéciaux — Livrable) : registres vides.
+ *  2.8 : le badge miniature est EXEMPT de charte (1 phrase légère, precedent 1.7)
+ *  — registre vide, PAS de fichier arche. */
 export const ARCHE: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '1.1': ARCHES_1_1,
   '1.2': ARCHES_1_2,
@@ -139,4 +156,12 @@ export const ARCHE: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '1.9': ARCHES_1_9,
   '1.10': ARCHES_1_10,
   '1.11': {},
+  '2.1': ARCHES_2_1,
+  '2.2': ARCHES_2_2,
+  '2.3': ARCHES_2_3,
+  '2.4': ARCHES_2_4,
+  '2.5': ARCHES_2_5,
+  '2.6': ARCHES_2_6,
+  '2.7': ARCHES_2_7,
+  '2.8': {},
 };

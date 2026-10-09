@@ -4,7 +4,7 @@
  * Contenu FIDÈLE au Livrable M1-1.3-Tes-Emotions (branche archive/v1-2026-10-05) :
  *  - ITEMS : les 20 items carte (verbatim, ordre du tableau) ;
  *  - PASSATION : l'ordre de passation GELÉ (mélange graine 213427, 26 positions) ;
- *  - les 6 codes Q1.3-T… (T21→T26) sont des trames de fiabilité (règle 11-b : AUCUN
+ *  - les 6 codes Q1.3-T… (T21→T26) sont des trames SÉCURITÉ (DE_U + DE_C — règle 11-b : AUCUN
  *    contenu au dépôt, le deck les saute) ;
  *  - CARTES : les 6 variantes verbatim ;
  *  - choisirVariante : sélecteurs verbatim, évalués dans l'ordre 1 → 6.

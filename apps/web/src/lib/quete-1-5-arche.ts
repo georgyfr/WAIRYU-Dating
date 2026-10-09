@@ -75,7 +75,7 @@ export const ARCHES_1_5: Record<'V1' | 'V2' | 'V3' | 'V4' | 'V5', ArchetypeCarte
     freines:
       'L\'urgence imposée, les occasions à saisir sans réfléchir, les décisions dans la précipitation. Ce ne sont pas des défauts — juste ce qui heurte quand ta main veut d\'abord comprendre.',
     couple:
-      'Tu offres une présence qui vise juste : ce qui commence chez toi avait de bonnes raisons de commencer. À garder en tête : l\'autre peut avoir l\'impression de devoir prouver qu\'il vaut le risque de ta main.',
+      'Tu offres une présence qui vise juste : ce qui commence chez toi avait de bonnes raisons de commencer. À garder en tête : l\'autre peut attendre la preuve que le risque de ta main en vaut la peine.',
     equilibre:
       'Garder une porte par mois où tu entres sans lire l\'étiquette. Non parce que ta patience serait fausse, mais parce que l\'imprévu réserve aussi de bonnes surprises.',
   },

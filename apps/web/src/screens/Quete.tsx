@@ -53,8 +53,13 @@ import {
 import { ARCHE } from '../lib/quetes-plus';
 import { ECRAN_17, decode17 } from '../lib/quete-1-7';
 import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
+import { LIBRE_CODE } from '../lib/quete-2-3';
+import { INTENTION_CODE, intentionAffichee, MESSAGE_DOUX } from '../lib/quete-2-5';
+import { AXES as AXES_26 } from '../lib/quete-2-6';
+import { DISCLAIMER_28, PIED_ECRAN_28, titreBadge28, choisirVariante as choisirVariante28 } from '../lib/quete-2-8';
 import {
   enregistrerReponse,
+  enregistrerTexte,
   marquerTerminee,
   reinitialiserQuete,
   useEtatQuete,
@@ -83,6 +88,30 @@ const COMMENT_REPONDRE_FORMAT: Record<QueteDef['format'], readonly string[]> = {
   ecran: [
     "Des questions à options, rien à réussir : tu coches ce qui est juste pour toi — ou tu ne dis rien, c'est une réponse complète.",
     'Tes réponses restent modifiables et effaçables à tout moment, depuis cet écran.',
+  ],
+  checklist: [
+    "Une liste s'affiche : des lignes rouges possibles. Tu coches celles qui sont rédhibitoires pour toi — tu peux tout laisser vide, c'est une réponse complète.",
+    "Une ligne rouge, c'est ce que tu ne peux pas construire chez l'autre. Cocher n'est jamais « mieux » que ne pas cocher.",
+    'À la fin, tu peux ajouter une ligne rouge dans tes mots — ou ne rien écrire.',
+  ],
+  clic: [
+    "Huit réalités s'affichent une à une : le tabac, l'alcool, les enfants, où tu vis… Tu touches LA déclaration qui est vraie pour toi.",
+    "Ce sont des faits, jamais des notes : aucune réalité n'est « meilleure » qu'une autre.",
+    'Une touche par réalité — tu peux revenir en arrière pour changer.',
+  ],
+  binaire: [
+    "Trois énoncés s'affichent, un à un. Tu réponds Oui ou Non — c'est ton cap d'aujourd'hui, pas un engagement à vie.",
+    "Si aucune réponse ne te ressemble encore, tu pourras choisir « Je découvre » — un état, jamais une case.",
+    'Réponds spontanément : les énoncés sont assumés, il n\'y a pas de piège.',
+  ],
+  arbitrage: [
+    "Un seul écran : cinq horizons pour les cinq prochaines années. Cent points à répartir — donner à un horizon, c'est le retirer à un autre.",
+    "Aucune répartition n'est proposée : les curseurs partent de zéro, c'est ton arbitrage, pas une suggestion.",
+    'Le bouton Valider s\'allume quand les cent points sont posés.',
+  ],
+  jeu: [
+    "Une question, une sélection : ton signe, si tu veux le jouer — ou « Je préfère ne pas dire », et la route continue sans le demander.",
+    "Le zodiaque ne dit rien de toi : ici, c'est un badge pour la conversation, jamais un profil.",
   ],
 };
 
@@ -165,6 +194,14 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const et19 = useEtatQuete('1.9');
   const et110 = useEtatQuete('1.10');
   const et111 = useEtatQuete('1.11');
+  const et21 = useEtatQuete('2.1');
+  const et22 = useEtatQuete('2.2');
+  const et23 = useEtatQuete('2.3');
+  const et24 = useEtatQuete('2.4');
+  const et25 = useEtatQuete('2.5');
+  const et26 = useEtatQuete('2.6');
+  const et27 = useEtatQuete('2.7');
+  const et28 = useEtatQuete('2.8');
   const etatsTous: Record<IdQuete, EtatQuete> = {
     '1.1': et11,
     '1.2': et12,
@@ -176,6 +213,14 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     '1.9': et19,
     '1.10': et110,
     '1.11': et111,
+    '2.1': et21,
+    '2.2': et22,
+    '2.3': et23,
+    '2.4': et24,
+    '2.5': et25,
+    '2.6': et26,
+    '2.7': et27,
+    '2.8': et28,
   };
   const termineesTotal = QUETE_IDS.filter((id) => etatsTous[id].terminee).length;
   const monde = mondeDeQuete(queteId);
@@ -229,9 +274,14 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   }, [montreReprise]);
 
   // Complétion : toutes les réponses posées → la carte (une seule fois).
-  // Quêtes SANS carte (1.7/1.11) : aucun score, aucun choix de variante —
-  // l'écran final (ECRAN_17 / SORTIES_111). 1.11 attend en plus le choix du
-  // chemin (Q1.11-chemin), posé APRÈS les 3 questions (Livrable).
+  // Quêtes SANS carte (1.7/1.11/2.8) : aucun score, aucun choix de variante —
+  // l'écran final (ECRAN_17 / SORTIES_111 / badge 2.8). 1.11 attend en plus le
+  // choix du chemin (Q1.11-chemin), posé APRÈS les 3 questions (Livrable).
+  // Monde 3 — les formats à validation explicite attendent leur geste :
+  // 2.3 le « Valider » de la checklist (Q2.3-valide), 2.6 la répartition
+  // complète à 100 points (Q2.6-valide), 2.5 la 4ᵉ réponse « Je découvre »
+  // (Q2.5-intention) quand la combinaison des 3 binaires ne dit rien
+  // (Non/Non/Non — message doux du Livrable).
   useEffect(() => {
     if (phase === 'passation' && repondues === deck.length) {
       if (quete.sansCarte) {
@@ -240,6 +290,14 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         setPhase('ecran');
         return;
       }
+      if (queteId === '2.3' && etat.reponses['Q2.3-valide'] !== 1) return;
+      if (queteId === '2.6' && etat.reponses['Q2.6-valide'] !== 1) return;
+      if (
+        queteId === '2.5' &&
+        etat.reponses[INTENTION_CODE] === undefined &&
+        intentionAffichee(etat.reponses) === 'aucune'
+      )
+        return;
       const carteId = etat.carteId ?? quete.choisirVariante(quete.scorer(etat.reponses));
       marquerTerminee(queteId, carteId);
       setPhase('carte');
@@ -420,6 +478,15 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     // enregistré puis l'effet de complétion bascule sur l'écran final.
     const choixChemin =
       queteId === '1.11' && repondues === deck.length && etat.reponses['Q1.11-chemin'] === undefined;
+    // 2.5 : les 3 binaires posés mais la combinaison (Non/Non/Non) ne dit rien
+    // (Livrable — « Incomplétude assumée ») : le MESSAGE DOUX accueille l'état
+    // et la 4ᵉ réponse « Je découvre » offre une issue déclarée — ni relance,
+    // ni insinuation de défaut. Les réponses restent modifiables.
+    const choixIntention =
+      queteId === '2.5' &&
+      repondues === deck.length &&
+      etat.reponses[INTENTION_CODE] === undefined &&
+      intentionAffichee(etat.reponses) === 'aucune';
     return (
       <main className="screen q-screen q-run" aria-labelledby="q-run-label">
         {montreReprise && (
@@ -467,6 +534,122 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               Je commence quand même
             </button>
             <p className="q-ecran-note">Aucun chemin n'est le bon — et tu pourras changer d'avis quand tu veux.</p>
+          </div>
+        ) : choixIntention ? (
+          <div className="q-choix" role="group" aria-label="Ton intention — un état, jamais une case">
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              Aucune de tes réponses ne dessine encore un cap — et c'est très bien ainsi.
+            </h1>
+            <p className="q-ecran-note q-ecran-note-doux">{MESSAGE_DOUX}</p>
+            <button
+              type="button"
+              className="q-choix-btn"
+              onClick={() => enregistrerReponse(queteId, INTENTION_CODE, 1)}
+            >
+              Je découvre
+            </button>
+            <p className="q-ecran-note">
+              Tu peux aussi modifier tes réponses ci-dessous — tes trois réponses restent intactes et sans jugement.
+            </p>
+          </div>
+        ) : quete.format === 'checklist' ? (
+          // 2.3 — UN écran (Livrable) : les 9 lignes rouges cochables + le champ
+          // libre Q2.3-10 (les mots de la personne, jamais reformulés, hors
+          // computation). « Valider » pose TOUTES les valeurs (0 ou 1 — la liste
+          // vide est un cadre ouvert assumé, jamais une absence de réponse) puis
+          // le gate Q2.3-valide déclenche la complétion.
+          <div className="q-choix q-checklist" role="group" aria-label="Tes lignes rouges — coches ce qui est rédhibitoire pour toi">
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              Coches tes lignes rouges — ou aucune.
+            </h1>
+            {deck.map((it) => {
+              const on = etat.reponses[it.code] === 1;
+              return (
+                <button
+                  key={it.code}
+                  type="button"
+                  className={on ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                  aria-pressed={on}
+                  onClick={() => enregistrerReponse(queteId, it.code, on ? 0 : 1)}
+                >
+                  <span className="q-check-mark" aria-hidden="true">
+                    {on ? '✓' : ''}
+                  </span>
+                  {it.text}
+                </button>
+              );
+            })}
+            <label className="q-check-libre">
+              <span>Une autre ligne rouge, dans tes mots — ou laisse vide.</span>
+              <textarea
+                value={etat.textes?.[LIBRE_CODE] ?? ''}
+                maxLength={500}
+                rows={3}
+                onChange={(e) => enregistrerTexte(queteId, LIBRE_CODE, e.target.value)}
+                placeholder="Tes mots à toi — ils ne sont jamais reformulés."
+              />
+            </label>
+            <button
+              type="button"
+              className="btn btn-accent q-choix-valider"
+              onClick={() => {
+                deck.forEach((it) => enregistrerReponse(queteId, it.code, etat.reponses[it.code] === 1 ? 1 : 0));
+                enregistrerReponse(queteId, 'Q2.3-valide', 1);
+              }}
+            >
+              Valider ma sélection
+              <Fleche />
+            </button>
+            <p className="q-ecran-note">Rien n'est jugé ici : la liste vide est un cadre ouvert, une réponse complète.</p>
+          </div>
+        ) : quete.format === 'arbitrage' ? (
+          // 2.6 — UN écran (Livrable) : 5 curseurs 0-100, somme verrouillée à
+          // 100, AUCUNE valeur par défaut (les curseurs s'enregistrent au geste).
+          // « Valider » pose TOUTES les valeurs puis le gate Q2.6-valide —
+          // aucune sortie partielle.
+          <div className="q-choix q-arbitrage" role="group" aria-label="Tes priorités — cent points à répartir sur cinq horizons">
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              Cent points. Cinq horizons.
+            </h1>
+            {AXES_26.map((a) => {
+              const pts = etat.reponses[a.code] ?? 0;
+              return (
+                <div key={a.code} className="q-arb-axe">
+                  <div className="q-arb-head">
+                    <span className="q-arb-nom">{a.nom}</span>
+                    <span className="q-arb-pts">{pts} pts</span>
+                  </div>
+                  <p className="q-arb-desc">{a.description}</p>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={pts}
+                    aria-label={`${a.nom} — points sur 100`}
+                    onChange={(e) => enregistrerReponse(queteId, a.code, Number(e.target.value))}
+                  />
+                </div>
+              );
+            })}
+            <div className="q-arb-total" role="status">
+              {(() => {
+                const reste = 100 - AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0);
+                return reste === 0 ? 'Les cent points sont posés.' : `Il reste ${reste} points à répartir.`;
+              })()}
+            </div>
+            <button
+              type="button"
+              className="btn btn-accent q-choix-valider"
+              disabled={100 - AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0) !== 0}
+              onClick={() => {
+                AXES_26.forEach((a) => enregistrerReponse(queteId, a.code, etat.reponses[a.code] ?? 0));
+                enregistrerReponse(queteId, 'Q2.6-valide', 1);
+              }}
+            >
+              Valider ma répartition
+              <Fleche />
+            </button>
           </div>
         ) : (
           <>
@@ -572,9 +755,63 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
 
   // -------------------------------------- écran final — quêtes SANS carte
   // 1.7 « écran de confiance » (ECRAN_17) · 1.11 « écran de passage » (le
-  // chemin choisi → SORTIES_111 — verbatim Livrable). Aucune carte, aucun
-  // score, aucun PDF : la quête se clôt sur son écran, digne et modifiable.
+  // chemin choisi → SORTIES_111 — verbatim Livrable) · 2.8 « badge miniature »
+  // (le signe choisi → titre verbatim + phrase légère + DISCLAIMER gravé ;
+  // « Je préfère ne pas dire » → AUCUN badge, aucune trace — retour silencieux).
+  // Aucune carte, aucun score, aucun PDF : la quête se clôt sur son écran.
   if (phase === 'ecran') {
+    if (queteId === '2.8') {
+      const idBadge = choisirVariante28(etat.reponses);
+      const badge = quete.cartes[idBadge];
+      const badgeTitre = titreBadge28(idBadge);
+      const silence = badgeTitre === '';
+      const laSuite2 = quete.suivante ? QUETES[quete.suivante] : null;
+      return (
+        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+          <div className="q-carte" role="region" aria-label="Ton écran">
+            <p className="q-carte-entete">{quete.completion.entete}</p>
+            {silence ? (
+              <>
+                <h1 className="q-carte-nom" id="q-ecran-title">
+                  Tu préfères ne pas dire
+                </h1>
+                <p className="q-carte-lumiere">
+                  C'est noté — le voyage continue sans le badge. Aucune trace, aucune relance.
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="q-carte-nom" id="q-ecran-title">
+                  {badgeTitre}
+                </h1>
+                <p className="q-carte-lumiere">{badge.lumiere}</p>
+                <p className="q-ecran-note">{DISCLAIMER_28}</p>
+                <p className="q-carte-hint">{PIED_ECRAN_28.split(' · ')[0]}</p>
+              </>
+            )}
+            <div className="q-carte-actions">
+              {laSuite2 ? (
+                <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite2.id)}>
+                  {quete.suite.cta ?? 'Continuer le voyage'}
+                  <Fleche />
+                </button>
+              ) : (
+                <button type="button" className="btn btn-accent" onClick={onHome}>
+                  {quete.suite.cta ?? 'Retour à mon voyage'}
+                  <Fleche />
+                </button>
+              )}
+              <button type="button" className="btn btn-ghost" onClick={onExit}>
+                Retour aux mondes
+              </button>
+            </div>
+            <p className="q-carte-hint">
+              Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».
+            </p>
+          </div>
+        </main>
+      );
+    }
     const ecran = queteId === '1.7' ? ECRAN_17 : SORTIES_111[chemin111(etat.reponses)];
     const laSuite = quete.suivante ? QUETES[quete.suivante] : null;
     return (

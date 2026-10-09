@@ -105,7 +105,9 @@ export const WORLDS: VoyageWorld[] = [
     tagline: "Tes valeurs, tes non-négociables, ta vision de la famille : le cap qui oriente tes rencontres.",
     quests: 8,
     free: true,
-    status: "soon",
+    // Monde 3 OUVERT (quêtes 2.1 → 2.8 livrées) — l'accès reste séquentiel :
+    // l'écran Mondes ne le déverrouille qu'une fois le Monde 2 terminé.
+    status: "open",
   },
   {
     num: 4,

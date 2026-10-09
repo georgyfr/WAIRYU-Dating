@@ -5225,6 +5225,140 @@ body.no-scroll {
     font-weight: 700
 }
 
+/* ============================================================
+   q-checklist / q-check-* : quête 2.3 « Tes non-négociables » —
+   UN écran : lignes rouges cochables + champ libre (Monde 3)
+   ============================================================ */
+
+.q-checklist .q-choix-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 52px
+}
+
+.q-check-mark {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    margin-top: 1px;
+    border-radius: 8px;
+    border: 2px solid var(--c-line);
+    background: var(--c-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--c-turquoise-deep)
+}
+
+.q-check-libre {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-night)
+}
+
+.q-check-libre textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--c-line);
+    background: var(--c-white);
+    font: inherit;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--c-night);
+    resize: vertical;
+    min-height: 84px
+}
+
+.q-check-libre textarea:focus {
+    outline: none;
+    border-color: var(--c-turquoise-deep)
+}
+
+/* ============================================================
+   q-arbitrage / q-arb-* : quête 2.6 « Tes priorités 5 ans » —
+   UN écran : 5 curseurs 0-100, somme verrouillée à 100 (Monde 3)
+   ============================================================ */
+
+.q-arbitrage {
+    gap: 20px
+}
+
+.q-arb-axe {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-white)
+}
+
+.q-arb-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px
+}
+
+.q-arb-nom {
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.q-arb-pts {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--c-turquoise-deep);
+    white-space: nowrap
+}
+
+.q-arb-desc {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--c-encre-douce, #5a6b7a);
+    margin: 0
+}
+
+.q-arb-axe input[type="range"] {
+    width: 100%;
+    accent-color: var(--c-turquoise-deep);
+    min-height: 44px;
+    cursor: pointer
+}
+
+.q-arb-total {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--c-night);
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--c-turquoise);
+    border: 2px solid var(--c-turquoise-deep)
+}
+
+/* Le message doux de la quête 2.5 (Non/Non/Non — Livrable) : accueilli,
+   jamais une relance — un encadré posé, pas une note d'erreur. */
+.q-ecran-note-doux {
+    font-size: 14.5px;
+    color: var(--c-night);
+    font-style: normal;
+    font-weight: 600;
+    padding: 12px 14px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-white)
+}
+
 @media (prefers-contrast: more) {
     .q-choix-btn {
         border-width: 2.5px

@@ -69,9 +69,18 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const worldsDone = PROGRESS.worldsDone;
   const statuts = useStatutsMondes();
   // L'accès aux mondes reste SÉQUENTIEL : le Monde 2 « Le Volant » ne se
-  // déverrouille qu'une fois les trois quêtes du Monde 1 terminées.
+  // déverrouille qu'une fois les trois quêtes du Monde 1 terminées ; le Monde 3
+  // « La Boussole » qu'une fois les sept quêtes du Monde 2 terminées.
   const et13 = useEtatQuete('1.3');
+  const et14 = useEtatQuete('1.4');
+  const et15 = useEtatQuete('1.5');
+  const et16 = useEtatQuete('1.6');
+  const et17 = useEtatQuete('1.7');
+  const et19 = useEtatQuete('1.9');
+  const et110 = useEtatQuete('1.10');
+  const et111 = useEtatQuete('1.11');
   const monde1Fini = useEtatQuete('1.1').terminee && useEtatQuete('1.2').terminee && et13.terminee;
+  const monde2Fini = [et14, et15, et16, et17, et19, et110, et111].every((e) => e.terminee);
   const [openCode, setOpenCode] = useState<string | null>(null);
   const openWorld = openCode ? (WORLDS.find((w) => w.code === openCode) ?? null) : null;
   const fermerFiche = useCallback(() => setOpenCode(null), []);
@@ -219,10 +228,23 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           done={worldsDone}
           started={estEnCours(statuts, openWorld.code)}
           onClose={fermerFiche}
-          // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé.
-          deverrouille={openWorld.code === 'M1' ? true : openWorld.code === 'M2' ? monde1Fini : false}
+          // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé ;
+          // M3 jouable une fois le Monde 2 terminé.
+          deverrouille={
+            openWorld.code === 'M1'
+              ? true
+              : openWorld.code === 'M2'
+                ? monde1Fini
+                : openWorld.code === 'M3'
+                  ? monde2Fini
+                  : false
+          }
           onEnterQuest={
-            openWorld.code === 'M1' || (openWorld.code === 'M2' && monde1Fini) ? onEnterQuest : undefined
+            openWorld.code === 'M1' ||
+            (openWorld.code === 'M2' && monde1Fini) ||
+            (openWorld.code === 'M3' && monde2Fini)
+              ? onEnterQuest
+              : undefined
           }
         />
       )}

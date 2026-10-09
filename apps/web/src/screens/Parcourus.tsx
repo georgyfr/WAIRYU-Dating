@@ -54,8 +54,8 @@ function dateCourte(iso: string): string {
 }
 
 export default function Parcourus() {
-  // Ordre FIXE et inconditionnel (règles des hooks) — les 10 quêtes ouvertes
-  // (Monde 1 + Monde 2 « Le Volant »).
+  // Ordre FIXE et inconditionnel (règles des hooks) — les 18 quêtes ouvertes
+  // (Monde 1 + Monde 2 « Le Volant » + Monde 3 « La Boussole »).
   const etat11 = useEtatQuete('1.1');
   const etat12 = useEtatQuete('1.2');
   const etat13 = useEtatQuete('1.3');
@@ -66,6 +66,14 @@ export default function Parcourus() {
   const etat19 = useEtatQuete('1.9');
   const etat110 = useEtatQuete('1.10');
   const etat111 = useEtatQuete('1.11');
+  const etat21 = useEtatQuete('2.1');
+  const etat22 = useEtatQuete('2.2');
+  const etat23 = useEtatQuete('2.3');
+  const etat24 = useEtatQuete('2.4');
+  const etat25 = useEtatQuete('2.5');
+  const etat26 = useEtatQuete('2.6');
+  const etat27 = useEtatQuete('2.7');
+  const etat28 = useEtatQuete('2.8');
   const etatsParId: Record<IdQuete, EtatQuete> = {
     '1.1': etat11,
     '1.2': etat12,
@@ -77,6 +85,14 @@ export default function Parcourus() {
     '1.9': etat19,
     '1.10': etat110,
     '1.11': etat111,
+    '2.1': etat21,
+    '2.2': etat22,
+    '2.3': etat23,
+    '2.4': etat24,
+    '2.5': etat25,
+    '2.6': etat26,
+    '2.7': etat27,
+    '2.8': etat28,
   };
   const [pdfEnCours, setPdfEnCours] = useState<IdQuete | null>(null);
 
@@ -102,7 +118,8 @@ export default function Parcourus() {
   );
 
   // Les quêtes réellement terminées, dans l'ordre de la chaîne — y compris les
-  // écrans SANS carte (1.7 « écran de confiance », 1.11 « écran de passage »).
+  // écrans SANS carte (1.7 « écran de confiance », 1.11 « écran de passage »,
+  // 2.8 « badge miniature »).
   const terminees: QueteTerminee[] = QUETE_IDS.filter((id) => {
     const e = etatsParId[id];
     if (!e.terminee) return false;

@@ -26,6 +26,14 @@ import * as Q17 from './quete-1-7';
 import * as Q19 from './quete-1-9';
 import * as Q110 from './quete-1-10';
 import * as Q111 from './quete-1-11';
+import * as Q21 from './quete-2-1';
+import * as Q22 from './quete-2-2';
+import * as Q23 from './quete-2-3';
+import * as Q24 from './quete-2-4';
+import * as Q25 from './quete-2-5';
+import * as Q26 from './quete-2-6';
+import * as Q27 from './quete-2-7';
+import * as Q28 from './quete-2-8';
 import { DEF_14 } from './quete-1-4-def';
 import { DEF_15 } from './quete-1-5-def';
 import { DEF_16 } from './quete-1-6-def';
@@ -33,6 +41,14 @@ import { DEF_17 } from './quete-1-7-def';
 import { DEF_19 } from './quete-1-9-def';
 import { DEF_110 } from './quete-1-10-def';
 import { DEF_111 } from './quete-1-11-def';
+import { DEF_21 } from './quete-2-1-def';
+import { DEF_22 } from './quete-2-2-def';
+import { DEF_23 } from './quete-2-3-def';
+import { DEF_24 } from './quete-2-4-def';
+import { DEF_25 } from './quete-2-5-def';
+import { DEF_26 } from './quete-2-6-def';
+import { DEF_27 } from './quete-2-7-def';
+import { DEF_28 } from './quete-2-8-def';
 import type { LikertNiveau } from './quete-1-1';
 
 /** Un item de passation Likert (les trames n'y figurent jamais — règle 11-b). */
@@ -73,7 +89,15 @@ export type IdQuete =
   | '1.7'
   | '1.9'
   | '1.10'
-  | '1.11';
+  | '1.11'
+  | '2.1'
+  | '2.2'
+  | '2.3'
+  | '2.4'
+  | '2.5'
+  | '2.6'
+  | '2.7'
+  | '2.8';
 
 export interface DimDef {
   /** Clé de dimension dans le score du scorer de la quête. */
@@ -117,9 +141,26 @@ export interface QueteDef {
   };
   /** Le deck réel de passation (trames sautées, jamais affichées). */
   deck: () => ItemPassation[];
-  /** Le format de passation (tous les items d'une quête partagent le format —
-   *  sauf 1.6 qui mêle Likert + énigmes : 'likert-énigmes'). */
-  format: 'likert' | 'choix' | 'ecran' | 'likert-enigmes';
+  /** Le format de passation. Les formats du Livrable :
+   *  - 'likert'         : énoncé + échelle 5 (M1 + 1.4/1.6/1.9/1.10 + 2.1/2.2/2.7) ;
+   *  - 'choix'          : tâche comportementale 1.5 — phrase-cadre + 2 options A/B ;
+   *  - 'question'       : écran spécial 1.7/1.11 — question + options (multi possible) ;
+   *  - 'likert-enigmes' : 1.6 — Likert puis 3 énigmes hors mélange ;
+   *  - 'checklist'      : 2.3 — UN écran, 9 lignes rouges à cocher + champ libre ;
+   *  - 'clic'           : 2.4 — 8 déclarations à un toucher (options) ;
+   *  - 'binaire'        : 2.5 — 3 binaires Oui/Non + 4ᵉ réponse « Je découvre » ;
+   *  - 'arbitrage'      : 2.6 — UN écran, 100 points sur 5 curseurs, somme verrouillée ;
+   *  - 'jeu'            : 2.8 — 1 sélection opt-in, badge miniature (hors score). */
+  format:
+    | 'likert'
+    | 'choix'
+    | 'ecran'
+    | 'likert-enigmes'
+    | 'checklist'
+    | 'clic'
+    | 'binaire'
+    | 'arbitrage'
+    | 'jeu';
   scorer: (reponses: Record<string, number>) => Record<string, number>;
   choisirVariante: (score: Record<string, number>) => string;
   cartes: Record<string, { id: string; nom: string; lumiere: string; ombre: string; tension: string }>;
@@ -164,10 +205,12 @@ export const COMMUN = {
   ],
 } as const;
 
-/** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »).
- *  1.8 n'existe pas au Livrable (série 1.x : la numérotation traverse M1/M2). */
+/** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
+ *  + Monde 3 « La Boussole »). 1.8 n'existe pas au Livrable (série 1.x : la
+ *  numérotation traverse M1/M2) ; la série 2.x traverse M3. */
 export const QUETE_IDS: readonly IdQuete[] = [
   '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
+  '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8',
 ];
 
 /** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
@@ -565,7 +608,7 @@ export const QUETES: Record<IdQuete, QueteDef> = {
     id: '1.7',
     numero: 4,
     totalDuMonde: 7,
-    titre: 'Ton fonctionnement',
+    titre: 'Ton fonctionnement (optionnel)',
     ...DEF_17,
     annonce: Q17.BRIEFING.annonce,
     briefing: {
@@ -635,14 +678,173 @@ export const QUETES: Record<IdQuete, QueteDef> = {
     sansCarte: true,
     completion: Q111.COMPLETION,
   },
+  // ─── Monde 3 « La Boussole » — les 8 quêtes 2.1 → 2.8 (Livrable verbatim) ───
+  '2.1': {
+    id: '2.1',
+    numero: 1,
+    totalDuMonde: 8,
+    titre: 'Tes valeurs',
+    ...DEF_21,
+    annonce: Q21.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q21.BRIEFING.aQuoiCaSert,
+      resultats: Q21.BRIEFING.resultats,
+    },
+    deck: () => Q21.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q21.scorer,
+    choisirVariante: (s) => Q21.choisirVariante(s as Q21.Score21),
+    cartes: Q21.CARTES,
+    completion: Q21.COMPLETION,
+  },
+  '2.2': {
+    id: '2.2',
+    numero: 2,
+    totalDuMonde: 8,
+    titre: 'Ta place pour la spiritualité',
+    ...DEF_22,
+    annonce: Q22.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q22.BRIEFING.aQuoiCaSert,
+      resultats: Q22.BRIEFING.resultats,
+    },
+    deck: () => Q22.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q22.scorer,
+    choisirVariante: (s) => Q22.choisirVariante(s as Q22.Score22),
+    cartes: Q22.CARTES,
+    completion: Q22.COMPLETION,
+  },
+  '2.3': {
+    id: '2.3',
+    numero: 3,
+    totalDuMonde: 8,
+    titre: 'Tes non-négociables',
+    ...DEF_23,
+    annonce: Q23.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q23.BRIEFING.aQuoiCaSert,
+      resultats: Q23.BRIEFING.resultats,
+    },
+    // UN écran : les 9 lignes rouges cochables (ordre gelé graine 23427) +
+    // le champ libre Q2.3-10 (hors deck, hors computation). La complétion est
+    // posée par « Valider » (gate Q2.3-valide, voir Quete.tsx).
+    deck: () => Q23.deckQuete().map(itemLikert),
+    format: 'checklist',
+    scorer: Q23.scorer,
+    choisirVariante: (s) => Q23.choisirVariante(s as Q23.Score23),
+    cartes: Q23.CARTES,
+    completion: Q23.COMPLETION,
+  },
+  '2.4': {
+    id: '2.4',
+    numero: 4,
+    totalDuMonde: 8,
+    titre: 'Tes réalités',
+    ...DEF_24,
+    annonce: Q24.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q24.BRIEFING.aQuoiCaSert,
+      resultats: Q24.BRIEFING.resultats,
+    },
+    // UN-CLIC : chaque déclaration porte ses options verbatim (un toucher).
+    deck: () => Q24.deckQuete().map((it) => ({ code: it.code, text: it.text, format: 'question' as const, options: it.options })),
+    format: 'clic',
+    scorer: Q24.scorer,
+    choisirVariante: (s) => Q24.choisirVariante(s as Q24.Score24),
+    cartes: Q24.CARTES,
+    completion: Q24.COMPLETION,
+  },
+  '2.5': {
+    id: '2.5',
+    numero: 5,
+    totalDuMonde: 8,
+    titre: 'Ce que tu cherches',
+    ...DEF_25,
+    annonce: Q25.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q25.BRIEFING.aQuoiCaSert,
+      resultats: Q25.BRIEFING.resultats,
+    },
+    // BINAIRE : 3 énoncés (Oui / Non) + la 4ᵉ réponse globale « Je découvre »
+    // (gate Q2.5-intention — voir Quete.tsx : le message doux n'arrive que sur
+    // la combinaison Non/Non/Non).
+    deck: () => Q25.deckQuete().map((it) => ({ code: it.code, text: it.text, format: 'question' as const, options: ['Oui', 'Non'] })),
+    format: 'binaire',
+    // Score25 porte l'intention (chaîne) — cast de pont vers le contrat app ;
+    // la lecture des barres n'utilise que la clé numérique « cap ».
+    scorer: (r) => Q25.scorer(r) as unknown as Record<string, number>,
+    choisirVariante: (s) => Q25.choisirVariante(s as Q25.Score25),
+    cartes: Q25.CARTES,
+    completion: Q25.COMPLETION,
+  },
+  '2.6': {
+    id: '2.6',
+    numero: 6,
+    totalDuMonde: 8,
+    titre: 'Tes priorités pour les 5 prochaines années',
+    ...DEF_26,
+    annonce: Q26.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q26.BRIEFING.aQuoiCaSert,
+      resultats: Q26.BRIEFING.resultats,
+    },
+    // JEU D'ARBITRAGE : UN écran — 100 points sur 5 curseurs, somme verrouillée
+    // (gate Q2.6-valide). Les libellés du deck = les noms d'axes ; les
+    // descriptions verbatim vivent dans Q26.AXES (rendu arbitrage).
+    deck: () => Q26.deckQuete().map((a) => ({ code: a.code, text: a.nom, format: 'question' as const, options: [] })),
+    format: 'arbitrage',
+    scorer: Q26.scorer,
+    choisirVariante: (s) => Q26.choisirVariante(s as Q26.Score26),
+    cartes: Q26.CARTES,
+    completion: Q26.COMPLETION,
+  },
+  '2.7': {
+    id: '2.7',
+    numero: 7,
+    totalDuMonde: 8,
+    titre: 'Ta vision de la famille',
+    ...DEF_27,
+    annonce: Q27.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q27.BRIEFING.aQuoiCaSert,
+      resultats: Q27.BRIEFING.resultats,
+    },
+    deck: () => Q27.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q27.scorer,
+    choisirVariante: (s) => Q27.choisirVariante(s as Q27.Score27),
+    cartes: Q27.CARTES,
+    completion: Q27.COMPLETION,
+  },
+  '2.8': {
+    id: '2.8',
+    numero: 8,
+    totalDuMonde: 8,
+    titre: 'Ton signe (juste pour le jeu)',
+    ...DEF_28,
+    annonce: Q28.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q28.BRIEFING.aQuoiCaSert,
+      resultats: Q28.BRIEFING.resultats,
+    },
+    deck: Q28.deck28,
+    format: 'jeu',
+    scorer: Q28.scorerNul28,
+    choisirVariante: (s) => Q28.choisirVariante(s),
+    cartes: Q28.CARTES,
+    sansCarte: true,
+    completion: Q28.COMPLETION,
+  },
 };
 
-/** Le monde d'une quête (la série 1.x traverse M1/M2 — le code reste la clé).
- *  Utilisé par les écrans : chip d'entête, marquerMondeEnCours, libellés. */
-export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2'; nom: string } {
-  return id === '1.1' || id === '1.2' || id === '1.3'
-    ? { code: 'M1', nom: 'Monde 1 — Le Miroir' }
-    : { code: 'M2', nom: 'Monde 2 — Le Volant' };
+/** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
+ *  code reste la clé). Utilisé par les écrans : chip d'entête,
+ *  marquerMondeEnCours, libellés. */
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3'; nom: string } {
+  if (id === '1.1' || id === '1.2' || id === '1.3') return { code: 'M1', nom: 'Monde 1 — Le Miroir' };
+  if (id.startsWith('1.')) return { code: 'M2', nom: 'Monde 2 — Le Volant' };
+  return { code: 'M3', nom: 'Monde 3 — La Boussole' };
 }
 
 /** Le niveau Likert (labels verbatim) — utilisé par la passation et le briefing. */
