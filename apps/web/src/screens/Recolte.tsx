@@ -275,6 +275,12 @@ export default function Recolte() {
     arret?.monde ??
     recolteMondes.find((m) => !m.livree)?.monde ??
     null;
+  // Les mondes qui ont déjà une HISTOIRE réelle (quêtes posées ou terminées).
+  const histoires = recolteMondes.filter((m) => m.termine || m.faites > 0);
+  // Le teaser « ta prochaine découverte t'attend ici » ne s'affiche que si le
+  // prochain monde n'a PAS encore d'entrée réelle (sinon doublon dans la liste).
+  const teaser =
+    prochain && !histoires.some((m) => m.monde.code === prochain.code) ? prochain : null;
 
   return (
     <main className="screen">
@@ -741,9 +747,7 @@ export default function Recolte() {
         </h2>
         <p className="r-sec-sub">{tx('Comment ta récolte s\'est construite, monde après monde.')}</p>
         <ol className="r-tl">
-          {recolteMondes
-            .filter((m) => m.termine || m.faites > 0)
-            .map((m) => (
+          {histoires.map((m) => (
               <li key={m.monde.code} className="r-tl-item">
                 <span
                   className="r-tl-node"
@@ -800,17 +804,17 @@ export default function Recolte() {
                 </div>
               </li>
             ))}
-          {prochain && (
+          {teaser && (
             <li className="r-tl-item r-tl-next">
               <span className="r-tl-node r-tl-node-off" aria-hidden="true">
                 <VoyageIcon name="lock" size={15} strokeWidth={2.2} />
               </span>
               <div className="r-tl-body">
                 <small className="r-tl-etape">
-                  {tx('Monde {{n}} sur {{total}}', { n: prochain.num, total: WORLDS.length })} ·{' '}
+                  {tx('Monde {{n}} sur {{total}}', { n: teaser.num, total: WORLDS.length })} ·{' '}
                   <strong>{tx('bientôt')}</strong>
                 </small>
-                <h3>{prochain.name}</h3>
+                <h3>{teaser.name}</h3>
                 <p className="r-tl-attente">{tx('Ta prochaine découverte t\'attend ici.')}</p>
               </div>
             </li>
