@@ -11,8 +11,9 @@
  * quêtes livrées est 50 — le 51ᵉ pas est la Rencontre. TOTAL_QUESTS est conservé
  * pour la transparence ; à réconcilier sur décision fondateur.
  *
- * PROGRESS = la source unique de la progression RÉELLE (mondes franchis, étapes,
- * récolte) : posée par les actions de l'utilisateur, jamais inventée.
+ * PROGRESS — supprimé : la progression RÉELLE (mondes franchis, étapes,
+ * récolte) est CALCULÉE depuis l'état des quêtes par lib/progression.ts
+ * (useProgression) — posée par les actions de l'utilisateur, jamais inventée.
  *
  * WORLD_DETAILS = la fiche réelle des 11 mondes (présentation, objectif, récolte
  * attendue, format des évaluations, quêtes aux noms verbatim du Livrable).
@@ -408,20 +409,18 @@ export const BUILDS: VoyageBuild[] = avecEN([
   },
 ], VOYAGE_EN.BUILDS);
 
-/** La progression RÉELLE du voyageur — source unique, jamais inventée.
- * INTERIMAIRE : lue ici à zéro, alimentera les écrans dès que les mondes
- * seront franchis (l'état des quêtes vit dans lib/quete-state.ts). */
+/** La progression RÉELLE du voyageur — CALCULÉE depuis l'état des quêtes par
+ *  lib/progression.ts (useProgression) : les compteurs figés à zéro de
+ *  l'ancien constant PROGRESS laissaient le journal de bord (#/parcourus)
+ *  immuable malgré les quêtes terminées. */
 export interface Progression {
+  /** Les mondes FRANCHIS (toutes les quêtes livrées du monde terminées). */
   worldsDone: number;
+  /** Les quêtes TERMINÉES parmi les quêtes ouvertes (QUETE_IDS). */
   stepsDone: number;
+  /** Les cartes OBTENUES (les écrans sans carte ne produisent pas de carte). */
   recolte: number;
 }
-
-export const PROGRESS: Progression = {
-  worldsDone: 0,
-  stepsDone: 0,
-  recolte: 0,
-};
 
 /** Une quête telle qu'affichée dans la fiche d'un monde. */
 export interface WorldQuest {

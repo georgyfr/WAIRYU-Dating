@@ -150,6 +150,9 @@ export const SCREENS_A: Record<string, string> = {
   "Aucun monde traversé pour l'instant": 'No world traveled yet',
   "Le Monde 1 — Le Miroir — ouvre bientôt le chemin. Dès qu'un monde est franchi, il rejoint ton journal avec ce que tu y as découvert.":
     'World 1 — The Mirror — will open the path soon. As soon as a world is crossed, it joins your journal with what you discovered there.',
+  "Ton premier monde n'est pas encore franchi": 'Your first world is not crossed yet',
+  "Chaque quête terminée t'en rapproche — et tes résultats t'attendent juste ici, plus bas.":
+    'Every quest completed brings you closer — and your results are waiting right here, below.',
   'Les mondes que tu as traversés': 'The worlds you have traveled',
   'Tes résultats de quêtes': 'Your quest results',
   'Tes résultats': 'Your results',
@@ -173,6 +176,8 @@ export const SCREENS_A: Record<string, string> = {
   // Apostrophe typographique U+2019 verbatim (bundle, ligne 13009).
   'Aucun monde traversé pour l’instant — le premier ouvre bientôt.':
     'No world traveled yet — the first one opens soon.',
+  "Ton journal se remplit — chaque monde franchi y rejoint ce qu'il t'a révélé.":
+    'Your journal is filling in — each world crossed joins what it revealed about you.',
   '{{a}} sur {{b}}': '{{a}} of {{b}}',
   'Certaines rencontres commencent ici.': 'Some matches begin here.',
   "0 pour l'instant": '0 for now',

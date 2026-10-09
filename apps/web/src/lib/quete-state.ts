@@ -80,7 +80,18 @@ function lire(id: string): EtatQuete {
 const etats = new Map<string, EtatQuete>();
 const abonnes = new Set<() => void>();
 
-function etatDe(id: string): EtatQuete {
+/** S'abonne aux changements d'état — le bus partagé par tous les hooks de
+ *  l'app (useEtatQuete, useProgression). Retourne la désinscription. */
+export function souscrireEtat(abonner: () => void): () => void {
+  abonnes.add(abonner);
+  return () => {
+    abonnes.delete(abonner);
+  };
+}
+
+/** Lecture EN CACHE (identité stable par quête) — pour les lectures dérivées
+ *  (useProgression) et le routage. */
+export function etatDe(id: string): EtatQuete {
   let e = etats.get(id);
   if (!e) {
     e = lire(id);
@@ -150,14 +161,5 @@ export function reinitialiserQuete(id: string): void {
 
 /** Hook réactif — snapshot par identité, re-rendu sur changement réel. */
 export function useEtatQuete(id: string): EtatQuete {
-  return useSyncExternalStore(
-    (abonner) => {
-      abonnes.add(abonner);
-      return () => {
-        abonnes.delete(abonner);
-      };
-    },
-    () => etatDe(id),
-    () => etatDe(id),
-  );
+  return useSyncExternalStore(souscrireEtat, () => etatDe(id), () => etatDe(id));
 }

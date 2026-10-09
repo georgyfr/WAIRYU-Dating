@@ -7,8 +7,9 @@
  *  - stats réelles (11 mondes / N offerts / 51 étapes / 1 destination) ;
  *  - cartes cliquables ENTIÈRES (li onClick + .m-world-click) — chaque monde
  *    ouvre sa fiche (WorldModal) ; le bouton ne fait qu'ouvrir la fiche aussi ;
- *  - statuts pilotés par useStatutsMondes() (monde en cours) + PROGRESS
- *    (mondes franchis) + WORLDS[].status (open/soon) : Terminé / En cours /
+ *  - statuts pilotés par useStatutsMondes() (monde en cours) + useProgression()
+ *    (mondes franchis — calculés depuis l'état réel des quêtes) +
+ *    WORLDS[].status (open/soon) : Terminé / En cours /
  *    Ouvert (bouton accent « Commencer/Continuer ») / À venir (chip + « Découvrir ») ;
  *  - gemmes 💎 Premium sobres (jamais vendues), note M11, footer « premier arrêt » ;
  *  - pendingWorld : la fiche du monde demandé s'ouvre automatiquement UNE fois
@@ -24,7 +25,8 @@ import { useCallback, useEffect, useState } from 'react';
 import WorldModal from '../components/WorldModal';
 import { useStatutsMondes } from '../lib/mondes-state';
 import { useEtatQuete } from '../lib/quete-state';
-import { FREE_WORLDS, PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { useProgression } from '../lib/progression';
+import { FREE_WORLDS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
@@ -68,7 +70,8 @@ function Di() {
 
 export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }: MondesProps) {
   const { tx } = useI18n();
-  const worldsDone = PROGRESS.worldsDone;
+  // Les mondes franchis — RÉELS (calculés depuis l'état des quêtes).
+  const { worldsDone } = useProgression();
   const statuts = useStatutsMondes();
   // L'accès aux mondes reste SÉQUENTIEL : le Monde 2 « Le Volant » ne se
   // déverrouille qu'une fois les trois quêtes du Monde 1 terminées ; le Monde 3

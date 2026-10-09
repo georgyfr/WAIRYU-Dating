@@ -43,7 +43,6 @@ import {
   mondeDeQuete,
   NOTA_BARRES,
   QUETES,
-  QUETE_IDS,
   LIKERT,
   titreTendances,
   type IdQuete,
@@ -63,10 +62,10 @@ import {
   marquerTerminee,
   reinitialiserQuete,
   useEtatQuete,
-  type EtatQuete,
 } from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
-import { PROGRESS, TOTAL_STEPS } from '../lib/voyage';
+import { TOTAL_STEPS } from '../lib/voyage';
+import { useProgression } from '../lib/progression';
 import { useI18n } from '../i18n/I18nProvider';
 import { interpolerMontants } from '../i18n/apply';
 import PartageCarteModal from '../components/PartageCarteModal';
@@ -173,8 +172,8 @@ function IcoTelecharger() {
 }
 
 /** Profil de voyage : étapes réellement franchies (quêtes terminées) sur 51. */
-function profilPct(queteTerminees: number): number {
-  return Math.min(100, Math.round(((PROGRESS.stepsDone + queteTerminees) / TOTAL_STEPS) * 100));
+function profilPct(stepsDone: number): number {
+  return Math.min(100, Math.round((stepsDone / TOTAL_STEPS) * 100));
 }
 
 /** Le texte de partage de la carte (Web Share OU presse-papiers). */
@@ -201,46 +200,9 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const { tx, money } = useI18n();
   const quete = QUETES[queteId];
   const etat = useEtatQuete(queteId);
-  // Les terminaisons de TOUTES les quêtes ouvertes — le profil de voyage.
-  const et11 = useEtatQuete('1.1');
-  const et12 = useEtatQuete('1.2');
-  const et13 = useEtatQuete('1.3');
-  const et14 = useEtatQuete('1.4');
-  const et15 = useEtatQuete('1.5');
-  const et16 = useEtatQuete('1.6');
-  const et17 = useEtatQuete('1.7');
-  const et19 = useEtatQuete('1.9');
-  const et110 = useEtatQuete('1.10');
-  const et111 = useEtatQuete('1.11');
-  const et21 = useEtatQuete('2.1');
-  const et22 = useEtatQuete('2.2');
-  const et23 = useEtatQuete('2.3');
-  const et24 = useEtatQuete('2.4');
-  const et25 = useEtatQuete('2.5');
-  const et26 = useEtatQuete('2.6');
-  const et27 = useEtatQuete('2.7');
-  const et28 = useEtatQuete('2.8');
-  const etatsTous: Record<IdQuete, EtatQuete> = {
-    '1.1': et11,
-    '1.2': et12,
-    '1.3': et13,
-    '1.4': et14,
-    '1.5': et15,
-    '1.6': et16,
-    '1.7': et17,
-    '1.9': et19,
-    '1.10': et110,
-    '1.11': et111,
-    '2.1': et21,
-    '2.2': et22,
-    '2.3': et23,
-    '2.4': et24,
-    '2.5': et25,
-    '2.6': et26,
-    '2.7': et27,
-    '2.8': et28,
-  };
-  const termineesTotal = QUETE_IDS.filter((id) => etatsTous[id].terminee).length;
+  // Les étapes réellement franchies (quêtes terminées) — la progression RÉELLE
+  // calculée depuis l'état, sur le même bus réactif que useEtatQuete.
+  const progression = useProgression();
   const monde = mondeDeQuete(queteId);
 
   const deck = useMemo<ItemPassation[]>(() => quete.deck(), [quete]);
@@ -1023,7 +985,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p>{carte.tension}</p>
         </div>
         <p className="q-carte-pied">
-          {tx('Ton profil de voyage :')} <strong>{tx('{{n}} % complété', { n: profilPct(termineesTotal) })}</strong>
+          {tx('Ton profil de voyage :')} <strong>{tx('{{n}} % complété', { n: profilPct(progression.stepsDone) })}</strong>
         </p>
         <div className="q-carte-actions">
           <button type="button" className="btn btn-accent" onClick={() => setPhase('details')}>

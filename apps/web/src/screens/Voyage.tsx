@@ -9,7 +9,7 @@
  *     #v-etapes).
  *  ② LE SENS — manifeste en carte turquoise profond : « Ici, personne ne te
  *     note. / Personne ne te classe. », 4 piliers, bloc Tu gardes le contrôle.
- *  ③ TA PROGRESSION — 4 tuiles RÉELLES (PROGRESS) + barre 11 segments
+ *  ③ TA PROGRESSION — 4 tuiles RÉELLES (useProgression) + barre 11 segments
  *     (role=progressbar) + prochaine étape (MILESTONES[0]).
  *  ④ TA CARTE DU VOYAGE — WorldMap : SVG serpentin 460×540, Départ → 11
  *     stations cliquables (<g role="button" tabIndex aria-pressed>) → La
@@ -35,7 +35,8 @@
 
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { BUILDS, FREE_WORLDS, MILESTONES, PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { BUILDS, FREE_WORLDS, MILESTONES, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { useProgression } from '../lib/progression';
 import type { VoyageBuild, VoyageWorld } from '../lib/voyage';
 import { useStatutsMondes } from '../lib/mondes-state';
 import VoyageIcon from '../components/VoyageIcons';
@@ -237,9 +238,8 @@ function styleTuile(b: VoyageBuild): CSSProperties {
 
 export default function Voyage({ onExplore, onOpenWorld }: Props) {
   const { tx } = useI18n();
-  const franchis = PROGRESS.worldsDone;
-  const etapes = PROGRESS.stepsDone;
-  const recolte = PROGRESS.recolte;
+  // La progression RÉELLE — calculée depuis l'état des quêtes, réactive.
+  const { worldsDone: franchis, stepsDone: etapes, recolte } = useProgression();
   const total = WORLDS.length;
   const [selection, setSelection] = useState<string>(() => WORLDS[0].code);
   // État RÉEL « monde en cours » (localStorage ; le bundle stockait la chaîne

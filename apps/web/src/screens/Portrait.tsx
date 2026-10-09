@@ -4,8 +4,9 @@
  * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging (fonction `ih`,
  * lignes 10491-10601 de /tmp/staging-bundle-pretty.js) :
  *  - état RÉEL : p-state aria-live=polite, chip « En construction », meta
- *    « 0 monde franchi sur 11 · 0 étape sur 51 » (PROGRESS — la marque du
- *    pluriel apparaîtra dès que le compte > 1), CTA « Reprendre mon voyage » ;
+ *    « X monde franchi sur 11 · X étape sur 51 » (useProgression — calculée
+ *    depuis l'état des quêtes ; la marque du pluriel apparaît dès que > 1),
+ *    CTA « Reprendre mon voyage » ;
  *  - les 11 mondes du Livrable avec gemmes 💎 Premium sobres (aria-label
  *    « Premium » sur la pastille v-prem, verbatim bundle ligne 10566) ;
  *  - bloc « Ton portrait t'appartient. » — le bundle N'A AUCUN lien vers
@@ -15,13 +16,16 @@
  * Aucune prop (bundle : s.jsx(ih, {})). Apostrophes U+0027 (audit Task 25).
  */
 
-import { PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { useProgression } from '../lib/progression';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
 
 export default function Portrait() {
   const { tx } = useI18n();
+  // La progression RÉELLE — calculée depuis l'état des quêtes, réactive.
+  const { worldsDone, stepsDone } = useProgression();
   return (
     <main className="screen">
       <h1 className="screen-title">{tx('Ton portrait')}</h1>
@@ -38,12 +42,12 @@ export default function Portrait() {
         </p>
         <p className="p-state-meta">
           {tx('{{a}} monde{{s1}} franchi{{s2}} sur {{b}} · {{c}} étape{{s3}} sur {{d}}', {
-            a: PROGRESS.worldsDone,
-            s1: PROGRESS.worldsDone > 1 ? 's' : '',
-            s2: PROGRESS.worldsDone > 1 ? 's' : '',
+            a: worldsDone,
+            s1: worldsDone > 1 ? 's' : '',
+            s2: worldsDone > 1 ? 's' : '',
             b: WORLDS.length,
-            c: PROGRESS.stepsDone,
-            s3: PROGRESS.stepsDone > 1 ? 's' : '',
+            c: stepsDone,
+            s3: stepsDone > 1 ? 's' : '',
             d: TOTAL_STEPS,
           })}
         </p>
@@ -72,7 +76,7 @@ export default function Portrait() {
           {WORLDS.map((w) => (
             <li
               key={w.code}
-              className={w.num <= PROGRESS.worldsDone ? 'p-dim p-dim-done' : 'p-dim'}
+              className={w.num <= worldsDone ? 'p-dim p-dim-done' : 'p-dim'}
             >
               <span
                 className="p-dim-ico"

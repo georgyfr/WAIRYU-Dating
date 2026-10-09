@@ -38,7 +38,7 @@ import { useI18n } from '../i18n/I18nProvider';
 interface Props {
   /** Le monde dont la fiche est ouverte. */
   world: VoyageWorld;
-  /** Mondes franchis (PROGRESS.worldsDone) — world.num <= done ⇒ Terminé. */
+  /** Mondes franchis (useProgression().worldsDone) — world.num <= done ⇒ Terminé. */
   done: number;
   /** Le monde est déjà « en cours » (état réel posé par l'utilisateur). */
   started: boolean;

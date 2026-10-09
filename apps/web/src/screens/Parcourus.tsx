@@ -3,11 +3,13 @@
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging (fonction `Uh`,
  * lignes 12838-12952 de /tmp/staging-bundle-pretty.js) :
- *  - stats réelles : X/11 mondes franchis (PROGRESS.worldsDone / WORLDS.length)
- *    et X/51 étapes (PROGRESS.stepsDone / TOTAL_STEPS) ;
- *  - état vide HONNÊTE tant qu'aucun monde n'est franchi (🪞) ;
- *  - sinon la liste .m-list des mondes traversés (chip « Terminé »), prête
- *    dès que PROGRESS.worldsDone > 0 ;
+ *  - stats réelles : X/11 mondes franchis et X/51 étapes — CALCULÉES depuis
+ *    l'état des quêtes par useProgression() (correction : l'ancien constant
+ *    PROGRESS de voyage.ts était figé à zéro, le journal ne bougeait JAMAIS) ;
+ *  - état vide HONNÊTE tant qu'aucun monde n'est franchi (🪞 — ou 🧭 quand des
+ *    quêtes sont déjà terminées mais aucun monde complet) ;
+ *  - sinon la liste .m-list des mondes traversés (chip « Terminé »), dès que
+ *    useProgression().worldsDone > 0 ;
  *  - actions : #/mondes (accent) + #/voyage (ghost).
  *
  * COUCHE APP (demande fondateur, Task 31) : une section « Tes résultats »
@@ -25,11 +27,12 @@
  */
 
 import { useCallback, useState } from 'react';
-import { PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
+import { TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import { QUETES, QUETE_IDS, mondeDeQuete } from '../lib/quetes';
 import type { IdQuete } from '../lib/quetes';
 import { useEtatQuete } from '../lib/quete-state';
 import type { EtatQuete } from '../lib/quete-state';
+import { useProgression } from '../lib/progression';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
@@ -97,6 +100,8 @@ export default function Parcourus() {
     '2.8': etat28,
   };
   const [pdfEnCours, setPdfEnCours] = useState<IdQuete | null>(null);
+  // La progression RÉELLE — calculée depuis l'état des quêtes, réactive.
+  const progression = useProgression();
 
   /** Régénère le PDF depuis les réponses stockées — même carte, mêmes barres. */
   const telechargerPdf = useCallback(
@@ -129,7 +134,7 @@ export default function Parcourus() {
     return !!e.carteId && !!QUETES[id].cartes[e.carteId as string];
   }).map((id) => ({ id, etat: etatsParId[id] }));
 
-  const worldsDone = PROGRESS.worldsDone;
+  const worldsDone = progression.worldsDone;
   const traverses = WORLDS.filter((w) => w.num <= worldsDone);
   return (
     <main className="screen">
@@ -144,7 +149,7 @@ export default function Parcourus() {
         </span>
         <span role="listitem">
           <strong>
-            {PROGRESS.stepsDone}/{TOTAL_STEPS}
+            {progression.stepsDone}/{TOTAL_STEPS}
           </strong>{' '}
           {tx('étapes')}
         </span>
@@ -152,12 +157,23 @@ export default function Parcourus() {
       {traverses.length === 0 ? (
         <div className="empty">
           <span className="emoji" aria-hidden="true">
-            🪞
+            {progression.stepsDone > 0 ? '🧭' : '🪞'}
           </span>
-          <h2>{tx("Aucun monde traversé pour l'instant")}</h2>
-          <p>
-            {tx("Le Monde 1 — Le Miroir — ouvre bientôt le chemin. Dès qu'un monde est franchi, il rejoint ton journal avec ce que tu y as découvert.")}
-          </p>
+          {progression.stepsDone > 0 ? (
+            <>
+              <h2>{tx("Ton premier monde n'est pas encore franchi")}</h2>
+              <p>
+                {tx("Chaque quête terminée t'en rapproche — et tes résultats t'attendent juste ici, plus bas.")}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2>{tx("Aucun monde traversé pour l'instant")}</h2>
+              <p>
+                {tx("Le Monde 1 — Le Miroir — ouvre bientôt le chemin. Dès qu'un monde est franchi, il rejoint ton journal avec ce que tu y as découvert.")}
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <ol className="m-list" aria-label={tx('Les mondes que tu as traversés')}>

@@ -17,14 +17,15 @@
  * Aucune prop (bundle : s.jsx(Wh, {})).
  */
 
-import { MILESTONES, PROGRESS, WORLDS } from '../lib/voyage';
+import { MILESTONES, WORLDS } from '../lib/voyage';
+import { useProgression } from '../lib/progression';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
 
 export default function Recolte() {
   const { tx } = useI18n();
-  const worldsDone = PROGRESS.worldsDone;
+  const { worldsDone } = useProgression();
   return (
     <main className="screen">
       <h1 className="screen-title">{tx('Ma récolte')}</h1>
@@ -56,8 +57,13 @@ export default function Recolte() {
           </span>
           <span className="rec-state-body">
             <h2>{tx('Ton journal')}</h2>
-            {/* Verbatim bundle (U+2019 dans « l’instant »). */}
-            <p>{tx('Aucun monde traversé pour l’instant — le premier ouvre bientôt.')}</p>
+            {/* Verbatim bundle (U+2019 dans « l’instant ») — tant qu'aucun monde
+                n'est franchi ; sinon la copie suit l'état réel. */}
+            <p>
+              {worldsDone > 0
+                ? tx("Ton journal se remplit — chaque monde franchi y rejoint ce qu'il t'a révélé.")
+                : tx('Aucun monde traversé pour l’instant — le premier ouvre bientôt.')}
+            </p>
           </span>
           <span className="p-chip">
             {tx('{{a}} sur {{b}}', { a: worldsDone, b: WORLDS.length })}
