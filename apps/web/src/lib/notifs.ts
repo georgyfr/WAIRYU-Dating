@@ -264,7 +264,7 @@ export function libelleNotif(n: NotifRecolte, tx: (fr: string, vars?: Record<str
     case 'mois_ouvert':
       return tx('Mois {{n}} ouvert', { n: n.mois });
     case 'mois_fini':
-      return tx('Mois {{n}} terminé — ta récolte t\'attend');
+      return tx('Mois {{n}} terminé — ta récolte t\'attend', { n: n.mois });
     case 'pass':
       return tx('Nouveau pass');
     case 'credit':
