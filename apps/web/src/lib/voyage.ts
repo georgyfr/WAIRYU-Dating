@@ -31,7 +31,13 @@
  *
  * RECONSTITUTION (5ᵉ reset sandbox) : données extraites programmatiquement du
  * bundle staging index-BvGGhSXl.js (Task 27), apostrophes U+0027 (audit Task 25).
+ *
+ * i18n : les textes AFFICHABLES passent par le miroir EN
+ * (i18n/content/en/voyage.ts — fusion avecEN au chargement, repli FR).
  */
+
+import { avecEN } from '../i18n/apply';
+import { VOYAGE_EN } from '../i18n/content/en/voyage';
 
 export interface VoyageWorld {
   /** Numéro d'ordre du monde (1-11). */
@@ -56,7 +62,7 @@ export interface VoyageWorld {
   status: 'soon' | 'open';
 }
 
-export const WORLDS: VoyageWorld[] = [
+export const WORLDS: VoyageWorld[] = avecEN([
   {
     num: 1,
     code: "M1",
@@ -240,7 +246,7 @@ export const WORLDS: VoyageWorld[] = [
     note: "Se débloque à ton premier match — la rencontre n'est jamais payante",
     status: "soon",
   },
-];
+], VOYAGE_EN.WORLDS);
 
 /** Les 6 étapes jalons du voyage — l'échelle de restitution (Constitution [7]).
  * Chaque jalon EST un gain : ce que le voyageur récolte en avançant. */
@@ -256,7 +262,7 @@ export interface VoyageMilestone {
   status: 'now' | 'soon';
 }
 
-export const MILESTONES: VoyageMilestone[] = [
+export const MILESTONES: VoyageMilestone[] = avecEN([
   {
     num: 1,
     name: "La Carte",
@@ -329,7 +335,7 @@ export const MILESTONES: VoyageMilestone[] = [
     },
     status: "soon",
   },
-];
+], VOYAGE_EN.MILESTONES);
 
 /** Ce que ton voyage construit — les 4 portes vers les vraies destinations
  * (URLs fondateur exactes, états RÉELS, vocabulaire Voyage → Portrait →
@@ -347,7 +353,7 @@ export interface VoyageBuild {
   tile: { bg: string; fg: string };
 }
 
-export const BUILDS: VoyageBuild[] = [
+export const BUILDS: VoyageBuild[] = avecEN([
   {
     num: "01",
     icon: "mirror",
@@ -400,7 +406,7 @@ export const BUILDS: VoyageBuild[] = [
       fg: "#e2557b",
     },
   },
-];
+], VOYAGE_EN.BUILDS);
 
 /** La progression RÉELLE du voyageur — source unique, jamais inventée.
  * INTERIMAIRE : lue ici à zéro, alimentera les écrans dès que les mondes
@@ -437,7 +443,8 @@ export interface WorldDetail {
   note?: string;
 }
 
-export const WORLD_DETAILS: Record<string, WorldDetail> = {
+export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
+  {
   M1: {
     presentation: "Le premier monde du voyage. Tu regardes qui tu es : ta personnalité, ta façon d'aimer et d'être proche, tes émotions. Pas de bonne réponse — seulement ta réponse.",
     objectif: "Dessiner la première image de toi : comment tu fonctionnes, comment tu t'attaches, comment tu vis tes émotions. Tout le voyage s'appuie sur cette base.",
@@ -756,7 +763,8 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = {
       },
     ],
   },
-};
+},
+VOYAGE_EN.WORLD_DETAILS);
 
 /** Totaux dérivés — affichés dans le héro et la récolte. */
 export const TOTAL_QUESTS = WORLDS.reduce((sum, w) => sum + w.quests, 0);

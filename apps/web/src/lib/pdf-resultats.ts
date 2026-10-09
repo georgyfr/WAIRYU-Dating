@@ -27,6 +27,9 @@
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
 import { construireApercuResultats, mondeDeQuete, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
 import { ARCHE } from './quetes-plus';
+import { txSync } from '../i18n/tx-sync';
+import { getLang } from '../i18n/current';
+import { localeDevise } from '../i18n/currency';
 
 // Palette (RGB 0-255) — tokens de l'identité visuelle.
 const BLEU_NUIT: RGB = [23, 44, 61];
@@ -47,7 +50,12 @@ const LARGEUR = 210 - MARGE * 2;
 const BAS_PAGE = 279;
 
 function dateLongue(d = new Date()): string {
-  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  return d.toLocaleDateString(localeDevise(getLang()), {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
 interface OptionsPara {
@@ -132,16 +140,25 @@ export async function telechargerResultatsPdf(
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
   doc.setTextColor(...BLEU_NUIT);
-  doc.text(`Mon document personnel — « ${quete.titre} »`, MARGE, curseur.y);
+  doc.text(
+    txSync('Mon document personnel — « {{titre}} »', { titre: quete.titre }),
+    MARGE,
+    curseur.y,
+  );
   curseur.y += 6.5;
-  para('Ta carte, ce que représente ton type de personnalité, ce que tes réponses dessinent — et ce que tu peux en faire. Généré depuis tes réponses, il reste le tien.', {
-    size: 10,
-    couleur: ENCRE_DOUCE,
-    italique: true,
-  });
+  para(
+    txSync(
+      'Ta carte, ce que représente ton type de personnalité, ce que tes réponses dessinent — et ce que tu peux en faire. Généré depuis tes réponses, il reste le tien.',
+    ),
+    {
+      size: 10,
+      couleur: ENCRE_DOUCE,
+      italique: true,
+    },
+  );
 
   // ---- Ma carte (verbatim — la carte elle-même, validée)
-  section('Ma carte');
+  section(txSync('Ma carte'));
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14.5);
   doc.setTextColor(...TURQUOISE);
@@ -154,16 +171,16 @@ export async function telechargerResultatsPdf(
   para(carte.tension, { size: 10.5, italique: true });
 
   // ---- Ton profil (gabarit fondateur — mots du registre ARCHE, Task 35)
-  section(`Ton profil : ${carte.nom}`);
+  section(txSync('Ton profil : {{nom}}', { nom: carte.nom }));
   para(arche.intro, { size: 10 });
-  para(`En résumé : « ${arche.devise} »`, { size: 10.5, italique: true, couleur: TURQUOISE, gras: true });
-  para('Ce que tu apportes', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(txSync('En résumé :') + ` « ${arche.devise} »`, { size: 10.5, italique: true, couleur: TURQUOISE, gras: true });
+  para(txSync('Ce que tu apportes'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.apportes, { size: 10 });
-  para('Ce qui peut te freiner', { size: 9.5, couleur: CORAIL, gras: true });
+  para(txSync('Ce qui peut te freiner'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.freines, { size: 10 });
-  para('En couple', { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(txSync('En couple'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.couple, { size: 10 });
-  para('Ton équilibre', { size: 9.5, couleur: CORAIL, gras: true });
+  para(txSync('Ton équilibre'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.equilibre, { size: 10 });
 
   // ---- Tes N tendances (d'après tes réponses) — les mesures réelles
@@ -193,7 +210,7 @@ export async function telechargerResultatsPdf(
   para(NOTA_BARRES, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
 
   // ---- La suite de ton voyage (cliffhanger)
-  section('La suite de ton voyage');
+  section(txSync('La suite de ton voyage (pdf)'));
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11.5);
   doc.setTextColor(...BLEU_NUIT);
@@ -211,11 +228,10 @@ export async function telechargerResultatsPdf(
   doc.line(MARGE, curseur.y, 210 - MARGE, curseur.y);
   curseur.y += 5.5;
   para(
-    'Ce document vient de tes réponses à la quête « ' +
-      quete.titre +
-      ' » du ' +
-      mondeDeQuete(quete.id).nom +
-      ". Il reste le tien : rien n'est publié sur Wairyu sans ton action. Les textes d'accompagnement sont une lecture d'app — ils ne remplacent ni un professionnel, ni une étiquette.",
+    txSync(
+      'Ce document vient de tes réponses à la quête « {{quete}} » du {{monde}}. Il reste le tien : rien n\'est publié sur Wairyu sans ton action. Les textes d\'accompagnement sont une lecture d\'app — ils ne remplacent ni un professionnel, ni une étiquette.',
+      { quete: quete.titre, monde: mondeDeQuete(quete.id).nom },
+    ),
     { size: 8.8, couleur: ENCRE_DOUCE, italique: true },
   );
 
@@ -226,7 +242,7 @@ export async function telechargerResultatsPdf(
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(...ENCRE_DOUCE);
-    doc.text(`Wairyu — document personnel, généré le ${dateLongue()}`, MARGE, 289);
+    doc.text(txSync('Wairyu — document personnel, généré le {{date}}', { date: dateLongue() }), MARGE, 289);
     doc.text(`${p} / ${pages}`, 210 - MARGE, 289, { align: 'right' });
   }
 

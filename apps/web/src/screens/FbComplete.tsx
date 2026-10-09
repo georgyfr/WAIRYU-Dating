@@ -25,6 +25,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
 import TurnstileWidget from '../components/TurnstileWidget';
+import { useI18n } from '../i18n/I18nProvider';
 import {
   ApiError,
   birthDateError,
@@ -55,6 +56,7 @@ async function linkFacebook(): Promise<void> {
 }
 
 export default function FbComplete({ onDone }: Props) {
+  const { tx } = useI18n();
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -77,7 +79,7 @@ export default function FbComplete({ onDone }: Props) {
     setError('');
     const localBirth = birthDate ? birthDateError(birthDate) : null;
     if (localBirth) {
-      setError(localBirth);
+      setError(tx(localBirth));
       return;
     }
     setBusy(true);
@@ -85,7 +87,7 @@ export default function FbComplete({ onDone }: Props) {
       await requestOtp(email.trim(), turnstileToken, getDeviceId());
       setStage('code');
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -97,7 +99,7 @@ export default function FbComplete({ onDone }: Props) {
       const localBirth = birthDateError(birthDate);
       if (localBirth) {
         setNeedsBirth(true);
-        setError(localBirth);
+        setError(tx(localBirth));
         return;
       }
     }
@@ -119,9 +121,9 @@ export default function FbComplete({ onDone }: Props) {
         // Le code reste VALABLE (validation serveur avant consommation) :
         // le champ s'affiche, la même saisie est revalidée.
         setNeedsBirth(true);
-        setError('Dernière étape : votre date de naissance (jamais publiée, sert à vérifier que vous êtes majeur).');
+        setError(tx('Dernière étape : votre date de naissance (jamais publiée, sert à vérifier que vous êtes majeur).'));
       } else {
-        setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+        setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
       }
     } finally {
       setBusy(false);
@@ -136,12 +138,12 @@ export default function FbComplete({ onDone }: Props) {
   const continueWithoutEmail = async () => {
     setError('');
     if (!birthDate) {
-      setError('Ajoutez votre date de naissance ci-dessus pour créer votre compte sans email.');
+      setError(tx('Ajoutez votre date de naissance ci-dessus pour créer votre compte sans email.'));
       return;
     }
     const localBirth = birthDateError(birthDate);
     if (localBirth) {
-      setError(localBirth);
+      setError(tx(localBirth));
       return;
     }
     setBusy(true);
@@ -156,7 +158,7 @@ export default function FbComplete({ onDone }: Props) {
       }
       onDone(congratsVia ?? (r.created ? 'facebook' : null));
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -170,41 +172,42 @@ export default function FbComplete({ onDone }: Props) {
         </h1>
         <p className="auth-sub">
           {stage === 'email'
-            ? 'Facebook n\u2019a pas partagé votre email. Indiquez-le pour finaliser la connexion.'
-            : 'Saisissez le code à 6 chiffres envoyé par email.'}
+            ? tx('Facebook n\u2019a pas partagé votre email. Indiquez-le pour finaliser la connexion.')
+            : tx('Saisissez le code à 6 chiffres envoyé par email.')}
         </p>
         <div className="auth-form">
           {stage === 'email' ? (
             <>
               <label className="field">
-                <span>Email</span>
+                <span>{tx('Email')}</span>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
               <BirthDatePicker
-                label="Date de naissance — seulement si vous créez un compte"
+                label={tx('Date de naissance — seulement si vous créez un compte')}
                 value={birthDate}
                 onChange={setBirthDate}
                 onClear={() => setBirthDate('')}
               />
               {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
               <button className="btn btn-primary btn-block" onClick={requestCode} disabled={busy || !email.trim()}>
-                {busy ? 'Envoi…' : 'Recevoir mon code'}
+                {busy ? tx('Envoi…') : tx('Recevoir mon code')}
               </button>
               <div className="auth-divider" role="separator">
-                <span>ou</span>
+                <span>{tx('ou')}</span>
               </div>
               <button className="btn btn-ghost btn-block" onClick={continueWithoutEmail} disabled={busy}>
-                Continuer sans email — via Facebook
+                {tx('Continuer sans email — via Facebook')}
               </button>
               <p className="auth-hint">
-                Boîte mail inaccessible&nbsp;? Votre compte sera créé avec votre profil Facebook seul (la date de
-                naissance ci-dessus est requise). Un email de récupération pourra être ajouté plus tard.
+                {tx(
+                  'Boîte mail inaccessible\u00A0? Votre compte sera créé avec votre profil Facebook seul (la date de naissance ci-dessus est requise). Un email de récupération pourra être ajouté plus tard.',
+                )}
               </p>
             </>
           ) : (
             <>
               <label className="field">
-                <span>Code à 6 chiffres</span>
+                <span>{tx('Code à 6 chiffres')}</span>
                 <input
                   className="auth-code"
                   inputMode="numeric"
@@ -215,7 +218,7 @@ export default function FbComplete({ onDone }: Props) {
               </label>
               {needsBirth && (
                 <BirthDatePicker
-                  label="Date de naissance — pour vérifier que vous êtes majeur"
+                  label={tx('Date de naissance — pour vérifier que vous êtes majeur')}
                   value={birthDate}
                   onChange={setBirthDate}
                 />
@@ -225,7 +228,7 @@ export default function FbComplete({ onDone }: Props) {
                 onClick={verifyAndLink}
                 disabled={busy || code.length !== 6 || (needsBirth && !birthDate)}
               >
-                {busy ? 'Vérification…' : 'Valider et relier mon compte Facebook'}
+                {busy ? tx('Vérification…') : tx('Valider et relier mon compte Facebook')}
               </button>
             </>
           )}

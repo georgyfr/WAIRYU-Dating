@@ -13,6 +13,9 @@
  * staging index-BvGGhSXl.js (Task 27) — bundle audit octet par octet contre le Livrable.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q12 from '../i18n/content/en/quete-1-2';
+
 export interface QueteItem12 {
   code: string;
   text: string;
@@ -21,7 +24,7 @@ export interface QueteItem12 {
 }
 
 /** Les 12 items carte — verbatim. */
-export const ITEMS: readonly QueteItem12[] = [
+const ITEMS_FR: readonly QueteItem12[] = [
   {
     code: "Q1.2-01",
     text: "Quand quelqu'un compte pour moi, son silence me pèse très vite.",
@@ -95,6 +98,7 @@ export const ITEMS: readonly QueteItem12[] = [
     dim: "E",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q12.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 212427 (20 positions : 12 items + 8 trames). */
 export const PASSATION: readonly string[] = [

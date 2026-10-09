@@ -55,6 +55,9 @@
  */
 
 /** Un axe du jeu d'arbitrage — code gelé + libellé court + description écran. */
+import { avecEN } from '../i18n/apply';
+import * as EN_Q26 from '../i18n/content/en/quete-2-6';
+
 export interface Axe26 {
   code: string;
   nom: string;
@@ -62,7 +65,7 @@ export interface Axe26 {
 }
 
 /** Les 5 axes — verbatim (01-tableau-des-axes, ordre canonique 01 → 05). */
-export const AXES: readonly Axe26[] = [
+const AXES_FR: readonly Axe26[] = [
   {
     code: "Q2.6-01",
     nom: "Carrière / ambition",
@@ -94,6 +97,7 @@ export const AXES: readonly Axe26[] = [
       "Faire vivre ce qui est à toi : créer, courir, t'engager. Les années où tes projets personnels — créatifs, sportifs, associatifs — trouvent leur fenêtre.",
   },
 ];
+export const AXES = avecEN(AXES_FR, EN_Q26.AXES);
 
 /**
  * Ordre de passation — le CANONIQUE 01 → 05 (02-ordre-canonique).

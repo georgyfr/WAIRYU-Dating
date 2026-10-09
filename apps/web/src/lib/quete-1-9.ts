@@ -29,6 +29,9 @@
  * Typo : apostrophes ASCII uniquement.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q19 from '../i18n/content/en/quete-1-9';
+
 export interface QueteItem19 {
   code: string;
   text: string;
@@ -39,7 +42,7 @@ export interface QueteItem19 {
 }
 
 /** Les 8 items d'état — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem19[] = [
+const ITEMS_FR: readonly QueteItem19[] = [
   {
     code: "Q1.9-01",
     text: "En ce moment, mes journées ressemblent à mes choix.",
@@ -89,6 +92,7 @@ export const ITEMS: readonly QueteItem19[] = [
     dim: "affiliation",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q19.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 219427 (8 items, aucune trame). */
 export const PASSATION: readonly string[] = [

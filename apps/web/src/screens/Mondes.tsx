@@ -28,6 +28,7 @@ import { FREE_WORLDS, PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import type { VoyageWorld } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 /** Props fixées par App (bundle, lignes 13682-13685). */
 export interface MondesProps {
@@ -66,6 +67,7 @@ function Di() {
 }
 
 export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }: MondesProps) {
+  const { tx } = useI18n();
   const worldsDone = PROGRESS.worldsDone;
   const statuts = useStatutsMondes();
   // L'accès aux mondes reste SÉQUENTIEL : le Monde 2 « Le Volant » ne se
@@ -96,26 +98,25 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
 
   return (
     <main className="screen">
-      <h1 className="screen-title">Les Mondes du Voyage</h1>
+      <h1 className="screen-title">{tx('Les Mondes du Voyage')}</h1>
       <p className="screen-sub">
-        {WORLDS.length} mondes jalonnent ton chemin — chacun révèle un territoire de toi. Touche un
-        monde pour découvrir son objectif, sa récolte et comment ça se passe.
+        {tx('{{n}} mondes jalonnent ton chemin — chacun révèle un territoire de toi. Touche un monde pour découvrir son objectif, sa récolte et comment ça se passe.', { n: WORLDS.length })}
       </p>
-      <div className="m-stats" role="list" aria-label="Le voyage en chiffres">
+      <div className="m-stats" role="list" aria-label={tx('Le voyage en chiffres')}>
         <span role="listitem">
-          <strong>{WORLDS.length}</strong> mondes
+          <strong>{WORLDS.length}</strong> {tx('mondes')}
         </span>
         <span role="listitem">
-          <strong>{FREE_WORLDS}</strong> offerts
+          <strong>{FREE_WORLDS}</strong> {tx('offerts')}
         </span>
         <span role="listitem">
-          <strong>{TOTAL_STEPS}</strong> étapes
+          <strong>{TOTAL_STEPS}</strong> {tx('étapes')}
         </span>
         <span role="listitem">
           <strong>1</strong> destination
         </span>
       </div>
-      <ol className="m-list" aria-label="Les 11 mondes du voyage — touche un monde pour le découvrir">
+      <ol className="m-list" aria-label={tx('Les 11 mondes du voyage — touche un monde pour le découvrir')}>
         {WORLDS.map((w) => {
           const franchi = w.num <= worldsDone;
           const enCours = estEnCours(statuts, w.code);
@@ -135,13 +136,13 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
               </span>
               <div className="m-world-body">
                 <small className="m-world-num">
-                  Monde {w.num} sur {WORLDS.length}
+                  {tx('Monde {{n}} sur {{total}}', { n: w.num, total: WORLDS.length })}
                 </small>
                 <h2>{w.name}</h2>
                 <p>{w.tagline}</p>
                 <div className="m-world-meta">
                   <span className="m-world-steps">
-                    {w.quests} étape{w.quests > 1 ? 's' : ''}
+                    {tx('{{n}} étape{{s}}', { n: w.quests, s: w.quests > 1 ? 's' : '' })}
                   </span>
                   {franchi ? (
                     <span className="v-chip v-chip-done">
@@ -158,15 +159,15 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                       >
                         <path d="M4 12.5l5 5L20 6.5" />
                       </svg>
-                      Terminé
+                      {tx('Terminé')}
                     </span>
                   ) : enCours ? (
                     <span className="v-chip v-chip-now">
                       <span className="v-chip-dot" aria-hidden="true" />
-                      En cours
+                      {tx('En cours')}
                     </span>
                   ) : ouvert ? null : (
-                    <span className="v-chip v-chip-soon">À venir</span>
+                    <span className="v-chip v-chip-soon">{tx('À venir')}</span>
                   )}
                   {!w.free && (
                     <span className="v-prem">
@@ -175,16 +176,20 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                     </span>
                   )}
                   {w.free && w.num === WORLDS.length && (
-                    <span className="v-free">Toujours gratuit</span>
+                    <span className="v-free">{tx('Toujours gratuit')}</span>
                   )}
                   {ouvert ? (
                     <button
                       type="button"
                       className="m-world-btn m-world-btn-accent"
                       onClick={() => ouvrirFiche(w)}
-                      aria-label={`${enCours ? 'Continuer' : 'Commencer'} le monde ${w.name} — ouvrir sa fiche`}
+                      aria-label={
+                        enCours
+                          ? tx('Continuer le monde {{nom}} — ouvrir sa fiche', { nom: w.name })
+                          : tx('Commencer le monde {{nom}} — ouvrir sa fiche', { nom: w.name })
+                      }
                     >
-                      {enCours ? 'Continuer' : 'Commencer'}
+                      {enCours ? tx('Continuer') : tx('Commencer')}
                       <Di />
                     </button>
                   ) : (
@@ -192,9 +197,13 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                       type="button"
                       className="m-world-btn"
                       onClick={() => ouvrirFiche(w)}
-                      aria-label={`Découvrir le monde ${w.name}${franchi ? ' (traversé)' : ' (à venir)'}`}
+                      aria-label={
+                        franchi
+                          ? tx('Découvrir le monde {{nom}} (traversé)', { nom: w.name })
+                          : tx('Découvrir le monde {{nom}} (à venir)', { nom: w.name })
+                      }
                     >
-                      {franchi ? 'Revoir' : 'Découvrir'}
+                      {franchi ? tx('Revoir') : tx('Découvrir')}
                       <Di />
                     </button>
                   )}
@@ -210,15 +219,14 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           <VoyageIcon name="signpost" size={20} />
         </span>
         <div>
-          <h2>Le premier arrêt — Le Miroir — t'attend.</h2>
+          <h2>{tx("Le premier arrêt — Le Miroir — t'attend.")}</h2>
           <p>
-            Les mondes s'ouvrent l'un après l'autre : chaque monde franchi éclaire le suivant. Tu ne
-            peux commencer un monde qu'après avoir terminé le précédent.
+            {tx("Les mondes s'ouvrent l'un après l'autre : chaque monde franchi éclaire le suivant. Tu ne peux commencer un monde qu'après avoir terminé le précédent.")}
           </p>
         </div>
       </article>
       <a className="btn btn-accent m-foot-cta" href="#/voyage">
-        Voir ma carte du voyage
+        {tx('Voir ma carte du voyage')}
         <Di />
       </a>
       {openWorld && (

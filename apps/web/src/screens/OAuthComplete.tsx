@@ -10,6 +10,7 @@
  */
 import { useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
+import { useI18n } from '../i18n/I18nProvider';
 import { ApiError, birthDateError, linkDevice, oauthComplete } from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
 
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export default function OAuthComplete({ via, onDone }: Props) {
+  const { tx } = useI18n();
   const [birthDate, setBirthDate] = useState('');
   const [error, setError] = useState('');
   const [stale, setStale] = useState(false);
@@ -33,7 +35,7 @@ export default function OAuthComplete({ via, onDone }: Props) {
     setError('');
     const localErr = birthDateError(birthDate);
     if (localErr) {
-      setError(localErr);
+      setError(tx(localErr));
       return;
     }
     setBusy(true);
@@ -64,7 +66,7 @@ export default function OAuthComplete({ via, onDone }: Props) {
         // Cookie absent/expiré : le lien a vécu (> 10 min) ou navigation directe.
         setStale(true);
       }
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -84,34 +86,34 @@ export default function OAuthComplete({ via, onDone }: Props) {
         {stale ? (
           <>
             <p className="auth-sub">
-              Cette étape a expiré (valable 10 minutes). Revenez à l'écran de connexion et
-              recliquez sur « Continuer avec {providerLabel} » — vous reverrez directement cette
-              dernière étape.
+              {tx("Cette étape a expiré (valable 10 minutes). Revenez à l'écran de connexion et recliquez sur « Continuer avec ")}
+              {providerLabel}
+              {tx(' » — vous reverrez directement cette dernière étape.')}
             </p>
             <div className="auth-form">
               <button className="btn btn-primary btn-block" onClick={backToAuth}>
-                Retour à la connexion
+                {tx('Retour à la connexion')}
               </button>
             </div>
           </>
         ) : (
           <>
             <p className="auth-sub">
-              Dernière étape pour créer votre compte avec {providerLabel} : votre date de
-              naissance. Elle n'est jamais publiée — elle sert uniquement à vérifier que vous
-              avez 18 ans révolus.
+              {tx('Dernière étape pour créer votre compte avec ')}
+              {providerLabel}
+              {tx(" : votre date de naissance. Elle n'est jamais publiée — elle sert uniquement à vérifier que vous avez 18 ans révolus.")}
             </p>
             <div className="auth-form">
               <BirthDatePicker
-                label="Date de naissance — 18 ans révolus requis"
+                label={tx('Date de naissance — 18 ans révolus requis')}
                 value={birthDate}
                 onChange={setBirthDate}
               />
               <button className="btn btn-primary btn-block" onClick={submit} disabled={busy || !birthDate}>
-                {busy ? 'Création…' : 'Créer mon compte'}
+                {busy ? tx('Création…') : tx('Créer mon compte')}
               </button>
               <button className="btn btn-ghost btn-block" onClick={backToAuth} disabled={busy}>
-                Annuler
+                {tx('Annuler')}
               </button>
             </div>
           </>
@@ -122,9 +124,9 @@ export default function OAuthComplete({ via, onDone }: Props) {
           </p>
         )}
         <p className="auth-legal">
-          En continuant, vous acceptez d'avoir 18 ans révolus et nos règles : respect,
-          consentement, zéro contenu non consenti. Vos données restent les vôtres — export et
-          suppression à tout moment.
+          {tx(
+            "En continuant, vous acceptez d'avoir 18 ans révolus et nos règles : respect, consentement, zéro contenu non consenti. Vos données restent les vôtres — export et suppression à tout moment.",
+          )}
         </p>
       </main>
     </div>

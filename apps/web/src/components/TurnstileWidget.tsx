@@ -7,6 +7,7 @@
  * widget reste rendu si la clé est posée.
  */
 import { useEffect, useRef, useState } from 'react';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface TurnstileApi {
   render: (
@@ -74,6 +75,7 @@ interface Props {
 }
 
 export default function TurnstileWidget({ siteKey, onToken }: Props) {
+  const { tx } = useI18n();
   const holderRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
   const [failed, setFailed] = useState(false);
@@ -114,7 +116,7 @@ export default function TurnstileWidget({ siteKey, onToken }: Props) {
     // (fail-closed) — mieux vaut un retry explicite qu'une impasse muette.
     return (
       <div className="turnstile-retry" role="alert">
-        <p className="turnstile-retry-text">Vérification anti-robot indisponible (connexion instable&nbsp;?).</p>
+        <p className="turnstile-retry-text">{tx('Vérification anti-robot indisponible (connexion instable\u00A0?).')}</p>
         <button
           type="button"
           className="btn btn-ghost btn-block"
@@ -123,10 +125,10 @@ export default function TurnstileWidget({ siteKey, onToken }: Props) {
             setAttempt((a) => a + 1);
           }}
         >
-          Réessayer la vérification
+          {tx('Réessayer la vérification')}
         </button>
       </div>
     );
   }
-  return <div ref={holderRef} className="turnstile-holder" aria-label="Vérification anti-robot" />;
+  return <div ref={holderRef} className="turnstile-holder" aria-label={tx('Vérification anti-robot')} />;
 }

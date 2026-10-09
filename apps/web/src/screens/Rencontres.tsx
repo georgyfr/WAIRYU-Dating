@@ -16,30 +16,35 @@
  * Aucune prop (bundle : s.jsx(oh, {})). Apostrophes U+0027 (audit Task 25).
  */
 
+import { useI18n } from '../i18n/I18nProvider';
+
 export default function Rencontres() {
+  const { tx } = useI18n();
   return (
     <main className="screen">
-      <h1 className="screen-title">Tes rencontres</h1>
-      <p className="screen-sub">Certaines rencontres commencent ici.</p>
+      <h1 className="screen-title">{tx('Tes rencontres')}</h1>
+      <p className="screen-sub">{tx('Certaines rencontres commencent ici.')}</p>
       <div className="empty">
         <span className="emoji" aria-hidden="true">
           💞
         </span>
-        <h2>Aucune rencontre pour l'instant</h2>
+        <h2>{tx("Aucune rencontre pour l'instant")}</h2>
         <p>
-          Quand ton voyage révèle des affinités, elles apparaîtront ici : personnes compatibles,
-          connexions réciproques, recommandations.
+          {tx(
+            'Quand ton voyage révèle des affinités, elles apparaîtront ici : personnes compatibles, connexions réciproques, recommandations.',
+          )}
         </p>
       </div>
       <article className="card match-info">
         <p>
           {/* Verbatim bundle : espace insécable U+00A0 avant « ? ». */}
-          <strong>{'Comment ça commence\u00A0?'}</strong> Ton voyage construit ton portrait et tes
-          affinités — la première personne compatible apparaîtra ici, et le Voyage à Deux
-          s'ouvrira avec elle. La rencontre n'est jamais payante.
+          <strong>{tx('Comment ça commence\u00A0?')}</strong>{' '}
+          {tx(
+            "Ton voyage construit ton portrait et tes affinités — la première personne compatible apparaîtra ici, et le Voyage à Deux s'ouvrira avec elle. La rencontre n'est jamais payante.",
+          )}
         </p>
         <a className="btn btn-accent match-info-cta" href="#/voyage">
-          Voir ma carte du voyage
+          {tx('Voir ma carte du voyage')}
           <svg
             viewBox="0 0 24 24"
             width={16}

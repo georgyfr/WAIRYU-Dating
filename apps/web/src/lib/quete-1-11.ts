@@ -27,6 +27,8 @@
  */
 
 import type { ItemPassation } from './quetes';
+import { avecEN } from '../i18n/apply';
+import * as EN_Q111 from '../i18n/content/en/quete-1-11';
 
 /** Une question fermée de l'écran de passage — options dans l'ordre du Livrable. */
 export interface Question111 {
@@ -36,7 +38,7 @@ export interface Question111 {
 }
 
 /** Les 3 questions — VERBATIM (01-tableau-des-questions, ordre du tableau = ordre FIXE). */
-export const QUESTIONS_111: readonly Question111[] = [
+const QUESTIONS_111_FR: readonly Question111[] = [
   {
     code: 'Q1.11-01',
     question: 'Ta dernière relation : finie, en cours d\'oubli, ou encore en toi ?',
@@ -53,6 +55,7 @@ export const QUESTIONS_111: readonly Question111[] = [
     options: ['Être comblé·e', 'Construire à deux'],
   },
 ];
+export const QUESTIONS_111 = avecEN(QUESTIONS_111_FR, EN_Q111.QUESTIONS_111);
 
 /** Le deck de passation — ordre FIXE 01 → 02 → 03 (aucun mélange, 02-plan-de-passage :
  *  la séquence fait jouer la mémoire récente avant l'ouverture, et l'ouverture
@@ -115,7 +118,7 @@ export function chemin111(reponses: Record<string, number>): Chemin111 {
 /** Les trois écrans de sortie — VERBATIM (05-ecran-d-intro ; les deux lignes
  *  de chaque écran sont jointes par un saut de ligne). Textes doux, courts,
  *  sans futur certain, zéro métadonnée : aucun chemin n'est « le bon ». */
-export const SORTIES_111: Record<Chemin111, { titre: string; texte: string }> = {
+const SORTIES_111_FR: Record<Chemin111, { titre: string; texte: string }> = {
   pret: {
     titre: 'Je suis prêt·e',
     texte: 'Alors, on avance.\nTon voyage continue — la suite arrive à son rythme, comme toi.',
@@ -133,6 +136,7 @@ export const SORTIES_111: Record<Chemin111, { titre: string; texte: string }> = 
       'C\'est ton voyage — tout reste modifiable, et personne ne te redemandera tes raisons.',
   },
 };
+export const SORTIES_111 = avecEN(SORTIES_111_FR, EN_Q111.SORTIES_111);
 
 /** AUCUN score — quête-écran de passage : les réponses ne calculent rien, elles
  *  routent (fiche de cadrage, « Restitutions — aucune »). Exporté uniquement

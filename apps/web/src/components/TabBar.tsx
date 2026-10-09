@@ -10,6 +10,8 @@
  * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging (fonctions
  * Hf/Jf/Kf), classes CSS du CSS servi exact (.tabbar button.active, .tab-dot).
  */
+import { useI18n } from '../i18n/I18nProvider';
+
 export type Tab = 'voyage' | 'mondes' | 'quete' | 'parcourus' | 'recolte';
 
 function TabIcon({ id }: { id: Tab }) {
@@ -72,12 +74,12 @@ function TabIcon({ id }: { id: Tab }) {
   );
 }
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'voyage', label: 'Voyage' },
-  { id: 'mondes', label: 'Mondes' },
-  { id: 'quete', label: 'Quête' },
-  { id: 'parcourus', label: 'Parcourus' },
-  { id: 'recolte', label: 'Récolte' },
+const TABS: { id: Tab }[] = [
+  { id: 'voyage' },
+  { id: 'mondes' },
+  { id: 'quete' },
+  { id: 'parcourus' },
+  { id: 'recolte' },
 ];
 
 export default function TabBar({
@@ -91,21 +93,29 @@ export default function TabBar({
   /** Une quête est engagée ⇒ point corail + aria-label sur l'onglet Quête. */
   queteEnCours: boolean;
 }) {
+  const { tx } = useI18n();
+  const LABELS: Record<Tab, string> = {
+    voyage: tx('Voyage'),
+    mondes: tx('Mondes'),
+    quete: tx('Quête'),
+    parcourus: tx('Parcourus'),
+    recolte: tx('Récolte'),
+  };
   return (
-    <nav className="tabbar" aria-label="Navigation principale">
+    <nav className="tabbar" aria-label={tx('Navigation principale')}>
       {TABS.map((t) => (
         <button
           key={t.id}
           className={active === t.id ? 'active' : undefined}
           onClick={() => onSelect(t.id)}
           aria-current={active === t.id ? 'page' : undefined}
-          aria-label={t.id === 'quete' && queteEnCours ? 'Quête — une quête est en cours' : undefined}
+          aria-label={t.id === 'quete' && queteEnCours ? tx('Quête — une quête est en cours') : undefined}
         >
           <span className="tab-ico" aria-hidden="true">
             <TabIcon id={t.id} />
             {t.id === 'quete' && queteEnCours && <span className="tab-dot" />}
           </span>
-          {t.label}
+          {LABELS[t.id]}
         </button>
       ))}
     </nav>

@@ -75,17 +75,21 @@
  */
 
 /** Un item binaire de la quête — l'énoncé verbatim, sans les options (Oui/Non). */
+import { avecEN } from '../i18n/apply';
+import * as EN_Q25 from '../i18n/content/en/quete-2-5';
+
 export interface QueteItem25 {
   code: string;
   text: string;
 }
 
 /** Les 3 binaires — verbatim (01-tableau-des-items), ordre des codes. */
-export const ITEMS: readonly QueteItem25[] = [
+const ITEMS_FR: readonly QueteItem25[] = [
   { code: 'Q2.5-01', text: 'Tu cherches une relation exclusive.' },
   { code: 'Q2.5-02', text: 'Tu cherches une rencontre, sans plan précis.' },
   { code: 'Q2.5-03', text: "L'exclusivité n'est pas ce que tu vises aujourd'hui." },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q25.ITEMS);
 
 /**
  * L'ordre de passation GELÉ — plan de mélange graine 25428 (re-tirage
@@ -112,8 +116,9 @@ export function deckQuete(): QueteItem25[] {
  * “ ” reproduits caractères par caractères. L'orchestrateur le rend après les
  * 3 binaires quand l'agrégat vaut 'aucune'.
  */
-export const MESSAGE_DOUX =
+const MESSAGE_DOUX_FR =
   'C\'est bon de prendre le temps : tu peux revenir quand tu veux, ou choisir “Je découvre”.';
+export const MESSAGE_DOUX = avecEN(MESSAGE_DOUX_FR, EN_Q25.MESSAGE_DOUX);
 
 /** La clé de la 4ᵉ réponse globale « Je découvre » (gate orchestrateur). */
 export const INTENTION_CODE = 'Q2.5-intention';

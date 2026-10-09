@@ -50,6 +50,9 @@
  * rédigés.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q27 from '../i18n/content/en/quete-2-7';
+
 export interface QueteItem27 {
   code: string;
   text: string;
@@ -66,7 +69,7 @@ export interface ItemsQuete27 {
 }
 
 /** Les 8 items Likert — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem27[] = [
+const ITEMS_FR: readonly QueteItem27[] = [
   {
     code: "Q2.7-01",
     text: "Des enfants font partie du projet que je me fais.",
@@ -119,6 +122,7 @@ export const ITEMS: readonly QueteItem27[] = [
     dim: "la famille élargie",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q27.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 227427 (8 positions, aucune
  *  trame ▲ ; le 1ᵉʳ item vu est Q2.7-06, le dernier Q2.7-02). */

@@ -7,6 +7,7 @@
  * après la liaison de l'appareil (link-device → congrats_pending).
  */
 import './CongratsOverlay.css';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface Props {
   /** Canal d'inscription renvoyé par link-device (congratsVia) — pilote le texte. */
@@ -34,10 +35,11 @@ const CONFETTIS = [
 ];
 
 export default function CongratsOverlay({ via, onClose }: Props) {
-  const texte = TEXTES[via ?? 'email'] ?? TEXTES.email;
+  const { tx } = useI18n();
+  const texte = tx(TEXTES[via ?? 'email'] ?? TEXTES.email);
 
   return (
-    <div className="cg-backdrop" role="dialog" aria-modal="true" aria-label="Bienvenue sur wairyu">
+    <div className="cg-backdrop" role="dialog" aria-modal="true" aria-label={tx('Bienvenue sur wairyu')}>
       <div className="cg-confetti" aria-hidden="true">
         {CONFETTIS.map((c, i) => (
           <i key={i} style={{ left: c.left, animationDelay: c.delay, animationDuration: c.dur }}>
@@ -49,15 +51,16 @@ export default function CongratsOverlay({ via, onClose }: Props) {
       <div className="cg-card">
         <img src="/icons/icon-192.png" alt="" width={72} height={72} className="cg-logo" />
         <h2 className="cg-title">
-          Bienvenue sur WAIRYU <span aria-hidden="true">🎉</span>
+          {tx('Bienvenue sur WAIRYU')} <span aria-hidden="true">🎉</span>
         </h2>
         <p className="cg-text">{texte}</p>
         <p className="cg-text">
-          Ton inscription est enregistrée — ta session reste active, plus jamais besoin de te
-          réinscrire. Retrouve cette annonce et tes notifications dans le journal (onglet Profil).
+          {tx(
+            'Ton inscription est enregistrée — ta session reste active, plus jamais besoin de te réinscrire. Retrouve cette annonce et tes notifications dans le journal (onglet Profil).',
+          )}
         </p>
         <button type="button" className="btn btn-primary btn-block" onClick={onClose} autoFocus>
-          C'est parti ✨
+          {tx("C'est parti")} ✨
         </button>
       </div>
     </div>

@@ -29,6 +29,8 @@
  * apostrophes ASCII uniquement.
  */
 import type { ItemPassation } from './quetes';
+import { avecEN } from '../i18n/apply';
+import * as EN_Q15 from '../i18n/content/en/quete-1-5';
 
 export interface ChoixBinaire15 {
   code: string;
@@ -41,12 +43,15 @@ export interface ChoixBinaire15 {
 }
 
 /** Les 6 binômes — verbatim, ordre canonique C1 → C6 (02-ordre-canonique, figé). */
-export const CHOIX: readonly ChoixBinaire15[] = [
+const CHOIX_FR: readonly ChoixBinaire15[] = [
   {
     code: "Q1.5-C1",
     cadre: "Un argent qui t'est dû arrive.",
-    choixA: "Tu le reçois ce soir : 120 € sur ton compte.",
-    choixB: "Tu le reçois dans six semaines : 200 € sur ton compte.",
+    // Montants du Livrable en base EUR — jetons {m:N} interpolés au rendu
+    // dans la devise de l'utilisateur (i18n/currency.ts — 120 → 78 500 FCFA,
+    // $130, £105…) ; FR+EUR affiche exactement « 120 € » / « 200 € ».
+    choixA: "Tu le reçois ce soir : {m:120} sur ton compte.",
+    choixB: "Tu le reçois dans six semaines : {m:200} sur ton compte.",
   },
   {
     code: "Q1.5-C2",
@@ -79,6 +84,7 @@ export const CHOIX: readonly ChoixBinaire15[] = [
     choixB: "La rencontre qui s'installe doucement, dans quelques semaines.",
   },
 ];
+export const CHOIX = avecEN(CHOIX_FR, EN_Q15.CHOIX);
 
 /** Le deck de passation : un choix par écran, dans l'ordre canonique (pas de mélange). */
 export function deckChoix(): ItemPassation[] {

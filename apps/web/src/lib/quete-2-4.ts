@@ -55,6 +55,9 @@
  */
 
 /** Une auto-déclaration un-clic — l'énoncé + les options (verbatim, ordre du tableau). */
+import { avecEN } from '../i18n/apply';
+import * as EN_Q24 from '../i18n/content/en/quete-2-4';
+
 export interface QueteItem24 {
   code: string;
   text: string;
@@ -62,7 +65,7 @@ export interface QueteItem24 {
 }
 
 /** Les 8 déclarations — VERBATIM (01-tableau-des-items, ordre du tableau 01 → 08). */
-export const ITEMS: readonly QueteItem24[] = [
+const ITEMS_FR: readonly QueteItem24[] = [
   {
     code: "Q2.4-01",
     text: "Ma réalité : le tabac.",
@@ -110,6 +113,7 @@ export const ITEMS: readonly QueteItem24[] = [
     options: ["Je cherche à rencontrer rapidement", "Je préfère prendre mon temps"],
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q24.ITEMS);
 
 /**
  * Ordre de passation GELÉ — plan de mélange graine 24427 (02-plan-de-melange, 8 positions ;

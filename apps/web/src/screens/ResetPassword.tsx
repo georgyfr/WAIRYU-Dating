@@ -5,6 +5,7 @@
  */
 import { useState } from 'react';
 import PasswordField from '../components/PasswordField';
+import { useI18n } from '../i18n/I18nProvider';
 import { ApiError, linkDevice, passwordReset } from '../lib/auth-client';
 import { getDeviceId } from '../lib/push-client';
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function ResetPassword({ token, onDone }: Props) {
+  const { tx } = useI18n();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -21,7 +23,7 @@ export default function ResetPassword({ token, onDone }: Props) {
   const submit = async () => {
     setError('');
     if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.');
+      setError(tx('Le mot de passe doit contenir au moins 8 caractères.'));
       return;
     }
     setBusy(true);
@@ -30,7 +32,7 @@ export default function ResetPassword({ token, onDone }: Props) {
       void linkDevice(getDeviceId()).catch(() => {});
       onDone();
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -42,7 +44,7 @@ export default function ResetPassword({ token, onDone }: Props) {
         <h1 className="auth-title">
           Wai<span className="accent">ryu</span>
         </h1>
-        <p className="auth-sub">Choisissez un nouveau mot de passe.</p>
+        <p className="auth-sub">{tx('Choisissez un nouveau mot de passe.')}</p>
         <div className="auth-form">
           <PasswordField
             label="Nouveau mot de passe (8 caractères minimum)"
@@ -51,7 +53,7 @@ export default function ResetPassword({ token, onDone }: Props) {
             autoComplete="new-password"
           />
           <button className="btn btn-primary btn-block" onClick={submit} disabled={busy || password.length < 8}>
-            {busy ? 'Enregistrement…' : 'Enregistrer'}
+            {busy ? tx('Enregistrement…') : tx('Enregistrer')}
           </button>
           {error && (
             <p className="auth-error" role="alert">

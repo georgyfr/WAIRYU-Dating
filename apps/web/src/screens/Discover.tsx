@@ -1,3 +1,5 @@
+import { useI18n } from '../i18n/I18nProvider';
+
 const DEMO_PROFILES = [
   {
     id: 'demo-1',
@@ -23,13 +25,14 @@ const DEMO_PROFILES = [
 ];
 
 export default function Discover() {
+  const { tx } = useI18n();
   return (
     <main className="screen">
-      <h1 className="screen-title">Découvrir</h1>
-      <p className="screen-sub">Profils de démonstration — le moteur arrive.</p>
+      <h1 className="screen-title">{tx('Découvrir')}</h1>
+      <p className="screen-sub">{tx('Profils de démonstration — le moteur arrive.')}</p>
       {DEMO_PROFILES.map((p) => (
         <article className="card profile-card" key={p.id}>
-          <div className="photo" role="img" aria-label={`Photo (démo) de ${p.name}`}>
+          <div className="photo" role="img" aria-label={tx('Photo (démo) de {{n}}', { n: p.name })}>
             {p.emoji}
           </div>
           <div className="body">
@@ -37,8 +40,8 @@ export default function Discover() {
               <span className="name">{p.name}</span>
               <span className="age">{p.age}</span>
             </div>
-            <p className="bio">{p.bio}</p>
-            <span className="demo-badge">Profil de démonstration</span>
+            <p className="bio">{tx(p.bio)}</p>
+            <span className="demo-badge">{tx('Profil de démonstration')}</span>
           </div>
         </article>
       ))}

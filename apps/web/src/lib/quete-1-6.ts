@@ -30,6 +30,8 @@
  * apostrophes ASCII uniquement.
  */
 import type { ItemPassation } from './quetes';
+import { avecEN } from '../i18n/apply';
+import * as EN_Q16 from '../i18n/content/en/quete-1-6';
 
 export interface QueteItem16 {
   code: string;
@@ -41,7 +43,7 @@ export interface QueteItem16 {
 }
 
 /** Les 7 items déclaratifs — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem16[] = [
+const ITEMS_FR: readonly QueteItem16[] = [
   {
     code: "Q1.6-01",
     text: "Face à une décision, je fais confiance à mon flair plus qu'à mes calculs.",
@@ -85,6 +87,7 @@ export const ITEMS: readonly QueteItem16[] = [
     dim: "traitement",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q16.ITEMS);
 
 /**
  * Ordre de passation GELÉ — mélange graine 216427 (02-plan-de-melange,
@@ -137,7 +140,7 @@ export interface Enigme16 {
  * É2 : index 0, É3 : index 1) pour éviter un patron repérable. Toute évolution
  * passe par une Fiche de Mutation.
  */
-export const ENIGMES: readonly Enigme16[] = [
+const ENIGMES_FR: readonly Enigme16[] = [
   {
     code: "Q1.6-E1",
     enonce:
@@ -168,6 +171,7 @@ export const ENIGMES: readonly Enigme16[] = [
     correcte: 1,
   },
 ];
+export const ENIGMES = avecEN(ENIGMES_FR, EN_Q16.ENIGMES);
 
 /** Le deck des énigmes : format 'question' + options, ordre source É1 → É2 → É3. */
 export function deckEnigmes(): ItemPassation[] {

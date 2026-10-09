@@ -42,6 +42,9 @@
  * moteur dans un texte rendu ; phrases ≤ 22 mots dans les textes rédigés.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q22 from '../i18n/content/en/quete-2-2';
+
 export interface QueteItem22 {
   code: string;
   text: string;
@@ -60,7 +63,7 @@ export interface ItemsQuete22 {
 /** Les 6 items — verbatim (01-tableau-des-items, ordre du tableau).
  *  Angles : pratique réelle vs culturelle · place dans les choix de vie ·
  *  transmission dans un couple (1 D + 1 I par angle, règle R6). */
-export const ITEMS: readonly QueteItem22[] = [
+const ITEMS_FR: readonly QueteItem22[] = [
   {
     code: "Q2.2-01",
     text: "La spiritualité occupe une place réelle dans ma semaine.",
@@ -98,6 +101,7 @@ export const ITEMS: readonly QueteItem22[] = [
     dim: "transmission dans un couple",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q22.ITEMS);
 
 /** Ordre de passation GELÉ — mélange RÉEL graine 222427 (02-plan-de-melange ;
  *  le 1ᵉʳ item vu est Q2.2-04, le dernier Q2.2-01 — JAMAIS l'ordre des codes).

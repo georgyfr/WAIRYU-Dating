@@ -26,6 +26,7 @@ import {
 } from './lib/auth-client';
 import { lireEtatQuete, useEtatQuete, type EtatQuete } from './lib/quete-state';
 import { QUETE_IDS, type IdQuete } from './lib/quetes';
+import { useI18n } from './i18n/I18nProvider';
 import type { MeResponse, PushEventRow } from '@wairyu/shared';
 
 /**
@@ -127,6 +128,7 @@ function readRoute(): Route {
 }
 
 export default function App() {
+  const { tx, lang } = useI18n();
   const [stage, setStage] = useState<Stage>('welcome');
   const [route, setRoute] = useState<Route>(() => readRoute());
   /** État de session : null = vérification en cours, false = déconnecté, true = connecté. */
@@ -224,15 +226,15 @@ export default function App() {
     const facebook = params.get('facebook');
     const isOk = google === 'ok' || facebook === 'ok';
     const notice = isOk
-      ? 'Connexion réussie — bienvenue !'
+      ? tx('Connexion réussie — bienvenue !')
       : google === 'retry' || facebook === 'retry'
-        ? 'La connexion sociale a été interrompue — réessayez, ou utilisez le code email.'
+        ? tx('La connexion sociale a été interrompue — réessayez, ou utilisez le code email.')
         : google === 'unverified'
-          ? 'Cet email n\u2019est pas vérifié chez le fournisseur — utilisez le code email.'
+          ? tx('Cet email n\u2019est pas vérifié chez le fournisseur — utilisez le code email.')
           : google === 'cancelled' || facebook === 'cancelled'
-            ? 'Connexion annulée.'
+            ? tx('Connexion annulée.')
             : google === 'error' || facebook === 'error'
-              ? params.get('msg') || 'La connexion sociale a échoué — réessayez, ou utilisez le code email.'
+              ? params.get('msg') || tx('La connexion sociale a échoué — réessayez, ou utilisez le code email.')
               : null;
     // Retour OAuth réussi : lie l'appareil au compte. Si le compte vient
     // d'être CRÉÉ (congrats_pending), l'overlay félicitations s'affiche —
@@ -292,7 +294,7 @@ export default function App() {
         window.location.hash = '';
         window.location.reload();
       } catch {
-        window.alert('La déconnexion n’a pas abouti — réessaie.');
+        window.alert(tx('La déconnexion n’a pas abouti — réessaie.'));
         setBusy(false);
       }
     })();
@@ -302,7 +304,7 @@ export default function App() {
     try {
       exportAccount();
     } catch {
-      window.alert('L’export n’a pas abouti — réessaie.');
+      window.alert(tx('L’export n’a pas abouti — réessaie.'));
     }
   };
 
@@ -314,7 +316,7 @@ export default function App() {
         window.location.hash = '';
         window.location.reload();
       } catch {
-        window.alert('La suppression n’a pas abouti — réessaie.');
+        window.alert(tx('La suppression n’a pas abouti — réessaie.'));
         setBusy(false);
       }
     })();
@@ -371,7 +373,7 @@ export default function App() {
           <h1>
             Wai<span className="accent">ryu</span>
           </h1>
-          <p className="tagline">Chargement…</p>
+          <p className="tagline">{tx('Chargement…')}</p>
         </main>
       </div>
     );
@@ -394,7 +396,7 @@ export default function App() {
   // ---- Connecté : app — L'ACCUEIL EST LE VOYAGE (demande fondateur) ----
   const view: Exclude<Stage, 'welcome'> = stage === 'welcome' ? 'voyage' : stage;
   const rawName = (me?.displayName ?? '').trim() || (me?.username ?? '').trim();
-  const firstName = (rawName.split(/\s+/)[0] || 'Voyageur').slice(0, 14);
+  const firstName = (rawName.split(/\s+/)[0] || tx('Voyageur')).slice(0, 14);
   const initial = firstName.charAt(0).toUpperCase();
   const badge = Math.min(events.length, 9);
   return (
@@ -415,18 +417,21 @@ export default function App() {
               <span className="brand">
                 Wai<span className="brand-accent">ryu</span>
               </span>
-              <span className="ah-tagline">
-                Apprendre aujourd'hui,
-                <br />
-                explorer demain
-              </span>
+              <span
+                className="ah-tagline"
+                dangerouslySetInnerHTML={{ __html: tx("Apprendre aujourd'hui,<br>explorer demain") }}
+              />
             </div>
           </div>
           <div className="ah-right">
             <button
               type="button"
               className="ah-bell"
-              aria-label={badge > 0 ? `Notifications (${badge} nouvelles)` : 'Notifications'}
+              aria-label={
+                badge > 0
+                  ? tx('Notifications ({{n}} nouvelles)', { n: badge })
+                  : tx('Notifications')
+              }
               aria-expanded={bellOpen}
               aria-haspopup="dialog"
               onClick={() => {
@@ -447,7 +452,7 @@ export default function App() {
                 setAccountOpen((v) => !v);
                 setBellOpen(false);
               }}
-              aria-label="Mon compte"
+              aria-label={tx('Mon compte')}
               aria-expanded={accountOpen}
               aria-haspopup="dialog"
             >
@@ -455,7 +460,7 @@ export default function App() {
                 {initial}
               </span>
               <span className="ah-hello">
-                <small>Bonjour,</small>
+                <small>{tx('Bonjour,')}</small>
                 <strong>{firstName}</strong>
               </span>
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="ah-chev">
@@ -468,20 +473,20 @@ export default function App() {
               <button
                 type="button"
                 className="ah-overlay"
-                aria-label="Fermer les notifications"
+                aria-label={tx('Fermer les notifications')}
                 onClick={() => setBellOpen(false)}
               />
-              <div className="ah-panel" role="dialog" aria-label="Notifications récentes">
-                <h3>Notifications</h3>
+              <div className="ah-panel" role="dialog" aria-label={tx('Notifications récentes')}>
+                <h3>{tx('Notifications')}</h3>
                 {events.length === 0 ? (
-                  <p className="ah-empty">Rien pour le moment — tes notifications apparaîtront ici.</p>
+                  <p className="ah-empty">{tx('Rien pour le moment — tes notifications apparaîtront ici.')}</p>
                 ) : (
                   events.slice(0, 8).map((ev) => (
                     <div key={ev.id} className="ah-ev">
                       <strong>{ev.title}</strong>
                       <p>{ev.body}</p>
                       <time dateTime={ev.createdAt}>
-                        {new Date(ev.createdAt).toLocaleDateString('fr-FR', {
+                        {new Date(ev.createdAt).toLocaleDateString(lang === 'en' ? 'en-IE' : 'fr-FR', {
                           day: 'numeric',
                           month: 'short',
                           hour: '2-digit',
@@ -499,33 +504,33 @@ export default function App() {
               <button
                 type="button"
                 className="ah-overlay"
-                aria-label="Fermer mon compte"
+                aria-label={tx('Fermer mon compte')}
                 onClick={() => {
                   setAccountOpen(false);
                   setDeleteConfirm(false);
                 }}
               />
-              <div className="ah-panel ah-account" role="dialog" aria-label="Mon compte">
+              <div className="ah-panel ah-account" role="dialog" aria-label={tx('Mon compte')}>
                 <div className="ah-account-head">
                   <span className="ah-avatar ah-avatar-lg" aria-hidden="true">
                     {initial}
                   </span>
                   <span className="ah-account-name">
-                    <small>Mon compte</small>
+                    <small>{tx('Mon compte')}</small>
                     <strong>{firstName}</strong>
                   </span>
                 </div>
                 <button type="button" className="ah-account-item" onClick={handleExport} disabled={busy}>
-                  Exporter mes données (RGPD)
+                  {tx('Exporter mes données (RGPD)')}
                 </button>
                 <button type="button" className="ah-account-item" onClick={handleLogout} disabled={busy}>
-                  Se déconnecter
+                  {tx('Se déconnecter')}
                 </button>
                 {deleteConfirm ? (
                   <div className="ah-account-danger">
-                    <p>Supprimer ton compte efface immédiatement tes données personnelles. Cette action est définitive.</p>
+                    <p>{tx('Supprimer ton compte efface immédiatement tes données personnelles. Cette action est définitive.')}</p>
                     <button type="button" className="ah-account-item danger-text" onClick={handleDelete} disabled={busy}>
-                      Oui, supprimer définitivement
+                      {tx('Oui, supprimer définitivement')}
                     </button>
                     <button
                       type="button"
@@ -533,7 +538,7 @@ export default function App() {
                       onClick={() => setDeleteConfirm(false)}
                       disabled={busy}
                     >
-                      Annuler
+                      {tx('Annuler')}
                     </button>
                   </div>
                 ) : (
@@ -543,7 +548,7 @@ export default function App() {
                     onClick={() => setDeleteConfirm(true)}
                     disabled={busy}
                   >
-                    Supprimer mon compte (RGPD)
+                    {tx('Supprimer mon compte (RGPD)')}
                   </button>
                 )}
               </div>

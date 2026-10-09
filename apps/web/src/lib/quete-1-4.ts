@@ -24,6 +24,9 @@
  * métadonnée moteur dans un texte rendu ; phrases ≤ 22 mots dans les textes rédigés.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q14 from '../i18n/content/en/quete-1-4';
+
 export interface QueteItem14 {
   code: string;
   text: string;
@@ -39,7 +42,7 @@ export interface ItemsQuete14 {
 }
 
 /** Les 8 items carte — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem14[] = [
+const ITEMS_FR: readonly QueteItem14[] = [
   {
     code: "Q1.4-01",
     text: "Quand je décide d'une limite — budget, écran, nourriture — je la tiens.",
@@ -99,6 +102,7 @@ export const ITEMS: readonly QueteItem14[] = [
     dim: "autocontrole",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q14.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 214427 (8 positions, aucune trame ;
  *  le doublon Q1.4-01.r est HORS passation). */

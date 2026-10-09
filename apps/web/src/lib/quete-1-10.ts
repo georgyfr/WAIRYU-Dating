@@ -31,6 +31,9 @@
  */
 
 /** Un item de la quête 1.10 — 'D' = direct, 'I' = inversé (recodé 6 − r). */
+import { avecEN } from '../i18n/apply';
+import * as EN_Q110 from '../i18n/content/en/quete-1-10';
+
 export interface QueteItem110 {
   code: string;
   text: string;
@@ -39,7 +42,7 @@ export interface QueteItem110 {
 }
 
 /** Les 10 items — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem110[] = [
+const ITEMS_FR: readonly QueteItem110[] = [
   {
     code: "Q1.10-01",
     text: "Quand je dis que je serai là, j'y suis.",
@@ -101,6 +104,7 @@ export const ITEMS: readonly QueteItem110[] = [
     dim: "soutien",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q110.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 220427 (10 positions, aucune trame). */
 export const PASSATION: readonly string[] = [

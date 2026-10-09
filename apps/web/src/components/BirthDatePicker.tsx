@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { birthDateError } from '../lib/auth-client';
+import { useI18n } from '../i18n/I18nProvider';
 
 const ITEM_H = 44; // hauteur d'une ligne de molette (px)
 
@@ -29,6 +30,11 @@ const MOIS = [
   'Décembre',
 ];
 
+/** Noms de mois EN (générés une fois — même liste capitalisée que la FR). */
+const MOIS_EN = Array.from({ length: 12 }, (_, i) =>
+  new Date(Date.UTC(2024, i, 1)).toLocaleDateString('en-IE', { month: 'long', timeZone: 'UTC' }),
+);
+
 function daysInMonth(year: number, month0: number): number {
   return new Date(Date.UTC(year, month0 + 1, 0)).getUTCDate();
 }
@@ -36,10 +42,10 @@ function daysInMonth(year: number, month0: number): number {
 const pad2 = (n: number) => String(n).padStart(2, '0');
 
 /** Formate un ISO AAAA-MM-JJ en « 12 Mars 1998 » (affichage du déclencheur). */
-function formatFr(iso: string): string {
+function formatFr(iso: string, mois: readonly string[]): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   if (!m) return '';
-  return `${Number(m[3])} ${MOIS[Number(m[2]) - 1]} ${m[1]}`;
+  return `${Number(m[3])} ${mois[Number(m[2]) - 1]} ${m[1]}`;
 }
 
 interface WheelProps {
@@ -113,6 +119,9 @@ interface Props {
 }
 
 export default function BirthDatePicker({ value, onChange, label, onClear }: Props) {
+  const { tx, lang } = useI18n();
+  // Mois affichés : liste FR en dur (inchangée) ou mois EN lang-aware.
+  const MOIS_LOC = lang === 'en' ? MOIS_EN : MOIS;
   const [open, setOpen] = useState(false);
   const [err, setErr] = useState('');
 
@@ -174,7 +183,7 @@ export default function BirthDatePicker({ value, onChange, label, onClear }: Pro
     const iso = `${py}-${pad2(pm + 1)}-${pad2(pd)}`;
     const problem = birthDateError(iso);
     if (problem) {
-      setErr(problem);
+      setErr(tx(problem));
       return;
     }
     onChange(iso);
@@ -186,9 +195,9 @@ export default function BirthDatePicker({ value, onChange, label, onClear }: Pro
       <span>{label}</span>
       <button type="button" className="dp-trigger" onClick={openAt} aria-haspopup="dialog">
         {value ? (
-          formatFr(value)
+          formatFr(value, MOIS_LOC)
         ) : (
-          <em>Sélectionner — Jour · Mois · Année</em>
+          <em>{tx('Sélectionner — Jour · Mois · Année')}</em>
         )}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" strokeWidth="2" />
@@ -202,17 +211,17 @@ export default function BirthDatePicker({ value, onChange, label, onClear }: Pro
         <div className="dp-backdrop" role="dialog" aria-modal="true" aria-label={label}>
           <div className="dp-sheet">
             <div className="dp-head">
-              <strong className="dp-title">Date de naissance</strong>
-              <button type="button" className="dp-close" onClick={() => setOpen(false)} aria-label="Fermer">
+              <strong className="dp-title">{tx('Date de naissance')}</strong>
+              <button type="button" className="dp-close" onClick={() => setOpen(false)} aria-label={tx('Fermer')}>
                 ✕
               </button>
             </div>
 
             <div className="dp-cols">
               <div className="dp-band" aria-hidden="true" />
-              <Wheel items={days.map(String)} index={pd - 1} onSelect={(i) => setPd(i + 1)} label="Jour" />
-              <Wheel items={MOIS} index={pm} onSelect={changeMonth} label="Mois" />
-              <Wheel items={YEARS.map(String)} index={YEARS.indexOf(py)} onSelect={changeYear} label="Année" />
+              <Wheel items={days.map(String)} index={pd - 1} onSelect={(i) => setPd(i + 1)} label={tx('Jour')} />
+              <Wheel items={MOIS_LOC} index={pm} onSelect={changeMonth} label={tx('Mois')} />
+              <Wheel items={YEARS.map(String)} index={YEARS.indexOf(py)} onSelect={changeYear} label={tx('Année')} />
             </div>
 
             {err && (
@@ -231,11 +240,11 @@ export default function BirthDatePicker({ value, onChange, label, onClear }: Pro
                     setOpen(false);
                   }}
                 >
-                  Effacer
+                  {tx('Effacer')}
                 </button>
               )}
               <button type="button" className="btn btn-primary" onClick={confirm}>
-                Choisir cette date
+                {tx('Choisir cette date')}
               </button>
             </div>
           </div>

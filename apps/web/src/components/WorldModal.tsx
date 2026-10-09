@@ -33,6 +33,7 @@ import type { VoyageWorld } from '../lib/voyage';
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import VoyageIcon from './VoyageIcons';
 import type { VoyageIconName } from './VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface Props {
   /** Le monde dont la fiche est ouverte. */
@@ -71,6 +72,7 @@ function Fleche() {
 }
 
 export default function WorldModal({ world, done, started, onClose, onEnterQuest, deverrouille }: Props) {
+  const { tx } = useI18n();
   const refModal = useRef<HTMLDivElement | null>(null);
   const [confirme, setConfirme] = useState(false);
 
@@ -123,7 +125,9 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
   const texteVerrou =
     world.num === 11 && world.note
       ? world.note
-      : `Ce monde s'ouvrira quand tu auras terminé ${precedent?.name ?? 'le monde précédent'}.`;
+      : tx("Ce monde s'ouvrira quand tu auras terminé {{nom}}.", {
+          nom: precedent?.name ?? tx('le monde précédent'),
+        });
   const commencer = () => {
     marquerMondeEnCours(world.code);
     if (onEnterQuest) {
@@ -153,7 +157,7 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
           </span>
           <div className="w-modal-title">
             <small>
-              Monde {world.num} sur 11
+              {tx('Monde {{n}} sur 11', { n: world.num })}
             </small>
             <h2 id="w-modal-title">{world.name}</h2>
           </div>
@@ -161,7 +165,7 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
             type="button"
             className="w-modal-close"
             onClick={onClose}
-            aria-label={`Fermer la fiche du monde ${world.name}`}
+            aria-label={tx('Fermer la fiche du monde {{nom}}', { nom: world.name })}
           >
             <svg
               viewBox="0 0 24 24"
@@ -181,7 +185,7 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
         <div className="w-modal-body">
           <div className="w-modal-meta">
             <span className="m-world-steps">
-              {world.quests} quête{world.quests > 1 ? 's' : ''}
+              {tx('{{n}} quête{{s}}', { n: world.quests, s: world.quests > 1 ? 's' : '' })}
             </span>
             {termine ? (
               <span className="v-chip v-chip-done">
@@ -198,20 +202,20 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
                 >
                   <path d="M4 12.5l5 5L20 6.5" />
                 </svg>
-                Terminé
+                {tx('Terminé')}
               </span>
             ) : started || confirme ? (
               <span className="v-chip v-chip-now">
                 <span className="v-chip-dot" aria-hidden="true" />
-                En cours
+                {tx('En cours')}
               </span>
             ) : ouvert ? (
               <span className="v-chip v-chip-now">
                 <span className="v-chip-dot" aria-hidden="true" />
-                Ouvert
+                {tx('Ouvert')}
               </span>
             ) : (
-              <span className="v-chip v-chip-soon">À venir</span>
+              <span className="v-chip v-chip-soon">{tx('À venir')}</span>
             )}
             {!world.free && (
               <span className="v-prem">
@@ -219,37 +223,40 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
                 <em>Premium</em>
               </span>
             )}
-            {world.free && world.num === 11 && <span className="v-free">Toujours gratuit</span>}
+            {world.free && world.num === 11 && <span className="v-free">{tx('Toujours gratuit')}</span>}
           </div>
 
           {detail ? (
             <>
-              <section className="w-modal-sec" aria-label="Présentation du monde">
-                <h3>Ce monde</h3>
+              <section className="w-modal-sec" aria-label={tx('Présentation du monde')}>
+                <h3>{tx('Ce monde')}</h3>
                 <p>{detail.presentation}</p>
               </section>
-              <section className="w-modal-sec" aria-label="Objectif du monde">
-                <h3>Son objectif</h3>
+              <section className="w-modal-sec" aria-label={tx('Objectif du monde')}>
+                <h3>{tx('Son objectif')}</h3>
                 <p>{detail.objectif}</p>
               </section>
-              <section className="w-modal-sec" aria-label="Résultats attendus du monde">
-                <h3>Ce que tu récoltes</h3>
+              <section className="w-modal-sec" aria-label={tx('Résultats attendus du monde')}>
+                <h3>{tx('Ce que tu récoltes')}</h3>
                 <ul>
                   {detail.resultats.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </section>
-              <section className="w-modal-sec" aria-label="Déroulement des évaluations du monde">
-                <h3>Comment ça se passe</h3>
+              <section className="w-modal-sec" aria-label={tx('Déroulement des évaluations du monde')}>
+                <h3>{tx('Comment ça se passe')}</h3>
                 <ul>
                   {detail.comment.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </section>
-              <section className="w-modal-sec" aria-label={`Les ${world.quests} quêtes du monde`}>
-                <h3>Tes quêtes</h3>
+              <section
+                className="w-modal-sec"
+                aria-label={tx('Les {{n}} quêtes du monde', { n: world.quests })}
+              >
+                <h3>{tx('Tes quêtes')}</h3>
                 <ol className="w-modal-quests">
                   {detail.quetes.map((quete) => (
                     <li key={quete.title}>
@@ -263,8 +270,8 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
               </section>
             </>
           ) : (
-            <section className="w-modal-sec" aria-label="Présentation du monde">
-              <h3>Ce monde</h3>
+            <section className="w-modal-sec" aria-label={tx('Présentation du monde')}>
+              <h3>{tx('Ce monde')}</h3>
               <p>{world.tagline}</p>
             </section>
           )}
@@ -274,18 +281,18 @@ export default function WorldModal({ world, done, started, onClose, onEnterQuest
 
         <div className="w-modal-foot">
           {termine ? (
-            <p className="w-modal-footnote">Tu as traversé ce monde — sa récolte est dans ton portrait.</p>
+            <p className="w-modal-footnote">{tx('Tu as traversé ce monde — sa récolte est dans ton portrait.')}</p>
           ) : ouvert ? (
             <>
               {confirme && (
                 <p className="w-started-note" role="status">
                   {world.num === 1
-                    ? 'Le Miroir est ouvert — bienvenue dans ton premier monde.'
-                    : `${world.name} est ouvert.`}
+                    ? tx('Le Miroir est ouvert — bienvenue dans ton premier monde.')
+                    : tx('{{nom}} est ouvert.', { nom: world.name })}
                 </p>
               )}
               <button type="button" className="btn w-modal-cta" onClick={commencer}>
-                {started || confirme ? 'Continuer le monde' : 'Commencer le monde'}
+                {started || confirme ? tx('Continuer le monde') : tx('Commencer le monde')}
                 <Fleche />
               </button>
             </>

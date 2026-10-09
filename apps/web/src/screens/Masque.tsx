@@ -13,24 +13,27 @@
  * Aucune prop (bundle : s.jsx(Bh, {})). Apostrophes U+0027 (audit Task 25).
  */
 
+import { useI18n } from '../i18n/I18nProvider';
 import VoyageIcon from '../components/VoyageIcons';
 
 export default function Masque() {
+  const { tx } = useI18n();
   return (
     <main className="screen masked">
       <div className="masked-box">
         <span className="masked-ico" aria-hidden="true">
           <VoyageIcon name="signpost" size={26} strokeWidth={1.8} />
         </span>
-        <h1 className="screen-title">Cet espace n'est pas encore ouvert</h1>
+        <h1 className="screen-title">{tx("Cet espace n'est pas encore ouvert")}</h1>
         <p className="masked-p">
-          Wairyu avance par étages : certains espaces s'ouvriront plus tard dans ton voyage, quand
-          les Mondes t'auront révélé l'essentiel.
+          {tx(
+            "Wairyu avance par étages : certains espaces s'ouvriront plus tard dans ton voyage, quand les Mondes t'auront révélé l'essentiel.",
+          )}
         </p>
         {/* Verbatim bundle : espace insécable U+00A0 avant « : ». */}
-        <p className="masked-p">{'Chaque chose en son temps — ton voyage continue ici\u00A0:'}</p>
+        <p className="masked-p">{tx('Chaque chose en son temps — ton voyage continue ici\u00A0:')}</p>
         <a className="btn btn-accent masked-cta" href="#/voyage">
-          Retour à mon voyage
+          {tx('Retour à mon voyage')}
           <svg
             viewBox="0 0 24 24"
             width={16}

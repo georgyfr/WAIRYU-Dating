@@ -12,6 +12,7 @@
  * aria-pressed + aria-label dynamiques, focus visible.
  */
 import { useState } from 'react';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface Props {
   value: string;
@@ -51,10 +52,11 @@ export default function PasswordField({
   placeholder,
 }: Props) {
   const [shown, setShown] = useState(false);
-  const toggleLabel = shown ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
+  const { tx } = useI18n();
+  const toggleLabel = shown ? tx('Masquer le mot de passe') : tx('Afficher le mot de passe');
   return (
     <label className="field field-password">
-      <span>{label}</span>
+      <span>{tx(label)}</span>
       <span className="pw-wrap">
         <input
           type={shown ? 'text' : 'password'}

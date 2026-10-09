@@ -50,6 +50,20 @@ import { DEF_26 } from './quete-2-6-def';
 import { DEF_27 } from './quete-2-7-def';
 import { DEF_28 } from './quete-2-8-def';
 import type { LikertNiveau } from './quete-1-1';
+import { avecEN } from '../i18n/apply';
+import { getLang } from '../i18n/current';
+import {
+  COMMUN_EN,
+  INTRO_APERCU_EN,
+  LABELS_PALIER_EN,
+  LIKERT_EN,
+  MONDES_NOMS,
+  MOTS_NOMBRE_EN,
+  NOTA_BARRES_EN,
+  TITRE_TENDANCE_UNIQUE_EN,
+  TITRE_TENDANCES_PLURIEL_EN,
+} from '../i18n/content/en/registre-commun';
+import { REGISTRE_EN } from '../i18n/content/en/registre';
 
 /** Un item de passation Likert (les trames n'y figurent jamais — règle 11-b). */
 export type ItemQuete = Q11.QueteItem | Q12.QueteItem12 | Q13.QueteItem13;
@@ -191,8 +205,10 @@ export interface QueteDef {
   };
 }
 
-/** Les textes communs du briefing (verbatim 05-ecran-d-intro). */
-export const COMMUN = {
+/** Les textes communs du briefing (verbatim 05-ecran-d-intro — miroir EN
+ *  dans i18n/content/en/registre-commun, fusion au chargement). */
+export const COMMUN = avecEN(
+  {
   commentRepondre: [
     'Une affirmation s\'affiche à la fois. Tu réponds sur 5 niveaux, de « Pas du tout moi » à « Tout à fait moi ».',
     'Pas de bonne réponse, pas de note, pas de chronomètre — tu avances à ton rythme.',
@@ -203,7 +219,9 @@ export const COMMUN = {
     'Réponds comme tu es aujourd\'hui, pas comme tu voudrais être — c\'est ce qui rend le voyage juste.',
     'Tu peux mettre en pause quand tu veux : tes réponses restent sur cet appareil, tu reprends là où tu t\'es arrêté.',
   ],
-} as const;
+  },
+  COMMUN_EN,
+);
 
 /** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
  *  + Monde 3 « La Boussole »). 1.8 n'existe pas au Livrable (série 1.x : la
@@ -228,8 +246,9 @@ export type EntreeRegistre = Pick<
   | 'sousTitre'
 >;
 
-/** Le registre — les trois quêtes ouvertes du Monde 1 « Le Miroir ». */
-export const QUETES: Record<IdQuete, QueteDef> = {
+/** Le registre — les trois quêtes ouvertes du Monde 1 « Le Miroir » (FR
+ *  verbatim ; le miroir EN vit dans i18n/content/en/registre-*.ts). */
+const REGISTRE_FR: Record<IdQuete, QueteDef> = {
   '1.1': {
     id: '1.1',
     numero: 1,
@@ -838,17 +857,26 @@ export const QUETES: Record<IdQuete, QueteDef> = {
   },
 };
 
+/** Le registre LOCALISÉ — fusion FR × miroir EN au chargement (repli FR
+ *  champ à champ : une traduction manquante ne casse jamais l'écran). */
+export const QUETES: Record<IdQuete, QueteDef> = avecEN(REGISTRE_FR, REGISTRE_EN);
+
 /** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
  *  code reste la clé). Utilisé par les écrans : chip d'entête,
  *  marquerMondeEnCours, libellés. */
 export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3'; nom: string } {
-  if (id === '1.1' || id === '1.2' || id === '1.3') return { code: 'M1', nom: 'Monde 1 — Le Miroir' };
-  if (id.startsWith('1.')) return { code: 'M2', nom: 'Monde 2 — Le Volant' };
-  return { code: 'M3', nom: 'Monde 3 — La Boussole' };
+  if (id === '1.1' || id === '1.2' || id === '1.3')
+    return { code: 'M1', nom: getLang() === 'en' ? MONDES_NOMS.M1 : 'Monde 1 — Le Miroir' };
+  if (id.startsWith('1.'))
+    return { code: 'M2', nom: getLang() === 'en' ? MONDES_NOMS.M2 : 'Monde 2 — Le Volant' };
+  return { code: 'M3', nom: getLang() === 'en' ? MONDES_NOMS.M3 : 'Monde 3 — La Boussole' };
 }
 
-/** Le niveau Likert (labels verbatim) — utilisé par la passation et le briefing. */
-export const LIKERT: readonly LikertNiveau[] = Q11.LIKERT;
+/** Le niveau Likert (labels verbatim FR — miroir EN dans registre-commun). */
+export const LIKERT: readonly LikertNiveau[] = avecEN(
+  Q11.LIKERT,
+  Object.entries(LIKERT_EN).map(([v, label]) => ({ value: Number(v), label })),
+);
 
 // ------------------------------------------------------------- couche accompagnement
 
@@ -864,6 +892,7 @@ export function palierDe(pct: number): Palier {
  *  qualitatif reste premier, le chiffre secondaire (leçon Task 32 : pas de
  *  « 78 % » qui pousse score → comparaison → classement). */
 export function labelPalier(palier: Palier, genre: 'f' | 'm'): string {
+  if (getLang() === 'en') return LABELS_PALIER_EN[palier] ?? palier;
   if (palier === 'fort') return genre === 'f' ? 'très présente' : 'très présent';
   if (palier === 'equilibre') return genre === 'f' ? 'équilibrée' : 'équilibré';
   return genre === 'f' ? 'plus discrète' : 'plus discret';
@@ -871,7 +900,7 @@ export function labelPalier(palier: Palier, genre: 'f' | 'm'): string {
 
 /** « À noter » — la passe d'honnêteté du gabarit fondateur (Task 35),
  *  refermée après les tendances (écran + PDF, texte identique). */
-export const NOTA_BARRES =
+export const NOTA_BARRES = getLang() === 'en' ? NOTA_BARRES_EN :
   'À noter : ces barres sont un instantané de tes réponses du jour, pas des notes ni des verdicts. Chaque tendance a sa force et son risque — l\'important est de choisir consciemment où placer le curseur.';
 
 const MOTS_NOMBRE: Record<number, string> = { 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq' };
@@ -880,6 +909,10 @@ const MOTS_NOMBRE: Record<number, string> = { 2: 'deux', 3: 'trois', 4: 'quatre'
  *  « 🪞 Tes cinq tendances (d'après tes réponses) » (5 dims en 1.1) ;
  *  singulier accordé pour les quêtes mono-dimension (« Ta tendance »). */
 export function titreTendances(nb: number): string {
+  if (getLang() === 'en') {
+    if (nb === 1) return TITRE_TENDANCE_UNIQUE_EN;
+    return TITRE_TENDANCES_PLURIEL_EN.split('{{mot}}').join(MOTS_NOMBRE_EN[nb] ?? String(nb));
+  }
   if (nb === 1) return "Ta tendance (d'après tes réponses)";
   return `Tes ${MOTS_NOMBRE[nb] ?? String(nb)} tendances (d'après tes réponses)`;
 }
@@ -934,8 +967,11 @@ export function construireApercuResultats(quete: QueteDef, reponses: Record<stri
     };
   });
   return {
-    titre: `${quete.titre} — tes résultats en détail`,
-    intro: 'Voici ce que tes réponses dessinent aujourd\'hui. Aucune barre ne te réduit : chacune décrit une tendance — un lieu d\'où tu pars, pas une case où tu restes.',
+    titre: getLang() === 'en' ? `${quete.titre} — your results in detail` : `${quete.titre} — tes résultats en détail`,
+    intro:
+      getLang() === 'en'
+        ? INTRO_APERCU_EN
+        : 'Voici ce que tes réponses dessinent aujourd\'hui. Aucune barre ne te réduit : chacune décrit une tendance — un lieu d\'où tu pars, pas une case où tu restes.',
     commentLire: quete.commentLire,
     bars,
     conseils: quete.conseils,

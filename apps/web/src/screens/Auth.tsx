@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import BirthDatePicker from '../components/BirthDatePicker';
 import PasswordField from '../components/PasswordField';
 import TurnstileWidget from '../components/TurnstileWidget';
+import { useI18n } from '../i18n/I18nProvider';
 import {
   ApiError,
   birthDateError,
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export default function Auth({ onAuthenticated }: Props) {
+  const { tx } = useI18n();
   const [mode, setMode] = useState<Mode>('choice');
   const [config, setConfig] = useState<AuthConfigResponse | null>(null);
   const [message, setMessage] = useState('');
@@ -75,14 +77,14 @@ export default function Auth({ onAuthenticated }: Props) {
       setCode(r.devCode ?? '');
       setMessage(
         r.channel === 'dev'
-          ? 'Mode test : le code est prérempli ci-dessous.'
+          ? tx('Mode test : le code est prérempli ci-dessous.')
           : r.channel === 'email+push'
-            ? 'Code envoyé par email ET en notification sur tes appareils wairyu — regarde tes notifications, pas besoin de fouiller ta boîte mail.'
-            : 'Code envoyé par email — il est valable 10 minutes.',
+            ? tx('Code envoyé par email ET en notification sur tes appareils wairyu — regarde tes notifications, pas besoin de fouiller ta boîte mail.')
+            : tx('Code envoyé par email — il est valable 10 minutes.'),
       );
       go('otp-verify');
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -106,9 +108,9 @@ export default function Auth({ onAuthenticated }: Props) {
     } catch (e) {
       if (e instanceof ApiError && /Date de naissance requise/.test(e.message)) {
         setNeedsBirth(true);
-        setError('Dernière étape : votre date de naissance (jamais publiée, sert à vérifier que vous êtes majeur).');
+        setError(tx('Dernière étape : votre date de naissance (jamais publiée, sert à vérifier que vous êtes majeur).'));
       } else {
-        setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+        setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
       }
     } finally {
       setBusy(false);
@@ -120,7 +122,7 @@ export default function Auth({ onAuthenticated }: Props) {
     setError('');
     const localBirth = birthDateError(birthDate);
     if (localBirth) {
-      setError(localBirth);
+      setError(tx(localBirth));
       return;
     }
     setBusy(true);
@@ -136,9 +138,9 @@ export default function Auth({ onAuthenticated }: Props) {
         setPwdVia('password');
       }
       go('pwd-recover'); // réutilisé comme écran « notez votre code »
-      setMessage('Compte créé ! Notez précieusement ce code de récupération — il ne sera plus jamais affiché.');
+      setMessage(tx('Compte créé ! Notez précieusement ce code de récupération — il ne sera plus jamais affiché.'));
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -152,7 +154,7 @@ export default function Auth({ onAuthenticated }: Props) {
       void linkDevice(getDeviceId()).catch(() => {});
       onAuthenticated();
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -165,11 +167,11 @@ export default function Auth({ onAuthenticated }: Props) {
       const r = await passwordForgot(email.trim(), turnstileToken);
       setMessage(
         r.devResetUrl
-          ? 'Mode test : lien de réinitialisation disponible dans la réponse du serveur.'
-          : 'Si cette adresse correspond à un compte, un email avec un lien de réinitialisation vient de partir.',
+          ? tx('Mode test : lien de réinitialisation disponible dans la réponse du serveur.')
+          : tx('Si cette adresse correspond à un compte, un email avec un lien de réinitialisation vient de partir.'),
       );
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -183,7 +185,7 @@ export default function Auth({ onAuthenticated }: Props) {
       void linkDevice(getDeviceId()).catch(() => {});
       onAuthenticated();
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Erreur réseau — réessayez.');
+      setError(e instanceof ApiError ? tx(e.message) : tx('Erreur réseau — réessayez.'));
     } finally {
       setBusy(false);
     }
@@ -202,66 +204,66 @@ export default function Auth({ onAuthenticated }: Props) {
   return (
     <div className="app-shell">
       <main className="auth">
-        <img src="/icons/icon-192.png" alt="Logo Wairyu" className="auth-logo" width={64} height={64} />
+        <img src="/icons/icon-192.png" alt={tx('Logo Wairyu')} className="auth-logo" width={64} height={64} />
         <h1 className="auth-title">
           Wai<span className="accent">ryu</span>
         </h1>
         <p className="auth-sub">
-          {mode === 'choice' && 'Connectez-vous ou créez votre compte — c\u2019est gratuit, sans carte.'}
-          {mode === 'otp-request' && 'Recevez un code à 6 chiffres par email.'}
-          {mode === 'otp-verify' && `Code envoyé à ${email}.`}
-          {mode === 'pwd-login' && 'Connexion avec votre pseudo ou votre email.'}
-          {mode === 'pwd-register' && 'Créez votre compte classique (pseudo + mot de passe).'}
-          {mode === 'pwd-forgot' && 'Retrouver l\u2019accès à votre compte.'}
-          {mode === 'pwd-recover' && 'Récupération avec votre code wairyu.'}
+          {mode === 'choice' && tx('Connectez-vous ou créez votre compte — c\u2019est gratuit, sans carte.')}
+          {mode === 'otp-request' && tx('Recevez un code à 6 chiffres par email.')}
+          {mode === 'otp-verify' && tx('Code envoyé à {{n}}.', { n: email })}
+          {mode === 'pwd-login' && tx('Connexion avec votre pseudo ou votre email.')}
+          {mode === 'pwd-register' && tx('Créez votre compte classique (pseudo + mot de passe).')}
+          {mode === 'pwd-forgot' && tx('Retrouver l\u2019accès à votre compte.')}
+          {mode === 'pwd-recover' && tx('Récupération avec votre code wairyu.')}
         </p>
 
         {/* ---------- Choix de la voie ---------- */}
         {mode === 'choice' && (
           <div className="auth-form">
             <label className="field">
-              <span>Votre email</span>
+              <span>{tx('Votre email')}</span>
               <input
                 type="email"
                 inputMode="email"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="vous@exemple.com"
+                placeholder={tx('vous@exemple.com')}
               />
             </label>
             <button className="btn btn-primary btn-block" onClick={() => go('otp-request')} disabled={!email.trim()}>
-              Continuer avec l'email
+              {tx("Continuer avec l'email")}
             </button>
 
             <div className="auth-sep" role="separator">
-              <span>ou</span>
+              <span>{tx('ou')}</span>
             </div>
 
             <button className="btn btn-ghost btn-block" onClick={() => go('pwd-login')}>
-              J'ai un pseudo et un mot de passe
+              {tx("J'ai un pseudo et un mot de passe")}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('pwd-register')}>
-              Créer un compte avec un pseudo
+              {tx('Créer un compte avec un pseudo')}
             </button>
 
             {(config?.googleEnabled || config?.facebookEnabled) && (
               <div className="auth-alt">
                 {config.googleEnabled && (
                   <a className="btn btn-ghost btn-block" href={`/api/auth/google/start${oauthQuery}`}>
-                    Continuer avec Google
+                    {tx('Continuer avec Google')}
                   </a>
                 )}
                 {config.facebookEnabled && (
                   <a className="btn btn-ghost btn-block" href={`/api/auth/facebook/start${oauthQuery}`}>
-                    Continuer avec Facebook
+                    {tx('Continuer avec Facebook')}
                   </a>
                 )}
               </div>
             )}
             {needsBirth && (
               <BirthDatePicker
-                label="Date de naissance — 18 ans révolus requis"
+                label={tx('Date de naissance — 18 ans révolus requis')}
                 value={birthDate}
                 onChange={setBirthDate}
               />
@@ -273,21 +275,21 @@ export default function Auth({ onAuthenticated }: Props) {
         {mode === 'otp-request' && (
           <div className="auth-form">
             <label className="field">
-              <span>Email</span>
+              <span>{tx('Email')}</span>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
             <BirthDatePicker
-              label="Date de naissance — seulement si vous créez un compte"
+              label={tx('Date de naissance — seulement si vous créez un compte')}
               value={birthDate}
               onChange={setBirthDate}
               onClear={() => setBirthDate('')}
             />
             {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
             <button className="btn btn-primary btn-block" onClick={submitOtpRequest} disabled={busy || !email.trim()}>
-              {busy ? 'Envoi…' : 'Recevoir mon code'}
+              {busy ? tx('Envoi…') : tx('Recevoir mon code')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('choice')} disabled={busy}>
-              Retour
+              {tx('Retour')}
             </button>
           </div>
         )}
@@ -296,7 +298,7 @@ export default function Auth({ onAuthenticated }: Props) {
         {mode === 'otp-verify' && (
           <div className="auth-form">
             <label className="field">
-              <span>Code à 6 chiffres</span>
+              <span>{tx('Code à 6 chiffres')}</span>
               <input
                 className="auth-code"
                 inputMode="numeric"
@@ -309,7 +311,7 @@ export default function Auth({ onAuthenticated }: Props) {
             </label>
             {needsBirth && (
               <BirthDatePicker
-                label="Date de naissance — pour vérifier que vous êtes majeur"
+                label={tx('Date de naissance — pour vérifier que vous êtes majeur')}
                 value={birthDate}
                 onChange={setBirthDate}
               />
@@ -319,10 +321,10 @@ export default function Auth({ onAuthenticated }: Props) {
               onClick={submitOtpVerify}
               disabled={busy || code.length !== 6 || (needsBirth && !birthDate)}
             >
-              {busy ? 'Vérification…' : 'Valider'}
+              {busy ? tx('Vérification…') : tx('Valider')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('otp-request')} disabled={busy}>
-              Renvoyer un code
+              {tx('Renvoyer un code')}
             </button>
           </div>
         )}
@@ -331,21 +333,21 @@ export default function Auth({ onAuthenticated }: Props) {
         {mode === 'pwd-login' && (
           <div className="auth-form">
             <label className="field">
-              <span>Pseudo ou email</span>
+              <span>{tx('Pseudo ou email')}</span>
               <input value={identifier} onChange={(e) => setIdentifier(e.target.value)} autoComplete="username" />
             </label>
             <PasswordField value={password} onChange={setPassword} autoComplete="current-password" />
             <button className="btn btn-primary btn-block" onClick={submitPwdLogin} disabled={busy || !identifier || !password}>
-              {busy ? 'Connexion…' : 'Se connecter'}
+              {busy ? tx('Connexion…') : tx('Se connecter')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('pwd-forgot')} disabled={busy}>
-              Mot de passe oublié ?
+              {tx('Mot de passe oublié ?')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('pwd-recover')} disabled={busy}>
-              J'ai un code de récupération
+              {tx("J'ai un code de récupération")}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('choice')} disabled={busy}>
-              Retour
+              {tx('Retour')}
             </button>
           </div>
         )}
@@ -354,7 +356,7 @@ export default function Auth({ onAuthenticated }: Props) {
         {mode === 'pwd-register' && (
           <div className="auth-form">
             <label className="field">
-              <span>Pseudo (3-20 caractères, espaces et accents acceptés)</span>
+              <span>{tx('Pseudo (3-20 caractères, espaces et accents acceptés)')}</span>
               <input value={username} onChange={(e) => setUsername(e.target.value)} maxLength={20} autoComplete="username" />
             </label>
             <PasswordField
@@ -364,7 +366,7 @@ export default function Auth({ onAuthenticated }: Props) {
               autoComplete="new-password"
             />
             <BirthDatePicker
-              label="Date de naissance — 18 ans révolus requis"
+              label={tx('Date de naissance — 18 ans révolus requis')}
               value={birthDate}
               onChange={setBirthDate}
             />
@@ -374,10 +376,10 @@ export default function Auth({ onAuthenticated }: Props) {
               onClick={submitPwdRegister}
               disabled={busy || !username.trim() || password.length < 8 || !birthDate}
             >
-              {busy ? 'Création…' : 'Créer mon compte'}
+              {busy ? tx('Création…') : tx('Créer mon compte')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('choice')} disabled={busy}>
-              Retour
+              {tx('Retour')}
             </button>
           </div>
         )}
@@ -386,15 +388,15 @@ export default function Auth({ onAuthenticated }: Props) {
         {mode === 'pwd-forgot' && (
           <div className="auth-form">
             <label className="field">
-              <span>Email du compte</span>
+              <span>{tx('Email du compte')}</span>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
             {config?.turnstileSiteKey && <TurnstileWidget siteKey={config.turnstileSiteKey} onToken={onToken} />}
             <button className="btn btn-primary btn-block" onClick={submitPwdForgot} disabled={busy || !email.trim()}>
-              {busy ? 'Envoi…' : 'Recevoir un lien de réinitialisation'}
+              {busy ? tx('Envoi…') : tx('Recevoir un lien de réinitialisation')}
             </button>
             <button className="btn btn-ghost btn-block" onClick={() => go('choice')} disabled={busy}>
-              Retour
+              {tx('Retour')}
             </button>
           </div>
         )}
@@ -406,20 +408,20 @@ export default function Auth({ onAuthenticated }: Props) {
               <>
                 <div className="auth-recovery" role="alert">
                   <code>{recoveryCode}</code>
-                  <p>Écrivez ce code sur papier ou dans vos notes. Il permet de reprendre votre compte sans email.</p>
+                  <p>{tx('Écrivez ce code sur papier ou dans vos notes. Il permet de reprendre votre compte sans email.')}</p>
                 </div>
                 <button className="btn btn-primary btn-block" onClick={() => onAuthenticated(pwdVia)}>
-                  C'est noté — continuer
+                  {tx("C'est noté — continuer")}
                 </button>
               </>
             ) : (
               <>
                 <label className="field">
-                  <span>Pseudo</span>
+                  <span>{tx('Pseudo')}</span>
                   <input value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
                 </label>
                 <label className="field">
-                  <span>Code de récupération (12 caractères)</span>
+                  <span>{tx('Code de récupération (12 caractères)')}</span>
                   <input value={recoveryCode} onChange={(e) => setRecoveryCode(e.target.value)} maxLength={14} className="auth-code-wide" />
                 </label>
                 <button
@@ -427,12 +429,12 @@ export default function Auth({ onAuthenticated }: Props) {
                   onClick={() => submitPwdRecovery(null)}
                   disabled={busy || !identifier.trim() || recoveryCode.trim().length < 12}
                 >
-                  {busy ? 'Vérification…' : 'Reprendre mon compte'}
+                  {busy ? tx('Vérification…') : tx('Reprendre mon compte')}
                 </button>
               </>
             )}
             <button className="btn btn-ghost btn-block" onClick={() => go('choice')} disabled={busy}>
-              Retour
+              {tx('Retour')}
             </button>
           </div>
         )}
@@ -445,8 +447,9 @@ export default function Auth({ onAuthenticated }: Props) {
         {!error && message && <p className="auth-message">{message}</p>}
 
         <p className="auth-legal">
-          En continuant, vous acceptez d'avoir 18 ans révolus et nos règles : respect, consentement,
-          zéro contenu non consenti. Vos données restent les vôtres — export et suppression à tout moment.
+          {tx(
+            "En continuant, vous acceptez d'avoir 18 ans révolus et nos règles : respect, consentement, zéro contenu non consenti. Vos données restent les vôtres — export et suppression à tout moment.",
+          )}
         </p>
       </main>
     </div>

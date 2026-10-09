@@ -18,29 +18,37 @@
 import { PROGRESS, TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 export default function Portrait() {
+  const { tx } = useI18n();
   return (
     <main className="screen">
-      <h1 className="screen-title">Ton portrait</h1>
-      <p className="screen-sub">Ce que ton voyage révèle de toi, dimension après dimension.</p>
+      <h1 className="screen-title">{tx('Ton portrait')}</h1>
+      <p className="screen-sub">{tx('Ce que ton voyage révèle de toi, dimension après dimension.')}</p>
       <article className="card p-state" aria-live="polite">
         <div className="p-state-head">
           <span className="p-state-ico" aria-hidden="true">
             <VoyageIcon name="mirror" size={22} />
           </span>
-          <span className="p-chip">En construction</span>
+          <span className="p-chip">{tx('En construction')}</span>
         </div>
         <p className="p-state-line">
-          Ton portrait commencera à se construire dès tes premières réponses.
+          {tx('Ton portrait commencera à se construire dès tes premières réponses.')}
         </p>
         <p className="p-state-meta">
-          {PROGRESS.worldsDone} monde{PROGRESS.worldsDone > 1 ? 's' : ''} franchi
-          {PROGRESS.worldsDone > 1 ? 's' : ''} sur {WORLDS.length} · {PROGRESS.stepsDone} étape
-          {PROGRESS.stepsDone > 1 ? 's' : ''} sur {TOTAL_STEPS}
+          {tx('{{a}} monde{{s1}} franchi{{s2}} sur {{b}} · {{c}} étape{{s3}} sur {{d}}', {
+            a: PROGRESS.worldsDone,
+            s1: PROGRESS.worldsDone > 1 ? 's' : '',
+            s2: PROGRESS.worldsDone > 1 ? 's' : '',
+            b: WORLDS.length,
+            c: PROGRESS.stepsDone,
+            s3: PROGRESS.stepsDone > 1 ? 's' : '',
+            d: TOTAL_STEPS,
+          })}
         </p>
         <a className="btn btn-accent p-state-cta" href="#/voyage">
-          Reprendre mon voyage
+          {tx('Reprendre mon voyage')}
           <svg
             viewBox="0 0 24 24"
             width={16}
@@ -58,7 +66,7 @@ export default function Portrait() {
       </article>
       <section aria-labelledby="p-dims-title">
         <h2 id="p-dims-title" className="p-h2">
-          Ce qui construira ton portrait
+          {tx('Ce qui construira ton portrait')}
         </h2>
         <ol className="p-dims">
           {WORLDS.map((w) => (
@@ -95,9 +103,8 @@ export default function Portrait() {
         </span>
         <div>
           <p>
-            <strong>Ton portrait t'appartient.</strong> Tu choisis ce qui se voit : rien n'apparaît
-            sur ton profil sans ta décision — et l'espace pour gérer ce que tu montres s'ouvrira
-            plus tard dans ton voyage.
+            <strong>{tx("Ton portrait t'appartient.")}</strong>{' '}
+            {tx("Tu choisis ce qui se voit : rien n'apparaît sur ton profil sans ta décision — et l'espace pour gérer ce que tu montres s'ouvrira plus tard dans ton voyage.")}
           </p>
         </div>
       </article>

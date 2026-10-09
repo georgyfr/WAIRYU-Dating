@@ -61,10 +61,14 @@
  */
 
 import type { ItemPassation } from './quetes';
+import { avecEN } from '../i18n/apply';
+import { getLang } from '../i18n/current';
+import * as EN_Q28 from '../i18n/content/en/quete-2-8';
 
 /** La question unique — VERBATIM (01-tableau-de-la-selection, Q2.8-01) :
  *  la question annonce l'usage (01, décision n° 1). */
-export const QUESTION_28 = 'Ton signe, pour la conversation ?';
+const QUESTION_28_FR = 'Ton signe, pour la conversation ?';
+export const QUESTION_28 = avecEN(QUESTION_28_FR, EN_Q28.QUESTION_28);
 
 /** Code gelé de la sélection unique (01-tableau-de-la-selection). */
 export const SIGNE_CODE = 'Q2.8-01';
@@ -76,7 +80,7 @@ export const SIGNE_CODE = 'Q2.8-01';
  * L'ordre de SIGNE_OPTIONS fait foi pour le codage des réponses
  * (valeur = index + 1 — voir choisirVariante).
  */
-export const SIGNE_OPTIONS: readonly string[] = [
+const SIGNE_OPTIONS_FR: readonly string[] = [
   '♈ Bélier',
   '♉ Taureau',
   '♊ Gémeaux',
@@ -91,6 +95,7 @@ export const SIGNE_OPTIONS: readonly string[] = [
   '♓ Poissons',
   'Je préfère ne pas dire',
 ];
+export const SIGNE_OPTIONS = avecEN(SIGNE_OPTIONS_FR, EN_Q28.SIGNE_OPTIONS);
 
 /** Les 13 ids de variantes — VERBATIM (cartes.yaml, champ id). */
 export type VarianteId28 =
@@ -276,16 +281,18 @@ export function scorerNul28(_reponses: Record<string, number>): Record<string, n
  *  profil, conversation — sans exception, 01 garde-fous). VERBATIM mission
  *  V8.D, version qui FAIT FOI ; les variantes plus anciennes (Contrat
  *  d'Inventaire, Vague 6) sont des rotations documentées (fiche de cadrage). */
-export const DISCLAIMER_28 =
+const DISCLAIMER_28_FR =
   'Pour la conversation — la science, elle, est dans tes résultats de tests.';
+export const DISCLAIMER_28 = avecEN(DISCLAIMER_28_FR, EN_Q28.DISCLAIMER_28);
 
 /** L'écran d'intro — VERBATIM (05-ecran-d-intro, 2 lignes) : la frontière
  *  jeu/science posée AVANT la sélection (« ne dit rien de toi »), le droit de
  *  passer posé avant le choix (« si tu veux », « sinon » — opt-in strict). */
-export const INTRO_28 = {
+const INTRO_28_FR = {
   ligne1: 'Le zodiaque ne dit rien de toi — mais ça fait une belle histoire à table.',
   ligne2: 'Choisis ton signe si tu veux le jouer. Sinon, la route continue sans le demander.',
 };
+export const INTRO_28 = avecEN(INTRO_28_FR, EN_Q28.INTRO_28);
 
 /** Le titre du badge — format VERBATIM 05-ecran-d-intro (« Ton signe : ♌ —
  *  juste pour le jeu ») : le symbole seul, extrait du nom de la variante.
@@ -293,27 +300,32 @@ export const INTRO_28 = {
 export function titreBadge28(id: VarianteId28): string {
   if (id === 'CARTE-2.8-SILENCE') return '';
   const symbole = CARTES[id].nom.split(' ')[0] ?? '';
-  return `Ton signe : ${symbole} — juste pour le jeu`;
+  return getLang() === 'en'
+    ? `Your sign: ${symbole} — just for fun`
+    : `Ton signe : ${symbole} — juste pour le jeu`;
 }
 
 /** L'entête de l'écran de complétion — VERBATIM (cartes.yaml, entete_ecran). */
-export const ENTETE_ECRAN_28 = 'TON SIGNE — juste pour le jeu';
+const ENTETE_ECRAN_28_FR = 'TON SIGNE — juste pour le jeu';
+export const ENTETE_ECRAN_28 = avecEN(ENTETE_ECRAN_28_FR, EN_Q28.ENTETE_ECRAN_28);
 
 /** Le pied de l'écran de complétion — VERBATIM (cartes.yaml, pied_ecran) : les
  *  libellés [Changer] · [Retirer le badge] · [Quête suivante] sont des contrôles
  *  UI, pour l'orchestrateur — le badge est modifiable/effaçable en un clic
  *  (l'étiquette appartient au membre). */
-export const PIED_ECRAN_28 =
+const PIED_ECRAN_28_FR =
   'Le badge s\'affiche sur ton profil et dans la conversation — modifiable ou ' +
   'effaçable en un clic. · [Changer] · [Retirer le badge] · [Quête suivante]';
+export const PIED_ECRAN_28 = avecEN(PIED_ECRAN_28_FR, EN_Q28.PIED_ECRAN_28);
 
 /** La fenêtre rotative F1/F2 — VERBATIM (cartes.yaml, fenetre_sur_l_autre) :
  *  le pied standard reste disponible à l'écran de complétion (fenêtre rotative,
  *  mission Production 4). */
-export const FENETRE_28 = {
+const FENETRE_28_FR = {
   F1: 'Quelque part, quelqu\'un répond à ces mêmes questions. Le jour où vos cartes se croiseront, elles auront beaucoup à se dire.',
   F2: 'Ce portrait n\'est pas une fin — c\'est ta façon d\'être trouvé·e : par quelqu\'un qui lira ta carte avant ton visage.',
 };
+export const FENETRE_28 = avecEN(FENETRE_28_FR, EN_Q28.FENETRE_28);
 
 /** Le deck réel : UNE question, sélection unique (opt-in strict, aucune valeur
  *  pré-sélectionnée, pas de multi). Pas de mélange : 1 clic — rien à ordonner

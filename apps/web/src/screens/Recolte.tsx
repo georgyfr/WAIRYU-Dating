@@ -20,14 +20,16 @@
 import { MILESTONES, PROGRESS, WORLDS } from '../lib/voyage';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 export default function Recolte() {
+  const { tx } = useI18n();
   const worldsDone = PROGRESS.worldsDone;
   return (
     <main className="screen">
-      <h1 className="screen-title">Ma récolte</h1>
+      <h1 className="screen-title">{tx('Ma récolte')}</h1>
       <p className="screen-sub">
-        Ce que ton voyage construit, étape après étape — chaque découverte reste à toi.
+        {tx('Ce que ton voyage construit, étape après étape — chaque découverte reste à toi.')}
       </p>
       <div className="rec-states">
         <a className="card rec-state" href="#/portrait">
@@ -39,10 +41,10 @@ export default function Recolte() {
             <VoyageIcon name="mirror" size={20} />
           </span>
           <span className="rec-state-body">
-            <h2>Ton Portrait</h2>
-            <p>Dès tes premières réponses, ton portrait commence à se construire.</p>
+            <h2>{tx('Ton Portrait')}</h2>
+            <p>{tx('Dès tes premières réponses, ton portrait commence à se construire.')}</p>
           </span>
-          <span className="p-chip">En construction</span>
+          <span className="p-chip">{tx('En construction')}</span>
         </a>
         <a className="card rec-state" href="#/parcourus">
           <span
@@ -53,12 +55,12 @@ export default function Recolte() {
             <VoyageIcon name="signpost" size={20} />
           </span>
           <span className="rec-state-body">
-            <h2>Ton journal</h2>
+            <h2>{tx('Ton journal')}</h2>
             {/* Verbatim bundle (U+2019 dans « l’instant »). */}
-            <p>Aucun monde traversé pour l’instant — le premier ouvre bientôt.</p>
+            <p>{tx('Aucun monde traversé pour l’instant — le premier ouvre bientôt.')}</p>
           </span>
           <span className="p-chip">
-            {worldsDone} sur {WORLDS.length}
+            {tx('{{a}} sur {{b}}', { a: worldsDone, b: WORLDS.length })}
           </span>
         </a>
         <a className="card rec-state" href="#/matchs">
@@ -70,15 +72,15 @@ export default function Recolte() {
             <VoyageIcon name="rings" size={20} />
           </span>
           <span className="rec-state-body">
-            <h2>Tes rencontres</h2>
-            <p>Certaines rencontres commencent ici.</p>
+            <h2>{tx('Tes rencontres')}</h2>
+            <p>{tx('Certaines rencontres commencent ici.')}</p>
           </span>
-          <span className="p-chip">0 pour l'instant</span>
+          <span className="p-chip">{tx("0 pour l'instant")}</span>
         </a>
       </div>
       <section aria-labelledby="rec-jalons-title">
         <h2 id="rec-jalons-title" className="p-h2">
-          Les étapes de ta récolte
+          {tx('Les étapes de ta récolte')}
         </h2>
         <ol className="v-rec">
           {MILESTONES.map((jalon) => (
@@ -99,10 +101,10 @@ export default function Recolte() {
                   {jalon.status === 'now' ? (
                     <span className="v-chip v-chip-now">
                       <span className="v-chip-dot" aria-hidden="true" />
-                      En cours
+                      {tx('En cours')}
                     </span>
                   ) : (
-                    <span className="v-chip v-chip-soon">À venir</span>
+                    <span className="v-chip v-chip-soon">{tx('À venir')}</span>
                   )}
                 </h3>
                 <p>{jalon.desc}</p>
@@ -117,9 +119,8 @@ export default function Recolte() {
         </span>
         <div>
           <p>
-            <strong>Tu gardes le contrôle.</strong> Ta récolte t'appartient : tu choisis ce que tu
-            partages, quand tu le partages — et l'espace pour gérer ce que tu montres s'ouvrira
-            plus tard dans ton voyage.
+            <strong>{tx('Tu gardes le contrôle.')}</strong>{' '}
+            {tx("Ta récolte t'appartient : tu choisis ce que tu partages, quand tu le partages — et l'espace pour gérer ce que tu montres s'ouvrira plus tard dans ton voyage.")}
           </p>
         </div>
       </article>

@@ -32,6 +32,8 @@
  */
 
 import type { ItemPassation } from './quetes';
+import { avecEN } from '../i18n/apply';
+import * as EN_Q17 from '../i18n/content/en/quete-1-7';
 
 export interface Question17 {
   code: 'Q1.7-01' | 'Q1.7-02';
@@ -41,7 +43,7 @@ export interface Question17 {
 }
 
 /** Les 2 questions opt-in — VERBATIM (01-tableau-des-items, ordre du Livrable). */
-export const QUESTIONS_17: readonly Question17[] = [
+const QUESTIONS_17_FR: readonly Question17[] = [
   {
     code: "Q1.7-01",
     question: "Coche ce qui te décrit, si tu veux le partager :",
@@ -64,6 +66,7 @@ export const QUESTIONS_17: readonly Question17[] = [
     multi: false,
   },
 ];
+export const QUESTIONS_17 = avecEN(QUESTIONS_17_FR, EN_Q17.QUESTIONS_17);
 
 /** Le deck réel : 2 items, ordre FIXE 01 → 02 (séquence de consentement — sans mélange). */
 export function deck17(): ItemPassation[] {
@@ -125,11 +128,12 @@ export const BRIEFING = {
 
 /** Écran de confiance de fin de quête — VERBATIM (cartes.yaml, charte PARTIE 7) :
  *  PAS de carte, PAS de partage — le titre et le corps de l'écran, tels quels. */
-export const ECRAN_17 = {
+const ECRAN_17_FR = {
   titre: "Merci pour ta confiance.",
   texte:
     "Ce que tu as partagé reste entre toi et l'app — sauf si tu as choisi de l'afficher sur ton profil. Il aidera les personnes que tu rencontreras à être à l'aise, et t'aidera à croiser des gens qui te comprennent.\n\nTu peux le modifier ou l'effacer à tout moment, depuis ton profil. Rien de tout cela n'entre dans aucun score.",
 };
+export const ECRAN_17 = avecEN(ECRAN_17_FR, EN_Q17.ECRAN_17);
 
 /** Fenêtre de complétion — entête = gabarit app (le Livrable n'en donne aucun) ;
  *  fenetre = le corps de l'écran de confiance VERBATIM (cartes.yaml) ;

@@ -42,6 +42,9 @@
  */
 
 /** Un item de la checklist — 'coche' = énoncé fermé cochable · 'libre' = champ libre optionnel. */
+import { avecEN } from '../i18n/apply';
+import * as EN_Q23 from '../i18n/content/en/quete-2-3';
+
 export interface QueteItem23 {
   code: string;
   text: string;
@@ -55,7 +58,7 @@ export interface QueteItem23 {
  * rendu à part par l'orchestrateur sur l'écran unique ; sa valeur texte vit hors reponses
  * (voir LIBRE_CODE).
  */
-export const ITEMS: readonly QueteItem23[] = [
+const ITEMS_FR: readonly QueteItem23[] = [
   {
     code: "Q2.3-01",
     text: "Je ne peux pas construire avec quelqu'un qui fume.",
@@ -113,6 +116,7 @@ export const ITEMS: readonly QueteItem23[] = [
     format: "libre",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q23.ITEMS);
 
 /**
  * Ordre de passation GELÉ — plan de mélange graine 23427 (02-plan-de-melange).

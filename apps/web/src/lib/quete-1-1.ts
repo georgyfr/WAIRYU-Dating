@@ -14,6 +14,9 @@
  * staging index-BvGGhSXl.js (Task 27) — bundle audit octet par octet contre le Livrable.
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q11 from '../i18n/content/en/quete-1-1';
+
 export interface QueteItem {
   code: string;
   text: string;
@@ -52,7 +55,7 @@ export const LIKERT: readonly LikertNiveau[] = [
 ];
 
 /** Les 50 items carte — verbatim (01-tableau-des-items, ordre du tableau). */
-export const ITEMS: readonly QueteItem[] = [
+const ITEMS_FR: readonly QueteItem[] = [
   {
     code: "Q1.1-01",
     text: "J'aime les conversations qui partent dans des idées inattendues.",
@@ -354,6 +357,7 @@ export const ITEMS: readonly QueteItem[] = [
     dim: "S",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q11.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 211427 (58 positions : 50 items + 8 trames). */
 export const PASSATION: readonly string[] = [

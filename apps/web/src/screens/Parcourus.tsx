@@ -32,6 +32,7 @@ import { useEtatQuete } from '../lib/quete-state';
 import type { EtatQuete } from '../lib/quete-state';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 /** Le libellé du monde d'une quête (la série 1.x traverse M1/M2). */
 const nomMonde = (id: IdQuete): string => mondeDeQuete(id).nom;
@@ -41,9 +42,9 @@ interface QueteTerminee {
   etat: EtatQuete;
 }
 
-function dateCourte(iso: string): string {
+function dateCourte(iso: string, lang: 'fr' | 'en'): string {
   try {
-    return new Date(iso).toLocaleDateString('fr-FR', {
+    return new Date(iso).toLocaleDateString(lang === 'en' ? 'en-IE' : 'fr-FR', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -54,6 +55,7 @@ function dateCourte(iso: string): string {
 }
 
 export default function Parcourus() {
+  const { tx, lang } = useI18n();
   // Ordre FIXE et inconditionnel (règles des hooks) — les 18 quêtes ouvertes
   // (Monde 1 + Monde 2 « Le Volant » + Monde 3 « La Boussole »).
   const etat11 = useEtatQuete('1.1');
@@ -131,20 +133,20 @@ export default function Parcourus() {
   const traverses = WORLDS.filter((w) => w.num <= worldsDone);
   return (
     <main className="screen">
-      <h1 className="screen-title">Mes Mondes parcourus</h1>
-      <p className="screen-sub">Ton journal de bord — les mondes traversés et ce qu'ils t'ont révélé.</p>
-      <div className="m-stats" role="list" aria-label="Ton parcours en chiffres">
+      <h1 className="screen-title">{tx('Mes Mondes parcourus')}</h1>
+      <p className="screen-sub">{tx("Ton journal de bord — les mondes traversés et ce qu'ils t'ont révélé.")}</p>
+      <div className="m-stats" role="list" aria-label={tx('Ton parcours en chiffres')}>
         <span role="listitem">
           <strong>
             {worldsDone}/{WORLDS.length}
           </strong>{' '}
-          mondes franchis
+          {tx('mondes franchis')}
         </span>
         <span role="listitem">
           <strong>
             {PROGRESS.stepsDone}/{TOTAL_STEPS}
           </strong>{' '}
-          étapes
+          {tx('étapes')}
         </span>
       </div>
       {traverses.length === 0 ? (
@@ -152,14 +154,13 @@ export default function Parcourus() {
           <span className="emoji" aria-hidden="true">
             🪞
           </span>
-          <h2>Aucun monde traversé pour l'instant</h2>
+          <h2>{tx("Aucun monde traversé pour l'instant")}</h2>
           <p>
-            Le Monde 1 — Le Miroir — ouvre bientôt le chemin. Dès qu'un monde est franchi, il
-            rejoint ton journal avec ce que tu y as découvert.
+            {tx("Le Monde 1 — Le Miroir — ouvre bientôt le chemin. Dès qu'un monde est franchi, il rejoint ton journal avec ce que tu y as découvert.")}
           </p>
         </div>
       ) : (
-        <ol className="m-list" aria-label="Les mondes que tu as traversés">
+        <ol className="m-list" aria-label={tx('Les mondes que tu as traversés')}>
           {traverses.map((w) => (
             <li key={w.code} className="m-world m-world-done">
               <span
@@ -171,13 +172,13 @@ export default function Parcourus() {
               </span>
               <div className="m-world-body">
                 <small className="m-world-num">
-                  Monde {w.num} sur {WORLDS.length}
+                  {tx('Monde {{n}} sur {{total}}', { n: w.num, total: WORLDS.length })}
                 </small>
                 <h2>{w.name}</h2>
                 <p>{w.tagline}</p>
                 <div className="m-world-meta">
                   <span className="m-world-steps">
-                    {w.quests} étape{w.quests > 1 ? 's' : ''}
+                    {tx('{{n}} étape{{s}}', { n: w.quests, s: w.quests > 1 ? 's' : '' })}
                   </span>
                   <span className="v-chip v-chip-done">
                     <svg
@@ -193,7 +194,7 @@ export default function Parcourus() {
                     >
                       <path d="M4 12.5l5 5L20 6.5" />
                     </svg>
-                    Terminé
+                    {tx('Terminé')}
                   </span>
                 </div>
               </div>
@@ -202,38 +203,42 @@ export default function Parcourus() {
         </ol>
       )}
       {terminees.length > 0 && (
-        <section className="m-res" aria-label="Tes résultats de quêtes">
-          <h2 className="m-res-titre">Tes résultats</h2>
+        <section className="m-res" aria-label={tx('Tes résultats de quêtes')}>
+          <h2 className="m-res-titre">{tx('Tes résultats')}</h2>
           <p className="m-res-sub">
-            Chaque quête franchie te laisse une carte et tes résultats détaillés. Relis-les quand
-            tu veux, ou garde-les avec toi en PDF — tout t'attend ici, intact.
+            {tx("Chaque quête franchie te laisse une carte et tes résultats détaillés. Relis-les quand tu veux, ou garde-les avec toi en PDF — tout t'attend ici, intact.")}
           </p>
           <ol className="m-res-list">
             {terminees.map(({ id, etat }) => {
               const quete = QUETES[id];
               const sansCarte = !!quete.sansCarte;
               const carte = etat.carteId ? quete.cartes[etat.carteId] : undefined;
-              const date = etat.termineeA ? dateCourte(etat.termineeA) : '';
+              const date = etat.termineeA ? dateCourte(etat.termineeA, lang) : '';
               return (
                 <li key={id} className="m-res-item">
                   <small className="m-res-num">
-                    Quête {quete.numero} sur {quete.totalDuMonde}
+                    {tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
                     {' · '}
                     {nomMonde(id)}
                   </small>
                   <h3>{quete.titre}</h3>
                   {sansCarte ? (
-                    <p className="m-res-carte">Un écran de passage — rien à mesurer, tout reste modifiable.</p>
+                    <p className="m-res-carte">{tx('Un écran de passage — rien à mesurer, tout reste modifiable.')}</p>
                   ) : carte ? (
                     <p className="m-res-carte">
-                      Ta carte&nbsp;: <strong>{carte.nom}</strong>
+                      {tx('Ta carte\u00a0: ')}
+                      <strong>{carte.nom}</strong>
                     </p>
                   ) : null}
-                  {date && <p className="m-res-date">{sansCarte ? 'Fait le' : 'Carte obtenue le'} {date}</p>}
+                  {date && (
+                    <p className="m-res-date">
+                      {sansCarte ? tx('Fait le') : tx('Carte obtenue le')} {date}
+                    </p>
+                  )}
                   <div className="m-res-actions">
                     {sansCarte ? (
                       <a className="btn btn-accent" href={`#/quete/${id}`}>
-                        Revoir mon écran
+                        {tx('Revoir mon écran')}
                         <svg
                           viewBox="0 0 24 24"
                           width={16}
@@ -251,7 +256,7 @@ export default function Parcourus() {
                     ) : (
                       <>
                         <a className="btn btn-accent" href={`#/quete/${id}/resultats`}>
-                          Voir mes résultats en détail
+                          {tx('Voir mes résultats en détail')}
                           <svg
                             viewBox="0 0 24 24"
                             width={16}
@@ -267,7 +272,7 @@ export default function Parcourus() {
                           </svg>
                         </a>
                         <a className="btn btn-ghost" href={`#/quete/${id}`}>
-                          Relire ma carte
+                          {tx('Relire ma carte')}
                         </a>
                         <button
                           type="button"
@@ -276,7 +281,7 @@ export default function Parcourus() {
                           disabled={pdfEnCours !== null}
                           aria-busy={pdfEnCours === id}
                         >
-                          {pdfEnCours === id ? 'Préparation…' : 'Télécharger le PDF'}
+                          {pdfEnCours === id ? tx('Préparation…') : tx('Télécharger le PDF')}
                         </button>
                       </>
                     )}
@@ -289,7 +294,7 @@ export default function Parcourus() {
       )}
       <div className="parc-actions">
         <a className="btn btn-accent" href="#/mondes">
-          Découvrir les Mondes
+          {tx('Découvrir les Mondes')}
           <svg
             viewBox="0 0 24 24"
             width={16}
@@ -305,7 +310,7 @@ export default function Parcourus() {
           </svg>
         </a>
         <a className="btn btn-ghost" href="#/voyage">
-          Voir ma carte du voyage
+          {tx('Voir ma carte du voyage')}
         </a>
       </div>
     </main>

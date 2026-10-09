@@ -67,53 +67,70 @@ import {
 } from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import { PROGRESS, TOTAL_STEPS } from '../lib/voyage';
+import { useI18n } from '../i18n/I18nProvider';
+import { interpolerMontants } from '../i18n/apply';
 import PartageCarteModal from '../components/PartageCarteModal';
 import type { CartePartageable } from '../components/CarteTypes';
 
 type Phase = 'briefing' | 'passation' | 'details' | 'carte' | 'ecran';
 
-/** Les textes « comment tu vas répondre » par format (couche app — les textes
- *  Likert verbatim restent dans COMMUN). */
-const COMMENT_REPONDRE_FORMAT: Record<QueteDef['format'], readonly string[]> = {
-  likert: COMMUN.commentRepondre,
-  'likert-enigmes': [
-    ...COMMUN.commentRepondre,
-    'À la fin, trois petites énigmes. Elles ne sont pas une note : on regarde comment tu y vas, jamais si tu trouves.',
-  ],
-  choix: [
-    "Six situations s'affichent une à une. À chaque fois, deux options : celle de maintenant, celle qui attend.",
-    "Pas de bonne réponse — chaque option vaut la même. C'est ton rapport au temps qui se dessine, jamais une note.",
-    'Réponds avec ta première impulsion, puis laisse la suivante arriver.',
-  ],
-  ecran: [
-    "Des questions à options, rien à réussir : tu coches ce qui est juste pour toi — ou tu ne dis rien, c'est une réponse complète.",
-    'Tes réponses restent modifiables et effaçables à tout moment, depuis cet écran.',
-  ],
-  checklist: [
-    "Une liste s'affiche : des lignes rouges possibles. Tu coches celles qui sont rédhibitoires pour toi — tu peux tout laisser vide, c'est une réponse complète.",
-    "Une ligne rouge, c'est ce que tu ne peux pas construire chez l'autre. Cocher n'est jamais « mieux » que ne pas cocher.",
-    'À la fin, tu peux ajouter une ligne rouge dans tes mots — ou ne rien écrire.',
-  ],
-  clic: [
-    "Huit réalités s'affichent une à une : le tabac, l'alcool, les enfants, où tu vis… Tu touches LA déclaration qui est vraie pour toi.",
-    "Ce sont des faits, jamais des notes : aucune réalité n'est « meilleure » qu'une autre.",
-    'Une touche par réalité — tu peux revenir en arrière pour changer.',
-  ],
-  binaire: [
-    "Trois énoncés s'affichent, un à un. Tu réponds Oui ou Non — c'est ton cap d'aujourd'hui, pas un engagement à vie.",
-    "Si aucune réponse ne te ressemble encore, tu pourras choisir « Je découvre » — un état, jamais une case.",
-    'Réponds spontanément : les énoncés sont assumés, il n\'y a pas de piège.',
-  ],
-  arbitrage: [
-    "Un seul écran : cinq horizons pour les cinq prochaines années. Cent points à répartir — donner à un horizon, c'est le retirer à un autre.",
-    "Aucune répartition n'est proposée : les curseurs partent de zéro, c'est ton arbitrage, pas une suggestion.",
-    'Le bouton Valider s\'allume quand les cent points sont posés.',
-  ],
-  jeu: [
-    "Une question, une sélection : ton signe, si tu veux le jouer — ou « Je préfère ne pas dire », et la route continue sans le demander.",
-    "Le zodiaque ne dit rien de toi : ici, c'est un badge pour la conversation, jamais un profil.",
-  ],
-};
+/** Les textes « comment tu vas répondre » par format — les littéraux passent
+ *  par tx (chrome) ; les textes COMMUN viennent du registre localisé
+ *  (data) et traversent tx sans effet de bord (repli à l'identique). */
+function commentRepondreFormat(
+  format: QueteDef['format'],
+  tx: (fr: string, vars?: Record<string, string | number>) => string,
+): readonly string[] {
+  switch (format) {
+    case 'likert':
+      return COMMUN.commentRepondre.map((p) => tx(p));
+    case 'likert-enigmes':
+      return [
+        ...COMMUN.commentRepondre.map((p) => tx(p)),
+        tx('À la fin, trois petites énigmes. Elles ne sont pas une note : on regarde comment tu y vas, jamais si tu trouves.'),
+      ];
+    case 'choix':
+      return [
+        tx("Six situations s'affichent une à une. À chaque fois, deux options : celle de maintenant, celle qui attend."),
+        tx("Pas de bonne réponse — chaque option vaut la même. C'est ton rapport au temps qui se dessine, jamais une note."),
+        tx('Réponds avec ta première impulsion, puis laisse la suivante arriver.'),
+      ];
+    case 'ecran':
+      return [
+        tx("Des questions à options, rien à réussir : tu coches ce qui est juste pour toi — ou tu ne dis rien, c'est une réponse complète."),
+        tx('Tes réponses restent modifiables et effaçables à tout moment, depuis cet écran.'),
+      ];
+    case 'checklist':
+      return [
+        tx("Une liste s'affiche : des lignes rouges possibles. Tu coches celles qui sont rédhibitoires pour toi — tu peux tout laisser vide, c'est une réponse complète."),
+        tx("Une ligne rouge, c'est ce que tu ne peux pas construire chez l'autre. Cocher n'est jamais « mieux » que ne pas cocher."),
+        tx('À la fin, tu peux ajouter une ligne rouge dans tes mots — ou ne rien écrire.'),
+      ];
+    case 'clic':
+      return [
+        tx("Huit réalités s'affichent une à une : le tabac, l'alcool, les enfants, où tu vis… Tu touches LA déclaration qui est vraie pour toi."),
+        tx("Ce sont des faits, jamais des notes : aucune réalité n'est « meilleure » qu'une autre."),
+        tx('Une touche par réalité — tu peux revenir en arrière pour changer.'),
+      ];
+    case 'binaire':
+      return [
+        tx("Trois énoncés s'affichent, un à un. Tu réponds Oui ou Non — c'est ton cap d'aujourd'hui, pas un engagement à vie."),
+        tx('Si aucune réponse ne te ressemble encore, tu pourras choisir « Je découvre » — un état, jamais une case.'),
+        tx('Réponds spontanément : les énoncés sont assumés, il n\'y a pas de piège.'),
+      ];
+    case 'arbitrage':
+      return [
+        tx("Un seul écran : cinq horizons pour les cinq prochaines années. Cent points à répartir — donner à un horizon, c'est le retirer à un autre."),
+        tx("Aucune répartition n'est proposée : les curseurs partent de zéro, c'est ton arbitrage, pas une suggestion."),
+        tx("Le bouton Valider s'allume quand les cent points sont posés."),
+      ];
+    case 'jeu':
+      return [
+        tx("Une question, une sélection : ton signe, si tu veux le jouer — ou « Je préfère ne pas dire », et la route continue sans le demander."),
+        tx("Le zodiaque ne dit rien de toi : ici, c'est un badge pour la conversation, jamais un profil."),
+      ];
+  }
+}
 
 /** Flèche droite (icône locale de la quête). */
 function Fleche({ dir = 'right' }: { dir?: 'right' | 'left' }) {
@@ -181,6 +198,7 @@ interface Props {
 }
 
 export default function Quete({ queteId, resultatsInitiale = false, onExit, onHome, onAllerQuete }: Props) {
+  const { tx, money } = useI18n();
   const quete = QUETES[queteId];
   const etat = useEtatQuete(queteId);
   // Les terminaisons de TOUTES les quêtes ouvertes — le profil de voyage.
@@ -365,7 +383,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       <main className="screen q-screen" aria-labelledby="q-title">
         <button type="button" className="q-back" onClick={onExit}>
           <Fleche dir="left" />
-          Retour aux mondes
+          {tx('Retour aux mondes')}
         </button>
         <div className="q-head">
           <span className="v-chip v-chip-now">
@@ -373,9 +391,9 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             {monde.nom}
           </span>
           <span className="v-chip v-chip-soon">
-            Quête {quete.numero} sur {quete.totalDuMonde}
+            {tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
           </span>
-          <span className="v-chip v-chip-done">Gratuite</span>
+          <span className="v-chip v-chip-done">{tx('Gratuite')}</span>
         </div>
         <h1 className="screen-title" id="q-title">
           {quete.titre}
@@ -385,21 +403,23 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p>{quete.annonce}</p>
         </blockquote>
         <section className="q-sec" aria-label="À quoi sert cette quête">
-          <h3>À quoi sert cette quête</h3>
+          <h3>{tx('À quoi sert cette quête')}</h3>
           {quete.briefing.aQuoiCaSert.map((p) => (
             <p key={p}>{p}</p>
           ))}
         </section>
-        <section className="q-sec" aria-label="Comment tu vas répondre">
-          <h3>Comment tu vas répondre</h3>
-          {COMMENT_REPONDRE_FORMAT[quete.format].map((p) => (
+        <section className="q-sec" aria-label={tx('Comment tu vas répondre')}>
+          <h3>{tx('Comment tu vas répondre')}</h3>
+          {commentRepondreFormat(quete.format, tx).map((p) => (
             <p key={p}>{p}</p>
           ))}
           {(quete.format === 'likert' || quete.format === 'likert-enigmes') && (
             <div
               className="q-scale"
               role="img"
-              aria-label="L'échelle de réponse : 5 niveaux, de « Pas du tout moi » à « Tout à fait moi »"
+              aria-label={tx(
+                "L'échelle de réponse : 5 niveaux, de « Pas du tout moi » à « Tout à fait moi »",
+              )}
             >
               {LIKERT.map((n, i) => (
                 <span key={n.value} className="q-scale-step" data-level={i + 1}>
@@ -409,22 +429,22 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             </div>
           )}
         </section>
-        <section className="q-sec" aria-label="Ce qu'on attend de toi pendant la quête">
-          <h3>Ce qu'on attend de toi</h3>
+        <section className="q-sec" aria-label={tx("Ce qu'on attend de toi")}>
+          <h3>{tx("Ce qu'on attend de toi")}</h3>
           {COMMUN.comportement.map((p) => (
             <p key={p}>{p}</p>
           ))}
         </section>
-        <section className="q-sec" aria-label="Les résultats attendus à la fin de la quête">
-          <h3>Les résultats attendus</h3>
+        <section className="q-sec" aria-label={tx('Les résultats attendus')}>
+          <h3>{tx('Les résultats attendus')}</h3>
           <ul className="q-list">
             {quete.briefing.resultats.map((r) => (
               <li key={r}>{r}</li>
             ))}
           </ul>
         </section>
-        <div className="q-ask" role="group" aria-label="Voulez-vous commencer ?">
-          <p className="q-ask-q">Voulez-vous commencer ?</p>
+        <div className="q-ask" role="group" aria-label={tx('Voulez-vous commencer ?')}>
+          <p className="q-ask-q">{tx('Voulez-vous commencer ?')}</p>
           <div className="q-actions">
             {etat.terminee ? (
               <>
@@ -433,21 +453,21 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                   className="btn btn-accent"
                   onClick={() => setPhase(quete.sansCarte ? 'ecran' : 'carte')}
                 >
-                  {quete.sansCarte ? 'Revoir mon écran' : 'Revoir ma carte'}
+                  {quete.sansCarte ? tx('Revoir mon écran') : tx('Revoir ma carte')}
                   <Fleche />
                 </button>
                 <button type="button" className="btn btn-ghost" onClick={onExit}>
-                  Retour aux mondes
+                  {tx('Retour aux mondes')}
                 </button>
               </>
             ) : (
               <>
                 <button type="button" className="btn btn-accent" onClick={reprendre}>
-                  {peutReprendre ? `Reprendre (${repondues} réponses)` : 'Commencer'}
+                  {peutReprendre ? tx('Reprendre ({{n}} réponses)', { n: repondues }) : tx('Commencer')}
                   <Fleche />
                 </button>
                 <button type="button" className="btn btn-ghost" onClick={onExit}>
-                  Annuler
+                  {tx('Annuler')}
                 </button>
               </>
             )}
@@ -461,7 +481,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 setIdx(0);
               }}
             >
-              Effacer mes réponses et recommencer
+              {tx('Effacer mes réponses et recommencer')}
             </button>
           )}
         </div>
@@ -491,13 +511,13 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       <main className="screen q-screen q-run" aria-labelledby="q-run-label">
         {montreReprise && (
           <p className="q-resume" role="status">
-            Tu reprends là où tu t'es arrêté — tes réponses sont conservées.
+            {tx("Tu reprends là où tu t'es arrêté — tes réponses sont conservées.")}
           </p>
         )}
         <div
           className="q-progress"
           role="progressbar"
-          aria-label="Progression de la quête"
+          aria-label={tx('Progression de la quête')}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round((repondues / deck.length) * 100)}
@@ -508,37 +528,37 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           {quete.titre}
         </p>
         {choixChemin ? (
-          <div className="q-choix" role="group" aria-label="Ton chemin — trois sorties, toutes dignes">
+          <div className="q-choix" role="group" aria-label={tx('Ton chemin — trois sorties, toutes dignes')}>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              Alors, tu pars d'où ?
+              {tx("Alors, tu pars d'où ?")}
             </h1>
             <button
               type="button"
               className="q-choix-btn"
               onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 1)}
             >
-              Je suis prêt·e
+              {tx('Je suis prêt·e')}
             </button>
             <button
               type="button"
               className="q-choix-btn"
               onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 2)}
             >
-              D'abord une quête recommandée
+              {tx("D'abord une quête recommandée")}
             </button>
             <button
               type="button"
               className="q-choix-btn"
               onClick={() => enregistrerReponse(queteId, 'Q1.11-chemin', 3)}
             >
-              Je commence quand même
+              {tx('Je commence quand même')}
             </button>
-            <p className="q-ecran-note">Aucun chemin n'est le bon — et tu pourras changer d'avis quand tu veux.</p>
+            <p className="q-ecran-note">{tx("Aucun chemin n'est le bon — et tu pourras changer d'avis quand tu veux.")}</p>
           </div>
         ) : choixIntention ? (
-          <div className="q-choix" role="group" aria-label="Ton intention — un état, jamais une case">
+          <div className="q-choix" role="group" aria-label={tx('Ton intention — un état, jamais une case')}>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              Aucune de tes réponses ne dessine encore un cap — et c'est très bien ainsi.
+              {tx("Aucune de tes réponses ne dessine encore un cap — et c'est très bien ainsi.")}
             </h1>
             <p className="q-ecran-note q-ecran-note-doux">{MESSAGE_DOUX}</p>
             <button
@@ -546,10 +566,10 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               className="q-choix-btn"
               onClick={() => enregistrerReponse(queteId, INTENTION_CODE, 1)}
             >
-              Je découvre
+              {tx('Je découvre')}
             </button>
             <p className="q-ecran-note">
-              Tu peux aussi modifier tes réponses ci-dessous — tes trois réponses restent intactes et sans jugement.
+              {tx('Tu peux aussi modifier tes réponses ci-dessous — tes trois réponses restent intactes et sans jugement.')}
             </p>
           </div>
         ) : quete.format === 'checklist' ? (
@@ -558,9 +578,9 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           // computation). « Valider » pose TOUTES les valeurs (0 ou 1 — la liste
           // vide est un cadre ouvert assumé, jamais une absence de réponse) puis
           // le gate Q2.3-valide déclenche la complétion.
-          <div className="q-choix q-checklist" role="group" aria-label="Tes lignes rouges — coches ce qui est rédhibitoire pour toi">
+          <div className="q-choix q-checklist" role="group" aria-label={tx('Tes lignes rouges — coches ce qui est rédhibitoire pour toi')}>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              Coches tes lignes rouges — ou aucune.
+              {tx('Coches tes lignes rouges — ou aucune.')}
             </h1>
             {deck.map((it) => {
               const on = etat.reponses[it.code] === 1;
@@ -586,7 +606,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 maxLength={500}
                 rows={3}
                 onChange={(e) => enregistrerTexte(queteId, LIBRE_CODE, e.target.value)}
-                placeholder="Tes mots à toi — ils ne sont jamais reformulés."
+                placeholder={tx('Tes mots à toi — ils ne sont jamais reformulés.')}
               />
             </label>
             <button
@@ -597,19 +617,19 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 enregistrerReponse(queteId, 'Q2.3-valide', 1);
               }}
             >
-              Valider ma sélection
+              {tx('Valider ma sélection')}
               <Fleche />
             </button>
-            <p className="q-ecran-note">Rien n'est jugé ici : la liste vide est un cadre ouvert, une réponse complète.</p>
+            <p className="q-ecran-note">{tx("Rien n'est jugé ici : la liste vide est un cadre ouvert, une réponse complète.")}</p>
           </div>
         ) : quete.format === 'arbitrage' ? (
           // 2.6 — UN écran (Livrable) : 5 curseurs 0-100, somme verrouillée à
           // 100, AUCUNE valeur par défaut (les curseurs s'enregistrent au geste).
           // « Valider » pose TOUTES les valeurs puis le gate Q2.6-valide —
           // aucune sortie partielle.
-          <div className="q-choix q-arbitrage" role="group" aria-label="Tes priorités — cent points à répartir sur cinq horizons">
+          <div className="q-choix q-arbitrage" role="group" aria-label={tx('Tes priorités — cent points à répartir sur cinq horizons')}>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              Cent points. Cinq horizons.
+              {tx('Cent points. Cinq horizons.')}
             </h1>
             {AXES_26.map((a) => {
               const pts = etat.reponses[a.code] ?? 0;
@@ -617,7 +637,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 <div key={a.code} className="q-arb-axe">
                   <div className="q-arb-head">
                     <span className="q-arb-nom">{a.nom}</span>
-                    <span className="q-arb-pts">{pts} pts</span>
+                    <span className="q-arb-pts">{tx('{{n}} pts', { n: pts })}</span>
                   </div>
                   <p className="q-arb-desc">{a.description}</p>
                   <input
@@ -626,7 +646,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                     max={100}
                     step={1}
                     value={pts}
-                    aria-label={`${a.nom} — points sur 100`}
+                    aria-label={`${a.nom} — ${tx('{{n}} — points sur 100', { n: 100 })}`}
                     onChange={(e) => enregistrerReponse(queteId, a.code, Number(e.target.value))}
                   />
                 </div>
@@ -635,7 +655,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             <div className="q-arb-total" role="status">
               {(() => {
                 const reste = 100 - AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0);
-                return reste === 0 ? 'Les cent points sont posés.' : `Il reste ${reste} points à répartir.`;
+                return reste === 0 ? tx('Les cent points sont posés.') : tx('Il reste {{n}} points à répartir.', { n: reste });
               })()}
             </div>
             <button
@@ -647,17 +667,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 enregistrerReponse(queteId, 'Q2.6-valide', 1);
               }}
             >
-              Valider ma répartition
+              {tx('Valider ma répartition')}
               <Fleche />
             </button>
           </div>
         ) : (
           <>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              {item.text}
+              {interpolerMontants(item.text, money)}
             </h1>
             {item.format === 'likert' && (
-              <div className="q-likert" role="group" aria-label="Ta réponse — 5 niveaux">
+              <div className="q-likert" role="group" aria-label={tx('Ta réponse — 5 niveaux')}>
                 {LIKERT.map((n) => (
                   <button
                     key={n.value}
@@ -672,22 +692,22 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               </div>
             )}
             {item.format === 'choix' && (
-              <div className="q-choix" role="group" aria-label="Ton choix — deux options, la même valeur">
+              <div className="q-choix" role="group" aria-label={tx('Ton choix — deux options, la même valeur')}>
                 <button
                   type="button"
                   className={valeur === 1 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
                   onClick={() => repondre(item.code, 1)}
                 >
-                  <span className="q-choix-tag">Maintenant</span>
-                  {item.choixA}
+                  <span className="q-choix-tag">{tx('Maintenant')}</span>
+                  {interpolerMontants(item.choixA ?? '', money)}
                 </button>
                 <button
                   type="button"
                   className={valeur === 2 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
                   onClick={() => repondre(item.code, 2)}
                 >
-                  <span className="q-choix-tag">Plus tard</span>
-                  {item.choixB}
+                  <span className="q-choix-tag">{tx('Plus tard')}</span>
+                  {interpolerMontants(item.choixB ?? '', money)}
                 </button>
               </div>
             )}
@@ -695,7 +715,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               <div
                 className="q-choix q-choix-multi"
                 role="group"
-                aria-label="Ta réponse — choisis autant d'options que tu veux, ou aucune"
+                aria-label={tx("Ta réponse — choisis autant d'options que tu veux, ou aucune")}
               >
                 {(item.options ?? []).map((opt, i) => {
                   const bit = 1 << i;
@@ -708,7 +728,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                       aria-pressed={on}
                       onClick={() => enregistrerReponse(queteId, item.code, (valeur ?? 0) ^ bit)}
                     >
-                      {opt}
+                      {interpolerMontants(opt, money)}
                     </button>
                   );
                 })}
@@ -717,13 +737,13 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                   className="btn btn-accent q-choix-valider"
                   onClick={() => setIdx((i) => Math.min(i + 1, deck.length - 1))}
                 >
-                  Valider ma sélection
+                  {tx('Valider ma sélection')}
                   <Fleche />
                 </button>
               </div>
             )}
             {item.format === 'question' && !item.multi && (
-              <div className="q-choix" role="group" aria-label="Ta réponse">
+              <div className="q-choix" role="group" aria-label={tx('Ta réponse')}>
                 {(item.options ?? []).map((opt, i) => (
                   <button
                     key={opt}
@@ -731,7 +751,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                     className={valeur === i + 1 ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
                     onClick={() => repondre(item.code, i + 1)}
                   >
-                    {opt}
+                    {interpolerMontants(opt, money)}
                   </button>
                 ))}
               </div>
@@ -742,11 +762,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           {idx > 0 && !choixChemin && (
             <button type="button" className="q-run-prev" onClick={() => setIdx((i) => Math.max(0, i - 1))}>
               <Fleche dir="left" />
-              Question précédente
+              {tx('Question précédente')}
             </button>
           )}
           <button type="button" className="q-run-pause" onClick={() => setPhase('briefing')}>
-            Faire une pause — tes réponses restent
+            {tx('Faire une pause — tes réponses restent')}
           </button>
         </div>
       </main>
@@ -768,15 +788,15 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       const laSuite2 = quete.suivante ? QUETES[quete.suivante] : null;
       return (
         <main className="screen q-screen" aria-labelledby="q-ecran-title">
-          <div className="q-carte" role="region" aria-label="Ton écran">
+          <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
             <p className="q-carte-entete">{quete.completion.entete}</p>
             {silence ? (
               <>
                 <h1 className="q-carte-nom" id="q-ecran-title">
-                  Tu préfères ne pas dire
+                  {tx('Tu préfères ne pas dire')}
                 </h1>
                 <p className="q-carte-lumiere">
-                  C'est noté — le voyage continue sans le badge. Aucune trace, aucune relance.
+                  {tx("C'est noté — le voyage continue sans le badge. Aucune trace, aucune relance.")}
                 </p>
               </>
             ) : (
@@ -792,22 +812,21 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             <div className="q-carte-actions">
               {laSuite2 ? (
                 <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite2.id)}>
-                  {quete.suite.cta ?? 'Continuer le voyage'}
+                  {quete.suite.cta ?? tx('Continuer le voyage')}
                   <Fleche />
                 </button>
               ) : (
                 <button type="button" className="btn btn-accent" onClick={onHome}>
-                  {quete.suite.cta ?? 'Retour à mon voyage'}
+                  {quete.suite.cta ?? tx('Retour à mon voyage')}
                   <Fleche />
                 </button>
               )}
               <button type="button" className="btn btn-ghost" onClick={onExit}>
-                Retour aux mondes
+                {tx('Retour aux mondes')}
               </button>
             </div>
             <p className="q-carte-hint">
-              Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».
-            </p>
+              {tx('Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».')}            </p>
           </div>
         </main>
       );
@@ -816,7 +835,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     const laSuite = quete.suivante ? QUETES[quete.suivante] : null;
     return (
       <main className="screen q-screen" aria-labelledby="q-ecran-title">
-        <div className="q-carte" role="region" aria-label="Ton écran">
+        <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
           <p className="q-carte-entete">{quete.completion.entete}</p>
           <h1 className="q-carte-nom" id="q-ecran-title">
             {ecran.titre}
@@ -832,7 +851,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                     <br />
                     {labels.length > 0
                       ? labels.join(' · ')
-                      : "Tu n'as rien coché pour le moment — c'est une réponse complète."}
+                      : tx("Tu n'as rien coché pour le moment — c'est une réponse complète.")}
                   </p>
                 );
               })}
@@ -841,20 +860,20 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <div className="q-carte-actions">
             {laSuite ? (
               <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite.id)}>
-                {quete.suite.cta ?? 'Continuer le voyage'}
+                {quete.suite.cta ?? tx('Continuer le voyage')}
                 <Fleche />
               </button>
             ) : (
               <button type="button" className="btn btn-accent" onClick={onHome}>
-                {quete.suite.cta ?? 'Retour à mon voyage'}
+                {quete.suite.cta ?? tx('Retour à mon voyage')}
                 <Fleche />
               </button>
             )}
             <button type="button" className="btn btn-ghost" onClick={onExit}>
-              Retour aux mondes
+              {tx('Retour aux mondes')}
             </button>
           </div>
-          <p className="q-carte-hint">Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».</p>
+          <p className="q-carte-hint">{tx('Tes réponses restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».')}</p>
         </div>
       </main>
     );
@@ -874,7 +893,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       <main className="screen q-screen q-det" aria-labelledby="q-det-title">
         <button type="button" className="q-back" onClick={() => setPhase('carte')}>
           <Fleche dir="left" />
-          Revenir à ma carte
+          {tx('Revenir à ma carte')}
         </button>
         <div className="q-head">
           <span className="v-chip v-chip-now">
@@ -882,38 +901,38 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             {monde.nom}
           </span>
           <span className="v-chip v-chip-soon">
-            Quête {quete.numero} sur {quete.totalDuMonde}
+            {tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
           </span>
         </div>
         <h1 className="screen-title" id="q-det-title">
-          🎉 Ton profil : {carte.nom}
+          {tx('🎉 Ton profil :')} {carte.nom}
         </h1>
         <p className="screen-sub">{quete.titre}</p>
 
-        <section className="q-sec q-profil" aria-label="Ton archétype">
+        <section className="q-sec q-profil" aria-label={tx('Ton archétype')}>
           <p className="q-profil-intro">{arche.intro}</p>
           <p className="q-profil-devise">
-            <strong>En résumé :</strong> « {arche.devise} »
+            <strong>{tx('En résumé :')}</strong> « {arche.devise} »
           </p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label="Ce que tu apportes">
-          <h3>Ce que tu apportes</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Ce que tu apportes')}>
+          <h3>{tx('Ce que tu apportes')}</h3>
           <p>{arche.apportes}</p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label="Ce qui peut te freiner">
-          <h3>Ce qui peut te freiner</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Ce qui peut te freiner')}>
+          <h3>{tx('Ce qui peut te freiner')}</h3>
           <p>{arche.freines}</p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label="En couple">
-          <h3>En couple</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('En couple')}>
+          <h3>{tx('En couple')}</h3>
           <p>{arche.couple}</p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label="Ton équilibre">
-          <h3>Ton équilibre</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Ton équilibre')}>
+          <h3>{tx('Ton équilibre')}</h3>
           <p>{arche.equilibre}</p>
         </section>
 
@@ -938,8 +957,8 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p className="q-profil-nota">{NOTA_BARRES}</p>
         </section>
 
-        <section className="q-sec q-rev" aria-label="La suite de ton voyage">
-          <p className="q-rev-kicker">🧭 La suite de ton voyage</p>
+        <section className="q-sec q-rev" aria-label={tx('La suite de ton voyage')}>
+          <p className="q-rev-kicker">{tx('🧭 La suite de ton voyage')}</p>
           <h3>{quete.suite.titre}</h3>
           <p className="q-rev-texte">{quete.suite.intro}</p>
           {quete.suite.questions.length > 0 && (
@@ -952,12 +971,12 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <div className="q-actions">
             {suivante ? (
               <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(suivante.id)}>
-                {quete.suite.cta ?? 'Continuer le voyage'}
+                {quete.suite.cta ?? tx('Continuer le voyage')}
                 <Fleche />
               </button>
             ) : (
               <button type="button" className="btn btn-accent" onClick={onHome}>
-                Retour à mon voyage
+                {tx('Retour à mon voyage')}
                 <Fleche />
               </button>
             )}
@@ -970,14 +989,13 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               disabled={pdfEnCours}
             >
               <IcoTelecharger />
-              {pdfEnCours ? 'Ton document se prépare…' : 'Télécharger mon document personnel'}
+              {pdfEnCours ? tx('Ton document se prépare…') : tx('Télécharger mon document personnel')}
             </button>
             <button type="button" className="btn btn-ghost" onClick={() => setPhase('carte')}>
-              Revenir à ma carte
+              {tx('Revenir à ma carte')}
             </button>
             <p className="q-carte-hint">
-              Le document reprend ton profil, tes tendances mesurées et la suite de ton voyage. Il reste sur ton
-              appareil — rien n'est envoyé.
+              {tx("Le document reprend ton profil, tes tendances mesurées et la suite de ton voyage. Il reste sur ton appareil — rien n'est envoyé.")}
             </p>
           </div>
         </section>
@@ -990,7 +1008,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const suivante = quete.suivante ? QUETES[quete.suivante] : null;
   return (
     <main className="screen q-screen" aria-labelledby="q-carte-title">
-      <div className="q-carte" role="region" aria-label="Ta carte">
+      <div className="q-carte" role="region" aria-label={tx('Ta carte')}>
         <p className="q-carte-entete">{quete.completion.entete}</p>
         <h1 className="q-carte-nom" id="q-carte-title">
           {carte.nom}
@@ -1005,51 +1023,49 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p>{carte.tension}</p>
         </div>
         <p className="q-carte-pied">
-          Ton profil de voyage : <strong>{profilPct(termineesTotal)} %</strong> complété
+          {tx('Ton profil de voyage :')} <strong>{tx('{{n}} % complété', { n: profilPct(termineesTotal) })}</strong>
         </p>
         <div className="q-carte-actions">
           <button type="button" className="btn btn-accent" onClick={() => setPhase('details')}>
-            Voir mes résultats en détail
+            {tx('Voir mes résultats en détail')}
             <Fleche />
           </button>
           <button type="button" className="btn btn-outline" onClick={() => setPartageOuvert(true)}>
-            Partager ma carte
+            {tx('Partager ma carte')}
           </button>
           {copieOk && (
             <p className="q-shared" role="status">
-              Copié — ta carte est dans le presse-papiers.
+              {tx('Copié — ta carte est dans le presse-papiers.')}
             </p>
           )}
           <button type="button" className="btn btn-ghost" onClick={onHome}>
-            Retour à mon voyage
+            {tx('Retour à mon voyage')}
           </button>
         </div>
         <p className="q-carte-hint">
-          Rien ne se remet à zéro : ta carte, tes réponses et tes résultats restent dans l'onglet Quête — tu reviens
-          quand tu veux.
+          {tx("Rien ne se remet à zéro : ta carte, tes réponses et tes résultats restent dans l'onglet Quête — tu reviens quand tu veux.")}
         </p>
         <p className="q-fenetre">{quete.completion.fenetre}</p>
       </div>
       {suivante ? (
-        <div className="q-next" role="region" aria-label="Ta prochaine quête">
-          <p className="q-next-kicker">Ta prochaine quête</p>
+        <div className="q-next" role="region" aria-label={tx('Ta prochaine quête')}>
+          <p className="q-next-kicker">{tx('Ta prochaine quête')}</p>
           <h2 className="q-next-titre">{suivante.titre}</h2>
           <blockquote className="q-next-annonce">
             <p>{suivante.annonce}</p>
           </blockquote>
           <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(suivante.id)}>
-            Attaquer la quête suivante
+            {tx('Attaquer la quête suivante')}
             <Fleche />
           </button>
         </div>
       ) : (
-        <div className="q-next q-next-end" role="region" aria-label="Et maintenant ?">
-          <p className="q-next-kicker">Et maintenant ?</p>
-          <h2 className="q-next-titre">Le miroir — la suite de ton monde</h2>
+        <div className="q-next q-next-end" role="region" aria-label={tx('Et maintenant ?')}>
+          <p className="q-next-kicker">{tx('Et maintenant ?')}</p>
+          <h2 className="q-next-titre">{tx('Le miroir — la suite de ton monde')}</h2>
           <p className="q-next-note">{quete.completion.miroirNote}</p>
           <p className="q-next-note">
-            Tu as terminé les trois quêtes ouvertes du Miroir : ta personnalité, ta façon de t'attacher, tes émotions —
-            trois cartes qui se répondent.
+            {tx("Tu as terminé les trois quêtes ouvertes du Miroir : ta personnalité, ta façon de t'attacher, tes émotions — trois cartes qui se répondent.")}
           </p>
         </div>
       )}

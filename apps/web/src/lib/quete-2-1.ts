@@ -41,6 +41,9 @@
  * rendu — 00-README, verrou de citation).
  */
 
+import { avecEN } from '../i18n/apply';
+import * as EN_Q21 from '../i18n/content/en/quete-2-1';
+
 export interface QueteItem21 {
   code: string;
   text: string;
@@ -59,7 +62,7 @@ export interface ItemsQuete21 {
 /** Les 20 items carte — verbatim (01-tableau-des-24-items, ordre du tableau).
  *  AUCUNE trame Q2.1-21→24 ici : formulation hors dépôt (règle 11-b), jamais
  *  reconstituée, jamais affichée, jamais scorée. */
-export const ITEMS: readonly QueteItem21[] = [
+const ITEMS_FR: readonly QueteItem21[] = [
   {
     code: "Q2.1-01",
     text: "Pour les grandes décisions, je préfère trancher moi-même.",
@@ -181,6 +184,7 @@ export const ITEMS: readonly QueteItem21[] = [
     dim: "Universalisme",
   },
 ];
+export const ITEMS = avecEN(ITEMS_FR, EN_Q21.ITEMS);
 
 /** Ordre de passation GELÉ — mélange graine 210427, passe ⑤ FM-015 (20
  *  positions carte ; les trames Q2.1-21→24 aux positions 4 · 10 · 16 · 24 du

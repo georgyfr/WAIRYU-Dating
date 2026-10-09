@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import { useI18n } from '../i18n/I18nProvider';
 import type { CartePartageable } from './CarteTypes';
 
 interface Props {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function PartageCarteModal({ carte, onConfirm, onClose }: Props) {
+  const { tx } = useI18n();
   const refModal = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -75,26 +77,28 @@ export default function PartageCarteModal({ carte, onConfirm, onClose }: Props) 
         onClick={(e) => e.stopPropagation()}
       >
         <p className="sh-kicker" aria-hidden="true">
-          Avant de partager
+          {tx('Avant de partager')}
         </p>
         <h2 className="sh-title" id="sh-title">
-          Partager ta carte ?
+          {tx('Partager ta carte ?')}
         </h2>
         <p className="sh-text">
-          Ta carte complète — <strong>{carte.nom}</strong>, ta lumière, ta zone d'ombre et ta tension intérieure — sera
-          préparée en texte. Selon ton appareil, une feuille de partage s'ouvrira pour l'envoyer où tu veux (messagerie,
-          email…), ou elle sera copiée dans le presse-papiers, prête à coller.
+          {tx('Ta carte complète —')} <strong>{carte.nom}</strong>
+          {tx(
+            ", ta lumière, ta zone d'ombre et ta tension intérieure — sera préparée en texte. Selon ton appareil, une feuille de partage s'ouvrira pour l'envoyer où tu veux (messagerie, email…), ou elle sera copiée dans le presse-papiers, prête à coller.",
+          )}
         </p>
         <p className="sh-text sh-text-strong">
-          Wairyu ne publie rien : ta carte part uniquement si tu l'envoies toi-même. Qui la reçoit pourra la lire et la
-          garder.
+          {tx(
+            "Wairyu ne publie rien : ta carte part uniquement si tu l'envoies toi-même. Qui la reçoit pourra la lire et la garder.",
+          )}
         </p>
         <div className="sh-actions">
           <button type="button" className="btn btn-accent" onClick={onConfirm}>
-            Oui, je partage ma carte
+            {tx('Oui, je partage ma carte')}
           </button>
           <button type="button" className="btn btn-ghost sh-keep" onClick={onClose}>
-            Non, je la garde pour moi
+            {tx('Non, je la garde pour moi')}
           </button>
         </div>
       </div>

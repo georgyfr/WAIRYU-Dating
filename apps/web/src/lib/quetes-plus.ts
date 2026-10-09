@@ -116,6 +116,8 @@ import { ARCHES_2_5 } from './quete-2-5-arche';
 import { ARCHES_2_6 } from './quete-2-6-arche';
 import { ARCHES_2_7 } from './quete-2-7-arche';
 import type { IdQuete } from './quetes';
+import { avecEN } from '../i18n/apply';
+import * as EN_ARCHE from '../i18n/content/en/arches';
 
 /** Le registre de la couche « plus », par identifiant de quête.
  *  Monde 2 et Monde 3 : données NON rédigées à ce stade (couches conservées
@@ -145,7 +147,7 @@ export const PLUS: Record<IdQuete, CouchePlus> = {
  *  1.7 et 1.11 n'ont AUCUNE carte (écrans spéciaux — Livrable) : registres vides.
  *  2.8 : le badge miniature est EXEMPT de charte (1 phrase légère, precedent 1.7)
  *  — registre vide, PAS de fichier arche. */
-export const ARCHE: Record<IdQuete, Record<string, ArchetypeCarte>> = {
+const ARCHE_FR: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '1.1': ARCHES_1_1,
   '1.2': ARCHES_1_2,
   '1.3': ARCHES_1_3,
@@ -165,3 +167,4 @@ export const ARCHE: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '2.7': ARCHES_2_7,
   '2.8': {},
 };
+export const ARCHE = avecEN(ARCHE_FR, EN_ARCHE.ARCHE);

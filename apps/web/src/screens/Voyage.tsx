@@ -40,6 +40,7 @@ import type { VoyageBuild, VoyageWorld } from '../lib/voyage';
 import { useStatutsMondes } from '../lib/mondes-state';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface Props {
   /** « Découvrir les Mondes » (Premier arrêt, si Le Miroir n'est pas ouvert). */
@@ -108,6 +109,7 @@ function WorldMap({
   onSelect: (code: string) => void;
   franchis: number;
 }) {
+  const { tx } = useI18n();
   const noeuds = positionsMondes();
   const noms = WORLDS.map((w) => w.name).join(' · ');
   return (
@@ -115,7 +117,7 @@ function WorldMap({
       className="v-map-svg"
       viewBox="0 0 460 540"
       role="group"
-      aria-label={`Carte du voyage : départ, puis ${noms}, puis la Rencontre. Sélectionne un monde pour voir ses détails.`}
+      aria-label={tx('Carte du voyage : départ, puis {{noms}}, puis la Rencontre. Sélectionne un monde pour voir ses détails.', { noms })}
     >
       <path
         className="v-map-path"
@@ -132,7 +134,7 @@ function WorldMap({
           <VoyageIcon name="signpost" size={18} />
         </g>
         <text x={COLONNES[0]} y={RANGEES[0] + 34} className="v-map-label">
-          Départ
+          {tx('Départ')}
         </text>
       </g>
       {/* Les 11 stations des mondes */}
@@ -156,7 +158,17 @@ function WorldMap({
             role="button"
             tabIndex={0}
             aria-pressed={estSelectionne}
-            aria-label={`Monde ${world.num} sur ${WORLDS.length} : ${world.name}. ${world.quests} étapes${world.free ? '' : '. Premium'}.${estSelectionne ? ' Sélectionné.' : ''}`}
+            aria-label={
+              tx('Monde {{n}} sur {{total}} : {{nom}}. {{q}} étapes', {
+                n: world.num,
+                total: WORLDS.length,
+                nom: world.name,
+                q: world.quests,
+              }) +
+              (world.free ? '' : '. Premium') +
+              '.' +
+              (estSelectionne ? tx(' Sélectionné.') : '')
+            }
             onClick={() => onSelect(world.code)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -208,7 +220,7 @@ function WorldMap({
           <VoyageIcon name="rings" size={22} />
         </g>
         <text x={RENCONTRE.x} y={RENCONTRE.y + 42} className="v-map-label v-map-label-dest">
-          La Rencontre
+          {tx('La Rencontre')}
         </text>
       </g>
     </svg>
@@ -224,6 +236,7 @@ function styleTuile(b: VoyageBuild): CSSProperties {
 }
 
 export default function Voyage({ onExplore, onOpenWorld }: Props) {
+  const { tx } = useI18n();
   const franchis = PROGRESS.worldsDone;
   const etapes = PROGRESS.stepsDone;
   const recolte = PROGRESS.recolte;
@@ -250,27 +263,27 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
         <div className="v-hero-head">
           <span className="v-hero-chip">
             <VoyageIcon name="compass" size={13} strokeWidth={2.2} />
-            Ton voyage commence ici
+            {tx('Ton voyage commence ici')}
           </span>
           <h1 id="v-title" className="v-hero-title">
-            Le Voyage
+            {tx('Le Voyage')}
           </h1>
           <p className="v-hero-promise">
-            <strong>{total} mondes</strong>
+            <strong>{tx('{{n}} mondes', { n: total })}</strong>
             <span className="v-promise-dot" aria-hidden="true">
               •
             </span>
-            <strong>{TOTAL_STEPS} étapes</strong>
+            <strong>{tx('{{n}} étapes', { n: TOTAL_STEPS })}</strong>
             <span className="v-promise-dot" aria-hidden="true">
               •
             </span>
-            <em>1 destination : une rencontre qui a du sens</em>
+            <em>{tx('1 destination : une rencontre qui a du sens')}</em>
           </p>
         </div>
         <div className="v-hero-fig">
           <img
             src="/img/voyage-panorama.webp"
-            alt="Un voyageur au sac à dos s'engage sur un chemin lumineux qui serpente à travers une vallée jusqu'à des montagnes turquoise, jalonné d'étapes brillantes ; à l'horizon rayonnant, deux silhouettes se rencontrent"
+            alt={tx("Un voyageur au sac à dos s'engage sur un chemin lumineux qui serpente à travers une vallée jusqu'à des montagnes turquoise, jalonné d'étapes brillantes ; à l'horizon rayonnant, deux silhouettes se rencontrent")}
             className="v-hero-img"
             width={1440}
             height={720}
@@ -279,7 +292,7 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
         <div className="v-hero-actions">
           <button type="button" className="v-hero-cta" onClick={() => versAncre('v-etapes')}>
             <VoyageIcon name="compass" size={15} strokeWidth={2.2} />
-            Voir la carte du voyage
+            {tx('Voir la carte du voyage')}
             <Fleche />
           </button>
         </div>
@@ -291,41 +304,42 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
           <SparkIcon />
         </span>
         <h2 id="v-sens-title" className="v-sens-title">
-          Ici, personne ne te note.
+          {tx('Ici, personne ne te note.')}
           <br />
-          Personne ne te classe.
+          {tx('Personne ne te classe.')}
         </h2>
-        <p className="v-sens-lead">Tu réponds à ta façon.</p>
+        <p className="v-sens-lead">{tx('Tu réponds à ta façon.')}</p>
         <p className="v-sens-p">
-          Chaque réponse construit ton portrait, affine tes rencontres et fait avancer ton voyage.
+          {tx('Chaque réponse construit ton portrait, affine tes rencontres et fait avancer ton voyage.')}
         </p>
         <p className="v-sens-p">
-          Ce que tu découvres en chemin t'appartient : <strong>tu choisis ce qui se voit.</strong>
+          {tx("Ce que tu découvres en chemin t'appartient : ")}
+          <strong>{tx('tu choisis ce qui se voit.')}</strong>
         </p>
-        <ul className="v-sens-pillars" aria-label="Ce que construisent tes réponses">
+        <ul className="v-sens-pillars" aria-label={tx('Ce que construisent tes réponses')}>
           <li>
             <span className="v-sens-pico" style={{ background: '#dff3f4', color: '#2a9aa0' }} aria-hidden="true">
               <VoyageIcon name="scroll" size={15} />
             </span>
-            Ton portrait
+            {tx('Ton portrait')}
           </li>
           <li>
             <span className="v-sens-pico" style={{ background: '#fde9e6', color: '#f56b53' }} aria-hidden="true">
               <VoyageIcon name="heart" size={15} />
             </span>
-            Tes affinités
+            {tx('Tes affinités')}
           </li>
           <li>
             <span className="v-sens-pico" style={{ background: '#e4f4e4', color: '#3e9d5b' }} aria-hidden="true">
               <VoyageIcon name="compass" size={15} />
             </span>
-            Ton chemin
+            {tx('Ton chemin')}
           </li>
           <li>
             <span className="v-sens-pico" style={{ background: '#ffebcf', color: '#d9932b' }} aria-hidden="true">
               <VoyageIcon name="rings" size={15} />
             </span>
-            Tes rencontres
+            {tx('Tes rencontres')}
           </li>
         </ul>
         <div className="v-sens-privacy">
@@ -333,8 +347,8 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <VoyageIcon name="lock" size={15} strokeWidth={2.2} />
           </span>
           <p>
-            <strong>Tu gardes le contrôle.</strong> Tes réponses servent à mieux comprendre tes affinités — tu choisis
-            ce qui apparaît sur ton profil et ce que tu souhaites partager.
+            <strong>{tx('Tu gardes le contrôle.')}</strong>{' '}
+            {tx('Tes réponses servent à mieux comprendre tes affinités — tu choisis ce qui apparaît sur ton profil et ce que tu souhaites partager.')}
           </p>
         </div>
       </section>
@@ -346,7 +360,7 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <span className="v-h2-ico" style={{ color: '#2a9aa0' }}>
               <VoyageIcon name="signpost" size={19} />
             </span>
-            Ta progression
+            {tx('Ta progression')}
           </h2>
         </div>
         <div className="v-prog">
@@ -356,22 +370,22 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
                 {franchis}
                 <i>/{total}</i>
               </strong>
-              <span>Mondes franchis</span>
+              <span>{tx('Mondes franchis')}</span>
             </article>
             <article className="v-stat">
               <strong>
                 {etapes}
                 <i>/{TOTAL_STEPS}</i>
               </strong>
-              <span>Étapes parcourues</span>
+              <span>{tx('Étapes parcourues')}</span>
             </article>
             <article className="v-stat">
               <strong>{recolte}</strong>
-              <span>Éléments récoltés</span>
+              <span>{tx('Éléments récoltés')}</span>
             </article>
             <article className="v-stat">
-              <strong className="v-stat-txt">En construction</strong>
-              <span>Tes affinités</span>
+              <strong className="v-stat-txt">{tx('En construction')}</strong>
+              <span>{tx('Tes affinités')}</span>
             </article>
           </div>
           <div
@@ -380,21 +394,21 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             aria-valuenow={Math.round((franchis / total) * 100)}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label="Progression du voyage : mondes franchis"
+            aria-label={tx('Progression du voyage : mondes franchis')}
           >
             {WORLDS.map((w, i) => (
               <span key={w.code} className={i < franchis ? 'v-seg v-seg-done' : 'v-seg'} aria-hidden="true" />
             ))}
           </div>
           <small className="v-bar-label">
-            Chaque monde franchi allume un segment — {franchis} sur {total} pour l'instant.
+            {tx("Chaque monde franchi allume un segment — {{a}} sur {{b}} pour l'instant.", { a: franchis, b: total })}
           </small>
           <div className="v-next">
             <span className="v-next-ico" aria-hidden="true">
               <VoyageIcon name="map" size={19} />
             </span>
             <span className="v-next-text">
-              <small>Prochaine étape</small>
+              <small>{tx('Prochaine étape')}</small>
               <strong>{MILESTONES[0]?.name}</strong>
             </span>
           </div>
@@ -408,12 +422,11 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <span className="v-h2-ico" style={{ color: '#2a9aa0' }}>
               <VoyageIcon name="map" size={19} />
             </span>
-            Ta carte du voyage
+            {tx('Ta carte du voyage')}
           </h2>
         </div>
         <p className="v-section-sub">
-          Du départ à la Rencontre, {total} mondes jalonnent ton chemin — {FREE_WORLDS} sont offerts, dont la
-          destination. Touche un monde pour le découvrir.
+          {tx('Du départ à la Rencontre, {{a}} mondes jalonnent ton chemin — {{b}} sont offerts, dont la destination. Touche un monde pour le découvrir.', { a: total, b: FREE_WORLDS })}
         </p>
         <div className="v-map">
           <WorldMap selection={selection} onSelect={setSelection} franchis={franchis} />
@@ -428,7 +441,7 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
               </span>
               <div className="v-map-panel-title">
                 <small>
-                  Monde {monde.num} sur {total}
+                  {tx('Monde {{n}} sur {{total}}', { n: monde.num, total })}
                 </small>
                 <h3>{monde.name}</h3>
               </div>
@@ -436,7 +449,7 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <p className="v-map-panel-tag">{monde.tagline}</p>
             <div className="v-map-panel-meta">
               <span className="v-map-panel-steps">
-                {monde.quests} étape{monde.quests > 1 ? 's' : ''}
+                {tx('{{n}} étape{{s}}', { n: monde.quests, s: monde.quests > 1 ? 's' : '' })}
               </span>
               {mondeFranchi ? (
                 <span className="v-chip v-chip-done">
@@ -453,15 +466,15 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
                   >
                     <path d="M4 12.5l5 5L20 6.5" />
                   </svg>
-                  Terminé
+                  {tx('Terminé')}
                 </span>
               ) : mondeOuvert ? (
                 <span className="v-chip v-chip-now">
                   <span className="v-chip-dot" aria-hidden="true" />
-                  {mondeEnCours ? 'En cours' : 'Ouvert'}
+                  {mondeEnCours ? tx('En cours') : tx('Ouvert')}
                 </span>
               ) : (
-                <span className="v-chip v-chip-soon">À venir</span>
+                <span className="v-chip v-chip-soon">{tx('À venir')}</span>
               )}
               {!monde.free && (
                 <span className="v-prem">
@@ -469,12 +482,12 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
                   <em>Premium</em>
                 </span>
               )}
-              {monde.free && monde.num === total && <span className="v-free">Toujours gratuit</span>}
+              {monde.free && monde.num === total && <span className="v-free">{tx('Toujours gratuit')}</span>}
             </div>
             {monde.note && <p className="v-map-panel-note">{monde.note}</p>}
             {mondeOuvert && (
               <button type="button" className="v-map-start" onClick={() => onOpenWorld(monde.code)}>
-                {mondeEnCours ? 'Continuer' : 'Commencer'}
+                {mondeEnCours ? tx('Continuer') : tx('Commencer')}
                 <Fleche />
               </button>
             )}
@@ -489,19 +502,18 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <span className="v-h2-ico" style={{ color: '#d68f06' }}>
               <SparkIcon />
             </span>
-            Ce que ton voyage construit
+            {tx('Ce que ton voyage construit')}
           </h2>
         </div>
         <p className="v-section-sub">
-          À chaque étape, tu découvres quelque chose sur toi. Ton voyage construit progressivement ton portrait, tes
-          affinités et ta façon de rencontrer.
+          {tx('À chaque étape, tu découvres quelque chose sur toi. Ton voyage construit progressivement ton portrait, tes affinités et ta façon de rencontrer.')}
         </p>
         <ol className="v-build">
           {BUILDS.map((b) => {
             const estPortrait = b.href === '#/portrait';
             const estJournal = b.href === '#/parcourus';
-            const cta = estPortrait ? 'Commencer' : b.cta;
-            const etat = estPortrait ? 'En construction' : estJournal ? `${franchis} sur ${total} franchi` : null;
+            const cta = estPortrait ? tx('Commencer') : b.cta;
+            const etat = estPortrait ? tx('En construction') : estJournal ? tx('{{a}} sur {{b}} franchi', { a: franchis, b: total }) : null;
             return (
               <li key={b.num} className="v-build-item">
                 <a className="v-build-card" href={b.href} aria-label={`${b.title} — ${cta}`}>
@@ -536,13 +548,13 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <VoyageIcon name="map" size={21} />
           </span>
           <div className="v-continue-body">
-            <h3>Continuer mon Voyage</h3>
+            <h3>{tx('Continuer mon Voyage')}</h3>
             <p>
-              {total} mondes. {TOTAL_STEPS} étapes. Une histoire qui se construit à ton rythme.
+              {tx('{{a}} mondes. {{b}} étapes. Une histoire qui se construit à ton rythme.', { a: total, b: TOTAL_STEPS })}
             </p>
           </div>
           <a className="v-continue-cta" href="#/voyage" onClick={() => versAncre('v-etapes')}>
-            Reprendre mon voyage
+            {tx('Reprendre mon voyage')}
             <Fleche />
           </a>
         </div>
@@ -555,10 +567,10 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
             <span className="v-h2-ico" style={{ color: '#3e9d5b' }}>
               <VoyageIcon name="layers" size={19} />
             </span>
-            Ta récolte
+            {tx('Ta récolte')}
           </h2>
         </div>
-        <p className="v-section-sub">Ce que ton voyage construit, étape après étape — chaque découverte reste à toi.</p>
+        <p className="v-section-sub">{tx('Ce que ton voyage construit, étape après étape — chaque découverte reste à toi.')}</p>
         <ol className="v-rec">
           {MILESTONES.map((jalon) => (
             <li key={jalon.num} className={jalon.status === 'now' ? 'v-rec-item v-rec-now' : 'v-rec-item'}>
@@ -571,10 +583,10 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
                   {jalon.status === 'now' ? (
                     <span className="v-chip v-chip-now">
                       <span className="v-chip-dot" aria-hidden="true" />
-                      En cours
+                      {tx('En cours')}
                     </span>
                   ) : (
-                    <span className="v-chip v-chip-soon">À venir</span>
+                    <span className="v-chip v-chip-soon">{tx('À venir')}</span>
                   )}
                 </h3>
                 <p>{jalon.desc}</p>
@@ -585,18 +597,17 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
       </section>
 
       {/* ⑦ Premier arrêt : Le Miroir */}
-      <section className="v-section" aria-label="Premier arrêt">
+      <section className="v-section" aria-label={tx('Premier arrêt')}>
         <div className="v-arret">
           <img
             src="/img/voyage-arret.webp"
-            alt="Paysage turquoise — le premier monde, Le Miroir, t'attend"
+            alt={tx("Paysage turquoise — le premier monde, Le Miroir, t'attend")}
             className="v-arret-img"
           />
           <div className="v-arret-body">
-            <h3>Premier arrêt : Le Miroir</h3>
+            <h3>{tx('Premier arrêt : Le Miroir')}</h3>
             <p>
-              Le Monde 1 t'attend : découvre ce qu'il révèle de toi — personnalité, attachement, émotions — puis
-              commence à ton rythme. Chaque monde franchi éclaire le suivant.
+              {tx("Le Monde 1 t'attend : découvre ce qu'il révèle de toi — personnalité, attachement, émotions — puis commence à ton rythme. Chaque monde franchi éclaire le suivant.")}
             </p>
             {/* Le bundle garde `e || g && t` (props tolérées indéfinies) ;
                 ici les deux props sont requises et toujours fournies par App
@@ -606,7 +617,7 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
               className="v-arret-cta"
               onClick={miroirOuvert ? () => onOpenWorld(miroir.code) : onExplore}
             >
-              {miroirOuvert ? (miroirEnCours ? 'Continuer le Miroir' : 'Commencer') : 'Découvrir les Mondes'}
+              {miroirOuvert ? (miroirEnCours ? tx('Continuer le Miroir') : tx('Commencer')) : tx('Découvrir les Mondes')}
               <Fleche />
             </button>
           </div>
