@@ -469,3 +469,21 @@ Stage Summary:
 - Le raccord « achat d'un mois » est PRÊT et honnête : prix premium réels par devise affichés sur les fiches de mois premium, notification architecturée derrière notifierMoisAchete() — elle partira à la vraie intégration paiement (aucun achat simulé).
 - PROD NON TOUCHÉE — partira au prochain feu vert (avec M2+M3 déjà en prod, ceci s'ajoute au lot).
 - Noté : le hash du deep-link verrouillé reste #/quete/{id} (la VUE retombe sur l'atlas — l'URL ne suit pas ; recharge = même comportement, cohérent) · pass/crédits attendent leurs données réelles (§16).
+
+---
+Task ID: 45-prod
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT PROD — mise en production de Task 45 (notifications de récolte par type, vue mois par mois, pop-up explicatif) + fix interpolation mois_fini.
+
+Work Log:
+- Typecheck bunx tsc --noEmit : 0 erreur (arbre de travail avec le fix non commité).
+- Commit 6a34baa : fix(notifs) — la variable { n: n.mois } était absente de tx() sur la notification mois_fini (« Mois {{n}} terminé » s'affichait littéralement) ; push main.
+- Déploiement production (deploy.sh production) : version de537171-9c06-41ac-b6db-32c0419434fe, bundle index-CPxwtyEA.js, D1 wairyu-prod, cron 10 3 * * *.
+- Smoke prod : /api/health 200 ({ok:true, env:"production"}) · /api/auth/config 200 · /api/push/key 200 (VAPID enabled:true) · nouveau bundle servi après propagation du cache edge (~10 s, cf-cache-status HIT → MISS sur cache-bust).
+- Vérification agent-browser prod : landing rendu (titre « wairyu — rencontres sincères »), bundle index-CPxwtyEA.js chargé, écran d'authentification complet (email + mot de passe + pseudo + Google/Facebook), deep-link #/recolte non authentifié → garde de route → écran de connexion, mobile 390×844 rendu. ZÉRO erreur JS sur toute la session.
+- E2E authentifié prod non rejoué (Turnstile strict fail-closed rejette le headless — comportement anti-robot attendu, déjà documenté Task 44) : couverture par l'E2E staging complet du MÊME bundle (worklog Task 45 : pop-ups FR/EN, badge cloche exact, toast en direct, vue mois par mois, verrou deep-links, mobile 390) — aucun contournement, aucun écriture prod.
+
+Stage Summary:
+- Task 45 est EN PRODUCTION : notifications de récolte PAR TYPE (carte/écran/fragment/sceau/mois ouvert/mois fini + pass/crédits prêts), récoltes organisées PAR MOIS (section dédiée + panneau cloche groupé), chaque récolte CLIQUABLE avec pop-up « à quoi ça sert dans les rencontres », verrou deep-links, fixes nits (pluriel héros, compteur Ouvert).
+- Le raccord achat d'un mois reste prêt derrière notifierMoisAchete() (PSP à venir — aucune notification d'achat simulée, honnêteté §16 préservée).
+- PROD version de537171-9c06-41ac-b6db-32c0419434fe — vérifiée : rendu, 0 erreur, garde de route, mobile.
