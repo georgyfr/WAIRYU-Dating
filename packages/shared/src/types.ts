@@ -101,6 +101,27 @@ export interface PushTestResponse {
   error?: string | null;
 }
 
+/** POST /api/push/notify-recolte — une récolte à pousser sur les appareils du compte. */
+export interface RecoltePushItem {
+  /**
+   * Id déterministe du journal récolte côté front ('carte:1.1', 'sceau:M2'…) —
+   * clé de dédoublonnage serveur : le même id ne part JAMAIS deux fois.
+   */
+  id: string;
+  type: 'carte' | 'ecran' | 'fragment' | 'sceau' | 'mois_ouvert' | 'mois_fini';
+  /** Le mois du voyage d'origine (1-11 — un mois = un monde). */
+  mois: number;
+  /** Nom de la carte (type 'carte' seulement, déjà localisé par le front). */
+  nom?: string;
+}
+
+/** POST /api/push/notify-recolte — réponse (pushed = envois réellement partis). */
+export interface PushRecolteResponse {
+  ok: true;
+  /** Nombre de récoltes NOUVELLEMENT poussées (dédoublonnage serveur appliqué). */
+  pushed: number;
+}
+
 /** Ligne du journal de notifications (centre in-app). */
 export interface PushEventRow {
   id: string;

@@ -273,6 +273,78 @@ export async function sendPushToDevice(
   }
 }
 
+export interface UserSendResult {
+  /** Nombre d'appareils ayant accepté le push (2xx). */
+  sent: number;
+  /** Nombre d'abonnements 410 nettoyés. */
+  gone: number;
+  error: string | null;
+}
+
+/**
+ * Envoie un push à TOUS les appareils liés à un compte
+ * (device_push_subscriptions.user_id — liaison posée par /push/link-device).
+ * Best-effort : chaque appareil est servi indépendamment, un échec n'arrête
+ * pas les autres (ne lève JAMAIS — politique d'échec du module).
+ */
+export async function sendPushToUser(
+  env: {
+    DB: D1Database;
+    VAPID_PUBLIC_KEY?: string;
+    VAPID_PRIVATE_KEY?: string;
+    VAPID_SUBJECT?: string;
+  },
+  userId: string,
+  payload: PushPayload,
+): Promise<UserSendResult> {
+  const out: UserSendResult = { sent: 0, gone: 0, error: null };
+  try {
+    const cfg = await vapid(env);
+    if (!cfg) return { ...out, error: 'vapid_disabled' };
+
+    // Deux voies de liaison mènent l'appareil au compte : la colonne
+    // user_id de l'abonnement (posée par subscribe quand la session existe —
+    // Task 47) ET celle de l'appareil (posée par link-device, y compris AVANT
+    // la création de l'abonnement). Le JOIN couvre les deux — une récolte ne
+    // doit jamais se perdre parce que l'une des deux liaisons manque.
+    const { results } = await env.DB.prepare(
+      `SELECT s.device_id AS device_id
+       FROM device_push_subscriptions s
+       LEFT JOIN devices d ON d.id = s.device_id
+       WHERE s.user_id = ? OR d.user_id = ?
+       LIMIT 50`,
+    )
+      .bind(userId, userId)
+      .all<{ device_id: string }>();
+    if (!results || results.length === 0) return { ...out, error: 'no_subscription' };
+
+    for (const row of results) {
+      const r = await sendToSubscription(env, cfg, await getSub(env, row.device_id), payload);
+      out.sent += r.sent;
+      if (r.gone) out.gone += 1;
+      if (r.error && !out.error) out.error = r.error;
+    }
+    return out;
+  } catch (err) {
+    console.error(JSON.stringify({ push: 'dispatch_user_failed', user: userId.slice(0, 8), err: String(err) }));
+    return { ...out, error: String(err) };
+  }
+}
+
+/** Lit l'abonnement d'un appareil (helper de sendPushToUser — 1 requête/appareil). */
+async function getSub(
+  env: { DB: D1Database },
+  deviceId: string,
+): Promise<PushSubscriptionKeys> {
+  const sub = await env.DB.prepare(
+    `SELECT endpoint, p256dh, auth FROM device_push_subscriptions WHERE device_id = ? LIMIT 1`,
+  )
+    .bind(deviceId)
+    .first<{ endpoint: string; p256dh: string; auth: string }>();
+  if (!sub) throw new Error('subscription_vanished');
+  return sub;
+}
+
 async function sendToSubscription(
   env: { DB: D1Database },
   cfg: VapidConfig,

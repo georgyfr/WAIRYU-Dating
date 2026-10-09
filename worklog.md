@@ -755,3 +755,29 @@ Stage Summary (final):
 - 25 quêtes ouvertes sur 50 en prod · 4 premiers mondes franchissables (M1-M4) · M5+ « À venir ».
 - Environnements : prod https://wairyu.wairyu.workers.dev (version 4228e434) · staging https://wairyu-staging.wairyu.workers.dev (54c1a15b, même bundle).
 - Suite (rien d'urgent) : assets graphiques 3.6 (le format 'images' les allumera sans refonte) · PSP → notifierMoisAchete() · TOTAL_STEPS 51 vs 50 (décision fondateur) · Phase B (Découvrir/Messages réels) au rythme du fondateur.
+
+---
+Task ID: 47
+Agent: orchestrateur (Z.ai Code)
+Task: Les notifications de RÉCOLTE en VRAI PUSH web + mobile (précision fondateur : « quand je parlais de notifications dans #/recolte, il s'agissait des notifications push sur web et mobile »). Task 45 n'avait livré que le journal in-app (cloche/pop-up) — le push OS manquait.
+
+Work Log:
+- AUDIT : infra push Mission N complète (VAPID zéro-dépendance, device_push_subscriptions avec user_id prévu, /push/link-device session↔appareil, SW anti-doublon page visible) ; état quêtes en localStorage → le SERVEUR ne peut pas deviner une complétion → architecture CLIENT-DÉCLENCHEUR / SERVEUR-DÉDOUBLONNANT.
+- API : migration 0009_recolte_push.sql (push_recolte_dedup, PK user_id+notif_id, purge cron 90 j) · POST /api/push/notify-recolte (session requise, 1-6 items, validation id/type/mois, rate-limit 30/min/compte, INSERT OR IGNORE = jamais deux fois le même id, libellés FR/EN miroirs de libelleNotif/tr-screens-a.ts, tag wairyu-recolte-<id>, url #/recolte, SANS force — page visible ⇒ toast in-app, arrière-plan ⇒ bulle OS) · sendPushToUser (lib/push.ts) : tous les appareils du compte, JOIN devices+subscriptions (double voie de liaison) · subscribe lie DÉSORMAIS user_id À LA SOURCE (bug préexistant corrigé : boot → link-device AVANT l'abonnement laissait user_id NULL — le relais OTP 0008 était atteint aussi) · suppression de compte purge push_recolte_dedup · types RecoltePushItem/PushRecolteResponse dans @wairyu/shared.
+- WEB : lib/recolte-push.ts (garde locale wairyu.notifs.pushe, max 6/sync, fire-and-forget, 401 = réessai après connexion) · notifs.ts : synchroniserNotifs collecte les NOUVELLES NON LUES → pont push (et notifierMoisAchete branché pour le futur PSP) · App.tsx : handler 'wairyu-navigate' (le SW l'émittait au tap de bulle, personne ne l'écoutait — garde serviceWorker pour navigateurs anciens).
+- STAGING 3 déploiements : eca5b40a (regex ids : les vrais ids 'carte:1.1' contiennent un POINT — corrigé) · f3d8f461 (fix liaison user_id + JOIN) · 11f572d1 (purge dedup à la suppression de compte). Version finale 11f572d1.
+- E2E RÉEL (Playwright contexts persistants — leçon : le Push API est DÉSACTIVÉ en incognito, contexte standard Playwright = incognito ; permissions notifications accordées via ctx.grantPermissions ; compte e2e OTP backdoor) :
+  · DÉCLENCHEUR CLIENT : quête 1.1 jouée EN ENTIER dans l'UI (50 Likert) → 2 POST notify-recolte EXACTS (mois-ouvert:M1 au 1ᵉʳ engagement + carte:1.1 nom localisé EN « The Tightrope Walker », lang=en) ; quêtes 1.2/1.3 → carte:1.2/carte:1.3 idem.
+  · LIVRAISON VAPID RÉELLE : pushed:2→7 selon runs — FCM accepte (201) ; D1 notification_events : kind=recolte channel=push delivered=1 err=null ×6 dont « New discovery: The Apprentice » (carte:1.3, déclenchée PAR LE CLIENT).
+  · RELAIS SW CAPTURÉ : postMessage 'wairyu-push' reçu dans la page avec le titre récolte (le SW reçoit et relaie — le chemin du code).
+  · DÉDOUBLONNAGE PARFAIT : rejeu du même id → pushed:0, aucune écriture, aucune bulle nouvelle.
+  · BULLE FORCE vue dans getNotifications (freeze CDP) ; garde 401/400/429 vérifiées ; purge RGPD complète (users 0, devices 0).
+  · NON REPRODUCTIBLE HEADLESS : la bulle système SANS force quand 0 fenêtre visible — les clients SW headless/Xvfb se déclarent toujours « visible » (limite environnement) ; le code d'affichage est le MÊME que les bulles force/test vues sur vrais appareils (sw.js inchangé) — vérification fondateur en 30 s sur téléphone.
+- BUG PRÉEXISTANT CORRIGÉ AU PASSAGE : subscribe ne propageait pas la session (user_id NULL) — la récolte ET le relais OTP visaient des lignes orphelines ; liaison à la source + JOIN = les deux chemins couverts.
+
+Stage Summary:
+- Les récoltes (carte, écran, fragment, sceau, mois ouvert/fini) partent maintenant en VRAI PUSH web+mobile sur TOUS les appareils du compte : VAPID → FCM → SW → bulle OS (app fermée/arrière-plan) ou toast in-app (page visible), clic → #/recolte (le coffre).
+- Jamais de doublon (dédoublonnage serveur authoritatif), jamais de spam (rate-limit, garde locale, sans force), jamais de perte silencieuse (échec = journal in-app + retentative à la prochaine sync), honnêteté §16 intacte (pass/credit dormants, notifierMoisAchete câblé mais sans achat simulé).
+- Mobile (TWA/PWA) : même canal VAPID — aucun code spécifique nécessaire.
+- STAGING version 11f572d1 — PROD NON TOUCHÉE (17-b) : déploiera au prochain feu vert.
+- Résiduels : bulle OS « page cachée » à confirmer par le fondateur sur un vrai téléphone (30 s — le relais/l'affichage SW sont prouvés, seule la visibilité headless est irreproductible) ; 4 subscriptions mortes d'E2E seront nettoyées par le 410 standard.

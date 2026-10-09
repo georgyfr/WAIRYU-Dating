@@ -230,7 +230,34 @@ export default function App() {
 
     const onHash = () => setRoute(readRoute());
     window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+
+    // LE TAP DE NOTIFICATION PUSH (Task 47) : le SW (public/sw.js) relait
+    // « wairyu-navigate » quand la bulle OS est tapée sur une fenêtre EXISTANTE
+    // (focus) — la page suit le lien de la notification (ex. #/recolte, le
+    // coffre du voyageur). Nouvelle fenêtre : le SW ouvre directement l'URL.
+    // Garde : sans serviceWorker (navigateurs anciens), rien à écouter.
+    const onNavigate = (ev: MessageEvent) => {
+      const d = ev.data as { type?: string; url?: string } | null;
+      if (!d || d.type !== 'wairyu-navigate' || typeof d.url !== 'string') return;
+      const url = d.url;
+      // Formes de deep-link SPA ('#/recolte' ou '/#/recolte'). Une URL '/'
+      // (test/bienvenue) ne re-navigue pas : le focus du SW suffit.
+      if (url.startsWith('#')) {
+        if (window.location.hash === url) setRoute(readRoute());
+        else window.location.hash = url;
+      } else if (url.startsWith('/#')) {
+        window.location.hash = url.slice(1);
+      }
+    };
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', onNavigate);
+    }
+    return () => {
+      window.removeEventListener('hashchange', onHash);
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.removeEventListener('message', onNavigate);
+      }
+    };
   }, []);
 
   // Connecté : charge le journal in-app (badge + panneau de la cloche).

@@ -115,7 +115,7 @@ export default {
         const now = Math.floor(Date.now() / 1000);
         const day = new Date().toISOString().slice(0, 10);
 
-        const [sessions, windows, events, tombstones, codes, resets] = await Promise.all([
+        const [sessions, windows, events, tombstones, codes, resets, recolteDedup] = await Promise.all([
           env.DB.prepare(`DELETE FROM sessions WHERE expires_at < ?`).bind(now - 86400 * 7).run(),
           // Fenêtres rate-limit clôturées depuis > 2 h
           env.DB.prepare(`DELETE FROM rate_limits WHERE window_start < ?`).bind(now - 7200).run(),
@@ -126,6 +126,9 @@ export default {
           // Codes OTP consommés/expirés depuis > 1 j + liens de reset consommés/expirés
           env.DB.prepare(`DELETE FROM auth_codes WHERE expires_at < ?`).bind(now - 86400).run(),
           env.DB.prepare(`DELETE FROM password_resets WHERE expires_at < ?`).bind(now - 86400).run(),
+          // Dédoublonnage push récolte > 90 j (0009_recolte_push — une récolte
+          // n'a pas de sens re-poussée plus tard)
+          env.DB.prepare(`DELETE FROM push_recolte_dedup WHERE created_at < ?`).bind(now - 90 * 86400).run(),
         ]);
         console.log(
           JSON.stringify({
@@ -137,6 +140,7 @@ export default {
               tombstones: tombstones.meta.changes,
               auth_codes: codes.meta.changes,
               password_resets: resets.meta.changes,
+              recolte_dedup: recolteDedup.meta.changes,
             },
           }),
         );

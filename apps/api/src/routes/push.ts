@@ -17,11 +17,13 @@
  *  4. POST /api/push/test      — VRAI push de bout en bout (force:true).
  *  5. GET/POST /api/push/events — journal in-app (canal universel 2016/2017).
  *  6. POST /api/push/unsubscribe.
+ *  7. POST /api/push/notify-recolte — push OS des récoltes à TOUS les
+ *     appareils du compte (session requise, dédoublonnage D1, Task 47).
  */
 import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import { errors, errorBody, reqId } from '../lib/errors';
-import { pushEnabled, sendPushToDevice } from '../lib/push';
+import { pushEnabled, sendPushToDevice, sendPushToUser } from '../lib/push';
 import { kvRateLimit } from '../lib/kvrate';
 import type {
   LinkDeviceResponse,
@@ -29,8 +31,10 @@ import type {
   PushEventRow,
   PushEventsResponse,
   PushOpenResponse,
+  PushRecolteResponse,
   PushSubscribeResponse,
   PushTestResponse,
+  RecoltePushItem,
 } from '@wairyu/shared';
 
 export const pushRoutes = new Hono<AppEnv>();
@@ -307,6 +311,14 @@ pushRoutes.post('/push/subscribe', async (c) => {
     .bind(sub.endpoint, deviceId)
     .run();
 
+  // Liaison session → abonnement À LA SOURCE (Task 47) : si l'appareil a une
+  // session, le nouvel abonnement naît LIÉ au compte. Sans cela, la séquence
+  // réelle « boot → link-device (pas encore d'abonnement) → geste → subscribe »
+  // laissait la ligne avec user_id NULL — le ciblage par compte (récoltes,
+  // relais OTP 0008) la ratait jusqu'à une re-connexion.
+  const session = c.get('session');
+  const sessionUserId = session?.userId ?? null;
+
   const hadSub = await c.env.DB.prepare(
     `SELECT id FROM device_push_subscriptions WHERE device_id = ? LIMIT 1`,
   )
@@ -315,11 +327,13 @@ pushRoutes.post('/push/subscribe', async (c) => {
 
   await c.env.DB.prepare(
     `INSERT INTO device_push_subscriptions
-       (id, device_id, endpoint, p256dh, auth, platform, user_agent, first_open_at, last_open_at, open_count, welcome_pending, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
+       (id, device_id, endpoint, p256dh, auth, platform, user_agent, user_id, first_open_at, last_open_at, open_count, welcome_pending, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)
      ON CONFLICT (device_id) DO UPDATE SET
        endpoint = excluded.endpoint, p256dh = excluded.p256dh, auth = excluded.auth,
-       platform = excluded.platform, user_agent = excluded.user_agent, updated_at = excluded.updated_at`,
+       platform = excluded.platform, user_agent = excluded.user_agent,
+       user_id = COALESCE(excluded.user_id, device_push_subscriptions.user_id),
+       updated_at = excluded.updated_at`,
   )
     .bind(
       crypto.randomUUID(),
@@ -329,6 +343,7 @@ pushRoutes.post('/push/subscribe', async (c) => {
       sub.auth,
       platform,
       ua,
+      sessionUserId,
       now,
       now,
       dev ? (dev.welcome_pending ?? 1) : 1,
@@ -508,6 +523,156 @@ pushRoutes.post('/push/link-device', async (c) => {
   }
 
   const body: LinkDeviceResponse = { linked: true, congrats, congratsVia };
+  return c.json(body);
+});
+
+// ---------------------------------------------------------------------------
+// POST /push/notify-recolte — PUSH OS des notifications de récolte (Task 47)
+// ---------------------------------------------------------------------------
+// Demande fondateur : les notifications de récolte (Task 45 — carte, écran de
+// passage, fragment, sceau, mois ouvert/fini) sont de VRAIES notifications
+// push web + mobile, pas seulement le journal in-app de la cloche.
+//
+// Architecture : l'état des quêtes vit en localStorage CÔTÉ FRONT — le serveur
+// ne peut pas deviner une complétion. Le front (authentifié) poste donc les
+// récoltes NOUVELLES ici ; le serveur dédoublonne (push_recolte_dedup — le
+// même id ne part jamais deux fois, quel que soit l'appareil qui le poste),
+// compose le libellé FR/EN (miroir exact de libelleNotif / tr/screens-a.ts)
+// et pousse à TOUS les appareils liés au compte via VAPID.
+//
+// POLITIQUE SW : payload SANS force — page visible ⇒ toast in-app relayé par
+// le SW (pas de bulle pendant l'usage actif), arrière-plan/app fermée ⇒ bulle
+// système. Clic ⇒ #/recolte (le coffre du voyageur).
+
+/** Libellés push FR — miroir exact de libelleNotif (web/lib/notifs.ts). */
+function titreRecolteFR(it: RecoltePushItem): string {
+  switch (it.type) {
+    case 'carte':
+      return it.nom ? `Nouvelle découverte : ${it.nom}` : 'Nouvelle découverte';
+    case 'ecran':
+      return 'Écran de passage franchi';
+    case 'fragment':
+      return 'Fragment de portrait ajouté';
+    case 'sceau':
+      return 'Sceau du monde posé';
+    case 'mois_ouvert':
+      return `Mois ${it.mois} ouvert`;
+    case 'mois_fini':
+      return `Mois ${it.mois} terminé — ta récolte t'attend`;
+  }
+}
+
+/** Libellés push EN — miroir exact de tr/screens-a.ts (clés FR → valeurs EN). */
+function titreRecolteEN(it: RecoltePushItem): string {
+  switch (it.type) {
+    case 'carte':
+      return it.nom ? `New discovery: ${it.nom}` : 'New discovery';
+    case 'ecran':
+      return 'Passage screen crossed';
+    case 'fragment':
+      return 'Portrait fragment added';
+    case 'sceau':
+      return 'World seal placed';
+    case 'mois_ouvert':
+      return `Month ${it.mois} open`;
+    case 'mois_fini':
+      return `Month ${it.mois} completed — your harvest awaits`;
+  }
+}
+
+const TYPES_RECOLTE = new Set(['carte', 'ecran', 'fragment', 'sceau', 'mois_ouvert', 'mois_fini']);
+// Les ids réels du journal : 'carte:1.1', 'ecran:3.7', 'sceau:M2'… (points inclus).
+const ID_RECOLTE_RE = /^[A-Za-z0-9_.:-]{1,80}$/;
+
+pushRoutes.post('/push/notify-recolte', async (c) => {
+  const session = c.get('session');
+  if (!session) throw errors.unauthorized();
+  const userId = session.userId;
+
+  // Récoltes postées à chaque synchronisation du journal : 30/min/compte.
+  const rl = await kvRateLimit(c.env.CONFIG, 'push_recolte', userId, 30, 60);
+  if (!rl.allowed) throw errors.rateLimited('Trop de notifications, réessayez dans un instant.');
+
+  const payload = (await c.req.json().catch(() => null)) as {
+    items?: unknown;
+    lang?: unknown;
+  } | null;
+
+  if (!Array.isArray(payload?.items) || payload.items.length === 0 || payload.items.length > 6) {
+    throw errors.badRequest('items requis (1 à 6 récoltes par appel).');
+  }
+  const lang = payload?.lang === 'en' ? 'en' : 'fr';
+
+  const items: RecoltePushItem[] = [];
+  for (const raw of payload.items) {
+    const o = raw as Record<string, unknown>;
+    const id = typeof o?.id === 'string' && ID_RECOLTE_RE.test(o.id) ? o.id : '';
+    const type = typeof o?.type === 'string' && TYPES_RECOLTE.has(o.type) ? (o.type as RecoltePushItem['type']) : null;
+    const mois = typeof o?.mois === 'number' && Number.isInteger(o.mois) && o.mois >= 1 && o.mois <= 11 ? o.mois : 0;
+    if (!id || !type || !mois) throw errors.badRequest('Récolte invalide (id/type/mois).');
+    if (type === 'carte') {
+      const nom = typeof o?.nom === 'string' ? o.nom.slice(0, 120) : '';
+      items.push({ id, type, mois, ...(nom ? { nom } : {}) });
+    } else {
+      items.push({ id, type, mois });
+    }
+  }
+
+  const enabled = await pushEnabled(c.env);
+  let pushed = 0;
+  const now = Math.floor(Date.now() / 1000);
+
+  for (const it of items) {
+    // Dédoublonnage AUTHORITATIF : INSERT OR IGNORE — changes = 0 ⇒ déjà
+    // poussé (par cet appareil ou un autre) ⇒ on ne repart pas la bulle.
+    const ins = await c.env.DB.prepare(
+      `INSERT OR IGNORE INTO push_recolte_dedup (user_id, notif_id, sent, created_at)
+       VALUES (?, ?, 0, ?)`,
+    )
+      .bind(userId, it.id, now)
+      .run();
+    if (!ins.meta.changes) continue;
+
+    if (!enabled) continue; // récolte réservée (jamais poussée) — VAPID off
+
+    const titre = lang === 'en' ? titreRecolteEN(it) : titreRecolteFR(it);
+    const corps =
+      lang === 'en'
+        ? "Your journey's harvest just grew. Open your traveler's chest."
+        : "Ta récolte du voyage vient de s'enrichir. Ouvre ton coffre du voyageur.";
+    const r = await sendPushToUser(c.env, userId, {
+      title: titre,
+      body: corps,
+      tag: `wairyu-recolte-${it.id}`,
+      url: '#/recolte',
+      kind: 'recolte',
+    });
+    pushed += r.sent;
+
+    // Journal in-app : la récolte poussée rejoint le centre universel
+    // (visible même sur les appareils où le push OS n'a pas abouti).
+    await logEvent(
+      c.env.DB,
+      null,
+      'recolte',
+      titre,
+      r.sent > 0 ? corps : "Push récolte non délivré — journal in-app tenu à jour.",
+      r.sent > 0 ? 'push' : 'inapp',
+      true,
+      r.error,
+      userId,
+    );
+
+    if (r.sent > 0 || r.gone > 0) {
+      await c.env.DB.prepare(
+        `UPDATE push_recolte_dedup SET sent = ? WHERE user_id = ? AND notif_id = ?`,
+      )
+        .bind(r.sent > 0 ? 1 : 0, userId, it.id)
+        .run();
+    }
+  }
+
+  const body: PushRecolteResponse = { ok: true, pushed };
   return c.json(body);
 });
 

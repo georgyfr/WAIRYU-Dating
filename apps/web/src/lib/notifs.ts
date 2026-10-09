@@ -33,6 +33,7 @@ import { QUETE_IDS, QUETES, mondeDeQuete } from './quetes';
 import { etatDe } from './quete-state';
 import { statutsBruts } from './mondes-state';
 import { WORLDS } from './voyage';
+import { pousserRecoltes } from './recolte-push';
 
 /** Les types de notifications de récolte — un type = une icône + une copie. */
 export type TypeNotif =
@@ -183,13 +184,16 @@ export function synchroniserNotifs(): boolean {
   //    Premier lancement : TOUTE l'histoire s'amorce en lu (pas de mur de badges).
   const ancienne = new Map(notifs.map((n) => [n.id, n]));
   const fusion: NotifRecolte[] = [];
+  const nouveautesNonLues: NotifRecolte[] = [];
   let change = premiereFois;
   for (const [id, attendue] of attendues) {
     const existante = ancienne.get(id);
     if (existante) {
       fusion.push(existante);
     } else {
-      fusion.push({ ...attendue, lu: premiereFois ? true : false });
+      const nouvelle = { ...attendue, lu: premiereFois ? true : false };
+      fusion.push(nouvelle);
+      if (!nouvelle.lu) nouveautesNonLues.push(nouvelle);
       change = true;
     }
   }
@@ -212,6 +216,10 @@ export function synchroniserNotifs(): boolean {
     }
   }
   publier();
+  // LE PONT PUSH OS (Task 47) : les récoltes nouvelles partent en bulle
+  // système sur tous les appareils du compte — fire-and-forget, ne lève
+  // jamais, le serveur dédoublonne (fire and forget hors du rendu).
+  if (nouveautesNonLues.length > 0) void pousserRecoltes(nouveautesNonLues);
   return true;
 }
 
@@ -244,10 +252,14 @@ export function notifierMoisAchete(code: string): void {
   if (!w) return;
   const id = `mois-ouvert:${code}`;
   if (notifs.some((n) => n.id === id)) return;
-  notifs = [{ id, type: 'mois_ouvert', mois: w.num, date: new Date().toISOString(), lu: false }, ...notifs];
+  const nouvelle: NotifRecolte = { id, type: 'mois_ouvert', mois: w.num, date: new Date().toISOString(), lu: false };
+  notifs = [nouvelle, ...notifs];
   cache = notifs;
   ecrireStock(notifs);
   publier();
+  // LE PONT PUSH OS (Task 47) : l'achat d'un mois part aussi en bulle sur
+  // tous les appareils du compte — le serveur dédoublonne par id.
+  void pousserRecoltes([nouvelle]);
 }
 
 /** La libellé FR d'un type (les autres langues passent par EN_CHROME au rendu). */

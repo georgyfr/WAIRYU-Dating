@@ -1375,6 +1375,7 @@ async function hardDeleteAccount(
   await c.env.DB.prepare(`DELETE FROM oauth_identities WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM device_push_subscriptions WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM devices WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM push_recolte_dedup WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM auth_password WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM users WHERE id = ?`).bind(userId).run();
 }
