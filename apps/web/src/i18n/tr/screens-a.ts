@@ -492,4 +492,25 @@ export const SCREENS_A: Record<string, string> = {
   'Chaque monde complété ajoute une pièce.': 'Each completed world adds a piece.',
   'Comment en obtenir ?': 'How can you get some?',
   'Progression du voyage — {{a}} étapes sur {{b}}': 'Journey progress — {{a}} of {{b}} steps',
+  /* --- Onglet « Gains acquis » (demande fondateur, 5e onglet) --- */
+  'Gains acquis': 'Rewards',
+  'Mes gains acquis': 'Earned rewards',
+  'Tout ce que ton voyage a déjà mis dans ton coffre.':
+    'Everything your journey has already placed in your chest.',
+  'Ton inventaire': 'Your inventory',
+  'Ton inventaire de gains': 'Your rewards inventory',
+  '{{label}} : {{n}} — à quoi ça sert ?': '{{label}}: {{n}} — what is it for?',
+  'Écrans de passage': 'Passage screens',
+  'Fragments': 'Fragments',
+  'Pass': 'Passes',
+  'Crédits': 'Credits',
+  'Gain après gain': 'Reward by reward',
+  'Du plus récent au tout premier.': 'From the most recent to the very first.',
+  'La chronologie de tes gains': 'The timeline of your rewards',
+  'Monde {{n}} · {{titre}}': 'World {{n}} · {{titre}}',
+  'Ton coffre est encore vide.': 'Your chest is still empty.',
+  'Ta première découverte l\'ouvrira — elle rejoindra cet inventaire.':
+    'Your first discovery will open it — it will join this inventory.',
+  'Pass et crédits : ton solde et tes usages s\'afficheront ici dès leur ouverture — gagnés en voyageant.':
+    'Passes and credits: your balance and usage will show here once they open — earned by journeying.',
 };

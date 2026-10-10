@@ -2,16 +2,21 @@
  * « Ma récolte » (#/recolte) — le coffre du voyageur.
  *
  * REFONTE VISUELLE (mockup fondateur « Ma récolte — proposition » — Main.dc.html) :
- * la page passe en 4 ONGLETS (Aperçu / Cartes / Sceaux / Histoire) sur fond crème
- * #F6F3EC, titres Fraunces, corps Figtree, héros teal #0F5C66 avec ANNEAU DE
- * PROGRESSION (conic-gradient), carte « En cours », dernières cartes en carrousel,
- * mosaïque 6 colonnes, grille des 11 mondes, duo pass/crédits, bandeau vie privée.
+ * la page passe en 5 ONGLETS (Aperçu / Cartes / Sceaux / Gains acquis / Histoire)
+ * sur fond crème #F6F3EC, titres Fraunces, corps Figtree, héros teal #0F5C66 avec
+ * ANNEAU DE PROGRESSION (conic-gradient), carte « En cours », dernières cartes en
+ * carrousel, mosaïque 6 colonnes, grille des 11 mondes, duo pass/crédits, bandeau
+ * vie privée.
  * Rien n'est supprimé (consigne fondateur historique) — l'existant est RELOGÉ :
  *  - Aperçu  : carte « En cours » (le jalon actif de l'échelle), Dernières cartes
  *    (carrousel), « Ton portrait prend forme » (mosaïque), « Les 11 mondes »
  *    (grille), duo Pass/Crédits compact, « Tes espaces », vie privée ;
  *  - Cartes  : la collection des 11 mondes (découvertes réelles + promesses) ;
  *  - Sceaux  : les sceaux dérivés de la progression réelle ;
+ *  - Gains acquis (demande fondateur — « il n'y a pas d'onglet pour les gains
+ *    acquis ») : l'inventaire consolidé de ce que le voyage a DÉJÀ donné —
+ *    compteurs réels (cartes, écrans, fragments, sceaux, pass, crédits) et
+ *    registre chronologique de chaque gain, clic → son explication ;
  *  - Histoire: l'échelle complète des 6 jalons, la timeline et le mois par mois.
  * La cloche de la maquette = la cloche GLOBALE de l'en-tête de l'app (App.tsx,
  * journal groupé par mois) — non dupliquée. La barre basse (Voyage/Mondes/Quête/
@@ -71,8 +76,31 @@ interface MondeRecolte {
   ecrans: EcranPassage[];
 }
 
-/** Les quatre onglets de la maquette. */
-type Onglet = 'apercu' | 'cartes' | 'sceaux' | 'histoire';
+/** Les onglets de la refonte — les 4 de la maquette + « Gains acquis » (fondateur). */
+type Onglet = 'apercu' | 'cartes' | 'sceaux' | 'gains' | 'histoire';
+
+/** Une ligne du REGISTRE des gains acquis — un seul élément réellement obtenu. */
+interface GainAcquis {
+  key: string;
+  type: 'carte' | 'ecran' | 'fragment' | 'sceau';
+  /** Le nom verbatim (carte : « L'Étoile sociale ») ou le libellé du type. */
+  nom: string;
+  /** La provenance (« Monde 2 · Ta boussole intérieure »). */
+  sous: string;
+  /** La date réelle d'obtention (ISO — null = non daté, fin de liste). */
+  date: string | null;
+  /** Le payload COMPLET du pop-up explicatif (même contrat que partout). */
+  item: ItemRecolte;
+}
+
+/** Couleur + icône de chaque type de gain — alignées sur le registre
+ *  d'InfoRecolte (même langage visuel dans tout le coffre). */
+const GAIN_STYLE: Record<GainAcquis['type'], { ico: VoyageIconName; bg: string; fg: string }> = {
+  carte: { ico: 'gem', bg: '#fff3d6', fg: '#e8a312' },
+  ecran: { ico: 'signpost', bg: '#e4f4e4', fg: '#3e9d5b' },
+  fragment: { ico: 'layers', bg: '#dff3f4', fg: '#2a9aa0' },
+  sceau: { ico: 'star', bg: '#f3e8f8', fg: '#9c4dd3' },
+};
 
 /** Le coche des chips « Découverte » (même dessin que les chips Terminé). */
 function Coche() {
@@ -329,6 +357,87 @@ export default function Recolte() {
   dernieres.sort((a, b) => (b.c.date ?? '').localeCompare(a.c.date ?? ''));
   const recentes = dernieres.slice(0, 6);
 
+  // LE REGISTRE DES GAINS ACQUIS (onglet « Gains acquis » — demande fondateur) :
+  // chaque élément RÉELLEMENT obtenu, tous types confondus — cartes, écrans de
+  // passage, fragment et sceau de chaque monde traversé. MÊME SOURCE que les
+  // autres onglets (recolteMondes + parMonde) — aucune donnée nouvelle, aucun
+  // calcul métier : la même réalité, présentée en un seul registre chronologique.
+  const gains: GainAcquis[] = [];
+  for (const m of recolteMondes) {
+    const cloture = m.termine ? (parMonde[m.monde.code]?.derniereA ?? null) : null;
+    for (const c of m.cartes) {
+      gains.push({
+        key: `carte-${c.id}`,
+        type: 'carte',
+        nom: c.nom,
+        sous: tx('Monde {{n}} · {{titre}}', { n: m.monde.num, titre: c.titre }),
+        date: c.date,
+        item: {
+          type: 'carte',
+          nom: c.nom,
+          titre: c.titre,
+          date: c.date,
+          mondeNum: m.monde.num,
+          mondeCode: m.monde.code,
+          queteId: c.id,
+        },
+      });
+    }
+    for (const e of m.ecrans) {
+      gains.push({
+        key: `ecran-${e.id}`,
+        type: 'ecran',
+        nom: tx('Écran de passage'),
+        sous: tx('Monde {{n}} · {{titre}}', { n: m.monde.num, titre: e.titre }),
+        date: e.date,
+        item: {
+          type: 'ecran',
+          titre: e.titre,
+          date: e.date,
+          mondeNum: m.monde.num,
+          mondeCode: m.monde.code,
+        },
+      });
+    }
+    if (m.termine) {
+      gains.push({
+        key: `fragment-${m.monde.code}`,
+        type: 'fragment',
+        nom: tx('Fragment du portrait'),
+        sous: tx('Monde {{n}} · {{nom}}', { n: m.monde.num, nom: m.monde.name }),
+        date: cloture,
+        item: { type: 'fragment', mondeNum: m.monde.num, mondeCode: m.monde.code, date: cloture },
+      });
+      gains.push({
+        key: `sceau-${m.monde.code}`,
+        type: 'sceau',
+        nom: tx('Sceau du monde'),
+        sous: tx('Monde {{n}} · {{nom}}', { n: m.monde.num, nom: m.monde.name }),
+        date: cloture,
+        item: { type: 'sceau', mondeNum: m.monde.num, mondeCode: m.monde.code, date: cloture },
+      });
+    }
+  }
+  // Du plus récent au tout premier — les non datés ferment la liste.
+  gains.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
+
+  // L'INVENTAIRE — les compteurs réels du coffre (mêmes chiffres que les
+  // autres onglets) + pass/crédits à 0 honnête (rien n'est inventé, §16) :
+  // chaque tuile ouvre l'explication « à quoi ça sert » de son type.
+  const nbEcrans = recolteMondes.reduce((n, m) => n + m.ecrans.length, 0);
+  const inventaire: {
+    type: 'carte' | 'ecran' | 'fragment' | 'sceau' | 'pass' | 'credit';
+    label: string;
+    n: number;
+  }[] = [
+    { type: 'carte', label: tx('Cartes'), n: recolte },
+    { type: 'ecran', label: tx('Écrans de passage'), n: nbEcrans },
+    { type: 'fragment', label: tx('Fragments'), n: worldsDone },
+    { type: 'sceau', label: tx('Sceaux'), n: worldsDone },
+    { type: 'pass', label: tx('Pass'), n: 0 },
+    { type: 'credit', label: tx('Crédits'), n: 0 },
+  ];
+
   // Le contenu RÉEL de la fiche d'un mois (partagé par la grille des mondes
   // de l'Aperçu et par la vue « mois par mois » de l'Histoire).
   const infoMois = (m: MondeRecolte): ItemRecolte => ({
@@ -458,13 +567,14 @@ export default function Recolte() {
         </a>
       </section>
 
-      {/* LES 4 ONGLETS de la maquette (pur état d'interface). */}
+      {/* LES 5 ONGLETS — les 4 de la maquette + « Gains acquis » (fondateur). */}
       <div className="rec2-tabs" role="tablist" aria-label={tx('Sections de ta récolte')}>
         {(
           [
             ['apercu', tx('Aperçu')],
             ['cartes', tx('Cartes')],
             ['sceaux', tx('Sceaux')],
+            ['gains', tx('Gains acquis')],
             ['histoire', tx('Histoire')],
           ] as const
         ).map(([id, label]) => (
@@ -953,6 +1063,115 @@ export default function Recolte() {
             })}
           </div>
         </section>
+      </div>
+
+      {/* ============ GAINS ACQUIS (demande fondateur) ============
+          L'inventaire consolidé de ce que le voyage a DÉJÀ donné : compteurs
+          réels + registre chronologique de chaque gain — même source de
+          vérité que les autres onglets, aucun chiffre inventé. */}
+      <div
+        role="tabpanel"
+        id="rec2-panel-gains"
+        aria-labelledby="rec2-tab-gains"
+        className="rec2-panel"
+        hidden={onglet !== 'gains'}
+      >
+        <section aria-labelledby="r-gains-title">
+          <h2 id="r-gains-title" className="rec2-h2">
+            {tx('Mes gains acquis')}
+          </h2>
+          <p className="rec2-caption">
+            {tx('Tout ce que ton voyage a déjà mis dans ton coffre.')}
+          </p>
+
+          {/* TON INVENTAIRE — les compteurs réels (cartes, écrans, fragments,
+              sceaux) + pass/crédits à 0 honnête (§16). Chaque tuile ouvre
+              l'explication « à quoi ça sert dans les rencontres ». */}
+          <h3 className="rec2-h3g">{tx('Ton inventaire')}</h3>
+          <div className="r-inv" role="list" aria-label={tx('Ton inventaire de gains')}>
+            {inventaire.map((it) => {
+              const st =
+                it.type === 'pass'
+                  ? GAIN_STYLE.ecran
+                  : it.type === 'credit'
+                    ? GAIN_STYLE.carte
+                    : GAIN_STYLE[it.type];
+              return (
+                <button
+                  key={it.type}
+                  type="button"
+                  role="listitem"
+                  className="r-inv-card"
+                  onClick={() => ouvrirInfo({ type: it.type })}
+                  aria-label={tx('{{label}} : {{n}} — à quoi ça sert ?', { label: it.label, n: it.n })}
+                >
+                  <span className="r-inv-top">
+                    <span className="r-inv-ico" style={{ background: st.bg, color: st.fg }} aria-hidden="true">
+                      <VoyageIcon name={st.ico} size={14} />
+                    </span>
+                    <strong>{it.n}</strong>
+                  </span>
+                  <small>{it.label}</small>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* LE REGISTRE — chaque gain réellement obtenu, du plus récent au
+            tout premier ; clic → son explication (même pop-up que partout). */}
+        {gains.length > 0 ? (
+          <section aria-labelledby="r-reg-title">
+            <h2 id="r-reg-title" className="rec2-h2">
+              {tx('Gain après gain')}
+            </h2>
+            <p className="rec2-caption">{tx('Du plus récent au tout premier.')}</p>
+            <div className="r-gains" role="list" aria-label={tx('La chronologie de tes gains')}>
+              {gains.map((g) => {
+                const st = GAIN_STYLE[g.type];
+                return (
+                  <button
+                    key={g.key}
+                    type="button"
+                    role="listitem"
+                    className="r-gain"
+                    onClick={() => ouvrirInfo(g.item)}
+                    aria-label={tx('À quoi sert {{nom}} ?', { nom: g.nom })}
+                  >
+                    <span className="r-gain-ico" style={{ background: st.bg, color: st.fg }} aria-hidden="true">
+                      <VoyageIcon name={st.ico} size={16} />
+                    </span>
+                    <span className="r-gain-body">
+                      <small>{g.sous}</small>
+                      <strong>{g.nom}</strong>
+                    </span>
+                    {g.date && <span className="r-gain-date">{dateCourte(g.date, lang)}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        ) : (
+          <section aria-labelledby="r-vide-title" className="r-vide">
+            <span className="r-vide-ico" aria-hidden="true">
+              <VoyageIcon name="scroll" size={22} />
+            </span>
+            <h2 id="r-vide-title">{tx('Ton coffre est encore vide.')}</h2>
+            <p>{tx('Ta première découverte l\'ouvrira — elle rejoindra cet inventaire.')}</p>
+            <a className="rec2-cta" href="#/mondes">
+              {tx('Continuer le voyage')}
+            </a>
+          </section>
+        )}
+
+        {/* PASS & CRÉDITS — le raccord honnête : leur solde et leurs usages
+            s'afficheront ici dès leur ouverture (promesse déjà écrite dans le
+            pop-up Crédits — « Ton solde, tes gains et tes usages s'afficheront
+            dans ta récolte »), gagnés en voyageant, jamais contre une
+            meilleure compatibilité (§16). */}
+        <p className="rec2-note">
+          {tx('Pass et crédits : ton solde et tes usages s\'afficheront ici dès leur ouverture — gagnés en voyageant.')}
+        </p>
       </div>
 
       {/* ============ HISTOIRE ============ */}

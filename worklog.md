@@ -833,3 +833,30 @@ Stage Summary:
 - #/recolte porte le design de la maquette fondateur : crème + Fraunces/Figtree + héros teal à anneau + 4 onglets — toutes les données restent RÉELLES et toutes les sections historiques sont conservées dans les onglets.
 - STAGING 8b355abd (bundle index-BzfOVRoq.js) — PROD NON TOUCHÉE (17-b) : déploiera au prochain feu vert (aucune migration D1, front-only + 1 ligne index.html).
 - Vérification fondateur en 1 min sur wairyu-staging.wairyu.workers.dev/#/recolte.
+
+---
+Task ID: 49
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur — « dans #/recolte il n'y a pas d'onglet pour les gains acquis » : ajouter l'onglet GAINS ACQUIS au coffre du voyageur. Staging d'abord, PROD NON TOUCHÉE (17-b).
+
+Work Log:
+- AUDIT : la refonte Task 48 (4 onglets Aperçu/Cartes/Sceaux/Histoire) éparpillait les gains — cartes (onglet Cartes), sceaux (onglet Sceaux), pass/crédits (duo compact Aperçu), aucun lieu ne listait tout ce qui a été RÉELLEMENT obtenu. La promesse du pop-up Crédits (« Ton solde, tes gains et tes usages s'afficheront dans ta récolte ») n'avait pas d'écran dédié.
+- DESIGN (5e onglet, entre Sceaux et Histoire — zéro logique touchée, règle §19) : le panneau lit les MÊMES sources (recolteMondes + parMonde, déjà calculées) et présente : 1) TON INVENTAIRE — 6 tuiles compteurs réels (Cartes/Écrans de passage/Fragments/Sceaux + Pass 0/Crédits 0 honnêtes §16), chaque tuile ouvre le pop-up « à quoi ça sert » de son type ; 2) LE REGISTRE « Gain après gain » — chaque gain réellement obtenu (cartes, écrans, fragment + sceau par monde traversé) en ordre chronologique décroissant, non datés en fin, clic → le pop-up explicatif complet (même payload que partout) ; 3) ÉTAT VIDE honnête (« Ton coffre est encore vide. » + CTA Continuer le voyage) si rien d'acquis ; 4) note « Pass et crédits : ton solde et tes usages s'afficheront ici dès leur ouverture — gagnés en voyageant » (raccord avec la promesse existante du pop-up Crédits).
+- RIEN N'EST SUPPRIMÉ : les 4 onglets de la maquette restent intacts ; le duo Pass/Crédits de l'Aperçu reste ; les gains visibles ailleurs restent. Couleurs/icônes des types = celles du registre d'InfoRecolte (gem ambré, signpost vert, layers teal, star violet) — même langage visuel dans tout le coffre. État vide : icône scroll (pas d'icône « chest » dans la bibliothèque).
+- CSS : bloc additif (~200 l., fin de styles.css) — .r-inv/.r-inv-card/.r-gains/.r-gain/.r-vide/.rec2-h3g + adaptation 5 onglets (white-space nowrap, 12.5px sous 430px). Aucun style existant modifié.
+- i18n : 19 chaînes FR → EN ajoutées à screens-a.ts (Gains acquis/Rewards, Mes gains acquis/Earned rewards, inventaire, registre, état vide, note pass/crédits). Doublons vérifiés : aucun.
+- typecheck apps/web : 0 erreur (1 fix : narrowing du type de l'inventaire — union des 6 types de gains). vite build : index-DmBkWzKC.js (9,7 s).
+- DÉPLOIEMENT STAGING : version e3cda45c-7ab6-453c-a10a-5014adb9d2a6, bundle servi index-DmBkWzKC.js, health 200 env=staging. Aucune migration D1 (front-only).
+- E2E RÉEL STAGING (agent-browser 390×844, compte jetable OTP backdoor + fixture localStorage) :
+  · Compte FRAIS : 5 onglets rendus (Overview/Cards/Seals/Rewards/Story), onglet Rewards → « Earned rewards / Your inventory » avec 0·0·0·0·0·0 honnêtes, état vide « Your chest is still empty. » + CTA, note pass/crédits — tous verts.
+  · FIXTURE (1.1/1.2/1.3 V1 datées + 1.7 sansCarte + 1.9 V1 — soit M1 complet + M2 partiel) : inventaire 4 Cartes · 1 Écran · 1 Fragment · 1 Sceau · 0 · 0 (EXACT) ; registre 7 gains en ordre décroissant EXACT (La Météo du moment 6 oct → Écran de passage 5 oct → La Clarté intérieure 3 oct → Fragment 3 oct → Sceau 3 oct → L'Ancrage 2 oct → L'Explorateur·rice chaleureux·se 1 oct) ; héros cohérent 5/51 · 1/11 · 4 cartes (aucune régression).
+  · POP-UPS : ligne du registre « La Météo du moment » → dialog Carte-découverte · Mois 2 sur 11 · Obtenu le 6 octobre 2026 ; tuile d'inventaire Sceaux → dialog Sceau du monde ; fermeture OK.
+  · i18n EN : tout l'onglet traduit (Earned rewards / Reward by reward / From the most recent to the very first. / dates en-IE « 6 October 2026 » / noms de mondes EN).
+  · RESPONSIVE : 390px sans débordement (barre 350/350), 360px ok, desktop 1280px inventaire en 6 colonnes, zéro erreur JS, zéro console.
+  · Captures /tmp/rec2-gains-{vide,fr,en,popup,desktop}.png. Compte purgé RGPD (DELETE /api/account → deleted:true).
+- PROD NON TOUCHÉE : prod reste en version 3cd9e69e (bundle index-DWYNx4Ed.js). Le déploiement de la refonte + onglet (Task 48 + 49) attendra le prochain feu vert.
+
+Stage Summary:
+- #/recolte a désormais CINQ onglets : Aperçu / Cartes / Sceaux / GAINS ACQUIS / Histoire — l'onglet demandé liste l'inventaire réel du coffre et le registre chronologique de chaque gain, tout cliquable vers son explication « à quoi ça sert dans les rencontres ».
+- STAGING e3cda45c (bundle index-DmBkWzKC.js) — vérification fondateur en 1 min : https://wairyu-staging.wairyu.workers.dev/#/recolte → onglet « Gains acquis ».
+- PROD NON TOUCHÉE (17-b) — la refonte complète (48+49) partira en prod au prochain feu vert (aucune migration D1, front-only).
