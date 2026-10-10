@@ -7038,3 +7038,664 @@ button.r-tl-chip:hover {
     font-size: 12.5px;
     color: var(--c-ink-soft, #5a6b78)
 }
+
+/* ============================================================
+   « MA RÉCOLTE » v2 — refonte visuelle d'après le mockup fondateur
+   (Main.dc.html) : fond crème #F6F3EC, titres Fraunces, corps
+   Figtree, héros teal #0F5C66 avec anneau de progression, 4 onglets
+   (Aperçu / Cartes / Sceaux / Histoire). TOUT est scopé sous .rec2 :
+   le reste de l'app est intact. Les couleurs des mondes/pièces
+   restent les couleurs RÉELLES des données (tile.bg/fg).
+   ============================================================ */
+.rec2 {
+    --r2-ink: #1E2B2F;
+    --r2-mut: #52646A;
+    --r2-teal: #0F5C66;
+    --r2-teal2: #0F7C86;
+    --r2-teal-bg: #DDF1F2;
+    --r2-teal-bd: #BFE3E5;
+    --r2-amber: #F2B84B;
+    --r2-amber-ink: #8A5B00;
+    --r2-bg: #F6F3EC;
+    --r2-tile: #ECE7DA;
+    --r2-tile2: #F0ECE0;
+    --r2-bd: #DDD6C6;
+    --r2-tabs: #E9E4D7;
+    --r2-priv: #EAF3F3;
+
+    /* Pleine page : le fond crème couvre tout l'écran (le padding de
+       .screen est répliqué pour que la mise en page reste identique). */
+    margin: -18px -20px 0;
+    padding: 18px 20px calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom));
+    background: var(--r2-bg);
+    font-family: 'Figtree', 'Nunito', system-ui, sans-serif;
+    color: var(--r2-ink)
+}
+
+.rec2-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.rec2-title {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--r2-ink)
+}
+
+.rec2-sub {
+    margin: 0;
+    font-size: 14px;
+    color: var(--r2-mut)
+}
+
+/* ---- Héros teal + anneau de progression (conic-gradient, étapes réelles) ---- */
+.rec2-hero {
+    margin: 4px 0 0;
+    padding: 20px;
+    border-radius: 24px;
+    background: var(--r2-teal);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(15, 92, 102, .22)
+}
+
+.rec2-hero-row {
+    display: flex;
+    align-items: center;
+    gap: 16px
+}
+
+.rec2-ring {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0
+}
+
+.rec2-ring-in {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: var(--r2-teal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1
+}
+
+.rec2-ring-in strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700
+}
+
+.rec2-ring-in span {
+    font-size: 11px;
+    opacity: .85;
+    margin-top: 3px
+}
+
+.rec2-hero-body {
+    flex: 1;
+    min-width: 0
+}
+
+.rec2-hero-t {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.25
+}
+
+.rec2-hero-stats {
+    margin: 6px 0 0;
+    font-size: 13px;
+    opacity: .88
+}
+
+.rec2-hero-stats strong {
+    font-weight: 700
+}
+
+/* Le chemin des 11 mondes, relogé dans le héros (liaisons éclaircies). */
+.rec2 .r-chemin {
+    margin: 14px 0 0
+}
+
+.rec2 .r-chemin-liaison {
+    background: rgba(255, 255, 255, .28)
+}
+
+.rec2 .r-chemin-liaison-done {
+    background: var(--r2-amber)
+}
+
+.rec2 .r-chemin-stop {
+    border-color: rgba(255, 255, 255, .45)
+}
+
+.rec2 .r-chemin-done {
+    border-color: transparent
+}
+
+.rec2-cta {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    border-radius: 14px;
+    background: var(--r2-amber);
+    color: var(--r2-ink);
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .08s ease, filter .15s ease
+}
+
+.rec2-cta:hover {
+    filter: brightness(1.04)
+}
+
+.rec2-cta:active {
+    transform: scale(.99)
+}
+
+/* ---- Les 4 onglets de la maquette ---- */
+.rec2-tabs {
+    margin: 18px 0 0;
+    padding: 4px;
+    border-radius: 14px;
+    background: var(--r2-tabs);
+    display: flex;
+    gap: 2px
+}
+
+.rec2-tab {
+    flex: 1;
+    min-height: 40px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--r2-mut);
+    cursor: pointer;
+    padding: 0 4px;
+    transition: background .15s ease, color .15s ease
+}
+
+.rec2-tab:hover {
+    color: var(--r2-ink)
+}
+
+.rec2-tab-on {
+    background: #fff;
+    font-weight: 700;
+    color: var(--r2-ink);
+    box-shadow: 0 1px 4px rgba(30, 43, 47, .12)
+}
+
+.rec2-tab:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 16px
+}
+
+/* display:flex écraserait [hidden] — on le rétablit explicitement. */
+.rec2-panel[hidden] {
+    display: none
+}
+
+/* ---- Titres de section + tête de section ---- */
+.rec2-sec-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 0 10px
+}
+
+.rec2-h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--r2-ink)
+}
+
+.rec2-link {
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--r2-teal2);
+    min-height: 44px;
+    cursor: pointer;
+    padding: 0 2px
+}
+
+.rec2-link:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--r2-teal2)
+}
+
+.rec2-hint {
+    font-size: 13px;
+    color: var(--r2-mut)
+}
+
+.rec2-caption {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--r2-mut);
+    line-height: 1.45
+}
+
+.rec2-note {
+    margin: 8px 0 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--r2-bd);
+    font-size: 13px;
+    color: var(--r2-mut);
+    line-height: 1.5
+}
+
+.rec2-note a {
+    color: var(--r2-teal2);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px
+}
+
+/* ---- Carte « EN COURS » (le jalon actif) ---- */
+.rec2-next {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 16px;
+    border-radius: 20px;
+    background: #fff;
+    border: 2px solid var(--r2-teal2);
+    cursor: pointer;
+    font: inherit;
+    color: var(--r2-ink);
+    box-shadow: 0 6px 20px rgba(15, 124, 134, .10);
+    transition: transform .08s ease
+}
+
+.rec2-next:active {
+    transform: scale(.99)
+}
+
+.rec2-next:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 3px
+}
+
+.rec2-next-ico {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0
+}
+
+.rec2-next-body {
+    flex: 1;
+    min-width: 0
+}
+
+.rec2-next-body small {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--r2-teal2);
+    letter-spacing: .04em;
+    text-transform: uppercase
+}
+
+.rec2-next-body strong {
+    display: block;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2px
+}
+
+.rec2-next-sub {
+    display: block;
+    font-size: 13px;
+    color: var(--r2-mut);
+    margin-top: 2px;
+    line-height: 1.4
+}
+
+.rec2-next-chev {
+    color: var(--r2-mut);
+    flex-shrink: 0;
+    display: flex
+}
+
+/* ---- Dernières cartes (carrousel horizontal) ---- */
+.rec2-latest {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 2px 2px 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none
+}
+
+.rec2-latest::-webkit-scrollbar {
+    display: none
+}
+
+.rec2-lc {
+    flex: 0 0 150px;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    padding: 14px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--r2-bd);
+    border-top: 4px solid var(--r2-amber);
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    color: var(--r2-ink);
+    transition: transform .08s ease
+}
+
+.rec2-lc:active {
+    transform: scale(.98)
+}
+
+.rec2-lc:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-lc small {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    line-height: 1.35
+}
+
+.rec2-lc strong {
+    display: block;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 6px;
+    line-height: 1.2
+}
+
+.rec2-lc span {
+    display: block;
+    font-size: 12px;
+    color: var(--r2-mut);
+    margin-top: 4px;
+    line-height: 1.35
+}
+
+/* ---- Mosaïque du portrait (6 colonnes, tuiles de la maquette) ---- */
+.rec2-mos {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px
+}
+
+.rec2-mos-spark {
+    position: absolute;
+    top: -12px;
+    right: 0;
+    font-size: 16px;
+    pointer-events: none
+}
+
+.rec2-tile {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    background: var(--r2-tile);
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    transition: transform .08s ease
+}
+
+.rec2-tile:active {
+    transform: scale(.94)
+}
+
+.rec2-tile:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-tile-now {
+    background: #fff;
+    border: 2px dashed var(--r2-teal2)
+}
+
+.rec2-tile-done {
+    border: 0
+}
+
+/* ---- Grille des 11 mondes ---- */
+.rec2-worlds {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px
+}
+
+.rec2-w {
+    text-align: left;
+    padding: 12px;
+    min-height: 64px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid var(--r2-bd);
+    cursor: pointer;
+    font: inherit;
+    color: var(--r2-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: center;
+    transition: transform .08s ease
+}
+
+.rec2-w:active {
+    transform: scale(.98)
+}
+
+.rec2-w:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-w small {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--r2-mut)
+}
+
+.rec2-w span {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25
+}
+
+.rec2-w-done {
+    border-color: var(--r2-teal-bd)
+}
+
+.rec2-w-done small {
+    color: var(--r2-teal2)
+}
+
+.rec2-w-now {
+    border: 2px solid var(--r2-teal2)
+}
+
+.rec2-w-now small {
+    color: var(--r2-teal2)
+}
+
+.rec2-w-soon,
+.rec2-w-prem {
+    background: var(--r2-tile2)
+}
+
+.rec2-w-prem small {
+    color: var(--r2-amber-ink)
+}
+
+/* ---- Duo Pass / Crédits ---- */
+.rec2-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px
+}
+
+.rec2-duo-card {
+    text-align: left;
+    padding: 14px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--r2-bd);
+    cursor: pointer;
+    font: inherit;
+    color: var(--r2-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: transform .08s ease
+}
+
+.rec2-duo-card:active {
+    transform: scale(.98)
+}
+
+.rec2-duo-card:focus-visible {
+    outline: 2px solid var(--r2-teal2);
+    outline-offset: 2px
+}
+
+.rec2-duo-card small {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--r2-mut);
+    text-transform: uppercase;
+    letter-spacing: .04em
+}
+
+.rec2-duo-card strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 2px
+}
+
+.rec2-duo-card span {
+    font-size: 12px;
+    color: var(--r2-teal2);
+    font-weight: 600;
+    margin-top: 2px
+}
+
+/* ---- Tes espaces (restyle léger sur fond crème) ---- */
+.rec2-esp-t {
+    margin-top: 4px
+}
+
+.rec2 .rec-states {
+    gap: 10px;
+    margin: 0
+}
+
+.rec2 .rec-state {
+    border-radius: 18px;
+    border: 1px solid var(--r2-bd);
+    box-shadow: none
+}
+
+/* ---- Vie privée (bandeau #EAF3F3 de la maquette) ---- */
+.rec2-privacy {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: var(--r2-priv);
+    color: var(--r2-teal)
+}
+
+.rec2-privacy p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--r2-ink)
+}
+
+/* ---- Révélation (restyle : carte blanche sur fond crème) ---- */
+.rec2 .r-reveal {
+    background: #fff;
+    border: 1px solid var(--r2-bd);
+    box-shadow: 0 6px 22px rgba(30, 43, 47, .08)
+}
+
+/* ---- Accessibilité : mouvement réduit ---- */
+@media (prefers-reduced-motion: reduce) {
+    .rec2 *,
+    .rec2 *::before,
+    .rec2 *::after {
+        animation: none !important;
+        transition: none !important
+    }
+}

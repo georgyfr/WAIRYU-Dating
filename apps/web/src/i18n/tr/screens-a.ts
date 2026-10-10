@@ -475,4 +475,20 @@ export const SCREENS_A: Record<string, string> = {
     'Conversation openers, if you want them — never a test.',
   'Tes déclarations restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».':
     'Your declarations stay on this device — you can change or erase everything from “Do you want to start?”.',
+  /* --- Refonte visuelle « Ma récolte » (mockup fondateur, 4 onglets) --- */
+  'Ton voyage, étape après étape': 'Your journey, step by step',
+  'Aperçu': 'Overview',
+  'Cartes': 'Cards',
+  'Sceaux': 'Seals',
+  'Histoire': 'Story',
+  'Sections de ta récolte': 'Sections of your harvest',
+  'En cours · Niveau {{n}} sur {{t}}': 'In progress · Level {{n}} of {{t}}',
+  'Dernières cartes': 'Latest cards',
+  'Tout voir ({{n}})': 'See all ({{n}})',
+  'Monde {{n}} · {{nom}}': 'World {{n}} · {{nom}}',
+  'Les {{n}} mondes': 'The {{n}} worlds',
+  'Touche pour ouvrir': 'Tap to open',
+  'Chaque monde complété ajoute une pièce.': 'Each completed world adds a piece.',
+  'Comment en obtenir ?': 'How can you get some?',
+  'Progression du voyage — {{a}} étapes sur {{b}}': 'Journey progress — {{a}} of {{b}} steps',
 };
