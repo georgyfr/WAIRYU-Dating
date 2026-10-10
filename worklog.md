@@ -897,3 +897,19 @@ Stage Summary:
 - L'audit de provenance Task 50 est désormais FORMALISÉ et PUBLIC dans le dépôt : docs/AUDIT-PROVENANCE-TESTS.md (verdict : items originaux sur concepts publics, profil C, risque faible mais non nul — honnêteté §16) + docs/REGISTRE-PROVENANCE.md (registre vivant à tenir à jour à chaque nouvelle quête, avec journal daté).
 - Poussés sur github.com/georgyfr/WAIRYU-Dating main — vérification fondateur : ouvrir les deux fichiers dans docs/.
 - AUCUN CODE MODIFIÉ ; staging e3cda45c inchangé ; PROD 3cd9e69e NON TOUCHÉE.
+
+---
+Task ID: 52
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur — « ok continuons avec l'étape suivante » : exécution du feu vert prod pour la refonte Recolte (Tasks 48 + 49), l'étape explicitement en attente signalée au fondateur. AUCUN code modifié — déploiement + vérifications seuls.
+
+Work Log:
+- PRÉ-CONTROLES : repo propre (aucun fichier non commitué) ; git diff ceb0513..HEAD sur *migrations* VIDE → aucune migration D1 nouvelle depuis la Task 47 (prod déjà à jour) → déploiement front-only, migrations idempotentes ; interprétation du feu vert consignée : la dernière information envoyée au fondateur était « la refonte Recolte (48+49) attend toujours ton feu vert » — « ok continuons avec l'étape suivante » dans ce contexte immédiat = autorisation de cette étape documentée.
+- DÉPLOIEMENT PRODUCTION (deploy.sh) : typecheck apps/api 0 erreur → vite build (bundle index-DmBkWzKC.js, identique au staging Task 49) → migrations D1 wairyu-prod (aucune à appliquer) → wrangler deploy. Version prod : d6b9c053-6bdd-411e-addd-f446474651b7 (remplace 3cd9e69e). URL https://wairyu.wairyu.workers.dev.
+- VÉRIFICATIONS PROD RÉELLES : (1) curl /api/health → 200, {"ok":true,"env":"production"} ; (2) le HTML servi référence bien index-DmBkWzKC.js (bundle 48+49) ; (3) agent-browser réel sur la prod : accueil rendu (titre « wairyu — rencontres sincères », bouton Start, console notifications) — ZÉRO erreur console, ZÉRO erreur page ; (4) /#/recolte en visiteur non connecté → garde de route correcte (écran email/OTP avec encart 18+), aucune erreur d'hydratation ni error boundary ; (5) capture d'épreuve /tmp/prod-deploy-52.png. E2E authentifié complet = déjà fait sur staging (Tasks 48+49) ; sur prod l'auth Turnstile strict fail-closed l'interdit par conception — le bundle servi est identique octet pour octet à celui vérifié en staging.
+- COMMIT/PUSH : worklog Task 52 seul (déploiement ne modifiant pas le code).
+
+Stage Summary:
+- PROD wairyu.wairyu.workers.dev = version d6b9c053, bundle index-DmBkWzKC.js : la refonte Recolte (maquette fondateur : crème + Fraunces/Figtree + héros teal + 4 onglets) ET l'onglet « Gains acquis » (Task 49) sont désormais EN PRODUCTION pour tous les utilisateurs.
+- Vérification fondateur en 1 min : https://wairyu.wairyu.workers.dev/#/recolte (connecté) → 5 onglets Aperçu/Cartes/Sceaux/Gains acquis/Histoire.
+- STAGING et PROD alignés sur le même code (e3cda45c == d6b9c053, même bundle). Aucune migration D1 exécutée de nouvelle, aucun code modifié.
