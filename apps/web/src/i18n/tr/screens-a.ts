@@ -483,6 +483,7 @@ export const SCREENS_A: Record<string, string> = {
   'Histoire': 'Story',
   'Sections de ta récolte': 'Sections of your harvest',
   'En cours · Niveau {{n}} sur {{t}}': 'In progress · Level {{n}} of {{t}}',
+  'Prochaine · Niveau {{n}} sur {{t}}': 'Up next · Level {{n}} of {{t}}',
   'Dernières cartes': 'Latest cards',
   'Tout voir ({{n}})': 'See all ({{n}})',
   'Monde {{n}} · {{nom}}': 'World {{n}} · {{nom}}',

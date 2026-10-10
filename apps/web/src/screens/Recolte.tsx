@@ -509,7 +509,11 @@ export default function Recolte() {
             </span>
             <span className="rec2-next-body">
               <small>
-                {tx('En cours · Niveau {{n}} sur {{t}}', { n: jalonActif.num, t: MILESTONES.length })}
+                {/* Honnêteté : « En cours » seulement si le statut RÉEL du jalon
+                    est 'now' ; sinon « Prochaine » (premier non atteint). */}
+                {statutJalon(jalonActif.num, jalonActif.status) === 'now'
+                  ? tx('En cours · Niveau {{n}} sur {{t}}', { n: jalonActif.num, t: MILESTONES.length })
+                  : tx('Prochaine · Niveau {{n}} sur {{t}}', { n: jalonActif.num, t: MILESTONES.length })}
               </small>
               <strong>{jalonActif.name}</strong>
               <span className="rec2-next-sub">{jalonActif.desc}</span>
