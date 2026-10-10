@@ -47,10 +47,9 @@ export const DEF_43: EntreeRegistre = {
   // design documentées au Livrable — NE PAS créer de fichier arche).
   ombreRelationnel: {},
 
-  // Dernière quête ouverte du Monde 5 « Ton Héritage » — la chaîne se referme
-  // ici ; le monde suivant n'est pas construit (précédent 3.7 : suivante
-  // null jusqu'à l'ouverture du monde suivant).
-  suivante: null,
+  // La chaîne continue dans le Monde 6 « Mon Cœur » — quête 5.1 « Ton
+  // style amoureux » (le monde 6 est livré : chaînages ouverts).  
+  suivante: '5.1',
 
   suite: {
     titre: 'La suite de ton voyage',
@@ -62,5 +61,6 @@ export const DEF_43: EntreeRegistre = {
       'Qu\'est-ce que tes relations t\'ont appris que tu veux emporter ?',
       'Quelle place tu donnes à ce que ça t\'a appris — la tienne, pas celle des autres ?',
     ],
+    cta: 'Entrer dans ton cœur',
   },
 };

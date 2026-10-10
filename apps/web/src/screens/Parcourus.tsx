@@ -93,6 +93,10 @@ export default function Parcourus() {
   const etat41 = useEtatQuete('4.1');
   const etat42 = useEtatQuete('4.2');
   const etat43 = useEtatQuete('4.3');
+  const etat51 = useEtatQuete('5.1');
+  const etat52 = useEtatQuete('5.2');
+  const etat53 = useEtatQuete('5.3');
+  const etat57 = useEtatQuete('5.7');
   const etatsParId: Record<IdQuete, EtatQuete> = {
     '1.1': etat11,
     '1.2': etat12,
@@ -122,6 +126,10 @@ export default function Parcourus() {
     '4.1': etat41,
     '4.2': etat42,
     '4.3': etat43,
+    '5.1': etat51,
+    '5.2': etat52,
+    '5.3': etat53,
+    '5.7': etat57,
   };
   const [pdfEnCours, setPdfEnCours] = useState<IdQuete | null>(null);
   // La progression RÉELLE + le détail par monde (dates de clôture, compteurs).

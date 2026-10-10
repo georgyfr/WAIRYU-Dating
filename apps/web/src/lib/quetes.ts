@@ -44,6 +44,10 @@ import * as Q37 from './quete-3-7';
 import * as Q41 from './quete-4-1';
 import * as Q42 from './quete-4-2';
 import * as Q43 from './quete-4-3';
+import * as Q51 from './quete-5-1';
+import * as Q52 from './quete-5-2';
+import * as Q53 from './quete-5-3';
+import * as Q57 from './quete-5-7';
 import { DEF_14 } from './quete-1-4-def';
 import { DEF_15 } from './quete-1-5-def';
 import { DEF_16 } from './quete-1-6-def';
@@ -69,6 +73,10 @@ import { DEF_37 } from './quete-3-7-def';
 import { DEF_41 } from './quete-4-1-def';
 import { DEF_42 } from './quete-4-2-def';
 import { DEF_43 } from './quete-4-3-def';
+import { DEF_51 } from './quete-5-1-def';
+import { DEF_52 } from './quete-5-2-def';
+import { DEF_53 } from './quete-5-3-def';
+import { DEF_57 } from './quete-5-7-def';
 import type { LikertNiveau } from './quete-1-1';
 import { avecEN } from '../i18n/apply';
 import { getLang } from '../i18n/current';
@@ -144,7 +152,11 @@ export type IdQuete =
   | '3.7'
   | '4.1'
   | '4.2'
-  | '4.3';
+  | '4.3'
+  | '5.1'
+  | '5.2'
+  | '5.3'
+  | '5.7';
 
 export interface DimDef {
   /** Clé de dimension dans le score du scorer de la quête. */
@@ -261,16 +273,19 @@ export const COMMUN = avecEN(
 
 /** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
  *  + Monde 3 « La Boussole » + Monde 4 « Ton Terrain » + Monde 5
- *  « Ton Héritage »). 1.8 n'existe pas au Livrable (série 1.x : la
- *  numérotation traverse M1/M2) ; la série 2.x traverse M3 ; la série 3.x
- *  traverse M4 ; la série 4.x traverse M5 — la quête 4.4 « Blessures et
- *  aisance » est INVISIBLE par design (tissée dans les passations de 4.1 et
- *  4.2 — aucune entrée registre, aucun écran). */
+ *  « Ton Héritage » + Monde 6 « Mon Cœur »). 1.8 n'existe pas au Livrable
+ *  (série 1.x : la numérotation traverse M1/M2) ; la série 2.x traverse M3 ;
+ *  la série 3.x traverse M4 ; la série 4.x traverse M5 — la quête 4.4
+ *  « Blessures et aisance » est INVISIBLE par design (tissée dans les
+ *  passations de 4.1 et 4.2 — aucune entrée registre, aucun écran) ; la
+ *  série 5.x traverse M6 (5.4/5.5/5.6 = M7 « Face aux Tempêtes », non
+ *  construit — ordre du Livrable : M6 héberge 5.1, 5.2, 5.3 et 5.7). */
 export const QUETE_IDS: readonly IdQuete[] = [
   '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
   '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8',
   '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7',
   '4.1', '4.2', '4.3',
+  '5.1', '5.2', '5.3', '5.7',
 ];
 
 /** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
@@ -1083,6 +1098,78 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     sansCarte: true,
     completion: Q43.COMPLETION,
   },
+  '5.1': {
+    id: '5.1',
+    numero: 1,
+    totalDuMonde: 4,
+    titre: 'Ton style amoureux',
+    ...DEF_51,
+    annonce: Q51.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q51.BRIEFING.aQuoiCaSert,
+      resultats: Q51.BRIEFING.resultats,
+    },
+    deck: () => Q51.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q51.scorer,
+    choisirVariante: (s) => Q51.choisirVariante(s as Q51.Score51),
+    cartes: Q51.CARTES,
+    completion: Q51.COMPLETION,
+  },
+  '5.2': {
+    id: '5.2',
+    numero: 2,
+    totalDuMonde: 4,
+    titre: "Ta vision de l'amour",
+    ...DEF_52,
+    annonce: Q52.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q52.BRIEFING.aQuoiCaSert,
+      resultats: Q52.BRIEFING.resultats,
+    },
+    deck: () => Q52.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q52.scorer,
+    choisirVariante: (s) => Q52.choisirVariante(s as Q52.Score52),
+    cartes: Q52.CARTES,
+    completion: Q52.COMPLETION,
+  },
+  '5.3': {
+    id: '5.3',
+    numero: 3,
+    totalDuMonde: 4,
+    titre: 'Comment tu exprimes ton affection',
+    ...DEF_53,
+    annonce: Q53.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q53.BRIEFING.aQuoiCaSert,
+      resultats: Q53.BRIEFING.resultats,
+    },
+    deck: () => Q53.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q53.scorer,
+    choisirVariante: (s) => Q53.choisirVariante(s as Q53.Score53),
+    cartes: Q53.CARTES,
+    completion: Q53.COMPLETION,
+  },
+  '5.7': {
+    id: '5.7',
+    numero: 4,
+    totalDuMonde: 4,
+    titre: 'Ton humour',
+    ...DEF_57,
+    annonce: Q57.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q57.BRIEFING.aQuoiCaSert,
+      resultats: Q57.BRIEFING.resultats,
+    },
+    deck: () => Q57.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q57.scorer,
+    choisirVariante: (s) => Q57.choisirVariante(s as Q57.Score57),
+    cartes: Q57.CARTES,
+    completion: Q57.COMPLETION,
+  },
 };
 
 /** Le registre LOCALISÉ — fusion FR × miroir EN au chargement (repli FR
@@ -1092,7 +1179,7 @@ export const QUETES: Record<IdQuete, QueteDef> = avecEN(REGISTRE_FR, REGISTRE_EN
 /** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
  *  code reste la clé). Utilisé par les écrans : chip d'entête,
  *  marquerMondeEnCours, libellés. */
-export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | 'M5'; nom: string } {
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | 'M5' | 'M6'; nom: string } {
   if (id === '1.1' || id === '1.2' || id === '1.3')
     return { code: 'M1', nom: getLang() === 'en' ? MONDES_NOMS.M1 : 'Monde 1 — Le Miroir' };
   if (id.startsWith('1.'))
@@ -1101,7 +1188,9 @@ export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | '
     return { code: 'M3', nom: getLang() === 'en' ? MONDES_NOMS.M3 : 'Monde 3 — La Boussole' };
   if (id.startsWith('3.'))
     return { code: 'M4', nom: getLang() === 'en' ? MONDES_NOMS.M4 : 'Monde 4 — Ton Terrain' };
-  return { code: 'M5', nom: getLang() === 'en' ? MONDES_NOMS.M5 : 'Monde 5 — Ton Héritage' };
+  if (id.startsWith('4.'))
+    return { code: 'M5', nom: getLang() === 'en' ? MONDES_NOMS.M5 : 'Monde 5 — Ton Héritage' };
+  return { code: 'M6', nom: getLang() === 'en' ? MONDES_NOMS.M6 : 'Monde 6 — Mon Cœur' };
 }
 
 /** Le niveau Likert (labels verbatim FR — miroir EN dans registre-commun). */

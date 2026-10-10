@@ -41,17 +41,20 @@ import type { Progression } from './voyage';
 
 /** Les quêtes livrées par monde, dans l'ordre de la chaîne (la série 1.x
  *  traverse M1 puis M2 ; la 2.x = M3 ; la 3.x = M4 ; la 4.x = M5 — sans la
- *  quête invisible 4.4 ; 1.8 n'existe pas au Livrable). */
+ *  quête invisible 4.4 ; 1.8 n'existe pas au Livrable ; la 5.x = M6 — 5.1,
+ *  5.2, 5.3 et 5.7 ; 5.4/5.5/5.6 appartiennent au M7, non construit). */
 const QUIDS_PAR_MONDE: ReadonlyArray<readonly IdQuete[]> = [
   ['1.1', '1.2', '1.3'], // M1 « Le Miroir »
   ['1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11'], // M2 « Le Volant »
   ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8'], // M3 « La Boussole »
   ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7'], // M4 « Ton Terrain »
   ['4.1', '4.2', '4.3'], // M5 « Ton Héritage » (4.4 invisible — tissée)
+  ['5.1', '5.2', '5.3', '5.7'], // M6 « Mon Cœur »
 ];
 
-/** Les CODES de mondes livrés, alignés sur QUIDS_PAR_MONDE (M1, M2, M3, M4, M5). */
-const CODES_PAR_MONDE: readonly string[] = ['M1', 'M2', 'M3', 'M4', 'M5'];
+/** Les CODES de mondes livrés, alignés sur QUIDS_PAR_MONDE (M1, M2, M3, M4,
+ *  M5, M6). */
+const CODES_PAR_MONDE: readonly string[] = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
 
 /** Le progrès RÉEL d'un monde livré — compté depuis l'état des quêtes. */
 export interface ProgresMonde {

@@ -122,6 +122,10 @@ import { ARCHES_34 } from './quete-3-4-arche';
 import { ARCHES_35 } from './quete-3-5-arche';
 import { ARCHES_36 } from './quete-3-6-arche';
 import { ARCHES_41 } from './quete-4-1-arche';
+import { ARCHES_51 } from './quete-5-1-arche';
+import { ARCHES_52 } from './quete-5-2-arche';
+import { ARCHES_53 } from './quete-5-3-arche';
+import { ARCHES_57 } from './quete-5-7-arche';
 import { ARCHES_42 } from './quete-4-2-arche';
 import type { IdQuete } from './quetes';
 import { avecEN } from '../i18n/apply';
@@ -159,6 +163,10 @@ export const PLUS: Record<IdQuete, CouchePlus> = {
   '4.1': { cartes: {}, leviers: {} },
   '4.2': { cartes: {}, leviers: {} },
   '4.3': { cartes: {}, leviers: {} },
+  '5.1': { cartes: {}, leviers: {} },
+  '5.2': { cartes: {}, leviers: {} },
+  '5.3': { cartes: {}, leviers: {} },
+  '5.7': { cartes: {}, leviers: {} },
 };
 
 /** Les archétypes GÉNÉRAUX (Task 33), par identifiant de quête, clés = variantes.
@@ -194,5 +202,9 @@ const ARCHE_FR: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '4.1': ARCHES_41,
   '4.2': ARCHES_42,
   '4.3': {}, // tâche d'écriture sans carte — exemption par design (Livrable 4.3)
+  '5.1': ARCHES_51,
+  '5.2': ARCHES_52,
+  '5.3': ARCHES_53,
+  '5.7': ARCHES_57,
 };
 export const ARCHE = avecEN(ARCHE_FR, EN_ARCHE.ARCHE);

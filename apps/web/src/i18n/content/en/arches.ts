@@ -10,6 +10,7 @@ import { ARCHES_M2 } from './arches-m2';
 import { ARCHES_M3 } from './arches-m3';
 import { ARCHES_M4 } from './arches-m4';
 import { ARCHES_M5 } from './arches-m5';
+import { ARCHES_M6 } from './arches-m6';
 
 export const ARCHE: {
   [quete: string]: {
@@ -28,4 +29,5 @@ export const ARCHE: {
   ...ARCHES_M3,
   ...ARCHES_M4,
   ...ARCHES_M5,
+  ...ARCHES_M6,
 };
