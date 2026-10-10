@@ -18,6 +18,7 @@ export const MONDES_NOMS: Record<string, string> = {
   M2: 'World 2 — The Wheel',
   M3: 'World 3 — The Compass',
   M4: 'World 4 — Your Terrain',
+  M5: 'World 5 — Your Heritage',
 };
 
 /** Les mots-nombre de titreTendances (2 → 5). */

@@ -227,4 +227,22 @@ export const CORE: Record<string, string> = {
   'Wairyu — document personnel, généré le {{date}}': 'Wairyu — personal document, generated on {{date}}',
   'Ce document vient de tes réponses à la quête « {{quete}} » du {{monde}}. Il reste le tien : rien n\'est publié sur Wairyu sans ton action. Les textes d\'accompagnement sont une lecture d\'app — ils ne remplacent ni un professionnel, ni une étiquette.':
     'This document comes from your answers to the quest “{{quete}}” in {{monde}}. It stays yours: nothing is published on Wairyu without your action. The accompanying texts are an app reading — they replace neither a professional, nor a label.',
+
+  // ---- Monde 5 « Ton Héritage » (Task 53) — écrans propres 4.1/4.2/4.3
+  'Une page s\'ouvre : une question, un champ libre — ou « Je préfère ne pas dire », et la route continue sans pénalité.':
+    'One page opens: a question, a free field — or "I\'d rather not say", and the road goes on with no penalty.',
+  'Pas de longueur minimale, pas de piège : l\'écoute n\'est pas une évaluation.':
+    'No minimum length, no trap: listening is not an assessment.',
+  'Ce que tu écris reste chez toi : jamais cité, jamais montré.':
+    'What you write stays with you: never quoted, never shown.',
+  'Ton arbre relationnel — une conversation, jamais un arbre bien fait':
+    'Your relational tree — a conversation, never a "well-made" tree',
+  'Une figure': 'A figure',
+  'Tes mots à toi — ils ne sortent jamais de cet appareil.':
+    'Your own words — they never leave this device.',
+  'La qualification — un mot libre': 'The qualifier — one free word',
+  "La page d'écoute — si tu veux": 'The listening page — if you want',
+  'Ta page — une question, un champ libre': 'Your page — a question, a free field',
+  'Ta page reste sur cet appareil — jamais citée, jamais montrée.':
+    'Your page stays on this device — never quoted, never shown.',
 };

@@ -59,6 +59,14 @@ import { DISCLAIMER_28, PIED_ECRAN_28, titreBadge28, choisirVariante as choisirV
 import { BADGES_31 } from '../lib/quete-3-1';
 import { AMORCES } from '../lib/quete-3-6';
 import { ECRAN_FINAL_37, compteSelections37, GARDE_MAX_37 } from '../lib/quete-3-7';
+import { ARBRE_CODE, ARBRE, serialiserArbre, deserialiserArbre } from '../lib/quete-4-1';
+import { OUVERTE_CODE, OUVERTE } from '../lib/quete-4-2';
+import {
+  OUVERTE_CODE as OUVERTE_43,
+  RETRAIT as RETRAIT_43,
+  ECRAN_ECRITE,
+  ECRAN_FINAL_43,
+} from '../lib/quete-4-3';
 import {
   enregistrerReponse,
   enregistrerTexte,
@@ -91,6 +99,16 @@ function commentRepondreFormat(
       tx("Cinq déclarations s'affichent une à une : tu coches de une à trois options — jamais plus."),
       tx("Rien ne se déduit et rien ne se note : tes choix organisent tes découvertes, ils ne te classent pas."),
       tx("Personne ne voit tes déclarations : ni sur ton profil, ni ailleurs. Modifiable quand tu veux."),
+    ];
+  }
+  // 4.3 « Ce que tes relations t'ont appris » — la tâche d'écriture a SA copie
+  // (le générique 'ecran' parle de cases à cocher : faux ici, c'est une page
+  // d'écoute — Livrable 4.3, facultative, jamais rendue).
+  if (queteId === '4.3') {
+    return [
+      tx("Une page s'ouvre : une question, un champ libre — ou « Je préfère ne pas dire », et la route continue sans pénalité."),
+      tx("Pas de longueur minimale, pas de piège : l'écoute n'est pas une évaluation."),
+      tx('Ce que tu écris reste chez toi : jamais cité, jamais montré.'),
     ];
   }
   switch (format) {
@@ -249,6 +267,14 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const [reprise] = useState<boolean>(() => !etat.terminee && aDesReponses);
   const [montreReprise, setMontreReprise] = useState<boolean>(reprise);
   const [partageOuvert, setPartageOuvert] = useState<boolean>(false);
+  // Monde 5 · 4.1 — les figures libres de l'écran génogramme (modalité NON
+  // COMPTEE du Livrable : local à cet écran, sérialisé dans les textes au
+  // geste « Continuer » — jamais rendu hors de cet écran, jamais scoré).
+  const [figures, setFigures] = useState<{ label: string; qualif: string }[]>(() =>
+    deserialiserArbre(etat.textes?.[ARBRE_CODE] ?? ''),
+  );
+  const [labelDraft, setLabelDraft] = useState('');
+  const [qualifDraft, setQualifDraft] = useState('');
   const [copieOk, setCopieOk] = useState<boolean>(false);
   const [pdfEnCours, setPdfEnCours] = useState<boolean>(false);
 
@@ -285,12 +311,21 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     if (phase === 'passation' && repondues === deck.length) {
       if (quete.sansCarte) {
         if (queteId === '1.11' && etat.reponses['Q1.11-chemin'] === undefined) return;
+        // 4.3 : la page d'écoute attend son geste (« Envoyer » ou
+        // « Je préfère ne pas dire » — deux sorties complètes, Livrable 4.3).
+        if (queteId === '4.3' && etat.reponses[OUVERTE_43] === undefined) return;
         marquerTerminee(queteId, null);
         setPhase('ecran');
         return;
       }
       if (queteId === '2.3' && etat.reponses['Q2.3-valide'] !== 1) return;
       if (queteId === '2.6' && etat.reponses['Q2.6-valide'] !== 1) return;
+      // Monde 5 — les écrans propres attendent leur geste : 4.1 le génogramme
+      // (modalité NON COMPTEE — « Continuer » ou « Passer », deux sorties
+      // complètes), 4.2 la question ouverte hors mélange (« Envoyer ma page »
+      // ou « Je préfère ne pas dire » — interdits V10 : jamais rendue).
+      if (queteId === '4.1' && etat.reponses[ARBRE_CODE] === undefined) return;
+      if (queteId === '4.2' && etat.reponses[OUVERTE_CODE] === undefined) return;
       if (
         queteId === '2.5' &&
         etat.reponses[INTENTION_CODE] === undefined &&
@@ -488,6 +523,20 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       repondues === deck.length &&
       etat.reponses[INTENTION_CODE] === undefined &&
       intentionAffichee(etat.reponses) === 'aucune';
+    // Monde 5 — les écrans propres du M5 :
+    // 4.1 — les 8 items posés → l'écran génogramme (modalité NON COMPTEE du
+    // Livrable : structure libre, non scorée, retrait possible ; le code de
+    // flux Q4.1-arbre n'entre dans AUCUN score — « Passer » est un chemin
+    // complet).
+    const ecranArbre41 =
+      queteId === '4.1' && repondues === deck.length && etat.reponses[ARBRE_CODE] === undefined;
+    // 4.2 — les 18 items posés → l'écran d'écoute (Q4.2-19, hors mélange :
+    // facultatif, stockage appareil seul, JAMAIS rendue — interdits V10).
+    const ecranOuverte42 =
+      queteId === '4.2' && repondues === deck.length && etat.reponses[OUVERTE_CODE] === undefined;
+    // 4.3 — la quête ENTIÈRE est la page d'écoute (tâche d'écriture : 1 item
+    // ouvert, facultatif, jamais rendu).
+    const ecranEcrite43 = queteId === '4.3';
     return (
       <main className="screen q-screen q-run" aria-labelledby="q-run-label">
         {montreReprise && (
@@ -552,6 +601,172 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             <p className="q-ecran-note">
               {tx('Tu peux aussi modifier tes réponses ci-dessous — tes trois réponses restent intactes et sans jugement.')}
             </p>
+          </div>
+        ) : ecranArbre41 ? (
+          // 4.1 — l'écran génogramme (Livrable 4.1 : modalité visuelle NON
+          // COMPTEE) — des figures libres, des qualifications libres, aucun
+          // nom imposé, retrait possible. Non scoré, jamais rendu hors de cet
+          // écran, jamais un arbre « bien fait ». « Passer » est un chemin
+          // complet.
+          <div className="q-choix q-arbre" role="group" aria-label={tx('Ton arbre relationnel — une conversation, jamais un arbre bien fait')}>
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              {ARBRE.titre}
+            </h1>
+            <p className="q-ecran-note">{ARBRE.note}</p>
+            {figures.map((f, i) => (
+              <div key={`fig-${i}`} className="q-arbre-fig">
+                <span className="q-arbre-label">{f.label || tx('Une figure')}</span>
+                {f.qualif && <span className="q-arbre-qualif">{f.qualif}</span>}
+                <button
+                  type="button"
+                  className="q-arbre-retirer"
+                  onClick={() => setFigures(figures.filter((_, j) => j !== i))}
+                >
+                  {ARBRE.retirer}
+                </button>
+              </div>
+            ))}
+            <label className="q-check-libre">
+              <span>{ARBRE.champLabel}</span>
+              <input
+                type="text"
+                value={labelDraft}
+                maxLength={120}
+                onChange={(e) => setLabelDraft(e.target.value)}
+                placeholder={tx('Tes mots à toi — ils ne sortent jamais de cet appareil.')}
+              />
+            </label>
+            <div className="q-arbre-quals" role="group" aria-label={tx('La qualification — un mot libre')}>
+              {ARBRE.qualifications.map((q) => (
+                <button
+                  key={q}
+                  type="button"
+                  className={qualifDraft === q ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
+                  aria-pressed={qualifDraft === q}
+                  onClick={() => setQualifDraft(qualifDraft === q ? '' : q)}
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost q-choix-valider"
+              onClick={() => {
+                if (labelDraft.trim().length > 0 || qualifDraft.trim().length > 0) {
+                  setFigures([...figures, { label: labelDraft.trim(), qualif: qualifDraft.trim() }]);
+                  setLabelDraft('');
+                  setQualifDraft('');
+                }
+              }}
+            >
+              {ARBRE.ajouter}
+            </button>
+            <button
+              type="button"
+              className="btn btn-accent q-choix-valider"
+              onClick={() => {
+                const finales =
+                  labelDraft.trim().length > 0 || qualifDraft.trim().length > 0
+                    ? [...figures, { label: labelDraft.trim(), qualif: qualifDraft.trim() }]
+                    : figures;
+                enregistrerTexte(queteId, ARBRE_CODE, serialiserArbre(finales));
+                enregistrerReponse(queteId, ARBRE_CODE, 1);
+              }}
+            >
+              {ARBRE.continuer}
+              <Fleche />
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost q-choix-valider"
+              onClick={() => {
+                enregistrerTexte(queteId, ARBRE_CODE, '');
+                enregistrerReponse(queteId, ARBRE_CODE, 0);
+              }}
+            >
+              {ARBRE.passer}
+            </button>
+            <p className="q-ecran-note">{ARBRE.noteFin}</p>
+          </div>
+        ) : ecranOuverte42 ? (
+          // 4.2 — l'écran d'écoute (Q4.2-19, hors mélange : facultatif,
+          // « Je préfère ne pas dire » = saut sans pénalité — interdits V10 :
+          // la réponse n'est JAMAIS rendue, stockage appareil seul).
+          <div className="q-choix q-ouverte" role="group" aria-label={tx("La page d'écoute — si tu veux")}>
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              {OUVERTE.titre}
+            </h1>
+            <label className="q-check-libre">
+              <textarea
+                value={etat.textes?.[OUVERTE_CODE] ?? ''}
+                maxLength={500}
+                rows={4}
+                onChange={(e) => enregistrerTexte(queteId, OUVERTE_CODE, e.target.value)}
+                placeholder={tx('Tes mots à toi — ils ne sont jamais reformulés.')}
+              />
+            </label>
+            <button
+              type="button"
+              className="btn btn-accent q-choix-valider"
+              disabled={(etat.textes?.[OUVERTE_CODE] ?? '').trim().length === 0}
+              onClick={() => enregistrerReponse(queteId, OUVERTE_CODE, 1)}
+            >
+              {OUVERTE.valider}
+              <Fleche />
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost q-choix-valider"
+              onClick={() => {
+                enregistrerTexte(queteId, OUVERTE_CODE, '');
+                enregistrerReponse(queteId, OUVERTE_CODE, 0);
+              }}
+            >
+              {OUVERTE.retrait}
+            </button>
+            <p className="q-ecran-note">{OUVERTE.note}</p>
+            <p className="q-ecran-note">{OUVERTE.noteRetrait}</p>
+          </div>
+        ) : ecranEcrite43 ? (
+          // 4.3 — LA page d'écoute (la quête entière : tâche d'écriture,
+          // 1 item ouvert, facultative — retrait sans pénalité, interdits
+          // V10 : la réponse n'est JAMAIS rendue, stockage appareil seul,
+          // aucune analyse à l'écran).
+          <div className="q-choix q-ouverte" role="group" aria-label={tx("Ta page — une question, un champ libre")}>
+            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+              {item.text}
+            </h1>
+            <label className="q-check-libre">
+              <textarea
+                value={etat.textes?.[OUVERTE_43] ?? ''}
+                maxLength={500}
+                rows={5}
+                onChange={(e) => enregistrerTexte(queteId, OUVERTE_43, e.target.value)}
+                placeholder={tx('Tes mots à toi — ils ne sont jamais reformulés.')}
+              />
+            </label>
+            <button
+              type="button"
+              className="btn btn-accent q-choix-valider"
+              disabled={(etat.textes?.[OUVERTE_43] ?? '').trim().length === 0}
+              onClick={() => enregistrerReponse(queteId, OUVERTE_43, 1)}
+            >
+              {ECRAN_ECRITE.valider}
+              <Fleche />
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost q-choix-valider"
+              onClick={() => {
+                enregistrerTexte(queteId, OUVERTE_43, '');
+                enregistrerReponse(queteId, OUVERTE_43, 0);
+              }}
+            >
+              {RETRAIT_43}
+            </button>
+            <p className="q-ecran-note">{ECRAN_ECRITE.note}</p>
+            <p className="q-ecran-note">{ECRAN_ECRITE.noteRetrait}</p>
           </div>
         ) : quete.format === 'checklist' ? (
           // 2.3 — UN écran (Livrable) : les 9 lignes rouges cochables + le champ
@@ -868,6 +1083,42 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             </div>
             <p className="q-carte-hint">
               {tx('Tes déclarations restent sur cet appareil — tu peux les modifier ou tout effacer depuis « Voulez-vous commencer ? ».')}
+            </p>
+          </div>
+        </main>
+      );
+    }
+    // 4.3 « Ce que tes relations t'ont appris » — l'écran final simple et
+    // bienveillant (Livrable 4.3 : exemption carte, écran de clôture sans
+    // AUCUN rappel du contenu écrit).
+    if (queteId === '4.3') {
+      const laSuite43 = quete.suivante ? QUETES[quete.suivante] : null;
+      return (
+        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+          <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
+            <p className="q-carte-entete">{quete.completion.entete}</p>
+            <h1 className="q-carte-nom" id="q-ecran-title">
+              {ECRAN_FINAL_43.titre}
+            </h1>
+            <p className="q-carte-lumiere">{ECRAN_FINAL_43.texte}</p>
+            <div className="q-carte-actions">
+              {laSuite43 ? (
+                <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(laSuite43.id)}>
+                  {quete.suite.cta ?? tx('Continuer le voyage')}
+                  <Fleche />
+                </button>
+              ) : (
+                <button type="button" className="btn btn-accent" onClick={onHome}>
+                  {quete.suite.cta ?? tx('Retour à mon voyage')}
+                  <Fleche />
+                </button>
+              )}
+              <button type="button" className="btn btn-ghost" onClick={onExit}>
+                {tx('Retour aux mondes')}
+              </button>
+            </div>
+            <p className="q-carte-hint">
+              {tx('Ta page reste sur cet appareil — jamais citée, jamais montrée.')}
             </p>
           </div>
         </main>

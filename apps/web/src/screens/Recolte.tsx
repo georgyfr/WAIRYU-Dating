@@ -201,6 +201,9 @@ export default function Recolte() {
   const etat35 = useEtatQuete('3.5');
   const etat36 = useEtatQuete('3.6');
   const etat37 = useEtatQuete('3.7');
+  const etat41 = useEtatQuete('4.1');
+  const etat42 = useEtatQuete('4.2');
+  const etat43 = useEtatQuete('4.3');
   const etatsParId: Record<IdQuete, EtatQuete> = {
     '1.1': etat11,
     '1.2': etat12,
@@ -227,6 +230,9 @@ export default function Recolte() {
     '3.5': etat35,
     '3.6': etat36,
     '3.7': etat37,
+    '4.1': etat41,
+    '4.2': etat42,
+    '4.3': etat43,
   };
   // La progression RÉELLE — les compteurs et les jalons suivent l'état des
   // quêtes, réactifs (même bus que l'atlas et le journal).

@@ -18,12 +18,11 @@
  * pas l'ancrage), la garde de une à trois options protège la qualité des
  * découvertes, jamais une note.
  *
- * DERNIÈRE quête ouverte du Monde 4 « Ton Terrain » : suivante = null
- * (precedent 2.8 ; le M5 « Ton Héritage » n'est pas construit — NE PAS
- * inventer d'id '4.x' dans l'union IdQuete, la transition passera par
- * prochaineQuete()/l'atlas, contrat d'intégration A2). La fin émotionnelle
- * ouvre le Monde 5 « Ton Héritage » : l'histoire relationnelle — l'arbre, le
- * présent, ce que les relations ont appris (WORLD_DETAILS.M5).
+ * DERNIÈRE quête ouverte du Monde 4 « Ton Terrain » : la chaîne continue —
+ * le Monde 5 « Ton Héritage » est CONSTRUIT : suivante = '4.1' (la première
+ * quête du M5, livrée avec ses trames hébergées — Livrable M5-4.1). La fin
+ * émotionnelle ouvre le Monde 5 « Ton Héritage » : l'histoire relationnelle —
+ * l'arbre, le présent, ce que les relations ont appris (WORLD_DETAILS.M5).
  *
  * Rédigé (jamais verbatim du Livrable) — ton Task 35 : tutoiement, simple et
  * littéral, phrases courtes (≤ 22 mots), jamais un diagnostic, aucun
@@ -63,10 +62,9 @@ export const DEF_37: EntreeRegistre = {
   // de fichier arche).
   ombreRelationnel: {},
 
-  // Dernière quête ouverte du Monde 4 « Ton Terrain » — la chaîne se referme
-  // ici ; le Monde 5 « Ton Héritage » n'est pas construit (precedent 2.8 :
-  // suivante null jusqu'à l'ouverture du monde suivant).
-  suivante: null,
+  // Dernière quête ouverte du Monde 4 « Ton Terrain » — la chaîne continue
+  // dans le Monde 5 « Ton Héritage » (construit : 4.1 → 4.2 → 4.3).
+  suivante: '4.1',
 
   suite: {
     titre: 'La suite de ton voyage',

@@ -148,7 +148,7 @@ export const WORLDS: VoyageWorld[] = avecEN([
     tagline: "Ton histoire relationnelle : ton arbre, où tu en es aujourd'hui, ce que tes relations t'ont appris.",
     quests: 4,
     free: true,
-    status: "soon",
+    status: "open",
   },
   {
     num: 6,

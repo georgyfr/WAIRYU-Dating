@@ -41,6 +41,9 @@ import * as Q34 from './quete-3-4';
 import * as Q35 from './quete-3-5';
 import * as Q36 from './quete-3-6';
 import * as Q37 from './quete-3-7';
+import * as Q41 from './quete-4-1';
+import * as Q42 from './quete-4-2';
+import * as Q43 from './quete-4-3';
 import { DEF_14 } from './quete-1-4-def';
 import { DEF_15 } from './quete-1-5-def';
 import { DEF_16 } from './quete-1-6-def';
@@ -63,6 +66,9 @@ import { DEF_34 } from './quete-3-4-def';
 import { DEF_35 } from './quete-3-5-def';
 import { DEF_36 } from './quete-3-6-def';
 import { DEF_37 } from './quete-3-7-def';
+import { DEF_41 } from './quete-4-1-def';
+import { DEF_42 } from './quete-4-2-def';
+import { DEF_43 } from './quete-4-3-def';
 import type { LikertNiveau } from './quete-1-1';
 import { avecEN } from '../i18n/apply';
 import { getLang } from '../i18n/current';
@@ -135,7 +141,10 @@ export type IdQuete =
   | '3.4'
   | '3.5'
   | '3.6'
-  | '3.7';
+  | '3.7'
+  | '4.1'
+  | '4.2'
+  | '4.3';
 
 export interface DimDef {
   /** Clé de dimension dans le score du scorer de la quête. */
@@ -251,13 +260,17 @@ export const COMMUN = avecEN(
 );
 
 /** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
- *  + Monde 3 « La Boussole » + Monde 4 « Ton Terrain »). 1.8 n'existe pas au
- *  Livrable (série 1.x : la numérotation traverse M1/M2) ; la série 2.x
- *  traverse M3 ; la série 3.x traverse M4. */
+ *  + Monde 3 « La Boussole » + Monde 4 « Ton Terrain » + Monde 5
+ *  « Ton Héritage »). 1.8 n'existe pas au Livrable (série 1.x : la
+ *  numérotation traverse M1/M2) ; la série 2.x traverse M3 ; la série 3.x
+ *  traverse M4 ; la série 4.x traverse M5 — la quête 4.4 « Blessures et
+ *  aisance » est INVISIBLE par design (tissée dans les passations de 4.1 et
+ *  4.2 — aucune entrée registre, aucun écran). */
 export const QUETE_IDS: readonly IdQuete[] = [
   '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
   '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8',
   '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7',
+  '4.1', '4.2', '4.3',
 ];
 
 /** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
@@ -1015,6 +1028,61 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     sansCarte: true,
     completion: Q37.COMPLETION,
   },
+  '4.1': {
+    id: '4.1',
+    numero: 1,
+    totalDuMonde: 3,
+    titre: 'Ton arbre relationnel',
+    ...DEF_41,
+    annonce: Q41.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q41.BRIEFING.aQuoiCaSert,
+      resultats: Q41.BRIEFING.resultats,
+    },
+    deck: () => Q41.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q41.scorer,
+    choisirVariante: (s) => Q41.choisirVariante(s as Q41.Score41),
+    cartes: Q41.CARTES,
+    completion: Q41.COMPLETION,
+  },
+  '4.2': {
+    id: '4.2',
+    numero: 2,
+    totalDuMonde: 3,
+    titre: "Où tu en es aujourd'hui",
+    ...DEF_42,
+    annonce: Q42.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q42.BRIEFING.aQuoiCaSert,
+      resultats: Q42.BRIEFING.resultats,
+    },
+    deck: () => Q42.deckQuete().map(itemLikert),
+    format: 'likert',
+    scorer: Q42.scorer,
+    choisirVariante: (s) => Q42.choisirVariante(s as Q42.Score42),
+    cartes: Q42.CARTES,
+    completion: Q42.COMPLETION,
+  },
+  '4.3': {
+    id: '4.3',
+    numero: 3,
+    totalDuMonde: 3,
+    titre: "Ce que tes relations t'ont appris",
+    ...DEF_43,
+    annonce: Q43.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q43.BRIEFING.aQuoiCaSert,
+      resultats: Q43.BRIEFING.resultats,
+    },
+    deck: Q43.deckQuete,
+    format: 'ecran',
+    scorer: Q43.scorer,
+    choisirVariante: () => Q43.choisirVariante(),
+    cartes: Q43.CARTES,
+    sansCarte: true,
+    completion: Q43.COMPLETION,
+  },
 };
 
 /** Le registre LOCALISÉ — fusion FR × miroir EN au chargement (repli FR
@@ -1024,14 +1092,16 @@ export const QUETES: Record<IdQuete, QueteDef> = avecEN(REGISTRE_FR, REGISTRE_EN
 /** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
  *  code reste la clé). Utilisé par les écrans : chip d'entête,
  *  marquerMondeEnCours, libellés. */
-export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4'; nom: string } {
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | 'M5'; nom: string } {
   if (id === '1.1' || id === '1.2' || id === '1.3')
     return { code: 'M1', nom: getLang() === 'en' ? MONDES_NOMS.M1 : 'Monde 1 — Le Miroir' };
   if (id.startsWith('1.'))
     return { code: 'M2', nom: getLang() === 'en' ? MONDES_NOMS.M2 : 'Monde 2 — Le Volant' };
   if (id.startsWith('2.'))
     return { code: 'M3', nom: getLang() === 'en' ? MONDES_NOMS.M3 : 'Monde 3 — La Boussole' };
-  return { code: 'M4', nom: getLang() === 'en' ? MONDES_NOMS.M4 : 'Monde 4 — Ton Terrain' };
+  if (id.startsWith('3.'))
+    return { code: 'M4', nom: getLang() === 'en' ? MONDES_NOMS.M4 : 'Monde 4 — Ton Terrain' };
+  return { code: 'M5', nom: getLang() === 'en' ? MONDES_NOMS.M5 : 'Monde 5 — Ton Héritage' };
 }
 
 /** Le niveau Likert (labels verbatim FR — miroir EN dans registre-commun). */

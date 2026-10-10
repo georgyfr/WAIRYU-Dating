@@ -146,9 +146,17 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const et26 = useEtatQuete('2.6');
   const et27 = useEtatQuete('2.7');
   const et28 = useEtatQuete('2.8');
+  const et31 = useEtatQuete('3.1');
+  const et32 = useEtatQuete('3.2');
+  const et33 = useEtatQuete('3.3');
+  const et34 = useEtatQuete('3.4');
+  const et35 = useEtatQuete('3.5');
+  const et36 = useEtatQuete('3.6');
+  const et37 = useEtatQuete('3.7');
   const monde1Fini = useEtatQuete('1.1').terminee && useEtatQuete('1.2').terminee && et13.terminee;
   const monde2Fini = [et14, et15, et16, et17, et19, et110, et111].every((e) => e.terminee);
   const monde3Fini = [et21, et22, et23, et24, et25, et26, et27, et28].every((e) => e.terminee);
+  const monde4Fini = [et31, et32, et33, et34, et35, et36, et37].every((e) => e.terminee);
   const [openCode, setOpenCode] = useState<string | null>(null);
   const openWorld = openCode ? (WORLDS.find((w) => w.code === openCode) ?? null) : null;
   const fermerFiche = useCallback(() => setOpenCode(null), []);
@@ -176,7 +184,9 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
             ? monde2Fini
             : w.code === 'M4'
               ? monde3Fini
-              : false;
+              : w.code === 'M5'
+                ? monde4Fini
+                : false;
     if (w.status === 'open' && !ouvrable) return 'verrouille';
     const faites = parMonde[w.code]?.faites ?? 0;
     if (estEnCours(statuts, w.code) || faites > 0) return 'en_cours';
@@ -185,7 +195,7 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   };
 
   // La géographie de l'atlas : mondes LIVRÉS (un progrès est possible),
-  // mondes À VENIR (M5→M10, compact) et LA DESTINATION (M11, carte dédiée).
+  // mondes À VENIR (M6→M10, compact) et LA DESTINATION (M11, carte dédiée).
   const livrees = WORLDS.filter((w) => !!parMonde[w.code]);
   const destination = WORLDS[WORLDS.length - 1];
   const aVenir = WORLDS.filter((w) => w.status === 'soon' && w !== destination);
@@ -523,7 +533,8 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           started={estEnCours(statuts, openWorld.code)}
           onClose={fermerFiche}
           // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé ;
-          // M3 jouable une fois le Monde 2 terminé.
+          // M3 jouable une fois le Monde 2 terminé ; M4 après le M3 ;
+          // M5 « Ton Héritage » après le M4.
           deverrouille={
             openWorld.code === 'M1'
               ? true
@@ -533,13 +544,16 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                   ? monde2Fini
                   : openWorld.code === 'M4'
                     ? monde3Fini
-                    : false
+                    : openWorld.code === 'M5'
+                      ? monde4Fini
+                      : false
           }
           onEnterQuest={
             openWorld.code === 'M1' ||
             (openWorld.code === 'M2' && monde1Fini) ||
             (openWorld.code === 'M3' && monde2Fini) ||
-            (openWorld.code === 'M4' && monde3Fini)
+            (openWorld.code === 'M4' && monde3Fini) ||
+            (openWorld.code === 'M5' && monde4Fini)
               ? onEnterQuest
               : undefined
           }
