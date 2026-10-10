@@ -811,3 +811,25 @@ Stage Summary (final):
 - Environnements : prod https://wairyu.wairyu.workers.dev (version 3cd9e69e, bundle index-DWYNx4Ed.js) · staging https://wairyu-staging.wairyu.workers.dev (11f572d1, même bundle).
 - Mobile (TWA/PWA) : même canal VAPID — aucun code spécifique. À confirmer fondateur en 30 s sur téléphone : bulle OS reçue app fermée après une quête.
 - Résiduels inchangés : PSP → notifierMoisAchete() (câblé, dormant) · assets graphiques 3.6 · TOTAL_STEPS 51 vs 50 (décision fondateur) · Phase B au rythme du fondateur.
+
+---
+Task ID: 48
+Agent: orchestrateur (Z.ai Code)
+Task: Refonte visuelle de #/recolte d'après le mockup fondateur (upload « Ma récolte — proposition » : Main.dc.html + README) — « je souhaite que tu refasses l'interface en t'inspirant de ceci ». Staging d'abord, PROD NON TOUCHÉE (17-b).
+
+Work Log:
+- MAQUETTE LUE comme référence de design (README : « replicate faithfully in its own components and styling system ») : fond crème #F6F3EC, titres Fraunces, corps Figtree, héros teal #0F5C66 avec anneau conic-gradient, 4 onglets Aperçu/Cartes/Sceaux/Histoire, carte « En cours », carrousel dernières cartes, mosaïque 6 col, grille des 11 mondes, duo pass/crédits, bandeau vie privée.
+- LOGIQUE INTACTE (règle §19) : les 25 hooks useEtatQuete, recolteMondes, arret, phrase dynamique, révélation, ouvrirInfo/InfoRecolteModal, filtre sansCarte — repris à l'identique ; l'helper statutJalon factorise le calcul EXISTANT des jalons (une seule source de vérité pour la carte « En cours » et l'échelle).
+- RIEN N'EST SUPPRIMÉ — tout est relogé : Aperçu = jalon actif + Dernières cartes (carrousel réel trié par date, « Tout voir » → onglet Cartes) + mosaïque maquette + grille des 11 mondes (fiche mois) + duo Pass/Crédits compact (0 honnête, l'explication complète reste dans le pop-up) + Tes espaces + vie privée ; Cartes = collection 11 mondes + note de cadrage + distinction Carte du voyage ; Sceaux = sceaux ; Histoire = échelle des 6 jalons + timeline + mois par mois.
+- LA CLOCHE de la maquette = la cloche GLOBALE de l'en-tête (App.tsx, journal groupé par mois) — non dupliquée ; la barre basse de la maquette = la TabBar globale existante (mêmes 5 onglets).
+- Polices Fraunces/Figtree : Google Fonts dans index.html, SCOPÉES à .rec2 (le reste de l'app garde Nunito). CSS : bloc .rec2 ~600 l. ajouté (variables, héros, ring, tabs, panels, carrousel, mosaïque, grille, duo, privacy, focus-visible, prefers-reduced-motion) — aucun style existant modifié.
+- i18n : 17 nouvelles chaînes FR → EN (screens-a.ts) ; 1 doublon 'Terminé' détecté (clé non quotée existante ligne 59) et retiré.
+- DÉPLOIEMENTS STAGING : 3fb6afb6 (refonte) · 5c484f18 (fix débordement) · 8b355abd (honnêteté libellé). Version finale 8b355abd.
+- BUGS CORRIGÉS EN E2E : (1) débordement horizontal 430px>390 — marge négative horizontale sur un enfant flex column additionnée par le stretch (scrollWidth 410) → margin -18px vertical seul ; re-vérifié 390=390. (2) Honnêteté : le jalon actif 'soon' affiché « En cours » → « Prochaine · Niveau n sur 6 » quand le statut réel n'est pas 'now'.
+- E2E RÉEL STAGING (agent-browser + session OTP backdoor injectée en cookie) : compte neuf → garde de route, bienvenue, Aperçu vierge (anneau 0/51 à 0deg, chemin gris, jalon « En cours · Niveau 1 ») ; fixture localStorage quête 1.9 (compte jetable) → anneau 1/51 à 7.06deg (360×1/51 EXACT), carrousel « World 2 · The Wheel / The Weather of the Moment » (mondeDeQuete(1.9)=M2 — conforme au mockup fondateur qui listait 1.9/1.10 sous « Monde 2 · Le Volant »), révélation « A new piece… », badge cloche 2, toast push Part 47 déclenché ; onglets Cartes (11) / Sceaux (11) / Histoire (6 jalons + timeline 2 nœuds avec teaser + 11 mois) ; « See all (1) » → onglet Cartes ; fiche mois 2 ouverte depuis une tuile de la grille ; pop-up explicatif OK ; bascule FR (wairyu.lang) : « Ma récolte / Ton voyage, étape après étape / Aperçu/Cartes/Sceaux/Histoire / 0/11 mondes explorés · 1 carte / Prochaine · Niveau 2 sur 6 / Continuer le voyage » ; mobile 390×844 sans débordement ; ZÉRO erreur JS, zéro console ; captures écran Aperçu/Cartes/Histoire/modal/pleine page FR conservées /tmp/rec2-*.png.
+- Compte E2E purgé RGPD (DELETE /api/account → deleted:true).
+
+Stage Summary:
+- #/recolte porte le design de la maquette fondateur : crème + Fraunces/Figtree + héros teal à anneau + 4 onglets — toutes les données restent RÉELLES et toutes les sections historiques sont conservées dans les onglets.
+- STAGING 8b355abd (bundle index-BzfOVRoq.js) — PROD NON TOUCHÉE (17-b) : déploiera au prochain feu vert (aucune migration D1, front-only + 1 ligne index.html).
+- Vérification fondateur en 1 min sur wairyu-staging.wairyu.workers.dev/#/recolte.
