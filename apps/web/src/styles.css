@@ -7063,9 +7063,12 @@ button.r-tl-chip:hover {
     --r2-tabs: #E9E4D7;
     --r2-priv: #EAF3F3;
 
-    /* Pleine page : le fond crème couvre tout l'écran (le padding de
-       .screen est répliqué pour que la mise en page reste identique). */
-    margin: -18px -20px 0;
+    /* Pleine page : le fond crème couvre tout l'écran. L'élément .screen est
+       déjà pleine largeur (stretch flex) — seules les 18 px du padding haut
+       sont annulés pour que le crème touche l'en-tête. Jamais de marge
+       négative horizontale : en flex column, le stretch l'additionnerait
+       (débordement 430 > 390). */
+    margin: -18px 0 0;
     padding: 18px 20px calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom));
     background: var(--r2-bg);
     font-family: 'Figtree', 'Nunito', system-ui, sans-serif;
