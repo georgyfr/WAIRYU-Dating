@@ -781,3 +781,33 @@ Stage Summary:
 - Mobile (TWA/PWA) : même canal VAPID — aucun code spécifique nécessaire.
 - STAGING version 11f572d1 — PROD NON TOUCHÉE (17-b) : déploiera au prochain feu vert.
 - Résiduels : bulle OS « page cachée » à confirmer par le fondateur sur un vrai téléphone (30 s — le relais/l'affichage SW sont prouvés, seule la visibilité headless est irreproductible) ; 4 subscriptions mortes d'E2E seront nettoyées par le 410 standard.
+
+---
+Task ID: 47-prod
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT PROD fondateur — mise en production de Task 47 (notifications de récolte en VRAI PUSH web+mobile). Session ouverte APRÈS un 9ᵉ reset sandbox.
+
+Work Log:
+- Constat de reset : /home/z/wairyu et /home/z/SECRETS-WAIRYU-LOCAL.txt ABSENTS (/tmp a survécu). Repo re-cloné github.com/georgyfr/WAIRYU-Dating → main ceb0513, working tree propre.
+- DÉCOUVERTE : Task 47 DÉJÀ construite, déployée staging et E2E- vérifiée par la session précédente (commit ceb0513 + worklog Task 47 : 3 déploiements staging eca5b40a→f3d8f461→11f572d1, E2E réel Playwright contexts persistants, livraison VAPID→FCM 201, dédoublonnage, bug user_id NULL corrigé) — le feu vert porte donc sur la PROD, gabarit Task 45-prod/46-prod.
+- Le fichier secrets n'est PAS reconstruisable localement : recherche exhaustive /tmp (tool-results d'octobre 2026 présents mais discipline anti-fuite = jamais de valeurs, uniquement des références de variables) ; aucun état OAuth wrangler, aucune variable d'env, aucun ID de compte trouvé. Pattern établi (7ᵉ et 8ᵉ resets) : le fondateur re-fournit les secrets, écrits hors dépôt.
+- Pré-vol prod SANS credentials : bun install OK (258 paquets) · tsc --noEmit apps/api → 0 erreur · tsc --noEmit apps/web → 0 erreur · vite build → index-DWYNx4Ed.js (9,7 s).
+- Environnements en ligne vérifiés : PROD health 200 env=production, bundle servi index-BmyWVmEY.js (Task 46), /api/push/notify-recolte → 404 (endpoint absent — Task 47 pas encore en prod, conforme) · STAGING health 200 env=staging, bundle servi index-DWYNx4Ed.js, /api/push/key 200 VAPID enabled:true, /api/push/notify-recolte → 401 (endpoint présent + session requise — Task 47 déployée).
+- PREUVE DÉTERMINISTE : bundle staging téléchargé → cmp avec le build local de ceb0513 → BYTE-IDENTIQUE (index-DWYNx4Ed.js). L'artefact prod sera exactement l'artefact E2E-vérifié sur staging. Marqueurs Task 47 dans le bundle : notify-recolte/pushe présents, chaîne UI « Activer les notifications » présente.
+- Migration D1 en attente sur prod : 0009_recolte_push.sql (push_recolte_dedup, PK user_id+notif_id, purge 90 j — déjà appliquée staging ; sera appliquée wairyu-prod par deploy.sh).
+
+Stage Summary:
+- Task 47 (push récolte web+mobile) PRÊTE POUR LA PROD : pré-vol intégralement vert, build déterministe = bundle staging E2E-vérifié byte-à-byte, migration 0009 seule nouveauté D1.
+- DÉPLOIEMENT EN ATTENTE des secrets fondateur (CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID pour deploy.sh ; GITHUB_TOKEN_FALLBACK pour pousser ce worklog — le fine-grained PAT reste en 403). Au reçu : bash deploy.sh production → smoke (health, bundle byte-identique, /api/push/key, notify-recolte 401) → agent-browser prod → push worklog (PAT).
+- PROD NON TOUCHÉE (17-b) — aucune écriture, aucun contournement.
+- SECRETS REÇUS du fondateur (Cloudflare token + account ID, PAT GitHub) → /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600, hors dépôt) ; token vérifié /user/tokens/verify : actif, exp 2026-12-30.
+- DÉPLOIEMENT PRODUCTION : deploy.sh production vert (typecheck → build → migration 0009_recolte_push.sql appliquée wairyu-prod [table push_recolte_dedup confirmée via sqlite_master] → wrangler deploy) — Version ID 3cd9e69e-d5d3-4787-95c6-f98506bb05a9, 5 assets uploadés, cron 10 3 * * * préservé.
+- Smoke prod : /api/health 200 ({ok:true, env:"production"}) · bundle SERVI index-DWYNx4Ed.js → téléchargé : BYTE-IDENTIQUE au build local et au bundle staging E2E-vérifié (cmp) · /api/push/key 200 (VAPID enabled:true) · /api/push/notify-recolte → 401 (endpoint actif en prod, session requise — Task 47 bien déployée).
+- Vérification agent-browser prod : landing rendue (« wairyu — rencontres sincères »), console de notifications Mission N présente, i18n EN actif (locale navigateur), deep-link #/recolte non authentifié → garde de route → écran de connexion complet, mobile 390×844 sans débordement horizontal (scrollWidth 390 = clientWidth) — ZÉRO erreur JS, zéro message console.
+- E2E authentifié prod non rejoué (Turnstile strict fail-closed rejette le headless — comportement attendu) : couverture par l'E2E staging complet du MÊME bundle byte-à-byte (worklog Task 47 : quêtes jouées dans l'UI → POST notify-recolte exacts, livraison VAPID→FCM 201, relais SW capturé, dédoublonnage parfait, gardes 401/400/429, purge RGPD).
+
+Stage Summary (final):
+- LE PUSH RÉCOLTE EST EN PRODUCTION : les notifications de récolte (carte, écran, fragment, sceau, mois ouvert/fini) partent en VRAI PUSH web+mobile sur tous les appareils du compte — VAPID → FCM → SW → bulle OS (app fermée/arrière-plan) ou toast in-app (page visible), clic → #/recolte (le coffre). Dédoublonnage serveur authoritatif, rate-limit, garde locale, sans force, honnêteté §16 intacte.
+- Environnements : prod https://wairyu.wairyu.workers.dev (version 3cd9e69e, bundle index-DWYNx4Ed.js) · staging https://wairyu-staging.wairyu.workers.dev (11f572d1, même bundle).
+- Mobile (TWA/PWA) : même canal VAPID — aucun code spécifique. À confirmer fondateur en 30 s sur téléphone : bulle OS reçue app fermée après une quête.
+- Résiduels inchangés : PSP → notifierMoisAchete() (câblé, dormant) · assets graphiques 3.6 · TOTAL_STEPS 51 vs 50 (décision fondateur) · Phase B au rythme du fondateur.
