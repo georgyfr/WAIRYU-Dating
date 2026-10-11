@@ -109,6 +109,12 @@ export const CORE: Record<string, string> = {
   'Les cent points sont posés.': 'All one hundred points are placed.',
   'Il reste {{n}} points à répartir.': '{{n}} points left to place.',
   'Valider ma répartition': 'Confirm my split',
+  'Quand tu montes un curseur, les autres descendent — la somme reste à 100.':
+    'When you raise a slider, the others go down — the total stays at 100.',
+  'Tu as réparti {{n}} points — il en faut exactement 100 : baisse un ou plusieurs curseurs.':
+    'You have placed {{n}} points — it must be exactly 100: lower one or more sliders.',
+  "Le bouton Valider s'allume quand les cent points sont posés.":
+    'The Confirm button lights up once all one hundred points are placed.',
   'Ta réponse — 5 niveaux': 'Your answer — 5 levels',
   'Ton choix — deux options, la même valeur': 'Your choice — two options, same value',
   Maintenant: 'Now',

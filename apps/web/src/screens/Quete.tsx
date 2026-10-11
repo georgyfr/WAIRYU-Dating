@@ -86,6 +86,86 @@ import type { VoyageIconName } from '../components/VoyageIcons';
 
 type Phase = 'briefing' | 'passation' | 'details' | 'carte' | 'ecran';
 
+/* ============================================================
+   2.6 — VERROU DE SOMME effectif (Livrable 04 n°1 : « somme verrouillée » ;
+   briefing : « donner à un horizon, c'est le retirer à un autre »).
+   PRÉSENTATION SEULE : traduit le geste d'un curseur en enregistrements de
+   réponses — aucune valeur inventée, le scorer lit exactement les mêmes
+   reponses et le gate Q2.6-valide (somme exacte) reste le seul validateur.
+   - total < 100 : le geste puise dans les points non posés (remplissage) ;
+   - total = 100 : monter un curseur PREND aux autres, baisser REND aux autres
+     (répartition en rond, clampée) — la somme reste 100 à tout geste ;
+   - total > 100 (états posés avant le verrou) : curseurs libres, l'écran
+     nomme le dépassement ; dès que le total repasse ≤ 100, le verrou reprend.
+   ============================================================ */
+
+/** Répartit exactement `besoin` unités, en rond (i prend au plus capacites[i]),
+ *  retour par index. Faisabilité garantie par les bornes des deux usages
+ *  (prendre : Σ capacites = 100 − valeur du curseur ; rendre : Σ capacites =
+ *  4×100 − Σ autres). Unitaire et conservatif — la somme ne peut pas dériver. */
+function repartirEnRond(capacites: readonly number[], besoin: number): number[] {
+  const res = capacites.map(() => 0);
+  let reste = besoin;
+  let progres = true;
+  while (reste > 0 && progres) {
+    progres = false;
+    for (let i = 0; i < capacites.length && reste > 0; i += 1) {
+      if (res[i] < capacites[i]) {
+        res[i] += 1;
+        reste -= 1;
+        progres = true;
+      }
+    }
+  }
+  return res;
+}
+
+/** Le geste d'un curseur 2.6, verrouillé : enregistre la nouvelle valeur du
+ *  curseur ET les ajustements des autres (si redistribution nécessaire). */
+function gesteArbitrage26(
+  queteId: string,
+  code: string,
+  demande: number,
+  reponses: Record<string, number>,
+): void {
+  const codes = AXES_26.map((a) => a.code);
+  const val = (c: string): number => reponses[c] ?? 0;
+  const courant = val(code);
+  const v = Math.max(0, Math.min(100, Math.round(demande)));
+  if (v === courant) return;
+  const delta = v - courant;
+  const total = codes.reduce((s, c) => s + val(c), 0);
+
+  // États posés avant le verrou (total > 100) : geste libre — l'écran nomme
+  // le dépassement ; la reprise du verrou se fait dès total ≤ 100.
+  if (total > 100) {
+    enregistrerReponse(queteId, code, v);
+    return;
+  }
+  // Remplissage (total < 100) : montée limitée au pool restant, baisse simple.
+  if (total < 100) {
+    enregistrerReponse(queteId, code, delta > 0 ? Math.min(v, courant + (100 - total)) : v);
+    return;
+  }
+  // Somme pleine (total = 100) : le geste redistribue — la somme reste 100.
+  const autres = codes.filter((c) => c !== code);
+  if (delta > 0) {
+    // Prendre `delta` aux autres — capacité de chacun = sa valeur (clamp 0).
+    const prelev = repartirEnRond(autres.map((c) => val(c)), delta);
+    enregistrerReponse(queteId, code, v);
+    autres.forEach((c, i) => {
+      if (prelev[i] > 0) enregistrerReponse(queteId, c, val(c) - prelev[i]);
+    });
+  } else {
+    // Rendre `−delta` aux autres — capacité de chacun = 100 − sa valeur.
+    const dons = repartirEnRond(autres.map((c) => 100 - val(c)), -delta);
+    enregistrerReponse(queteId, code, v);
+    autres.forEach((c, i) => {
+      if (dons[i] > 0) enregistrerReponse(queteId, c, val(c) + dons[i]);
+    });
+  }
+}
+
 /** Les textes « comment tu vas répondre » par format — les littéraux passent
  *  par tx (chrome) ; les textes COMMUN viennent du registre localisé
  *  (data) et traversent tx sans effet de bord (repli à l'identique). */
@@ -921,54 +1001,68 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             <p className="q-ecran-note">{tx("Rien n'est jugé ici : la liste vide est un cadre ouvert, une réponse complète.")}</p>
           </div>
         ) : quete.format === 'arbitrage' ? (
-          // 2.6 — UN écran (Livrable) : 5 curseurs 0-100, somme verrouillée à
-          // 100, AUCUNE valeur par défaut (les curseurs s'enregistrent au geste).
-          // « Valider » pose TOUTES les valeurs puis le gate Q2.6-valide —
-          // aucune sortie partielle.
-          <div className="q-choix q-arbitrage" role="group" aria-label={tx('Tes priorités — cent points à répartir sur cinq horizons')}>
-            <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
-              {tx('Cent points. Cinq horizons.')}
-            </h1>
-            {AXES_26.map((a) => {
-              const pts = etat.reponses[a.code] ?? 0;
-              return (
-                <div key={a.code} className="q-arb-axe">
-                  <div className="q-arb-head">
-                    <span className="q-arb-nom">{a.nom}</span>
-                    <span className="q-arb-pts">{tx('{{n}} pts', { n: pts })}</span>
-                  </div>
-                  <p className="q-arb-desc">{a.description}</p>
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={pts}
-                    aria-label={`${a.nom} — ${tx('{{n}} — points sur 100', { n: 100 })}`}
-                    onChange={(e) => enregistrerReponse(queteId, a.code, Number(e.target.value))}
-                  />
+          (() => {
+            // 2.6 — UN écran (Livrable) : 5 curseurs 0-100, VERROU DE SOMME
+            // effectif via gesteArbitrage26 (Livrable 04 n°1), AUCUNE valeur
+            // par défaut (les curseurs s'enregistrent au geste).
+            // « Valider » pose TOUTES les valeurs puis le gate Q2.6-valide —
+            // aucune sortie partielle. Le statut nomme les trois états :
+            // posés / reste N / dépassement (états hérités d'avant le verrou).
+            const total26 = AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0);
+            const reste26 = 100 - total26;
+            return (
+              <div className="q-choix q-arbitrage" role="group" aria-label={tx('Tes priorités — cent points à répartir sur cinq horizons')}>
+                <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>
+                  {tx('Cent points. Cinq horizons.')}
+                </h1>
+                <p className="q-arb-hint">{tx('Quand tu montes un curseur, les autres descendent — la somme reste à 100.')}</p>
+                {AXES_26.map((a) => {
+                  const pts = etat.reponses[a.code] ?? 0;
+                  return (
+                    <div key={a.code} className="q-arb-axe">
+                      <div className="q-arb-head">
+                        <span className="q-arb-nom">{a.nom}</span>
+                        <span className="q-arb-pts">{tx('{{n}} pts', { n: pts })}</span>
+                      </div>
+                      <p className="q-arb-desc">{a.description}</p>
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        step={1}
+                        value={pts}
+                        aria-label={a.nom}
+                        aria-valuetext={`${pts} / 100`}
+                        onChange={(e) => gesteArbitrage26(queteId, a.code, Number(e.target.value), etat.reponses)}
+                      />
+                    </div>
+                  );
+                })}
+                <div className={reste26 < 0 ? 'q-arb-total q-arb-total--trop' : 'q-arb-total'} role="status">
+                  {reste26 === 0
+                    ? tx('Les cent points sont posés.')
+                    : reste26 > 0
+                      ? tx('Il reste {{n}} points à répartir.', { n: reste26 })
+                      : tx('Tu as réparti {{n}} points — il en faut exactement 100 : baisse un ou plusieurs curseurs.', { n: total26 })}
                 </div>
-              );
-            })}
-            <div className="q-arb-total" role="status">
-              {(() => {
-                const reste = 100 - AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0);
-                return reste === 0 ? tx('Les cent points sont posés.') : tx('Il reste {{n}} points à répartir.', { n: reste });
-              })()}
-            </div>
-            <button
-              type="button"
-              className="btn btn-accent q-choix-valider"
-              disabled={100 - AXES_26.reduce((s, a) => s + (etat.reponses[a.code] ?? 0), 0) !== 0}
-              onClick={() => {
-                AXES_26.forEach((a) => enregistrerReponse(queteId, a.code, etat.reponses[a.code] ?? 0));
-                enregistrerReponse(queteId, 'Q2.6-valide', 1);
-              }}
-            >
-              {tx('Valider ma répartition')}
-              <Fleche />
-            </button>
-          </div>
+                <button
+                  type="button"
+                  className="btn btn-accent q-choix-valider"
+                  disabled={reste26 !== 0}
+                  onClick={() => {
+                    AXES_26.forEach((a) => enregistrerReponse(queteId, a.code, etat.reponses[a.code] ?? 0));
+                    enregistrerReponse(queteId, 'Q2.6-valide', 1);
+                  }}
+                >
+                  {tx('Valider ma répartition')}
+                  <Fleche />
+                </button>
+                {reste26 !== 0 && (
+                  <p className="q-arb-aide">{tx("Le bouton Valider s'allume quand les cent points sont posés.")}</p>
+                )}
+              </div>
+            );
+          })()
         ) : (
           <>
             <h1 className="q-item" id="q-run-label" ref={questionRef} tabIndex={-1}>

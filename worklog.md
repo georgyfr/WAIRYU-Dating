@@ -1277,3 +1277,26 @@ Stage Summary:
 - LE LOT TASKS 56+57 EST EN LIGNE SUR STAGING : version ec6da4ac, bundle index-By92eg0l.js — page de quête en langage « Tes valeurs, refonte » ET bloc « Voulez-vous commencer ? / Commencer / Annuler » en vraies ancres <a> (question + CTA = lien partageable #/quete/{id}, Annuler = #/mondes), rendu visuel identique, zéro logique touchée.
 - GitHub main = 638f86c (sauvegarde à jour). PROD NON TOUCHÉE (index-DsAoVRjm.js inchangé) — le lot attend le feu vert fondateur.
 - ADMIN_TOKEN staging régénéré et fonctionnel (bypass OTP vérifié en conditions réelles).
+
+---
+Task ID: 58
+Agent: orchestrateur (Z.ai Code)
+Task: Retour fondateur (capture ibb.co) — quête 2.6 « Cent points. Cinq horizons. » incompréhensible : somme libre (313 pts posés), bandeau « Il reste -213 points », bouton « Valider ma répartition » muet au clic. Rendre le test simple à exécuter.
+
+Work Log:
+- DIAGNOSTIC (capture fondateur : 71+57+76+51+58 = 313 pts, « Il reste -213 points à répartir », clic sans effet) : le verrou de somme promis par le LIVRABLE (04 n° 1 « somme verrouillée » ; briefing verbatim « Cent points à placer, pas un de plus : donner à un horizon, c'est le retirer à un autre » et « Le bouton Valider s'allume quand les cent points sont posés ») et par le commentaire du code n'était JAMAIS implémenté — 5 curseurs indépendants 0-100, statut restant calculé brut (négatif affiché tel quel), bouton disabled SANS état visuel ⇒ impression de bouton cassé.
+- FIX UI (présentation seule — scorer, sélecteur, cartes, gate Q2.6-valide INCHANGÉS) :
+  · Quete.tsx : gesteArbitrage26() + repartirEnRond() — le verrou EFFECTIF. total<100 : le geste puise dans les points non posés (montée clampée au pool). total=100 : monter PREND aux autres, baisser REND aux autres (répartition en rond unitaire, conservatif, clampée 0/100) — la somme reste 100 à tout geste, conforme au briefing verbatim. total>100 (états posés AVANT le verrou, ex. 313 du fondateur) : curseurs libres, l'écran nomme le dépassement, reprise du verrou dès total ≤ 100.
+  · Statut honnête à 3 états : verbatim « Les cent points sont posés. » / verbatim « Il reste {{n}} points à répartir. » / NOUVEAU « Tu as réparti {{n}} points — il en faut exactement 100 : baisse un ou plusieurs curseurs. » (état hérité, encadré coral .q-arb-total--trop).
+  · Aide en contexte : .q-arb-hint « Quand tu montes un curseur, les autres descendent — la somme reste à 100. » sous le titre ; .q-arb-aide « Le bouton Valider s'allume quand les cent points sont posés. » (verbatim briefing, désormais VRAI) affichée tant que le bouton est inactif.
+  · A11y : aria-label du curseur = nom de l'axe ; aria-valuetext « X / 100 » (l'ancien libellé '{{n}} — points sur 100' avec n=100 fixe était faux).
+  · styles.css : .btn-accent:disabled VISIBLE (opacity .45, cursor not-allowed, hover neutralisé) — bénéficie aux autres gates (2.3 checklist…) ; .q-arb-total--trop coral ; .q-arb-hint/.q-arb-aide.
+  · i18n/tr/core.ts : miroirs EN des 3 nouvelles chaînes + LACUNE PRÉEXISTANTE comblée (la puce briefing « s'allume » n'avait pas d'EN).
+- TEST ALGORITHME (bun, jetable supprimé) : 21 gestes simulés — remplissage, prise aux autres, rendu aux autres, clamp 0, saturations 100, état hérité 313 → toujours somme ≤ 100, jamais < 0, jamais > 100 par axe, conservation exacte.
+- Typecheck 0 erreur · deploy.sh staging → version 0a4f1adb.
+- E2E RÉEL STAGING (agent-browser, comptes jetables e2e-58-verrou + e2e-58b-herite, backdoor OTP) : état initial [0×5] « 100 points left » + bouton opacité .45 ; geste A=50 → « 50 points left » ; B=50 → « All one hundred points are placed. » + bouton actif ; C=30, C=0, D=100 → statut INCHANGÉ (la somme reste 100 à chaque redistribution) ; clic Valider → 🧭 QUÊTE ACCOMPLIE + carte « The House with Five Rooms » (CARTE-2.6-MAISON) ; état hérité 313 injecté avant boot → message coral exact, gestes libres 313→237→186→128→101, puis à 100 le verrou reprend et le bouton s'active ; ZÉRO erreur console ; captures /tmp/e2e58-*.png ; comptes purgés RGPD (deleted:true ×2).
+- PROD NON TOUCHÉE.
+
+Stage Summary:
+- LA QUÊTE 2.6 EST JOUABLE ET COMPRÉHENSIBLE : la mécanique promisée (« donner à un horizon, c'est le retirer à un autre ») est EFFECTIVE, le statut ne peut plus afficher d'absurdité (« -213 »), le bouton inactif se voit et explique quand il s'allumera, et l'état hérité du fondateur (313 pts) se guérit par simples baisses de curseurs — le verrou reprend dès 100.
+- Zéro changement psychométrique : items, verbatims, scorer, sélecteur 2.6, cartes, gate — intacts. Staging 0a4f1adb ; le lot (Tasks 56+57+58) attend le feu vert fondateur pour la prod.

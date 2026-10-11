@@ -5657,6 +5657,40 @@ a.q-ask-q {
     border: 2px solid var(--c-turquoise-deep)
 }
 
+/* 2.6 — honnêteté des états (verrou de somme effectif) : le dépassement
+   (états posés avant le verrou) se NOMME et se voit ; le bouton désactivé
+   aussi — « Le bouton Valider s'allume quand les cent points sont posés. » */
+.q-arb-total--trop {
+    background: #fdeae6;
+    border-color: var(--c-coral);
+    color: #8a2f1d
+}
+
+.q-arb-hint {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--c-gray-blue);
+    margin: -8px 0 0
+}
+
+.q-arb-aide {
+    font-size: 13.5px;
+    color: var(--c-gray-blue);
+    text-align: center;
+    margin: -8px 0 0
+}
+
+.btn-accent:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none
+}
+
+.btn-accent:disabled:hover {
+    background: var(--c-turquoise);
+    color: var(--c-night-deep)
+}
+
 /* Le message doux de la quête 2.5 (Non/Non/Non — Livrable) : accueilli,
    jamais une relance — un encadré posé, pas une note d'erreur. */
 .q-ecran-note-doux {
