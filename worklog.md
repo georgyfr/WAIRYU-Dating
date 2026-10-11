@@ -1252,3 +1252,28 @@ Stage Summary:
 - Bloc « Voulez-vous commencer ? » intégralement passé en ancres <a> (35 quêtes concernées, présentation seule) — le fondateur peut copier/partager le lien d'une quête depuis la question ou le CTA, et « Annuler » expose le vrai href #/mondes.
 - Zéro changement métier : items, ordre, scorer, sélecteur, cartes, PDF intacts ; diff = Quete.tsx (bloc briefing) + styles.css (2 règles a.*).
 - EN ATTENTE DU FONDATEUR : re-fournir CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (+ jeton GitHub) — puis `source secrets && bash deploy.sh staging` et push main. PROD NON TOUCHÉE.
+
+---
+Task ID: 57-b
+Agent: orchestrateur (Z.ai Code)
+Task: Suite Task 57 — tokens re-fournis par le fondateur : push main + déploiement staging + E2E réel du bloc « Voulez-vous commencer ? / Commencer / Annuler » en ancres.
+
+Work Log:
+- Tokens re-fournis par le fondateur (chat) et VÉRIFIÉS actifs : Cloudflare (api tokens/verify → active, exp. 2026-12-30) + GitHub (login georgyfr confirmé). SECRETS-WAIRYU-LOCAL.txt recréé hors dépôt (chmod 600, contenu : CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, GITHUB_TOKEN_FALLBACK) — JAMAIS commités (git status propre, untracked package-lock.json seulement).
+- PUSH MAIN → GitHub : credential helper store reposé (~/.git-credentials hors dépôt) ; 644b560..638f86c poussé — la sauvegarde GitHub est à jour (Tasks 56 + 57).
+- ADMIN_TOKEN staging régénéré (la valeur /tmp avait disparu au reset) : openssl rand -hex 24 → wrangler secret put ADMIN_TOKEN --env staging ; valeur conservée hors dépôt (/tmp/wairyu-admin-staging.txt, chmod 600).
+- DÉPLOIEMENT STAGING : deploy.sh staging → version ec6da4ac-0dbe-4575-8dfd-fd0fe0801983, bundle index-By92eg0l.js (hash IDENTIQUE au build validé en E2E local Task 57 — même artefact déployé, rien reconstruit entre-temps).
+- Vérifs health : staging {ok:true,env:staging} sert index-By92eg0l.js ; PROD INTACTE : {ok:true,env:production} sert toujours index-DsAoVRjm.js (version 843c8867).
+- E2E RÉEL STAGING (agent-browser 390×844 + 1280×900, méthode Task 56 : fetch d'auth dans le contexte de page ⇒ cookie httpOnly appliqué au navigateur ; Turnstile null accepté côté serveur staging) : compte jetable e2e-57-ancres@wairyu-test.dev — OTP bypass Bearer ADMIN_TOKEN (devCode dans la réponse), verify + birthDate 1990-01-01 → {created:true, userId c00a6b70…}.
+- Fixtures localStorage wairyu.quete.{1.1→1.11} terminee:true (garde M3 = 1.4/1.5/1.6/1.7/1.9/1.10/1.11) → deep-link #/quete/2.3 accessible.
+- VÉRIFICATION DOM DU BLOC (la demande fondateur) : question tag=A href=#/quete/2.3 « Do you want to start? » · CTA tag=A href=#/quete/2.3 « Start » · Annuler tag=A href=#/mondes « Cancel » (langue EN = locale headless ; miroirs tr/core.ts vérifiés côté source). Styles calculés : question text-decoration:none ; CTA background rgb(15,92,102) = #0F5C66 (teal maquette refonte), texte blanc, radius 16px — rendu bouton strictement identique, balise réelle <a>.
+- Comportements au clic : Commencer → phase passation ouverte (bloc .q-ask démonté) ; Annuler → hash #/mondes + écran quête démonté. ZÉRO erreur console.
+- Captures : /tmp/e2e57e-briefing-clean.png (390px) + /tmp/e2e57e-briefing-clean-desktop.png (1280px, cadre 480px centré) — bloc final « Do you want to start? » (Fraunces, sans soulignement) / « Start → » pilule teal / « Cancel » ghost. Le premier tour de captures était masqué par l'overlay de félicitations de création de compte (apparition asynchrone ~5-25 s ; fermeture nécessitant regex /letsgo/ sur texte débarrassé des non-lettres) — contourné : attente + fermeture puis capture propre.
+- PURGE RGPD ×5 comptes de test (e2e-57-ancres / e2e-57b / e2e-57c / e2e-57d / e2e-57e @wairyu-test.dev) : DELETE /api/account → {deleted:true} à chaque fois. Aucune donnée réelle touchée.
+- Incidents honnêtes : (1) cooldown OTP 60 s entre tentatives (rate-limit anti-abus, attendu) ; (2) overlay de bienvenue asynchrone recouvrant les premières captures — pas un défaut du produit, contourné à la 3ᵉ passe ; (3) sortie d'agent-browser échappant les guillemets (\"clé\":\"valeur\") — parsing devCode corrigé (tr -d '\\').
+- REGISTRE-PROVENANCE : non modifié — Task 57 = chrome UI (balises d'action), aucun contenu livrable/psychométrique concerné (précédent Task 56).
+
+Stage Summary:
+- LE LOT TASKS 56+57 EST EN LIGNE SUR STAGING : version ec6da4ac, bundle index-By92eg0l.js — page de quête en langage « Tes valeurs, refonte » ET bloc « Voulez-vous commencer ? / Commencer / Annuler » en vraies ancres <a> (question + CTA = lien partageable #/quete/{id}, Annuler = #/mondes), rendu visuel identique, zéro logique touchée.
+- GitHub main = 638f86c (sauvegarde à jour). PROD NON TOUCHÉE (index-DsAoVRjm.js inchangé) — le lot attend le feu vert fondateur.
+- ADMIN_TOKEN staging régénéré et fonctionnel (bypass OTP vérifié en conditions réelles).
