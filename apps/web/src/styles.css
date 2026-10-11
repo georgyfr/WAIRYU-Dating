@@ -1181,8 +1181,12 @@ a.btn {
 .push-toasts {
     position: fixed;
     top: max(12px, env(safe-area-inset-top));
-    left: 12px;
-    right: 12px;
+    /* Retour fondateur : le toast s'étalait sur toute la fenêtre du
+       navigateur (left/right: 12px en fixed). Il est désormais cadré dans le
+       cadre de l'app (480 px max, centré comme .app-shell, marges 12 px). */
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(calc(100vw - 24px), 456px);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -1191,12 +1195,50 @@ a.btn {
 }
 
 .push-toast {
+    position: relative;
     background: var(--c-night, #172c3d);
     color: var(--c-cream, #f5f1e6);
     border-radius: 14px;
-    padding: 12px 14px;
+    padding: 12px 44px 12px 14px;
     box-shadow: 0 8px 24px #172c3d59;
-    animation: push-toast-in .25s ease-out
+    animation: push-toast-in .25s ease-out;
+    pointer-events: auto
+}
+
+.push-toast.cliquable {
+    cursor: pointer;
+    transition: background .15s ease
+}
+
+.push-toast.cliquable:hover,
+.push-toast.cliquable:focus-visible {
+    background: #1e384d
+}
+
+.push-toast-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    opacity: .55;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    transition: opacity .15s ease, background .15s ease
+}
+
+.push-toast-close:hover,
+.push-toast-close:focus-visible {
+    opacity: 1;
+    background: #ffffff1f
 }
 
 .push-toast strong {

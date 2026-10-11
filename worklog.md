@@ -1300,3 +1300,27 @@ Work Log:
 Stage Summary:
 - LA QUÊTE 2.6 EST JOUABLE ET COMPRÉHENSIBLE : la mécanique promisée (« donner à un horizon, c'est le retirer à un autre ») est EFFECTIVE, le statut ne peut plus afficher d'absurdité (« -213 »), le bouton inactif se voit et explique quand il s'allumera, et l'état hérité du fondateur (313 pts) se guérit par simples baisses de curseurs — le verrou reprend dès 100.
 - Zéro changement psychométrique : items, verbatims, scorer, sélecteur 2.6, cartes, gate — intacts. Staging 0a4f1adb ; le lot (Tasks 56+57+58) attend le feu vert fondateur pour la prod.
+
+---
+Task ID: 59
+Agent: orchestrateur (Z.ai Code)
+Task: Retour fondateur (capture ibb.co/Gv9qhwLq) — la notification « Nouvelle découverte » se présente très mal (bande sombre pleine largeur de la FENÊTRE, hors cadre app, recouvrant le header), met beaucoup de temps à disparaître, et ne peut pas être supprimée par l'utilisateur.
+
+Work Log:
+- DIAGNOSTIC : la notification vient du relais in-app des pushes (sw.js : page visible ⇒ postMessage « wairyu-push » ; composant PushToast.tsx). Trois défauts : (1) CSS .push-toasts en position:fixed left/right 12px ⇒ sur desktop le toast s'étalait sur toute la fenêtre (capture fondateur : ~1520px) au lieu du cadre app 480px centré ; (2) durée dure 90 s (durée pensée pour un futur code OTP — aucun push OTP à ce jour), appliquée à TOUTES les notifs dont les récoltes ; (3) aucun bouton de fermeture + container pointer-events:none ⇒ impossible de la faire partir avant la fin.
+- FIX (PushToast.tsx — présentation seule, canal push/sw.js inchangés) : bouton × par toast (stopPropagation, aria-label FR/EN selon getLang) ; durée différenciée par kind — 'otp' garde 90 s (futur code), TOUT le reste passe à 10 s ; clic sur le toast = fermeture + navigation vers l'url du push (ex. #/recolte — conforme à l'invite « Ouvre ton coffre du voyageur ») ; role=button + tabIndex + onKeyDown (a11y clavier) ; garde url: seuls les hrefs commençant par '#/' sont utilisés.
+- FIX (styles.css) : .push-toasts cadré dans le cadre app — left:50%, translateX(-50%), width:min(calc(100vw - 24px), 456px) (mêmes marges 12px que le cadre 480px .app-shell) ; .push-toast pointer-events:auto + padding droit 44px (texte dégagé du ×) ; .push-toast-close (32px rond, opacity .55→1 hover/focus, bg subtil au survol) ; .push-toast.cliquable cursor:pointer + hover/focus-visible bg #1e384d.
+- Typecheck 0 erreur · deploy.sh staging → version b790161a-de7f-442c-adca-729568b38a1d.
+- E2E RÉEL STAGING (agent-browser, compte jetable e2e-59-toast@wairyu-test.dev, backdoor OTP Bearer ADMIN_TOKEN, fixtures garde M3 → #/quete/2.3) : message SW injecté via navigator.serviceWorker.dispatchEvent(MessageEvent 'wairyu-push') — même cible d'écoute que le composant (seule la transmission SW→page est simulée ; le code sw.js postMessage est inchangé et déjà validé).
+  · DESKTOP 1280 : toast width=456, centré (|centre−640|<3px), bouton × présent (aria-label « Dismiss notification » — locale EN headless, miroir FR vérifié côté source), classe cliquable ; capture /tmp/e2e59-toast-desktop.png.
+  · Clic × → toast FERME. Re-injection + clic sur le toast → hash #/recolte + toast FERME.
+  · AUTO-DISMISS : PRESENT juste après injection → disparu à 13 s (durée 10 s effective).
+  · MOBILE 390 : width=366, marges gauche/droite 12px exactement ; capture /tmp/e2e59-toast-mobile.png.
+  · ZÉRO erreur console. Purge RGPD : {deleted:true}.
+- RAPPEL CONTEXTE : le retour précédent du fondateur (« bouton d'enregistrement ne fonctionne pas » sur 2.6, capture 5XgZSvq2) était déjà couvert par la Task 58 (verrou de somme + statut honnête + bouton désactivé visible, staging 0a4f1adb) — sa capture datait d'un staging antérieur. Aucune action supplémentaire : il peut retester 2.6 sur le staging actuel.
+- PROD NON TOUCHÉE.
+
+Stage Summary:
+- LA NOTIFICATION EST CORRIGÉE : cadrée dans le cadre de l'app (456px centré desktop, marges 12px mobile), bouton × de fermeture immédiate, auto-dismiss 10 s (90 s réservées au futur code OTP), clic sur le toast = ouverture de la destination (#/recolte pour les récoltes). FR/EN (aria-labels).
+- Zéro changement métier : canal push, sw.js, journal récolte, serveur — intacts ; diff = PushToast.tsx + styles.css.
+- Staging b790161a ; le lot Tasks 56+57+58+59 attend le feu vert fondateur pour la prod.
