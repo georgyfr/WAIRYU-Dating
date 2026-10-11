@@ -255,6 +255,7 @@ function Proto26() {
           cle: `${x.de}-${x.vers}-${x.points}`,
           phrase: `Déplace ${x.points} point${x.points > 1 ? 's' : ''} de « ${NOMS[x.de]} » vers « ${NOMS[x.vers]} » : ta carte devient « ${x.nom} ».`,
         }))}
+        cfVide="Aucun déplacement de points ne fait basculer ta carte ici : tes marges sont solides — la carte ne suit pas n'importe quel changement."
         faits={[
           `Tu as posé ${top.pts} points sur « ${NOMS[top.cle]} » — ${top.pts} % de ton énergie de cinq ans.`,
           `L'horizon le moins doté : « ${NOMS[min.cle]} » (${min.pts} points) — un arbitrage, jamais un oubli.`,
@@ -479,6 +480,7 @@ function ProtoLikert({ queteId }: { queteId: '1.1' | '1.2' }) {
         carte={carte}
         pourquoi={pourquoi}
         cf={cfPhrases}
+        cfVide="Aucune bascule à une ou deux réponses près : tes marges sont solides. La carte ne suit pas n'importe quel changement — elle suit la forme de tes réponses. Pour voir une bascule, élargis le contraste : mets plusieurs affirmations d'une même barre à « Pas du tout moi » (ou à « Tout à fait moi »)."
         faits={[
           `Sur les ${itemsTopDim.length} affirmations qui mesurent « ${barreTop?.nom ?? ''} », ta réponse la plus fréquente : « ${
             compteTopDim[0] ? LABEL_NIVEAU[compteTopDim[0][0]] : ''
@@ -516,6 +518,7 @@ function Bref({
   carte,
   pourquoi,
   cf,
+  cfVide,
   faits,
   noteMoteur,
   children,
@@ -524,6 +527,8 @@ function Bref({
   carte: CarteVue;
   pourquoi: string;
   cf: { cle: string; phrase: string }[];
+  /** Dit la vérité quand la recherche ne trouve AUCUNE bascule : marges solides. */
+  cfVide: string;
   faits: string[];
   noteMoteur: string;
   children?: ReactNode;
@@ -575,7 +580,7 @@ function Bref({
                 ))}
               </ul>
             ) : (
-              <p>Change n&apos;importe quelle réponse : la carte suivra.</p>
+              <p>{cfVide}</p>
             )}
             <p className="proto-preuve-note">{noteMoteur}</p>
           </div>
