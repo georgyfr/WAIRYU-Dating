@@ -1062,3 +1062,24 @@ Stage Summary:
 - LE MONDE 6 « MON CŒUR » EST JOUABLE SUR STAGING : 4 quêtes Likert verbatim (5.1 style amoureux 18 items · 5.2 vision de l'amour 8 · 5.3 expression de l'affection 10 · 5.7 humour 12) — graines gelées, sélecteurs verbatim, cartes verbatim, FR/EN complet, 6ᵉ sceau.
 - STAGING a7d06d79 (bundle index-DsAoVRjm.js) — vérification fondateur en 2 min : compte à jour des mondes 1-5 → l'atlas propose « Mon Cœur » (💎 PREMIUM, monétisation éteinte = jouable).
 - PROD NON TOUCHÉE (version d6b9c053 inchangée) : DEUX lots attendent un feu vert — (1) le Monde 5 « Ton Héritage » (Task 53), (2) le Monde 6 « Mon Cœur » (Task 54). Aucune migration D1 dans les deux lots.
+
+---
+Task ID: 55
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur — exécution attendue = déploiement PRODUCTION des deux lots en attente (Monde 5 « Ton Héritage » Task 53 + Monde 6 « Mon Cœur » Task 54). BLOCAGE : credentials Cloudflare perdus (10ᵉ reset du sandbox) — prod NON touchée, procédure de re-provisionnement documentée.
+
+Work Log:
+- FEU VERT INTERPRÉTÉ ET CONSIGNÉ : le rapport Task 54 se terminait par « DEUX lots attendent un feu vert — (1) Monde 5, (2) Monde 6 » ; le « feu vert » du fondateur libère ce déploiement prod. (Rappel d'état : la quête 4.4 « schémas précoces » est DÉJÀ livrée en Option B invisible — Task 53 ; la 1.8 « bien-être » PHQ-9 reste écartée par doctrine « Phase 3 opt-in » — consigné Tasks 53 et 54.)
+- 10ᵉ RESET DU SANDBOX constaté : /home/z/wairyu, /tmp/m5-m6, /home/z/SECRETS-WAIRYU-LOCAL.txt et le cache wrangler disparus. Re-cloné georgyfr/WAIRYU-Dating (HEAD 80eb770, dépôt public — PAT utilisé en URL de push uniquement, jamais stocké).
+- VÉRIFICATIONS PRÉ-PROD (tout au HEAD) : bunx tsc --noEmit apps/api → 0 erreur · apps/web → 0 erreur · vite build → bundle index-DsAoVRjm.js IDENTIQUE au staging a7d06d79 vérifié E2E en Task 54 (build reproductible — la prod servira exactement le lot testé).
+- D1 : dernière migration 0009_recolte_push.sql (Task 47, 2026-10-09) ANTÉRIEURE au déploiement prod Task 52 → base prod à jour ; Mondes 5+6 front-only (aucune migration à appliquer).
+- PROVENANCE (§0 du registre) : lignes 4.1-4.4 et 5.1/5.2/5.3/5.7 datées « Vérifié 2026-10-10 » ; sweep de pré-prod rejoué sur quete-4-*/quete-5-* (+ miroirs EN) : zéro occurrence réelle des 13 marques/auteurs/sigles interdits ni des typologies EN (Eros/Ludus/Storge/Pragma/Mania/Agape, love language) — faux positifs connus (spontaneous/agendas/prison) non déclenchés.
+- TENTATIVE DE DÉPLOIEMENT PROD : IMPOSSIBLE — CLOUDFLARE_API_TOKEN et CLOUDFLARE_ACCOUNT_ID perdus au reset (deploy.sh exige les deux variables ; aucun cache ~/.wrangler, aucune variable d'environnement, SECRETS-WAIRYU-LOCAL.txt disparu). RIEN n'a été déployé.
+- PUSH GITHUB ÉCHOUÉ : le PAT de la session précédente est rejeté (« Invalid username or token » — révoqué ou expiré). Commit local 0b34686 (worklog Task 55) en attente d'un PAT frais du fondateur ; rien n'est poussé.
+- Sortie de blocage (documentée) : le fondateur re-fournit les credentials (comme aux restaurations précédentes) → `source SECRETS-WAIRYU-LOCAL.txt && bash deploy.sh production` → vérifications E2E prod (health, bundle index-DsAoVRjm.js, atlas M5/M6 visibles, quête jouable de bout en bout, purge compte test RGPD).
+
+Stage Summary:
+- LOT PRÊT À DÉPLOYER : HEAD 80eb770 vert (typecheck ×2, build index-DsAoVRjm.js, D1 à jour, provenance vérifiée) — déploiement prod = une commande unique dès re-provisionnement des credentials Cloudflare.
+- PROD NON TOUCHÉE : wairyu.wairyu.workers.dev reste en version d6b9c053 (Recolte + Mondes 1-4) ; staging inchangé a7d06d79.
+- DEUX JETONS À RE-PROVISIONNER : (1) CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID pour le déploiement prod ; (2) un PAT GitHub frais pour pousser le worklog (commit local 0b34686).
+- Prochaine étape de contenu après le feu vert prod : Monde 7 (plan gelé C4 : M6/M7 → M8/M9 → M11 → M10) — sur demande du fondateur.
