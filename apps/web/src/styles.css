@@ -9070,3 +9070,114 @@ button.r-tl-chip:hover {
         min-width: 0
     }
 }
+
+/* --- Task 60-b : onglets de quête + replay Likert du prototype --- */
+
+.proto-onglets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center
+}
+
+.proto-onglet {
+    padding: 10px 16px;
+    font-size: 13.5px;
+    border-radius: 999px;
+    background: var(--c-white);
+    color: var(--c-gray-blue);
+    border: 1.5px solid var(--c-line)
+}
+
+.proto-onglet--on {
+    background: var(--c-night);
+    color: #fff;
+    border-color: var(--c-night)
+}
+
+.proto-rep-liste {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 460px;
+    overflow-y: auto;
+    padding: 4px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-turquoise-deep) var(--c-line)
+}
+
+.proto-rep-liste::-webkit-scrollbar {
+    width: 8px
+}
+
+.proto-rep-liste::-webkit-scrollbar-track {
+    background: var(--c-line);
+    border-radius: 999px
+}
+
+.proto-rep-liste::-webkit-scrollbar-thumb {
+    background: var(--c-turquoise-deep);
+    border-radius: 999px
+}
+
+.proto-rep {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-line)
+}
+
+.proto-rep:last-child {
+    border-bottom: none
+}
+
+.proto-rep-texte {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--c-night);
+    margin-bottom: 8px
+}
+
+.proto-rep-num {
+    color: var(--c-turquoise-deep);
+    font-weight: 900
+}
+
+.proto-rep-chips {
+    display: flex;
+    gap: 6px
+}
+
+.proto-chip {
+    flex: 1;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 10px;
+    border: 1.5px solid var(--c-line);
+    background: var(--c-white);
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--c-gray-blue);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s
+}
+
+.proto-chip:hover {
+    border-color: var(--c-turquoise-deep);
+    color: var(--c-turquoise-deep)
+}
+
+.proto-chip--on {
+    background: var(--c-turquoise-deep);
+    border-color: var(--c-turquoise-deep);
+    color: #fff
+}
+
+.proto-faits-ecouts li {
+    font-size: 13px;
+    color: var(--c-gray-blue)
+}
+
+.proto-faits-ecouts strong {
+    color: var(--c-night)
+}
