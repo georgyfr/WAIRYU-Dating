@@ -1324,3 +1324,37 @@ Stage Summary:
 - LA NOTIFICATION EST CORRIGÉE : cadrée dans le cadre de l'app (456px centré desktop, marges 12px mobile), bouton × de fermeture immédiate, auto-dismiss 10 s (90 s réservées au futur code OTP), clic sur le toast = ouverture de la destination (#/recolte pour les récoltes). FR/EN (aria-labels).
 - Zéro changement métier : canal push, sw.js, journal récolte, serveur — intacts ; diff = PushToast.tsx + styles.css.
 - Staging b790161a ; le lot Tasks 56+57+58+59 attend le feu vert fondateur pour la prod.
+
+---
+Task ID: 60 (entrée restaurée)
+Agent: orchestrateur (Z.ai Code)
+Task: Restauration du worklog après RESET DU SANDBOX (15:38) — l'entrée Task 60 avait été écrite APRÈS le push e5daeda et a été perdue avec le clone local. Contenu reconstitué intégralement depuis le journal de session.
+
+Work Log:
+- RESET SUBI : /home/z/wairyu, /home/z/SECRETS-WAIRYU-LOCAL.txt (tokens Cloudflare), ~/.git-credentials (jeton GitHub) et les fichiers /tmp (captures e2e59/proto60, ADMIN_TOKEN staging) ont disparu. AUCUN secret n'était committé — rien de compromis côté dépôt.
+- SURVIVANTS : GitHub main = e5daeda (Task 60 code inclus, push vérifié avant reset) ; déploiements Cloudflare vivants : STAGING cd970be2 (prototype anti-Barnum en ligne), PROD e16e6524 (lot Tasks 56-59).
+- RESTAURATION : re-clone anonyme (repo public) → HEAD e5daeda ; bun install 258 paquets ; la présente entrée.
+
+Stage Summary:
+- Environnement local reconstruit à l'identique du dernier état poussé. Tokens Cloudflare + GitHub À RE-FOURNIR par le fondateur pour tout nouveau déploiement staging / push main (même incident que Task 57).
+- Le prototype #/prototype-resultats reste EN LIGNE sur staging (version cd970be2) — la validation fondateur n'est pas interrompue.
+
+---
+Task ID: 61
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur — « donne moi aussi un prototype de la quête 1 et 2 du monde 1 » : étendre le prototype anti-Barnum aux quêtes 1.1 et 1.2.
+
+Work Log:
+- CONTEXTE : le sandbox a été RÉINITIALISÉ entre la Task 60 et la présente (/home/z/wairyu, SECRETS-WAIRYU-LOCAL.txt, ~/.git-credentials et /tmp disparus). Restauration : re-clone anonyme GitHub → HEAD e5daeda (Task 60 intégrale), bun install, worklog Task 60 ré-appendu (entrée restaurée). Les déploiements Cloudflare n'ont pas été affectés (staging cd970be2 / prod e16e6524 vivants).
+- ANALYSE 1.1 / 1.2 : 1.1 = 50 items Likert 1-5 (O/C/E/A/S, contribution (r−1)/4 direct, (5−r... recodage 6−r inversé), sélecteur 7 branches à seuils (V5 S<0.4 && E|O≥0.55 ; V2 C≥0.65 && S≥0.6 ; V1 O≥0.65 && A≥0.6 ; V3 E≥0.65 && O≥0.6 ; V6 E≤0.4 && O≥0.55 ; V4 S≥0.6 && A≥0.55 ; sinon V7) ; 1.2 = 12 items (A/E), 5 cartes (L'Ancrage, La Vigie, L'Autonome, Le Va-et-vient, L'Équilibre en mouvement), sélecteur 5 branches.
+- EXTENSION DU PROTOTYPE (#/prototype-resultats) : onglets 2.6 / 1.1 / 1.2 (role=tablist) ; refactoring en composants partagés Bref (avant/après) et Detaille (avant/après) réutilisés par les 3 quêtes.
+- REPLAY LIKERT RÉEL : liste scrollable des affirmations VERBATIM (50 pour 1.1, 12 pour 1.2) avec chips 1-5 (échelle verbatim « Pas du tout moi » → « Tout à fait moi », importée de quete-1-1) ; presets par PROFIL DE DIMENSIONS exacts — chaque preset pose, par dimension, un niveau L (1-5) et calcule chaque réponse brute selon l'orientation de l'item (D → L, I → 6−L) : la moyenne de dimension vaut exactement (L−1)/4, la carte visée est garantie par les seuils du sélecteur (Vérifié en E2E : Explorateur→V1, Intense→V5, Ancrage→V1-Ancrage, Va-et-vient→V4…).
+- PREUVE LIKERT : « Pourquoi cette carte » = les 2 barres les plus hautes en /100 + « c'est ce profil de barres qui choisit » ; « Ce que tes réponses disent, mot pour mot » = le COMPTE fréquentiel de la dimension haute (« Sur les 10 affirmations… « Plutôt moi » 7 fois sur 10 ») + la liste intégrale des affirmations de cette dimension avec la réponse de l'utilisateur (les items inversés restent en réponses BRUTES — le recodage reste moteur, charte respectée) ; barre % + palierLabel.
+- CONTRE-FACTUEL LIKERT (moteur réel) : recherche de la bascule MINIMALE — d'abord à UNE réponse près (items × 4 valeurs, tri par plus petit écart), sinon à DEUX (paires × 16 combinaisons — 19 600 appels moteur pour 1.1, instantané), formulations honnêtes (« Réponds « X » à « énoncé »… » / « Deux réponses d'un coup… »). Les énoncés sont tronqués à 72/48 caractères.
+- GARDE-FOUS INCHANGÉS : AUCUN item/scorer/sélecteur/texte modifié — QUETES['1.1']/['1.2'] (scorer → choisirVariante → cartes) + construireApercuResultats + ARCHES_1_1/ARCHES_1_2 verbatim. Section 5 du prototype mise à jour (Likert « rejoué ci-dessus pour 1.1 et 1.2 »).
+- Typecheck 0 erreur · build Vite OK · VÉRIFICATION LOCALE COMPLÈTE (vite preview :4173 + agent-browser — déploiement staging IMPOSSIBLE, tokens perdus au reset) : 3 onglets ; 2.6 intact (Grue + 3 contre-factuels) ; 1.1 : 50 items, presets exacts (Explorateur→The Warm Explorer, Intense→The Intense One), preuve mot-pour-mot 10 affirmations, contre-factuel honnête « deux réponses d'un coup » (marges solides → 19 600 appels moteur), chip manuel 1→5 réactif ; 1.2 : 12 items, Ancrage→Anchored (25/100×2), Va-et-vient→The Come-and-Go (75/100×2), contre-factuel 2 réponses → Balance in Motion ; ZÉRO erreur page ; overflow mobile 390/390 OK ; captures /tmp/proto61-12-desktop.png + /tmp/proto61-12-mobile.png.
+- BLOQUÉ (honnête) : PUSH GitHub (pas de credentials) et DÉPLOIEMENT STAGING (pas de CLOUDFLARE_API_TOKEN) — commit local 830ec2a en attente. Le fondateur doit re-fournir CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (+ jeton GitHub), comme après l'incident Task 57.
+
+Stage Summary:
+- LE PROTOTYPE COUVRE MAINTENANT 3 QUÊTES (2.6 arbitrage + 1.1/1.2 Likert) avec le même pattern : preuve / contre-factuel moteur / contrat de lecture — contenu verbatim, psychométrie intacte.
+- En attente de tokens pour : push main (830ec2a) + déploiement staging. Le prototype 2.6 de la Task 60 reste EN LIGNE sur staging (cd970be2) en attendant.
