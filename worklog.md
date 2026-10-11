@@ -1358,3 +1358,22 @@ Work Log:
 Stage Summary:
 - LE PROTOTYPE COUVRE MAINTENANT 3 QUÊTES (2.6 arbitrage + 1.1/1.2 Likert) avec le même pattern : preuve / contre-factuel moteur / contrat de lecture — contenu verbatim, psychométrie intacte.
 - En attente de tokens pour : push main (830ec2a) + déploiement staging. Le prototype 2.6 de la Task 60 reste EN LIGNE sur staging (cd970be2) en attendant.
+
+---
+Task ID: 61-b
+Agent: orchestrateur (Z.ai Code)
+Task: Tokens re-fournis par le fondateur → push GitHub + déploiement staging de la Task 61 (prototype 3 quêtes) + E2E réelle + correctif d'honnêteté du contre-factuel.
+
+Work Log:
+- TOKENS : CLOUDFLARE_API_TOKEN (vérifié actif via /user/tokens/verify) + CLOUDFLARE_ACCOUNT_ID + jeton GitHub re-fournis ; stockés dans /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600, HORS dépôt) ; credential.helper store reconfiguré (~/.git-credentials 600).
+- PUSH : worklog Task 60-restaurée + Task 61 commités (a75ab7a) puis push origin main VÉRIFIÉ (origin/main = HEAD). Puis correctif e71c427 poussé.
+- DÉPLOIEMENTS STAGING : 1er déploiement (version a14e0961, bundle index-CYMjPAv_.js = artefact Task 61 vérifié en local — identité d'artefact garantie) ; smoke /api/health OK.
+- INCIDENT CACHE : le navigateur a servi un index.html en cache (ancien bundle CYMjPAv_) malgré ?v=3 → contourné par ?v=4 (leçon Task 60 confirmée : cache Cloudflare/navigateur sur index.html).
+- BUG TROUVÉ ET CORRIGÉ pendant l'E2E : quand la recherche contre-factuelle ne trouve AUCUNE bascule (ex. preset « Intense » 1.1 : E=0,75/S=0 → aucune bascule à 1 ni 2 réponses près), le repli affichait « Change n'importe quelle réponse : la carte suivra. » — phrase DÉS-HONNÊTE qui contredisait la preuve venant de démontrer l'inverse. Correctif (e71c427) : prop cfVide par format — Likert : « Aucune bascule à une ou deux réponses près : tes marges sont solides… élargis le contraste » ; 2.6 : « Aucun déplacement de points ne fait basculer ta carte ici ». 2ᵉ déploiement staging (version 4afe4d28, bundle index-BszhWx47.js).
+- E2E RÉELLE COMPLÈTE (agent-browser, app en FR via localStorage wairyu.lang=fr) : 3 onglets présents ; 2.6 intact (Grue, faits, contre-factuels) ; 1.1 : 250 chips (50×5), preset Intense → L'Intense, preuve mot-pour-mot exacte (« Sur les 10 affirmations… « Plutôt moi » (5 fois sur 10) », barre 75/100), message marges solides AFFICHÉ ; contre-factuels SUIVIS avec succès (L23→1 puis L21→1 : E=0,6 → V5 tient et le moteur l'annonce ; L22→5 : bascule exacte vers L'Équilibriste) ; 1.2 : 60 chips, Ancrage par défaut, preset Va-et-vient → Le Va-et-vient, contre-factuel 2 réponses SUIVI (L01→1, L02→2 → L'Équilibre en mouvement exact).
+- NOTE TECHNIQUE (fausse alerte élucidée) : `${NOMS[min.cle]}` semblait corrompu (« NOMSin.cle] ») — c'était l'interprétation ANSI du terminal qui avalait la séquence [m ; vérifié par od -c : source intacte. Les presets Likert affichent les réponses BRUTES des items inversés (I → 6−L), d'où les « 2 » attendus sur les items E inversés au preset Intense — conforme au moteur.
+- ÉTAT FINAL : zéro erreur console, mobile 390/390 sans débordement (overflowX false), captures /tmp/proto61-final-desktop-11.png + /tmp/proto61-final-mobile-12.png.
+
+Stage Summary:
+- LE PROTOTYPE 3 QUÊTES (2.6 / 1.1 / 1.2) EST EN LIGNE sur staging : https://wairyu-staging.wairyu.workers.dev/#/prototype-resultats (version 4afe4d28, bundle index-BszhWx47.js) — en attente de validation fondateur.
+- URL à communiquer ; en cas de cache, ajouter ?v=4. PROD NON TOUCHÉE (toujours e16e6524). Contenu 100 % verbatim, aucun item/scorer/sélecteur modifié.
