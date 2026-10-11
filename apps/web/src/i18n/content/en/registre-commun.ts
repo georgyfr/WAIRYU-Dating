@@ -20,6 +20,7 @@ export const MONDES_NOMS: Record<string, string> = {
   M4: 'World 4 — Your Terrain',
   M5: 'World 5 — Your Heritage',
   M6: 'World 6 — Your Heart',
+  M7: 'World 7 — Facing Storms',
 };
 
 /** Les mots-nombre de titreTendances (2 → 5). */

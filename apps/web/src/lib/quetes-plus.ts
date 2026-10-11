@@ -125,6 +125,9 @@ import { ARCHES_41 } from './quete-4-1-arche';
 import { ARCHES_51 } from './quete-5-1-arche';
 import { ARCHES_52 } from './quete-5-2-arche';
 import { ARCHES_53 } from './quete-5-3-arche';
+import { ARCHES_54 } from './quete-5-4-arche';
+import { ARCHES_5_5 } from './quete-5-5-arche';
+import { ARCHES_5_6 } from './quete-5-6-arche';
 import { ARCHES_57 } from './quete-5-7-arche';
 import { ARCHES_42 } from './quete-4-2-arche';
 import type { IdQuete } from './quetes';
@@ -166,6 +169,9 @@ export const PLUS: Record<IdQuete, CouchePlus> = {
   '5.1': { cartes: {}, leviers: {} },
   '5.2': { cartes: {}, leviers: {} },
   '5.3': { cartes: {}, leviers: {} },
+  '5.4': { cartes: {}, leviers: {} },
+  '5.5': { cartes: {}, leviers: {} },
+  '5.6': { cartes: {}, leviers: {} },
   '5.7': { cartes: {}, leviers: {} },
 };
 
@@ -205,6 +211,9 @@ const ARCHE_FR: Record<IdQuete, Record<string, ArchetypeCarte>> = {
   '5.1': ARCHES_51,
   '5.2': ARCHES_52,
   '5.3': ARCHES_53,
+  '5.4': ARCHES_54,
+  '5.5': ARCHES_5_5,
+  '5.6': ARCHES_5_6,
   '5.7': ARCHES_57,
 };
 export const ARCHE = avecEN(ARCHE_FR, EN_ARCHE.ARCHE);

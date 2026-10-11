@@ -11,6 +11,7 @@ import { REGISTRE_M3 } from './registre-m3';
 import { REGISTRE_M4 } from './registre-m4';
 import { REGISTRE_M5 } from './registre-m5';
 import { REGISTRE_M6 } from './registre-m6';
+import { REGISTRE_M7 } from './registre-m7';
 
 export type MiroirQuete = L10n<QueteDef>;
 
@@ -21,4 +22,5 @@ export const REGISTRE_EN: Record<string, MiroirQuete> = {
   ...REGISTRE_M4,
   ...REGISTRE_M5,
   ...REGISTRE_M6,
+  ...REGISTRE_M7,
 };

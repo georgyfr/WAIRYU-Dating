@@ -164,10 +164,10 @@ export const WORLDS: VoyageWorld[] = avecEN([
     tagline: "Ton style amoureux, ta vision de l'amour, ton expression de l'affection, ton humour.",
     quests: 4,
     free: false,
-    // Monde 6 OUVERT (quêtes 5.1/5.2/5.3/5.7 livrées — 5.4/5.5/5.6 = M7,
-    // non construit) — l'accès reste séquentiel : l'écran Mondes ne le
-    // déverrouille qu'une fois le Monde 5 terminé. Monétisation éteinte :
-    // le badge 💎 reste informatif, aucun verrou payant.
+    // Monde 6 OUVERT (quêtes 5.1/5.2/5.3/5.7 livrées — Task 54). L'accès
+    // reste séquentiel : l'écran Mondes ne le déverrouille qu'une fois le
+    // Monde 5 terminé. Monétisation éteinte : le badge 💎 reste informatif,
+    // aucun verrou payant.
     status: "open",
   },
   {
@@ -184,7 +184,10 @@ export const WORLDS: VoyageWorld[] = avecEN([
     tagline: "Les désaccords font partie du voyage : comment tu traverses les tensions et répare après.",
     quests: 3,
     free: false,
-    status: "soon",
+    // Monde 7 OUVERT (quêtes 5.4/5.5/5.6 livrées — Task 55). Accès
+    // séquentiel après le Monde 6 ; badge 💎 informatif (monétisation
+    // éteinte).
+    status: "open",
   },
   {
     num: 8,

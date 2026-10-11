@@ -207,6 +207,9 @@ export default function Recolte() {
   const etat51 = useEtatQuete('5.1');
   const etat52 = useEtatQuete('5.2');
   const etat53 = useEtatQuete('5.3');
+  const etat54 = useEtatQuete('5.4');
+  const etat55 = useEtatQuete('5.5');
+  const etat56 = useEtatQuete('5.6');
   const etat57 = useEtatQuete('5.7');
   const etatsParId: Record<IdQuete, EtatQuete> = {
     '1.1': etat11,
@@ -240,6 +243,9 @@ export default function Recolte() {
     '5.1': etat51,
     '5.2': etat52,
     '5.3': etat53,
+    '5.4': etat54,
+    '5.5': etat55,
+    '5.6': etat56,
     '5.7': etat57,
   };
   // La progression RÉELLE — les compteurs et les jalons suivent l'état des

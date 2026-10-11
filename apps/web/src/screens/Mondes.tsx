@@ -159,6 +159,9 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const et51 = useEtatQuete('5.1');
   const et52 = useEtatQuete('5.2');
   const et53 = useEtatQuete('5.3');
+  const et54 = useEtatQuete('5.4');
+  const et55 = useEtatQuete('5.5');
+  const et56 = useEtatQuete('5.6');
   const et57 = useEtatQuete('5.7');
   const monde1Fini = useEtatQuete('1.1').terminee && useEtatQuete('1.2').terminee && et13.terminee;
   const monde2Fini = [et14, et15, et16, et17, et19, et110, et111].every((e) => e.terminee);
@@ -166,7 +169,8 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
   const monde4Fini = [et31, et32, et33, et34, et35, et36, et37].every((e) => e.terminee);
   const monde5Fini = [et41, et42, et43].every((e) => e.terminee); // 4.4 invisible — tissée
   const monde6Fini = [et51, et52, et53, et57].every((e) => e.terminee);
-  void monde6Fini; // M7 non construit — réservé pour le chaînage suivant
+  const monde7Fini = [et54, et55, et56].every((e) => e.terminee);
+  void monde7Fini; // M8 non construit — réservé pour le chaînage suivant
   const [openCode, setOpenCode] = useState<string | null>(null);
   const openWorld = openCode ? (WORLDS.find((w) => w.code === openCode) ?? null) : null;
   const fermerFiche = useCallback(() => setOpenCode(null), []);
@@ -198,7 +202,9 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                 ? monde4Fini
                 : w.code === 'M6'
                   ? monde5Fini
-                  : false;
+                  : w.code === 'M7'
+                    ? monde6Fini
+                    : false;
     if (w.status === 'open' && !ouvrable) return 'verrouille';
     const faites = parMonde[w.code]?.faites ?? 0;
     if (estEnCours(statuts, w.code) || faites > 0) return 'en_cours';
@@ -546,7 +552,8 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
           onClose={fermerFiche}
           // M1 toujours jouable ; M2 jouable une fois le Monde 1 terminé ;
           // M3 jouable une fois le Monde 2 terminé ; M4 après le M3 ;
-          // M5 « Ton Héritage » après le M4 ; M6 « Mon Cœur » après le M5.
+          // M5 « Ton Héritage » après le M4 ; M6 « Mon Cœur » après le M5 ;
+          // M7 « Face aux Tempêtes » après le M6.
           deverrouille={
             openWorld.code === 'M1'
               ? true
@@ -560,7 +567,9 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
                       ? monde4Fini
                       : openWorld.code === 'M6'
                         ? monde5Fini
-                        : false
+                        : openWorld.code === 'M7'
+                          ? monde6Fini
+                          : false
           }
           onEnterQuest={
             openWorld.code === 'M1' ||
@@ -568,7 +577,8 @@ export default function Mondes({ pendingWorld, onPendingConsumed, onEnterQuest }
             (openWorld.code === 'M3' && monde2Fini) ||
             (openWorld.code === 'M4' && monde3Fini) ||
             (openWorld.code === 'M5' && monde4Fini) ||
-            (openWorld.code === 'M6' && monde5Fini)
+            (openWorld.code === 'M6' && monde5Fini) ||
+            (openWorld.code === 'M7' && monde6Fini)
               ? onEnterQuest
               : undefined
           }

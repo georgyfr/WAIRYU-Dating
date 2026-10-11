@@ -130,13 +130,11 @@ export const DEF_57: EntreeRegistre = {
       'En relation, ta zone d\'ombre peut donner : la blague sur soi devenue la seule présentation. Pour toi : des faiblesses connues par cœur, des forces qui attendent. Pour l\'autre : rassurer à l\'infini, une tendresse qui s\'use. Ce qui aide : raconter une force sans rire — une fois suffit à changer l\'adresse.',
   },
 
-  // DERNIÈRE quête ouverte du Monde 6 « Mon Cœur » — la chaîne du monde se
-  // referme ici (précédent 4.3 en fin de M5) : le Monde suivant n'est pas
-  // construit, la transition passera par prochaineQuete()/l'atlas. AUCUN id
-  // de suite n'est inventé : la quête 5.4 (trames hébergées, phase V12)
-  // n'est ni construite ni nommable, et le Monde 7 n'a pas d'entrée au
-  // registre — d'où suivante = null.
-  suivante: null,
+  // La chaîne traverse les mondes (précédent 4.3 en fin de M5 → 5.1) : le
+  // Monde 7 « Face aux Tempêtes » est LIVRÉ (Task 55) — la quête 5.4
+  // « Face aux désaccords » ouvre le monde suivant (l'atlas verrouille
+  // l'accès au monde tant que le M6 n'est pas traversé).
+  suivante: '5.4',
 
   suite: {
     titre: 'La suite de ton voyage',
@@ -148,8 +146,8 @@ export const DEF_57: EntreeRegistre = {
       'Quand le désaccord arrive, qu\'est-ce qui te revient de ton histoire — et que veux-tu garder ?',
       'Qu\'est-ce qui, chez toi, répare une tension — un mot, un temps, un geste ?',
     ],
-    // CTA générique : le monde suivant n'est pas construit — le texte ne
-    // présuppose rien de son contenu (zéro teaser).
-    cta: 'Continuer le voyage',
+    // CTA nommé vers la première quête du Monde 7 (précédent 4.3 → 5.1 :
+    // « Entrer dans ton cœur »).
+    cta: 'Entrer dans la tempête',
   },
 };

@@ -47,6 +47,9 @@ import * as Q43 from './quete-4-3';
 import * as Q51 from './quete-5-1';
 import * as Q52 from './quete-5-2';
 import * as Q53 from './quete-5-3';
+import * as Q54 from './quete-5-4';
+import * as Q55 from './quete-5-5';
+import * as Q56 from './quete-5-6';
 import * as Q57 from './quete-5-7';
 import { DEF_14 } from './quete-1-4-def';
 import { DEF_15 } from './quete-1-5-def';
@@ -76,6 +79,9 @@ import { DEF_43 } from './quete-4-3-def';
 import { DEF_51 } from './quete-5-1-def';
 import { DEF_52 } from './quete-5-2-def';
 import { DEF_53 } from './quete-5-3-def';
+import { DEF_54 } from './quete-5-4-def';
+import { DEF_55 } from './quete-5-5-def';
+import { DEF_56 } from './quete-5-6-def';
 import { DEF_57 } from './quete-5-7-def';
 import type { LikertNiveau } from './quete-1-1';
 import { avecEN } from '../i18n/apply';
@@ -156,6 +162,9 @@ export type IdQuete =
   | '5.1'
   | '5.2'
   | '5.3'
+  | '5.4'
+  | '5.5'
+  | '5.6'
   | '5.7';
 
 export interface DimDef {
@@ -273,19 +282,19 @@ export const COMMUN = avecEN(
 
 /** La chaîne des quêtes ouvertes du voyage (Monde 1 + Monde 2 « Le Volant »
  *  + Monde 3 « La Boussole » + Monde 4 « Ton Terrain » + Monde 5
- *  « Ton Héritage » + Monde 6 « Mon Cœur »). 1.8 n'existe pas au Livrable
- *  (série 1.x : la numérotation traverse M1/M2) ; la série 2.x traverse M3 ;
- *  la série 3.x traverse M4 ; la série 4.x traverse M5 — la quête 4.4
- *  « Blessures et aisance » est INVISIBLE par design (tissée dans les
- *  passations de 4.1 et 4.2 — aucune entrée registre, aucun écran) ; la
- *  série 5.x traverse M6 (5.4/5.5/5.6 = M7 « Face aux Tempêtes », non
- *  construit — ordre du Livrable : M6 héberge 5.1, 5.2, 5.3 et 5.7). */
+ *  « Ton Héritage » + Monde 6 « Mon Cœur » + Monde 7 « Face aux Tempêtes »).
+ *  1.8 n'existe pas au Livrable (série 1.x : la numérotation traverse M1/M2) ;
+ *  la série 2.x traverse M3 ; la série 3.x traverse M4 ; la série 4.x
+ *  traverse M5 — la quête 4.4 « Blessures et aisance » est INVISIBLE par
+ *  design (tissée dans les passations de 4.1 et 4.2 — aucune entrée
+ *  registre, aucun écran) ; la série 5.x traverse M6 (5.1, 5.2, 5.3, 5.7 —
+ *  ordre du Livrable) PUIS M7 « Face aux Tempêtes » (5.4, 5.5, 5.6 — Task 55). */
 export const QUETE_IDS: readonly IdQuete[] = [
   '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.9', '1.10', '1.11',
   '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8',
   '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7',
   '4.1', '4.2', '4.3',
-  '5.1', '5.2', '5.3', '5.7',
+  '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7',
 ];
 
 /** Les couches APP d'une entrée de registre — rédigées (jamais verbatim du
@@ -1152,6 +1161,60 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     cartes: Q53.CARTES,
     completion: Q53.COMPLETION,
   },
+  '5.4': {
+    id: '5.4',
+    numero: 1,
+    totalDuMonde: 3,
+    titre: 'Face aux désaccords',
+    ...DEF_54,
+    annonce: Q54.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q54.BRIEFING.aQuoiCaSert,
+      resultats: Q54.BRIEFING.resultats,
+    },
+    deck: Q54.deckQuete,
+    format: 'likert',
+    scorer: Q54.scorer,
+    choisirVariante: (s) => Q54.choisirVariante(s as Q54.Score54),
+    cartes: Q54.CARTES,
+    completion: Q54.COMPLETION,
+  },
+  '5.5': {
+    id: '5.5',
+    numero: 2,
+    totalDuMonde: 3,
+    titre: 'Quand la tension monte',
+    ...DEF_55,
+    annonce: Q55.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q55.BRIEFING.aQuoiCaSert,
+      resultats: Q55.BRIEFING.resultats,
+    },
+    deck: Q55.deckQuete,
+    format: 'likert',
+    scorer: Q55.scorer,
+    choisirVariante: (s) => Q55.choisirVariante(s as Q55.Score55),
+    cartes: Q55.CARTES,
+    completion: Q55.COMPLETION,
+  },
+  '5.6': {
+    id: '5.6',
+    numero: 3,
+    totalDuMonde: 3,
+    titre: 'Après un désaccord',
+    ...DEF_56,
+    annonce: Q56.BRIEFING.annonce,
+    briefing: {
+      aQuoiCaSert: Q56.BRIEFING.aQuoiCaSert,
+      resultats: Q56.BRIEFING.resultats,
+    },
+    deck: Q56.deckQuete,
+    format: 'likert',
+    scorer: Q56.scorer,
+    choisirVariante: (s) => Q56.choisirVariante(s as Q56.Score56),
+    cartes: Q56.CARTES,
+    completion: Q56.COMPLETION,
+  },
   '5.7': {
     id: '5.7',
     numero: 4,
@@ -1179,7 +1242,7 @@ export const QUETES: Record<IdQuete, QueteDef> = avecEN(REGISTRE_FR, REGISTRE_EN
 /** Le monde d'une quête (les séries 1.x et 2.x traversent les mondes — le
  *  code reste la clé). Utilisé par les écrans : chip d'entête,
  *  marquerMondeEnCours, libellés. */
-export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | 'M5' | 'M6'; nom: string } {
+export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | 'M5' | 'M6' | 'M7'; nom: string } {
   if (id === '1.1' || id === '1.2' || id === '1.3')
     return { code: 'M1', nom: getLang() === 'en' ? MONDES_NOMS.M1 : 'Monde 1 — Le Miroir' };
   if (id.startsWith('1.'))
@@ -1190,6 +1253,8 @@ export function mondeDeQuete(id: IdQuete): { code: 'M1' | 'M2' | 'M3' | 'M4' | '
     return { code: 'M4', nom: getLang() === 'en' ? MONDES_NOMS.M4 : 'Monde 4 — Ton Terrain' };
   if (id.startsWith('4.'))
     return { code: 'M5', nom: getLang() === 'en' ? MONDES_NOMS.M5 : 'Monde 5 — Ton Héritage' };
+  if (id === '5.4' || id === '5.5' || id === '5.6')
+    return { code: 'M7', nom: getLang() === 'en' ? MONDES_NOMS.M7 : 'Monde 7 — Face aux Tempêtes' };
   return { code: 'M6', nom: getLang() === 'en' ? MONDES_NOMS.M6 : 'Monde 6 — Mon Cœur' };
 }
 
