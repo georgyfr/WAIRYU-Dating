@@ -1083,3 +1083,20 @@ Stage Summary:
 - PROD NON TOUCHÉE : wairyu.wairyu.workers.dev reste en version d6b9c053 (Recolte + Mondes 1-4) ; staging inchangé a7d06d79.
 - DEUX JETONS À RE-PROVISIONNER : (1) CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID pour le déploiement prod ; (2) un PAT GitHub frais pour pousser le worklog (commit local 0b34686).
 - Prochaine étape de contenu après le feu vert prod : Monde 7 (plan gelé C4 : M6/M7 → M8/M9 → M11 → M10) — sur demande du fondateur.
+
+---
+Task ID: 55-b
+Agent: orchestrateur (Z.ai Code)
+Task: Jetons reçus du fondateur → exécution du feu vert : DÉPLOIEMENT PRODUCTION des Mondes 5+6 + vérifications réelles + push GitHub.
+
+Work Log:
+- Credentials re-provisionnés et vérifiés : token Cloudflare actif (verify 200, expire 2026-12-30) · compte a6ad9b4a2f8b42a6cf7f38e4e519ec22 (« Wairyu26@gmail.com's Account ») · SECRETS-WAIRYU-LOCAL.txt reconstitué hors dépôt (chmod 600, jamais committé).
+- DÉPLOIEMENT PROD RÉUSSI : bash deploy.sh production → typecheck + vite build + (0 migration D1 nouvelle) + wrangler deploy. Version ID 843c8867-b6ae-4939-b246-e4c975937d68, assets servis dont index-DsAoVRjm.js (bundle identique au staging a7d06d79 E2E-vérifié Task 54), bindings D1 wairyu-prod / KV / DO ChatRoom / ENVIRONMENT=production intacts, cron 10 3 * * * reconduit.
+- VÉRIFICATIONS PROD RÉELLES : /api/health → HTTP 200 {"ok":true,"env":"production"} · index.html référence index-DsAoVRjm.js · bundle servi HTTP 200 (1 275 383 o) · marqueurs M5/M6 présents dans le bundle servi (« Ton Héritage » ×3, « Mon Cœur » ×2) · rendu réel agent-browser 390×844 : écran d'accueil rendu (titre « wairyu — rencontres sincères », bouton Start, console notifications), ZÉRO erreur JS/page. Capture /tmp/prod-deploy-55.png.
+- Périmètre E2E prod : la passation complète compte-requiert une session authentifiée — Turnstile strict fail-closed en prod (E2E auth désactivé by design) ; la vérification jouable complète reste celle de Task 54 sur staging (bundle identique), conformément au précédent Task 52.
+- PUSH GITHUB RÉUSSI : le rejet du PAT en Task 55 était transitoire — push main OK (forme x-access-token), ls-remote vérifié : origin/main = e7287ae (worklog Tasks 55 + 55-b).
+
+Stage Summary:
+- PRODUCTION = Mondes 1-6 complets (Recolte inclus), version 843c8867, bundle index-DsAoVRjm.js : le fondateur peut vérifier en 2 min — compte à jour → l'atlas propose « Ton Héritage » puis « Mon Cœur » (💎 PREMIUM, monétisation éteinte = jouables).
+- Aucune migration D1 appliquée en prod (front-only confirmé). Staging et prod désormais AU MÊME BUNDLE.
+- Prochaine étape de contenu : Monde 7 (plan gelé C4) — sur demande du fondateur. 1.8 PHQ-9 reste doctrine « Phase 3 opt-in ».
