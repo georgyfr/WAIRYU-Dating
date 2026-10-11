@@ -75,12 +75,14 @@ import {
   useEtatQuete,
 } from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
-import { TOTAL_STEPS } from '../lib/voyage';
+import { TOTAL_STEPS, WORLDS } from '../lib/voyage';
 import { useProgression } from '../lib/progression';
 import { useI18n } from '../i18n/I18nProvider';
 import { interpolerMontants } from '../i18n/apply';
 import PartageCarteModal from '../components/PartageCarteModal';
 import type { CartePartageable } from '../components/CarteTypes';
+import VoyageIcon from '../components/VoyageIcons';
+import type { VoyageIconName } from '../components/VoyageIcons';
 
 type Phase = 'briefing' | 'passation' | 'details' | 'carte' | 'ecran';
 
@@ -211,6 +213,40 @@ function IcoTelecharger() {
 /** Profil de voyage : étapes réellement franchies (quêtes terminées) sur 51. */
 function profilPct(stepsDone: number): number {
   return Math.min(100, Math.round((stepsDone / TOTAL_STEPS) * 100));
+}
+
+/** L'icône du monde pour le héros du briefing (données Voyage — pur affichage,
+ *  même icône que l'écran Voyage ; repli boussole si code inconnu). */
+function heroIconMonde(code: string): VoyageIconName {
+  return (WORLDS.find((w) => w.code === code)?.icon as VoyageIconName) ?? 'compass';
+}
+
+/** La modalité du briefing (cellule centrale des statistiques) — PUR AFFICHAGE :
+ *  le chiffre et le libellé décrivent la passation (5 niveaux, 1 écran…), jamais
+ *  un score ni une donnée moteur. Dérivé du format de la quête uniquement. */
+function modaliteFormat(
+  format: QueteDef['format'],
+  tx: (fr: string, vars?: Record<string, string | number>) => string,
+): { n: number; label: string } {
+  switch (format) {
+    case 'likert':
+    case 'likert-enigmes':
+      return { n: LIKERT.length, label: tx('niveaux') };
+    case 'checklist':
+    case 'ecran':
+      return { n: 1, label: tx('écran') };
+    case 'choix':
+      return { n: 2, label: tx('options') };
+    case 'binaire':
+    case 'jeu':
+      return { n: 2, label: tx('choix') };
+    case 'arbitrage':
+      return { n: 100, label: tx('points') };
+    case 'clic':
+      return { n: 1, label: tx('touche') };
+    case 'images':
+      return { n: 2, label: tx('scènes') };
+  }
 }
 
 /** Le texte de partage de la carte (Web Share OU presse-papiers). */
@@ -395,29 +431,65 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   // ---------------------------------------------------------------- briefing
   if (phase === 'briefing') {
     const peutReprendre = repondues > 0 && !etat.terminee;
+    const modalite = modaliteFormat(quete.format, tx);
+    const labelItems =
+      quete.format === 'likert' || quete.format === 'likert-enigmes'
+        ? deck.length > 1
+          ? tx('affirmations')
+          : tx('affirmation')
+        : deck.length > 1
+          ? tx('énoncés')
+          : tx('énoncé');
     return (
-      <main className="screen q-screen" aria-labelledby="q-title">
-        <button type="button" className="q-back" onClick={onExit}>
-          <Fleche dir="left" />
-          {tx('Retour aux mondes')}
-        </button>
-        <div className="q-head">
-          <span className="v-chip v-chip-now">
-            <span className="v-chip-dot" aria-hidden="true" />
-            {monde.nom}
-          </span>
-          <span className="v-chip v-chip-soon">
-            {tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
-          </span>
-          <span className="v-chip v-chip-done">{tx('Gratuite')}</span>
+      <main className="screen q-screen qtv" aria-labelledby="q-title">
+        <div className="qtv-top">
+          <button type="button" className="q-back" onClick={onExit}>
+            <Fleche dir="left" />
+            {tx('Retour aux mondes')}
+          </button>
+          <span className="v-chip v-chip-done qtv-free">{tx('Gratuite')}</span>
         </div>
-        <h1 className="screen-title" id="q-title">
-          {quete.titre}
-        </h1>
-        <p className="screen-sub">{quete.sousTitre}</p>
+        <p className="qtv-eyebrow">{monde.nom.replace(' — ', ' · ').toUpperCase()}</p>
+        <div
+          className="qtv-seg"
+          role="img"
+          aria-label={tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
+        >
+          {Array.from({ length: quete.totalDuMonde }).map((_, i) => (
+            <span key={i} className={i < quete.numero ? 'qtv-seg-on' : undefined} />
+          ))}
+        </div>
+        <p className="qtv-quen" aria-hidden="true">
+          {tx('Quête {{n}} sur {{total}}', { n: quete.numero, total: quete.totalDuMonde })}
+        </p>
+        <div className="qtv-hero">
+          <span className="qtv-hero-ico" aria-hidden="true">
+            <VoyageIcon name={heroIconMonde(monde.code)} size={38} strokeWidth={1.7} />
+          </span>
+          <div className="qtv-hero-txt">
+            <h1 className="qtv-titre" id="q-title">
+              {quete.titre}
+            </h1>
+            <p className="qtv-sub">{quete.sousTitre}</p>
+          </div>
+        </div>
         <blockquote className="q-annonce">
           <p>{quete.annonce}</p>
         </blockquote>
+        <div className="qtv-stats" role="list" aria-label={tx('La quête en un coup d\'œil')}>
+          <div className="qtv-stat" role="listitem">
+            <strong>{deck.length}</strong>
+            <span>{labelItems}</span>
+          </div>
+          <div className="qtv-stat" role="listitem">
+            <strong>{modalite.n}</strong>
+            <span>{modalite.label}</span>
+          </div>
+          <div className="qtv-stat" role="listitem">
+            <strong>0</strong>
+            <span>{tx('chronomètre')}</span>
+          </div>
+        </div>
         <section className="q-sec" aria-label="À quoi sert cette quête">
           <h3>{tx('À quoi sert cette quête')}</h3>
           {quete.briefing.aQuoiCaSert.map((p) => (
@@ -538,7 +610,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     // ouvert, facultatif, jamais rendu).
     const ecranEcrite43 = queteId === '4.3';
     return (
-      <main className="screen q-screen q-run" aria-labelledby="q-run-label">
+      <main className="screen q-screen q-run qtv" aria-labelledby="q-run-label">
         {montreReprise && (
           <p className="q-resume" role="status">
             {tx("Tu reprends là où tu t'es arrêté — tes réponses sont conservées.")}
@@ -796,7 +868,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               );
             })}
             <label className="q-check-libre">
-              <span>Une autre ligne rouge, dans tes mots — ou laisse vide.</span>
+              <span>{tx('Une autre ligne rouge, dans tes mots — ou laisse vide.')}</span>
               <textarea
                 value={etat.textes?.[LIBRE_CODE] ?? ''}
                 maxLength={500}
@@ -1009,7 +1081,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       const silence = badgeTitre === '';
       const laSuite2 = quete.suivante ? QUETES[quete.suivante] : null;
       return (
-        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+        <main className="screen q-screen qtv" aria-labelledby="q-ecran-title">
           <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
             <p className="q-carte-entete">{quete.completion.entete}</p>
             {silence ? (
@@ -1058,7 +1130,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     if (queteId === '3.7') {
       const laSuite37 = quete.suivante ? QUETES[quete.suivante] : null;
       return (
-        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+        <main className="screen q-screen qtv" aria-labelledby="q-ecran-title">
           <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
             <p className="q-carte-entete">{quete.completion.entete}</p>
             <h1 className="q-carte-nom" id="q-ecran-title">
@@ -1094,7 +1166,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     if (queteId === '4.3') {
       const laSuite43 = quete.suivante ? QUETES[quete.suivante] : null;
       return (
-        <main className="screen q-screen" aria-labelledby="q-ecran-title">
+        <main className="screen q-screen qtv" aria-labelledby="q-ecran-title">
           <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
             <p className="q-carte-entete">{quete.completion.entete}</p>
             <h1 className="q-carte-nom" id="q-ecran-title">
@@ -1127,7 +1199,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     const ecran = queteId === '1.7' ? ECRAN_17 : SORTIES_111[chemin111(etat.reponses)];
     const laSuite = quete.suivante ? QUETES[quete.suivante] : null;
     return (
-      <main className="screen q-screen" aria-labelledby="q-ecran-title">
+      <main className="screen q-screen qtv" aria-labelledby="q-ecran-title">
         <div className="q-carte" role="region" aria-label={tx('Ton écran')}>
           <p className="q-carte-entete">{quete.completion.entete}</p>
           <h1 className="q-carte-nom" id="q-ecran-title">
@@ -1183,7 +1255,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     const arche = ARCHE[queteId][carte.id];
     const suivante = quete.suivante ? QUETES[quete.suivante] : null;
     return (
-      <main className="screen q-screen q-det" aria-labelledby="q-det-title">
+      <main className="screen q-screen q-det qtv" aria-labelledby="q-det-title">
         <button type="button" className="q-back" onClick={() => setPhase('carte')}>
           <Fleche dir="left" />
           {tx('Revenir à ma carte')}
@@ -1300,7 +1372,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const carte = etat.carteId && quete.cartes[etat.carteId] ? quete.cartes[etat.carteId] : quete.cartes[quete.choisirVariante(quete.scorer(etat.reponses))];
   const suivante = quete.suivante ? QUETES[quete.suivante] : null;
   return (
-    <main className="screen q-screen" aria-labelledby="q-carte-title">
+    <main className="screen q-screen qtv" aria-labelledby="q-carte-title">
       <div className="q-carte" role="region" aria-label={tx('Ta carte')}>
         <p className="q-carte-entete">{quete.completion.entete}</p>
         <h1 className="q-carte-nom" id="q-carte-title">

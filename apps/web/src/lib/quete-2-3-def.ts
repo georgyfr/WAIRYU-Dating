@@ -34,6 +34,12 @@ export const DEF_23: EntreeRegistre = {
       nom: 'Tes lignes rouges',
       sousLigne: 'ce que tu ne négocies pas',
       genre: 'f',
+      // Affichage seul (Task 56) : la barre se lit sur 9 coches (comptage
+      // brut — la computation et le sélecteur verbatim 0-2/3-6/7+ ne bougent
+      // pas). Les seuils alignent les textes de palier sur les MÊMES plages
+      // que la carte : doux ≤ 2 · équilibre 3-6 · fort ≥ 7.
+      max: 9,
+      seuils: [2.5 / 9, 6.5 / 9],
       lecture:
         'Cette barre dit combien de lignes rouges tu poses : pleine, un cadre précis ; légère, un cadre ouvert. Elle ne mesure rien — cocher décrit tes limites, il n\'y a ni bonne ni mauvaise liste. Un cadre précis n\'est pas une fermeture, un cadre ouvert n\'est pas un défaut : les deux se valent, et la liste se relit à tout moment.',
     },

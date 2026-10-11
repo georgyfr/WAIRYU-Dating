@@ -119,6 +119,30 @@ export const CORE: Record<string, string> = {
   'Question précédente': 'Previous question',
   'Faire une pause — tes réponses restent': 'Take a break — your answers stay saved',
 
+  // ---- écran Quête — briefing v2 (refonte « Tes valeurs », scopée .qtv) :
+  // libellés des statistiques et de la modalité — pur affichage, jamais un score.
+  affirmations: 'statements',
+  affirmation: 'statement',
+  'énoncés': 'statements',
+  'énoncé': 'statement',
+  'niveaux': 'levels',
+  'écran': 'screen',
+  options: 'options',
+  choix: 'choices',
+  points: 'points',
+  touche: 'tap',
+  'scènes': 'scenes',
+  'chronomètre': 'timer',
+  'La quête en un coup d\'œil': 'The quest at a glance',
+  'Une autre ligne rouge, dans tes mots — ou laisse vide.':
+    'Another red line, in your own words — or leave it blank.',
+  'Une liste s\'affiche : des lignes rouges possibles. Tu coches celles qui sont rédhibitoires pour toi — tu peux tout laisser vide, c\'est une réponse complète.':
+    'A list appears: possible red lines. Tick the ones that are deal-breakers for you — you can leave it all empty, that is a complete answer.',
+  'Une ligne rouge, c\'est ce que tu ne peux pas construire chez l\'autre. Cocher n\'est jamais « mieux » que ne pas cocher.':
+    'A red line is what you cannot build within the other person. Ticking is never "better" than not ticking.',
+  'À la fin, tu peux ajouter une ligne rouge dans tes mots — ou ne rien écrire.':
+    'At the end, you can add a red line in your own words — or write nothing.',
+
   // ---- écran Quête — carte
   'Ton écran': 'Your screen',
   'Ta carte': 'Your card',

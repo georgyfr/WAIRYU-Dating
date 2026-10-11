@@ -7993,3 +7993,599 @@ button.r-tl-chip:hover {
         transition: none;
     }
 }
+
+/* ============================================================
+   « QUÊTE » v2 (qtv) — refonte visuelle d'après la maquette
+   fondateur « Tes valeurs, refonte » : crème #F6F3EC, titres
+   Fraunces, corps Figtree, carte annonce teal #0F5C66, segments
+   de progression or #F2B84B, chip Gratuite #DDF1F2.
+   TOUT est scopé sous .qtv (posé sur les <main> de Quete.tsx) :
+   le reste de l'app est intact. PRÉSENTATION SEULE — textes,
+   ordre des items, scoring et sélecteurs inchangés. Thème clair
+   uniquement (l'app n'a pas de variante sombre ; le scope évite
+   tout débordement). Contrastes ≥ 4.5:1, cibles ≥ 44 px.
+   ============================================================ */
+.qtv {
+    --q-bg: #F6F3EC;
+    --q-card: #FFFFFF;
+    --q-ink: #1E2B2F;
+    --q-mute: #52646A;
+    --q-line: #E5DFD0;
+    --q-teal: #0F5C66;
+    --q-teal2: #0F7C86;
+    --q-tint: #EAF3F3;
+    --q-teal-bd: #BFE3E5;
+    --q-gold: #F2B84B;
+    --q-gold-ink: #8A5B00;
+    --q-red-ink: #A03A3A;
+    margin: -18px 0 0;
+    padding: 18px 20px calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom));
+    background: var(--q-bg);
+    font-family: 'Figtree', 'Nunito', system-ui, sans-serif;
+    color: var(--q-ink)
+}
+
+/* ---- Briefing : rangée retour + chip gratuite ---- */
+.qtv-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.qtv .q-back {
+    color: var(--q-mute)
+}
+
+.qtv .q-back:hover {
+    color: var(--q-ink);
+    background: rgba(30, 43, 47, 0.06)
+}
+
+.qtv .v-chip {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    padding: 5px 12px
+}
+
+.qtv-free {
+    background: #DDF1F2;
+    color: #0B5059;
+    border: none
+}
+
+/* ---- Eyebrow monde + segments de progression (maquette) ---- */
+.qtv-eyebrow {
+    margin: 10px 0 0;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    color: var(--q-teal2)
+}
+
+.qtv-seg {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px
+}
+
+.qtv-seg span {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--q-line)
+}
+
+.qtv-seg span.qtv-seg-on {
+    background: var(--q-gold)
+}
+
+.qtv-quen {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: var(--q-mute)
+}
+
+/* ---- Héros : icône du monde + titre Fraunces + sous-titre ---- */
+.qtv-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px
+}
+
+.qtv-hero-ico {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+    border-radius: 38px;
+    background: var(--q-teal);
+    color: #F2B84B;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.qtv-hero-txt {
+    min-width: 0
+}
+
+.qtv-titre {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--q-ink)
+}
+
+.qtv-sub {
+    margin: 6px 0 0;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--q-mute)
+}
+
+/* ---- L'annonce verbatim devient la carte teal de la maquette ---- */
+.qtv .q-annonce {
+    border: none;
+    border-left: none;
+    border-radius: 20px;
+    background: var(--q-teal);
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(15, 92, 102, .25)
+}
+
+.qtv .q-annonce p {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.35;
+    color: #FFFFFF
+}
+
+/* ---- Statistiques : énoncés · modalité · 0 chronomètre ---- */
+.qtv-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--q-line);
+    border-radius: 18px;
+    background: var(--q-card);
+    overflow: hidden
+}
+
+.qtv-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 4px;
+    text-align: center
+}
+
+.qtv-stat + .qtv-stat {
+    border-left: 1px solid var(--q-line)
+}
+
+.qtv-stat strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--q-ink)
+}
+
+.qtv-stat span {
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--q-mute)
+}
+
+/* ---- Sections du briefing : cartes blanches, en-têtes teal ---- */
+.qtv .q-sec {
+    background: var(--q-card);
+    border: 1px solid var(--q-line);
+    border-radius: 20px;
+    box-shadow: none;
+    padding: 16px
+}
+
+.qtv .q-sec h3 {
+    color: var(--q-teal2);
+    letter-spacing: .05em
+}
+
+.qtv .q-sec p,
+.qtv .q-list li,
+.qtv .q-profil-intro,
+.qtv .q-det-dim-texte {
+    color: var(--q-ink)
+}
+
+.qtv .q-list li::before {
+    background: var(--q-teal2)
+}
+
+.qtv .q-scale-step {
+    background: var(--q-card);
+    border-color: var(--q-line);
+    color: var(--q-mute)
+}
+
+.qtv .q-scale-step[data-level="5"] {
+    background: var(--q-teal);
+    border-color: var(--q-teal);
+    color: #FFFFFF
+}
+
+/* ---- « Voulez-vous commencer ? » + boutons ---- */
+.qtv .q-ask {
+    background: var(--q-card);
+    border: 1px solid var(--q-line);
+    border-radius: 20px;
+    box-shadow: none
+}
+
+.qtv .q-ask-q {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600
+}
+
+.qtv .btn {
+    border-radius: 16px;
+    font-weight: 700
+}
+
+.qtv .btn-accent {
+    background: var(--q-teal);
+    color: #FFFFFF;
+    box-shadow: 0 8px 20px rgba(15, 92, 102, .28)
+}
+
+.qtv .btn-accent:hover {
+    background: var(--q-teal2);
+    color: #FFFFFF
+}
+
+.qtv .btn-outline {
+    background: var(--q-card);
+    border: 1.5px solid var(--q-line);
+    color: var(--q-ink)
+}
+
+.qtv .btn-outline:hover {
+    border-color: var(--q-teal2)
+}
+
+.qtv .btn-ghost {
+    background: none;
+    color: var(--q-mute)
+}
+
+.qtv .btn-ghost:hover {
+    color: var(--q-ink);
+    background: rgba(30, 43, 47, 0.05)
+}
+
+.qtv .q-reset {
+    color: var(--q-mute)
+}
+
+.qtv .q-reset:hover {
+    color: var(--q-red-ink)
+}
+
+/* ---- Titres hors briefing (détails) : Fraunces ---- */
+.qtv .screen-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--q-ink)
+}
+
+.qtv .screen-sub {
+    color: var(--q-mute)
+}
+
+/* ---- Passation : progression teal, item Fraunces ---- */
+.qtv .q-progress {
+    background: var(--q-line)
+}
+
+.qtv .q-progress-bar {
+    background: var(--q-teal)
+}
+
+.qtv .q-resume {
+    color: var(--q-teal2)
+}
+
+.qtv .q-run-count {
+    color: var(--q-mute);
+    font-weight: 700
+}
+
+.qtv .q-item {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    color: var(--q-ink)
+}
+
+.qtv .q-likert-btn {
+    border-width: 1.5px;
+    border-color: var(--q-line);
+    background: var(--q-card);
+    color: var(--q-ink);
+    border-radius: 14px
+}
+
+.qtv .q-likert-btn:hover {
+    border-color: var(--q-teal2)
+}
+
+.qtv .q-likert-btn-on {
+    background: var(--q-teal);
+    border-color: var(--q-teal);
+    color: #FFFFFF
+}
+
+.qtv .q-choix-btn {
+    border-width: 1.5px;
+    border-color: var(--q-line);
+    background: var(--q-card);
+    color: var(--q-ink);
+    border-radius: 16px;
+    box-shadow: none
+}
+
+.qtv .q-choix-btn:hover {
+    border-color: var(--q-teal2)
+}
+
+.qtv .q-choix-btn-on {
+    background: var(--q-tint);
+    border-color: var(--q-teal);
+    color: var(--q-ink)
+}
+
+.qtv .q-choix-tag {
+    color: var(--q-teal2)
+}
+
+.qtv .q-choix-btn-on .q-choix-tag {
+    color: var(--q-teal2)
+}
+
+/* ---- Checklist 2.3 : coche ronde teal (maquette « Avant de commencer ») ---- */
+.qtv .q-check-mark {
+    border-radius: 13px;
+    border: 2px solid var(--q-teal2);
+    background: var(--q-card);
+    color: var(--q-teal)
+}
+
+.qtv .q-choix-btn-on .q-check-mark {
+    background: var(--q-teal);
+    border-color: var(--q-teal);
+    color: #FFFFFF
+}
+
+.qtv .q-check-libre {
+    color: var(--q-ink)
+}
+
+.qtv .q-check-libre textarea {
+    border: 1.5px solid var(--q-line);
+    border-radius: 14px;
+    background: var(--q-card);
+    color: var(--q-ink)
+}
+
+.qtv .q-check-libre textarea:focus {
+    border-color: var(--q-teal2)
+}
+
+.qtv .q-ecran-note {
+    color: var(--q-mute)
+}
+
+.qtv .q-run-pause,
+.qtv .q-run-prev {
+    color: var(--q-mute)
+}
+
+.qtv .q-run-pause:hover,
+.qtv .q-run-prev:hover {
+    color: var(--q-ink)
+}
+
+/* ---- Arbitrage 2.6 + images 3.5 : mêmes tokens ---- */
+.qtv .q-arb-axe {
+    border-color: var(--q-line);
+    background: var(--q-card)
+}
+
+.qtv .q-arb-nom {
+    color: var(--q-ink)
+}
+
+.qtv .q-arb-pts {
+    color: var(--q-teal2)
+}
+
+.qtv .q-arb-desc {
+    color: var(--q-mute)
+}
+
+.qtv .q-arb-total {
+    color: var(--q-teal2)
+}
+
+.qtv .q-img-btn {
+    border-color: var(--q-line);
+    background: var(--q-card)
+}
+
+.qtv .q-img-btn-on {
+    border-color: var(--q-teal);
+    background: var(--q-tint)
+}
+
+/* ---- Carte + écran final : carte blanche, entête teal, nom Fraunces ---- */
+.qtv .q-carte {
+    background: var(--q-card);
+    border: 1px solid var(--q-line);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(30, 43, 47, .08)
+}
+
+.qtv .q-carte-entete {
+    color: var(--q-teal2)
+}
+
+.qtv .q-carte-nom {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    color: var(--q-ink)
+}
+
+.qtv .q-carte-lumiere,
+.qtv .q-carte-sec p {
+    color: var(--q-ink)
+}
+
+.qtv .q-carte-sec {
+    border-top: 1px dashed var(--q-line)
+}
+
+.qtv .q-carte-sec h3 {
+    color: var(--q-teal2)
+}
+
+.qtv .q-carte-pied,
+.qtv .q-carte-hint,
+.qtv .q-note,
+.qtv .q-fenetre,
+.qtv .q-next-note {
+    color: var(--q-mute)
+}
+
+.qtv .q-carte-badge {
+    color: var(--q-gold-ink)
+}
+
+.qtv .q-fenetre {
+    border-top: 1px dashed var(--q-line)
+}
+
+.qtv .q-shared {
+    color: var(--q-teal2)
+}
+
+/* ---- Prochaine quête ---- */
+.qtv .q-next {
+    background: var(--q-card);
+    border: 1px solid var(--q-teal-bd);
+    border-radius: 20px
+}
+
+.qtv .q-next-kicker {
+    color: var(--q-teal2)
+}
+
+.qtv .q-next-titre {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    color: var(--q-ink)
+}
+
+.qtv .q-next-annonce {
+    background: var(--q-tint);
+    border-radius: 14px;
+    border-left: 3px solid var(--q-teal2);
+    padding: 12px 14px
+}
+
+.qtv .q-next-annonce p {
+    color: var(--q-ink)
+}
+
+/* ---- Détails : barres de tendances en teal/or, paliers neutres ---- */
+.qtv .q-bar {
+    background: var(--q-bg);
+    border-color: var(--q-line)
+}
+
+.qtv .q-bar-fill {
+    background: var(--q-teal2)
+}
+
+.qtv .q-bar-fill[data-palier=doux] {
+    background: var(--q-teal-bd)
+}
+
+.qtv .q-bar-fill[data-palier=equilibre] {
+    background: var(--q-teal2)
+}
+
+.qtv .q-bar-fill[data-palier=fort] {
+    background: var(--q-teal)
+}
+
+.qtv .q-det-dim-nom {
+    color: var(--q-ink)
+}
+
+.qtv .q-det-dim-niveau {
+    color: var(--q-mute)
+}
+
+.qtv .q-det-dim-niveau[data-palier=fort] {
+    color: var(--q-teal)
+}
+
+.qtv .q-det-dim-niveau[data-palier=equilibre] {
+    color: var(--q-teal2)
+}
+
+.qtv .q-det-dim-niveau[data-palier=doux] {
+    color: var(--q-mute)
+}
+
+.qtv .q-profil-devise,
+.qtv .q-profil-nota {
+    color: var(--q-mute)
+}
+
+.qtv .q-profil-devise strong {
+    color: var(--q-ink)
+}
+
+.qtv .q-rev-kicker {
+    color: var(--q-teal2)
+}
+
+.qtv .q-rev-texte {
+    color: var(--q-ink)
+}
+
+.qtv .q-suite-questions li {
+    color: var(--q-ink)
+}
+
+.qtv .q-suite-questions li::before {
+    background: var(--q-teal2)
+}
+
+/* ---- Respect du mouvement réduit (cohérent avec le reste de l'app) ---- */
+@media (prefers-reduced-motion: reduce) {
+
+    .qtv .btn,
+    .qtv .q-choix-btn,
+    .qtv .q-likert-btn {
+        transition: none
+    }
+}

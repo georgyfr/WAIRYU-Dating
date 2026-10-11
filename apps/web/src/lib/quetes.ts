@@ -179,6 +179,18 @@ export interface DimDef {
    *  demande fondateur : « apporte plus d'explication des résultats »).
    *  Donnée conservée (carnet de bord futur) — non rendue au gabarit 35. */
   lecture: string;
+  /** Valeur MAXIMALE de la dimension pour l'AFFICHAGE de la barre (0-100).
+   *  Défaut 1 : la convention du moteur est un score normalisé 0-1 (moyennes
+   *  Likert, répartition 2.6). Les quêtes au score BRUT (2.3 — comptage de
+   *  coches 0-9, sélecteur verbatim qui dépend du comptage) déclarent ici
+   *  leur max — le rendu divise, la computation ne bouge pas.
+   *  Task 56 — correctif d'affichage : « 300/100 » sur la page 2.3. */
+  max?: number;
+  /** Seuils de palier PROPRES à la dimension (ratios 0-1 : [équilibre, fort])
+   *  — alignent les textes d'accompagnement sur les plages de la carte quand
+   *  elles diffèrent des seuils globaux (0,4 / 0,65). Défaut : seuils globaux
+   *  (aucun changement pour les quêtes qui ne les déclarent pas). */
+  seuils?: readonly [number, number];
 }
 
 export interface AccompagnementDim {
@@ -1340,12 +1352,19 @@ export function construireApercuResultats(quete: QueteDef, reponses: Record<stri
   const score = quete.scorer(reponses);
   const bars: BarreDetail[] = quete.dims.map((d) => {
     const valeur = score[d.key] ?? 0;
-    const palier = palierDe(valeur);
+    // Affichage : rapport à la max de la dimension (défaut 1 — score 0-1 du
+    // moteur). Le palier suit le MÊME rapport, avec les seuils propres à la
+    // dimension s'ils sont déclarés (2.3 : plages de la carte 0-2/3-6/7+).
+    const maxDim = typeof d.max === 'number' && d.max > 0 ? d.max : 1;
+    const ratio = Math.max(0, Math.min(1, valeur / maxDim));
+    const seuilEquilibre = d.seuils?.[0] ?? 0.4;
+    const seuilFort = d.seuils?.[1] ?? 0.65;
+    const palier: Palier = ratio >= seuilFort ? 'fort' : ratio >= seuilEquilibre ? 'equilibre' : 'doux';
     return {
       key: d.key,
       nom: d.nom,
       sousLigne: d.sousLigne,
-      pct: Math.round(valeur * 100),
+      pct: Math.round(ratio * 100),
       palier,
       palierLabel: labelPalier(palier, d.genre),
       texte: quete.accompagnement[d.key]?.[palier] ?? '',
