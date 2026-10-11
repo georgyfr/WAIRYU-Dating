@@ -8680,3 +8680,393 @@ button.r-tl-chip:hover {
         transition: none
     }
 }
+
+/* =====================================================================
+   PROTOTYPE « Des résultats qui se prouvent » (Task 60 — validation
+   fondateur, STAGING uniquement). Auto-contenu : toutes les classes sont
+   préfixées .proto- ; aucune classe produit n'est modifiée. Retirable
+   sans impact avec l'écran PrototypeResultats.tsx.
+   ===================================================================== */
+
+.proto-wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 28px 16px 56px;
+    background: var(--c-cream);
+    min-height: 100vh;
+    gap: 20px;
+    overflow-x: clip
+}
+
+.proto-head {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center
+}
+
+.proto-head .screen-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px;
+    color: var(--c-night)
+}
+
+.proto-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-coral-deep);
+    border: 1.5px dashed var(--c-coral);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: #fff
+}
+
+.proto-sec {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 18px;
+    min-width: 0
+}
+
+.proto-h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 21px;
+    color: var(--c-night);
+    margin-bottom: 8px
+}
+
+.proto-hint {
+    font-size: 14px;
+    color: var(--c-gray-blue);
+    line-height: 1.5;
+    margin-bottom: 10px
+}
+
+.proto-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px
+}
+
+.proto-preset {
+    padding: 9px 14px;
+    font-size: 13px;
+    border-radius: 999px
+}
+
+.proto-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.proto-slider {
+    display: grid;
+    grid-template-columns: minmax(130px, 190px) minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 10px
+}
+
+.proto-slider-nom {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.proto-slider input[type='range'] {
+    width: 100%;
+    min-width: 0;
+    accent-color: var(--c-turquoise-deep);
+    min-height: 44px
+}
+
+.proto-slider-val {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--c-turquoise-deep);
+    text-align: right;
+    font-variant-numeric: tabular-nums
+}
+
+.proto-duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px
+}
+
+@media (min-width: 980px) {
+    .proto-duo {
+        grid-template-columns: 1fr 1fr;
+        align-items: start
+    }
+}
+
+.proto-box {
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0
+}
+
+.proto-avant {
+    background: var(--c-cream);
+    border: 1.5px dashed var(--c-gray-blue)
+}
+
+.proto-apres {
+    background: #f4faf9;
+    border: 1.5px solid var(--c-turquoise-deep)
+}
+
+.proto-box-label {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--c-gray-blue)
+}
+
+.proto-box-label--apres {
+    color: var(--c-turquoise-deep)
+}
+
+.proto-carte-nom {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    color: var(--c-night)
+}
+
+.proto-carte-lum {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--c-night)
+}
+
+.proto-carte-sec h4 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--c-gray-blue);
+    margin-bottom: 4px
+}
+
+.proto-carte-sec p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-night)
+}
+
+.proto-box-note {
+    font-size: 12.5px;
+    color: var(--c-gray-blue);
+    font-style: italic;
+    border-top: 1px solid var(--c-line);
+    padding-top: 8px
+}
+
+.proto-preuve {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-left: 4px solid var(--c-turquoise-deep);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px
+}
+
+.proto-preuve h4 {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--c-turquoise-deep);
+    margin-bottom: 6px
+}
+
+.proto-preuve p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--c-night)
+}
+
+.proto-preuve-note {
+    font-size: 12px !important;
+    color: var(--c-gray-blue) !important;
+    font-style: italic;
+    margin-top: 6px
+}
+
+.proto-faits {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px
+}
+
+.proto-faits li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-night);
+    padding-left: 18px;
+    position: relative
+}
+
+.proto-faits li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--c-turquoise-deep);
+    font-weight: 900
+}
+
+.proto-cadrage {
+    font-size: 14.5px;
+    color: var(--c-night);
+    font-weight: 700
+}
+
+.proto-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.proto-bar-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px
+}
+
+.proto-bar-nom {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.proto-bar-niveau {
+    font-size: 12.5px;
+    color: var(--c-gray-blue);
+    font-variant-numeric: tabular-nums
+}
+
+.proto-bar-track {
+    height: 10px;
+    border-radius: 999px;
+    background: var(--c-line);
+    overflow: hidden
+}
+
+.proto-bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--c-turquoise-deep), var(--c-turquoise))
+}
+
+.proto-bar-texte {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--c-gray-blue);
+    margin-top: 5px
+}
+
+.proto-arche-intro {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--c-night)
+}
+
+.proto-devise {
+    font-size: 14px;
+    color: var(--c-night)
+}
+
+.proto-contrat {
+    background: var(--c-night);
+    color: #fff;
+    gap: 8px
+}
+
+.proto-contrat p {
+    font-size: 14.5px;
+    line-height: 1.55
+}
+
+.proto-contrat-fin {
+    font-style: italic;
+    color: var(--c-turquoise-light) !important
+}
+
+.proto-pattern {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px
+}
+
+.proto-pattern li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-night);
+    padding-left: 20px;
+    position: relative
+}
+
+.proto-pattern li::before {
+    content: '·';
+    position: absolute;
+    left: 6px;
+    color: var(--c-turquoise-deep);
+    font-weight: 900
+}
+
+.proto-foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center
+}
+
+.proto-foot-note {
+    font-size: 13px;
+    color: var(--c-gray-blue);
+    max-width: 640px;
+    line-height: 1.5
+}
+
+@media (max-width: 480px) {
+    .proto-wrap {
+        padding: 20px 10px 44px
+    }
+
+    .proto-slider {
+        grid-template-columns: minmax(0, 1fr) 44px;
+        grid-template-rows: auto auto
+    }
+
+    .proto-slider-nom {
+        grid-column: 1;
+        grid-row: 1
+    }
+
+    .proto-slider-val {
+        grid-column: 2;
+        grid-row: 1
+    }
+
+    .proto-slider input[type='range'] {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        min-width: 0
+    }
+}
