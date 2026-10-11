@@ -531,32 +531,62 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             ))}
           </ul>
         </section>
+        {/* Bloc « Voulez-vous commencer ? » — actions en ANCRES <a> (demande fondateur) :
+            mêmes styles et mêmes comportements que les boutons, mais de vraies balises
+            d'ancre avec un href réel (lien partageable vers la quête / retour mondes).
+            onClick + preventDefault ⇒ la logique existante est inchangée. */}
         <div className="q-ask" role="group" aria-label={tx('Voulez-vous commencer ?')}>
-          <p className="q-ask-q">{tx('Voulez-vous commencer ?')}</p>
+          <a className="q-ask-q" href={`#/quete/${queteId}`}>
+            {tx('Voulez-vous commencer ?')}
+          </a>
           <div className="q-actions">
             {etat.terminee ? (
               <>
-                <button
-                  type="button"
+                <a
                   className="btn btn-accent"
-                  onClick={() => setPhase(quete.sansCarte ? 'ecran' : 'carte')}
+                  href={`#/quete/${queteId}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPhase(quete.sansCarte ? 'ecran' : 'carte');
+                  }}
                 >
                   {quete.sansCarte ? tx('Revoir mon écran') : tx('Revoir ma carte')}
                   <Fleche />
-                </button>
-                <button type="button" className="btn btn-ghost" onClick={onExit}>
+                </a>
+                <a
+                  className="btn btn-ghost"
+                  href="#/mondes"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onExit();
+                  }}
+                >
                   {tx('Retour aux mondes')}
-                </button>
+                </a>
               </>
             ) : (
               <>
-                <button type="button" className="btn btn-accent" onClick={reprendre}>
+                <a
+                  className="btn btn-accent"
+                  href={`#/quete/${queteId}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    reprendre();
+                  }}
+                >
                   {peutReprendre ? tx('Reprendre ({{n}} réponses)', { n: repondues }) : tx('Commencer')}
                   <Fleche />
-                </button>
-                <button type="button" className="btn btn-ghost" onClick={onExit}>
+                </a>
+                <a
+                  className="btn btn-ghost"
+                  href="#/mondes"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onExit();
+                  }}
+                >
                   {tx('Annuler')}
-                </button>
+                </a>
               </>
             )}
           </div>

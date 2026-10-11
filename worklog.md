@@ -1232,3 +1232,23 @@ Stage Summary:
 - LA PAGE DE QUÊTE (2.3 en vitrine, les 35 quêtes par partage d'écran) EST EN LANGAGE « Tes valeurs, refonte » SUR STAGING : version 5cda90cd, bundle index-CQ3etCLI.js — briefing/héros/segments/stats/annonce teal, passation, carte, détails et PDF harmonisés sous `.qtv`.
 - BUG D'AFFICHAGE « 300/100 » CORRIGÉ (détails + PDF) sans toucher computation ni sélecteur — mécanisme réutilisable (`max`/`seuils` par dimension) si une future quête livre un score brut.
 - PROD NON TOUCHÉE (843c8867 inchangée) — le lot attend le feu vert fondateur.
+
+---
+Task ID: 57
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur — les éléments « Voulez-vous commencer ? / Commencer / Annuler » du bloc de démarrage de quête doivent être rendus sous forme d'ancres (<a>).
+
+Work Log:
+- Re-cloné le dépôt après reset sandbox (main = 644b560, Task 56) ; SECRETS-WAIRYU-LOCAL.txt et /home/z/wairyu ont disparu — tokens Cloudflare/GitHub PERDUS (à re-fournir par le fondateur avant push/deploy).
+- Localisé le bloc dans Quete.tsx (briefing, phase partagée par les 35 quêtes) : question <p class="q-ask-q"> + 2 emplacements d'action (btn-accent / btn-ghost) × états (Commencer | Reprendre (n réponses) | Revoir ma carte | Revoir mon écran) × (Annuler | Retour aux mondes).
+- Converti les 3 éléments + états jumeaux en vraies ancres <a> : question href="#/quete/{id}" (lien partageable), CTA href="#/quete/{id}", Annuler href="#/mondes" (DEST_HASH réel) — onClick preventDefault + handlers existants (reprendre/setPhase/onExit) ⇒ comportement strictement inchangé, aucune logique touchée.
+- styles.css : ajout a.btn { text-decoration:none; cursor:pointer } + a.q-ask-q { text-decoration:none } — rendu visuel identique aux anciens boutons (mêmes classes btn-accent/btn-ghost/q-ask-q, qtv inclus).
+- Typecheck 0 erreur, build Vite OK (index-By92eg0l.js).
+- E2E navigateur local (wrangler dev --env staging + D1 local + .dev.vars gitigné ; mode dev staging : OTP devCode prérempli, Turnstile skippé) : tags DOM vérifiés — question A href #/quete/1.1, CTA A, Annuler A href #/mondes ; text-decoration none confirmé ; clic Commencer → passation ouverte ; clic Annuler → #/mondes + écran quête démonté ; ZÉRO erreur JS ; captures mobile 390px + desktop 1280px (rendu identique aux boutons, Fraunces/teal/ghost préservés). Comptes de test créés UNIQUEMENT en D1 locale (miniflare) — bases distantes jamais touchées.
+- Incidents honnêtes : (1) processes récoltés entre appels ⇒ E2E re-monté en un appel par itération ; (2) agent-browser : locateurs d'attributs instables + écran « Chargement… » lent (fetchMe ~3-10 s) ⇒ contournés par eval JS natif et boucles d'attente ; (3) set media dark non appliqué à la capture sombre — sans impact : aucune couleur modifiée, ancres héritent des classes validées en sombre à la Task 56.
+- Commit local uniquement : PUSH ET DEPLOY STAGING IMPOSSIBLES (tokens perdus) — voir Stage Summary.
+
+Stage Summary:
+- Bloc « Voulez-vous commencer ? » intégralement passé en ancres <a> (35 quêtes concernées, présentation seule) — le fondateur peut copier/partager le lien d'une quête depuis la question ou le CTA, et « Annuler » expose le vrai href #/mondes.
+- Zéro changement métier : items, ordre, scorer, sélecteur, cartes, PDF intacts ; diff = Quete.tsx (bloc briefing) + styles.css (2 règles a.*).
+- EN ATTENTE DU FONDATEUR : re-fournir CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (+ jeton GitHub) — puis `source secrets && bash deploy.sh staging` et push main. PROD NON TOUCHÉE.

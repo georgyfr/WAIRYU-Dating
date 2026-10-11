@@ -555,6 +555,14 @@ button {
     width: 100%
 }
 
+/* Actions rendues en ancres <a> (bloc « Voulez-vous commencer ? » de la quête) :
+   mêmes styles que .btn — on neutralise seulement le soulignement par défaut des liens. */
+
+a.btn {
+    text-decoration: none;
+    cursor: pointer
+}
+
 .card {
     background: var(--c-white);
     border-radius: var(--radius);
@@ -4191,6 +4199,13 @@ body.no-scroll {
     font-weight: 900;
     color: var(--c-night);
     text-align: center
+}
+
+/* La question est elle aussi une ancre <a> (href = lien partageable de la quête) :
+   rendu identique à l'ancien <p> — pas de soulignement, pas de couleur de lien. */
+
+a.q-ask-q {
+    text-decoration: none
 }
 
 .q-actions {
