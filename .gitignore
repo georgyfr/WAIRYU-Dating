@@ -38,3 +38,4 @@ apps/twa/.project
 .e2e-*.png
 .dev.vars
 .recovery/
+package-lock.json
