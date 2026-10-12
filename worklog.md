@@ -1444,3 +1444,23 @@ Work Log:
 Stage Summary:
 - Le prototype s'explique maintenant lui-même en 30 secondes : idée en une phrase + 3 clics, en tête de page, sur staging (f7742344). En cas de cache : ?v=7.
 - Reste proposé au fondateur : si la forme « outil de validation » gêne encore, prochaine étape possible = une « vue membre » épurée (sans numéros de sections, sans badges, sans meta-texte) pour voir ce que vivra un vrai utilisateur.
+
+---
+Task ID: 64
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur (« A) la direction me convient, on passe à la vue membre épurée ») → livraison de la VUE MEMBRE, 1er onglet du prototype, onglet par défaut.
+
+Work Log:
+- CONCEPTION : la vue membre = la page de résultat telle qu'un membre la vivra — SANS numéros de sections, SANS badges « nouveau texte », SANS notes de méthode (règle de proportion, « tout ce bloc est déduit », « aucun seuil interne »), SANS contrat de lecture. L'anti-Barnum validé reste intégré produit : chiffres + « Pourquoi cette carte » + preuves mot pour mot.
+- IMPLÉMENTATION (commit 31963eb) : variante d'affichage `labo | membre` ajoutée aux blocs partagés du V2 (Reprise, Nombres, CarteDeuxFaces, LumiereAncree, OmbreAncree, QueteFlow ex-R0Quete) — les moteurs (scorer → choisirVariante → cartes ; construireApercuResultats) et TOUS les contenus du Livrable STRICTEMENT identiques ; l'onglet r0 reste rendu en variante labo (inchangé).
+- NOUVEAU : export PrototypeVueMembre — picker de quête discret (outil de démo, libellé « Quête : ») + flux membre : Titre produit (« Ta personnalité » / « Ta façon de t'attacher ») + « Réponds spontanément — il n'y a ni bonne ni mauvaise réponse » → gated → Tes nombres (+ ligne vm-pourquoi : « les barres les plus hautes X (p/100) et Y (p/100) — c'est ce profil qui choisit ta carte ») → Ta carte (deux faces + tension) → Ce qui te porte (details fermé) → Ce qui te coûte (details OUVERT si pleine, coût sans badge ; courte : sans details ; équilibre : carte citée). La page membre S'ARRÊTE là (fin produit).
+- CÂBLAGE : onglet « Vue membre — la page de résultat » EN PREMIER et PAR DÉFAUT ; sections labo globales (4 contrat / 5 pattern) gated sur les onglets labo uniquement ; guide de lecture réécrit (étape 1 vue membre, étape 2 change une réponse, étape 3 coulisses via CTA) ; sous-titre d'en-tête mis à jour (5 onglets).
+- CSS : vm-picker / vm-picker-btn / vm-pourquoi auto-contenus (~60 lignes, palette thème).
+- E2E LOCALE (vite preview :4173 + agent-browser, FR) : onglet par défaut vm ✓ ; état vide 0/50 + attente produit ✓ ; Intense → L'Intense, headings [Ta personnalité / Tes nombres / Ta carte / Ce qui te porte / Ce qui te coûte], 0 numéro, 0 badge, pourquoi ✓ ; live : chip item 1 → 5 = ouverture 50→55/100 dans la ligne pourquoi (tout suit) ✓ ; reset → 0/50 gated ✓ ; rafale 7 puces → 7/50 ✓ ; 1.2 : Vigie → pleine (A 75/100 écart 50, details ouvert) ; Va-et-vient → courte (sans details, coût présent) ; Ancrage → équilibre (carte V1 citée) ✓ ; coulisses intactes : 2.6 (Grue, sections numérotées), r0 (labo) ✓ ; 0 erreur console ; mobile 390 sans overflow ; captures /tmp/proto64-{desktop,mobile}.png.
+- DÉPLOIEMENT STAGING : version 97be6471-ead2-4eb1-9395-1cbeb8002931 (push fc6ebae..31963eb vérifié) ; E2E staging : onglet actif « Vue membre », Intense → L'Intense + 5 headings épurés + pourquoi + 0 contrat labo + 0 badge + details [false,true] ; /api/health OK ; captures /tmp/proto64-staging-{desktop,mobile}.png.
+- PROD NON TOUCHÉE.
+
+Stage Summary:
+- LA VUE MEMBRE EST EN LIGNE et est l'onglet par défaut : https://wairyu-staging.wairyu.workers.dev/#/prototype-resultats (version 97be6471 ; cache → ?v=8).
+- Ce que voit le fondateur à l'ouverture : la page de résultat produit — je réponds → tes nombres → ta carte (2 faces) → ce qui te porte → ce qui te coûte. Les coulisses (2.6 / 1.1 / 1.2 / reprise annotée) restent accessibles pour vérifier que rien n'est truqué.
+- Prochaine étape possible si la forme membre convient : étendre la vue membre à la quête 2.6 (points/Monde 3), puis préparer l'intégration prod (sur feu vert explicite uniquement).
