@@ -186,6 +186,12 @@ export const CORE: Record<string, string> = {
   'Ce qui peut te freiner': 'What can hold you back',
   'En couple': 'As a couple',
   'Ton équilibre': 'Your balance',
+  // ---- Task 65 — ancrage des barres + zone d'ombre en relation
+  'Tes réponses qui pèsent le plus': 'Your answers that weigh the most',
+  'Tes réponses sur cette tendance': 'Your answers on this tendency',
+  'pousse la barre vers le haut': 'pushes the bar up',
+  'pousse la barre vers le bas': 'pushes the bar down',
+  "Ta zone d'ombre en relation": 'Your shadow side in relationships',
   "La suite de ton voyage": 'The next step of your journey',
   '🧭 La suite de ton voyage': '🧭 The next step of your journey',
   'Ton document se prépare…': 'Your document is being prepared…',
@@ -254,6 +260,8 @@ export const CORE: Record<string, string> = {
   'Ma carte': 'My card',
   'Ton profil : {{nom}}': 'Your profile: {{nom}}',
   'La suite de ton voyage (pdf)': 'The next step of your journey',
+  // ---- Task 65 — PDF : la zone d'ombre en relation
+  "Ta zone d'ombre en relation (pdf)": 'Your shadow side in relationships',
   'Wairyu — document personnel, généré le {{date}}': 'Wairyu — personal document, generated on {{date}}',
   'Ce document vient de tes réponses à la quête « {{quete}} » du {{monde}}. Il reste le tien : rien n\'est publié sur Wairyu sans ton action. Les textes d\'accompagnement sont une lecture d\'app — ils ne remplacent ni un professionnel, ni une étiquette.':
     'This document comes from your answers to the quest “{{quete}}” in {{monde}}. It stays yours: nothing is published on Wairyu without your action. The accompanying texts are an app reading — they replace neither a professional, nor a label.',

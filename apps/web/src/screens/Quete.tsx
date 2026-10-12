@@ -50,6 +50,9 @@ import {
   type QueteDef,
 } from '../lib/quetes';
 import { ARCHE } from '../lib/quetes-plus';
+// Task 65 — l'ancrage des barres : les réponses réelles citées sous chaque
+// tendance (demande fondateur : les résultats doivent PROUVER, pas affirmer).
+import { ancragesDeQuete } from '../lib/ancrage-likert';
 import { ECRAN_17, decode17 } from '../lib/quete-1-7';
 import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
 import { LIBRE_CODE } from '../lib/quete-2-3';
@@ -397,6 +400,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const apercu = useMemo(
     () => (phase === 'details' ? construireApercuResultats(quete, etat.reponses) : null),
     [phase, quete, etat.reponses],
+  );
+  /** L'ancrage complet (par dimension) — null si la quête n'a pas d'items typés. */
+  const ancrages = useMemo(
+    () => (phase === 'details' ? ancragesDeQuete(queteId, etat.reponses) : null),
+    [phase, queteId, etat.reponses],
   );
 
   const questionRef = useRef<HTMLHeadingElement | null>(null);
@@ -1440,11 +1448,54 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                   <span className="q-bar-fill" data-palier={b.palier} style={{ width: `${Math.max(b.pct, 2)}%` }} />
                 </div>
                 <p className="q-det-dim-texte">{b.texte}</p>
+                {/* Task 65 — les réponses RÉELLES qui pèsent le plus dans le
+                    chiffre : le membre vérifie lui-même sa tendance. Le sens
+                    de chaque contribution est affiché (items inversés compris)
+                    et le titre s'assagit si la dim n'a que du milieu. */}
+                {ancrages && (ancrages[b.key]?.length ?? 0) > 0 && (
+                  <div className="q-det-ancrage">
+                    <p className="q-det-ancrage-titre">
+                      {ancrages[b.key][0].tranche
+                        ? tx('Tes réponses qui pèsent le plus')
+                        : tx('Tes réponses sur cette tendance')}
+                    </p>
+                    <ul>
+                      {ancrages[b.key].map((a) => (
+                        <li key={a.code}>
+                          <span className="q-det-ancrage-enonce">« {a.enonce} »</span>
+                          {' — '}
+                          <strong>{a.reponse}</strong>
+                          {a.sens === 'haut' && (
+                            <> · {tx('pousse la barre vers le haut')}</>
+                          )}
+                          {a.sens === 'bas' && (
+                            <> · {tx('pousse la barre vers le bas')}</>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             ))}
           </div>
           <p className="q-profil-nota">{NOTA_BARRES}</p>
         </section>
+
+        {/* Task 65 — LA ZONE D'OMBRE EN RELATION : le contenu par variante
+            (quete.ombreRelationnel, déjà écrit) n'était jamais rendu — c'est
+            la demande fondateur « très faible zone d'ombre ». Rendu seulement
+            quand le texte existe (quêtes exemptées : rien). */}
+        {(() => {
+          const ombreRel = quete.ombreRelationnel[carte.id];
+          if (typeof ombreRel !== 'string' || ombreRel.length === 0) return null;
+          return (
+            <section className="q-sec q-ombre-rel" aria-label={tx('Ta zone d\'ombre en relation')}>
+              <h3>{tx('Ta zone d\'ombre en relation')}</h3>
+              <p>{ombreRel}</p>
+            </section>
+          );
+        })()}
 
         <section className="q-sec q-rev" aria-label={tx('La suite de ton voyage')}>
           <p className="q-rev-kicker">{tx('🧭 La suite de ton voyage')}</p>

@@ -9516,3 +9516,104 @@ button.r-tl-chip:hover {
     margin-top: 12px;
     min-width: 0
 }
+
+/* ---------------------------------------------------------------
+   Task 65 — qualité du résultat (demande fondateur : anti-barnum,
+   faits vrais, zone d'ombre substantielle). Deux ajouts au gabarit
+   des détails : l'ANCRAGE des barres (les réponses réelles citées
+   sous chaque tendance) et la ZONE D'OMBRE EN RELATION (le contenu
+   par variante, enfin rendu). Auto-contenu — aucune classe
+   existante touchée. Mobile-first : cible 390 px d'abord.
+   --------------------------------------------------------------- */
+
+/* L'ancrage — sous chaque barre, les réponses qui pèsent le plus. */
+.q-det-ancrage {
+    margin-top: 6px;
+    padding: 9px 11px;
+    background: #f6faf9;
+    border: 1px solid var(--c-line);
+    border-radius: 10px;
+    min-width: 0
+}
+
+.q-det-ancrage-titre {
+    margin: 0 0 4px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-turquoise-deep)
+}
+
+.q-det-ancrage ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.q-det-ancrage li {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--c-night);
+    padding-left: 12px;
+    position: relative;
+    overflow-wrap: break-word
+}
+
+.q-det-ancrage li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--c-gray-blue)
+}
+
+.q-det-ancrage-enonce {
+    font-style: italic
+}
+
+.q-det-ancrage strong {
+    font-weight: 800;
+    color: var(--c-turquoise-deep)
+}
+
+/* La zone d'ombre en relation — l'ombre assumée, coût + ce qui aide. */
+.q-ombre-rel {
+    margin-top: 18px
+}
+
+.q-ombre-rel h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.q-ombre-rel p {
+    margin: 0;
+    padding: 12px 14px;
+    background: #fdf6f4;
+    border: 1px solid #f0d9d2;
+    border-left: 4px solid var(--c-coral);
+    border-radius: var(--radius);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--c-night)
+}
+
+@media (max-width: 420px) {
+    .q-det-ancrage {
+        padding: 8px 9px
+    }
+
+    .q-det-ancrage li {
+        font-size: 12.5px
+    }
+
+    .q-ombre-rel p {
+        font-size: 14px;
+        padding: 10px 11px
+    }
+}

@@ -193,89 +193,89 @@ export const ARCHES_M1: {
   },
 
   '1.3': {
-    // V1 — La Clarté intérieure : The Inner Clarity.
+    // V1 — La Clarté intérieure (P haut + R haut) : The Inner Clarity.
     V1: {
       intro:
-        "Your archetype reveals a person who finds words early for what is lived inside. You are one of those who know what they feel, even when several emotions mix — you perceive mood changes before they settle and you find words where others stay blurry. Your watchpoint: your mastery can become a wall — you are so good at managing alone that help has no room left to enter.",
-      devise: "I name what I feel, and that already changes the situation.",
+        "Your archetype reveals a double strength that your answers show on the same side: what happens inside you announces itself early and clearly, and you know your way back to calm. Knowing what you feel AND knowing how to cross it — this combination is rare, and it shows. Your watchpoint: the ease. You manage so well alone that help has no room left to enter — and some waves are better crossed with someone than with method.",
+      devise: "I know what I feel, and I know my way back.",
       apportes:
-        "A calm that reassures: tensions get named early, drama backs off. You often become the point where things become clear again, in a couple as among friends.",
+        "A calm that reassures: tensions get named early, drama backs off. In a couple as among friends, you become the point where things become clear again.",
       freines:
-        "Emotions analyzed more than lived, waves settled in silence without a witness, moments where naming replaces feeling. These are not flaws — just your strengths seen from the side where they overflow, when method replaces sharing.",
+        "Your shadow side has a precise address: self-reliance. You settle the waves in silence, without a witness — some would need one. And naming can replace feeling: what you can describe well hasn't always been crossed.",
       couple:
-        "You bring words placed, not thrown, and solutions sought together rather than blame. To keep in mind: you can be so good at managing alone that the other stops offering help — while a hand during the wave often shortens the trip.",
+        "You bring words placed, not thrown, and ways back to calm that depend on nobody. To keep in mind: you can be so good at managing alone that the other stops offering help — while a hand during the wave often shortens the trip.",
       equilibre:
         "Let someone stand beside you during the wave. Not because your clarity would lack depth, but because asking for help can be done small — a word, a sign, a door left ajar.",
     },
-    // V2 — Le Volcan tendre : The Tender Volcano.
+    // V2 — Le Volcan tendre (P haut + R bas) : The Tender Volcano.
     V2: {
       intro:
-        "Your archetype reveals a person who lives their emotions like fast seasons: everything arrives strong, early, and nothing stays lukewarm. You are one of those whose annoyance rises fast and falls almost as fast, whose good news raises the whole table. Your watchpoint: the rise can outrun everyone — and speak louder than the reason that triggered it.",
-      devise: "I feel strongly, I come down fast, and it always stays true.",
+        "Your archetype reveals a gap your answers mark clearly: you catch early what rises in you — and the way back to calm is your slow link. You see the wave coming; you don't cross it as fast as you see it arrive. That combination — clear sight, slow descent — is what makes your intensity. Your watchpoint: between the rise and the descent, every strong emotion is lived in full.",
+      devise: "I see the wave coming — the way down is what takes me.",
       apportes:
-        "An energy that carries people along and a truth that isn't played: a joy that shows and is shared, quick apologies after an outburst, emotions owned out loud.",
+        "You know what you feel, fast and precisely — that is rare. Many discover their states after the fact; you can name them in the moment. It makes for true conversations, early.",
       freines:
-        "The blow-ups, the words too many mid-rise, the regrets that follow the outburst. These are not flaws — just an intensity that sometimes overflows its bed, and that learns, wave after wave, to warn.",
+        "The cost is measured, not guessed: your feeling arrives fast, the calm arrives late. In between, the words too many slip in — not because you exaggerate, but because the brake arrives after the accelerator. You know the regrets that follow the blow-ups.",
       couple:
-        "You bring a sincere warmth, without calculation, and emotions shared live, not deferred. To keep in mind: the other may answer the tone while the substance still waits its turn — some margin while the wave falls changes everything.",
+        "You see everything right away — the other, not always. Your impatience isn't domination: it is your inner clock. To keep in mind: what rises in you in one minute can take ten in the other — the margin is yours to give.",
       equilibre:
-        "Know what you want to protect when the wave rises. Not because you should feel less, but because spotting your first signal early enough lets you choose the word, the pause or the exit — before the wave decides alone.",
+        "Warn rather than hold. Your first physical signal — throat, fists, stomach — arrives before the wave. Spotting it buys you thirty seconds: often enough to choose the word instead of enduring it.",
     },
-    // V3 — Le Réservoir : The Reservoir.
+    // V3 — Le Réservoir (P bas + X bas) : The Reservoir.
     V3: {
       intro:
-        "Your archetype reveals a person who lives their emotions far from the surface: they work in depth, under a calm appearance. You are one of those who neither dissect nor declare them — they cross. You bring a precious stability: no storm, a presence that lasts. Your watchpoint: your silence stays a choice as long as it isn't the only language spoken — what goes unsaid can end up creating distance.",
-      devise: "I live my emotions in depth, without displaying them.",
+        "Your archetype reveals a double discretion: what happens inside you announces itself after the fact, and little shows outside. Nothing here says you feel little — what your answers draw is an inner life that doesn't go through display or instant announcing. Your watchpoint: what you don't name, the other can neither guess nor count.",
+      devise: "It lives strongly inside — it gets declared late, and little.",
       apportes:
-        "Calm under pressure: rare but weighed words, worth double, a quiet loyalty to loved people — the great tides don't become shows.",
+        "A presence that doesn't crowd: no staging, no displayed storm. Those who know you well know how to read your small signs — in you, they are worth declarations.",
       freines:
-        "Emotions crossed in silence without a witness, unsaid expectations that pile up, signs so discreet that nobody reads them. These are not flaws — just a depth that hasn't yet found a common language with the surface.",
+        "The cost is silence. Unsaid expectations pile up; the other may believe in indifference where everything is alive — and the waiting becomes distance. It isn't a flaw: it is what your discretion produces when nobody gives it a language.",
       couple:
-        "You bring a stability for two, far from roller coasters, and patience for confidences that arrive late. To keep in mind: you can wait to be read while the other waits to be told — two legitimate waits that rarely cross without a word placed out loud.",
+        "You build by degrees, far from roller coasters. To keep in mind: you can wait to be read while the other waits to be told — two legitimate waits that never cross alone. One word placed out loud unlocks them.",
       equilibre:
-        "Say early enough what is happening, before it passes. Not because every wave should be declared, but because some simply gain from being named once — even after the fact.",
+        "Name it after the fact, once: “yesterday I was angry — I couldn't say it in the moment.” Late clarity is better than complete silence — and it trains the next one.",
     },
-    // V4 — Le Radiateur : The Radiator.
+    // V4 — Le Radiateur (X haut seul) : The Radiator. P and R NOT guaranteed.
     V4: {
       intro:
-        "Your archetype reveals a person who is a place where others feel better. You are one of those who praise, comfort, celebrate other people's good news as if it were theirs — a warmth that sets people right and an ear one doesn't forget. Your watchpoint: you can become the pillar that never asks — your own waves wait, quietly, in line.",
-      devise: "I take care of the hearts around me, naturally.",
+        "Your archetype reveals one simple, measured thing: with you, it shows and it gets said. Your answers describe someone who expresses — praising, comforting, saying what people mean. Your watchpoint is mechanical: when the exit is always taken by others, your own turn rarely arrives.",
+      devise: "What I live gets said — and it does good around.",
       apportes:
-        "An address people naturally turn to when things are wrong: a rare and judgment-free ear, the joys of others celebrated as one's own, the early spotting of those doing poorly.",
+        "An address people naturally turn to: an ear that shows, the joys of others celebrated as one's own, emotions that circulate because you make them circulate.",
       freines:
-        "The “I'm fine” said too fast, your own emotions left in the waiting line, the silent exhaustion of the place where everyone lands. These are not flaws — just a generosity that also needs a place to rest.",
+        "Your own emotions in the waiting line. Nothing here says you don't feel them — what your answers mark is that the exit, itself, is taken. A pillar that never sits down wears out in silence: that is your shadow.",
       couple:
-        "You ask “and you?” and you wait for the real answer — the other opens up without at once taking back the pillar role. To keep in mind: you can become the place where the other drops everything — the balance can shift without anyone deciding it, so much your generosity seems to allow it.",
+        'You ask "and you?" and you wait for the real answer. To keep in mind: the balance can shift without anyone deciding it — so much your generosity seems to allow it. Saying your states once a week keeps it alive.',
       equilibre:
-        "Answer true when asked how you are. Not because holding up would be a problem, but because your turn of wave deserves to arrive — with a chosen person, when the moment lends itself.",
+        "Answer true when asked how you are — with a chosen person, once a week. Your turn of wave deserves to arrive: that is what keeps the radiator durable.",
     },
-    // V5 — La Réserve : The Reserve.
+    // V5 — La Réserve (P correct + X bas) : The Reserve.
     V5: {
       intro:
-        "Your archetype reveals a person who lives a rich, held, intimate emotional life: outside the calm, inside everything is alive. You are one of those for whom it isn't coldness but modesty — the openings are chosen, rare, precise. Your watchpoint: your reserve can be taken for indifference, while inside everything lives — one word announcing your style spares many misunderstandings.",
-      devise: "I feel a lot, I show little — everything is alive inside.",
+        "Your archetype reveals a precise gap: you catch what is lived inside you, and you don't show it. Clear feeling, quiet display — it isn't coldness: it is a reserved access. Your watchpoint: what you see clearly, the other doesn't see — and they won't guess alone.",
+      devise: "I know what I feel — I choose who knows it.",
       apportes:
-        "A deep loyalty to bonds and confidences that mark: when you open a door, it is chosen — and the people who receive it feel it.",
+        "Openings that count: when you open, it is chosen — and the people who receive it feel it. The trust you grant carries a value no abundance has.",
       freines:
-        "Emotions invisible from outside, modesty read as distance, openings postponed too long. These are not flaws — just a modesty that is tuned by a sign, not by a speech.",
+        "The misunderstanding is structural: your inside is clear to you, invisible to the other. The reserve can be read as distance — and some doors wait too long before opening.",
       couple:
-        "You build by degrees, not all at once: bonds that respect the rhythms of opening, constancy rather than grand declarations. To keep in mind: writing first, voice after — what you open first is worth gold, just say it is your style.",
+        "You build by degrees: bonds that respect your rhythm of opening, constancy rather than grand declarations. To keep in mind: writing first, voice after — and say it is your style: what you open, chosen, is worth gold.",
       equilibre:
-        "Let show a bit of what lives inside, a little earlier than usual. Not because your reserve would need fixing, but because a single opening is often enough for the other to understand the rest.",
+        "Let show a bit of what lives inside, a little earlier than usual. One single opening is often enough for the other to understand the rest.",
     },
-    // V6 — L'Apprenti·e : The Apprentice.
+    // V6 — L'Apprenti·e (fallback) : no marked combination — profile in motion.
     V6: {
       intro:
-        "Your archetype reveals a person who is learning to read what moves inside them: clear at times, tangled at others — that is the normal rhythm of learning. You are one of those who answer “I don't know yet” and look for clues: a knot in the stomach, an irritability. Your search is sincere, without pretense. Your watchpoint: the discouragement of days when progress looks slow — not knowing how to name has never meant not feeling.",
-      devise: "I don't always know — and I learn, step after step.",
+        "Your archetype reveals a profile with no dominant string: your three strengths — perceiving, soothing, expressing — stay close to one another in your answers. Neither very present, nor very quiet: your emotional way is still taking shape. Your watchpoint: the day it rises strongly, you don't have a signature reflex yet — and one can confuse the absence of a compass with the absence of feeling.",
+      devise: "No signature muscle yet — I build it, answer after answer.",
       apportes:
-        "Truth, even when it's blurry: a sincere search about oneself, real progress at each step, a humility that grants the right to learn.",
+        "Truth, even when it's blurry: your answers say a profile in motion, with no ready-made box — and that is the most honest starting point.",
       freines:
-        "Emotional conversations dodged out of caution, states recognized long after the fact, the fogs of days without compass. These are not limits of character — the fog is part of the road.",
+        "Without a dominant string, no obvious reflex: the days without a compass come, and with them the urge to conclude \"I feel nothing\". The second sentence is almost always false — the fog is part of the road.",
       couple:
-        "You bring a sincerity valued even when the answer isn't ready: simple questions, not interrogations. To keep in mind: an honest “I don't know yet” can be heard as a refusal — say it as a search in progress, and the other will follow the work site with you.",
+        "You bring a sincerity valued even when the answer isn't ready: simple questions, not interrogations. To keep in mind: an honest \"I don't know yet\" can be heard as a refusal — say it as a search in progress.",
       equilibre:
-        "Grant yourself the right to still be learning. Not because one should arrive fast, but because each emotion named once is better recognized the next time — the road pays along the way.",
+        "Grant yourself the right to be learning: each emotion named once is better recognized the next time. The road pays along the way.",
     },
   },
 

@@ -433,24 +433,27 @@ export const REGISTRE_M1: {
           "This bar says what shows of you: emotions read from outside (full), or everything works inside (quiet). Both are styles — the right one is the one you can explain to the other: “I feel a lot, I show little” is precious information to give.",
       },
     ],
+    // Task 65 — miroir EN de l'accompagnement réécrit (anti-barnum : le texte
+    // énonce ce que le curseur MESURE, puis le levier — phrases universelles
+    // supprimées). Même structure que le FR (fusion par index).
     accompagnement: {
       P: {
-        fort: "You know what you feel, often before the words. You spot the mixtures: a bit of joy, a background of sadness, a hint of fear. One piece of advice only: an understood emotion is not a settled emotion — the two are worked on together.",
+        fort: "Your cursor leans clearly toward perception: what happens inside you announces itself early and clearly — that is what your answers show. The point to watch: an understood emotion is not a settled emotion — the two are worked on together.",
         equilibre:
-          "Your inner states speak to you at moments: clear some days, tangled others. It is the rhythm of most people. Your lever: name early — an “I am annoyed” said at 3 p.m. spares the explosion at 8 p.m.",
-        doux: "What happens inside you arrives at you rather than announcing itself. You sometimes discover it after the fact, through the body or the reactions. It isn't a wall: it's a language one learns — one simple question a day (“what am I feeling, right now?”) is enough to install it.",
+          "Your perception sits in the middle of the cursor: some states arrive clearly, others are discovered after the fact. Neither an ease nor a handicap — ground to be made precise. Your lever: name early — an \"I am annoyed\" said at 3 p.m. spares the explosion at 8 p.m.",
+        doux: "Your cursor leans the other way: what happens inside you announces itself rather after the fact — through the body, the reactions, other people's feedback. It isn't an absence of emotion: it is information arriving late. Your lever: one simple question a day (\"what am I feeling, right now?\").",
       },
       R: {
-        fort: "When it rises, you know how to bring it down: gestures, words, time. You are not immune to blow-ups, but you know your way back. Watchpoint: calming yourself alone must not become never asking for help.",
+        fort: "Your cursor leans clearly: when it rises, you know how to bring it down — your answers describe known gestures, a way back. Watchpoint: calming yourself alone must not become never asking for help.",
         equilibre:
-          "Sometimes you cross your emotions, sometimes they cross you. You know some gestures that soothe, and other moments where rumination wins. Your lever: spot YOUR first physical signal — it is the one that gives you the most time.",
-        doux: "Strong emotions carry you faster than you carry them. The regrets after the blow-ups may know you. Good news: regulation learns very well — a gesture, repeated in calm, becomes available in the storm.",
+          "Your regulation sits in the middle of the cursor: some days you hold the wave, others it carries you. That is what your answers draw — a path in progress, not a verdict. Your lever: spot YOUR first physical signal — it is the one that gives you the most time.",
+        doux: "Your way back to calm is the slow link: when the wave arrives, it crosses you more than you cross it. It is measured, not judged — and it is the most trainable of the three: a gesture repeated in calm becomes available in the storm.",
       },
       X: {
-        fort: "With you, it shows and it gets said: you praise, you comfort, you say what people mean. It does good around you. Watchpoint: your own emotions deserve the same exit — they too are entitled to the short line.",
+        fort: "Your cursor leans clearly: with you, it shows and it gets said — your answers describe someone who expresses what they live and what people mean to them. Watchpoint: your own emotions deserve the same exit — they too are entitled to the short line.",
         equilibre:
-          "You share what you live when it's the right moment and the right person. You can keep what is intimate unsaid without it weighing. Your lever: one more sincere sentence a week — out loud, it changes relationships.",
-        doux: "You feel a lot inside, and little shows outside. It isn't coldness: it's your modesty or your caution. Your lever: start with writing — a long message says what the voice still blocks.",
+          "Your expression sits in the middle of the cursor: you show depending on the moment and the person — neither a display window nor a fortress. That is what your answers draw. Your lever: one more sincere sentence a week — out loud, it changes relationships.",
+        doux: "Your cursor leans toward kept feeling: little shows outside — that is what your answers show. It isn't coldness: it is a reserved access. Your lever: start with writing — a long message says what the voice still blocks.",
       },
     },
     conseils: [
@@ -460,8 +463,10 @@ export const REGISTRE_M1: {
       "Your perception, your regulation, your expression: three muscles, not three destinies — each week, one small step on one of them.",
       "Keep your answers: the mirror of this quest will build on them at the next step.",
     ],
+    // Task 65 — miroir EN du commentLire (annonce l'ancrage : le membre
+    // vérifie lui-même d'où vient chaque barre).
     commentLire:
-      "Three bars, three muscles of your emotional life: perceiving, soothing, expressing. Each goes from 0 to 100, drawn from your answers of today — the fuller it is, the more your answers lean that way. A light muscle is not a sentence: it is simply the next one to train. Each bar is followed by what it looks at and what it says about you.",
+      "Three bars, drawn from your answers of today: perceiving, soothing, expressing. Each goes from 0 to 100 — the fuller it is, the more your answers lean that way. Under each bar: the answers that weigh the most in the number, quoted as they are — you check for yourself where each tendency comes from.",
     ombreRelationnel: {
       V1:
         "In a relationship, your shadow side can give: the impression that you always handle things alone — your ease can hide that you too need help on some waves. What helps: let someone in on ONE emotion you handle poorly. Clarity grows stronger when it accepts a look.",

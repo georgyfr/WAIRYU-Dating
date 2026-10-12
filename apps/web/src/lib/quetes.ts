@@ -592,21 +592,26 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
           'Cette barre dit ce qui se voit de toi : les émotions se lisent dehors (pleine), ou tout travaille en dedans (légère). Les deux sont des styles — le bon, c\'est celui que tu sais expliquer à l\'autre : « je ressens beaucoup, je montre peu » est une information précieuse à donner.',
       },
     ],
+    // Task 65 — accompagnement RÉÉCRIT (demande fondateur : anti-barnum, faits
+    // vrais) : chaque texte énonce d'abord CE QUE MESURE le curseur (direction
+    // soutenue par le chiffre), puis un levier. Les phrases universelles
+    // (« le rythme de la plupart des gens », « parfois… parfois ») sont
+    // supprimées : si le membre avait répondu autrement, le texte serait autre.
     accompagnement: {
       P: {
-        fort: 'Tu sais ce que tu ressens, souvent avant les mots. Tu repères les mélanges : un peu de joie, un fond de tristesse, une pointe de peur. Un seul conseil : l\'émotion comprise n\'est pas l\'émotion réglée — les deux se travaillent ensemble.',
-        equilibre: 'Tes états intérieurs te parlent par moments : clairs certains jours, embrouillés d\'autres. C\'est le rythme de la plupart des gens. Ton levier : nommer tôt — « je suis agacé·e » dit à 15 h évite l\'explosion à 20 h.',
-        doux: 'Ce qui se passe en toi t\'arrive plutôt qu\'il ne s\'annonce. Tu le découvres parfois après coup, par le corps ou par les réactions. Ce n\'est pas un mur : c\'est une langue qu\'on apprend — une question simple par jour (« qu\'est-ce que je ressens, maintenant ? ») suffit à l\'installer.',
+        fort: 'Ton curseur penche net du côté de la perception : ce qui se passe en toi s\'annonce tôt et clairement — c\'est ce que tes réponses montrent. Le point à surveiller : l\'émotion comprise n\'est pas l\'émotion réglée — les deux se travaillent ensemble.',
+        equilibre: 'Ta perception est au milieu du curseur : certains états t\'arrivent clairement, d\'autres se découvrent après coup. Ni facilité ni handicap — un terrain à préciser. Ton levier : nommer tôt — « je suis agacé·e » dit à 15 h évite l\'explosion à 20 h.',
+        doux: 'Ton curseur penche de l\'autre côté : ce qui se passe en toi s\'annonce plutôt après coup — par le corps, les réactions, les retours des autres. Ce n\'est pas une absence d\'émotion : c\'est une information qui arrive en retard. Ton levier : une question simple par jour (« qu\'est-ce que je ressens, maintenant ? »).',
       },
       R: {
-        fort: 'Quand ça monte, tu sais faire redescendre : gestes, mots, temps. Tu n\'es pas à l\'abri des coups de chaud, mais tu connais ton chemin de retour. Vigilance : te calmer seul·e ne doit pas devenir ne jamais demander d\'aide.',
-        equilibre: 'Parfois tu traverses tes émotions, parfois elles te traversent. Tu connais certains gestes qui apaisent, et d\'autres moments où la rumination gagne. Ton levier : repérer TON premier signal physique — c\'est lui qui te donne le plus de temps.',
-        doux: 'Les émotions fortes te portent plus vite que tu ne les portes. Les regrets après les coups de chaud te connaissent peut-être. Bonne nouvelle : la régulation s\'apprend très bien — un geste, répété dans le calme, devient disponible dans la tempête.',
+        fort: 'Ton curseur penche net : quand ça monte, tu sais faire redescendre — tes réponses décrivent des gestes connus, un chemin de retour. Vigilance : te calmer seul·e ne doit pas devenir ne jamais demander d\'aide.',
+        equilibre: 'Ta régulation est au milieu du curseur : certains jours tu tiens la vague, d\'autres elle te porte. C\'est ce que tes réponses dessinent — un chemin en cours, pas un verdict. Ton levier : repérer TON premier signal physique — c\'est lui qui donne le plus de temps.',
+        doux: 'Ton retour au calme est le maillon lent : quand la vague arrive, elle te traverse plus que tu ne la traverses. C\'est mesuré, pas jugé — et c\'est le plus entraînable des trois : un geste répété dans le calme devient disponible dans la tempête.',
       },
       X: {
-        fort: 'Chez toi, ça se voit et ça se dit : tu félicites, tu consoles, tu dis ce que les gens représentent. Ça fait du bien autour de toi. Vigilance : tes propres émotions méritent la même sortie — elles aussi ont droit à la file d\'attente courte.',
-        equilibre: 'Tu partages ce que tu vis quand c\'est le bon moment et la bonne personne. Tu peux taire ce qui est intime sans que ça pèse. Ton levier : une phrase sincère de plus par semaine — à voix haute, elle change les relations.',
-        doux: 'Tu ressens beaucoup en dedans, et peu se voit dehors. Ce n\'est pas de la froideur : c\'est ta pudeur ou ta prudence. Ton levier : commencer par l\'écrit — un message long dit ce que la voix bloque encore.',
+        fort: 'Ton curseur penche net : chez toi, ça se voit et ça se dit — tes réponses décrivent quelqu\'un qui exprime ce qu\'il vit et ce que les autres comptent. Vigilance : tes propres émotions méritent la même sortie — elles aussi ont droit à la file d\'attente courte.',
+        equilibre: 'Ton expression est au milieu du curseur : tu montres selon le moment et la personne — ni vitrine ni forteresse. C\'est ce que tes réponses dessinent. Ton levier : une phrase sincère de plus par semaine — à voix haute, elle change les relations.',
+        doux: 'Ton curseur penche du côté du ressenti gardé : peu se voit dehors — c\'est ce que tes réponses montrent. Ce n\'est pas de la froideur : c\'est un accès réservé. Ton levier : commencer par l\'écrit — un message long dit ce que la voix bloque encore.',
       },
     },
     conseils: [
@@ -616,8 +621,10 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
       'Ta perception, ta régulation, ton expression : trois muscles, pas trois destins — chaque semaine, un petit pas sur l\'un d\'eux.',
       'Garde tes réponses : le miroir de cette quête s\'appuiera dessus à la prochaine étape.',
     ],
+    // Task 65 — commentLire annonce l'ANCRAGE : le membre vérifie lui-même
+    // d'où vient chaque barre (les réponses citées sous chaque barre).
     commentLire:
-      'Trois barres, trois muscles de ta vie émotionnelle : percevoir, apaiser, exprimer. Chacune va de 0 à 100, tirée de tes réponses d\'aujourd\'hui — plus elle est pleine, plus tes réponses penchent de ce côté. Un muscle léger n\'est pas une condamnation : c\'est simplement le prochain à entraîner. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi.',
+      'Trois barres, tirées de tes réponses d\'aujourd\'hui : percevoir, apaiser, exprimer. Chacune va de 0 à 100 — plus elle est pleine, plus tes réponses penchent de ce côté. Sous chaque barre : les réponses qui pèsent le plus dans le chiffre, citées telles quelles — tu vérifies toi-même d\'où vient chaque tendance.',
     ombreRelationnel: {
       V1:
         'En relation, ta zone d\'ombre peut donner : l\'impression que tu gères toujours seul·e — ton aisance peut masquer que toi aussi tu as besoin d\'aide sur certaines vagues. Ce qui aide : laisser entrer quelqu\'un sur UNE émotion que tu maîtrises mal. La clarté se renforce quand elle accepte un regard.',

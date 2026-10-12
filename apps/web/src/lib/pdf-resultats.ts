@@ -209,6 +209,14 @@ export async function telechargerResultatsPdf(
   }
   para(NOTA_BARRES, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
 
+  // ---- Task 65 — Ta zone d'ombre en relation (le même contenu que l'écran :
+  //      le contenu par variante existait, il n'était jamais imprimé ni rendu)
+  const ombreRel = quete.ombreRelationnel[carte.id];
+  if (typeof ombreRel === 'string' && ombreRel.length > 0) {
+    section(txSync("Ta zone d'ombre en relation (pdf)"));
+    para(ombreRel, { size: 10 });
+  }
+
   // ---- La suite de ton voyage (cliffhanger)
   section(txSync('La suite de ton voyage (pdf)'));
   doc.setFont('helvetica', 'bold');
