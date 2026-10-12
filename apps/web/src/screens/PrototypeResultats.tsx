@@ -537,7 +537,7 @@ function Bref({
 }) {
   const { tx } = useI18n();
   return (
-    <section className="proto-sec" aria-label="Résultat bref, avant et après">
+    <section className="proto-sec" aria-label="Résultat bref, avant et après" id="proto-exemple-bref">
       <h2 className="proto-h2">2 · Le résultat bref — avant / après</h2>
       <div className="proto-duo">
         <div className="proto-box proto-avant" role="group" aria-label="Ce que tu lis aujourd'hui">
@@ -676,6 +676,22 @@ function Detaille({
 export default function PrototypeResultats() {
   const [queteActive, setQueteActive] = useState<QueteProto>('2.6');
 
+  /** Guide (Task 63) : bascule sur la quête 2.6 puis fait défiler jusqu'à l'exemple. */
+  const voirExemple = () => {
+    setQueteActive('2.6');
+    window.setTimeout(() => {
+      document
+        .getElementById('proto-exemple-bref')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 90);
+  };
+
+  /** Guide (Task 63) : ouvre la reprise à zéro et remonte en haut de page. */
+  const ouvrirReprise = () => {
+    setQueteActive('r0');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <main className="screen proto-wrap" aria-labelledby="proto-title">
       <div className="proto-head">
@@ -686,12 +702,49 @@ export default function PrototypeResultats() {
           Des résultats qui se prouvent
         </h1>
         <p className="screen-sub">
-          Quatre onglets — trois quêtes rejouables avec preuve, contre-factuel et contrat ; et la{' '}
-          <strong>reprise à zéro</strong> des résultats : lumière et ombre à part égale,
-          proportionnées à tes nombres. Le contenu (items, échelles, cartes, archétypes, textes,
-          barres) reste <strong>verbatim</strong>.
+          Quatre onglets : les quêtes 2.6 (Monde 3) et 1.1 / 1.2 (Monde 1) rejouables, et la page de
+          résultats refaite à zéro. Les questions, l&apos;échelle, les cartes et les textes sont le
+          contenu réel du Livrable — rien n&apos;est inventé.
         </p>
       </div>
+
+      {/* Guide de lecture — l'essentiel en 30 secondes (Task 63) */}
+      <section className="proto-guide" aria-label="Comment lire ce prototype en 30 secondes">
+        <p className="proto-guide-titre">L&apos;idée en une phrase</p>
+        <p className="proto-guide-idee">
+          Quand un membre finit une quête, on lui montre <strong>sa</strong> carte — et sous chaque
+          phrase, <strong>la preuve tirée de ses réponses</strong> : ses chiffres, ses mots, mot
+          pour mot. C&apos;est ce qui remplace les textes génériques que tout le monde reconnaît
+          («&nbsp;tu es mystérieux·se mais tu as bon cœur&nbsp;»).
+        </p>
+        <ol className="proto-guide-etapes">
+          <li>
+            Clique{' '}
+            <button type="button" className="proto-guide-lien" onClick={voirExemple}>
+              ▶ Voir un exemple tout de suite
+            </button>{' '}
+            — une carte s&apos;affiche avec «&nbsp;pourquoi cette carte&nbsp;» en chiffres et en
+            mots.
+          </li>
+          <li>
+            Sur le même onglet, bouge un curseur (ou clique un scénario) : la carte change et la
+            preuve suit — rien n&apos;est pré-écrit.
+          </li>
+          <li>
+            Ouvre{' '}
+            <button type="button" className="proto-guide-lien" onClick={ouvrirReprise}>
+              la reprise à zéro
+            </button>{' '}
+            — réponds toi-même (ou clique un profil d&apos;exemple) et regarde la page de résultat
+            se construire, lumière et ombre à part égale.
+          </li>
+        </ol>
+        <p className="proto-guide-fin">
+          Ce qu&apos;on te demande de valider : <strong>la direction</strong> — des résultats qui se
+          prouvent, avec une ombre à part égale de la lumière. Pas les libellés ni les détails
+          visuels.
+        </p>
+      </section>
 
       <div className="proto-onglets" role="tablist" aria-label="Choisis la quête du prototype">
         {ONGLETS.map((o) => (

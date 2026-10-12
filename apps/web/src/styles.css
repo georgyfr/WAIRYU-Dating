@@ -9389,3 +9389,77 @@ button.r-tl-chip:hover {
     font-size: .92rem;
     margin: 0 0 14px
 }
+
+/* =====================================================================
+   Task 63 — guide de lecture du prototype (auto-contenu, aucune classe
+   existante touchée). Palette / variables du thème uniquement.
+   ===================================================================== */
+.proto-guide {
+    background: var(--c-white);
+    border: 1.5px solid var(--c-coral);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: left;
+    min-width: 0
+}
+
+.proto-guide-titre {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-coral-deep);
+    margin-bottom: 6px
+}
+
+.proto-guide-idee {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--c-night);
+    margin-bottom: 10px
+}
+
+.proto-guide-etapes {
+    margin: 0 0 10px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-gray-blue)
+}
+
+.proto-guide-lien {
+    display: inline;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-weight: 800;
+    color: var(--c-coral-deep);
+    text-decoration: underline;
+    cursor: pointer
+}
+
+.proto-guide-lien:hover {
+    color: var(--c-coral)
+}
+
+.proto-guide-lien:focus-visible {
+    outline: 2px solid var(--c-coral-deep);
+    outline-offset: 2px
+}
+
+.proto-guide-fin {
+    font-size: 13px;
+    color: var(--c-gray-blue);
+    border-top: 1px dashed var(--c-line);
+    padding-top: 10px;
+    line-height: 1.5
+}
