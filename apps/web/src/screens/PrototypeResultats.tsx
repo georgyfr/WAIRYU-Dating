@@ -27,7 +27,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n/I18nProvider';
 import { QUETES, construireApercuResultats, type QueteDef } from '../lib/quetes';
-import PrototypeResultatsV2 from './PrototypeResultatsV2';
+import PrototypeResultatsV2, { PrototypeVueMembre } from './PrototypeResultatsV2';
 import { ARCHES_2_6 } from '../lib/quete-2-6-arche';
 import { ARCHES_1_1 } from '../lib/quete-1-1-arche';
 import { ARCHES_1_2 } from '../lib/quete-1-2-arche';
@@ -39,9 +39,10 @@ const Q26 = QUETES['2.6'];
 const Q11 = QUETES['1.1'];
 const Q12 = QUETES['1.2'];
 
-type QueteProto = '2.6' | '1.1' | '1.2' | 'r0';
+type QueteProto = 'vm' | '2.6' | '1.1' | '1.2' | 'r0';
 
 const ONGLETS: { id: QueteProto; label: string }[] = [
+  { id: 'vm', label: 'Vue membre — la page de résultat' },
   { id: '2.6', label: '2.6 · Cent points — Monde 3' },
   { id: '1.1', label: '1.1 · Ta personnalité — Monde 1' },
   { id: '1.2', label: '1.2 · Ta façon de t\u2019attacher — Monde 1' },
@@ -674,19 +675,15 @@ function Detaille({
    ===================================================================== */
 
 export default function PrototypeResultats() {
-  const [queteActive, setQueteActive] = useState<QueteProto>('2.6');
+  const [queteActive, setQueteActive] = useState<QueteProto>('vm');
 
-  /** Guide (Task 63) : bascule sur la quête 2.6 puis fait défiler jusqu'à l'exemple. */
-  const voirExemple = () => {
+  /** Guide (Task 64) : ouvre les coulisses de validation (1er onglet labo). */
+  const voirCoulisses = () => {
     setQueteActive('2.6');
-    window.setTimeout(() => {
-      document
-        .getElementById('proto-exemple-bref')
-        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 90);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  /** Guide (Task 63) : ouvre la reprise à zéro et remonte en haut de page. */
+  /** Guide (Task 64) : ouvre la reprise à zéro annotée et remonte en haut. */
   const ouvrirReprise = () => {
     setQueteActive('r0');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -702,9 +699,10 @@ export default function PrototypeResultats() {
           Des résultats qui se prouvent
         </h1>
         <p className="screen-sub">
-          Quatre onglets : les quêtes 2.6 (Monde 3) et 1.1 / 1.2 (Monde 1) rejouables, et la page de
-          résultats refaite à zéro. Les questions, l&apos;échelle, les cartes et les textes sont le
-          contenu réel du Livrable — rien n&apos;est inventé.
+          La <strong>vue membre</strong> (premier onglet) montre la page de résultat telle qu'un
+          membre la vivra. Les onglets suivants sont les coulisses de validation : quêtes
+          rejouables, contre-factuels, reprise à zéro annotée. Les questions, l&apos;échelle, les
+          cartes et les textes sont le contenu réel du Livrable — rien n&apos;est inventé.
         </p>
       </div>
 
@@ -719,30 +717,29 @@ export default function PrototypeResultats() {
         </p>
         <ol className="proto-guide-etapes">
           <li>
-            Clique{' '}
-            <button type="button" className="proto-guide-lien" onClick={voirExemple}>
-              ▶ Voir un exemple tout de suite
+            Tu es sur la <strong>vue membre</strong> : clique un profil d&apos;exemple — ou réponds
+            toi-même — et regarde ta page de résultat se construire.
+          </li>
+          <li>
+            Change ensuite une réponse : les barres, la carte et les preuves suivent — rien
+            n&apos;est pré-écrit.
+          </li>
+          <li>
+            Les onglets suivants sont les{' '}
+            <button type="button" className="proto-guide-lien" onClick={voirCoulisses}>
+              coulisses de validation
             </button>{' '}
-            — une carte s&apos;affiche avec «&nbsp;pourquoi cette carte&nbsp;» en chiffres et en
-            mots.
-          </li>
-          <li>
-            Sur le même onglet, bouge un curseur (ou clique un scénario) : la carte change et la
-            preuve suit — rien n&apos;est pré-écrit.
-          </li>
-          <li>
-            Ouvre{' '}
+            — avant / après, contre-factuels,{' '}
             <button type="button" className="proto-guide-lien" onClick={ouvrirReprise}>
-              la reprise à zéro
+              reprise à zéro annotée
             </button>{' '}
-            — réponds toi-même (ou clique un profil d&apos;exemple) et regarde la page de résultat
-            se construire, lumière et ombre à part égale.
+            — pour vérifier que rien n&apos;est truqué.
           </li>
         </ol>
         <p className="proto-guide-fin">
-          Ce qu&apos;on te demande de valider : <strong>la direction</strong> — des résultats qui se
-          prouvent, avec une ombre à part égale de la lumière. Pas les libellés ni les détails
-          visuels.
+          Ce qu&apos;on te demande de valider : <strong>la forme membre</strong> — ce qu&apos;un
+          utilisateur verra à la fin d&apos;une quête. Les questions, l&apos;échelle, les cartes et
+          les textes sont le contenu réel du Livrable.
         </p>
       </section>
 
@@ -761,12 +758,13 @@ export default function PrototypeResultats() {
         ))}
       </div>
 
+      {queteActive === 'vm' && <PrototypeVueMembre />}
       {queteActive === '2.6' && <Proto26 />}
       {queteActive === '1.1' && <ProtoLikert queteId="1.1" />}
       {queteActive === '1.2' && <ProtoLikert queteId="1.2" />}
       {queteActive === 'r0' && <PrototypeResultatsV2 />}
 
-      {queteActive !== 'r0' && (
+      {(queteActive === '2.6' || queteActive === '1.1' || queteActive === '1.2') && (
       <>
       {/* 4 · Le contrat de lecture */}
       <section className="proto-sec" aria-label="Le contrat de lecture">

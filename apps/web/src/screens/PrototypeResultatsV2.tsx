@@ -103,6 +103,20 @@ const PRESETS_R0: Record<QueteLikert, { label: string; niv: Record<string, Nivea
   ],
 };
 
+/** Titres produit des quêtes Likert (sans code interne). */
+const VM_TITRES: Record<QueteLikert, string> = {
+  '1.1': 'Ta personnalité',
+  '1.2': 'Ta façon de t\u2019attacher',
+};
+
+/** Variante d'affichage d'un bloc :
+ *  - 'labo' (défaut) : validation fondateur — sections numérotées, notes de
+ *    méthode, badges « nouveau texte » ;
+ *  - 'membre' : la page telle qu'un membre la vivra — épurée, sans numéros,
+ *    sans notes, sans badges (demande fondateur Task 64).
+ *  Les moteurs et les contenus du Livrable sont STRICTEMENT identiques. */
+type Variante = 'labo' | 'membre';
+
 /** Les lignes « Le coût, en clair » — SEULS textes nouveaux de l'ombre ancrée.
  *  1.1 : pole BAS de chaque dimension (l'ombre vit du côté discret) ;
  *  1.2 : pole HAUT de chaque besoin (l'ombre vit du besoin dominant).
@@ -135,46 +149,50 @@ function Reprise({
   items,
   reps,
   setReps,
+  variante = 'labo',
 }: {
   queteId: QueteLikert;
   items: readonly ItemLikert[];
   reps: Reps;
   setReps: Dispatch<SetStateAction<Reps>>;
+  variante?: Variante;
 }) {
+  const membre = variante === 'membre';
   const repondues = items.filter((it) => {
     const v = reps[it.code];
     return typeof v === 'number' && v >= 1 && v <= 5;
   }).length;
   const complet = repondues === items.length;
   return (
-    <section className="proto-sec" aria-label="Reprends les affirmations à zéro">
+    <section className="proto-sec" aria-label={membre ? VM_TITRES[queteId] : 'Reprends les affirmations à zéro'}>
       <div className="r0-reprise-head">
-        <h2 className="proto-h2">1 · Reprends la quête à zéro</h2>
+        <h2 className="proto-h2">{membre ? VM_TITRES[queteId] : '1 · Reprends la quête à zéro'}</h2>
         <button
           type="button"
           className="btn btn-outline r0-reset"
           onClick={() => setReps({})}
           disabled={repondues === 0}
         >
-          Reprendre à zéro
+          {membre ? 'Recommencer' : 'Reprendre à zéro'}
         </button>
       </div>
       <p className="proto-hint">
-        Aucune réponse n&apos;est pré-remplie : tu réponds, la page se construit. Les résultats
-        arrivent quand tout est répondu — comme en production.
+        {membre
+          ? 'Réponds spontanément — il n\u2019y a ni bonne ni mauvaise réponse. Ta page de résultat se construit pendant que tu réponds.'
+          : 'Aucune réponse n\u2019est pré-remplie : tu réponds, la page se construit. Les résultats arrivent quand tout est répondu — comme en production.'}
       </p>
       <p className="r0-progress" role="status">
         <span className="r0-progress-chiffre">
           {repondues} / {items.length}
         </span>{' '}
         affirmations répondues
-        {!complet && ' — réponds à tout pour voir tes résultats'}
+        {!complet && ' — réponds à tout pour voir ta page de résultat'}
       </p>
       <div className="r0-progressbar" role="img" aria-label={`${repondues} sur ${items.length} répondues`}>
         <span className="r0-progressbar-fill" style={{ width: `${(repondues / items.length) * 100}%` }} />
       </div>
       <div className="proto-presets" role="group" aria-label="Profils d'exemple (pour la démonstration)">
-        <span className="r0-presets-label">Démonstration rapide :</span>
+        <span className="r0-presets-label">{membre ? 'Profils d\u2019exemple :' : 'Démonstration rapide :'}</span>
         {PRESETS_R0[queteId].map((p) => (
           <button
             key={p.label}
@@ -217,16 +235,30 @@ function Reprise({
   );
 }
 
-/** Les barres du moteur — les nombres d'abord, avant toute prose. */
-function Nombres({ queteId, reps }: { queteId: QueteLikert; reps: Reps }) {
+/** Les barres du moteur — les nombres d'abord, avant toute prose.
+ *  Variante membre : titre épuré + la ligne « Pourquoi cette carte » (le
+ *  couple de barres le plus haut choisit la carte — anti-Barnum produit). */
+function Nombres({
+  queteId,
+  reps,
+  variante = 'labo',
+}: {
+  queteId: QueteLikert;
+  reps: Reps;
+  variante?: Variante;
+}) {
+  const membre = variante === 'membre';
   const apercu = useMemo(() => construireApercuResultats(QUETE[queteId], reps), [queteId, reps]);
+  const top2 = [...apercu.bars].sort((a, b) => b.pct - a.pct).slice(0, 2);
   return (
-    <section className="proto-sec" aria-label="Tes nombres d'abord">
-      <h2 className="proto-h2">2 · Tes nombres d&apos;abord</h2>
-      <p className="proto-hint">
-        Voici tout ce que tes réponses produisent — avant tout texte. La suite est la lecture de
-        ces nombres, jamais l&apos;inverse.
-      </p>
+    <section className="proto-sec" aria-label={membre ? 'Tes nombres' : 'Tes nombres d\'abord'}>
+      <h2 className="proto-h2">{membre ? 'Tes nombres' : '2 · Tes nombres d\'abord'}</h2>
+      {!membre && (
+        <p className="proto-hint">
+          Voici tout ce que tes réponses produisent — avant tout texte. La suite est la lecture de
+          ces nombres, jamais l&apos;inverse.
+        </p>
+      )}
       <div className="proto-bars">
         {apercu.bars.map((b) => (
           <div key={b.key} className="proto-bar">
@@ -242,16 +274,32 @@ function Nombres({ queteId, reps }: { queteId: QueteLikert; reps: Reps }) {
           </div>
         ))}
       </div>
+      {membre && (
+        <p className="vm-pourquoi">
+          <strong>Pourquoi cette carte :</strong> tes barres les plus hautes sont «&nbsp;
+          {top2[0].nom}&nbsp;» ({top2[0].pct}/100) et «&nbsp;{top2[1].nom}&nbsp;» ({top2[1].pct}/100)
+          — c&apos;est ce profil de barres qui choisit ta carte.
+        </p>
+      )}
     </section>
   );
 }
 
 /** La carte verbatim — deux faces à part égale. */
-function CarteDeuxFaces({ queteId, reps }: { queteId: QueteLikert; reps: Reps }) {
+function CarteDeuxFaces({
+  queteId,
+  reps,
+  variante = 'labo',
+}: {
+  queteId: QueteLikert;
+  reps: Reps;
+  variante?: Variante;
+}) {
+  const membre = variante === 'membre';
   const carte = useMemo(() => cartePour(QUETE[queteId], reps), [queteId, reps]);
   return (
-    <section className="proto-sec" aria-label="Ta carte, deux faces à part égale">
-      <h2 className="proto-h2">3 · Ta carte — deux faces à part égale</h2>
+    <section className="proto-sec" aria-label={membre ? 'Ta carte' : 'Ta carte, deux faces à part égale'}>
+      <h2 className="proto-h2">{membre ? 'Ta carte' : '3 · Ta carte — deux faces à part égale'}</h2>
       <p className="r0-nom">{carte.nom}</p>
       <div className="r0-faces">
         <div className="r0-face r0-face--lum" role="group" aria-label="Ta lumière">
@@ -285,15 +333,28 @@ function MotPourMot({ items, dim, reps }: { items: readonly ItemLikert[]; dim: s
 }
 
 /** La lumière ancrée — même traitement que l'ombre (symétrie). */
-function LumiereAncree({ queteId, reps, top }: { queteId: QueteLikert; reps: Reps; top: Barre }) {
+function LumiereAncree({
+  queteId,
+  reps,
+  top,
+  variante = 'labo',
+}: {
+  queteId: QueteLikert;
+  reps: Reps;
+  top: Barre;
+  variante?: Variante;
+}) {
+  const membre = variante === 'membre';
   const items = ITEMS[queteId];
   return (
     <section className="proto-sec" aria-label="Ce qui te porte">
-      <h2 className="proto-h2">4 · Ce qui te porte</h2>
-      <p className="proto-hint">
-        Ta dimension la plus présente — avec tes réponses en preuve. Même traitement que
-        l&apos;ombre : chiffre, mots, preuve.
-      </p>
+      <h2 className="proto-h2">{membre ? 'Ce qui te porte' : '4 · Ce qui te porte'}</h2>
+      {!membre && (
+        <p className="proto-hint">
+          Ta dimension la plus présente — avec tes réponses en preuve. Même traitement que
+          l&apos;ombre : chiffre, mots, preuve.
+        </p>
+      )}
       <div className="r0-ancree r0-ancree--lum">
         <p className="r0-ancree-chiffre">
           <strong>{top.nom}</strong> à <strong>{top.pct}/100</strong> ({top.palierLabel})
@@ -312,24 +373,29 @@ function LumiereAncree({ queteId, reps, top }: { queteId: QueteLikert; reps: Rep
 
 type Barre = ReturnType<typeof construireApercuResultats>['bars'][number];
 
-/** L'ombre ancrée proportionnelle — le cœur de la demande fondateur. */
+/** L'ombre ancrée proportionnelle — le cœur de la demande fondateur.
+ *  Variante membre : titre épuré, sans note de méthode ni badge. */
 function OmbreAncree({
   queteId,
   reps,
   top,
   bottom,
   carteOmbre,
+  variante = 'labo',
 }: {
   queteId: QueteLikert;
   reps: Reps;
   top: Barre;
   bottom: Barre;
   carteOmbre: string;
+  variante?: Variante;
 }) {
+  const membre = variante === 'membre';
   const items = ITEMS[queteId];
   const ecart = top.pct - bottom.pct;
-  // Où vit l'ombre (règle affichée) : 1.1 → la dimension la plus discrète, si
-  // son palier est bas ; 1.2 → le besoin le plus fort, si son palier est haut.
+  // Où vit l'ombre (règle affichée en labo) : 1.1 → la dimension la plus
+  // discrète, si son palier est bas ; 1.2 → le besoin le plus fort, si son
+  // palier est haut.
   const cible = queteId === '1.1' ? bottom : top;
   const ancree = queteId === '1.1' ? cible.palier === 'doux' : cible.palier === 'fort';
   const pleine = ancree && ecart >= 25;
@@ -340,12 +406,16 @@ function OmbreAncree({
       : `Ton ombre vit du besoin qui domine — ici : « ${cible.nom} ».`;
   return (
     <section className="proto-sec" aria-label="Ce qui te coûte">
-      <h2 className="proto-h2">5 · Ce qui te coûte — ton ombre, proportionnée à tes nombres</h2>
-      <p className="r0-regle" role="note">
-        La règle de proportion : profil tranché → ombre détaillée ; profil peu tranché → ombre
-        courte ; profil sans dimension marquée → ombre d&apos;équilibre. La longueur suit tes
-        nombres, jamais un texte fixe.
-      </p>
+      <h2 className="proto-h2">
+        {membre ? 'Ce qui te coûte' : '5 · Ce qui te coûte — ton ombre, proportionnée à tes nombres'}
+      </h2>
+      {!membre && (
+        <p className="r0-regle" role="note">
+          La règle de proportion : profil tranché → ombre détaillée ; profil peu tranché → ombre
+          courte ; profil sans dimension marquée → ombre d&apos;équilibre. La longueur suit tes
+          nombres, jamais un texte fixe.
+        </p>
+      )}
       {ancree ? (
         <div className={`r0-ancree r0-ancree--ombre${pleine ? '' : ' r0-ancree--courte'}`}>
           <p className="r0-ouvit">{ouVit}</p>
@@ -360,9 +430,7 @@ function OmbreAncree({
               <MotPourMot items={items} dim={cible.key} reps={reps} />
             </details>
           )}
-          <p className="r0-cout">
-            {cout} <BadgeNouveau />
-          </p>
+          <p className="r0-cout">{cout}{!membre && <BadgeNouveau />}</p>
         </div>
       ) : (
         <div className="r0-ancree r0-ancree--equilibre">
@@ -377,16 +445,21 @@ function OmbreAncree({
           </p>
         </div>
       )}
-      <p className="proto-hint">
-        Tout ce bloc est déduit de tes réponses du jour — change-les, et l&apos;ombre suit.
-        Aucun seuil interne n&apos;est affiché : la preuve, ce sont tes nombres et tes mots.
-      </p>
+      {!membre && (
+        <p className="proto-hint">
+          Tout ce bloc est déduit de tes réponses du jour — change-les, et l&apos;ombre suit.
+          Aucun seuil interne n&apos;est affiché : la preuve, ce sont tes nombres et tes mots.
+        </p>
+      )}
     </section>
   );
 }
 
-/** La page complète d'une quête — reprise à zéro, puis résultats. */
-function R0Quete({ queteId }: { queteId: QueteLikert }) {
+/** La page complète d'une quête — réponses, puis résultats.
+ *  variante 'labo' : reprise à zéro annotée (validation) ;
+ *  variante 'membre' : la même mécanique, présentation épurée produit. */
+function QueteFlow({ queteId, variante = 'labo' }: { queteId: QueteLikert; variante?: Variante }) {
+  const membre = variante === 'membre';
   const items = ITEMS[queteId];
   const [reps, setReps] = useState<Reps>({});
   const complet = items.every((it) => {
@@ -399,24 +472,35 @@ function R0Quete({ queteId }: { queteId: QueteLikert }) {
 
   return (
     <>
-      <Reprise queteId={queteId} items={items} reps={reps} setReps={setReps} />
+      <Reprise queteId={queteId} items={items} reps={reps} setReps={setReps} variante={variante} />
       {!complet && (
-        <section className="proto-sec" aria-label="Tes résultats t'attendent">
+        <section className="proto-sec" aria-label={membre ? 'Ta page de résultat arrive' : "Tes résultats t'attendent"}>
           <div className="r0-attente">
             <p>
-              Tes résultats se construisent ici — réponds aux{' '}
-              <strong>{items.length} affirmations</strong> ci-dessus, ou choisis un profil
-              d&apos;exemple pour voir la page se remplir.
+              {membre ? (
+                <>
+                  Ta page de résultat arrive ici — réponds aux{' '}
+                  <strong>{items.length} affirmations</strong> ci-dessus, ou choisis un profil
+                  d&apos;exemple pour tout remplir d&apos;un coup.
+                </>
+              ) : (
+                <>
+                  Tes résultats se construisent ici — réponds aux{' '}
+                  <strong>{items.length} affirmations</strong> ci-dessus, ou choisis un profil
+                  d&apos;exemple pour voir la page se remplir.
+                </>
+              )}
             </p>
           </div>
         </section>
       )}
       {complet && tri && carte && (
         <>
-          <Nombres queteId={queteId} reps={reps} />
-          <CarteDeuxFaces queteId={queteId} reps={reps} />
-          <LumiereAncree queteId={queteId} reps={reps} top={tri[0]} />
-          <OmbreAncree queteId={queteId} reps={reps} top={tri[0]} bottom={tri[tri.length - 1]} carteOmbre={carte.ombre} />
+          <Nombres queteId={queteId} reps={reps} variante={variante} />
+          <CarteDeuxFaces queteId={queteId} reps={reps} variante={variante} />
+          <LumiereAncree queteId={queteId} reps={reps} top={tri[0]} variante={variante} />
+          <OmbreAncree queteId={queteId} reps={reps} top={tri[0]} bottom={tri[tri.length - 1]} carteOmbre={carte.ombre} variante={variante} />
+          {!membre && (
           <section className="proto-sec" aria-label="Le contrat de cette page">
             <h2 className="proto-h2">6 · Le contrat de cette page</h2>
             <div className="proto-box proto-contrat">
@@ -434,6 +518,7 @@ function R0Quete({ queteId }: { queteId: QueteLikert }) {
               </p>
             </div>
           </section>
+          )}
         </>
       )}
     </>
@@ -482,7 +567,45 @@ export default function PrototypeResultatsV2() {
         ))}
       </div>
 
-      <R0Quete key={queteId} queteId={queteId} />
+      <QueteFlow key={queteId} queteId={queteId} />
+    </>
+  );
+}
+
+/** =====================================================================
+ *  LA VUE MEMBRE (Task 64 — demande fondateur : « la direction me convient,
+ *  on passe à la vue membre épurée »).
+ *  La page de résultat telle qu'un membre la vivra : pas de numéros de
+ *  sections, pas de badges « nouveau texte », pas de notes de méthode, pas
+ *  de contrat de lecture. Juste : je réponds → je vois ma carte → je
+ *  comprends pourquoi (chiffres + preuves mot pour mot, direction validée).
+ *  Même moteur, mêmes contenus du Livrable — strictement rien de changé
+ *  côté items / scorer / sélecteur / textes.
+ *  ===================================================================== */
+export function PrototypeVueMembre() {
+  const [queteId, setQueteId] = useState<QueteLikert>('1.1');
+  return (
+    <>
+      <div
+        className="vm-picker"
+        role="tablist"
+        aria-label="Choisis la quête (outil de démonstration, hors produit)"
+      >
+        <span className="vm-picker-label">Quête :</span>
+        {(['1.1', '1.2'] as QueteLikert[]).map((id) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={queteId === id}
+            className={`btn vm-picker-btn${queteId === id ? ' vm-picker-btn--on' : ''}`}
+            onClick={() => setQueteId(id)}
+          >
+            {VM_TITRES[id]}
+          </button>
+        ))}
+      </div>
+      <QueteFlow key={queteId} queteId={queteId} variante="membre" />
     </>
   );
 }
