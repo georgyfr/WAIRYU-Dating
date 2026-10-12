@@ -27,6 +27,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n/I18nProvider';
 import { QUETES, construireApercuResultats, type QueteDef } from '../lib/quetes';
+import PrototypeResultatsV2 from './PrototypeResultatsV2';
 import { ARCHES_2_6 } from '../lib/quete-2-6-arche';
 import { ARCHES_1_1 } from '../lib/quete-1-1-arche';
 import { ARCHES_1_2 } from '../lib/quete-1-2-arche';
@@ -38,12 +39,13 @@ const Q26 = QUETES['2.6'];
 const Q11 = QUETES['1.1'];
 const Q12 = QUETES['1.2'];
 
-type QueteProto = '2.6' | '1.1' | '1.2';
+type QueteProto = '2.6' | '1.1' | '1.2' | 'r0';
 
 const ONGLETS: { id: QueteProto; label: string }[] = [
   { id: '2.6', label: '2.6 · Cent points — Monde 3' },
   { id: '1.1', label: '1.1 · Ta personnalité — Monde 1' },
   { id: '1.2', label: '1.2 · Ta façon de t\u2019attacher — Monde 1' },
+  { id: 'r0', label: 'Reprise à zéro — résultats 2.0' },
 ];
 
 /** La carte choisie par le MOTEUR RÉEL de la quête pour des réponses données. */
@@ -684,9 +686,10 @@ export default function PrototypeResultats() {
           Des résultats qui se prouvent
         </h1>
         <p className="screen-sub">
-          Prototype sur trois quêtes — le contenu (items, échelles, cartes, archétypes, textes,
-          barres) reste <strong>verbatim</strong>. Ce qui change : chaque lecture est ancrée dans
-          tes réponses, la sensibilité est montrée, les limites sont dites.
+          Quatre onglets — trois quêtes rejouables avec preuve, contre-factuel et contrat ; et la{' '}
+          <strong>reprise à zéro</strong> des résultats : lumière et ombre à part égale,
+          proportionnées à tes nombres. Le contenu (items, échelles, cartes, archétypes, textes,
+          barres) reste <strong>verbatim</strong>.
         </p>
       </div>
 
@@ -708,7 +711,10 @@ export default function PrototypeResultats() {
       {queteActive === '2.6' && <Proto26 />}
       {queteActive === '1.1' && <ProtoLikert queteId="1.1" />}
       {queteActive === '1.2' && <ProtoLikert queteId="1.2" />}
+      {queteActive === 'r0' && <PrototypeResultatsV2 />}
 
+      {queteActive !== 'r0' && (
+      <>
       {/* 4 · Le contrat de lecture */}
       <section className="proto-sec" aria-label="Le contrat de lecture">
         <h2 className="proto-h2">4 · Le contrat de lecture</h2>
@@ -763,6 +769,8 @@ export default function PrototypeResultats() {
           les mots — les codes et règles restent au moteur, comme le veut la charte du Livrable.
         </p>
       </section>
+      </>)
+      }
 
       <div className="proto-foot">
         <button type="button" className="btn btn-accent" onClick={() => (window.location.hash = '')}>

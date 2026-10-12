@@ -9181,3 +9181,211 @@ button.r-tl-chip:hover {
 .proto-faits-ecouts strong {
     color: var(--c-night)
 }
+
+/* =====================================================================
+   PROTOTYPE V2 — « Résultats 2.0 : reprise à zéro » (r0-*)
+   Auto-contenu : aucune classe produit ou proto-* existante modifiée.
+   ===================================================================== */
+
+.r0-intro {
+    display: grid;
+    gap: 10px
+}
+
+.r0-legende {
+    font-size: .85rem;
+    color: var(--c-ink-soft, #5a5148)
+}
+
+.r0-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border: 1px dashed currentColor;
+    border-radius: 999px;
+    font-size: .72rem;
+    letter-spacing: .02em;
+    white-space: nowrap
+}
+
+.r0-reprise-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between
+}
+
+.r0-reset {
+    min-height: 44px
+}
+
+.r0-reset:disabled {
+    opacity: .45;
+    cursor: not-allowed
+}
+
+.r0-progress {
+    font-size: .95rem;
+    margin: 0 0 6px
+}
+
+.r0-progress-chiffre {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums
+}
+
+.r0-progressbar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .08);
+    overflow: hidden;
+    margin: 0 0 14px
+}
+
+.r0-progressbar-fill {
+    display: block;
+    height: 100%;
+    background: var(--c-accent, #2a7d6f);
+    transition: width .25s ease
+}
+
+.r0-presets-label {
+    font-size: .85rem;
+    align-self: center;
+    color: var(--c-ink-soft, #5a5148)
+}
+
+.r0-attente {
+    border: 1px dashed var(--c-accent, #2a7d6f);
+    border-radius: 14px;
+    padding: 18px 20px;
+    background: rgba(42, 125, 111, .06)
+}
+
+.r0-attente p {
+    margin: 0
+}
+
+/* — La carte à deux faces égales — */
+
+.r0-nom {
+    text-align: center;
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 10px 0 14px
+}
+
+.r0-faces {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px
+}
+
+@media (min-width: 900px) {
+    .r0-faces {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+    }
+}
+
+.r0-face {
+    border-radius: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    min-width: 0
+}
+
+.r0-face--lum {
+    background: rgba(42, 125, 111, .08);
+    border-color: rgba(42, 125, 111, .35)
+}
+
+.r0-face--ombre {
+    background: rgba(30, 26, 22, .05);
+    border-color: rgba(30, 26, 22, .25)
+}
+
+.r0-face-kicker {
+    margin: 0 0 8px;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase
+}
+
+.r0-face-texte {
+    margin: 0;
+    line-height: 1.55
+}
+
+.r0-tension {
+    margin: 14px 2px 0;
+    text-align: center;
+    font-style: italic
+}
+
+/* — Les blocs ancrés (lumière / ombre) — */
+
+.r0-ancree {
+    border-radius: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    min-width: 0
+}
+
+.r0-ancree--lum {
+    background: rgba(42, 125, 111, .07);
+    border-color: rgba(42, 125, 111, .3)
+}
+
+.r0-ancree--ombre {
+    background: rgba(30, 26, 22, .05);
+    border-color: rgba(30, 26, 22, .3)
+}
+
+.r0-ancree--equilibre {
+    background: rgba(30, 26, 22, .03);
+    border-style: dashed
+}
+
+.r0-ouvit {
+    margin: 0 0 8px;
+    font-size: .9rem;
+    font-weight: 600
+}
+
+.r0-ancree-chiffre {
+    margin: 0 0 10px;
+    font-size: 1.05rem
+}
+
+.r0-ancree-texte {
+    margin: 0 0 10px;
+    line-height: 1.55
+}
+
+.r0-preuve {
+    margin: 0 0 10px
+}
+
+.r0-preuve summary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 6px 0
+}
+
+.r0-cout {
+    margin: 4px 0 0;
+    padding: 10px 12px;
+    border-left: 3px solid var(--c-night, #1e1a16);
+    background: rgba(30, 26, 22, .06);
+    line-height: 1.5
+}
+
+.r0-regle {
+    border: 1px dashed rgba(30, 26, 22, .35);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: .92rem;
+    margin: 0 0 14px
+}
