@@ -1398,3 +1398,30 @@ Work Log:
 Stage Summary:
 - « Résultats 2.0 : reprise à zéro » est TERMINÉ et vérifié localement : la page de résultats refaite from scratch — nombres d'abord, carte deux faces égales, lumière et ombre ancrées, ombre proportionnelle aux nombres réels, règle affichée — anti-Barnum par construction, moteurs des tests intacts.
 - En attente de tokens (Cloudflare + GitHub) pour : push main (cb65754) + déploiement staging. L'URL de validation restera https://wairyu-staging.wairyu.workers.dev/#/prototype-resultats (onglet « Reprise à zéro »).
+
+---
+Task ID: 62-b
+Agent: orchestrateur (Z.ai Code)
+Task: Tokens re-fournis par le fondateur → push GitHub + déploiement staging de la Task 62 (« Reprise à zéro — résultats 2.0 ») + E2E réelle sur staging.
+
+Work Log:
+- TOKENS : CLOUDFLARE_API_TOKEN (vérifié actif via /user/tokens/verify — status active) + CLOUDFLARE_ACCOUNT_ID (a6ad9b4a…) + jeton GitHub (compte georgyfr, accès repo 200) re-fournis ; stockés dans /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600, HORS dépôt) ; ~/.git-credentials reconfiguré au bon format « https://user:token@github.com » (le format multi-lignes du premier essai était invalide — push refusé puis corrigé).
+- ÉTAT AU DÉMARRAGE : sandbox encore intact pour le clone Task 62 ; HEAD 362698d, en avance de 2 commits sur origin/main (cb65754 code Task 62 + 362698d worklog). Aucun secret compromis au reset précédent.
+- PUSH : origin/main = 362698d après push vérifié (5d10794..362698d).
+- DÉPLOIEMENT STAGING : bash deploy.sh staging (typecheck tsc OK, build Vite, migrations D1 wairyu-staging, wrangler deploy --env staging) → Version ID 869e8b72-9584-4b78-b2ca-ad2ed5c86d05 à 100 % (vérifié via wrangler deployments list). Bundle Task 62 = index-C2KI093F.js (+ index-BVUhyTnR.css), identité artefact local = déployé vérifiée.
+- CACHE EDGE (leçon Task 60/61 confirmée) : index.html a servi l'ancien bundle (BszhWx47) ~1 min après le déploiement malgré ?v=5 ; propagation seule ~20 s plus tard, puis index-C2KI093F.js servi. Pas d'action nécessaire au-delà d'attendre/rafraîchir.
+- SMOKE : /api/health → {"ok":true, env:"staging"}.
+- E2E RÉELLE STAGING (agent-browser, FR via localStorage wairyu.lang=fr) — ONGLET « Reprise à zéro — résultats 2.0 » :
+  · État à vide : 0/50, bouton « Reprendre à zéro » DÉSACTIVÉ, aucun résultat rendu (gate vérifié).
+  · Preset Intense : 50/50 → carte L'Intense, section 2 « Tes nombres d'abord », carte deux faces (groupes « Ta lumière » / « Ton ombre »), section 4 (« Ton énergie sociale à 75/100 (très présente) » + texte de palier verbatim), section 5 ombre PLEINE : « Ton ombre vit du côté le plus discret — Ta stabilité émotionnelle à 0/100 (plus discrète) — écart 75 points » + texte de palier S + « Le coût, en clair » badgé.
+  · PREUVES MOT POUR MOT = blocs <details> repliés (raison de la première fausse alerte « contenu absent ») : dépliés → 10 items verbatim × réponses brutes pour E (section 4) ET pour S (section 5), items inversés en réponses BRUTES. La phrase fréquentielle « Sur les N affirmations… » appartient aux onglets 1.1/1.2 (Task 61) — la preuve r0 est la liste intégrale, conforme au design Task 62.
+  · Preset Neutre : ombre d'ÉQUILIBRE (« ton ombre vivra dans l'excès de tes forces » + zone d'ombre de la carte V7 citée) ; preset Point sensible : ombre PLEINE sur profil ordinaire (Ton organisation 25/100, écart 25).
+  · PUCES MANUELLES : 7 clics batchés → compteur 7/50 (updater fonctionnel confirmé en prod-like) ; « Reprendre à zéro » → 0/50 + gate rétabli.
+  · SOUS-ONGLET 1.2 : 12 items, presets Ancrage/Vigie/Autonome/Va-et-vient. Vigie → ombre PLEINE (besoin dominant réassurance 75/100, écart 50, texte fort) ; Va-et-vient → ombre COURTE (écart 0, sans mot-pour-mot, avec « Le coût, en clair » — conforme au code : seule la liste est gated sur pleine) ; Ancrage → ÉQUILIBRE (zone d'ombre V1 citée).
+  · FAUSSE PISTE ÉLUCIDÉE : un find role tab ambigu a cliqué l'onglet PRINCIPAL 1.2 (Task 61) au lieu du sous-onglet r0 — les résultats « La Vigie » vus venaient du panel Task 61 ; repris avec refs explicites. Leçon : toujours cliquer par refs du snapshot courant.
+  · Onglets d'origine intacts : 2.6 (Grue présente), 1.1 (50 items + presets). ZÉRO erreur console. Mobile 390/390 sans débordement (overflowX false). Captures /tmp/proto62b-staging-desktop.png + /tmp/proto62b-staging-mobile.png.
+- PROD NON TOUCHÉE (toujours e16e6524).
+
+Stage Summary:
+- LA REPRISE À ZÉRO (Résultats 2.0) EST EN LIGNE sur staging : https://wairyu-staging.wairyu.workers.dev/#/prototype-resultats → onglet « Reprise à zéro — résultats 2.0 » (version 869e8b72, bundle index-C2KI093F.js).
+- En cas de cache navigateur : recharger ou ajouter ?v=6. Aucun item/scorer/sélecteur/texte livrable modifié — le pattern reste présentation seule, en attente de validation fondateur avant tout déploiement prod.
