@@ -1425,3 +1425,22 @@ Work Log:
 Stage Summary:
 - LA REPRISE À ZÉRO (Résultats 2.0) EST EN LIGNE sur staging : https://wairyu-staging.wairyu.workers.dev/#/prototype-resultats → onglet « Reprise à zéro — résultats 2.0 » (version 869e8b72, bundle index-C2KI093F.js).
 - En cas de cache navigateur : recharger ou ajouter ?v=6. Aucun item/scorer/sélecteur/texte livrable modifié — le pattern reste présentation seule, en attente de validation fondateur avant tout déploiement prod.
+
+---
+Task ID: 63
+Agent: orchestrateur (Z.ai Code)
+Task: Retour fondateur — « je ne comprend rien de ce prototype » : explication pédagogique + guide de lecture intégré en tête de page + déploiement staging.
+
+Work Log:
+- DIAGNOSTIC HONNÊTE : le prototype est un DISPOSITIF DE VALIDATION (preuves, contre-factuels, badges, contrat de lecture) — pas une maquette produit ; l'en-tête d'accueil était rédigé en jargon d'auditeur (« contre-factuel », « verbatim », « contrat ») et rien ne disait QUOI faire en arrivant. Si le fondateur est perdu, le défaut est à la page, pas au lecteur.
+- LIVRAISON (commit adc22b0) : bloc « proto-guide » en tête de page, AVANT les onglets : (1) « L'idée en une phrase » — le membre voit SA carte + la preuve tirée de SES réponses, contre le texte générique Barnum ; (2) 3 étapes numérotées dont 2 CTA réels : « ▶ Voir un exemple tout de suite » (setQueteActive 2.6 + scrollIntoView ancré #proto-exemple-bref, timeout 90 ms) et « la reprise à zéro » (bascule onglet r0) ; (3) rappel de ce qu'on valide : la DIRECTION, pas les libellés.
+- SOUS-TITRE D'EN-TÊTE réécrit sans jargon : « Quatre onglets : les quêtes 2.6 (Monde 3) et 1.1 / 1.2 (Monde 1) rejouables, et la page de résultats refaite à zéro. Les questions, l'échelle, les cartes et les textes sont le contenu réel du Livrable — rien n'est inventé. »
+- CSS .proto-guide-* auto-contenu (~70 lignes, palette thème : coral/cream/Fraunces, focus-visible, pas de classe existante touchée) ; section exemple 2.6 munie de id="proto-exemple-bref".
+- GARDE-FOUS : AUCUN item/scorer/sélecteur/texte livrable modifié ; routes hash intactes (CTA = scrollIntoView JS, jamais de href #).
+- E2E LOCALE (vite preview :4173 + agent-browser, FR) : guide rendu ; CTA exemple → section top=0 ; CTA reprise → onglet r0 actif ; mobile 390 sans overflow ; 0 erreur.
+- DÉPLOIEMENT STAGING : version f7742344-34b3-4184-a4c4-0b5b529bf5dd (push e0673be..adc22b0 vérifié, build index local=deployé) ; smoke /api/health OK ; E2E staging : guide rendu, sous-titre nouveau servi, scrollExemple=0, 0 erreur. Capture /tmp/proto63-staging-desktop.png.
+- PROD NON TOUCHÉE.
+
+Stage Summary:
+- Le prototype s'explique maintenant lui-même en 30 secondes : idée en une phrase + 3 clics, en tête de page, sur staging (f7742344). En cas de cache : ?v=7.
+- Reste proposé au fondateur : si la forme « outil de validation » gêne encore, prochaine étape possible = une « vue membre » épurée (sans numéros de sections, sans badges, sans meta-texte) pour voir ce que vivra un vrai utilisateur.
