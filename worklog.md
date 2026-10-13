@@ -1653,3 +1653,21 @@ Work Log:
 Stage Summary:
 - LA PROD EST À JOUR ET COMPLÈTE : https://wairyu.wairyu.workers.dev (c982dff7) = staging = main. Le cycle « popup illustrée → propositions 1.1 → migration réponses D1 » demandé par le fondateur est TOTALEMENT en production.
 - Reste en veille : rotation des jetons (décision fondateur) ; aucune autre livraison en attente.
+
+---
+Task ID: 73
+Agent: orchestrateur (Z.ai Code)
+Task: Retour fondateur (« je ne vois pas la barre d'évaluation obligatoire. tu l'as supprimé. » + capture de l'écran détails de 1.1 en prod, compte Georges) — la barre « Ton avis compte » n'était activée que sur la quête 1.3.
+
+Work Log:
+- DIAGNOSTIC HONNÊTE : la barre n'a JAMAIS été supprimée — lib/satisfaction.ts portait QUETES_AVEC_AVIS = new Set(['1.3']) (déploiement progressif documenté : la forme validée sur 1.3 en vitrine, l'extension prévue « ensuite »). Le fondateur regarde l'écran détails de 1.1 → barre absente. Son intention d'origine (Task 64, citée dans l'en-tête du module : « lorsque une quête est terminée pour que la personne évalue ») = TOUTES les quêtes.
+- CORRECTION (1 fichier) : QUETES_AVEC_AVIS = new Set(QUETE_IDS) (import de lib/quetes.ts — vérifié sans cycle : quetes.ts n'importe pas satisfaction.ts). La gate v2, la barre, la restauration par quête (wairyu.satisfaction = { [queteId]: Avis }) deviennent automatiques sur les 35 quêtes. Aucun changement API nécessaire (validation quete 1-24 caractères — tous les ids passent).
+- Typecheck tsc 0 erreur · vite build vert · staging 54cb08ed.
+- E2E STAGING (compte e2e-avis-73, pseudo) : injection état 1.1 terminé (50 réponses = 3, carteId V7) + RELOAD RÉEL (piège cache module) → fenêtre complétion → « See my results in detail » → BARRE PRÉSENTE sur 1.1 (EN : kicker « Your voice counts », h3, sub, 5 niveaux) ✓ · GATE sans note : « Back to my card » → PAS de navigation, scroll ancré (3318) + notice polie ✓ · note 4 + commentaire → bouton « Update my rating » + merci ✓ · POST /api/satisfaction 200 (réseau capturé) ✓ · ligne D1 vérifiée : quete='1.1', note=4, session liée ✓ · FR : kicker « Ton avis compte », h3 « Ces réponses t'ont-elles éclairé·e ? », note 4 restaurée (« Mettre à jour ma note ») ✓ · gate débloquée → « Revenir à ma carte » navigue vers la phase carte (QUEST COMPLETE + V7) ✓ · mobile 390 : overflow OK, capture /tmp/wairyu-73/barre-fr-mobile.png (barre complète, lisible) ✓.
+- PURGE : DELETE /api/account {confirm:true} → 200 ; D1 : compte 0, reponses 0, 0 session orpheline (hardDeleteAccount couvre sessions/devices/reponses/auth_password — satisfaction conservée anonyme, session_id déréférencé).
+- DÉPLOIEMENT PROD (justification : le défaut a été constaté par le fondateur SUR LA PROD — sa remarque est l'instruction de la réparer là où il l'a vu ; signalé explicitement dans le compte rendu) : version e8385b37, bundle index-C8egQ8Xq.js · health OK · « Ton avis compte » + « Your voice counts » + « Envoyer ma note » présents dans le bundle servi.
+- PROD = STAGING = main.
+
+Stage Summary:
+- LA BARRE « TON AVIS COMPTE » EST MAINTENANT SUR LES RÉSULTATS DE TOUTES LES QUÊTES (35/35) — gate « obligatoire » incluse : toute sortie (Revenir à ma carte, Retour à mon voyage, quête suivante) ramène au champ avec la notice polie tant que la note de CETTE quête n'est pas envoyée ; chaque quête a sa note propre ; rien n'a changé aux résultats (aucun scorer ne lit l'avis — jamais).
+- Reste en veille : nettoyage optionnel des sessions orphelines historiques (0 trouvé aujourd'hui — rien à faire) ; rotation des jetons (décision fondateur).

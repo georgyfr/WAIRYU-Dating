@@ -17,10 +17,12 @@
  *  - La gate d'ouverture de la quête suivante vit dans Quete.tsx (affichage) —
  *    ce module ne fait que lire/écrire l'avis.
  *
- * Périmètre volontairement restreint : QUETES_AVEC_AVIS liste les quêtes qui
- * demandent l'avis (1.3 d'abord, en vitrine de validation fondateur) — il
- * suffira d'y ajouter les identifiants une fois la forme validée.
+ * Périmètre — Task 73 (retour fondateur « je ne vois pas la barre
+ * d'évaluation obligatoire ») : TOUTES les quêtes demandent l'avis —
+ * l'intention d'origine. La forme avait d'abord été validée sur 1.3 en
+ * vitrine (Task 66). Chaque quête a sa note propre (clé par quêteId).
  */
+import { QUETE_IDS } from './quetes';
 
 /** Un avis envoyé : la note (1-5), le commentaire facultatif, l'horodatage. */
 export interface AvisSatisfaction {
@@ -33,9 +35,9 @@ export interface AvisSatisfaction {
 /** Clé localStorage — un objet { [queteId]: AvisSatisfaction }. */
 const CLE_STOCKAGE = 'wairyu.satisfaction';
 
-/** Les quêtes qui demandent l'avis (gate d'ouverture de la suite).
- *  1.3 d'abord : la forme est en validation fondateur — étendre ensuite. */
-export const QUETES_AVEC_AVIS: ReadonlySet<string> = new Set(['1.3']);
+/** Les quêtes qui demandent l'avis (gate d'ouverture de la suite) —
+ *  TOUTES les quêtes (Task 73, retour fondateur). */
+export const QUETES_AVEC_AVIS: ReadonlySet<string> = new Set(QUETE_IDS);
 
 /** Les cinq niveaux de la barre — libellés simples, non jugés. */
 export const NIVEAUX_AVIS: readonly { valeur: 1 | 2 | 3 | 4 | 5; cle: string }[] = [
