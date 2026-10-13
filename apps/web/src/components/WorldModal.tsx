@@ -1,11 +1,14 @@
 /**
- * FICHE D'UN MONDE — popup « Découvrir un monde » (demande fondateur, Task 22).
+ * FICHE D'UN MONDE — popup « Découvrir un monde » (demande fondateur, Task 22 ;
+ * restructurée Task 69-b, GO fondateur).
  *
  * role=dialog aria-modal : en-tête (icône tile du monde, « Monde N sur 11 »,
- * nom, bouton ×), meta chips (N quêtes + statut RÉEL Terminé / En cours /
+ * nom, bouton ×), ILLUSTRATION en tête (11 visuels palette corail/crème,
+ * décoratifs), meta chips (N quêtes + statut RÉEL Terminé / En cours /
  * Ouvert / À venir + 💎 Premium sobre si !free + « Toujours gratuit » si M11),
- * 5 sections (Ce monde · Son objectif · Ce que tu récoltes · Comment ça se
- * passe · Tes quêtes numérotées avec hints), pied :
+ * 2 BLOCS lisibles au lieu de 4 sections (Ce monde = resume fusionné · Ce que
+ * tu récoltes = resultats + une ligne format) + Tes quêtes numérotées (hints
+ * verbatim — INTACTS), pied :
  *  - monde ouvert → bouton « Commencer le monde » (déjà en cours → « Continuer
  *    le monde ») qui pose marquerMondeEnCours puis — si onEnterQuest est
  *    fourni (M1 seul monde à quête ouverte) — atterrit sur la quête ; sinon
@@ -56,6 +59,24 @@ interface Props {
    * monde précédent n'est pas fini (la fiche reste lisible, CTA verrouillé). */
   deverrouille?: boolean;
 }
+
+/** L'illustration de chaque monde — bannière de la fiche (Task 69-b, GO
+ *  fondateur : « une image illustrative au-dessus pour rendre cette interface
+ *  un peu plus gaie »). Visuels générés, palette corail/crème de l'app ;
+ *  décoratifs (alt vide — le nom du monde est déjà dans le h2). */
+const WORLD_ART: Record<string, string> = {
+  M1: '/img/mondes/m1.webp',
+  M2: '/img/mondes/m2.webp',
+  M3: '/img/mondes/m3.webp',
+  M4: '/img/mondes/m4.webp',
+  M5: '/img/mondes/m5.webp',
+  M6: '/img/mondes/m6.webp',
+  M7: '/img/mondes/m7.webp',
+  M8: '/img/mondes/m8.webp',
+  M9: '/img/mondes/m9.webp',
+  M10: '/img/mondes/m10.webp',
+  M11: '/img/mondes/m11.webp',
+};
 
 /** Flèche droite du bouton « Commencer/Continuer le monde ». */
 function Fleche() {
@@ -208,6 +229,16 @@ export default function WorldModal({ world, done, progres, started, onClose, onE
         </div>
 
         <div className="w-modal-body">
+          {WORLD_ART[world.code] && (
+            <img
+              className="w-modal-art"
+              src={WORLD_ART[world.code]}
+              alt=""
+              width={1344}
+              height={768}
+              decoding="async"
+            />
+          )}
           <div className="w-modal-meta">
             <span className="m-world-steps">
               {faites > 0
@@ -257,11 +288,7 @@ export default function WorldModal({ world, done, progres, started, onClose, onE
             <>
               <section className="w-modal-sec" aria-label={tx('Présentation du monde')}>
                 <h3>{tx('Ce monde')}</h3>
-                <p>{detail.presentation}</p>
-              </section>
-              <section className="w-modal-sec" aria-label={tx('Objectif du monde')}>
-                <h3>{tx('Son objectif')}</h3>
-                <p>{detail.objectif}</p>
+                <p>{detail.resume}</p>
               </section>
               <section className="w-modal-sec" aria-label={tx('Résultats attendus du monde')}>
                 <h3>{tx('Ce que tu récoltes')}</h3>
@@ -270,14 +297,7 @@ export default function WorldModal({ world, done, progres, started, onClose, onE
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-              </section>
-              <section className="w-modal-sec" aria-label={tx('Déroulement des évaluations du monde')}>
-                <h3>{tx('Comment ça se passe')}</h3>
-                <ul>
-                  {detail.comment.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+                <p className="w-modal-format">{detail.format}</p>
               </section>
               <section
                 className="w-modal-sec"

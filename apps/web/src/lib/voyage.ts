@@ -15,8 +15,12 @@
  * récolte) est CALCULÉE depuis l'état des quêtes par lib/progression.ts
  * (useProgression) — posée par les actions de l'utilisateur, jamais inventée.
  *
- * WORLD_DETAILS = la fiche réelle des 11 mondes (présentation, objectif, récolte
- * attendue, format des évaluations, quêtes aux noms verbatim du Livrable).
+ * WORLD_DETAILS = la fiche réelle des 11 mondes (résumé, récolte attendue,
+ * format des évaluations, quêtes aux noms verbatim du Livrable).
+ * RESTRUCTURATION (Task 69-b, GO fondateur) : 4 sections → 2 blocs lisibles +
+ * illustration en tête — presentation+objectif fusionnés dans `resume`,
+ * `comment` condensé en une ligne `format`, `resultats` resserrés
+ * (~50 % de lecture en moins). Les QUÊTES (titres + hints) restent verbatim.
  * Exceptions honnêtes : M9 zéro miroir par design ; M11 miroir exempté (la
  * récompense, c'est la réponse de l'autre) ; M6 carte humour partageable ;
  * M7 → Portrait de domaine du Cœur ; M10 traité avec dignité, zéro filtre ;
@@ -438,14 +442,15 @@ export interface WorldQuest {
   hint?: string;
 }
 
-/** La fiche réelle d'un monde (popup « Découvrir un monde »). */
+/** La fiche réelle d'un monde (popup « Découvrir un monde »).
+ *  Restructurée (Task 69-b) : 2 blocs lisibles au lieu de 4 sections. */
 export interface WorldDetail {
-  presentation: string;
-  objectif: string;
-  /** Ce que tu récoltes à la fin du monde. */
+  /** Ce monde + son objectif, fusionnés et condensés (tutoiement, présent). */
+  resume: string;
+  /** Ce que tu récoltes à la fin du monde (2-4 puces courtes). */
   resultats: readonly string[];
-  /** Comment se passe l'évaluation. */
-  comment: readonly string[];
+  /** Le format des quêtes, en une ligne (dérivé de l'ancien « comment »). */
+  format: string;
   quetes: readonly WorldQuest[];
   /** Note d'exception honnête (M9, M11…). */
   note?: string;
@@ -454,18 +459,13 @@ export interface WorldDetail {
 export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
   {
   M1: {
-    presentation: "Le premier monde du voyage. Tu regardes qui tu es : ta personnalité, ta façon d'aimer et d'être proche, tes émotions. Pas de bonne réponse — seulement ta réponse.",
-    objectif: "Dessiner la première image de toi : comment tu fonctionnes, comment tu t'attaches, comment tu vis tes émotions. Tout le voyage s'appuie sur cette base.",
+    resume: "Le premier monde du voyage : tu regardes qui tu es — ta personnalité, ta façon d'aimer et d'être proche, tes émotions. Pas de bonne réponse, seulement ta réponse. Tout le voyage s'appuie sur cette base.",
     resultats: [
-      "Ta carte — après chaque quête, une synthèse courte : ta lumière et ton ombre.",
-      "Ton miroir — ton fonctionnement renvoyé en toutes lettres : ta lumière, ton ombre, tes tensions.",
-      "Les premières pierres de ton portrait — ce que tu découvres ici alimente toute la suite du voyage.",
+      "Ta carte — ta lumière et ton ombre, après chaque quête.",
+      "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
+      "Les premières pierres de ton portrait.",
     ],
-    comment: [
-      "Des affirmations s'affichent une à une. Tu réponds sur 5 niveaux, de « Pas du tout moi » à « Tout à fait moi ».",
-      "Pas de bonne réponse, pas de note, pas de chronomètre — tu avances à ton rythme.",
-      "Celle que tu crois être celle qu'on attend, c'est rarement la tienne.",
-    ],
+    format: "Des affirmations une à une, 5 niveaux de « Pas du tout moi » à « Tout à fait moi ». Ni note ni chronomètre.",
     quetes: [
       {
         title: "Ta personnalité",
@@ -482,17 +482,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M2: {
-    presentation: "Le deuxième monde regarde ce que tu fais de ce que tu es : ta maîtrise, ta tête, ton élan du moment. Tu reprends la main.",
-    objectif: "Voir comment tu tiens le volant : ce que tu contrôles, comment tu penses, ce que tu apportes à une relation — et si tu es prêt·e à rencontrer.",
+    resume: "Le deuxième monde regarde ce que tu fais de ce que tu es : ta maîtrise, ta tête, ton élan du moment. Tu vois comment tu tiens le volant — et si tu es prêt·e à rencontrer.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
-      "À la fin du monde : ton Portrait de ce monde, la synthèse de ce territoire de toi.",
+      "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Chaque quête a son format : affirmations, choix, quelques énigmes, une petite tâche du quotidien.",
-      "Pas de bonne réponse, pas de note — tu réponds selon ce qui est vrai pour toi.",
-    ],
+    format: "Chaque quête a son format : affirmations, choix, quelques énigmes, une petite tâche du quotidien. Pas de bonne réponse — ce qui est vrai pour toi.",
     quetes: [
       {
         title: "Ton contrôle sur toi-même",
@@ -518,17 +514,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M3: {
-    presentation: "Le troisième monde pose ton cap — le cap qui oriente toutes tes rencontres.",
-    objectif: "Poser ton cap : ce qui compte pour toi, ce qui ne se négocie pas, ce que tu cherches — et où tu veux aller dans les cinq prochaines années.",
+    resume: "Le troisième monde pose ton cap — celui qui oriente toutes tes rencontres : ce qui compte pour toi, ce qui ne se négocie pas, ce que tu cherches, où tu veux aller dans les cinq prochaines années.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
-      "À la fin du monde : ton Portrait de ce monde, la synthèse de ce territoire de toi.",
+      "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Des choix francs : des cases à cocher, des clics, des binaires, un jeu de 100 points à répartir.",
-      "Ton signe, c'est juste pour le jeu — il ne compte pas dans ton voyage.",
-    ],
+    format: "Des choix francs : cases à cocher, binaires, un jeu de 100 points à répartir. Ton signe est juste pour le jeu.",
     quetes: [
       {
         title: "Tes valeurs",
@@ -557,17 +549,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M4: {
-    presentation: "Le quatrième monde descend sur ton terrain réel — là où une vie à deux se vit vraiment.",
-    objectif: "Montrer ton quotidien tel qu'il est : ton rythme de vie, ton temps libre, ton rapport à l'argent, ton entourage, tes attirances.",
+    resume: "Le quatrième monde descend sur ton terrain réel — là où une vie à deux se vit vraiment : ton rythme de vie, ton temps libre, ton rapport à l'argent, ton entourage, tes attirances.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
-      "À la fin du monde : ton Portrait de ce monde, la synthèse de ce territoire de toi.",
+      "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Des questions concrètes sur ta vraie vie, des paires d'images à choisir, un badge aurore ou hibou.",
-      "Tes attirances restent privés — ils ne se voient jamais.",
-    ],
+    format: "Des questions concrètes sur ta vraie vie, des paires d'images à choisir, un badge aurore ou hibou. Tes attirances restent privés — ils ne se voient jamais.",
     quetes: [
       {
         title: "Ton rythme de vie",
@@ -593,17 +581,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M5: {
-    presentation: "Le cinquième monde regarde ton histoire — d'où tu pars, pour t'aider à choisir où tu vas.",
-    objectif: "Regarder ton histoire relationnelle : ton arbre, où tu en es aujourd'hui, ce que tes relations t'ont appris.",
+    resume: "Le cinquième monde regarde ton histoire relationnelle — d'où tu pars, pour choisir où tu vas : ton arbre, où tu en es aujourd'hui, ce que tes relations t'ont appris.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
-      "À la fin du monde : ton Portrait de ce monde, la synthèse de ce territoire de toi.",
+      "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Tu dessines ton arbre relationnel, tu réponds à des questions sur ton présent, une question ouverte pour ce que ça t'a appris.",
-      "Une partie du monde se tisse discrètement, sans te poser de questions.",
-    ],
+    format: "Tu dessines ton arbre, tu réponds à des questions sur ton présent, une question ouverte pour ce que ça t'a appris. Une partie du monde se tisse discrètement.",
     quetes: [
       {
         title: "Ton arbre relationnel",
@@ -621,18 +605,14 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M6: {
-    presentation: "Le sixième monde donne un langage à ton cœur — ce que tu aimes et comment tu le montres.",
-    objectif: "Mettre des mots sur ton cœur : ton style amoureux, ta vision de l'amour, comment tu exprimes ton affection — et ton humour.",
+    resume: "Le sixième monde donne un langage à ton cœur : ton style amoureux, ta vision de l'amour, comment tu exprimes ton affection — et ton humour.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
       "Une carte de ton humour, faite pour être partagée.",
       "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Des affirmations sur ta façon d'aimer et de le montrer — réponds avec ton cœur, pas avec le dictionnaire.",
-      "Pas de bonne réponse, pas de note.",
-    ],
+    format: "Des affirmations sur ta façon d'aimer et de le montrer. Réponds avec ton cœur, pas avec le dictionnaire.",
     quetes: [
       {
         title: "Ton style amoureux",
@@ -649,17 +629,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M7: {
-    presentation: "Le septième monde regarde les jours de vent : les désaccords font partie du voyage.",
-    objectif: "Comprendre comment tu traverses les tensions : face aux désaccords, quand la tension monte, et comment tu répares après.",
+    resume: "Le septième monde regarde les jours de vent : comment tu traverses les désaccords, quand la tension monte, et comment tu répares après. Rien n'est jugé ici — chaque tempête a sa façon d'être traversée.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Ton miroir — ton fonctionnement renvoyé en toutes lettres.",
       "Ce monde et Mon Cœur se rejoignent dans un Portrait de domaine : le Cœur.",
     ],
-    comment: [
-      "Des situations vraies de désaccord — tu réponds selon ce que tu fais, pas selon ce qu'il faudrait dire.",
-      "Rien n'est jugé ici : chaque tempête a sa façon d'être traversée.",
-    ],
+    format: "Des situations vraies de désaccord — tu réponds selon ce que tu fais, pas selon ce qu'il faudrait dire.",
     quetes: [
       {
         title: "Face aux désaccords",
@@ -673,16 +649,12 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M8: {
-    presentation: "Le huitième monde ouvre le domaine de l'intime — sur ta décision seulement.",
-    objectif: "Parler de ta vie intime et de ta relation au désir, à ton rythme : rien n'est jamais imposé, tout se révèle par étages.",
+    resume: "Le huitième monde ouvre le domaine de l'intime — sur ta décision seulement. Ta vie intime et ta relation au désir, à ton rythme : rien n'est jamais imposé, tout se révèle par étages.",
     resultats: [
       "Une synthèse discrète à chaque étage franchi — seulement si tu as choisi d'y entrer.",
       "Ce que tu récoltes ici reste chiffré et privé pour toujours.",
     ],
-    comment: [
-      "Le monde commence par ta décision : tu choisis d'y entrer, étage par étage.",
-      "Le consentement est au centre — chaque étage se franchit seulement si tu le veux.",
-    ],
+    format: "Le monde commence par ta décision : tu entres étage par étage, seulement si tu le veux. Le consentement est au centre.",
     quetes: [
       {
         title: "Ta vie intime — l'essentiel",
@@ -693,16 +665,12 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M9: {
-    presentation: "Le neuvième monde descend aux profondeurs de l'intime — chiffré renforcé, jamais visible des autres.",
-    objectif: "Dessiner tes préférences et tes frontières : ta carte intime, tes limites, ton désir à ta définition.",
+    resume: "Le neuvième monde descend aux profondeurs de l'intime : tes préférences, tes frontières, ton désir à ta définition. Chiffré renforcé — jamais visible des autres, tes réponses ne sortent jamais de ton coffre.",
     resultats: [
       "Ta carte des préférences — privée pour toujours, chiffrée renforcé.",
       "Certaines divergences de frontières se signalent aux deux personnes, sans jamais révéler qui a répondu quoi.",
     ],
-    comment: [
-      "Tu choisis d'y entrer — et certaines quêtes ne produisent volontairement aucun miroir, par respect.",
-      "Tes réponses sont chiffrées renforcé : elles ne sortent jamais de ton coffre.",
-    ],
+    format: "Tu choisis d'y entrer — et certaines quêtes ne produisent volontairement aucun miroir, par respect.",
     quetes: [
       {
         title: "Ta carte des préférences",
@@ -716,17 +684,13 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M10: {
-    presentation: "Le dixième monde parle de tes racines et de ton ouverture — traité avec la dignité qu'il exige.",
-    objectif: "Dire d'où tu viens et comment tu ouvres au monde : tes racines, ta façon d'accueillir les autres, la mixité dans ta vie.",
+    resume: "Le dixième monde parle de tes racines et de ton ouverture : d'où tu viens, comment tu accueillles les autres, la mixité dans ta vie. Traité avec la dignité qu'il exige.",
     resultats: [
       "Ta carte après chaque quête — ta lumière et ton ombre en une phrase.",
       "Un miroir qui décrit ton ancrage — un rythme, jamais un verdict.",
       "À la fin du monde : ton Portrait de ce monde.",
     ],
-    comment: [
-      "Tu t'identifies librement — ton vécu n'est jamais supposé.",
-      "Zéro filtre par origine : ici, ce sont des traits, jamais des étiquettes.",
-    ],
+    format: "Tu t'identifies librement — ton vécu n'est jamais supposé. Zéro filtre par origine : des traits, jamais des étiquettes.",
     quetes: [
       {
         title: "Tes racines",
@@ -740,16 +704,12 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     ],
   },
   M11: {
-    presentation: "La destination : le monde qui se vit à deux, après la rencontre.",
-    objectif: "Faire se croiser deux voyages : questions croisées, réponses partagées, rendez-vous préparé — une rencontre qui commence bien.",
+    resume: "La destination : le monde qui se vit à deux, après la rencontre. Questions croisées, réponses partagées, rendez-vous préparé — une rencontre qui commence bien.",
     resultats: [
       "La récompense, c'est la réponse de l'autre.",
       "Des cartes de dialogue, un rendez-vous préparé, un check-in sécurité gratuit et permanent.",
     ],
-    comment: [
-      "Tu réponds, l'autre répond — certaines réponses se partagent, d'autres restent entre toi et ton voyage.",
-      "La voix passe avant le visage : texte, puis voix, puis photo — toujours avec le consentement des deux.",
-    ],
+    format: "Tu réponds, l'autre répond — certaines réponses se partagent, d'autres restent entre toi et ton voyage. La voix passe avant le visage : texte, puis voix, puis photo, toujours avec le consentement des deux.",
     quetes: [
       {
         title: "Les questions qui rapprochent",

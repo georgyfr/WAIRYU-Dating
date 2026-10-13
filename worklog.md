@@ -1562,3 +1562,39 @@ Work Log:
 Stage Summary:
 - LA PROD EST À JOUR : https://wairyu.wairyu.workers.dev sert désormais la barre de satisfaction (gate v2 + notice polie), l'API satisfaction (D1 schéma canonique) et les puces de nouveautés — staging et prod sont ALIGNÉS sur le même bundle.
 - Reste du GO fondateur : popup des mondes illustrés → propositions AVANT/APRÈS briefing 1.1 → migration réponses localStorage → D1.
+
+---
+Task ID: 69-b
+Agent: orchestrateur (Z.ai Code)
+Task: GO fondateur — popup des mondes ILLUSTRÉE + texte restructuré (11 visuels palette corail/crème, 4 sections → 2 blocs, ~50 % de lecture en moins).
+
+Work Log:
+- 11 ILLUSTRATIONS GÉNÉRÉES (CLI z-ai, style flat vector commun : fond crème #F5F1E6, corail #FA6249 / #D94B34, navy #172C3D, turquoise #45C0C6 — aucun texte) : m1 miroir+cœurs · m2 volant+route · m3 boussole+sentier · m4 tente sous la lune · m5 arbre aux racines+photos · m6 cœur+bulles · m7 voilier+tempête+arc-en-ciel · m8 lune+rideau entrouvert · m9 coffre+serrure · m10 globe+ruban de motifs · m11 pont+deux anneaux. Converties WebP 760px (ffmpeg, 12-46 Ko — ~230 Ko au total), déposées apps/web/public/img/mondes/m*.webp.
+- CONSTANCE DES DONNÉES : WorldDetail restructuré (resume = presentation+objectif fusionnés condensés ; resultats resserrés ; format = une ligne dérivée de comment) — FR voyage.ts + miroir EN i18n/content/en/voyage.ts réécrits en parallèle (mêmes ordres/longueurs) ; LES QUÊTES (titres + hints) et les hints verbatim INTACTS ; Recolte.tsx (seul autre consommateur de resultats) compatible sans changement ; les exceptions honnêtes (M9 chiffré, M4 attirances privés, M10 dignité, M11 consentement) toutes conservées.
+- WorldModal.tsx : bannière .w-modal-art (img edge-to-edge, height clamp(120px,30vw,185px), object-fit cover, coins 22px, alt vide — décorative, le nom est dans le h2) sous l'en-tête ; 2 BLOCS (Ce monde = resume · Ce que tu récoltes = resultats + ligne format séparée par un trait pointillé) ; « Tes quêtes » inchangée ; CTA/verrou/notes inchangés. CSS .w-modal-art + .w-modal-format (~24 lignes, mobile-first).
+- DÉPLOIEMENT STAGING : version 68efd129 (bundle index-BZI-6mt7.js) — 1er déploiement avait raté 3 assets (m2/m7/m8 servis en fallback HTML, manifest partiel) ; re-déploiement correctif → 11/11 webp intègres vérifiés byte-à-byte (identity).
+- E2E STAGING (compte e2e-popup-69, Turnstile sauté) : M1 EN — image chargée (naturalWidth>0, 185 px), THIS WORLD condensé, WHAT YOU HARVEST 3 puces, ligne format, YOUR QUESTS verbatim, CTA Start the world ✓ · M1 FR intégral (CE MONDE / CE QUE TU RÉCOLTES / TES QUÊTES / Commencer le monde) ✓ · mobile 390 : image 120 px, overflowX false, capture /tmp/wairyu-popup/m1-fr-mobile.png ✓ · M2 verrouillé : image + chips À venir + bloc verrou « Ce monde s'ouvrira quand tu auras terminé Le Miroir. », JAMAIS de faux bouton ✓ · 0 erreur console · capture desktop /tmp/wairyu-popup/m1-en.png.
+- PURGE : compte e2e-popup-69 SUPPRIMÉ (Yes, delete permanently → retour écran d'auth).
+
+Stage Summary:
+- LA POPUP DES MONDES EST EN LIGNE sur staging (68efd129) : illustration gaie en tête de chaque fiche (11/11 mondes), 2 blocs lisibles au lieu de 4 sections, quêtes verbatim intactes, FR/EN, mobile 390 propre.
+- En attente fondateur : œil sur staging (il redit si un visuel ou un mot doit bouger — les 11 images sont remplaçables une à une) ; propositions AVANT/APRÈS briefing 1.1 remises dans la réponse (validation mot à mot AVANT toute modification).
+
+---
+Task ID: 69-c
+Agent: orchestrateur (Z.ai Code)
+Task: GO fondateur — migration des réponses localStorage → D1 (« la vraie sauvegarde qui te suit partout »).
+
+Work Log:
+- MIGRATION 0011_reponses.sql : table reponses (user_id, quete, etat JSON, updated_at, created_at, PK (user_id, quete), index user/updated_at) — le MÊME JSON que la clé locale wairyu.quete.{id}, audit de forme côté API, AUCUN scoring/sélecteur/carte côté base ; appliquée wairyu-staging ✅.
+- API (routes/reponses.ts, session OBLIGATOIRE) : GET /api/reponses (toutes les quêtes du membre) · PUT /api/reponses/:quete (upsert, updated_at posé par le SERVEUR, last-write-wins ; quete validée ^\d{1,2}\.\d{1,2}$ ; état audité : reponses/terminee/carteId/termineeA/lectures 1-3/textes ≤500, ≤32 Ko) · DELETE /api/reponses/:quete — branchée index.ts.
+- CLIENT (quete-state.ts + lib/sync-reponses.ts) : persiste() pose `majA` (ISO) dans le JSON local SANS toucher l'objet mémoire + bus surPersiste() ; sync-reponses : brancherSynchroReponses() (debounce 1 600 ms par quête — 58 items ≠ 58 requêtes), PUT fire-and-forget, DELETE quand l'état est vidé (« Effacer mes réponses » suit), restaurerReponses() au boot authentifié + onAuthenticated (App.tsx) : quête par quête le PLUS RÉCENT gagne (majA local vs updatedAt D1) — local vide → D1 importe ; local non horodaté (pré-Task 69-c) et non vide → l'appareil ACTIF a raison, il rattrape D1 (BUG DE CONCEPTION CORRIGÉ EN E2E LOCALE : la 1re règle aurait laissé un vieux D1 écraser le local actif) ; rattrapage inverse des quêtes QUETE_IDS jamais sauvegardées ; sans session : silencieux.
+- RGPD : DELETE /api/account purge désormais DELETE FROM reponses WHERE user_id (droit à l'effacement — la sauvegarde suit le compte).
+- E2E LOCALE (vite :5173 + mock-api :8787 étendu /api/reponses mémoire) : état 1.1 injecté (4 réponses, sans majA) → boot → rattrapage PUT 4 réponses ✓ · réponses UI 1.2 (2 items) → debounce → UN PUT 2 réponses ✓ + majA posé ✓ · Erase → DELETE 1.1 ✓ · NOUVEL APPAREIL (storage clear + reload réel) → GET → restauration 2 réponses + majA = updatedAt D1 ✓ · UI « Resume (2 answers) » ✓ · 0 erreur.
+- DÉPLOIEMENT STAGING : 0011 appliquée, version a70ab29e (purge RGPD incluse).
+- E2E STAGING (compte e2e-sync-69) : 2 réponses 1.1 par l'UI → PUT /api/reponses/1.1 200 ✓ · ligne D1 vérifiée (quete 1.1, 135 o, updated_at) ✓ · logout → storage clear → login → RESTAURATION : wairyu.quete.1.1 = 2 réponses + majA D1 ✓ · deck 1.1 directement en passation avec l'état restauré ✓ · suppression du compte → purge reponses D1 (COUNT = 0) ✓.
+- PROD NON TOUCHÉE : staging et prod étaient ALIGNÉS après 69-a — le déploiement prod de la popup + migration attend son feu vert (ou part avec la prochaine salve validée).
+
+Stage Summary:
+- LA SAUVEGARDE QUI TE SUIT PARTOUT EST EN LIGNE sur staging : chaque réponse poussée sur le compte (D1), chaque connexion restaure les états plus récents, un second appareil retrouve ses quêtes, l'effacement suit, la suppression de compte purge tout — localStorage reste la vérité de session, D1 la sauvegarde durable.
+- Reste à valider par le fondateur : propositions AVANT/APRÈS du briefing 1.1 (remises, mot à mot) ; feu vert prod pour popup + migration.

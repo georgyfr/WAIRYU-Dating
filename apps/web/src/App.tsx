@@ -39,6 +39,11 @@ import {
   logout,
 } from './lib/auth-client';
 import { lireEtatQuete, souscrireEtat, type EtatQuete } from './lib/quete-state';
+import {
+  brancherSynchroReponses,
+  definirAuthentifie,
+  restaurerReponses,
+} from './lib/sync-reponses';
 import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import { useI18n } from './i18n/I18nProvider';
 import { DEVISES, type CurrencyCode } from './i18n/currency';
@@ -228,6 +233,13 @@ export default function App() {
       .then((u) => {
         setMe(u);
         setAuthenticated(true);
+        // SAUVEGARDE QUI TE SUIT PARTOUT (Task 69-c) : session existante ⇒
+        // armement de la synchro + restauration des réponses du COMPTE (les
+        // états D1 plus récents que le local remplacent le local, les écrans
+        // se re-rendent via le bus).
+        brancherSynchroReponses();
+        definirAuthentifie(true);
+        void restaurerReponses();
         // Session existante : (re)lie l'appareil au compte — cible des
         // notifications. Si une félicitations est EN ATTENTE (création dont
         // la liaison avait échoué — ex. 2ᵉ compte sur le même appareil avant
@@ -444,6 +456,11 @@ export default function App() {
     // sur 'welcome' ⇒ la vue connectée résout vers le Voyage.
     setStage('welcome');
     setAuthenticated(true);
+    // SAUVEGARDE QUI TE SUIT PARTOUT (Task 69-c) : armement + restauration
+    // juste après inscription/connexion (le compte est le point d'attache).
+    brancherSynchroReponses();
+    definirAuthentifie(true);
+    void restaurerReponses();
     // Recharge le profil pour le bonjour de l'en-tête (post-inscription, le
     // boot l'avait obtenu en 401 — me était resté null).
     void fetchMe()

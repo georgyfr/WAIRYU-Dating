@@ -3903,6 +3903,24 @@ body.no-scroll {
     -webkit-overflow-scrolling: touch
 }
 
+.w-modal-art {
+    display: block;
+    width: calc(100% + 36px);
+    margin: -14px -18px 12px;
+    height: clamp(120px, 30vw, 185px);
+    object-fit: cover;
+    border-radius: 22px 22px 0 0
+}
+
+.w-modal-format {
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--c-line);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
 .w-modal-meta {
     display: flex;
     flex-wrap: wrap;

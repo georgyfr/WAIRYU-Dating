@@ -1,9 +1,13 @@
 /**
  * État des quêtes — réponses, complétion, carte obtenue.
  *
- * STOCKAGE INTERIMAIRE : localStorage (`wairyu.quete.{id}`) — migrera vers D1
- * quand le moteur de quêtes serveur sera branché (documenté, assumé : aucune
- * donnée inventée, l'état est posé par les réponses réelles de l'utilisateur).
+ * STOCKAGE : localStorage (`wairyu.quete.{id}`) +, DEPUIS LA TASK 69-c (GO
+ * fondateur : « la vraie sauvegarde qui te suit partout »), MIROIR D1 rattaché
+ * au COMPTE — chaque persiste() pousse vers /api/reponses (fire-and-forget,
+ * via lib/sync-reponses.ts) et chaque connexion restaure les états plus
+ * récents du compte. Le localStorage reste la vérité de session et le JSON
+ * porte `majA` (ISO) qui arbitre les conflits — quête par quête, le plus
+ * récent gagne.
  *
  * La clé de la quête 1.1 (`wairyu.quete.1.1`) est CONSERVÉE à l'identique de la
  * version d'origine : les données existantes des voyageurs restent intactes.
@@ -80,6 +84,18 @@ function lire(id: string): EtatQuete {
 const etats = new Map<string, EtatQuete>();
 const abonnes = new Set<() => void>();
 
+/** Les écouteurs de persistance (Task 69-c) — lib/sync-reponses.ts s'y inscrit
+ *  pour pousser chaque état vers D1 (fire-and-forget, jamais bloquant). */
+const ecouteursPersiste = new Set<(id: string, etat: EtatQuete) => void>();
+
+/** S'abonne aux persistes (localStorage + mémoire) — retourne la désinscription. */
+export function surPersiste(ecouter: (id: string, etat: EtatQuete) => void): () => void {
+  ecouteursPersiste.add(ecouter);
+  return () => {
+    ecouteursPersiste.delete(ecouter);
+  };
+}
+
 /** S'abonne aux changements d'état — le bus partagé par tous les hooks de
  *  l'app (useEtatQuete, useProgression). Retourne la désinscription. */
 export function souscrireEtat(abonner: () => void): () => void {
@@ -109,11 +125,14 @@ function persiste(id: string): void {
   const e = etats.get(id);
   if (e) {
     try {
-      window.localStorage.setItem(cle(id), JSON.stringify(e));
+      // `majA` (ISO) voyage dans le JSON SANS entrer dans l'objet mémoire :
+      // c'est l'arbitre « plus récent gagne » de la sauvegarde D1 (Task 69-c).
+      window.localStorage.setItem(cle(id), JSON.stringify({ ...e, majA: new Date().toISOString() }));
     } catch {
       /* stockage indisponible — l'état vit pour la session */
     }
     abonnes.forEach((a) => a());
+    ecouteursPersiste.forEach((ec) => ec(id, e));
   }
 }
 
@@ -153,10 +172,39 @@ export function marquerTerminee(id: string, carteId: string | null): void {
   persiste(id);
 }
 
-/** Efface tout (bouton « Effacer mes réponses et recommencer »). */
+/** Efface tout (bouton « Effacer mes réponses et recommencer »).
+ *  L'état vide persisté pousse l'écouteur sync (PUT vide ou DELETE —
+ *  lib/sync-reponses.ts décide) : la sauvegarde suit l'effacement. */
 export function reinitialiserQuete(id: string): void {
   etats.set(id, etatInitial());
   persiste(id);
+}
+
+/** Le `majA` local (ISO) — l'horodatage de la dernière persistance, arbitre
+ *  du conflit avec D1. Absent pour les états d'avant la Task 69-c. */
+export function lireMajA(id: string): string | null {
+  try {
+    const brut = window.localStorage.getItem(cle(id));
+    if (!brut) return null;
+    const majA = (JSON.parse(brut) as { majA?: unknown }).majA;
+    return typeof majA === 'string' ? majA : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Importe un état distant (restauration D1 — Task 69-c) : pose le cache, le
+ *  localStorage (avec le majA DISTANT, pour que le prochain conflit arbitre
+ *  bien) et prévient les abonnés. Le contenu distant a déjà été audité côté
+ *  API ; on re-passe par la même lecture défensive que le local. */
+export function importerEtatDistant(id: string, etat: EtatQuete, majADistant: string): void {
+  etats.set(id, etat);
+  try {
+    window.localStorage.setItem(cle(id), JSON.stringify({ ...etat, majA: majADistant }));
+  } catch {
+    /* stockage indisponible — l'état vit pour la session */
+  }
+  abonnes.forEach((a) => a());
 }
 
 /** Hook réactif — snapshot par identité, re-rendu sur changement réel. */
