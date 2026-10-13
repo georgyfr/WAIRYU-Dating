@@ -38,8 +38,10 @@ export const REGISTRE_M1: {
         "Some answers are re-read by automatic honesty checks — they never change your card.",
     },
     cartes: {
+      // Task 74 — V1 : « L'Élan chaleureux » → The Warm Spark (miroir du
+      // renommage demandé par le fondateur).
       V1: {
-        nom: "The Warm Explorer",
+        nom: "The Warm Spark",
         lumiere:
           "You are one of those people who make the world bigger. A fresh idea, an unknown cuisine, a conversation that veers off course: you say yes, and you bring others along. Your curiosity is warm — it wants to share. People feel welcome in your momentum.",
         ombre:
@@ -124,7 +126,9 @@ export const REGISTRE_M1: {
           "This bar says where your energy comes from: the crowd or the calm. Full: people recharge you and you shine in groups. Quiet: silence rebuilds you, with few people but real ones. Neither is better — they are two different engines.",
       },
       {
-        nom: "Your trust",
+        // Task 74 — miroir du renommage FR « Ta franchise bienveillante » :
+        // les items parlent de franchise et de générosité, pas de confiance.
+        nom: "Your kind candor",
         sousLigne: "the bond, trust, candor",
         lecture:
           "This bar says how you give: quick trust or attentive prudence. Full: the bond comes before winning, you listen and you give without counting. Quiet: trust is earned with you — and your candor, well dosed, protects your relationships.",
@@ -137,35 +141,37 @@ export const REGISTRE_M1: {
       },
     ],
     accompagnement: {
+      // Task 74 — miroir EN de la nouvelle voix (les 5 textes du fondateur
+      // + les dix paliers au même moule « Small step: »).
       O: {
-        fort: "The new attracts you: ideas, places, different encounters. You explore and adapt your point of view easily. Your safeguard: keep at least one stable landmark so you don't scatter.",
+        fort: "The new attracts you: fresh ideas, different places, different encounters. You explore, and you easily understand other people's point of view. Small step: keep at least one stable landmark (a habit, a place, a person) so you don't scatter.",
         equilibre:
-          "You can love the new without chasing it: you explore when it's worth it, you stay when it counts. It is a balance you tune case by case — from time to time, dare the unknown just to see what it does inside you.",
-        doux: "You love what lasts: the same faces, the same landmarks, the things one knows by heart. It isn't closing off — it's constancy. One small novelty a month, chosen by you, is enough to keep the door ajar.",
+          "You love the new without chasing it: you explore when it's worth it, and you stay when it counts. Small step: now and then, dare the unknown just to see what it does inside you.",
+        doux: "You love what lasts: the same faces, the same landmarks, the things one knows by heart. It isn't closing off: it's constancy. Small step: one small novelty a month, chosen by you, is enough to keep the door ajar.",
       },
       C: {
-        fort: "What you promise, you keep. You like it when things are ordered, planned, finished — and people know it: they entrust you with what matters. Your watchpoint: when the unexpected arrives, leave it a room without living it as a failure.",
+        fort: "What you promise, you keep. You like it when things are ordered, planned, finished — and people entrust you with what matters. Small step: when the unexpected arrives, leave it a room without living it as a failure.",
         equilibre:
-          "You structure the essential and let the rest live. Your days have a backbone, not a straitjacket. Just watch the big deadlines — they sometimes deserve more frame.",
-        doux: "You prefer to improvise: you organize when it's mandatory, not for pleasure. It works — until the day everything arrives at once. One single appointment with yourself a week — ten minutes, one list — changes the tension of the rest.",
+          "You organize the essential and let the rest live. Your days have a structure, without being rigid. Small step: for the big deadlines, a bit of frame will serve you well.",
+        doux: "You prefer to improvise: you organize when it's mandatory, not for pleasure. It works — until the day everything arrives at once. Small step: one appointment with yourself a week — ten minutes, one list — changes the tension of the rest.",
       },
       E: {
-        fort: "People recharge you. You start conversations and liven things up naturally. Watchpoint: keep some quiet times for yourself — that is what makes your energy sustainable over time.",
+        fort: "Other people give you energy. You start conversations and set the mood without effort. Small step: keep quiet moments just for yourself too: that is what makes your energy last.",
         equilibre:
-          "You are social when it makes sense and silent when it's needed. Big groups amuse you, one-on-ones nourish you. You have nothing to fix — just to notice what you need after a long day of people.",
-        doux: "Calm rebuilds you: few people, but real ones. You prefer listening to filling the silence — and those who know you know the value of what you say. One small spontaneous step now and then opens doors that waiting would never see.",
+          "You are social when it makes sense, and quiet when it's needed. Big groups amuse you, one-on-ones nourish you. Small step: notice what you need after a long day of people.",
+        doux: "Calm rebuilds you: few people, but real ones. You prefer listening to filling the silence — and those who know you know the value of what you say. Small step: daring one spontaneous gesture now and then opens doors that waiting would never see.",
       },
       A: {
-        fort: "You put the bond before winning: you listen, you wait before judging, you give without counting. Your watchpoint: candor also has a gift to offer — saying a clear no makes your yeses truer.",
+        fort: "For you, the relationship comes before being right. You listen, you wait before judging, you give without counting. Small step: saying a clear no is also a gift — it makes your yeses truer.",
         equilibre:
-          "You are warm but you don't let people walk over you: you give a lot and you know how to set limits. It's a healthy balance — just keep an eye on the people with whom you force yourself to be soft.",
-        doux: "Trust is earned with you, and you have good reasons to have learned that. Your path: test trust in small touches rather than waiting for total certainty, and dare to say no clearly.",
+          "You give a lot, and you know how to set limits: you don't let people walk over you. Small step: keep an eye on the people with whom you force yourself to be soft.",
+        doux: "Trust is earned with you, and you have good reasons to have learned that. Small step: test trust in small touches rather than waiting for total certainty.",
       },
       S: {
-        fort: "The waves pass and you stay standing. You find your calm quickly and others lean on you, often without saying so. Watchpoint: don't let your stability become armor — welcoming what stirs is also part of balance.",
+        fort: "When the waves arrive, you stay standing. You find your calm quickly, and others lean on you, often without you saying a word. Small step: your stability is not armor: you are allowed to let others see what stirs in you.",
         equilibre:
-          "You have calm days and storm days — it's human and it's your rhythm. You already know what soothes you; the game is doing it early enough, before tiredness decides for you.",
-        doux: "You feel strongly and for long — remarks, waits, scenarios. It isn't a weakness: it's a fine antenna. Your lever: simple, repeatable gestures — a breath, a walk, a written note — that shorten the way back to calm.",
+          "You have calm days and storm days — it's human, and it's your rhythm. You already know what soothes you. Small step: do it early enough, before tiredness decides for you.",
+        doux: "You feel strongly and for long — remarks, waits, scenarios. It isn't a weakness: it's a fine antenna. Small step: simple, repeatable gestures — a breath, a walk, a written note — shorten the way back to calm.",
       },
     },
     conseils: [
@@ -178,8 +184,10 @@ export const REGISTRE_M1: {
     commentLire:
       "The five bars come from YOUR answers, right now. Each one goes from 0 to 100: the fuller the bar, the more your answers lean that way — and nothing else. They are neither grades nor boxes: they are a snapshot, the one of the person who answered today. Each bar is followed by what it looks at and what it says about you — read them like a portrait that speaks, not like a report card.",
     ombreRelationnel: {
+      // Task 74 — V1 : miroir EN du texte verbatim du fondateur (2 paragraphes,
+      // séparés par \n\n).
       V1:
-        "In a relationship, your shadow side can give: projects started together then replaced by the next one — and the other person wondering whether they really counted in the momentum. What helps: say when something still counts even after you have moved on. A message back, a reminder, a promise kept: the other stops following your impulses and starts following you.",
+        "Here is the main risk in a relationship: you start a project together with enthusiasm, then a new idea arrives and takes all the room. The other person may then wonder whether it really counted for you, or whether only the project excited you.\n\nWhat helps: say out loud when something still counts for you, even after you have moved on. A word back about what you started together, a small reminder, a promise kept. That way, the other person no longer has to run after your impulses: they know you stay.",
       V2:
         "In a relationship, your shadow side can give: an impeccable home and the other person feeling graded for every misplaced thing — or you, weighed down by an unexpected event you live as your fault. What helps: announce your standards instead of making people guess them, and let the other do it THEIR way now and then — without keeping score.",
       V3:
@@ -196,7 +204,7 @@ export const REGISTRE_M1: {
     suite: {
       titre: "Your first mirror is set.",
       intro:
-        "You have just discovered a part of you. But your personality is not your whole story — the heart has its own questions.",
+        "You have just discovered a part of you. But your personality is not your whole story: your heart has its own questions.",
       questions: [
         "How do you love?",
         "How do you attach?",

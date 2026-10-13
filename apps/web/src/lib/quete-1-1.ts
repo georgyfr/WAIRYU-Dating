@@ -346,7 +346,11 @@ const ITEMS_FR: readonly QueteItem[] = [
   },
   {
     code: "Q1.1-49",
-    text: "Je me considère globalement serein(e).",
+    // Task 74 (demande fondateur : « à neutraliser ») — « Je me considère
+    // globalement serein(e). » devient la formulation du quotidien qu'il a
+    // proposée. Le code, l'orientation et la dimension ne bougent PAS : les
+    // réponses déjà stockées restent valables, le scoring est inchangé.
+    text: "Globalement, je me sens bien dans ma tête.",
     orient: "D",
     dim: "S",
   },
@@ -488,7 +492,10 @@ export interface Carte {
 export const CARTES: Record<VarianteId, Carte> = {
   V1: {
     id: "V1",
-    nom: "L'Explorateur·rice chaleureux·se",
+    // Task 74 (demande fondateur) — « L'Élan chaleureux » remplace
+    // « L'Explorateur·rice chaleureux·se » : son texte propose le nouveau nom,
+    // le masculin y sert de neutre. lumiere/ombre/tension restent verbatim.
+    nom: "L'Élan chaleureux",
     lumiere: "Tu es de ceux qui rendent le monde plus grand. Une idée neuve, une cuisine inconnue, une conversation qui part de travers : tu dis oui, et tu entraînes les autres. Ta curiosité est chaleureuse — elle veut partager. Les gens se sentent bienvenus dans ton élan.",
     ombre: "Parfois, tu choisis le nouveau par peur que le même devienne l'ennui — et ce qui compte finit par attendre.",
     tension: "vivre tout, sans blesser personne.",

@@ -322,7 +322,7 @@ export default function Parcourus() {
       {traverses.length === 0 ? (
         <div className="empty">
           <span className="emoji" aria-hidden="true">
-            {stepsDone > 0 ? '🧭' : '🪞'}
+            {stepsDone > 0 ? '🧭' : <VoyageIcon name="mirror" size={38} strokeWidth={1.8} />}
           </span>
           {stepsDone > 0 ? (
             <>

@@ -4647,9 +4647,10 @@ a.q-ask-q {
 
 .q-det-dim-head {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 10px
+    gap: 2px 10px
 }
 
 .q-det-dim-nom {
@@ -4966,6 +4967,19 @@ a.q-ask-q {
     font-size: 17px;
     font-weight: 900;
     color: var(--c-night)
+}
+
+/* Task 74 — le pictogramme miroir est un SVG inline (l'emoji 🪞 s'affiche en
+   carré vide sur beaucoup d'appareils) : aligné sur la ligne du titre. */
+.q-tend-titre {
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.q-tend-titre svg {
+    flex: none;
+    color: var(--c-turquoise-deep)
 }
 
 .q-profil-nota {
@@ -9597,9 +9611,12 @@ button.r-tl-chip:hover {
    existante touchée. Mobile-first : cible 390 px d'abord.
    --------------------------------------------------------------- */
 
-/* L'ancrage — sous chaque barre, les réponses qui pèsent le plus. */
+/* L'ancrage — sous chaque barre, les réponses qui pèsent le plus.
+   Task 74 — marge haute portée à 10px : sur les captures du fondateur, le
+   bloc venait « recouvrir la fin du texte » — on garantit une séparation
+   nette (le texte ne peut plus toucher la boîte). */
 .q-det-ancrage {
-    margin-top: 6px;
+    margin-top: 10px;
     padding: 9px 11px;
     background: #f6faf9;
     border: 1px solid var(--c-line);
@@ -9672,6 +9689,11 @@ button.r-tl-chip:hover {
     font-size: 14.5px;
     line-height: 1.65;
     color: var(--c-night)
+}
+
+/* Task 74 — le texte du fondateur (V1) arrive en deux paragraphes. */
+.q-ombre-rel p + p {
+    margin-top: 10px
 }
 
 @media (max-width: 420px) {

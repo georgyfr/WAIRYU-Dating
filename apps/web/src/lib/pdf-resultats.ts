@@ -170,17 +170,23 @@ export async function telechargerResultatsPdf(
   para(quete.completion.labelTension, { size: 9.5, couleur: CORAIL, gras: true });
   para(carte.tension, { size: 10.5, italique: true });
 
-  // ---- Ton profil (gabarit fondateur — mots du registre ARCHE, Task 35)
+  // ---- Ton profil (gabarit fondateur — mots du registre ARCHE, Task 35 ;
+  //      titres et voix Task 74, identiques à l'écran)
   section(txSync('Ton profil : {{nom}}', { nom: carte.nom }));
+  para(txSync("{{titre}}, d'après tes réponses", { titre: quete.titre }), {
+    size: 9,
+    couleur: ENCRE_DOUCE,
+    italique: true,
+  });
   para(arche.intro, { size: 10 });
   para(txSync('En résumé :') + ` « ${arche.devise} »`, { size: 10.5, italique: true, couleur: TURQUOISE, gras: true });
-  para(txSync('Ce que tu apportes'), { size: 9.5, couleur: TURQUOISE, gras: true });
+  para(txSync('Ta force'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.apportes, { size: 10 });
-  para(txSync('Ce qui peut te freiner'), { size: 9.5, couleur: CORAIL, gras: true });
+  para(txSync('Là où ça peut se compliquer'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.freines, { size: 10 });
   para(txSync('En couple'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.couple, { size: 10 });
-  para(txSync('Ton équilibre'), { size: 9.5, couleur: CORAIL, gras: true });
+  para(txSync('Ce que ce profil te souffle'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.equilibre, { size: 10 });
 
   // ---- Tes N tendances (d'après tes réponses) — les mesures réelles
@@ -193,7 +199,7 @@ export async function telechargerResultatsPdf(
     doc.text(barre.nom, MARGE, curseur.y);
     doc.setFontSize(10.5);
     doc.setTextColor(...TURQUOISE);
-    doc.text(`— ${barre.pct}/100 (${barre.palierLabel})`, 210 - MARGE, curseur.y, { align: 'right' });
+    doc.text(`· ${barre.pct}/100 · ${barre.palierLabel}`, 210 - MARGE, curseur.y, { align: 'right' });
     curseur.y += 3.6;
     const yBarre = curseur.y;
     doc.setFillColor(...CREME);
@@ -214,7 +220,11 @@ export async function telechargerResultatsPdf(
   const ombreRel = quete.ombreRelationnel[carte.id];
   if (typeof ombreRel === 'string' && ombreRel.length > 0) {
     section(txSync("Ta zone d'ombre en relation (pdf)"));
-    para(ombreRel, { size: 10 });
+    // Task 74 — deux paragraphes quand le texte en contient deux (séparateur
+    // \n\n — V1 1.1 : « le risque » puis « ce qui aide »).
+    for (const p of ombreRel.split('\n\n').filter((x) => x.trim().length > 0)) {
+      para(p, { size: 10 });
+    }
   }
 
   // ---- La suite de ton voyage (cliffhanger)

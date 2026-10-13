@@ -1,130 +1,134 @@
 /**
- * Archétypes de la quête 1.1 — Ta personnalité (Task 35, gabarit fondateur).
- * Chaque type est écrit à la 2ᵉ personne, SIMPLE ET LITTÉRAL, dans les 6
- * champs du gabarit : intro (« Ton archétype révèle une personne qui… » +
- * point de vigilance), devise, « Ce que tu apportes », « Ce qui peut te
- * freiner », « En couple », « Ton équilibre ».
+ * Archétypes de la quête 1.1 — Ta personnalité (gabarit fondateur).
  *
- * V3 (« L'Étoile sociale ») : les six textes viennent du fondateur LUI-MÊME —
- * il a validé ce format comme le rendu EXACT attendu pour tout archétype
- * (« beaucoup plus simple et littérale. Ce n'est pas mécanique »). Les six
- * autres types suivent le même moule, phrase pour phrase.
+ * Task 74 — NOUVELLE VOIX (demande fondateur : « pourquoi tu ne peux pas
+ * générer les textes de cette manière ? » — son texte complet pour V1 devient
+ * la référence mot à mot ; les six autres types suivent le MÊME MOULE) :
+ *  - intro : on entre direct, par « Toi, … » — la formule « Ton archétype
+ *    révèle une personne qui… » et le « point de vigilance » en fin d'intro
+ *    disparaissent (le fondateur ne les écrit plus) ;
+ *  - « Ce que tu apportes » → « Ta force » — 2-3 phrases, ce que tu rends
+ *    possible autour de toi ;
+ *  - « Ce qui peut te freiner » → « Là où ça peut se compliquer » — « Quand …,
+ *    tu … . Ce n'est pas un défaut : c'est le revers de … . Il arrive aussi
+ *    que … . » (la reassurance est DANS le texte, plus en formule de clôture) ;
+ *  - « En couple » — ce que tu apportes, la nuance (« certains…, d'autres… »),
+ *    et un geste concret (« Prends l'habitude de … ») ;
+ *  - « Ton équilibre » → « Ce que ce profil te souffle » — un geste + le
+ *    « pas un problème / plus de chances de durer » du fondateur ;
+ *  - la devise (« En résumé : « … » ») reste inchangée — le fondateur la
+ *    reprend telle quelle dans son texte.
  *
- * Ancrage : les cartes VERBATIM (nom, lumière, ombre, tension) restent dans
- * quete-1-1.ts ; la couche « plus » (langage matching, leviers) reste dans
- * quete-1-1-plus.ts. Aucun segment ≥ 60 caractères n'est recopié d'un module
- * à l'autre.
- *
- * Typo : apostrophe ASCII uniquement, écriture inclusive « celles et ceux »,
- * pas de pluriel fautif (« ce qui émerge »), « Tu apprécies » (pas de mélange
- * tu/vous).
+ * Typo : masculin servi de neutre (choix explicite du fondateur — plus
+ * d'écriture inclusive « ·rice/·se » dans ces textes), apostrophe ASCII,
+ * tutoiement, phrases courtes.
  */
 import type { ArchetypeCarte } from './quetes-plus';
 
 export const ARCHES_1_1: Record<string, ArchetypeCarte> = {
-  // V1 — L'Explorateur·rice chaleureux·se : l'élan qui emmène, et ce qui attend derrière.
+  // V1 — L'Élan chaleureux : TEXTE VERBATIM DU FONDATEUR (Task 74) —
+  // la référence mot à mot dont les autres types suivent le moule.
   V1: {
     intro:
-      'Ton archétype révèle une personne qui vit le nouveau comme un carburant. Tu es de celles et ceux qui disent oui avant d\'avoir tout prévu, qui transforment une idée inattendue en sortie, en conversation, en plan commun. Ta curiosité est chaleureuse : elle veut partager, elle entraîne. Ton point de vigilance : dans l\'enthousiasme de ce qui arrive, ce qui compte déjà peut finir par attendre.',
+      'Toi, la nouveauté te donne de l\'énergie. Une idée inattendue, une sortie improvisée, une conversation qui part dans tous les sens : tu dis oui, et tu embarques les autres avec toi. Ta curiosité est chaleureuse : tu ne gardes pas tes découvertes pour toi, tu les partages.',
     devise: 'Je dis oui au nouveau, et j\'y emmène les autres.',
     apportes:
-      'De l\'élan, du regard neuf, de l\'audace devant l\'inconnu. Tu rends le monde un peu plus grand autour de toi — et tu y invites les autres au lieu d\'y aller seul·e.',
+      'Tu rends le monde plus grand autour de toi. Avec toi, on ose, on essaie, on découvre. Et tu invites les autres à venir, plutôt que d\'y aller seul.',
     freines:
-      'La répétition, les routines trop calées, les longues attentes. Ce ne sont pas des défauts — juste ce qui pèse quand ton goût du neuf n\'a plus rien à mordre.',
+      'Quand tout se répète, ou qu\'il faut attendre longtemps, tu t\'ennuies vite. Ce n\'est pas un défaut : c\'est le revers de ton envie de nouveau. Il arrive aussi qu\'un projet lancé avec enthousiasme soit remplacé par le suivant avant d\'être terminé.',
     couple:
-      'Tu apportes des projets, des surprises, une relation où rien ne stagne. À garder en tête : tu avances vite — certains partenaires se sentent entraînés et nourris, d\'autres peuvent avoir l\'impression de courir derrière.',
+      'Tu apportes des projets, des surprises, une relation où rien ne s\'endort. Mais tu avances vite : certains partenaires se sentent portés par ton élan, d\'autres ont l\'impression de courir derrière toi. Prends l\'habitude de demander à quelle vitesse l\'autre a envie d\'avancer.',
     equilibre:
-      'Prendre soin de ce qui compte déjà. Non parce que la nouveauté serait un problème, mais parce qu\'un élan qui revient vers ce qu\'il aime donne à ce qu\'il commence la chance de durer.',
+      'Reviens de temps en temps vers ce qui compte déjà pour toi. Le nouveau n\'est pas un problème. Mais ce qui commence a plus de chances de durer quand ton élan sait aussi revenir vers ce que tu aimes déjà.',
   },
 
-  // V2 — Le·La Bâtisseur·se : la fiabilité qui tient debout, et son coût invisible.
+  // V2 — Le·La Bâtisseur·se : la parole qui tient, et son coût invisible.
   V2: {
     intro:
-      'Ton archétype révèle une personne sur qui on peut compter — et ça se sait. Tu es de celles et ceux qui préparent, finissent ce qu\'ils commencent et tiennent leur parole, même sur les petites promesses. Ce n\'est pas de la rigidité : c\'est du respect, celui que tu portes aux choses, aux gens, à ta parole. Ton point de vigilance : quand quelque chose dérape, tu as tendance à t\'accuser en premier.',
+      'Toi, ce que tu promets t\'engage. Tu prépares, tu finis ce que tu commences, tu tiens ta parole — même sur les petites promesses. Ce n\'est pas de la rigidité : c\'est du respect, celui que tu portes aux choses, aux gens, à ta parole.',
     devise: 'Je promets peu, et je tiens tout ce que je promets.',
     apportes:
-      'De la fiabilité, de la constance, une parole qui tient. Les gens te confient ce qui compte, parce qu\'ils savent que ça arrive — et ta présence régulière finit par devenir un repère.',
+      'Les gens peuvent compter sur toi, et ils le savent. Ce qui compte, ils te le confient — parce que chez toi, c\'est gardé, fini, respecté. Ta présence régulière finit par devenir un repère.',
     freines:
-      'Les imprévus de dernière minute, les façons de faire différentes, les choses laissées en suspens. Ce ne sont pas des défauts — juste ce qui grippe quand ton besoin de solidité devient trop exigeant, envers les autres comme envers toi.',
+      'Quand un imprévu dérègle le plan, ça te touche fort. Ce n\'est pas un défaut : c\'est le revers de ton besoin de solidité. Il arrive aussi que tu t\'accuses en premier, même quand tout ne dépendait pas de toi.',
     couple:
-      'Tu construis une confiance qui se vérifie : engagements clairs, réciprocité, régularité rassurante. À garder en tête : ta solidité sécurise certains partenaires — d\'autres peuvent se sentir notés si le cadre devient une grille.',
+      'Tu construis une confiance qui se vérifie : des engagements clairs, une régularité qui rassure. Mais ton cadre peut peser : certains partenaires se sentent sécurisés, d\'autres ont l\'impression d\'être notés. Prends l\'habitude de laisser l\'autre faire à sa façon, de temps en temps — sans garder la note.',
     equilibre:
-      'Accueillir un imprévu sans tout rattraper. Non parce que le contrôle serait mauvais, mais parce que laisser une place au désordre détend ce qui tient déjà debout.',
+      'Accueille un imprévu sans tout rattraper. Ton besoin de solide n\'est pas un problème. Mais ce que tu construis a plus de chances de durer quand ta solidité sait aussi laisser respirer.',
   },
 
-  // V3 — L'Étoile sociale : la lumière qui anime, et le silence qui attend.
-  // Six textes VERBATIM du fondateur (Task 35) — le gabarit de référence.
+  // V3 — L'Étoile sociale : l'énergie qui anime, et le silence qui attend.
   V3: {
     intro:
-      'Ton archétype révèle une personne qui puise son énergie dans le contact avec les autres. Tu es de celles et ceux qui initient les échanges, créent des ponts entre les gens et transforment une ambiance terne en moment mémorable. Tu as soif de découvertes et l\'envie naturelle de les partager. Ton point de vigilance : le silence et la routine peuvent te peser, comme un espace vide à remplir.',
+      'Toi, les autres te donnent de l\'énergie. Tu lances les conversations, tu connectes les gens entre eux, tu transformes une ambiance terne en moment mémorable. Ta curiosité et ton énergie se renforcent : plus tu découvres, plus tu as envie de le raconter.',
     devise: 'Je découvre, je connecte, je fais circuler l\'énergie.',
     apportes:
-      'Énergie, curiosité, spontanéité, enthousiasme, humour… Tu es un moteur de lien social : tu fais vivre les relations par tes idées et ta vitalité.',
+      'Tu fais vivre les relations. Avec toi, une soirée s\'anime, les gens se parlent, les liens se font. Et tu rends ça facile : personne n\'a à forcer pour entrer dans ton énergie.',
     freines:
-      'Les atmosphères trop calmes, les longs silences, la lenteur des échanges, l\'attente. Ce ne sont pas des défauts — juste ce qui émerge quand ton énergie n\'a pas de débouché.',
+      'Quand ça se calme trop longtemps, le silence te pèse. Ce n\'est pas un défaut : c\'est le revers de ton besoin de mouvement. Il arrive aussi que tu remplisses un espace qui aurait mérité d\'être écouté.',
     couple:
-      'Tu apprécies la complicité, le partage de découvertes et un partenaire qui accueille ton dynamisme. À garder en tête : ton rythme enthousiasmera certains, pourra en essouffler d\'autres.',
+      'Tu apportes de la complicité, des découvertes, une relation vivante. Mais ton rythme est rapide : certains partenaires se sentent portés, d\'autres ont l\'impression de ne plus suivre. Prends l\'habitude de proposer aussi des moments calmes, à deux, sans fond sonore.',
     equilibre:
-      'Savoir savourer aussi ce qui ne bouge pas. Non parce que le calme serait supérieur, mais parce qu\'alterner rayonnement et repos rend ton énergie durable.',
+      'Apprécie aussi ce qui ne bouge pas. Ton énergie n\'est pas un problème. Mais elle dure plus longtemps quand elle sait aussi se poser, de temps en temps, à côté de quelqu\'un.',
   },
 
   // V4 — L'Ancre : le calme qui porte les autres, et soi qui passe en dernier.
   V4: {
     intro:
-      'Ton archétype révèle une personne autour de qui on respire mieux. Tu es de celles et ceux qui traversent les tensions sans les amplifier, qui aiment la simplicité, la durée, les liens qui n\'ont pas besoin de bruit pour tenir. Tu ne cherches pas à briller : tu cherches à faire du bien, sobrement, durablement. Ton point de vigilance : ta stabilité peut te retenir longtemps dans des situations qui mériteraient de changer.',
-    devise: 'Je reste posé·e, et je fais du bien sobrement.',
+      'Toi, tu es un endroit où ça va mieux. Le calme te traverse sans te casser ; les autres le sentent et s\'y appuient. Tu ne cherches pas à briller : tu cherches à faire du bien, sobrement, durablement.',
+    devise: 'Je reste posé, et je fais du bien sobrement.',
     apportes:
-      'Du calme, de la présence, une écoute attentive. La tension redescend quand tu arrives — les autres s\'appuient sur toi, souvent sans le dire.',
+      'Tu rends les gens plus calmes autour de toi. Avec toi, on respire, on se raconte, on revient à l\'essentiel. Et tu ne demandes rien en échange — c\'est ce qui rend ta présence si précieuse.',
     freines:
-      'Les conflits évités trop longtemps, les habitudes devenues pesantes, tes propres besoins passés en dernier. Ce ne sont pas des défauts — juste ce qui apparaît quand la patience devient une forteresse.',
+      'Quand une situation dure trop longtemps, tu restes bien plus que nécessaire. Ce n\'est pas un défaut : c\'est le revers de ta patience. Il arrive aussi que tes propres besoins passent en dernier, derrière ceux que tu accueilles.',
     couple:
-      'Tu offres une sécurité émotionnelle rare : sincérité, profondeur tranquille, liens durables. À garder en tête : très disponible pour l\'autre, tu peux finir par passer en dernier — un partenaire attentif le remarquera, d\'autres peuvent ne jamais voir ce que tu portes en silence.',
+      'Tu apportes une sécurité émotionnelle rare : tu écoutes, tu dures, tu ne dramatises pas. Mais tu peux t\'oublier : certains partenaires voient tout ce que tu portes, d\'autres ne le verront jamais. Prends l\'habitude de dire ce que toi tu portes, avant que ça pèse.',
     equilibre:
-      'Te compter dans tes propres priorités. Non parce que le calme ne suffirait pas, mais parce que savoir te ménager des places à toi te permet de porter sans t\'user.',
+      'Compte-toi dans tes propres priorités. Ton calme n\'est pas un problème. Mais ce que tu donnes a plus de chances de tenir quand toi aussi, tu es compté dedans.',
   },
 
   // V5 — L'Intense : le volume maximum, et la vague qui traverse.
   V5: {
     intro:
-      'Ton archétype révèle une personne qui vit à volume maximum : les joies te portent, les peines te traversent, rien ne te laisse neutre. Tu es de celles et ceux qui remarquent ce que les autres passent à côté, qui s\'attachent entièrement et se souviennent de tout. Ton point de vigilance : un monde parfois bruyant peut te déborder, et tu gères la tempête sans mode d\'emploi.',
+      'Toi, tu vis les choses à volume maximum. Les joies te portent, les peines te traversent, rien ne te laisse neutre. Cette intensité que certains nomment « trop », c\'est aussi ta profondeur : tu remarques ce que les autres passent à côté, tu t\'attaches entièrement, tu te souviens de tout.',
     devise: 'Je vis les choses à volume maximum, et je ne fais pas à moitié.',
     apportes:
-      'De la profondeur, de la passion, une fidélité du cœur. Tu rends les moments plus vifs et les liens plus serrés, parce que tu ne fais rien à moitié.',
+      'Tu rends les moments plus vrais. Avec toi, on rit plus fort, on parle de ce qui compte, on ne fait pas semblant. Et les liens se resserrent, parce que tu ne fais rien à moitié.',
     freines:
-      'Les remarques qui restent des heures, les vagues qui montent sans prévenir, les adieux. Ce ne sont pas des défauts — juste ce qui traverse quand tout se vit à plein volume.',
+      'Quand une vague monte, elle te traverse en entier. Ce n\'est pas un défaut : c\'est le revers de ta façon de ressentir. Il arrive aussi qu\'une remarque bête t\'occupe des heures — et que le monde paraisse plus bruyant que pour d\'autres.',
     couple:
-      'Tu donnes à une relation une profondeur rare : authenticité, accueil sans jugement, des échanges où tout peut se dire. À garder en tête : ton intensité réveille certains partenaires — d\'autres peuvent parfois être dépassés par la vague.',
+      'Tu apportes de la profondeur, de la passion, un lien sans demi-mesure. Mais la vague emporte parfois la conversation : certains partenaires aiment cette intensité, d\'autres ont besoin de savoir qu\'elle passe. Prends l\'habitude de prévenir quand tu la sens monter : « ce n\'est pas toi, c\'est la vague. »',
     equilibre:
-      'T\'accorder de vraies descentes après les vagues. Non parce qu\'il faudrait ressentir moins, mais parce que des repos choisis laissent à cette intensité la place de durer.',
+      'Accorde-toi de vraies descentes après les vagues. Ressentir fort n\'est pas un problème. Mais cette intensité a plus de chances de durer quand elle sait aussi se reposer.',
   },
 
-  // V6 — L'Indépendant·e profond·e : le monde intérieur, et la porte qu'on ose à peine frapper.
+  // V6 — L'Indépendant·e profond·e : le monde intérieur, et la porte lente.
   V6: {
     intro:
-      'Ton archétype révèle une personne riche d\'un vaste monde intérieur : longues pensées, projets de fond, conversations à deux qui durent des heures. Tu es de celles et ceux qui préfèrent la profondeur au bruit — et ton calme cache un feu tranquille. Ton point de vigilance : tu ouvres rarement la conversation en premier, et des rencontres qui comptaient sont parfois passées inaperçues.',
+      'Toi, tu vis vraiment dans ton monde intérieur. Longues pensées, projets de fond, conversations à deux qui durent des heures : tu préfères la profondeur au bruit. Ceux qui te connaissent savent que ton calme cache un feu tranquille.',
     devise: 'Je vis dans un monde intérieur vaste, et je l\'ouvre à ma façon.',
     apportes:
-      'Un monde intérieur riche, des idées de fond, une écoute rare. Quand tu partages ton monde, l\'autre a le sentiment d\'avoir été choisi·e — parce que c\'est vrai.',
+      'Tu écoutes vraiment. Avec toi, une conversation descend là où elle va, et l\'autre se sent choisi — parce que quand tu partages ton monde, c\'est un choix. Ceux qui entrent chez toi ne l\'oublient pas.',
     freines:
-      'Les grands rassemblements, les échanges de surface, les premiers contacts à engager. Ce ne sont pas des défauts — juste ce qui se durcit quand la préservation de ton monde devient une porte fermée plutôt qu\'une porte lente.',
+      'Quand il faut engager le premier contact, tu attends. Ce n\'est pas un défaut : c\'est le revers de ta façon de préserver ton monde. Il arrive aussi que des personnes que tu aurais aimées passent sans le savoir.',
     couple:
-      'Tu construis de l\'intimité réelle : patience, profondeur, respect du besoin d\'espace. À garder en tête : ton indépendance peut sembler une distance alors que, dedans, tout est vivant — certains partenaires apprennent à lire ce silence, d\'autres peuvent le prendre pour du désintérêt.',
+      'Tu apportes une intimité réelle : de la patience, de la profondeur, du respect du besoin d\'espace. Mais ton silence peut se lire comme une distance : certains partenaires apprennent à le lire, d\'autres le prennent pour du désintérêt. Prends l\'habitude de dire que dedans, tout est vivant.',
     equilibre:
-      'Oser partager ton monde avant d\'avoir fini de réfléchir. Non parce que la solitude serait mauvaise, mais parce qu\'un monde partagé, même maladroitement, rapporte bien plus qu\'un monde parfait gardé en silence.',
+      'Ouvre ta porte un peu plus tôt, même maladroitement. Ton monde n\'est pas un problème. Mais il a plus de chances d\'être partagé quand tu en laisses entrer quelqu\'un avant d\'avoir tout fini de penser.',
   },
 
-  // V7 — L'Équilibriste : toutes les facettes, et le centre qu'on cherche encore.
+  // V7 — L'Équilibriste : toutes les facettes, et le centre à faire entendre.
   V7: {
     intro:
-      'Ton archétype révèle une personne qui ne rentre dans aucune case — et personne ne ment : selon les jours, on te décrit aventureux·se, solide, animé·e ou posé·e. Tu es de celles et ceux qui possèdent un peu de tout — curiosité, constance, cœur, calme — et qui s\'adaptent à beaucoup de monde sans se sentir déguisés. Ton point de vigilance : tes désirs propres arrivent parfois en deuxième, derrière l\'adaptation.',
+      'Toi, tu ne rentres dans aucune case — et personne ne ment : selon les jours, on te décrit aventureux, solide, animé ou posé. Tu possèdes un peu de tout : de la curiosité, de la constance, du cœur, du calme. Et tu t\'adaptes à beaucoup de monde sans te sentir déguisé.',
     devise: 'Je suis plusieurs choses à la fois, et je tiens mon centre.',
     apportes:
-      'De la souplesse, de la polyvalence, un lien facile. Chacun peut trouver une façon de se connecter à toi sans avoir à se justifier — c\'est un vrai don.',
+      'Tu mets les gens à l\'aise. Chacun trouve une façon de se connecter à toi sans avoir à se justifier — c\'est un vrai don. Et ta souplesse fait de toi un compagnon facile à vivre, même dans les jours difficiles.',
     freines:
-      'Les choix à trancher vite, les camps à tenir longtemps, les périodes où rien ne bouge plus. Ce ne sont pas des défauts — juste ce qui apparaît quand la faculté de s\'adapter occupe toute la place et que ton centre peine à se faire entendre.',
+      'Quand il faut trancher vite ou tenir un camp longtemps, ça coince. Ce n\'est pas un défaut : c\'est le revers de ta faculté d\'adaptation. Il arrive aussi que tes désirs propres arrivent en deuxième, derrière l\'adaptation.',
     couple:
-      'Tu offres une acceptation rare : l\'autre existe tel qu\'il est, sans devoir choisir une version de lui. À garder en tête : tu épouses beaucoup de rythmes — certains partenaires se sentent profondément acceptés, d\'autres peuvent avoir du mal à saisir ce que toi tu veux.',
+      'Tu apportes une acceptation rare : l\'autre existe tel qu\'il est, sans devoir choisir une version de lui. Mais tu épouses beaucoup de rythmes : certains partenaires se sentent profondément acceptés, d\'autres ne savent plus ce que toi tu veux. Prends l\'habitude de dire ce que toi tu veux, avant de t\'adapter.',
     equilibre:
-      'Dire ce que toi tu veux, avant de t\'adapter. Non parce que s\'adapter serait faux, mais parce qu\'une vraie position, même rare, donne plus de poids à toutes les autres.',
+      'Prends position à voix haute, une fois par jour — un choix, une envie, un refus. T\'adapter n\'est pas un problème. Mais ta polyvalence devient un don quand elle part d\'un centre visible.',
   },
 };

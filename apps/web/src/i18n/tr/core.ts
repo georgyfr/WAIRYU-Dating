@@ -180,20 +180,20 @@ export const CORE: Record<string, string> = {
   "Tu n'as rien coché pour le moment — c'est une réponse complète.":
     'You have not ticked anything yet — that is a complete answer.',
 
-  // ---- écran Quête — détails (gabarit fondateur)
+  // ---- écran Quête — détails (gabarit fondateur ; titres Task 74)
   'Revenir à ma carte': 'Back to my card',
   '🎉 Ton profil :': '🎉 Your profile:',
-  'Ton archétype': 'Your archetype',
+  "{{titre}}, d'après tes réponses": '{{titre}}, from your answers',
+  'Ton portrait': 'Your portrait',
   'En résumé :': 'In short:',
-  'Ce que tu apportes': 'What you bring',
-  'Ce qui peut te freiner': 'What can hold you back',
+  'Ta force': 'Your strength',
+  'Là où ça peut se compliquer': 'Where it can get tricky',
   'En couple': 'As a couple',
-  'Ton équilibre': 'Your balance',
-  // ---- Task 65 — ancrage des barres + zone d'ombre en relation
-  'Tes réponses qui pèsent le plus': 'Your answers that weigh the most',
-  'Tes réponses sur cette tendance': 'Your answers on this tendency',
-  'pousse la barre vers le haut': 'pushes the bar up',
-  'pousse la barre vers le bas': 'pushes the bar down',
+  'Ce que ce profil te souffle': 'What this profile whispers to you',
+  // ---- Task 65/74 — ancrage des barres + zone d'ombre en relation
+  'Ce qui pèse dans ce score': 'What moves this score',
+  'fait monter la barre': 'moves the bar up',
+  'fait baisser la barre': 'moves the bar down',
   "Ta zone d'ombre en relation": 'Your shadow side in relationships',
   // ---- Task 66 — la barre de satisfaction + la notice polie (v2)
   'Ton avis sur ces réponses': 'Your take on these answers',
@@ -222,10 +222,8 @@ export const CORE: Record<string, string> = {
   '🧭 La suite de ton voyage': '🧭 The next step of your journey',
   'Ton document se prépare…': 'Your document is being prepared…',
   'Télécharger mon document personnel': 'Download my personal document',
-  'Le document reprend ton profil, tes tendances mesurées et la suite de ton voyage. Il reste sur ton\n          appareil — rien n\'est envoyé.':
-    'The document carries your profile, your measured trends and the next step of your journey. It stays on your\n          device — nothing is sent.',
-  'Le document reprend ton profil, tes tendances mesurées et la suite de ton voyage. Il reste sur ton appareil — rien n\'est envoyé.':
-    'The document carries your profile, your measured trends and the next step of your journey. It stays on your device — nothing is sent.',
+  "Ton document reste sur ton appareil. Rien n'est envoyé.":
+    'Your document stays on your device. Nothing is sent.',
 
   // ---- écran Profil
   'Mon profil': 'My profile',

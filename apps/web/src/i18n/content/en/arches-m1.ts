@@ -19,103 +19,106 @@ export const ARCHES_M1: {
   };
 } = {
   '1.1': {
-    // V1 — L'Explorateur·rice chaleureux·se : The Warm Explorer.
+    // Task 74 — miroir EN de la nouvelle voix : V1 reflète le TEXTE VERBATIM
+    // du fondateur (« L'Élan chaleureux » → The Warm Spark), V2-V7 suivent le
+    // même moule (« You, … » — plus de « Your archetype reveals… »).
+    // V1 — L'Élan chaleureux : The Warm Spark.
     V1: {
       intro:
-        "Your archetype reveals a person who lives the new like fuel. You are one of those who say yes before planning everything, who turn an unexpected idea into an outing, a conversation, a shared plan. Your curiosity is warm: it wants to share, it carries people along. Your watchpoint: in the excitement of what arrives, what already counts can end up waiting.",
+        "You, the new gives you energy. An unexpected idea, an improvised outing, a conversation that drifts in every direction: you say yes, and you bring the others along. Your curiosity is warm: you don't keep your discoveries to yourself, you share them.",
       devise: "I say yes to the new, and I bring others into it.",
       apportes:
-        "Momentum, a fresh look, boldness facing the unknown. You make the world a little bigger around you — and you invite others into it instead of going alone.",
+        "You make the world bigger around you. With you, people dare, they try, they discover. And you invite the others to come along, rather than going alone.",
       freines:
-        "Repetition, routines too set, long waits. These are not flaws — just what weighs when your taste for the new has nothing left to bite into.",
+        "When everything repeats, or when you have to wait for a long time, you get bored fast. It isn't a flaw: it's the other side of your taste for the new. It also happens that a project started with enthusiasm is replaced by the next one before it is finished.",
       couple:
-        "You bring projects, surprises, a relationship where nothing stagnates. To keep in mind: you move fast — some partners feel carried and nourished, others may feel like they are running behind.",
+        "You bring projects, surprises, a relationship where nothing falls asleep. But you move fast: some partners feel carried by your momentum, others feel like they are running behind you. Make a habit of asking how fast the other person wants to go.",
       equilibre:
-        "Take care of what already counts. Not because novelty would be a problem, but because a momentum that returns to what it loves gives what it starts the chance to last.",
+        "Come back now and then to what already counts for you. The new isn't a problem. But what begins has a better chance of lasting when your momentum also knows how to return to what you already love.",
     },
     // V2 — Le·La Bâtisseur·se : The Builder.
     V2: {
       intro:
-        "Your archetype reveals a person people can count on — and it shows. You are one of those who prepare, finish what they start and keep their word, even on small promises. It isn't rigidity: it's respect, the kind you have for things, for people, for your word. Your watchpoint: when something derails, you tend to accuse yourself first.",
+        "You, what you promise engages you. You prepare, you finish what you start, you keep your word — even on small promises. It isn't rigidity: it's respect, the kind you have for things, for people, for your word.",
       devise: "I promise little, and I keep everything I promise.",
       apportes:
-        "Reliability, constancy, a word that holds. People entrust you with what matters, because they know it will happen — and your regular presence ends up becoming a landmark.",
+        "People can count on you, and they know it. What matters, they entrust to you — because with you it is kept, finished, respected. Your regular presence ends up becoming a landmark.",
       freines:
-        "Last-minute surprises, different ways of doing things, matters left hanging. These are not flaws — just what grinds when your need for solidness becomes too demanding, toward others as toward yourself.",
+        "When an unexpected event upsets the plan, it hits you hard. It isn't a flaw: it's the other side of your need for solidness. It also happens that you accuse yourself first, even when nothing was only up to you.",
       couple:
-        "You build a trust that gets verified: clear commitments, reciprocity, reassuring regularity. To keep in mind: your solidness reassures some partners — others may feel graded if the frame becomes a grid.",
+        "You build a trust that gets verified: clear commitments, reassuring regularity. But your frame can weigh: some partners feel safe, others feel graded. Make a habit of letting the other do it their way, now and then — without keeping score.",
       equilibre:
-        "Welcome an unexpected event without catching everything. Not because control would be bad, but because leaving room for disorder relaxes what already stands.",
+        "Welcome an unexpected event without catching everything. Your need for solid isn't a problem. But what you build has a better chance of lasting when your solidness also knows how to breathe.",
     },
     // V3 — L'Étoile sociale : The Social Star.
     V3: {
       intro:
-        "Your archetype reveals a person who draws energy from contact with others. You are one of those who start exchanges, build bridges between people and turn a dull mood into a memorable moment. You thirst for discoveries and naturally want to share them. Your watchpoint: silence and routine can weigh on you, like an empty space to fill.",
+        "You, other people give you energy. You start the conversations, you connect people to each other, you turn a dull mood into a memorable moment. Your curiosity and your energy feed each other: the more you discover, the more you want to tell it.",
       devise: "I discover, I connect, I keep the energy circulating.",
       apportes:
-        "Energy, curiosity, spontaneity, enthusiasm, humor… You are an engine of social bond: you keep relationships alive with your ideas and your vitality.",
+        "You keep relationships alive. With you, an evening comes alive, people talk to each other, bonds get made. And you make it easy: nobody has to force their way into your energy.",
       freines:
-        "Atmospheres too quiet, long silences, slow exchanges, waiting. These are not flaws — just what emerges when your energy has no outlet.",
+        "When things stay quiet for too long, silence weighs on you. It isn't a flaw: it's the other side of your need for movement. It also happens that you fill a space that deserved to be heard.",
       couple:
-        "You enjoy complicity, sharing discoveries, and a partner who welcomes your dynamism. To keep in mind: your rhythm will thrill some, and may wear others out.",
+        "You bring complicity, discoveries, a relationship that is alive. But your rhythm is fast: some partners feel carried, others feel left behind. Make a habit of offering quiet moments too, just the two of you, with no background noise.",
       equilibre:
-        "Know how to savor what doesn't move, too. Not because calm would be superior, but because alternating radiance and rest makes your energy durable.",
+        "Enjoy what doesn't move, too. Your energy isn't a problem. But it lasts longer when it also knows how to sit down, now and then, next to someone.",
     },
     // V4 — L'Ancre : The Anchor.
     V4: {
       intro:
-        "Your archetype reveals a person around whom breathing is easier. You are one of those who cross tensions without amplifying them, who love simplicity, duration, bonds that don't need noise to hold. You don't try to shine: you try to do good, quietly, lastingly. Your watchpoint: your stability can hold you for a long time in situations that deserve to change.",
+        "You, you are a place where people feel better. Calm passes through you without breaking you; others feel it and lean on it. You don't try to shine: you try to do good, quietly, lastingly.",
       devise: "I stay grounded, and I do good quietly.",
       apportes:
-        "Calm, presence, attentive listening. Tension comes down when you arrive — others lean on you, often without saying so.",
+        "You make people calmer around you. With you, people breathe, they tell things, they come back to what matters. And you ask nothing back — that is what makes your presence so precious.",
       freines:
-        "Conflicts avoided too long, habits turned heavy, your own needs put last. These are not flaws — just what appears when patience becomes a fortress.",
+        "When a situation lasts too long, you stay far longer than needed. It isn't a flaw: it's the other side of your patience. It also happens that your own needs come last, behind the ones you welcome.",
       couple:
-        "You offer a rare emotional safety: sincerity, quiet depth, lasting bonds. To keep in mind: very available for the other, you can end up coming last — an attentive partner will notice, others may never see what you carry in silence.",
+        "You bring a rare emotional safety: you listen, you last, you don't dramatize. But you can forget yourself: some partners see everything you carry, others will never see it. Make a habit of saying what you carry, before it weighs.",
       equilibre:
-        "Count yourself in your own priorities. Not because calm wouldn't be enough, but because knowing how to keep places of your own lets you carry without wearing out.",
+        "Count yourself in your own priorities. Your calm isn't a problem. But what you give has a better chance of holding when you are counted in it too.",
     },
     // V5 — L'Intense : The Intense One.
     V5: {
       intro:
-        "Your archetype reveals a person who lives at full volume: joys carry you, sorrows cross you, nothing leaves you neutral. You are one of those who notice what others walk past, who attach entirely and remember everything. Your watchpoint: a sometimes loud world can overflow you, and you handle the storm without a manual.",
+        "You, you live things at full volume. Joys carry you, sorrows cross you, nothing leaves you neutral. This intensity that some call “too much” is also your depth: you notice what others walk past, you attach entirely, you remember everything.",
       devise: "I live things at full volume, and I never do them halfway.",
       apportes:
-        "Depth, passion, a fidelity of the heart. You make moments livelier and bonds tighter, because you do nothing halfway.",
+        "You make moments truer. With you, people laugh louder, they talk about what counts, nobody pretends. And bonds tighten, because you never do anything halfway.",
       freines:
-        "Remarks that stay for hours, waves that rise without warning, goodbyes. These are not flaws — just what crosses when everything is lived at full volume.",
+        "When a wave rises, it crosses you entirely. It isn't a flaw: it's the other side of your way of feeling. It also happens that a silly remark occupies you for hours — and that the world seems louder than for others.",
       couple:
-        "You give a relationship a rare depth: authenticity, welcome without judgment, exchanges where everything can be said. To keep in mind: your intensity awakens some partners — others may sometimes be swept over by the wave.",
+        "You bring depth, passion, a bond without half-measures. But the wave sometimes carries the conversation away: some partners love that intensity, others need to know it passes. Make a habit of warning when you feel it rise: “it isn't you, it's the wave.”",
       equilibre:
-        "Grant yourself real descents after the waves. Not because you should feel less, but because chosen rests let this intensity have room to last.",
+        "Grant yourself real descents after the waves. Feeling strongly isn't a problem. But this intensity has a better chance of lasting when it also knows how to rest.",
     },
     // V6 — L'Indépendant·e profond·e : The Deep Independent.
     V6: {
       intro:
-        "Your archetype reveals a person rich with a vast inner world: long thoughts, deep projects, one-on-one conversations that last for hours. You are one of those who prefer depth to noise — and your calm hides a quiet fire. Your watchpoint: you rarely open the conversation first, and encounters that mattered sometimes went unnoticed.",
+        "You, you truly live in your inner world. Long thoughts, deep projects, one-on-one conversations that last for hours: you prefer depth to noise. Those who know you know that your calm hides a quiet fire.",
       devise: "I live in a vast inner world, and I open it my way.",
       apportes:
-        "A rich inner world, deep ideas, a rare ear. When you share your world, the other feels chosen — because it's true.",
+        "You truly listen. With you, a conversation goes down to where it goes, and the other feels chosen — because when you share your world, it is a choice. Those who enter your place don't forget it.",
       freines:
-        "Big gatherings, surface exchanges, first contacts to start. These are not flaws — just what hardens when protecting your world becomes a closed door rather than a slow one.",
+        "When the first contact has to be started, you wait. It isn't a flaw: it's the other side of the way you protect your world. It also happens that people you would have loved pass by without knowing it.",
       couple:
-        "You build real intimacy: patience, depth, respect for the need for space. To keep in mind: your independence can look like distance while, inside, everything is alive — some partners learn to read that silence, others may take it for disinterest.",
+        "You bring real intimacy: patience, depth, respect for the need for space. But your silence can read as distance: some partners learn to read it, others take it for disinterest. Make a habit of saying that inside, everything is alive.",
       equilibre:
-        "Dare to share your world before you finish thinking. Not because solitude would be bad, but because a shared world, even awkwardly, gives back far more than a perfect world kept in silence.",
+        "Open your door a little earlier, even awkwardly. Your world isn't a problem. But it has a better chance of being shared when you let someone in before you have finished thinking it all.",
     },
     // V7 — L'Équilibriste : The Tightrope Walker.
     V7: {
       intro:
-        "Your archetype reveals a person who fits no box — and nobody is lying: depending on the day, people describe you as adventurous, solid, lively or grounded. You are one of those who hold a bit of everything — curiosity, constancy, heart, calm — and who adapt to many people without feeling disguised. Your watchpoint: your own desires sometimes come second, behind the adapting.",
+        "You, you fit no box — and nobody is lying: depending on the day, people describe you as adventurous, solid, lively or grounded. You hold a bit of everything: curiosity, constancy, heart, calm. And you adapt to many people without feeling disguised.",
       devise: "I am several things at once, and I hold my center.",
       apportes:
-        "Suppleness, versatility, an easy bond. Everyone can find a way to connect with you without having to justify themselves — that is a real gift.",
+        "You put people at ease. Everyone finds a way to connect with you without having to justify themselves — that is a real gift. And your suppleness makes you easy company, even on hard days.",
       freines:
-        "Choices to settle fast, sides to hold long, periods where nothing moves anymore. These are not flaws — just what appears when the ability to adapt takes all the room and your center struggles to be heard.",
+        "When you have to settle fast or hold a side for long, it jams. It isn't a flaw: it's the other side of your ability to adapt. It also happens that your own desires come second, behind the adapting.",
       couple:
-        "You offer a rare acceptance: the other exists as they are, without having to choose a version of themselves. To keep in mind: you embrace many rhythms — some partners feel deeply accepted, others may struggle to grasp what you yourself want.",
+        "You bring a rare acceptance: the other exists as they are, without having to choose a version of themselves. But you embrace many rhythms: some partners feel deeply accepted, others no longer know what you yourself want. Make a habit of saying what you want, before adapting.",
       equilibre:
-        "Say what you yourself want, before adapting. Not because adapting would be wrong, but because a true position, even rare, gives more weight to all the others.",
+        "Take a position out loud, once a day — a choice, a desire, a refusal. Adapting isn't a problem. But your versatility becomes a gift when it starts from a visible center.",
     },
   },
 

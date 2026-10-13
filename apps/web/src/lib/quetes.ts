@@ -376,9 +376,12 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
       {
         key: 'A',
         // Task 32 (critique fondateur §8) : « bienveillance » à 38 % se lit
-        // « peu bienveillant » — l'axe réel est la confiance accordée (la
-        // lecture dit déjà « la confiance se mérite chez toi »).
-        nom: 'Ta confiance',
+        // « peu bienveillant » — l'axe réel est la confiance accordée.
+        // Task 74 (retour fondateur) : les items de l'axe parlent de franchise
+        // et de générosité, pas de confiance — le nom devient « Ta franchise
+        // bienveillante » (proposition du fondateur). sousLigne et lecture
+        // inchangées ; le scoring, lui, ne bouge jamais.
+        nom: 'Ta franchise bienveillante',
         sousLigne: 'le lien, la confiance, la franchise',
         genre: 'f',
         lecture:
@@ -394,34 +397,36 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
       },
     ],
     accompagnement: {
-      // Task 35 : les 5 textes aux paliers atteints par le gabarit fondateur
-      // (O-fort, C-équilibre, E-fort, A-doux, S-fort) viennent du fondateur
-      // LUI-MÊME — reprise verbatim, coquilles corrigées. Les autres paliers
-      // gardent la même voix.
+      // Task 74 — NOUVELLE VOIX : les 5 textes des paliers atteints par le
+      // profil du fondateur (O-fort, C-équilibre, E-fort, A-fort, S-fort)
+      // sont les SIENS, mot à mot ; les dix autres paliers suivent le même
+      // moule (2-3 phrases + « Petit pas : »). L'ancienne formule
+      // « Ton garde-fou : / Vigilance : / Ta piste : » disparaît au profit
+      // du « Petit pas : » du fondateur.
       O: {
-        fort: 'Le nouveau t\'attire : idées, lieux, rencontres différentes. Tu explores et tu adaptes facilement ton point de vue. Ton garde-fou : garder au moins un repère stable pour ne pas te disperser.',
-        equilibre: 'Tu peux aimer le nouveau sans courir après lui : tu explores quand ça vaut la peine, tu restes quand ça compte. C\'est un équilibre qui se règle au cas par cas — de temps en temps, ose l\'inconnu juste pour voir ce qu\'il fait en toi.',
-        doux: 'Tu aimes ce qui dure : les mêmes visages, les mêmes repères, les choses qu\'on connaît par cœur. Ce n\'est pas de la fermeture — c\'est de la constance. Une petite nouveauté par mois, choisie par toi, suffit à garder la porte entrouverte.',
+        fort: 'Le nouveau t\'attire : des idées, des lieux, des rencontres différentes. Tu explores, et tu comprends facilement le point de vue des autres. Petit pas : garde au moins un repère stable (une habitude, un lieu, une personne) pour ne pas t\'éparpiller.',
+        equilibre: 'Tu aimes le nouveau, sans courir après lui : tu explores quand ça vaut la peine, et tu restes quand ça compte. Petit pas : de temps en temps, ose l\'inconnu juste pour voir ce qu\'il fait en toi.',
+        doux: 'Tu aimes ce qui dure : les mêmes visages, les mêmes repères, les choses qu\'on connaît par cœur. Ce n\'est pas de la fermeture : c\'est de la constance. Petit pas : une petite nouveauté par mois, choisie par toi, suffit à garder la porte entrouverte.',
       },
       C: {
-        fort: 'Ce que tu promets, tu le tiens. Tu aimes quand les choses sont en ordre, prévues, finies — et les gens le savent : ils te confient ce qui compte. Ta vigilance : quand l\'imprévu arrive, lui laisser une place sans te le vivre comme un manquement.',
-        equilibre: 'Tu structures l\'essentiel et laisses le reste vivre. Tes journées ont une colonne vertébrale, pas de carcan. Attention juste aux grosses échéances, qui méritent parfois plus de cadre.',
-        doux: 'Tu préfères improviser : tu t\'organises quand c\'est obligatoire, pas par plaisir. Ça marche, jusqu\'au jour où tout arrive en même temps. Un seul rendez-vous avec toi-même par semaine — dix minutes, une liste — change la tension du reste.',
+        fort: 'Ce que tu promets, tu le tiens. Tu aimes quand les choses sont en ordre, prévues, finies — et les gens te confient ce qui compte. Petit pas : quand l\'imprévu arrive, laisse-lui une place sans te le vivre comme un manquement.',
+        equilibre: 'Tu organises l\'essentiel et tu laisses le reste vivre. Tes journées ont une structure, sans être rigides. Petit pas : pour les grosses échéances, un peu de cadre te rendra service.',
+        doux: 'Tu préfères improviser : tu t\'organises quand c\'est obligatoire, pas par plaisir. Ça marche, jusqu\'au jour où tout arrive en même temps. Petit pas : un rendez-vous avec toi-même par semaine — dix minutes, une liste — change la tension du reste.',
       },
       E: {
-        fort: 'Les gens te rechargent. Tu lances les conversations et animes naturellement. Vigilance : préserve des temps calmes pour toi — c\'est ce qui rend ton énergie tenable sur la durée.',
-        equilibre: 'Tu es sociable quand ça a du sens et silencieux quand il le faut. Les grands groupes t\'amusent, les tête-à-tête te nourrissent. Tu n\'as rien à corriger — juste à repérer ce dont tu as besoin après une longue journée de monde.',
-        doux: 'Le calme te reconstruit : peu de gens, mais des vrais. Tu préfères écouter que remplir le silence — et ceux qui te connaissent savent la valeur de ce que tu dis. Un petit pas spontané de temps en temps ouvre des portes que l\'attente ne verrait pas.',
+        fort: 'Les autres te donnent de l\'énergie. Tu lances les conversations et tu mets l\'ambiance sans effort. Petit pas : garde aussi des moments calmes rien que pour toi : c\'est ce qui rend ton énergie durable.',
+        equilibre: 'Tu es sociable quand ça a du sens, et silencieux quand il le faut. Les grands groupes t\'amusent, les tête-à-tête te nourrissent. Petit pas : repère ce dont tu as besoin après une longue journée de monde.',
+        doux: 'Le calme te reconstruit : peu de gens, mais des vrais. Tu préfères écouter que remplir le silence — et ceux qui te connaissent savent la valeur de ce que tu dis. Petit pas : oser un geste spontané de temps en temps ouvre des portes que l\'attente ne verrait pas.',
       },
       A: {
-        fort: 'Tu fais passer le lien avant la victoire : tu écoutes, tu attends avant de juger, tu donnes sans compter. Ta vigilance : la franchise a aussi un cadeau à offrir — dire un non clair rend tes oui plus vrais.',
-        equilibre: 'Tu es chaleureux·se mais tu ne te laisses pas marcher dessus : tu donnes beaucoup et tu sais poser des limites. C\'est un équilibre sain — garde juste l\'œil sur les personnes avec qui tu te forces à être doux·ce.',
-        doux: 'La confiance se mérite chez toi, et tu as de bonnes raisons d\'avoir appris ça. Ta piste : tester la confiance par petites touches plutôt que d\'attendre une certitude totale, et oser dire non clairement.',
+        fort: 'Pour toi, la relation passe avant le fait d\'avoir raison. Tu écoutes, tu attends avant de juger, tu donns sans compter. Petit pas : dire clairement non est aussi un cadeau, car ça rend tes oui plus vrais.',
+        equilibre: 'Tu donnes beaucoup, et tu sais poser des limites : tu ne te laisses pas marcher dessus. Petit pas : garde l\'œil sur les personnes avec qui tu te forces à être doux.',
+        doux: 'La confiance se mérite chez toi, et tu as de bonnes raisons d\'avoir appris ça. Petit pas : teste la confiance par petites touches plutôt que d\'attendre une certitude totale.',
       },
       S: {
-        fort: 'Les vagues passent et tu restes debout. Tu retrouves ton calme rapidement et les autres s\'appuient sur toi, souvent sans le dire. Vigilance : que ta stabilité ne devienne pas une armure — accueillir ce qui remue fait aussi partie de l\'équilibre.',
-        equilibre: 'Tu as des jours calmes et des jours de tempête — c\'est humain et c\'est ton rythme. Tu connais déjà ce qui t\'apaise ; le jeu, c\'est de le faire assez tôt, avant que la fatigue ne décide pour toi.',
-        doux: 'Tu ressens fort et longtemps — les remarques, les attentes, les scénarios. Ce n\'est pas une faiblesse : c\'est une antenne fine. Ton levier : des gestes simples et répétables — un souffle, une marche, une note écrite — qui raccourcissent le retour au calme.',
+        fort: 'Quand les vagues arrivent, tu restes debout. Tu retrouves vite ton calme, et les autres s\'appuient sur toi, souvent sans que tu le dises. Petit pas : ta stabilité n\'est pas une armure : tu as le droit de laisser voir ce qui te remue.',
+        equilibre: 'Tu as des jours calmes et des jours de tempête — c\'est humain, et c\'est ton rythme. Tu connais déjà ce qui t\'apaise. Petit pas : fais-le assez tôt, avant que la fatigue ne décide pour toi.',
+        doux: 'Tu ressens fort et longtemps — les remarques, les attentes, les scénarios. Ce n\'est pas une faiblesse : c\'est une antenne fine. Petit pas : des gestes simples et répétables — un souffle, une marche, une note écrite — raccourcissent le retour au calme.',
       },
     },
     conseils: [
@@ -434,8 +439,10 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     commentLire:
       'Les cinq barres viennent de TES réponses, à l\'instant. Chacune va de 0 à 100 : plus la barre est pleine, plus tes réponses penchent de ce côté — et rien d\'autre. Ce ne sont ni des notes, ni des cases : c\'est un instantané, celui de la personne qui a répondu aujourd\'hui. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi — relis-les comme un portrait qui parle, pas comme un bulletin.',
     ombreRelationnel: {
+      // Task 74 — V1 : TEXTE VERBATIM DU FONDATEUR, en deux paragraphes
+      // (séparés par \n\n — l'écran et le PDF rendent un paragraphe chacun).
       V1:
-        'En relation, ta zone d\'ombre peut donner : des projets lancés à deux puis remplacés par le suivant — et l\'autre qui se demande s\'il comptait vraiment dans l\'élan. Ce qui aide : dire quand une chose continue de compter même après que tu as bougé. Un retour, un rappel, une promesse tenue : l\'autre cesse de suivre tes envies et se met à te suivre, toi.',
+        'Voici le risque principal en relation : tu lances un projet à deux avec enthousiasme, puis une nouvelle idée arrive et prend toute la place. L\'autre peut alors se demander si ça comptait vraiment pour toi, ou si seul le projet t\'enthousiasmait.\n\nCe qui aide : dire à voix haute quand une chose continue de compter pour toi, même si tu es déjà passé à autre chose. Un retour sur ce que vous avez commencé, un petit rappel, une promesse tenue. Ainsi, l\'autre n\'a plus à courir derrière tes envies : il sait que tu restes là.',
       V2:
         'En relation, ta zone d\'ombre peut donner : une maison impeccable et l\'autre qui se sent noté·e à chaque chose mal posée — ou toi, accablé·e par un imprévu que tu vis comme ta faute. Ce qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à SA façon de temps en temps — sans garder la note.',
       V3:
@@ -453,11 +460,12 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     suite: {
       titre: 'Ton premier miroir est posé.',
       intro:
-        'Tu viens de découvrir une partie de toi. Mais ta personnalité n\'est pas toute ton histoire — le cœur a ses propres questions.',
+        'Tu viens de découvrir une partie de toi. Mais ta personnalité n\'est pas toute ton histoire : ton cœur a ses propres questions.',
       questions: [
         'Comment aimes-tu ?',
         'Comment t\'attaches-tu ?',
-        'Que se passe-t-il lorsque tes émotions prennent le dessus ?',
+        // Task 74 (demande fondateur) — « lorsque » devient « quand ».
+        'Que se passe-t-il quand tes émotions prennent le dessus ?',
       ],
       cta: 'Découvrir ma façon de m\'attacher',
     },
@@ -1307,10 +1315,11 @@ export function labelPalier(palier: Palier, genre: 'f' | 'm'): string {
   return genre === 'f' ? 'plus discrète' : 'plus discret';
 }
 
-/** « À noter » — la passe d'honnêteté du gabarit fondateur (Task 35),
- *  refermée après les tendances (écran + PDF, texte identique). */
+/** La note sous les barres — Task 74 (demande fondateur) : sa formulation
+ *  « photo / pas une note » remplace la passe « À noter » du gabarit 35
+ *  (écran + PDF, texte identique). */
 export const NOTA_BARRES = getLang() === 'en' ? NOTA_BARRES_EN :
-  'À noter : ces barres sont un instantané de tes réponses du jour, pas des notes ni des verdicts. Chaque tendance a sa force et son risque — l\'important est de choisir consciemment où placer le curseur.';
+  'Ces barres sont une photo de tes réponses d\'aujourd\'hui, pas une note. Chaque tendance a sa force et son revers : l\'important, c\'est de choisir en connaissance de cause.';
 
 const MOTS_NOMBRE: Record<number, string> = { 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq' };
 

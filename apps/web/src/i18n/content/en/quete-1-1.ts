@@ -60,6 +60,6 @@ export const ITEMS: L10n<readonly QueteItem[]> = [
   { text: "I run worst-case scenarios in my head more often than necessary." },
   { text: "After an argument, I find my calm again fairly quickly." },
   { text: "A silly remark can occupy my mind for hours." },
-  { text: "On the whole, I consider myself serene." },
+  { text: "Overall, I feel in a good headspace." },
   { text: "I often feel my heart racing without a clear reason." },
 ];

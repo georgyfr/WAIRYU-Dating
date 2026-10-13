@@ -15,18 +15,19 @@
  *    en détail] · [Partager ma carte] (avertissement PartageCarteModal) ·
  *    [Retour à mon voyage], fenêtre sur l'autre, puis la PROCHAINE QUÊTE
  *    (chaîne du Monde 1 : on enchaîne, rien ne se remet à zéro).
- *  - DÉTAILS (Task 35 — gabarit fondateur) : la page répond EXACTEMENT de la
- *    même manière quel que soit l'archétype. Un GABARIT de 9 blocs, toujours
- *    rendu dans le même ordre : 🎉 Ton profil : {nom} → intro (« Ton archétype
- *    révèle une personne qui… » + point de vigilance) → En résumé : « devise »
- *    → Ce que tu apportes → Ce qui peut te freiner → En couple → Ton équilibre
- *    → 🪞 Tes N tendances (d'après tes réponses), score /100 + palier accordé
- *    → À noter — puis la suite (cliffhanger + CTA vers la quête suivante) et
- *    le PDF (lib/pdf-resultats.ts, import dynamique, même structure). Les
- *    mots viennent du registre ARCHE (quetes-plus.ts — 2ᵉ personne, simple
- *    et littérale, V3 1.1 écrite par le fondateur) ; les mesures du scorer
- *    du Livrable. La page doit donner envie d'aller jusqu'à la quête
- *    suivante, jamais décourager.
+ *  - DÉTAILS (Task 35 — gabarit fondateur ; voix Task 74) : la page répond
+ *    EXACTEMENT de la même manière quel que soit l'archétype. Un GABARIT de
+ *    9 blocs, toujours rendu dans le même ordre : 🎉 Ton profil : {nom} →
+ *    « {titre}, d'après tes réponses » + intro (« Toi, … ») → En résumé :
+ *    « devise » → Ta force → Là où ça peut se compliquer → En couple → Ce
+ *    que ce profil te souffle → Tes N tendances (d'après tes réponses),
+ *    « nom · score/100 · palier » + barre + « Petit pas : » + sous chaque
+ *    barre « Ce qui pèse dans ce score » → note « photo / pas une note » —
+ *    puis la zone d'ombre en relation, la barre de satisfaction, la suite
+ *    (cliffhanger + CTA) et le PDF (lib/pdf-resultats.ts, même structure).
+ *    Les mots viennent du registre ARCHE (V1 1.1 = texte verbatim du
+ *    fondateur, Task 74) ; les mesures du scorer du Livrable. La page doit
+ *    donner envie d'aller jusqu'à la quête suivante, jamais décourager.
  *  - DEEP-LINK #/quete/{id}/resultats (demande fondateur) : une quête terminée
  *    s'ouvre DIRECTEMENT sur cette vue détails — depuis Parcourus (« Voir mes
  *    résultats en détail », au niveau du bouton PDF), les résultats sont à UN
@@ -1462,22 +1463,26 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <h1 className="screen-title" id="q-det-title">
           {tx('🎉 Ton profil :')} {carte.nom}
         </h1>
-        <p className="screen-sub">{quete.titre}</p>
+        {/* Task 74 (demande fondateur) — le sous-titre du fondateur :
+            « {titre}, d'après tes réponses ». */}
+        <p className="screen-sub">
+          {tx("{{titre}}, d'après tes réponses", { titre: quete.titre })}
+        </p>
 
-        <section className="q-sec q-profil" aria-label={tx('Ton archétype')}>
+        <section className="q-sec q-profil" aria-label={tx('Ton portrait')}>
           <p className="q-profil-intro">{arche.intro}</p>
           <p className="q-profil-devise">
             <strong>{tx('En résumé :')}</strong> « {arche.devise} »
           </p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label={tx('Ce que tu apportes')}>
-          <h3>{tx('Ce que tu apportes')}</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Ta force')}>
+          <h3>{tx('Ta force')}</h3>
           <p>{arche.apportes}</p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label={tx('Ce qui peut te freiner')}>
-          <h3>{tx('Ce qui peut te freiner')}</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Là où ça peut se compliquer')}>
+          <h3>{tx('Là où ça peut se compliquer')}</h3>
           <p>{arche.freines}</p>
         </section>
 
@@ -1486,20 +1491,29 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <p>{arche.couple}</p>
         </section>
 
-        <section className="q-sec q-profil-bloc" aria-label={tx('Ton équilibre')}>
-          <h3>{tx('Ton équilibre')}</h3>
+        <section className="q-sec q-profil-bloc" aria-label={tx('Ce que ce profil te souffle')}>
+          <h3>{tx('Ce que ce profil te souffle')}</h3>
           <p>{arche.equilibre}</p>
         </section>
 
         <section className="q-sec q-profil-tendances" aria-label={titreTendances(apercu.bars.length)}>
-          <h3>🪞 {titreTendances(apercu.bars.length)}</h3>
+          {/* Task 74 — le pictogramme miroir est un SVG (VoyageIcon) : l'emoji
+              🪞 (Unicode 13) s'affiche en carré vide sur beaucoup d'appareils
+              — retour fondateur « encore comme un carré vide ». */}
+          <h3 className="q-tend-titre">
+            <VoyageIcon name="mirror" size={19} strokeWidth={2.2} />
+            {titreTendances(apercu.bars.length)}
+          </h3>
           <div className="q-det-bars">
             {apercu.bars.map((b) => (
               <div key={b.key} className="q-det-dim">
                 <div className="q-det-dim-head">
                   <span className="q-det-dim-nom">{b.nom}</span>
+                  {/* Task 74 (demande fondateur) — « nom · 75/100 · palier » :
+                      la formulation du fondateur remplace « nom — 75/100
+                      (palier) ». */}
                   <span className="q-det-dim-niveau" data-palier={b.palier}>
-                    — {b.pct}/100 ({b.palierLabel})
+                    · {b.pct}/100 · {b.palierLabel}
                   </span>
                 </div>
                 <div className="q-bar" role="img" aria-label={`${b.nom} : ${b.pct} sur 100`}>
@@ -1512,22 +1526,31 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                     et le titre s'assagit si la dim n'a que du milieu. */}
                 {ancrages && (ancrages[b.key]?.length ?? 0) > 0 && (
                   <div className="q-det-ancrage">
+                    {/* Task 74 (demande fondateur) — UN titre unique, plus
+                        simple : « Ce qui pèse dans ce score » ; chaque ligne
+                        lit « énoncé · réponse → fait monter/baisser la
+                        barre » (c'est plus simple que « pousse la barre
+                        vers le haut »). */}
                     <p className="q-det-ancrage-titre">
-                      {ancrages[b.key][0].tranche
-                        ? tx('Tes réponses qui pèsent le plus')
-                        : tx('Tes réponses sur cette tendance')}
+                      {tx('Ce qui pèse dans ce score')}
                     </p>
                     <ul>
                       {ancrages[b.key].map((a) => (
                         <li key={a.code}>
                           <span className="q-det-ancrage-enonce">« {a.enonce} »</span>
-                          {' — '}
+                          {' · '}
                           <strong>{a.reponse}</strong>
                           {a.sens === 'haut' && (
-                            <> · {tx('pousse la barre vers le haut')}</>
+                            <>
+                              {' → '}
+                              {tx('fait monter la barre')}
+                            </>
                           )}
                           {a.sens === 'bas' && (
-                            <> · {tx('pousse la barre vers le bas')}</>
+                            <>
+                              {' → '}
+                              {tx('fait baisser la barre')}
+                            </>
                           )}
                         </li>
                       ))}
@@ -1550,7 +1573,15 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           return (
             <section className="q-sec q-ombre-rel" aria-label={tx('Ta zone d\'ombre en relation')}>
               <h3>{tx('Ta zone d\'ombre en relation')}</h3>
-              <p>{ombreRel}</p>
+              {/* Task 74 — le texte du fondateur (V1) arrive en DEUX
+                  paragraphes (séparateur \n\n) : « le risque » puis « ce qui
+                  aide ». Un seul <p> rendu quand il n'y a pas de séparation. */}
+              {ombreRel
+                .split('\n\n')
+                .filter((p) => p.trim().length > 0)
+                .map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
             </section>
           );
         })()}
@@ -1619,7 +1650,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               {tx('Revenir à ma carte')}
             </button>
             <p className="q-carte-hint">
-              {tx("Le document reprend ton profil, tes tendances mesurées et la suite de ton voyage. Il reste sur ton appareil — rien n'est envoyé.")}
+              {tx("Ton document reste sur ton appareil. Rien n'est envoyé.")}
             </p>
           </div>
         </section>

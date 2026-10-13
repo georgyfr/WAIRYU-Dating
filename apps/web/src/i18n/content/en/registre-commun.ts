@@ -71,6 +71,7 @@ export const COMMUN_EN = {
   ],
 };
 
-/** « À noter » — la passe d'honnêteté du gabarit fondateur. */
+/** La note sous les barres — Task 74 : miroir EN de la formulation du
+ *  fondateur (« photo / pas une note »). */
 export const NOTA_BARRES_EN =
-  'Please note: these bars are a snapshot of today\'s answers, not grades or verdicts. Every tendency has its strength and its risk — what matters is consciously choosing where to place the cursor.';
+  'These bars are a snapshot of your answers today, not a grade. Every tendency has its strength and its other side: what matters is choosing in full awareness.';
