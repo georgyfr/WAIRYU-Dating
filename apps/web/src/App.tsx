@@ -14,6 +14,7 @@ import FbComplete from './screens/FbComplete';
 import OAuthComplete from './screens/OAuthComplete';
 import ResetPassword from './screens/ResetPassword';
 import TabBar, { type Tab } from './components/TabBar';
+import { useInedits, marquerVu } from './lib/inedit';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
 import InfoRecolteModal, { itemDeNotif, type ItemRecolte } from './components/InfoRecolte';
@@ -206,6 +207,9 @@ export default function App() {
   // Le point corail de l'onglet Quête — dérivé de la progression RÉELLE
   // (Task 45 : couvre LES 18 quêtes ouvertes, plus seulement le Monde 1).
   const queteEnCours = useProgressionDetail().engagee;
+  // Les puces de nouveautés des onglets (Task 68) — dérivées de l'état RÉEL,
+  // éteintes par la visite de l'onglet (effet ci-dessous).
+  const inedits = useInedits();
 
   // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
   const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
@@ -319,6 +323,17 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [stage]);
+
+  // LES PUCES S'ÉTEIGNENT À LA VISITE (Task 68) : atterrir sur un onglet
+  // marque ses nouveautés vues — Voyage, Mondes, Parcourus, Récolte (l'accueil
+  // authentifié est le Voyage : stage 'welcome' ⇒ vue voyage).
+  useEffect(() => {
+    if (!authenticated) return;
+    const vue = stage === 'welcome' ? 'voyage' : stage;
+    if (vue === 'voyage' || vue === 'mondes' || vue === 'parcourus' || vue === 'recolte') {
+      marquerVu(vue);
+    }
+  }, [stage, authenticated]);
 
   // Retour OAuth (#/?google=ok, #/?facebook=retry…) → message + nettoyage du hash.
   useEffect(() => {
@@ -794,7 +809,7 @@ export default function App() {
             }}
           />
         )}
-        <TabBar active={view} onSelect={go} queteEnCours={queteEnCours} />
+        <TabBar active={view} onSelect={go} queteEnCours={queteEnCours} badges={inedits} />
       </div>
     </>
   );

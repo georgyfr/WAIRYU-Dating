@@ -710,6 +710,29 @@ a.btn {
     border: 2px solid var(--c-white)
 }
 
+/* La puce de nouveautés des onglets (Task 68) — le même langage que la
+   cloche (.ah-badge) : corail de la marque, chiffre bold, liseré blanc.
+   Plus petite que la cloche : les icônes de la barre sont serrées. */
+.tab-badge {
+    position: absolute;
+    top: -7px;
+    right: -11px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--c-coral);
+    color: var(--c-white);
+    font-size: 8.5px;
+    font-weight: 900;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--c-white);
+    box-sizing: border-box
+}
+
 .tabbar button:hover {
     color: var(--c-turquoise-deep)
 }
@@ -7345,6 +7368,26 @@ button.r-tl-chip:hover {
 .rec2-tab:focus-visible {
     outline: 2px solid var(--r2-teal2);
     outline-offset: 2px
+}
+
+/* La puce de nouveautés des onglets internes de la Récolte (Task 68) —
+   inline (l'onglet est un bouton de la rangée), même corail. */
+.rec2-tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 15px;
+    height: 15px;
+    margin-left: 5px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--c-coral);
+    color: var(--c-white);
+    font-size: 8.5px;
+    font-weight: 900;
+    line-height: 1;
+    border: 2px solid var(--c-white);
+    box-sizing: border-box
 }
 
 .rec2-panel {

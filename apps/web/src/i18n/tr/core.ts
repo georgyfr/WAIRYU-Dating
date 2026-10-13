@@ -14,6 +14,9 @@ export const CORE: Record<string, string> = {
   'Bonjour,': 'Hello,',
   Voyageur: 'Traveler',
   'Notifications ({{n}} nouvelles)': 'Notifications ({{n}} new)',
+  // Les puces de nouveautés (Task 68) — TabBar + onglets de la Récolte.
+  '{{label}} — une nouveauté': '{{label}} — one new',
+  '{{label}} — {{n}} nouveautés': '{{label}} — {{n}} new',
   Notifications: 'Notifications',
   'Fermer les notifications': 'Close notifications',
   'Notifications récentes': 'Recent notifications',

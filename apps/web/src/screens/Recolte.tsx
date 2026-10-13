@@ -40,6 +40,7 @@ import type { IdQuete } from '../lib/quetes';
 import { useEtatQuete } from '../lib/quete-state';
 import type { EtatQuete } from '../lib/quete-state';
 import { useProgressionDetail } from '../lib/progression';
+import { marquerVu, useVuToutes } from '../lib/inedit';
 import InfoRecolteModal from '../components/InfoRecolte';
 import type { ItemRecolte } from '../components/InfoRecolte';
 import VoyageIcon from '../components/VoyageIcons';
@@ -260,6 +261,14 @@ export default function Recolte() {
   // L'ONGLET ACTIF de la maquette (pur état d'interface — aucune donnée).
   const [onglet, setOnglet] = useState<Onglet>('apercu');
 
+  // LES PUCES DES ONGLETS INTERNES (Task 68) : la visite d'un onglet éteint SA
+  // puce — au montage aussi (l'aperçu s'ouvre par défaut). Le COMPTEUR lui-même
+  // est calculé plus bas, depuis le registre des gains (une seule source).
+  const vuToutes = useVuToutes();
+  useEffect(() => {
+    marquerVu(`recolte.${onglet}`);
+  }, [onglet]);
+
   // La récolte RÉELLE par monde — cartes et écrans de passage dérivés de
   // l'état des quêtes (même filtre que le journal : sansCarte et carteId
   // inconnu ne produisent PAS de carte).
@@ -441,6 +450,23 @@ export default function Recolte() {
   // Du plus récent au tout premier — les non datés ferment la liste.
   gains.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 
+  // LES PUCES DES ONGLETS INTERNES (Task 68, demande fondateur) : chaque
+  // section annonce le nombre d'éléments ajoutés depuis sa dernière visite —
+  // dérivé du MÊME registre des gains (aucune donnée nouvelle). Les non datés
+  // (anciens, pré-amorçage) ne comptent jamais.
+  const nbInedits = (dest: Onglet, types: readonly GainAcquis['type'][]): number => {
+    const seuil = vuToutes[`recolte.${dest}`];
+    if (!seuil) return 0;
+    return gains.filter((g) => types.includes(g.type) && !!g.date && g.date > seuil).length;
+  };
+  const badgesOnglets: Record<Onglet, number> = {
+    apercu: nbInedits('apercu', ['carte']),
+    cartes: nbInedits('cartes', ['carte']),
+    sceaux: nbInedits('sceaux', ['sceau']),
+    gains: nbInedits('gains', ['carte', 'ecran', 'sceau', 'fragment']),
+    histoire: nbInedits('histoire', ['sceau', 'fragment']),
+  };
+
   // L'INVENTAIRE — les compteurs réels du coffre (mêmes chiffres que les
   // autres onglets) + pass/crédits à 0 honnête (rien n'est inventé, §16) :
   // chaque tuile ouvre l'explication « à quoi ça sert » de son type.
@@ -597,20 +623,35 @@ export default function Recolte() {
             ['gains', tx('Gains acquis')],
             ['histoire', tx('Histoire')],
           ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            id={`rec2-tab-${id}`}
-            aria-selected={onglet === id}
-            aria-controls={`rec2-panel-${id}`}
-            className={onglet === id ? 'rec2-tab rec2-tab-on' : 'rec2-tab'}
-            onClick={() => setOnglet(id)}
-          >
-            {label}
-          </button>
-        ))}
+        ).map(([id, label]) => {
+          const n = badgesOnglets[id];
+          return (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              id={`rec2-tab-${id}`}
+              aria-selected={onglet === id}
+              aria-controls={`rec2-panel-${id}`}
+              aria-label={
+                n > 0
+                  ? n === 1
+                    ? tx('{{label}} — une nouveauté', { label })
+                    : tx('{{label}} — {{n}} nouveautés', { label, n })
+                  : undefined
+              }
+              className={onglet === id ? 'rec2-tab rec2-tab-on' : 'rec2-tab'}
+              onClick={() => setOnglet(id)}
+            >
+              {label}
+              {n > 0 && (
+                <span className="rec2-tab-badge" aria-hidden="true">
+                  {n > 9 ? '9+' : n}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* ============ APERÇU ============ */}

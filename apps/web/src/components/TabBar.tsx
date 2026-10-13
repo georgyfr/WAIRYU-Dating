@@ -5,7 +5,12 @@
  * L'onglet Quête est l'ENDROIT où l'on se retrouve : quand une quête est
  * engagée (des réponses, pas encore terminée), un point corail s'allume sur
  * son icône et l'aria-label l'annonce — il s'éteint seul à la complétion.
- * Les icônes sont des SVG traits inline (zéro dépendance).
+ *
+ * LES PUCES DE NOUVEAUTÉS (Task 68, demande fondateur) : Voyage, Mondes,
+ * Parcourus et Récolte portent une puce rouge numérotée — le nombre de
+ * nouveautés apparues depuis la dernière visite de l'onglet (lib/inedit.ts,
+ * dérivé de l'état RÉEL). La visite éteint la puce. Les icônes sont des SVG
+ * traits inline (zéro dépendance).
  *
  * RECONSTITUTION (5ᵉ reset sandbox) — fidèle au bundle staging (fonctions
  * Hf/Jf/Kf), classes CSS du CSS servi exact (.tabbar button.active, .tab-dot).
@@ -86,12 +91,15 @@ export default function TabBar({
   active,
   onSelect,
   queteEnCours = false,
+  badges,
 }: {
   /** L'onglet allumé — ou une vue hors tabs (portes/masquées : aucun onglet allumé). */
   active: Tab | 'portrait' | 'matchs' | 'masked' | 'quete';
   onSelect: (t: Tab) => void;
   /** Une quête est engagée ⇒ point corail + aria-label sur l'onglet Quête. */
   queteEnCours: boolean;
+  /** Les compteurs de nouveautés par onglet (Task 68) — absent = 0. */
+  badges?: Partial<Record<Tab, number>>;
 }) {
   const { tx } = useI18n();
   const LABELS: Record<Tab, string> = {
@@ -103,21 +111,35 @@ export default function TabBar({
   };
   return (
     <nav className="tabbar" aria-label={tx('Navigation principale')}>
-      {TABS.map((t) => (
-        <button
-          key={t.id}
-          className={active === t.id ? 'active' : undefined}
-          onClick={() => onSelect(t.id)}
-          aria-current={active === t.id ? 'page' : undefined}
-          aria-label={t.id === 'quete' && queteEnCours ? tx('Quête — une quête est en cours') : undefined}
-        >
-          <span className="tab-ico" aria-hidden="true">
-            <TabIcon id={t.id} />
-            {t.id === 'quete' && queteEnCours && <span className="tab-dot" />}
-          </span>
-          {LABELS[t.id]}
-        </button>
-      ))}
+      {TABS.map((t) => {
+        const n = badges?.[t.id] ?? 0;
+        return (
+          <button
+            key={t.id}
+            className={active === t.id ? 'active' : undefined}
+            onClick={() => onSelect(t.id)}
+            aria-current={active === t.id ? 'page' : undefined}
+            aria-label={
+              n > 0
+                ? n === 1
+                  ? tx('{{label}} — une nouveauté', { label: LABELS[t.id] })
+                  : tx('{{label}} — {{n}} nouveautés', { label: LABELS[t.id], n })
+                : t.id === 'quete' && queteEnCours
+                  ? tx('Quête — une quête est en cours')
+                  : undefined
+            }
+          >
+            <span className="tab-ico" aria-hidden="true">
+              <TabIcon id={t.id} />
+              {t.id === 'quete' && queteEnCours && <span className="tab-dot" />}
+              {t.id !== 'quete' && n > 0 && (
+                <span className="tab-badge">{n > 9 ? '9+' : n}</span>
+              )}
+            </span>
+            {LABELS[t.id]}
+          </button>
+        );
+      })}
     </nav>
   );
 }
