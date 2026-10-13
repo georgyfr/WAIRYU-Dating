@@ -218,6 +218,9 @@ export interface QueteDef {
   briefing: {
     aQuoiCaSert: readonly string[];
     resultats: readonly string[];
+    /** Note discrète optionnelle en bas du briefing (Task 71 — quête 1.1 :
+     *  option B de la demande fondateur). Absente pour toutes les autres quêtes. */
+    noteDiscrete?: string;
   };
   /** Le deck réel de passation (trames sautées, jamais affichées). */
   deck: () => ItemPassation[];
@@ -337,6 +340,7 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     briefing: {
       aQuoiCaSert: Q11.BRIEFING.aQuoiCaSert,
       resultats: Q11.BRIEFING.resultats,
+      noteDiscrete: Q11.BRIEFING.noteDiscrete,
     },
     deck: () => Q11.deckQuete().map(itemLikert),
     format: 'likert',

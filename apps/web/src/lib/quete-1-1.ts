@@ -537,14 +537,20 @@ export const CARTES: Record<VarianteId, Carte> = {
   },
 };
 
-/** Textes du briefing — verbatim (05-ecran-d-intro). */
+/** Textes du briefing — verbatim (05-ecran-d-intro).
+ *  Task 71 (demande fondateur « à la fois A, B et C ») :
+ *  - A : la puce verbatim « Huit affirmations… sécurité » disparaît de l'écran membre ;
+ *  - C : elle est remplacée par la version adoucie (4ᵉ puce, sans chiffre ni jargon) ;
+ *  - B : une note discrète en bas du briefing (noteDiscrete) mentionne les contrôles
+ *    d'honnêteté sans le mot « sécurité ». Les 50 items, le scoring et l'ordre de
+ *    passation restent intangibles. */
 export const BRIEFING = {
   annonce: "58 affirmations. Pas de bonne réponse — seulement ta réponse. Celle que tu crois être celle qu'on attend, c'est rarement la tienne.",
   aQuoiCaSert: [
     "C'est la première quête de ton voyage — la base de tout ce qui suit.",
     "58 affirmations décrivent ta façon d'être : ton ouverture, ton organisation, ton énergie sociale, ta bienveillance, ta stabilité émotionnelle.",
     "Il en sort ta première carte, ton premier miroir — et les premières pierres de ton portrait.",
-    "Huit affirmations ressemblent aux autres et n'en sont pas : elles veillent sur la sécurité de l'app. Elles ne se voient jamais — ni dans ton portrait, ni dans tes rencontres.",
+    "Quelques affirmations supplémentaires aident à garder des rencontres sincères. Elles ne se voient jamais — ni dans ton portrait, ni dans tes rencontres.",
   ],
   resultats: [
     "Ta carte — ta lumière et ta zone d'ombre, en quelques mots.",
@@ -552,6 +558,8 @@ export const BRIEFING = {
     "Ton miroir — ton fonctionnement renvoyé en toutes lettres, avec un mode d'emploi concret.",
     "Les premières pierres de ton portrait — ce que tu découvres ici alimente toute la suite du voyage.",
   ],
+  noteDiscrete:
+    "Certaines réponses sont relues par des contrôles automatiques d'honnêteté — ils ne changent rien à ta carte.",
 };
 
 /** Textes de la fenêtre de complétion (carte) — verbatim. */

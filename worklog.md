@@ -1616,3 +1616,22 @@ Work Log:
 Stage Summary:
 - LA PROD EST À JOUR ET DEVANT TOUT : https://wairyu.wairyu.workers.dev sert désormais la popup des mondes illustrée (11 visuels, 2 blocs), la sauvegarde D1 des réponses (« qui te suit partout »), en plus de la barre de satisfaction et des puces déjà alignées en 69-a. Staging et prod servent le même arbre de code (3c4cad8).
 - En attente fondateur : (1) validation mot à mot des propositions briefing 1.1 (options A/B/C ci-dessous) ; (2) re-fourniture du GitHub PAT pour push main (commit local prêt) ; (3) rotation des jetons quand le déploiement sera stable.
+
+---
+Task ID: 71
+Agent: orchestrateur (Z.ai Code)
+Task: Validation fondateur « à la fois A, B et C » — briefing 1.1 : retrait de la puce verbatim « Huit affirmations… sécurité » (A), version adoucie à sa place (C), note discrète bas de briefing (B). Consigne : « assure-toi de ne rien casser ».
+
+Work Log:
+- PÉRIMÈTRE VERBATIM DÉLIMITÉ : la puce touchée vit dans BRIEFING (lib/quete-1-1.ts, FR) et son miroir (i18n/content/en/registre-m1.ts, EN). Les 50 items, les 8 trames DTM (sans contenu au dépôt), le scoring, l'ordre de passation et TOUTES les autres quêtes restent intangibles — vérifié au bundle ET en ligne.
+- MODIFICATIONS (5 fichiers) : quete-1-1.ts (4ᵉ puce → C FR « Quelques affirmations supplémentaires aident à garder des rencontres sincères. Elles ne se voient jamais — ni dans ton portrait, ni dans tes rencontres. » + champ noteDiscrete = B FR « Certaines réponses sont relues par des contrôles automatiques d'honnêteté — ils ne changent rien à ta carte. », commentaire A+B+C documenté) · quetes.ts (type QueteDef.briefing + noteDiscrete?: string OPTIONNEL — aucune autre quête affectée ; REGISTRE_FR 1.1 passe le champ) · registre-m1.ts (C EN « A few extra statements help keep encounters sincere. They are never seen — not in your portrait, not in your encounters. » + noteDiscrete EN « Some answers are re-read by automatic honesty checks — they never change your card. ») · Quete.tsx (rendu conditionnel <p class="q-brief-note"> avant le bloc « Voulez-vous commencer ? » — n'affiche RIEN quand le champ est absent) · styles.css (.q-brief-note 12.5px, var(--c-gray-blue), mobile-first).
+- VÉRIFICATION ANTI-CASSURE BUNDLE : puce verbatim 1.1 (« veillent sur la sécurité » / « watch over the safety ») ABSENTE du bundle ; les 5 occurrences « Huit affirmations » restantes = briefings LÉGITIMES d'autres quêtes (1.9, 3.3, 5.5, 4.1, 3.2, 5.2, 2.7, 1.4) — intacts ; C+B FR+EN présentes ; classe q-brief-note présente.
+- TYPECHECK tsc 0 erreur · vite build vert (index-DYVK3rWk.js).
+- DÉPLOIEMENT STAGING : version 34ea0008, bundle index-DYVK3rWk.js.
+- E2E STAGING (compte e2e-briefing-71, inscription par pseudo — Brevo configuré sur staging, OTP par email hors d'atteinte headless ; Turnstile widget échoue en headless comme documenté, vérification serveur sautée) : BRIEFING 1.1 EN — 4 sections, 4 puces, C EN en 4ᵉ position, note B EN en bas avant « Do you want to start? », AUCUNE mention de « safety » ✓ ; BRIEFING 1.1 FR au mot près (C FR + B FR) ✓ · ANTI-RÉGRESSION 1.2 : 0 note discrète, 4ᵉ puce = texte original de 1.2 ✓ · PASSATION : « Commencer » → 1ᵉʳ item verbatim (« Je termine ce que je commence, même quand l'envie est passée. ») + échelle 5 niveaux verbatim ✓ · mobile 390 : overflowX OK, note lisible (capture /tmp/wairyu-71/briefing-11-fr-mobile-note.png : note grise discrète entre « Les résultats attendus » et « Voulez-vous commencer ? ») · desktop FR/EN captures (/tmp/wairyu-71/) · 0 erreur console (2 warnings Turnstile headless attendus) ✓.
+- PURGE : DELETE /api/account {confirm:true} → 200 (hard delete + purge reponses RGPD) · D1 staging vérifié : auth_password compte = 0, reponses = 0 · localStorage effacé, navigateur fermé.
+- PROD NON TOUCHÉE (règle : jamais sans feu vert explicite) — la prod en est à 32d47e52 (Tasks 69-b/69-c) ; ce staging (34ea0008) ne s'y déploiera qu'avec le feu vert du fondateur.
+
+Stage Summary:
+- A+B+C EN PLACE SUR STAGING (34ea0008) au mot près, FR et EN, sans toucher aux items, au scoring, aux écrans de passation ni à la moindre autre quête — « ne rien casser » vérifié par 6 contrôles.
+- En attente fondateur : feu vert prod pour ce briefing ; re-fourniture du GitHub PAT (2 commits locaux en attente de push : 1ab8be2 + celui-ci).

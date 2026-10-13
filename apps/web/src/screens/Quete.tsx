@@ -653,6 +653,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             ))}
           </ul>
         </section>
+        {/* Task 71 (demande fondateur A+B+C, briefing 1.1) : note discrète en
+            bas du briefing — présente SEULEMENT quand la quête définit le champ. */}
+        {quete.briefing.noteDiscrete && (
+          <p className="q-brief-note">{quete.briefing.noteDiscrete}</p>
+        )}
         {/* Bloc « Voulez-vous commencer ? » — actions en ANCRES <a> (demande fondateur) :
             mêmes styles et mêmes comportements que les boutons, mais de vraies balises
             d'ancre avec un href réel (lien partageable vers la quête / retour mondes).

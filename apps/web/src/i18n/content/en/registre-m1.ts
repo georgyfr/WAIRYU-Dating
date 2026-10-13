@@ -26,7 +26,7 @@ export const REGISTRE_M1: {
         "This is the first quest of your journey — the base of everything that follows.",
         "58 statements describe your way of being: your openness, your organization, your social energy, your kindness, your emotional stability.",
         "Out of it come your first card, your first mirror — and the first stones of your portrait.",
-        "Eight statements look like the others and are not: they watch over the safety of the app. They are never seen — not in your portrait, not in your encounters.",
+        "A few extra statements help keep encounters sincere. They are never seen — not in your portrait, not in your encounters.",
       ],
       resultats: [
         "Your card — your light and your shadow side, in a few words.",
@@ -34,6 +34,8 @@ export const REGISTRE_M1: {
         "Your mirror — how you work, spelled out, with a concrete user's guide.",
         "The first stones of your portrait — what you discover here feeds the whole rest of the journey.",
       ],
+      noteDiscrete:
+        "Some answers are re-read by automatic honesty checks — they never change your card.",
     },
     cartes: {
       V1: {
