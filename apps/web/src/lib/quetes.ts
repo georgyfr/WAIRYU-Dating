@@ -498,8 +498,9 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
         nom: 'Ton besoin de réassurance',
         sousLigne: 'ce que ton cœur cherche quand quelqu\'un compte',
         genre: 'm',
+        // Task 76 — nouvelle voix (moule 1.1) : « Pleine : / Légère : ».
         lecture:
-          'Cette barre dit ce que ton cœur demande quand quelqu\'un compte pour toi : des preuves fréquentes et tôt (pleine), ou une tranquillité qui vient de toi (légère). Aucun point n\'est plus solide que l\'autre — ce qui compte, c\'est de connaître le tien pour pouvoir le dire.',
+          'Cette barre dit ce que ton cœur demande quand quelqu\'un compte pour toi. Pleine : des preuves fréquentes et tôt — ton cœur surveille le lien. Légère : une tranquillité qui vient de toi — un message qui tarde ne raconte pas une fin de monde. Aucun point n\'est plus solide que l\'autre : ce qui compte, c\'est de connaître le tien pour pouvoir le dire.',
       },
       {
         key: 'E',
@@ -507,41 +508,47 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
         sousLigne: 'ton air, ton rythme, ton monde intérieur',
         genre: 'm',
         lecture:
-          'Cette barre dit combien d\'air tu as besoin dans la proximité : beaucoup (pleine), ou le contact qui te nourrit sans peser (légère). Connaître ton rythme t\'évite de le vivre comme un défaut — et de le faire deviner à l\'autre.',
+          'Cette barre dit combien d\'air tu as besoin dans la proximité. Pleine : beaucoup — ton monde intérieur a besoin de respirer. Légère : le contact te nourrit sans peser. Connaître ton rythme t\'évite de le vivre comme un défaut — et de le faire deviner à l\'autre.',
       },
     ],
     accompagnement: {
+      // Task 76 — NOUVELLE VOIX (moule 1.1 / Task 74) : 2-3 phrases +
+      // « Petit pas : » (les formules « Ce qui t'aide / Vigilance / Ton point
+      // d'équilibre / Ton repère » disparaissent) ; masculin servi de neutre.
       A: {
-        fort: 'Quand quelqu\'un compte, ton cœur surveille : un silence, un mot plus court, et tu cherches à comprendre. Ce besoin de preuves n\'est pas un défaut — c\'est ton système d\'alarme du lien. Ce qui t\'aide : demander clairement, au bon moment, plutôt que décoder seul·e.',
-        equilibre: 'Tu aimes savoir où tu en es, sans vivre dans l\'attente de signes. Les preuves te rassurent, l\'absence ne t\'effondre pas. Ton point d\'équilibre : dire ce qui t\'apaise avant que le doute s\'installe.',
-        doux: 'Tu es tranquille dans le lien : un message qui tarde ne raconte pas une fin de monde. Tu donnes de la place naturellement. Vigilance : l\'autre, lui, peut avoir besoin de plus de signes — ta sérénité ne doit pas ressembler à de l\'indifférence.',
+        fort: 'Quand quelqu\'un compte, ton cœur surveille : un silence, un mot plus court, et tu cherches à comprendre. Ce besoin de preuves n\'est pas un défaut — c\'est ton système d\'alarme du lien. Petit pas : demander clairement, au bon moment, plutôt que décoder seul.',
+        equilibre: 'Tu aimes savoir où tu en es, sans vivre dans l\'attente de signes. Les preuves te rassurent, l\'absence ne t\'effondre pas. Petit pas : dis ce qui t\'apaise avant que le doute s\'installe.',
+        doux: 'Tu es tranquille dans le lien : un message qui tarde ne raconte pas une fin de monde. Ta sérénité est une force — mais l\'autre, lui, peut avoir besoin de plus de signes. Petit pas : dis ta stabilité à voix haute (« je suis bien, je reste ») pour qu\'elle ne ressemble pas à de l\'indifférence.',
       },
       E: {
-        fort: 'Tu as besoin de ton air : gérer seul·e, respirer entre deux moments, revenir quand tu as fini ton cycle intérieur. C\'est ta manière de rester bien. Vigilance : annonce tes pauses — un départ expliqué rassure, un départ silencieux inquiète.',
-        equilibre: 'Tu sais être proche et prendre l\'air, selon la personne et le moment. La proximité ne t\'étouffe pas dès qu\'elle peut s\'arrêter de temps en temps. Ton repère : dire le mouvement avant que l\'autre ne l\'interprète.',
-        doux: 'La proximité te nourrit : passer du temps, tout partager, être ensemble sans détour. C\'est une force de disponibilité. Vigilance : garde un coin rien qu\'à toi — c\'est ce qui rend ta présence un choix et non une habitude.',
+        fort: 'Tu as besoin de ton air : gérer seul, respirer entre deux moments, revenir quand tu as fini ton cycle intérieur. C\'est ta manière de rester bien. Petit pas : annonce tes pauses — un départ expliqué rassure, un départ silencieux inquiète.',
+        equilibre: 'Tu sais être proche et prendre l\'air, selon la personne et le moment. La proximité ne t\'étouffe pas dès qu\'elle peut s\'arrêter de temps en temps. Petit pas : dis le mouvement avant que l\'autre ne l\'interprète.',
+        doux: 'La proximité te nourrit : passer du temps, tout partager, être ensemble sans détour. C\'est une force de disponibilité. Petit pas : garde un coin rien qu\'à toi — c\'est ce qui rend ta présence un choix et non une habitude.',
       },
     },
     conseils: [
       'Relis ta carte à tête reposée, de préférence après un moment réel avec quelqu\'un qui compte : tu verras où elle se vérifie.',
       'Repense à ta dernière incompréhension en proche : relis ta zone d\'ombre — elle y ressemblait ?',
-      'Nomme ta façon à l\'autre UNE fois — « quand je suis silencieux·se, ce n\'est pas toi » ou « quand je demande, c\'est juste me rassurer » : une phrase suffit à changer beaucoup.',
+      'Nomme ta façon à l\'autre UNE fois — « quand je suis silencieux, ce n\'est pas toi » ou « quand je demande, c\'est juste me rassurer » : une phrase suffit à changer beaucoup.',
       'Aucune façon d\'aimer n\'est la bonne : la tienne s\'observe, elle ne se juge pas.',
       'Garde tes réponses : le miroir de cette quête s\'appuiera dessus à la prochaine étape.',
     ],
     commentLire:
       'Deux barres, deux mouvements de ton cœur : le besoin de réassurance et le besoin d\'espace. Chacune va de 0 à 100, tirée de tes réponses d\'aujourd\'hui — plus elle est pleine, plus tes réponses penchent de ce côté. Elles ne s\'opposent pas : elles dansent ensemble, et c\'est leur équilibre qui dessine ta façon d\'aimer. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi.',
     ombreRelationnel: {
+      // Task 76 — NOUVELLE VOIX : le cadre 2 paragraphes de la V1 1.1 du
+      // fondateur (« Voici le risque principal en relation : … » + « Ce qui
+      // aide : … », séparés par \n\n — l'écran et le PDF rendent un ¶ chacun).
       V1:
-        'En relation, ta zone d\'ombre peut donner : ta sérénité lue comme de la distance — l\'autre a peut-être besoin de plus de preuves que tu n\'en produis naturellement. Ce qui aide : dire ta stabilité à voix haute (« je suis bien, je reste »). Ce que toi tu vis tranquillement, l\'autre a besoin de l\'entendre pour le vivre pareil.',
+        'Voici le risque principal en relation : ton calme devient si silencieux que l\'autre ne sait plus où il en est — les preuves qu\'on ne donne plus finissent par ressembler à de l\'oubli.\n\nCe qui aide : dire à voix haute ce qui est évident pour toi. Un « je suis bien », un « je reste », un retour sur ce que vous avez construit. Ce que tu vis tranquillement, l\'autre a besoin de l\'entendre pour le vivre pareil.',
       V2:
-        'En relation, ta zone d\'ombre peut donner : une antenne si tendue vers l\'autre que son silence devient un événement — tu interroges, tu vérifies, tu attends un signe qui n\'arrive pas. Ce qui aide : demander clairement plutôt que décoder : « j\'ai besoin d\'entendre que tout va bien » est une force. C\'est la demande qui apaise, pas la réponse devinée.',
+        'Voici le risque principal en relation : une antenne si tendue vers l\'autre que son silence devient un événement — tu interroges, tu vérifies, tu attends un signe qui n\'arrive pas.\n\nCe qui aide : demander clairement plutôt que décoder. « J\'ai besoin d\'entendre que tout va bien » est une force : c\'est la demande qui apaise, pas la réponse devinée.',
       V3:
-        'En relation, ta zone d\'ombre peut donner : des pauses prises en silence que l\'autre vit comme un départ — ton besoin d\'air est légitime, son incertitude aussi. Ce qui aide : annoncer le mouvement avant de le faire : « je prends l\'air, je reviens. » La porte reste ouverte pendant que tu respires — et l\'autre cesse de compter les minutes.',
+        'Voici le risque principal en relation : des pauses prises en silence que l\'autre vit comme un départ — ton besoin d\'air est légitime, son incertitude aussi.\n\nCe qui aide : annoncer le mouvement avant de le faire. « Je prends l\'air, je reviens. » La porte reste ouverte pendant que tu respires — et l\'autre cesse de compter les minutes.',
       V4:
-        'En relation, ta zone d\'ombre peut donner : des signaux contradictoires — tout, puis de l\'air, puis tout — que l\'autre peut vivre comme de l\'instabilité alors que c\'est ta façon d\'avoir appris à aimer. Ce qui aide : nommer ta vitesse UNE fois : « quand je m\'éloigne, ce n\'est pas la fin — c\'est mon rythme. » La moitié du chemin est faite.',
+        'Voici le risque principal en relation : deux vitesses que l\'autre vit comme des signaux contradictoires — tout, puis de l\'air, puis tout — sans savoir quelle version de toi va revenir.\n\nCe qui aide : nommer ton rythme une bonne fois. « Quand je m\'éloigne, ce n\'est pas la fin : c\'est mon rythme. » Une phrase dite tôt transforme un malentendu en terrain connu.',
       V5:
-        'En relation, ta zone d\'ombre peut donner : une adaptation si fluide que tes propres besoins passent derrière ceux de l\'autre — et toi, tu finis par ne plus savoir ce que toi tu voulais. Ce qui aide : choisir à voix haute de temps en temps — le restau, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre.',
+        'Voici le risque principal en relation : une adaptation si fluide que tes envies propres passent derrière celles de l\'autre — et qu\'à force, tu ne sais plus toi-même ce que tu veux.\n\nCe qui aide : choisir à voix haute, de temps en temps. Le restaurant, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre visible — et l\'autre aime savoir ce que TU veux, toi.',
     },
     suivante: '1.3',
     suite: {

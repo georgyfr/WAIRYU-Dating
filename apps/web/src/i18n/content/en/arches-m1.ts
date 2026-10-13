@@ -123,75 +123,78 @@ export const ARCHES_M1: {
   },
 
   '1.2': {
+    // Task 76 — miroir EN de la nouvelle voix (moule « You, … », cf. 1.1) :
+    // plus de « Your archetype reveals… », plus de « Your watchpoint » —
+    // la vigilance vit désormais dans freines/couple/equilibre.
     // V1 — L'Ancrage : Anchored.
     V1: {
       intro:
-        "Your archetype reveals a person who settles the bond into duration. You are one of those who stay when it creaks, say the simple things and repair early what rubs. Closeness nourishes you, distance doesn't frighten you — your strength rests on little: a regular presence, a calm that gets verified. Your watchpoint: what is obvious to you doesn't always read from outside — the proofs one forgets to give can create doubts that don't exist.",
+        "You, the bond, you settle it for the long run. When it creaks, you say it, you repair early — and you stay. Closeness feeds you, distance doesn't scare you: your strength needs little — a steady presence, a calm that proves itself.",
       devise: "I stay, I repair, I trust the bond.",
       apportes:
-        "A base: people know where they start from, they know who stays. Your calm rests them, your snags repair fast, your ordinary moments make bond.",
+        "You lay a foundation: people know where they stand, people know who stays. Your calm rests them, your snags get repaired fast, and your ordinary moments make the bond.",
       freines:
-        "The simple words one thinks useless to say, the other's doubts corrected too fast, the routine that settles in when all is well. These are not flaws — just what appears when calm is so solid it becomes silent.",
+        "When the calm lasts, you can believe everything has been said — and the proofs nobody gives end up planting doubts in the other person. It isn't a flaw: it's the other side of your steadiness. It also happens that you fix the other's worry too fast, before they have finished saying it.",
       couple:
-        "You build a bond that survives snags: sincerity said simply, clear dealings, projects built without noise. To keep in mind: with calm this stable, the other may doubt that their worry finds a place — and keep that doubt inside rather than talk about it.",
+        "You bring a presence that proves itself: you stay, you repair, you build quietly. But what is obvious to you doesn't always read from outside: some partners feed on your calm, others expect more proof. Make a habit of saying your attachment out loud, even when it feels visible.",
       equilibre:
-        "Say your attachment often enough that it can be heard outside. Not because your calm would lack depth, but because what is lived as obvious needs to be said to be lived the same way by the other.",
+        "Say your attachment often enough that it can be heard outside. Your calm isn't a problem. But what is obvious to you has a better chance of being lived the same way by the other when you put it into words.",
     },
     // V2 — La Vigie : The Lookout.
     V2: {
       intro:
-        "Your archetype reveals a person who loves with a permanent antenna. You are one of those who spot mood shifts before everyone else, who keep watch through small gestures and are there on the hard days — your attention crosses the ordinary days too. Your watchpoint: when silence settles in, your imagination can work harder than needed and read intentions where there is only a busy evening.",
+        "You, when someone matters, your heart wakes up. You spot mood shifts before anyone else, you take care through small gestures, and you are there on the hard days as on the ordinary ones. Your attention is whole: when you give, you give without counting.",
       devise: "I love strongly, I keep watch, I give without counting.",
       apportes:
-        "A bond where one feels noticed, expected, counted: a whole loyalty, regular signs of love, a memory for small things.",
+        "You make people visible: noticed, expected, counted. Your loyalty is whole, and people feel safe inside your attention.",
       freines:
-        "Silences that last, messages that are late, repeated requests for proof. These are not flaws — just the same antenna, backwards: the watchfulness that overflows when silence speaks too loud.",
+        "When silence settles in, your imagination works harder than necessary: a shorter word, a late message, and you search for what it means. It isn't a flaw: it's the other side of your antenna. It also happens that you read intentions where there is only a busy evening.",
       couple:
-        "You give depth rather than lightness, a loyalty that isn't negotiable, words said at the moment doubt arrives. To keep in mind: your antenna can move the bond forward on assumptions rather than words — asking is better than decoding.",
+        "You bring a rare depth: regular signs of love, a memory for small things, words said the moment doubt arrives. But your antenna can move the bond forward on assumptions: some partners feel carried by your attention, others feel watched. Make a habit of asking instead of decoding.",
       equilibre:
-        "Ask, instead of decoding, what worries you in the bond. Not because your watchfulness would be false, but because a question said out loud replaces hours of interpretation.",
+        "Ask, instead of guessing, what worries you in the bond. Your antenna isn't a problem. But a question said out loud has a better chance of soothing a doubt than hours of interpreting.",
     },
     // V3 — L'Autonome : The Independent One.
     V3: {
       intro:
-        "Your archetype reveals a person who lives the bond at their own rhythm: you belong to yourself first, and you love without wanting to lose yourself in it. You are one of those who cross their storms on their own side, take air when it gets dense, and come back when they have breathed. Your love is calm and stable, drama-free. Your watchpoint: from outside, this need for air can read as distance — when it is mostly a breathing.",
+        "You, you belong to yourself first — and you love without wanting to lose yourself. You cross your storms on your own side, you take air when it gets dense, and you come back when you have breathed. Your love is calm and steady, without drama.",
       devise: "I belong to my life, and I love with air.",
       apportes:
-        "A bond where nobody has to play a role to stay: a love without drama, faithful returns, a life of your own that feeds the relationship.",
+        "You bring trust without control. With you, nobody has to play a role: your own life feeds the relationship, and your returns are faithful.",
       freines:
-        "Pauses taken in silence, distances taken without a word, worries crossed in a low voice. These are not flaws — just your need for air, which can look like an escape to someone who doesn't know this language.",
+        "When closeness gets dense, you step away — sometimes without a word. It isn't a flaw: it's the other side of your need for air. It also happens that the other invents the reasons for your silence, because your pauses leave without an explanation.",
       couple:
-        "You bring a respect for each person's rhythm, a trust without control, a relationship where each keeps their world. To keep in mind: with enough unannounced pauses, the other may start inventing the reasons for the silence — when one simple word would have been enough to soothe.",
+        "You bring respect for each person's rhythm, a relationship where each keeps their world. But your pauses taken in silence can look like a departure: some partners live your air as breathing, others as fleeing. Make a habit of announcing the movement before making it.",
       equilibre:
-        "Announce your pauses before taking them. Not because your air would be a problem, but because the way you take it decides whether the other stays invited or feels shut out.",
+        "Announce your pauses before taking them. Your need for air isn't a problem. But the way you take it decides whether the other stays invited or feels shut out — and one simple word is enough to change all of it.",
     },
     // V4 — Le Va-et-vient : The Come-and-Go.
     V4: {
       intro:
-        "Your archetype reveals a person who loves in two beats: when it matters, you commit fast and strong; then, closeness settled, a part of you seeks to take air again. This rhythm is neither lightness nor oddity — it is a way of having learned to love. Your watchpoint: unsaid, this rhythm becomes a message the other interprets for you — every pause can look like a departure.",
+        "You, you love in two beats: when it counts, you commit fast and strong; then, closeness settled, part of you looks for air again. It is neither lightness nor oddity: it is a way of having learned to love.",
       devise: "I give myself fully, I breathe, I come back.",
       apportes:
-        "A bond with relief: an intensity that returns, lively reunions, a whole presence when it is there — nothing in it becomes background noise.",
+        "You bring relief: an intensity that returns, lively reunions. When you are there, you are fully there — nothing becomes a usual background.",
       freines:
-        "Contradictory signals, distances acted before being said, beginnings faster than the rest. These are not flaws — just your rhythm changing speed without warning.",
+        "When closeness settles in, part of you wants air again — and your steps away sometimes leave before being said. It isn't a flaw: it's the other side of your two-speed rhythm. It also happens that the other receives contradictory signals, without knowing which version of you will come back.",
       couple:
-        "You make the bond exist with depth when it matters and returns received as loyalties. To keep in mind: without words about your rhythm, every pause can look like a departure and every return like a gift too big — the bond then lives to the beat of misunderstandings.",
+        "You bring an intensity that returns, beginnings that blaze, a whole presence when it is there. But your rhythm changes speed without warning: some partners feed on your returns, others end up running behind you. Make a habit of naming your two speeds before the other invents them.",
       equilibre:
-        "Name your two speeds before the other invents them. Not because your rhythm would need fixing, but because saying it turns a misunderstanding into known ground.",
+        "Name your two speeds — once is enough. Your come-and-go isn't a problem. But it has a better chance of being lived as a rhythm — and not as fleeing — when the other no longer has to interpret it.",
     },
     // V5 — L'Équilibre en mouvement : Balance in Motion.
     V5: {
       intro:
-        "Your archetype reveals a person whose way of loving adjusts to the person in front: close when it's the need, discreet when it's the air. You are one of those who cross both movements without drama — and this suppleness is rare: it gives the bond a comfort many can see. Your watchpoint: your own desires can come second, behind the adapting.",
+        "You, your way of loving adjusts to the person in front of you: close when it's the need, quiet when it's the air. You cross both movements without drama — and that suppleness is rare: it gives the bond a comfort many people notice.",
       devise: "I adjust to the other, and I keep my voice.",
       apportes:
-        "A bond that breathes with both people: a fine reading of the other, an adaptation without drama, transitions crossed without a jolt.",
+        "You read the other finely, and you adjust without drama. With you, the bond breathes: transitions get crossed without a jolt.",
       freines:
-        "Choices left without a voice, desires voiced too late, decisions taken only to the other's taste. These are not flaws — just your suppleness, which has a price: adapting can blur into erasing yourself.",
+        "When everything is fine, your own wants arrive second, behind the adapting. It isn't a flaw: it's the other side of your suppleness. It also happens that your choices get made on the other's taste alone, without you putting your voice in.",
       couple:
-        "You bring shared initiatives, decisions taken with two voices, a bond that welcomes its own movements. To keep in mind: with someone who chooses a lot, the fluidity can follow a single thread — the relationship becomes softer than reciprocal, without anyone wanting it.",
+        "You bring decisions made in two voices, shared initiatives, a bond that welcomes its own movements. But with someone who chooses a lot, your fluidity can follow a single thread: some partners find it soft, others settle into it without listening to you. Make a habit of keeping your voice in the choices, even small ones.",
       equilibre:
-        "Keep your voice in the choices, even small ones, even when all is well. Not because adjusting would be wrong, but because your suppleness is worth even more when it starts from a visible center.",
+        "Choose out loud, from time to time. Adjusting isn't a problem. But your suppleness is worth even more when it starts from a visible center — and that center is yours to keep.",
     },
   },
 

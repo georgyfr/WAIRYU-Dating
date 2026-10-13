@@ -287,28 +287,30 @@ export const REGISTRE_M1: {
       {
         nom: "Your need for reassurance",
         sousLigne: "what your heart seeks when someone matters",
+        // Task 76 — miroir de la nouvelle voix (Pleine:/Légère: → Full:/Quiet:).
         lecture:
-          "This bar says what your heart asks for when someone matters to you: frequent, early proof (full), or a steadiness that comes from you (quiet). No point is more solid than the other — what matters is knowing yours so you can say it.",
+          "This bar says what your heart asks for when someone matters to you. Full: frequent, early proof — your heart keeps watch over the bond. Quiet: a steadiness that comes from you — a late message doesn't tell a story of the end of the world. No point is more solid than the other: what matters is knowing yours so you can say it.",
       },
       {
         nom: "Your need for space",
         sousLigne: "your air, your rhythm, your inner world",
         lecture:
-          "This bar says how much air you need in closeness: a lot (full), or contact that nourishes you without weighing (quiet). Knowing your rhythm spares you living it as a flaw — and making the other guess it.",
+          "This bar says how much air you need in closeness. Full: a lot — your inner world needs to breathe. Quiet: contact that feeds you without weighing on you. Knowing your rhythm spares you living it as a flaw — and making the other guess it.",
       },
     ],
     accompagnement: {
+      // Task 76 — miroir EN de la nouvelle voix (2-3 phrases + « Small step: »).
       A: {
-        fort: "When someone matters, your heart keeps watch: a silence, a shorter word, and you try to understand. This need for proof is not a flaw — it is your alarm system for the bond. What helps: ask clearly, at the right moment, rather than decode alone.",
+        fort: "When someone matters, your heart keeps watch: a silence, a shorter word, and you try to understand. This need for proof is not a flaw — it is your alarm system for the bond. Small step: ask clearly, at the right moment, rather than decode alone.",
         equilibre:
-          "You like knowing where you stand, without living in expectation of signs. Proof reassures you, absence doesn't crush you. Your balance point: say what soothes you before doubt settles in.",
-        doux: "You are at ease in the bond: a late message doesn't tell a story of the end of the world. You give room naturally. Watchpoint: the other person may need more signs — your serenity must not look like indifference.",
+          "You like knowing where you stand, without living in expectation of signs. Proof reassures you, absence doesn't crush you. Small step: say what soothes you before doubt settles in.",
+        doux: "You are at ease in the bond: a late message doesn't tell a story of the end of the world. Your serenity is a strength — but the other person may need more signs. Small step: say your steadiness out loud (“I am good, I am staying”) so it doesn't look like indifference.",
       },
       E: {
-        fort: "You need your air: handling things alone, breathing between two moments, coming back when your inner cycle is done. It is your way of staying well. Watchpoint: announce your pauses — an explained departure reassures, a silent departure worries.",
+        fort: "You need your air: handling things alone, breathing between two moments, coming back when your inner cycle is done. It is your way of staying well. Small step: announce your pauses — an explained departure reassures, a silent departure worries.",
         equilibre:
-          "You know how to be close and take air, depending on the person and the moment. Closeness doesn't smother you as long as it can pause now and then. Your landmark: say the movement before the other interprets it.",
-        doux: "Closeness nourishes you: spending time, sharing everything, being together without detours. It is a strength of availability. Watchpoint: keep a corner just for yourself — that is what makes your presence a choice and not a habit.",
+          "You know how to be close and take air, depending on the person and the moment. Closeness doesn't smother you as long as it can pause now and then. Small step: say the movement before the other interprets it.",
+        doux: "Closeness feeds you: spending time, sharing everything, being together without detours. It is a strength of availability. Small step: keep a corner just for yourself — that is what makes your presence a choice and not a habit.",
       },
     },
     conseils: [
@@ -321,16 +323,18 @@ export const REGISTRE_M1: {
     commentLire:
       "Two bars, two movements of your heart: the need for reassurance and the need for space. Each goes from 0 to 100, drawn from your answers of today — the fuller it is, the more your answers lean that way. They don't oppose each other: they dance together, and it is their balance that draws your way of loving. Each bar is followed by what it looks at and what it says about you.",
     ombreRelationnel: {
+      // Task 76 — miroir EN du cadre 2 ¶ du fondateur (« Here is the main
+      // risk in a relationship: … » + « What helps: … », cf. 1.1 V1).
       V1:
-        "In a relationship, your shadow side can give: your serenity read as distance — the other may need more proof than you naturally produce. What helps: say your stability out loud (“I am good, I am staying”). What you live peacefully, the other needs to hear in order to live it the same way.",
+        "Here is the main risk in a relationship: your calm becomes so silent that the other no longer knows where they stand — the proofs nobody gives end up looking like forgetting.\n\nWhat helps: say out loud what is obvious to you. An “I am good”, an “I am staying”, a look back at what you have built. What you live peacefully, the other needs to hear to live it the same way.",
       V2:
-        "In a relationship, your shadow side can give: an antenna so stretched toward the other that their silence becomes an event — you question, you check, you wait for a sign that doesn't come. What helps: ask clearly rather than decode: “I need to hear that everything is fine” is a strength. It is the asking that soothes, not the guessed answer.",
+        "Here is the main risk in a relationship: an antenna so stretched toward the other that their silence becomes an event — you question, you check, you wait for a sign that doesn't come.\n\nWhat helps: ask clearly rather than decode. “I need to hear that everything is fine” is a strength: it is the asking that soothes, not the guessed answer.",
       V3:
-        "In a relationship, your shadow side can give: pauses taken in silence that the other lives as a departure — your need for air is legitimate, their uncertainty too. What helps: announce the movement before making it: “I'm taking some air, I'll be back.” The door stays open while you breathe — and the other stops counting the minutes.",
+        "Here is the main risk in a relationship: pauses taken in silence that the other lives as a departure — your need for air is legitimate, their uncertainty too.\n\nWhat helps: announce the movement before making it. “I'm taking some air, I'll be back.” The door stays open while you breathe — and the other stops counting the minutes.",
       V4:
-        "In a relationship, your shadow side can give: contradictory signals — everything, then air, then everything — that the other may live as instability when it is your way of having learned to love. What helps: name your speed ONCE: “when I pull away, it isn't the end — it's my rhythm.” Half the road is done.",
+        "Here is the main risk in a relationship: two speeds that the other lives as contradictory signals — everything, then air, then everything — without knowing which version of you will come back.\n\nWhat helps: name your rhythm once and for all. “When I pull away, it isn't the end: it's my rhythm.” One sentence said early turns a misunderstanding into known ground.",
       V5:
-        "In a relationship, your shadow side can give: an adaptation so fluid that your own needs fall behind the other's — and you end up no longer knowing what you yourself wanted. What helps: choose out loud from time to time — the restaurant, the weekend, the film. Your suppleness is worth even more when it starts from a center.",
+        "Here is the main risk in a relationship: an adaptation so fluid that your own wants fall behind the other's — and over time, you no longer know what you yourself want.\n\nWhat helps: choose out loud, from time to time. The restaurant, the weekend, the film. Your suppleness is worth even more when it starts from a visible center — and the other likes to know what YOU want, you.",
     },
     suite: {
       titre: "Your way of loving is set.",
