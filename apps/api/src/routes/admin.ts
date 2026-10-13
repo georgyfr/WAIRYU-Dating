@@ -41,5 +41,33 @@ adminRoutes.get('/usage', async (c) => {
   return c.json(body);
 });
 
+// GET /admin/satisfaction — les notes de la barre « Ton avis compte »
+// (Task 66). Lecture seule, mêmes garde Bearer + fail-closed que /usage :
+// le fondateur lit ce qui doit être amélioré, quête par quête.
+adminRoutes.get('/satisfaction', async (c) => {
+  const id = c.get('reqId') ?? reqId();
+  const expected = c.env.ADMIN_TOKEN;
+  if (!expected) {
+    return c.json(errorBody('unauthorized', 'Admin non configuré (ADMIN_TOKEN absent).', id), 503);
+  }
+  const auth = c.req.header('authorization') ?? '';
+  const provided = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  if (!timingSafeEqual(provided, expected)) {
+    return c.json(errorBody('unauthorized', 'Jeton admin requis.', id), 401);
+  }
+
+  const limite = Math.min(Math.max(Number(c.req.query('limite') ?? 200) || 200, 1), 500);
+  const { results } = await c.env.DB.prepare(
+    `SELECT quete, note, commentaire, created_at
+       FROM satisfaction
+      ORDER BY created_at DESC
+      LIMIT ?1`,
+  )
+    .bind(limite)
+    .all<{ quete: string; note: number; commentaire: string; created_at: string }>();
+
+  return c.json({ ok: true, notes: results ?? [] });
+});
+
 // Référence à errors pour l'usage futur des autres routes admin (Étape 7+).
 void errors;

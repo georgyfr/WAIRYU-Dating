@@ -9617,3 +9617,200 @@ button.r-tl-chip:hover {
         padding: 10px 11px
     }
 }
+
+/* ---------------------------------------------------------------
+   Task 66 — la barre de satisfaction (« Ton avis compte »).
+   Demande fondateur : une barre de section à la fin d'une quête pour
+   évaluer son degré de satisfaction des réponses — n'importe quelle
+   note ouvre la suite, la note ne change rien aux résultats. v2 :
+   toute action bloquée (Revenir à ma carte, Retour à mon voyage,
+   quête suivante) est redirigée vers ce champ avec une notice polie
+   (.q-sat-notice) rendue au-dessus de la barre, toujours avec lui.
+   Auto-contenu — aucune classe existante touchée. Mobile-first :
+   cible 390 px d'abord.
+   --------------------------------------------------------------- */
+
+/* L'ancre — repère de défilement (scroll-margin : l'entête collante). */
+.q-sat-ancre {
+    margin-top: 14px;
+    scroll-margin-top: 70px
+}
+
+/* La notice polie — toujours avec le champ, jamais loin des yeux. */
+.q-sat-notice {
+    margin: 0 0 10px;
+    padding: 12px 14px;
+    background: #fdf6f4;
+    border: 1px solid #f0d9d2;
+    border-left: 4px solid var(--c-coral);
+    border-radius: var(--radius)
+}
+
+.q-sat-notice strong {
+    display: block;
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--c-coral-deep)
+}
+
+.q-sat-notice p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--c-night)
+}
+
+/* La barre elle-même. */
+.sat-bar {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px
+}
+
+.sat-kicker {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-turquoise-deep);
+    margin-bottom: 4px
+}
+
+.sat-bar h3 {
+    font-size: 18px;
+    color: var(--c-night);
+    margin-bottom: 6px
+}
+
+.sat-sub {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--c-gray-blue);
+    margin-bottom: 12px
+}
+
+.sat-notes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px
+}
+
+.sat-note {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 56px;
+    border: 1.5px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    padding: 6px 4px;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    font: inherit
+}
+
+.sat-note:hover {
+    border-color: var(--c-turquoise-deep)
+}
+
+.sat-note:focus-visible {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 1px
+}
+
+.sat-note-valeur {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.sat-note-label {
+    font-size: 10.5px;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--c-gray-blue)
+}
+
+.sat-note[aria-pressed="true"] {
+    border-color: var(--c-coral);
+    background: var(--c-white);
+    box-shadow: 0 0 0 1.5px var(--c-coral) inset
+}
+
+.sat-note[aria-pressed="true"] .sat-note-valeur {
+    color: var(--c-coral-deep)
+}
+
+.sat-comment-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--c-night);
+    margin-bottom: 4px
+}
+
+.sat-comment {
+    width: 100%;
+    border: 1.5px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-cream);
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--c-night);
+    resize: vertical;
+    margin-bottom: 12px
+}
+
+.sat-comment:focus-visible {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 1px
+}
+
+.sat-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px
+}
+
+.sat-merci {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-turquoise-deep)
+}
+
+.sat-privacy {
+    font-size: 11.5px;
+    color: var(--c-gray-blue)
+}
+
+@media (max-width: 420px) {
+    .sat-bar {
+        padding: 13px
+    }
+
+    .sat-bar h3 {
+        font-size: 16.5px
+    }
+
+    .sat-note-label {
+        font-size: 10px
+    }
+
+    .q-sat-notice {
+        padding: 10px 11px
+    }
+
+    .q-sat-notice p {
+        font-size: 13px
+    }
+}

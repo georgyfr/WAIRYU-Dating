@@ -192,6 +192,29 @@ export const CORE: Record<string, string> = {
   'pousse la barre vers le haut': 'pushes the bar up',
   'pousse la barre vers le bas': 'pushes the bar down',
   "Ta zone d'ombre en relation": 'Your shadow side in relationships',
+  // ---- Task 66 — la barre de satisfaction + la notice polie (v2)
+  'Ton avis sur ces réponses': 'Your take on these answers',
+  'Ton avis compte': 'Your voice counts',
+  "Ces réponses t'ont-elles éclairé·e ?": 'Did these answers shed light on you?',
+  'Une note suffit — n\'importe laquelle ouvre la suite. Ta note ne change rien à tes résultats.':
+    'One rating is enough — any rating opens what\'s next. Your rating never changes your results.',
+  'Ton degré de satisfaction': 'Your satisfaction level',
+  'Pas du tout': 'Not at all',
+  'Un peu': 'A little',
+  Moyennement: 'Somewhat',
+  Oui: 'Yes',
+  'Tout à fait': 'Completely',
+  'Un commentaire ? (facultatif)': 'A comment? (optional)',
+  'Ce qui t\'a parlé — ou pas.': 'What resonated — or not.',
+  'Envoyer ma note': 'Send my rating',
+  'Mettre à jour ma note': 'Update my rating',
+  'Merci — ta note est enregistrée. N\'importe quelle note ouvre la suite.':
+    'Thanks — your rating is saved. Any rating opens what\'s next.',
+  'Ta note sert uniquement à améliorer les quêtes.': 'Your rating is only used to improve the quests.',
+  "Cette action ne peut fonctionner qu'une fois ta note envoyée.":
+    'This action only works once your rating has been sent.',
+  'Merci de ta compréhension : ta note ne change rien à tes résultats, elle nous aide simplement à rendre chaque quête plus claire et plus utile. Une seule note suffit — elle ne prend qu\'un instant.':
+    'Thank you for understanding: your rating never changes your results — it simply helps us make each quest clearer and more useful. One rating is enough, and it only takes a moment.',
   "La suite de ton voyage": 'The next step of your journey',
   '🧭 La suite de ton voyage': '🧭 The next step of your journey',
   'Ton document se prépare…': 'Your document is being prepared…',

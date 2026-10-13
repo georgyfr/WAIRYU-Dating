@@ -53,6 +53,9 @@ import { ARCHE } from '../lib/quetes-plus';
 // Task 65 — l'ancrage des barres : les réponses réelles citées sous chaque
 // tendance (demande fondateur : les résultats doivent PROUVER, pas affirmer).
 import { ancragesDeQuete } from '../lib/ancrage-likert';
+// Task 66 — la barre de satisfaction : la note du membre (1-5) ouvre la suite.
+import { QUETES_AVEC_AVIS, lireAvis, type AvisSatisfaction } from '../lib/satisfaction';
+import SatBarAvis from '../components/SatBarAvis';
 import { ECRAN_17, decode17 } from '../lib/quete-1-7';
 import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
 import { LIBRE_CODE } from '../lib/quete-2-3';
@@ -396,6 +399,16 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const [qualifDraft, setQualifDraft] = useState('');
   const [copieOk, setCopieOk] = useState<boolean>(false);
   const [pdfEnCours, setPdfEnCours] = useState<boolean>(false);
+  // Task 66 — la satisfaction : l'avis (note 1-5) est la clé qui ouvre la
+  // suite — n'importe laquelle, elle ne change rien aux résultats. La notice
+  // (avisDemande) explique poliment pourquoi la note compte ; le défilement
+  // (defilerAvis) amène le champ « Envoyer ma note » à l'écran quelle que
+  // soit l'action bloquée (quête suivante, Revenir à ma carte, Retour à mon
+  // voyage — retour fondateur v2).
+  const [avis, setAvis] = useState<AvisSatisfaction | null>(() => lireAvis(queteId));
+  const [avisDemande, setAvisDemande] = useState<boolean>(false);
+  const [defilerAvis, setDefilerAvis] = useState<boolean>(false);
+  const ancreAvisRef = useRef<HTMLDivElement | null>(null);
 
   const apercu = useMemo(
     () => (phase === 'details' ? construireApercuResultats(quete, etat.reponses) : null),
@@ -406,6 +419,27 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     () => (phase === 'details' ? ancragesDeQuete(queteId, etat.reponses) : null),
     [phase, queteId, etat.reponses],
   );
+
+  // Task 66 — la gate : pour les quêtes à avis, la suite ne s'ouvre qu'une
+  // fois la note envoyée — n'importe laquelle (jamais un seuil, jamais un
+  // filtre : le degré de satisfaction n'est PAS une donnée du moteur).
+  const gateAvis = QUETES_AVEC_AVIS.has(queteId) && !avis;
+
+  /** Amène le champ de note à l'écran avec sa notice polie (v2 fondateur :
+   *  « il doit être redirigé vers le champ Envoyer ma note avec une petite
+   *  notice » — mots polis + le pourquoi de la note). */
+  const demanderAvis = useCallback(() => {
+    setAvisDemande(true);
+    setDefilerAvis(true);
+  }, []);
+
+  // Le défilement attend la bonne phase : venant de la carte, le champ de
+  // note (écran détails) n'existe pas encore au moment du clic.
+  useEffect(() => {
+    if (!defilerAvis || phase !== 'details') return;
+    setDefilerAvis(false);
+    ancreAvisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [defilerAvis, phase]);
 
   const questionRef = useRef<HTMLHeadingElement | null>(null);
   const pauseTimer = useRef<number | null>(null);
@@ -1386,9 +1420,28 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     const carte = etat.carteId && quete.cartes[etat.carteId] ? quete.cartes[etat.carteId] : quete.cartes[quete.choisirVariante(quete.scorer(etat.reponses))];
     const arche = ARCHE[queteId][carte.id];
     const suivante = quete.suivante ? QUETES[quete.suivante] : null;
+    // Task 66 — la suite (CTA verbatim) est gated : sans note, on est ramené
+    // au champ « Envoyer ma note » avec sa notice polie.
+    const allerLaSuite = () => {
+      if (gateAvis) {
+        demanderAvis();
+        return;
+      }
+      if (suivante) onAllerQuete(suivante.id);
+      else onHome();
+    };
+    // Task 66 v2 — « Revenir à ma carte » (haut et bas de page) fait partie
+    // des actions bloquées : redirection vers le champ de note + notice.
+    const revenirCarte = () => {
+      if (gateAvis) {
+        demanderAvis();
+        return;
+      }
+      setPhase('carte');
+    };
     return (
       <main className="screen q-screen q-det qtv" aria-labelledby="q-det-title">
-        <button type="button" className="q-back" onClick={() => setPhase('carte')}>
+        <button type="button" className="q-back" onClick={revenirCarte}>
           <Fleche dir="left" />
           {tx('Revenir à ma carte')}
         </button>
@@ -1497,6 +1550,32 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           );
         })()}
 
+        {/* Task 66 — TON AVIS COMTE : la barre de satisfaction. La note
+            (n'importe laquelle) ouvre la suite ; v2 fondateur : toute action
+            bloquée est redirigée ICI, et la notice polie — rendue au-dessus
+            du champ, toujours avec lui — explique pourquoi la note compte. */}
+        {QUETES_AVEC_AVIS.has(queteId) && (
+          <div className="q-sat-ancre" ref={ancreAvisRef}>
+            {gateAvis && avisDemande && (
+              <aside className="q-sat-notice" role="status">
+                <strong>{tx("Cette action ne peut fonctionner qu'une fois ta note envoyée.")}</strong>
+                <p>
+                  {tx(
+                    'Merci de ta compréhension : ta note ne change rien à tes résultats, elle nous aide simplement à rendre chaque quête plus claire et plus utile. Une seule note suffit — elle ne prend qu\'un instant.',
+                  )}
+                </p>
+              </aside>
+            )}
+            <SatBarAvis
+              queteId={queteId}
+              onAvis={(a) => {
+                setAvis(a);
+                setAvisDemande(false);
+              }}
+            />
+          </div>
+        )}
+
         <section className="q-sec q-rev" aria-label={tx('La suite de ton voyage')}>
           <p className="q-rev-kicker">{tx('🧭 La suite de ton voyage')}</p>
           <h3>{quete.suite.titre}</h3>
@@ -1510,12 +1589,12 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           )}
           <div className="q-actions">
             {suivante ? (
-              <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(suivante.id)}>
+              <button type="button" className="btn btn-accent" onClick={allerLaSuite}>
                 {quete.suite.cta ?? tx('Continuer le voyage')}
                 <Fleche />
               </button>
             ) : (
-              <button type="button" className="btn btn-accent" onClick={onHome}>
+              <button type="button" className="btn btn-accent" onClick={allerLaSuite}>
                 {tx('Retour à mon voyage')}
                 <Fleche />
               </button>
@@ -1531,7 +1610,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               <IcoTelecharger />
               {pdfEnCours ? tx('Ton document se prépare…') : tx('Télécharger mon document personnel')}
             </button>
-            <button type="button" className="btn btn-ghost" onClick={() => setPhase('carte')}>
+            <button type="button" className="btn btn-ghost" onClick={revenirCarte}>
               {tx('Revenir à ma carte')}
             </button>
             <p className="q-carte-hint">
@@ -1546,6 +1625,27 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   // ------------------------------------------------------------------- carte
   const carte = etat.carteId && quete.cartes[etat.carteId] ? quete.cartes[etat.carteId] : quete.cartes[quete.choisirVariante(quete.scorer(etat.reponses))];
   const suivante = quete.suivante ? QUETES[quete.suivante] : null;
+  // Task 66 v2 — depuis la carte aussi, la suite est gated (retour fondateur :
+  // « Retour à mon voyage » comme « Attaquer la quête suivante » amènent au
+  // champ de note, avec sa notice polie — la note ouvre la route ensuite).
+  const allerDetailsPourAvis = () => {
+    setPhase('details');
+    demanderAvis();
+  };
+  const quitterCarte = () => {
+    if (gateAvis) {
+      allerDetailsPourAvis();
+      return;
+    }
+    onHome();
+  };
+  const attaquerSuite = () => {
+    if (gateAvis) {
+      allerDetailsPourAvis();
+      return;
+    }
+    if (suivante) onAllerQuete(suivante.id);
+  };
   return (
     <main className="screen q-screen qtv" aria-labelledby="q-carte-title">
       <div className="q-carte" role="region" aria-label={tx('Ta carte')}>
@@ -1597,7 +1697,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
               {tx('Copié — ta carte est dans le presse-papiers.')}
             </p>
           )}
-          <button type="button" className="btn btn-ghost" onClick={onHome}>
+          <button type="button" className="btn btn-ghost" onClick={quitterCarte}>
             {tx('Retour à mon voyage')}
           </button>
         </div>
@@ -1613,7 +1713,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           <blockquote className="q-next-annonce">
             <p>{suivante.annonce}</p>
           </blockquote>
-          <button type="button" className="btn btn-accent" onClick={() => onAllerQuete(suivante.id)}>
+          <button type="button" className="btn btn-accent" onClick={attaquerSuite}>
             {tx('Attaquer la quête suivante')}
             <Fleche />
           </button>

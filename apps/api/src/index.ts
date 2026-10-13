@@ -13,6 +13,7 @@ import { healthRoutes } from './routes/health';
 import { adminRoutes } from './routes/admin';
 import { pushRoutes } from './routes/push';
 import { authRoutes } from './routes/auth';
+import { satisfactionRoutes } from './routes/satisfaction';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -49,6 +50,7 @@ app.use('/api/*', sessionMiddleware);
 app.route('/api', healthRoutes);
 app.route('/api', pushRoutes);
 app.route('/api', authRoutes);
+app.route('/api', satisfactionRoutes);
 app.route('/admin', adminRoutes);
 
 // ---- Gestion d'erreurs unifiée ----
