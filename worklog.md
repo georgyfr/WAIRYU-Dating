@@ -1504,3 +1504,61 @@ Stage Summary:
 - La barre de satisfaction est reconstituée à l'identique (v1) ET améliorée (v2) : toute sortie de la quête 1.3 — quête suivante, Revenir à ma carte (×2), Retour à mon voyage — ramène au champ « Envoyer ma note » avec la notice polie ; la note (n'importe laquelle) ouvre la suite, ne change rien aux résultats, n'entre dans AUCUN score.
 - La notice explique le POURQUOI (améliorer les quêtes) avec des mots polis (merci de ta compréhension, merci d'avance implicite), rassure (rien ne change, une note suffit, un instant).
 - En attente : jetons (GitHub + Cloudflare) pour push + staging ; arbitrage fondateur sur « Attaquer la quête suivante » gated (mon choix : gated, cohérent avec l'intention) ; extension à d'autres quêtes = ajouter un id dans QUETES_AVEC_AVIS.
+
+---
+Task ID: 67
+Agent: orchestrateur (Z.ai Code)
+Task: Jetons re-fournis par le fondateur → push Task 66 v2 + déploiement staging + E2E EN LIGNE de la gate + avis structuré sur 4 demandes (session permanente, structure #/voyage, popup des mondes, textes quête 1.1).
+
+Work Log:
+- SÉCURITÉ : jetons Cloudflare (cfut_…) + GitHub (github_pat_…) stockés dans /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600, hors dépôt, jamais commités) ; note de rotation conseillée (les jetons ont transité par le chat).
+- VÉRIFICATIONS : CF token active · ACCOUNT_ID = a6ad9b4a2f8b42a6cf7f38e4e519ec22 (le fondateur l'avait étiqueté « id » du jeton — c'est l'ID de compte Wairyu26@gmail.com) · GitHub user georgyfr, push OK.
+- PUSH : main a11ae12..6703f79 (Task 66 v2 complète) sur github.com/georgyfr/WAIRYU-Dating.
+- DÉPLOIEMENT STAGING : bash deploy.sh staging vert (typecheck + build + migrations + worker) — version e99b5e17-3da1-40d5-95e8-1fe9dafb67ac, bundle index-DQWAoFd_.js, /api/health OK env=staging.
+- BUG D1 DÉCOUVERT EN LIGNE : POST /api/satisfaction → 500 store_unavailable (wrangler tail) — « table satisfaction has no column named session_id » : la 0010 appliquée AVANT le reset (v1) avait créé la table avec user_id ; la 0010 reconstituée porte le même nom de fichier → jamais réappliquée → divergence schéma/code. FIX staging (données jetables) : DROP TABLE + réexécution de la 0010 canonique → schéma conforme (session_id). PROD NON CONCERNÉE (table absente — la 0010 s'y appliquera proprement au prochain déploiement prod). Aucune migration 0001-0009 retouchée.
+- E2E STAGING (compte de test e2e-avis-66, Turnstile sauté sur staging comme documenté, état 1.3 injecté localStorage + reload réel — le simple hash-change ne relit pas le cache module) : (A) « Revenir à ma carte » sans note → scroll ancré (scrollY 2701) + notice, hash inchangé ✓ ; (B) « Retour à mon voyage » sans note → idem ✓ ; (C) note 4 + commentaire → « Update my rating », localStorage wairyu.satisfaction ✓, POST /api/satisfaction 200 ✓ ; (D) note envoyée → « Retour à mon voyage » navigue vers #/voyage ✓ ; (E) reload → note restaurée (bouton MàJ + aria-pressed) ✓ ; ligne D1 avec session_id (rapprochement compte) ✓ + sonde sans session (NULL) ✓ ; FR intégral (notice « Cette action ne peut fonctionner qu'une fois ta note envoyée. » + Merci de ta compréhension…, kicker, 5 niveaux, bouton) et EN miroir vérifiés en ligne ; mobile 390 : notice + barre lisibles, zéro overflow (capture) ; desktop 1280 propre.
+- LECTURE FONDATEUR BONUS : l'overlay de bienvenue dit déjà « Your sign-up is saved — your session stays active, you will never have to sign up again » — la promesse d'auto-login permanent (365 j glissants, middleware session.ts) est implémentée ET communiquée.
+- NETTOYAGE : compte de test SUPPRIMÉ (DELETE /api/account 200, retour écran d'auth), localStorage purgé, 2 lignes de test D1 supprimées (DELETE changes:2), wrangler tail arrêté, navigateur fermé.
+- AVIS REMIS AU FONDATEUR (demande explicite « ton avis d'abord ») : (1) session = déjà permanente par sa propre décision (365 j glissants) — l'incident = effacement cookies navigateur (réglage Chrome/privé/staging≠prod) ; vraie amélioration = migrer les réponses localStorage → D1 rattachées au compte ; pas de case « Rester connecté » (friction inutile). (2) #/voyage : STRUCTURE CONSERVÉE (carte = squelette identitaire), on affine les portes d'entrée (popup). (3) Popup des mondes : OUI — illustration en tête (11 visuels générés, palette corail/crème) + texte restructuré (2 blocs au lieu de 4 sections, ~50 % de lecture en moins). (4) Quête 1.1 : OUI pour la présentation avec propositions AVANT/APRÈS soumises à validation mot à mot (briefing = verbatim livrable ; items/scoring intangibles) ; la puce « Huit affirmations… sécurité » à retirer de l'écran membre ou en note discrète.
+- PROD NON TOUCHÉE (règle : jamais de prod sans feu vert explicite — prod est en retard : bundle CTf3u1KU sans la barre de satisfaction).
+
+Stage Summary:
+- La gate v2 (« toute sortie ramène à Envoyer ma note + notice polie ») est EN LIGNE sur staging (e99b5e17) et vérifiée de bout en bout FR/EN/mobile, API D1 réparée (divergence de schéma post-reset documentée et corrigée).
+- En attente fondateur : feu vert pour rattraper la PROD (staging est devant) + GO sur l'ordre proposé : popup des mondes → propositions 1.1 → migration réponses D1.
+
+---
+Task ID: 68
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur — « les boutons tels que Voyage, Mondes, Parcourus et Récolte aient des petites puces rouges qui montrent la quantité de notifications » + puces sur les 5 onglets internes de la Récolte (Aperçu, Cartes, Sceaux, Gains acquis, Histoire).
+
+Work Log:
+- CONCEPTION : « nouveau » = postérieur à la DERNIÈRE VISITE de la destination (sémantique « ce qu'il y a de nouveau pour TOI ici ») ; la visite éteint la puce ; AMORÇAGE à la notifs.ts (premier lancement ⇒ l'histoire existante est vue — aucun flood de badges pour les anciens voyageurs, flag wairyu.vu.v1). Zéro événement inventé : tout dérive de l'état RÉEL des quêtes, mêmes règles que progression.ts + registre des gains.
+- NOUVEAU lib/inedit.ts : store `wairyu.vu` {destination: ISO} (voyage, mondes, parcourus, recolte + recolte.{apercu,cartes,sceaux,gains,histoire}) · marquerVu() · bus réactif (souscrireEtat + ses abonnés — caches invalidés) · dérivations : quêtes terminées (quete:{id}, termineeA), mondes traversés (clôture = max termineeA), mondes OUVERTS par clôture du précédent, gains (carte/écran par quête + fragment/sceau par monde) · useInedits() (compteurs 4 onglets, cachés par signature) + useVuToutes() (pour les puces internes de Recolte).
+- SÉMANTIQUE DES PUCES : quête terminée → Parcourus+1, Récolte+1 (carte ou écran), Voyage+1 · monde traversé → Mondes+1 (chip Terminé) + Récolte+2 (fragment+sceau) + Voyage+1 · monde suivant ouvert → Mondes+1 · Voyage = « le voyage a avancé », exactement l'exemple fondateur (« terminent une quête → parcouru ET récolte »). Onglet Quête : inchangé (point corail d'engagement existant).
+- TabBar.tsx : prop badges + .tab-badge (n>9⇒9+) + aria-label '{{label}} — une nouveauté / {{n}} nouveautés' (singulier FR géré, EN miroir). App.tsx : useInedits + effet [stage, authenticated] — atterrir sur un onglet le marque vu (stage 'welcome' authentifié ⇒ voyage).
+- Recolte.tsx : puces des 5 onglets INTERNES dérivées du MÊME registre `gains` (aperçu: cartes · cartes: cartes · sceaux: sceau · gains: tous · histoire: sceau+fragment = la timeline avance) ; effet [onglet] → marquerVu('recolte.{onglet}') (au montage l'aperçu est consommé : il est AFFICHÉ à l'arrivée) ; .rec2-tab-badge inline + aria. styles.css : 2 classes (corail --c-coral, liseré blanc — même langage que .ah-badge la cloche ; mobile-first).
+- PIÈGE E2E RAPPELÉ (déjà vu en Task 67 staging) : l'injection localStorage suivie d'un simple hash-change NE relit PAS le cache module des quêtes — l'app écrase l'état injecté ; TOUjours forcer un reload réel après injection.
+- E2E LOCALE (vite local :5173 + mock bun :8787 + agent-browser) : état vierge → 0 badge (amorçage) ✓ · 1.1 injectée terminée + reload → Traveled 1, Harvest 1, Voyage éteint (l'utilisateur y est), Worlds 0 ✓ · 1.2 à 11/12 → complétion RÉELLE par l'UI (dernier item « Exactly me ») → allumage EN DIRECT sans reload : Journey 1, Traveled 2, Harvest 2 (carteId V5, 12/12) ✓ · visite Parcourus → puce éteinte, autres intactes ✓ · visite Récolte → puce onglet éteinte, puces internes : Cards 2, Rewards 2 (Aperçu consommée au montage, Seals/Story 0) ✓ · clôture Monde 1 (1.3 injectée) → Journey 3, Worlds 2 (fini + suivant ouvert), Traveled 1, Cards 3, Seals 1, Rewards 5, Story 2 — TOUS les chiffres exacts ✓ · visite Cards/Rewards/Seals → extinction, Story 2 persiste ✓ · reload → persistance des vus ✓ · FR « Voyage — 3 nouveautés / Parcourus — une nouveauté », EN « Journey — 3 new / Traveled — one new » ✓ · mobile 390 : overflowX false, badges lisibles (capture /tmp/wairyu-avis/badges-mobile.png : Voyage 3, Mondes 2, Parcourus 1, Histoire 2) ✓ · 0 erreur console ✓ · purge localStorage test ✓.
+- Typecheck tsc 0 erreur · vite build vert · commit 4ebe73b · push main (6703f79..4ebe73b) · DÉPLOIEMENT STAGING version 3516d27d-edb3-4e66-b7dd-eb93ce36c330, bundle index-YDy9ewm3.js — code des puces vérifié dans le bundle en ligne (tab-badge, rec2-tab-badge, wairyu.vu) · /api/health OK.
+- PROD NON TOUCHÉE (règle : jamais sans feu vert explicite).
+
+Stage Summary:
+- LES PUCES DE NOUVEAUTÉS SONT EN LIGNE sur staging (3516d27d) : chaque quête terminée allume Parcourus + Récolte + Voyage ; chaque monde traversé allume Mondes + Récolte (fragment + sceau) ; les 5 onglets internes de la Récolte annoncent ce qui vient d'être ajouté ; la visite éteint ; l'historique pré-existant n'allume RIEN (amorçage).
+- En attente fondateur : feu vert prod (staging cumule désormais : gate satisfaction v2 + puces) + GO sur popup des mondes / propositions 1.1 / migration réponses D1.
+
+---
+Task ID: 69-a
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur explicite → rattrapage PRODUCTION (staging cumulait : gate satisfaction v2 + Task 66 + puces de nouveautés Task 68).
+
+Work Log:
+- DÉPLOIEMENT PROD : bash deploy.sh production vert (typecheck + build + migrations D1 wairyu-prod + Worker) — version 523f900f-693f-4e8a-a52b-0f4ea4cf7b7d, bundle index-YDy9ewm3.js (HASH IDENTIQUE au staging 3516d27d : byte-à-byte, zéro divergence).
+- CLOUDFLARE_ACCOUNT_ID ajouté à /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600 conservé — il n'y figurait pas depuis le reset, était passé inline).
+- MIGRATION 0010 EN PROD PROPRE : table satisfaction créée avec le schéma canonique vérifié pragma_table_info = id, quete, note, commentaire, session_id, created_at (contrairement au staging où la divergence user_id avait eu lieu — prod n'avait pas de table, aucun conflit).
+- SMOKE TESTS PROD : /api/health {ok:true, env:"production"} ✓ · POST /api/satisfaction {} → 400 {ok:false,error:"invalid_body"} (endpoint actif, contrat API en ligne) ✓ · bundle servi = index-YDy9ewm3.js contenant wairyu.vu + tab-badge/rec2-tab-badge (puces) + « Envoyer ma note » (barre satisfaction) ✓.
+- CHECK VISUEL SURFACE PROD (agent-browser 1280, SANS création de compte — Turnstile actif en prod, règle permanente) : écran d'accueil rendu (logo, promesses, Start), 0 erreur page ✓.
+- Pas d'E2E compte-complet en prod (règle) : l'E2E fonctionnelle complète des puces et de la gate a été validée sur staging avec le bundle identique.
+
+Stage Summary:
+- LA PROD EST À JOUR : https://wairyu.wairyu.workers.dev sert désormais la barre de satisfaction (gate v2 + notice polie), l'API satisfaction (D1 schéma canonique) et les puces de nouveautés — staging et prod sont ALIGNÉS sur le même bundle.
+- Reste du GO fondateur : popup des mondes illustrés → propositions AVANT/APRÈS briefing 1.1 → migration réponses localStorage → D1.
