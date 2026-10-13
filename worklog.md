@@ -1693,3 +1693,19 @@ Stage Summary:
 - LA PAGE RÉSULTATS 1.1 PARLE DÉSORMAIS EXACTEMENT COMME LE FONDEUR L'A ÉCRITE (13/13 mot à mot, FR+EN) — et le gabarit entier adopte sa nouvelle voix : Ta force / Là où ça peut se compliquer / Ce que ce profil te souffle / « nom · score/100 · palier » / Petit pas : / Ce qui pèse dans ce score → fait monter la barre / photo-pas-une-note / document-sur-ton-appareil. Les 6 autres profils de 1.1 suivent le moule (à relire par lui) ; les AUTRES quêtes gardent leurs textes actuels — la même réécriture peut être étendue à la demande.
 - Les 4 points « à vérifier » sont tous traités (renommage franchise bienveillante, anti-chevauchement mesuré, item neutralisé, picto SVG).
 - En attente fondateur : feu vert prod pour 5a284530 ; relecture éventuelle de mes V2-V7 ; décision d'étendre la nouvelle voix aux autres quêtes ; rotation des jetons.
+
+---
+Task ID: 75
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur → déploiement PRODUCTION de la nouvelle voix des résultats (Task 74, staging 5a284530) + push GitHub des commits en attente. Décision annoncée : étendre la nouvelle voix aux autres quêtes (1.2 et le reste du voyage).
+
+Work Log:
+- PRÉ-DÉPLOIEMENT : secrets vérifiés (CLOUDFLARE_API_TOKEN actif via /user/tokens/verify — expire 2026-12-30 ; GitHub PAT complet présent) ; git propre, 2 commits locaux en attente (6132288 Task 73 déjà en prod, 0fd9932 Task 74).
+- DÉPLOIEMENT PROD : bash deploy.sh production vert (typecheck + build + migrations D1 wairyu-prod — aucune nouvelle migration + Worker) — version 4ce165cb-5fdb-48b8-9f0d-ff85dba14a3d, bundle index-DR_qGk9f.js (MÊME HASH que staging : byte-à-byte) ; 6 assets nouveaux uploadés.
+- SMOKE TESTS PROD : /api/health {ok:true, env:"production"} ✓ · bundle servi = index-DR_qGk9f.js ✓ · nouvelle voix présente (« Élan chaleureux », « Ta force » ×2 FR/EN, « Là où ça peut se compliquer » ×2, « Ce que ce profil te souffle » ×2, « Ce qui pèse dans ce score » ×2, « fait monter la barre » ×2, « Petit pas : », « d'après tes réponses » ×6, « pas une note » ×2) ✓ · barre avis intacte (« Ton avis compte » ×2) ✓ · ANCIENS TEXTES À 0 (« Explorateur·rice », « pousse la barre », « serein », « Ton garde-fou ») ✓.
+- CHECK VISUEL PROD (SANS compte — Turnstile actif en prod, règle permanente) : accueil rendu (logo, promesses, Start) à 1280 ET 390 ✓ · scrollWidth 1280/390 = 0 overflow ✓ · 0 erreur console ✓ · captures /tmp/wairyu-prod-75/ (accueil-1280.png, accueil-390.png). L'E2E compte-complet (13/13 verbatim, gate, item 49, picto SVG) a été validée sur staging Task 74 avec le bundle IDENTIQUE.
+- PROD = STAGING = main : les membres ont désormais la page résultats 1.1 qui parle exactement comme le fondateur l'a écrite, avec le gabarit chrome complet (Ta force / Là où ça peut se compliquer / Ce que ce profil te souffle / nom · score/100 · palier / Petit pas : / Ce qui pèse dans ce score → fait monter la barre / photo-pas-une-note).
+
+Stage Summary:
+- LA NOUVELLE VOIX EST EN PRODUCTION (4ce165cb). La décision du fondateur est notée : étendre la réécriture à la quête 1.2 puis au reste du voyage — même méthode (rédaction au moule 1.1 → staging → relecture → feu vert), textes présentés mot à mot dans le compte rendu avant mise en prod.
+- Reste en veille : rotation des jetons (ils ont re-transité par le chat) ; relecture éventuelle des V2-V7 de 1.1 par le fondateur.
