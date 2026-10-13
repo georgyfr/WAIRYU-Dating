@@ -1635,3 +1635,21 @@ Work Log:
 Stage Summary:
 - A+B+C EN PLACE SUR STAGING (34ea0008) au mot près, FR et EN, sans toucher aux items, au scoring, aux écrans de passation ni à la moindre autre quête — « ne rien casser » vérifié par 6 contrôles.
 - En attente fondateur : feu vert prod pour ce briefing ; re-fourniture du GitHub PAT (2 commits locaux en attente de push : 1ab8be2 + celui-ci).
+
+---
+Task ID: 72
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur → déploiement PRODUCTION du briefing 1.1 A+B+C (staging 34ea0008) + PAT GitHub complet re-fourni → push des commits en attente.
+
+Work Log:
+- SECRETS : SECRETS-WAIRYU-LOCAL.txt mis à jour avec le GitHub PAT COMPLET (chmod 600 conservé, hors dépôt) ; CF token re-vérifié actif (expire 2026-12-30).
+- PUSH GITHUB : main 3c4cad8..c8d31ef (Task 70 worklog + Task 71 briefing A+B+C) — main synchronisée avec origin/main.
+- DÉPLOIEMENT PROD : bash deploy.sh production vert (typecheck + build + migrations D1 wairyu-prod — aucune nouvelle migration, 0011 déjà appliquée en 70 + Worker) — version c982dff7-6ff2-4249-ad12-6c9aac1be273, bundle index-DYVK3rWk.js (MÊME HASH que staging : byte-à-byte).
+- SMOKE TESTS PROD : /api/health {ok:true, env:"production"} ✓ · bundle servi = index-DYVK3rWk.js ✓ · C FR (« Quelques affirmations supplémentaires ») + C EN (« A few extra statements ») + B EN (« automatic honesty checks ») + classe q-brief-note présentes ✓ · puce verbatim (« veillent sur la sécurité ») ABSENTE (0 occurrence) ✓.
+- CHECK VISUEL PROD (SANS compte — Turnstile actif en prod, règle permanente) : accueil rendu (h1 + Start) ✓ · mobile 390 overflowX OK ✓ · 0 erreur page ✓. L'E2E briefing complète (1.1 FR/EN, 1.2 anti-régression, passation, purge) a été validée sur staging Task 71 avec le bundle IDENTIQUE.
+- PROD = STAGING = main : les membres ont désormais le briefing A+B+C, en plus de la popup illustrée, de la sauvegarde D1, de la barre de satisfaction et des puces.
+- RAPPEL LAISSÉ : rotation des jetons conseillée (ils ont de nouveau transité par le chat).
+
+Stage Summary:
+- LA PROD EST À JOUR ET COMPLÈTE : https://wairyu.wairyu.workers.dev (c982dff7) = staging = main. Le cycle « popup illustrée → propositions 1.1 → migration réponses D1 » demandé par le fondateur est TOTALEMENT en production.
+- Reste en veille : rotation des jetons (décision fondateur) ; aucune autre livraison en attente.
