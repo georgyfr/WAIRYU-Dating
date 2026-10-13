@@ -1598,3 +1598,21 @@ Work Log:
 Stage Summary:
 - LA SAUVEGARDE QUI TE SUIT PARTOUT EST EN LIGNE sur staging : chaque réponse poussée sur le compte (D1), chaque connexion restaure les états plus récents, un second appareil retrouve ses quêtes, l'effacement suit, la suppression de compte purge tout — localStorage reste la vérité de session, D1 la sauvegarde durable.
 - Reste à valider par le fondateur : propositions AVANT/APRÈS du briefing 1.1 (remises, mot à mot) ; feu vert prod pour popup + migration.
+
+---
+Task ID: 70
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur → déploiement PRODUCTION de la popup des mondes illustrée (Task 69-b) + de la migration réponses → D1 (Task 69-c). Staging cumulait ces deux salves (68efd129 + a70ab29e) sans la prod.
+
+Work Log:
+- RESET SANDBOX (6e) : /home/z/wairyu et /home/z/SECRETS-WAIRYU-LOCAL.txt perdus. Reconstitués : clone GitHub (main 3c4cad8 = 69-b + 69-c), bun install (258 paquets), secrets re-écrits (chmod 600) depuis l'historique — CLOUDFLARE_API_TOKEN (vérifié actif via /user/tokens/verify, expire 2026-12-30) + ACCOUNT_ID. Le GitHub PAT est TRONQUÉ dans l'historique → push NON possible ce cycle (signalé au fondateur).
+- DÉPLOIEMENT PROD : bash deploy.sh production vert (typecheck + build + migrations D1 wairyu-prod + Worker) — version 32d47e52-62d5-440e-918d-9f0a0f2983be, bundle index-BNBhzLQv.js ; 17 assets nouveaux uploadés dont les 11 img/mondes/m*.webp.
+- SMOKE TESTS PROD : /api/health {ok:true, env:"production"} ✓ · index.html sert index-BNBhzLQv.js ✓ · bundle contient wairyu.vu (puces), « Envoyer ma note » (satisfaction), api/reponses (sync), w-modal-art (popup illustrée) ✓ · 11/11 webp servis en image/webp (11,7-45,6 Ko) ✓ · contrat /api/reponses : GET et PUT sans session → 401 {"ok":false,"error":"unauthorized"} ✓ · /admin/satisfaction sans token → 401 fail-closed ✓.
+- D1 PROD : tables reponses ET satisfaction présentes ; schéma reponses vérifié (user_id, quete, etat, updated_at, created_at, PK (user_id, quete)) ; COUNT = 0 (table vierge, prête).
+- CHECK VISUEL PROD (agent-browser 1280, SANS compte — Turnstile actif en prod, règle permanente) : accueil rendu (logo, promesses, 3 garanties, Start) ✓ · mobile 390 : overflowX OK (390 px) ✓ · 0 erreur page/console ✓ · capture /tmp/wairyu-prod-70/.
+- PAS d'E2E compte-complet en prod (règle) : l'E2E fonctionnelle popup + sync a été validée sur staging (Tasks 69-b/69-c) avec le MÊME code (commit 3c4cad8) ; le bundle prod est un rebuild du même arbre.
+- PROPOSITIONS AVANT/APRÈS briefing 1.1 re-présentées au fondateur (reconstituées après reset — les précédentes étaient dans la réponse Task 69-b perdue) : puce « sécurité » = 3 options mot à mot (A retrait écran, B note discrète bas de briefing, C reformulation sans chiffre ni jargon), recommandation A ; validation mot à mot AVANT toute modification (verbatim 05-ecran-d-intro, items/scoring intangibles).
+
+Stage Summary:
+- LA PROD EST À JOUR ET DEVANT TOUT : https://wairyu.wairyu.workers.dev sert désormais la popup des mondes illustrée (11 visuels, 2 blocs), la sauvegarde D1 des réponses (« qui te suit partout »), en plus de la barre de satisfaction et des puces déjà alignées en 69-a. Staging et prod servent le même arbre de code (3c4cad8).
+- En attente fondateur : (1) validation mot à mot des propositions briefing 1.1 (options A/B/C ci-dessous) ; (2) re-fourniture du GitHub PAT pour push main (commit local prêt) ; (3) rotation des jetons quand le déploiement sera stable.
