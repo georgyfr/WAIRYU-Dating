@@ -23,6 +23,16 @@
  * d'évaluation obligatoire ») : TOUTES les quêtes demandent l'avis —
  * l'intention d'origine. La forme avait d'abord été validée sur 1.3 en
  * vitrine (Task 66). Chaque quête a sa note propre (clé par quêteId).
+ *
+ * Task 80 — VERSION DE LA QUESTION : la question a changé de forme en Task 78
+ * (échelle 1-5 « degré de satisfaction » → « Ce profil te ressemble-t-il ? »,
+ * trois choix). Un avis posé sous l'ancienne forme répond à une AUTRE
+ * question : il ne doit ni préremplir le formulaire actuel ni éteindre la
+ * gate — sinon un membre (ou le fondateur) qui n'avait répondu qu'à
+ * l'ancienne échelle ne verrait JAMAIS la nouvelle question ni l'info-bulle
+ * du renvoi. La marque de version v règle le cas : entrée sans v:2 = avis de
+ * l'ancienne question, ignoré pour l'affichage (les lignes D1 restent
+ * l'historique), la nouvelle question est posée une seule fois, proprement.
  */
 import { QUETE_IDS } from './quetes';
 
@@ -52,6 +62,11 @@ export const CHOIX_AVIS: readonly { valeur: AvisSatisfaction['note']; cle: strin
   { valeur: 3, cle: 'En partie' },
   { valeur: 1, cle: 'Pas vraiment' },
 ];
+
+/** Marque de version de la QUESTION posée (Task 80 — voir l'entête).
+ *  v2 = « Ce profil te ressemble-t-il ? » (Task 78, forme du fondateur).
+ *  Toute entrée sans v:2 date de l'ancienne échelle 1-5 (Task 66-75). */
+const VERSION_QUESTION = 2;
 
 /** Garde-fou de forme : 1|2|3|4|5 exactement (jamais « 0 truthy » ni texte). */
 function estNote(val: unknown): val is AvisSatisfaction['note'] {
@@ -102,8 +117,11 @@ export function lireAvis(queteId: string): AvisSatisfaction | null {
     if (!tout || typeof tout !== 'object' || Array.isArray(tout)) return null;
     const entree = (tout as Record<string, unknown>)[queteId];
     if (!entree || typeof entree !== 'object' || Array.isArray(entree)) return null;
-    const avis = entree as { note?: unknown; commentaire?: unknown; ts?: unknown };
+    const avis = entree as { note?: unknown; commentaire?: unknown; ts?: unknown; v?: unknown };
     if (!estNote(avis.note)) return null;
+    // Task 80 — une entrée sans la marque de version répond à l'ANCIENNE
+    // question : elle n'éteint ni la gate ni le formulaire actuel.
+    if (avis.v !== VERSION_QUESTION) return null;
     return {
       note: avis.note,
       commentaire: typeof avis.commentaire === 'string' ? avis.commentaire.slice(0, 500) : '',
@@ -125,11 +143,11 @@ export function enregistrerAvis(queteId: string, note: AvisSatisfaction['note'],
   try {
     const brut = window.localStorage.getItem(CLE_STOCKAGE);
     const parse = brut ? (JSON.parse(brut) as unknown) : null;
-    const tout: Record<string, AvisSatisfaction> =
+    const tout: Record<string, AvisSatisfaction & { v: number }> =
       parse && typeof parse === 'object' && !Array.isArray(parse)
-        ? { ...(parse as Record<string, AvisSatisfaction>) }
+        ? { ...(parse as Record<string, AvisSatisfaction & { v: number }>) }
         : {};
-    tout[queteId] = avis;
+    tout[queteId] = { ...avis, v: VERSION_QUESTION };
     window.localStorage.setItem(CLE_STOCKAGE, JSON.stringify(tout));
   } catch {
     /* stockage indisponible (navigation privée…) — l'API reste tentée */
