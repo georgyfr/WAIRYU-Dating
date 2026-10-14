@@ -25,10 +25,14 @@
  */
 
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
-import { construireApercuResultats, mondeDeQuete, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
+import { construireApercuResultats, mondeDeQuete, nomFichierPdf, NOTA_BARRES, QUETES_FUSION_OMBRE, titreTendances } from './quetes';
 import { ARCHE } from './quetes-plus';
 // Task 77 — les sources des champs dans le document (identiques à l'écran).
 import { sourcesDeQuete, type LigneSource } from './sources-sections';
+// Task 78 — les échos des tendances (identiques à l'écran) : les cartes citent
+// les réponses réelles, les freines gagnent leur ligne « Et tes réponses le
+// disent », l'ombre fusionne dans « En couple ».
+import { texteTendanceDe, echoFreinesDe } from './echoes-tendances';
 import { txSync } from '../i18n/tx-sync';
 import { getLang } from '../i18n/current';
 import { localeDevise } from '../i18n/currency';
@@ -88,6 +92,18 @@ export async function telechargerResultatsPdf(
   // Task 77 — les sources des champs (mécanique, lecture seule) : le même
   // bloc « D'après tes réponses » que l'écran, imprimé sous chaque champ.
   const sources = sourcesDeQuete(quete.id, carte.id, reponses);
+  // Task 78 — même fusion que l'écran : « Ton risque / Ce qui aide » sous « En
+  // couple », sources des deux champs dédupliquées, écho des freines.
+  const fusionOmbre = QUETES_FUSION_OMBRE.has(quete.id);
+  const ombreParas = fusionOmbre
+    ? typeof quete.ombreRelationnel[carte.id] === 'string'
+      ? (quete.ombreRelationnel[carte.id] as string).split('\n\n').filter((p) => p.trim().length > 0)
+      : []
+    : [];
+  const sourcesCoupleFusion = fusionOmbre
+    ? [...sources.couple, ...sources.ombre.filter((l) => !sources.couple.some((c) => c.code === l.code))]
+    : sources.couple;
+  const echoFreines = echoFreinesDe(quete.id, carte.id, reponses);
   const nomDim = (k: string): string => quete.dims.find((d) => d.key === k)?.nom ?? k;
   const paraSources = (lignes: LigneSource[]): void => {
     if (lignes.length === 0) return;
@@ -200,11 +216,14 @@ export async function telechargerResultatsPdf(
   para(arche.apportes, { size: 10 });
   paraSources(sources.force);
   para(txSync('Là où ça peut se compliquer'), { size: 9.5, couleur: CORAIL, gras: true });
-  para(arche.freines, { size: 10 });
+  para(arche.freines + (echoFreines ? ' ' + echoFreines : ''), { size: 10 });
   paraSources(sources.freines);
   para(txSync('En couple'), { size: 9.5, couleur: TURQUOISE, gras: true });
-  para(arche.couple, { size: 10 });
-  paraSources(sources.couple);
+  // Task 78 — fusion ombre → « En couple » : ouverture + « Ton risque » dans
+  // un ¶, « Ce qui aide » dans le second — identique à l'écran.
+  para(arche.couple + (ombreParas[0] ? ' ' + ombreParas[0] : ''), { size: 10 });
+  if (ombreParas[1]) para(ombreParas[1], { size: 10 });
+  paraSources(sourcesCoupleFusion);
   para(txSync('Ce que ce profil te souffle'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.equilibre, { size: 10 });
   paraSources(sources.equilibre);
@@ -230,15 +249,19 @@ export async function telechargerResultatsPdf(
       doc.roundedRect(MARGE, yBarre, Math.max(4.4, (LARGEUR * barre.pct) / 100), 4.4, 2.2, 2.2, 'F');
     }
     curseur.y += 8;
-    para(barre.texte, { size: 10 });
+    // Task 78 — le texte de la carte cite les réponses réelles (identique à
+    // l'écran) ; repli sur le texte de palier quand rien n'est tranché.
+    para(texteTendanceDe(quete.id, barre.key, reponses, barre.texte) ?? barre.texte, { size: 10 });
     curseur.y += 1.4;
   }
   para(NOTA_BARRES, { size: 9.5, couleur: ENCRE_DOUCE, italique: true });
 
   // ---- Task 65 — Ta zone d'ombre en relation (le même contenu que l'écran :
   //      le contenu par variante existait, il n'était jamais imprimé ni rendu)
+  //      — Task 78 : pas rendue pour les quêtes en FUSION (le risque vit dans
+  //      « En couple », imprimé plus haut).
   const ombreRel = quete.ombreRelationnel[carte.id];
-  if (typeof ombreRel === 'string' && ombreRel.length > 0) {
+  if (!fusionOmbre && typeof ombreRel === 'string' && ombreRel.length > 0) {
     section(txSync("Ta zone d'ombre en relation (pdf)"));
     // Task 74 — deux paragraphes quand le texte en contient deux (séparateur
     // \n\n — V1 1.1 : « le risque » puis « ce qui aide »).

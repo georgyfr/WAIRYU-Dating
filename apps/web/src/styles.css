@@ -9614,7 +9614,61 @@ button.r-tl-chip:hover {
 /* L'ancrage — sous chaque barre, les réponses qui pèsent le plus.
    Task 74 — marge haute portée à 10px : sur les captures du fondateur, le
    bloc venait « recouvrir la fin du texte » — on garantit une séparation
-   nette (le texte ne peut plus toucher la boîte). */
+   nette (le texte ne peut plus toucher la boîte).
+   Task 78 — le bloc vit désormais DANS un <details> replié (« Voir mes
+   réponses ») : ouvert par défaut, il recouvrait le texte de la carte. */
+.q-det-reponses {
+    margin-top: 10px
+}
+
+.q-det-reponses > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    list-style: none;
+    border: 1px dashed var(--c-line);
+    border-radius: 999px;
+    background: var(--c-cream);
+    padding: 7px 14px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--c-turquoise-deep);
+    transition: border-color 0.15s, color 0.15s
+}
+
+.q-det-reponses > summary::-webkit-details-marker {
+    display: none
+}
+
+.q-det-reponses > summary::marker {
+    content: ''
+}
+
+.q-det-reponses > summary::after {
+    content: '+';
+    font-weight: 800;
+    line-height: 1
+}
+
+.q-det-reponses[open] > summary::after {
+    content: '\2212'
+}
+
+.q-det-reponses > summary:hover {
+    border-color: var(--c-turquoise-deep)
+}
+
+.q-det-reponses > summary:focus-visible {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 1px
+}
+
+.q-det-reponses[open] > summary {
+    margin-bottom: 8px
+}
+
 .q-det-ancrage {
     margin-top: 10px;
     padding: 9px 11px;
@@ -9836,67 +9890,72 @@ button.r-tl-chip:hover {
     margin-bottom: 6px
 }
 
-.sat-sub {
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--c-gray-blue);
-    margin-bottom: 12px
-}
-
-.sat-notes {
+/* Task 78 — trois choix aux mots du moteur (« Oui, tout à fait / En partie /
+   Pas vraiment ») à la place de l'échelle 1-5. */
+.sat-choix {
     display: flex;
     gap: 8px;
     margin-bottom: 12px
 }
 
-.sat-note {
+.sat-choix-btn {
     flex: 1 1 0;
     min-width: 0;
-    min-height: 56px;
+    min-height: 44px;
     border: 1.5px solid var(--c-line);
-    border-radius: var(--radius-sm);
+    border-radius: 999px;
     background: var(--c-cream);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
     cursor: pointer;
-    padding: 6px 4px;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-    font: inherit
+    padding: 10px 8px;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--c-night);
+    text-align: center;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s
 }
 
-.sat-note:hover {
+.sat-choix-btn:hover {
     border-color: var(--c-turquoise-deep)
 }
 
-.sat-note:focus-visible {
+.sat-choix-btn:focus-visible {
     outline: 2px solid var(--c-turquoise-deep);
     outline-offset: 1px
 }
 
-.sat-note-valeur {
-    font-size: 16px;
-    font-weight: 800;
+.sat-choix-btn[aria-pressed="true"] {
+    border-color: var(--c-turquoise-deep);
+    background: var(--c-white);
+    box-shadow: 0 0 0 1.5px var(--c-turquoise-deep) inset;
+    color: var(--c-turquoise-deep)
+}
+
+/* Task 78 — le lien « Passer » : la suite n'est plus bloquée tant que la
+   personne n'a pas répondu. */
+.sat-passer {
+    display: inline-block;
+    margin-top: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 6px 2px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--c-gray-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px
+}
+
+.sat-passer:hover {
     color: var(--c-night)
 }
 
-.sat-note-label {
-    font-size: 10.5px;
-    line-height: 1.2;
-    text-align: center;
-    color: var(--c-gray-blue)
-}
-
-.sat-note[aria-pressed="true"] {
-    border-color: var(--c-coral);
-    background: var(--c-white);
-    box-shadow: 0 0 0 1.5px var(--c-coral) inset
-}
-
-.sat-note[aria-pressed="true"] .sat-note-valeur {
-    color: var(--c-coral-deep)
+.sat-passer:focus-visible {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 1px;
+    border-radius: 4px
 }
 
 .sat-comment-label {
@@ -9953,8 +10012,8 @@ button.r-tl-chip:hover {
         font-size: 16.5px
     }
 
-    .sat-note-label {
-        font-size: 10px
+    .sat-choix {
+        flex-direction: column
     }
 
     .q-sat-notice {

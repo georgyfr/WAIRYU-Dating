@@ -9,9 +9,11 @@
  *    dans freines/couple/equilibre) ;
  *  - apportes (« Ta force ») : 2-3 phrases directes, « Tu … » ;
  *  - freines (« Là où ça peut se compliquer ») : « Quand …, tu … .
- *    Ce n'est pas un défaut : c'est le revers de … . Il arrive aussi que … » ;
- *  - couple (« En couple ») : « Tu apportes … . Mais … : certains…,
- *    d'autres…. Prends l'habitude de … . » ;
+ *    C'est l'envers de … . » — le « Il arrive aussi » ne reste que quand il ne
+ *    duplique pas le risque relationnel (Task 78) ;
+ *  - couple (« En couple ») : l'OUVERTURE seule — le « Ton risque : … / Ce
+ *    qui aide : … » vit dans ombreRelationnel, rendu sous ce paragraphe
+ *    (FUSION ombre → En couple, Task 78) ;
  *  - equilibre (« Ce que ce profil te souffle ») : conseil impératif +
  *    « … n'est pas un problème. Mais … a plus de chances de … quand … ».
  *  - devise : inchangée (déjà dans la voix du fondateur).
@@ -43,9 +45,9 @@ export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
     apportes:
       'Tu poses un socle : on sait d\'où l\'on part, on sait qui reste. Ton calme repose, tes accrocs se réparent vite, et tes moments ordinaires font lien.',
     freines:
-      'Quand le calme dure, tu peux croire que tout est dit — et les preuves qu\'on oublie de donner laissent des doutes s\'installer chez l\'autre. Ce n\'est pas un défaut : c\'est le revers de ta stabilité. Il arrive aussi que tu corriges l\'inquiétude de l\'autre trop vite, avant qu\'il ait fini de la dire.',
+      'Quand le calme dure, tu peux croire que tout est dit. C\'est l\'envers de ta stabilité. Il arrive aussi que tu corriges l\'inquiétude de l\'autre trop vite, avant qu\'il ait fini de la dire.',
     couple:
-      'Tu apportes une présence qui se vérifie : tu restes, tu répares, tu construis sans bruit. Mais ce qui est évident pour toi ne se lit pas toujours de l\'extérieur : certains partenaires se nourrissent de ton calme, d\'autres s\'attendent à plus de preuves. Prends l\'habitude de dire ton attachement à voix haute, même quand il te semble visible.',
+      'Tu apportes une présence qui se vérifie : tu restes, tu répares, tu construis sans bruit.',
     equilibre:
       'Dis ton attachement assez souvent pour qu\'il s\'entende dehors. Ton calme n\'est pas un problème. Mais ce qui est évident pour toi a plus de chances d\'être vécu pareil par l\'autre quand tu le mets en mots.',
   },
@@ -58,9 +60,9 @@ export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
     apportes:
       'Tu rends les gens visibles : remarqués, attendus, comptés. Ta loyauté est entière, et les gens se sentent en sécurité dans ton attention.',
     freines:
-      'Quand le silence s\'installe, ton imagination travaille plus fort que nécessaire : un mot plus court, un message qui tarde, et tu cherches ce que ça veut dire. Ce n\'est pas un défaut : c\'est le revers de ton antenne. Il arrive aussi que tu lises des intentions là où il n\'y a qu\'une soirée chargée.',
+      'Quand le silence s\'installe, ton imagination travaille plus fort que nécessaire : un mot plus court, un message qui tarde, et tu cherches ce que ça veut dire. C\'est l\'envers de ton antenne.',
     couple:
-      'Tu apportes une profondeur rare : des signes d\'amour réguliers, une mémoire des petites choses, des mots dits au moment où le doute arrive. Mais ton antenne peut faire avancer le lien sur des hypothèses : certains partenaires se sentent portés par ton attention, d\'autres surveillés. Prends l\'habitude de demander plutôt que de décoder.',
+      'Tu apportes une profondeur rare : des signes d\'amour réguliers, une mémoire des petites choses, des mots dits au moment où le doute arrive.',
     equilibre:
       'Demande, au lieu de deviner, ce qui t\'inquiète dans le lien. Ton antenne n\'est pas un problème. Mais une question dite à voix haute a plus de chances d\'apaiser un doute que des heures d\'interprétation.',
   },
@@ -73,9 +75,9 @@ export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
     apportes:
       'Tu apportes une confiance sans contrôle. Avec toi, personne n\'a à jouer un rôle : ta vie à toi nourrit la relation, et tes retours sont fidèles.',
     freines:
-      'Quand la proximité devient dense, tu t\'éloignes — parfois sans un mot. Ce n\'est pas un défaut : c\'est le revers de ton besoin d\'air. Il arrive aussi que l\'autre invente les raisons de ton silence, parce que tes pauses partent sans explication.',
+      'Quand la proximité devient dense, tu t\'éloignes — parfois sans un mot. C\'est l\'envers de ton besoin d\'air.',
     couple:
-      'Tu apportes un respect du rythme de chacun, une relation où chacun garde son monde. Mais tes pauses prises en silence peuvent ressembler à un départ : certains partenaires vivent ton air comme une respiration, d\'autres comme une fuite. Prends l\'habitude d\'annoncer le mouvement avant de le faire.',
+      'Tu apportes un respect du rythme de chacun, une relation où chacun garde son monde.',
     equilibre:
       'Annonce tes pauses avant de les prendre. Ton besoin d\'air n\'est pas un problème. Mais la façon de le prendre décide si l\'autre reste invité ou se sent exclu — et un mot simple suffit à tout changer.',
   },
@@ -88,9 +90,9 @@ export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
     apportes:
       'Tu apportes du relief : une intensité qui revient, des retrouvailles vivantes. Quand tu es là, tu es là tout entier — rien ne devient un fond habituel.',
     freines:
-      'Quand la proximité s\'installe, une partie de toi veut reprendre de l\'air — et tes éloignements partent parfois avant d\'être dits. Ce n\'est pas un défaut : c\'est le revers de ton rythme à deux vitesses. Il arrive aussi que l\'autre reçoive des signaux contradictoires, sans savoir quelle version de toi va revenir.',
+      'Quand la proximité s\'installe, une partie de toi veut reprendre de l\'air — et tes éloignements partent parfois avant d\'être dits. C\'est l\'envers de ton rythme à deux vitesses.',
     couple:
-      'Tu apportes une intensité qui revient, des débuts qui embrasent, une présence entière quand elle est là. Mais ton rythme change de vitesse sans prévenir : certains partenaires se nourrissent de tes retours, d\'autres finissent par courir derrière toi. Prends l\'habitude de nommer tes deux vitesses avant que l\'autre ne les invente.',
+      'Tu apportes une intensité qui revient, des débuts qui embrasent, une présence entière quand elle est là.',
     equilibre:
       'Nomme tes deux vitesses — une fois suffit. Ton va-et-vient n\'est pas un problème. Mais il a plus de chances d\'être vécu comme un rythme — et non comme une fuite — quand l\'autre n\'a plus à l\'interpréter.',
   },
@@ -103,9 +105,9 @@ export const ARCHES_1_2: Record<string, ArchetypeCarte> = {
     apportes:
       'Tu lis l\'autre finement, et tu t\'adaptes sans drame. Avec toi, le lien respire : les transitions se traversent sans secousse.',
     freines:
-      'Quand tout va bien, tes envies propres arrivent en deuxième, derrière l\'adaptation. Ce n\'est pas un défaut : c\'est le revers de ta souplesse. Il arrive aussi que tes choix se prennent au seul goût de l\'autre, sans que tu aies posé ta voix.',
+      'Quand tout va bien, tes envies propres arrivent en deuxième, derrière l\'adaptation. C\'est l\'envers de ta souplesse.',
     couple:
-      'Tu apportes des décisions prises à deux voix, des initiatives partagées, un lien qui accueille ses propres mouvements. Mais avec quelqu\'un qui choisit beaucoup, ta fluidité peut suivre un seul fil : certains partenaires trouvent ça doux, d\'autres s\'installent dedans sans t\'écouter. Prends l\'habitude de garder ta voix dans les choix, même petits.',
+      'Tu apportes des décisions prises à deux voix, des initiatives partagées, un lien qui accueille ses propres mouvements.',
     equilibre:
       'Choisis, de temps en temps, à voix haute. T\'ajuster n\'est pas un problème. Mais ta souplesse vaut encore plus quand elle part d\'un centre visible — et ce centre, c\'est toi qui l\'entretiens.',
   },

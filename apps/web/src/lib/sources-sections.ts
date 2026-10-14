@@ -128,6 +128,13 @@ const MAPPING: Record<string, Record<string, MapChamps>> = {
   },
 };
 
+/** Les axes mappés d'un champ — lus par les échos des tendances (Task 78 :
+ *  la ligne « Et tes réponses le disent » de « Là où ça peut se compliquer »
+ *  puise dans les mêmes axes, une seule source de vérité éditoriale). */
+export function axesDeChamp(queteId: string, carteId: string, champ: ChampProfil): readonly string[] {
+  return MAPPING[queteId]?.[carteId]?.[champ] ?? [];
+}
+
 /**
  * Les lignes de sources d'un champ du profil — la réponse la plus tranchée de
  * chaque axe mappé (dans l'ordre du mapping). Vide quand la quête/variante

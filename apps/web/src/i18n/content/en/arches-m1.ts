@@ -30,9 +30,9 @@ export const ARCHES_M1: {
       apportes:
         "You make the world bigger around you. With you, people dare, they try, they discover. And you invite the others to come along, rather than going alone.",
       freines:
-        "When everything repeats, or when you have to wait for a long time, you get bored fast. It isn't a flaw: it's the other side of your taste for the new. It also happens that a project started with enthusiasm is replaced by the next one before it is finished.",
+        "When everything repeats, or when you have to wait for a long time, you get bored fast. It's the other side of your taste for the new.",
       couple:
-        "You bring projects, surprises, a relationship where nothing falls asleep. But you move fast: some partners feel carried by your momentum, others feel like they are running behind you. Make a habit of asking how fast the other person wants to go.",
+        "You bring projects, surprises, a relationship where nothing falls asleep.",
       equilibre:
         "Come back now and then to what already counts for you. The new isn't a problem. But what begins has a better chance of lasting when your momentum also knows how to return to what you already love.",
     },
@@ -44,9 +44,9 @@ export const ARCHES_M1: {
       apportes:
         "People can count on you, and they know it. What matters, they entrust to you — because with you it is kept, finished, respected. Your regular presence ends up becoming a landmark.",
       freines:
-        "When an unexpected event upsets the plan, it hits you hard. It isn't a flaw: it's the other side of your need for solidness. It also happens that you accuse yourself first, even when nothing was only up to you.",
+        "When an unexpected event upsets the plan, it hits you hard. It's the other side of your need for solidness.",
       couple:
-        "You build a trust that gets verified: clear commitments, reassuring regularity. But your frame can weigh: some partners feel safe, others feel graded. Make a habit of letting the other do it their way, now and then — without keeping score.",
+        "You build a trust that gets verified: clear commitments, reassuring regularity.",
       equilibre:
         "Welcome an unexpected event without catching everything. Your need for solid isn't a problem. But what you build has a better chance of lasting when your solidness also knows how to breathe.",
     },
@@ -58,9 +58,9 @@ export const ARCHES_M1: {
       apportes:
         "You keep relationships alive. With you, an evening comes alive, people talk to each other, bonds get made. And you make it easy: nobody has to force their way into your energy.",
       freines:
-        "When things stay quiet for too long, silence weighs on you. It isn't a flaw: it's the other side of your need for movement. It also happens that you fill a space that deserved to be heard.",
+        "When things stay quiet for too long, silence weighs on you. It's the other side of your need for movement.",
       couple:
-        "You bring complicity, discoveries, a relationship that is alive. But your rhythm is fast: some partners feel carried, others feel left behind. Make a habit of offering quiet moments too, just the two of you, with no background noise.",
+        "You bring complicity, discoveries, a relationship that is alive.",
       equilibre:
         "Enjoy what doesn't move, too. Your energy isn't a problem. But it lasts longer when it also knows how to sit down, now and then, next to someone.",
     },
@@ -72,9 +72,9 @@ export const ARCHES_M1: {
       apportes:
         "You make people calmer around you. With you, people breathe, they tell things, they come back to what matters. And you ask nothing back — that is what makes your presence so precious.",
       freines:
-        "When a situation lasts too long, you stay far longer than needed. It isn't a flaw: it's the other side of your patience. It also happens that your own needs come last, behind the ones you welcome.",
+        "When a situation lasts too long, you stay far longer than needed. It's the other side of your patience.",
       couple:
-        "You bring a rare emotional safety: you listen, you last, you don't dramatize. But you can forget yourself: some partners see everything you carry, others will never see it. Make a habit of saying what you carry, before it weighs.",
+        "You bring a rare emotional safety: you listen, you last, you don't dramatize.",
       equilibre:
         "Count yourself in your own priorities. Your calm isn't a problem. But what you give has a better chance of holding when you are counted in it too.",
     },
@@ -86,9 +86,9 @@ export const ARCHES_M1: {
       apportes:
         "You make moments truer. With you, people laugh louder, they talk about what counts, nobody pretends. And bonds tighten, because you never do anything halfway.",
       freines:
-        "When a wave rises, it crosses you entirely. It isn't a flaw: it's the other side of your way of feeling. It also happens that a silly remark occupies you for hours — and that the world seems louder than for others.",
+        "When a wave rises, it crosses you entirely. It's the other side of your way of feeling. It also happens that a silly remark occupies you for hours — and that the world seems louder than for others.",
       couple:
-        "You bring depth, passion, a bond without half-measures. But the wave sometimes carries the conversation away: some partners love that intensity, others need to know it passes. Make a habit of warning when you feel it rise: “it isn't you, it's the wave.”",
+        "You bring depth, passion, a bond without half-measures.",
       equilibre:
         "Grant yourself real descents after the waves. Feeling strongly isn't a problem. But this intensity has a better chance of lasting when it also knows how to rest.",
     },
@@ -100,9 +100,9 @@ export const ARCHES_M1: {
       apportes:
         "You truly listen. With you, a conversation goes down to where it goes, and the other feels chosen — because when you share your world, it is a choice. Those who enter your place don't forget it.",
       freines:
-        "When the first contact has to be started, you wait. It isn't a flaw: it's the other side of the way you protect your world. It also happens that people you would have loved pass by without knowing it.",
+        "When the first contact has to be started, you wait. It's the other side of the way you protect your world. It also happens that people you would have loved pass by without knowing it.",
       couple:
-        "You bring real intimacy: patience, depth, respect for the need for space. But your silence can read as distance: some partners learn to read it, others take it for disinterest. Make a habit of saying that inside, everything is alive.",
+        "You bring real intimacy: patience, depth, respect for the need for space.",
       equilibre:
         "Open your door a little earlier, even awkwardly. Your world isn't a problem. But it has a better chance of being shared when you let someone in before you have finished thinking it all.",
     },
@@ -114,9 +114,9 @@ export const ARCHES_M1: {
       apportes:
         "You put people at ease. Everyone finds a way to connect with you without having to justify themselves — that is a real gift. And your suppleness makes you easy company, even on hard days.",
       freines:
-        "When you have to settle fast or hold a side for long, it jams. It isn't a flaw: it's the other side of your ability to adapt. It also happens that your own desires come second, behind the adapting.",
+        "When you have to settle fast or hold a side for long, it jams. It's the other side of your ability to adapt.",
       couple:
-        "You bring a rare acceptance: the other exists as they are, without having to choose a version of themselves. But you embrace many rhythms: some partners feel deeply accepted, others no longer know what you yourself want. Make a habit of saying what you want, before adapting.",
+        "You bring a rare acceptance: the other exists as they are, without having to choose a version of themselves.",
       equilibre:
         "Take a position out loud, once a day — a choice, a desire, a refusal. Adapting isn't a problem. But your versatility becomes a gift when it starts from a visible center.",
     },
@@ -134,9 +134,9 @@ export const ARCHES_M1: {
       apportes:
         "You lay a foundation: people know where they stand, people know who stays. Your calm rests them, your snags get repaired fast, and your ordinary moments make the bond.",
       freines:
-        "When the calm lasts, you can believe everything has been said — and the proofs nobody gives end up planting doubts in the other person. It isn't a flaw: it's the other side of your steadiness. It also happens that you fix the other's worry too fast, before they have finished saying it.",
+        "When the calm lasts, you can believe everything has been said. It's the other side of your steadiness. It also happens that you fix the other's worry too fast, before they have finished saying it.",
       couple:
-        "You bring a presence that proves itself: you stay, you repair, you build quietly. But what is obvious to you doesn't always read from outside: some partners feed on your calm, others expect more proof. Make a habit of saying your attachment out loud, even when it feels visible.",
+        "You bring a presence that proves itself: you stay, you repair, you build quietly.",
       equilibre:
         "Say your attachment often enough that it can be heard outside. Your calm isn't a problem. But what is obvious to you has a better chance of being lived the same way by the other when you put it into words.",
     },
@@ -148,9 +148,9 @@ export const ARCHES_M1: {
       apportes:
         "You make people visible: noticed, expected, counted. Your loyalty is whole, and people feel safe inside your attention.",
       freines:
-        "When silence settles in, your imagination works harder than necessary: a shorter word, a late message, and you search for what it means. It isn't a flaw: it's the other side of your antenna. It also happens that you read intentions where there is only a busy evening.",
+        "When silence settles in, your imagination works harder than necessary: a shorter word, a late message, and you search for what it means. It's the other side of your antenna.",
       couple:
-        "You bring a rare depth: regular signs of love, a memory for small things, words said the moment doubt arrives. But your antenna can move the bond forward on assumptions: some partners feel carried by your attention, others feel watched. Make a habit of asking instead of decoding.",
+        "You bring a rare depth: regular signs of love, a memory for small things, words said the moment doubt arrives.",
       equilibre:
         "Ask, instead of guessing, what worries you in the bond. Your antenna isn't a problem. But a question said out loud has a better chance of soothing a doubt than hours of interpreting.",
     },
@@ -162,9 +162,9 @@ export const ARCHES_M1: {
       apportes:
         "You bring trust without control. With you, nobody has to play a role: your own life feeds the relationship, and your returns are faithful.",
       freines:
-        "When closeness gets dense, you step away — sometimes without a word. It isn't a flaw: it's the other side of your need for air. It also happens that the other invents the reasons for your silence, because your pauses leave without an explanation.",
+        "When closeness gets dense, you step away — sometimes without a word. It's the other side of your need for air.",
       couple:
-        "You bring respect for each person's rhythm, a relationship where each keeps their world. But your pauses taken in silence can look like a departure: some partners live your air as breathing, others as fleeing. Make a habit of announcing the movement before making it.",
+        "You bring respect for each person's rhythm, a relationship where each keeps their world.",
       equilibre:
         "Announce your pauses before taking them. Your need for air isn't a problem. But the way you take it decides whether the other stays invited or feels shut out — and one simple word is enough to change all of it.",
     },
@@ -176,9 +176,9 @@ export const ARCHES_M1: {
       apportes:
         "You bring relief: an intensity that returns, lively reunions. When you are there, you are fully there — nothing becomes a usual background.",
       freines:
-        "When closeness settles in, part of you wants air again — and your steps away sometimes leave before being said. It isn't a flaw: it's the other side of your two-speed rhythm. It also happens that the other receives contradictory signals, without knowing which version of you will come back.",
+        "When closeness settles in, part of you wants air again — and your steps away sometimes leave before being said. It's the other side of your two-speed rhythm.",
       couple:
-        "You bring an intensity that returns, beginnings that blaze, a whole presence when it is there. But your rhythm changes speed without warning: some partners feed on your returns, others end up running behind you. Make a habit of naming your two speeds before the other invents them.",
+        "You bring an intensity that returns, beginnings that blaze, a whole presence when it is there.",
       equilibre:
         "Name your two speeds — once is enough. Your come-and-go isn't a problem. But it has a better chance of being lived as a rhythm — and not as fleeing — when the other no longer has to interpret it.",
     },
@@ -190,9 +190,9 @@ export const ARCHES_M1: {
       apportes:
         "You read the other finely, and you adjust without drama. With you, the bond breathes: transitions get crossed without a jolt.",
       freines:
-        "When everything is fine, your own wants arrive second, behind the adapting. It isn't a flaw: it's the other side of your suppleness. It also happens that your choices get made on the other's taste alone, without you putting your voice in.",
+        "When everything is fine, your own wants arrive second, behind the adapting. It's the other side of your suppleness.",
       couple:
-        "You bring decisions made in two voices, shared initiatives, a bond that welcomes its own movements. But with someone who chooses a lot, your fluidity can follow a single thread: some partners find it soft, others settle into it without listening to you. Make a habit of keeping your voice in the choices, even small ones.",
+        "You bring decisions made in two voices, shared initiatives, a bond that welcomes its own movements.",
       equilibre:
         "Choose out loud, from time to time. Adjusting isn't a problem. But your suppleness is worth even more when it starts from a visible center — and that center is yours to keep.",
     },

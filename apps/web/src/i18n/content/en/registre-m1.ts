@@ -126,9 +126,11 @@ export const REGISTRE_M1: {
           "This bar says where your energy comes from: the crowd or the calm. Full: people recharge you and you shine in groups. Quiet: silence rebuilds you, with few people but real ones. Neither is better — they are two different engines.",
       },
       {
-        // Task 74 — miroir du renommage FR « Ta franchise bienveillante » :
-        // les items parlent de franchise et de générosité, pas de confiance.
-        nom: "Your kind candor",
+        // Task 74 → Task 78 — miroir du renommage FR : « Ta franchise
+        // bienveillante » redevient « Ta bienveillance » (le fondateur a
+        // préféré la suggestion qui corrige la page — les deux facettes sont
+        // dites ensemble dans le texte de la carte).
+        nom: "Your kindness",
         sousLigne: "the bond, trust, candor",
         lecture:
           "This bar says how you give: quick trust or attentive prudence. Full: the bond comes before winning, you listen and you give without counting. Quiet: trust is earned with you — and your candor, well dosed, protects your relationships.",
@@ -144,7 +146,7 @@ export const REGISTRE_M1: {
       // Task 74 — miroir EN de la nouvelle voix (les 5 textes du fondateur
       // + les dix paliers au même moule « Small step: »).
       O: {
-        fort: "The new attracts you: fresh ideas, different places, different encounters. You explore, and you easily understand other people's point of view. Small step: keep at least one stable landmark (a habit, a place, a person) so you don't scatter.",
+        fort: "The new attracts you: fresh ideas, different places, different encounters. You explore, and you easily understand other people's point of view. Small step: keep a stable landmark (a habit, a place, a person) so you don't scatter.",
         equilibre:
           "You love the new without chasing it: you explore when it's worth it, and you stay when it counts. Small step: now and then, dare the unknown just to see what it does inside you.",
         doux: "You love what lasts: the same faces, the same landmarks, the things one knows by heart. It isn't closing off: it's constancy. Small step: one small novelty a month, chosen by you, is enough to keep the door ajar.",
@@ -152,23 +154,23 @@ export const REGISTRE_M1: {
       C: {
         fort: "What you promise, you keep. You like it when things are ordered, planned, finished — and people entrust you with what matters. Small step: when the unexpected arrives, leave it a room without living it as a failure.",
         equilibre:
-          "You organize the essential and let the rest live. Your days have a structure, without being rigid. Small step: for the big deadlines, a bit of frame will serve you well.",
+          "You organize the essential and let the rest live. Your days have a structure, without being rigid. Small step: for the big deadlines, set yourself a milestone in the middle.",
         doux: "You prefer to improvise: you organize when it's mandatory, not for pleasure. It works — until the day everything arrives at once. Small step: one appointment with yourself a week — ten minutes, one list — changes the tension of the rest.",
       },
       E: {
-        fort: "Other people give you energy. You start conversations and set the mood without effort. Small step: keep quiet moments just for yourself too: that is what makes your energy last.",
+        fort: "Other people give you energy. You start conversations and set the mood without effort. Small step: keep quiet moments for yourself too: they make your energy last.",
         equilibre:
           "You are social when it makes sense, and quiet when it's needed. Big groups amuse you, one-on-ones nourish you. Small step: notice what you need after a long day of people.",
         doux: "Calm rebuilds you: few people, but real ones. You prefer listening to filling the silence — and those who know you know the value of what you say. Small step: daring one spontaneous gesture now and then opens doors that waiting would never see.",
       },
       A: {
-        fort: "For you, the relationship comes before being right. You listen, you wait before judging, you give without counting. Small step: saying a clear no is also a gift — it makes your yeses truer.",
+        fort: "For you, the relationship comes before being right. You listen, you wait before judging, you give without counting. Small step: candor said with gentleness lands better, especially with the ones you love.",
         equilibre:
           "You give a lot, and you know how to set limits: you don't let people walk over you. Small step: keep an eye on the people with whom you force yourself to be soft.",
         doux: "Trust is earned with you, and you have good reasons to have learned that. Small step: test trust in small touches rather than waiting for total certainty.",
       },
       S: {
-        fort: "When the waves arrive, you stay standing. You find your calm quickly, and others lean on you, often without you saying a word. Small step: your stability is not armor: you are allowed to let others see what stirs in you.",
+        fort: "When the waves arrive, you stay standing. You find your calm quickly, and others lean on you, often without you saying a word. Small step: your stability is not armor: you are allowed to show what stirs in you.",
         equilibre:
           "You have calm days and storm days — it's human, and it's your rhythm. You already know what soothes you. Small step: do it early enough, before tiredness decides for you.",
         doux: "You feel strongly and for long — remarks, waits, scenarios. It isn't a weakness: it's a fine antenna. Small step: simple, repeatable gestures — a breath, a walk, a written note — shorten the way back to calm.",
@@ -184,24 +186,22 @@ export const REGISTRE_M1: {
     commentLire:
       "The five bars come from YOUR answers, right now. Each one goes from 0 to 100: the fuller the bar, the more your answers lean that way — and nothing else. They are neither grades nor boxes: they are a snapshot, the one of the person who answered today. Each bar is followed by what it looks at and what it says about you — read them like a portrait that speaks, not like a report card.",
     ombreRelationnel: {
-      // Task 74 — V1 : miroir EN du texte verbatim du fondateur (2 paragraphes,
-      // séparés par \n\n).
+      // Task 78 — miroir EN de la FUSION : « Your risk: … / What helps: … »
+      // rendu sous « As a couple », la section séparée disparaît.
       V1:
-        "Here is the main risk in a relationship: you start a project together with enthusiasm, then a new idea arrives and takes all the room. The other person may then wonder whether it really counted for you, or whether only the project excited you.\n\nWhat helps: say out loud when something still counts for you, even after you have moved on. A word back about what you started together, a small reminder, a promise kept. That way, the other person no longer has to run after your impulses: they know you stay.",
-      // Task 77 — V2-V7 passent au cadre 2 ¶ de la V1 (« Here is the main
-      // risk in a relationship: … » + « What helps: … »), miroir du FR.
+        "Your risk: starting a project together with enthusiasm, then a new idea takes all the room. The other may then wonder whether it really counted for you.\n\nWhat helps: say out loud what still counts for you, even when you are already somewhere else. A look back at what you started together, a promise kept. And ask, from time to time, how fast the other person wants to go.",
       V2:
-        "Here is the main risk in a relationship: everything is in order at your place, and the other ends up feeling graded — every misplaced thing becomes a case file. An unexpected event derails the plan, and you blame yourself first, even when nothing of it depended on you.\n\nWhat helps: announce your standards instead of making people guess them, and let the other do it their way now and then, without keeping score. When the other sees that their way of doing things has a place in your home, your solidity stops weighing: it carries.",
+        "Your risk: everything is in order at your place, and the other ends up feeling graded — every misplaced thing becomes a case file.\n\nWhat helps: announce your standards instead of making people guess them, and let the other do it their way now and then, without keeping score. When the other sees that their way of doing things has a place in your home, your solidity stops weighing: it carries.",
       V3:
-        "Here is the main risk in a relationship: silences weigh on you, so you fill them. The other may mistake your speed for unavailability to what is slow — and wonder whether you are truly there when nothing moves.\n\nWhat helps: choose one person and one moment where you stay without filling. Chosen silence is not absence: that is where the bond goes down a floor, and where the other discovers they don't need to entertain you to interest you.",
+        "Your risk: silences weigh on you, so you fill them. The other may mistake your speed for unavailability to what is slow — and wonder whether you are truly there when nothing moves.\n\nWhat helps: choose one person and one moment where you stay without filling. Chosen silence is not absence: that is where the bond goes down a floor. And offer quiet moments too, just the two of you, with no background noise.",
       V4:
-        "Here is the main risk in a relationship: your patience becomes a residence. You stay where others would have left long ago, and the time invested ends up weighing more than reality. Meanwhile, your own needs come last — and the other doesn't even see it.\n\nWhat helps: a regular check-in with yourself: “do I stay because it's good, or because I know how to stay?” And saying out loud what you carry, before it weighs. The honest answer protects your most precious good: your presence.",
+        "Your risk: your patience becomes a residence. You stay where others would have left long ago, and your own needs come last — without the other even seeing it.\n\nWhat helps: a regular check-in with yourself — “do I stay because it's good, or because I know how to stay?” And saying out loud what you carry, before it weighs.",
       V5:
-        "Here is the main risk in a relationship: the wave rises, it goes through you entirely, and carries the conversation away. The other may fear the storm without knowing it passes — and remember the tone longer than the substance.\n\nWhat helps: warn when you feel it rise — “it isn't you, it's the wave”. Four words that change everything, and a return to calm the other learns not to dread, because they now know it comes back.",
+        "Your risk: the wave rises and carries the conversation away. The other may fear the storm without knowing it passes — and remember the tone longer than the substance.\n\nWhat helps: warn when you feel it rise — “it isn't you, it's the wave”. Four words that change everything, and a return to calm the other learns not to dread, because they now know it comes back.",
       V6:
-        "Here is the main risk in a relationship: your inner world is so comfortable that the other knocks for a long time without knowing whether they are invited. Your silence can read as distance — while inside, everything is alive.\n\nWhat helps: open by small doors. Share a piece of your world first, even awkwardly. For someone who loves you, it is an invitation they may have been waiting for a long time — and would never dare to ask for.",
+        "Your risk: your inner world is so comfortable that the other knocks for a long time without knowing whether they are invited. Your silence can read as distance — while inside, everything is alive.\n\nWhat helps: open by small doors. Share a piece of your world first, even awkwardly. For someone who loves you, it is an invitation they may have been waiting for a long time — and would never dare to ask for.",
       V7:
-        "Here is the main risk in a relationship: your adaptation is so broad that the other sometimes no longer knows what YOU want. Your own wants come second — and the other ends up deciding alone, without knowing it.\n\nWhat helps: take a position out loud, once a day — one choice, one want, one refusal. Your versatility becomes a gift when it starts from a visible center: people love someone hard to pin down, but nobody likes guessing blind.",
+        "Your risk: your adaptation is so broad that the other sometimes no longer knows what YOU want. Your own wants come second — and the other ends up deciding alone, without knowing it.\n\nWhat helps: take a position out loud, once a day — one choice, one want, one refusal. Your versatility becomes a gift when it starts from a visible center: people love someone hard to pin down, but nobody likes guessing blind.",
     },
     suite: {
       titre: "Your first mirror is set.",
@@ -325,18 +325,17 @@ export const REGISTRE_M1: {
     commentLire:
       "Two bars, two movements of your heart: the need for reassurance and the need for space. Each goes from 0 to 100, drawn from your answers of today — the fuller it is, the more your answers lean that way. They don't oppose each other: they dance together, and it is their balance that draws your way of loving. Each bar is followed by what it looks at and what it says about you.",
     ombreRelationnel: {
-      // Task 76 — miroir EN du cadre 2 ¶ du fondateur (« Here is the main
-      // risk in a relationship: … » + « What helps: … », cf. 1.1 V1).
+      // Task 78 — miroir EN de la FUSION (« Your risk: … / What helps: … »).
       V1:
-        "Here is the main risk in a relationship: your calm becomes so silent that the other no longer knows where they stand — the proofs nobody gives end up looking like forgetting.\n\nWhat helps: say out loud what is obvious to you. An “I am good”, an “I am staying”, a look back at what you have built. What you live peacefully, the other needs to hear to live it the same way.",
+        "Your risk: your calm becomes so silent that the other no longer knows where they stand — the proofs nobody gives end up looking like forgetting.\n\nWhat helps: say out loud what is obvious to you. An “I am good”, an “I am staying”, a look back at what you have built. What you live peacefully, the other needs to hear to live it the same way.",
       V2:
-        "Here is the main risk in a relationship: an antenna so stretched toward the other that their silence becomes an event — you question, you check, you wait for a sign that doesn't come.\n\nWhat helps: ask clearly rather than decode. “I need to hear that everything is fine” is a strength: it is the asking that soothes, not the guessed answer.",
+        "Your risk: your antenna moves the bond forward on assumptions — you question, you check, you wait for a sign that doesn't come, and some partners end up feeling watched.\n\nWhat helps: ask clearly rather than decode. “I need to hear that everything is fine” is a strength: it is the asking that soothes, not the guessed answer.",
       V3:
-        "Here is the main risk in a relationship: pauses taken in silence that the other lives as a departure — your need for air is legitimate, their uncertainty too.\n\nWhat helps: announce the movement before making it. “I'm taking some air, I'll be back.” The door stays open while you breathe — and the other stops counting the minutes.",
+        "Your risk: pauses taken in silence that the other lives as a departure — your need for air is legitimate, their uncertainty too.\n\nWhat helps: announce the movement before making it. “I'm taking some air, I'll be back.” The door stays open while you breathe — and the other stops counting the minutes.",
       V4:
-        "Here is the main risk in a relationship: two speeds that the other lives as contradictory signals — everything, then air, then everything — without knowing which version of you will come back.\n\nWhat helps: name your rhythm once and for all. “When I pull away, it isn't the end: it's my rhythm.” One sentence said early turns a misunderstanding into known ground.",
+        "Your risk: two speeds that the other lives as contradictory signals — everything, then air, then everything — without knowing which version of you will come back.\n\nWhat helps: name your rhythm once and for all. “When I pull away, it isn't the end: it's my rhythm.” One sentence said early turns a misunderstanding into known ground.",
       V5:
-        "Here is the main risk in a relationship: an adaptation so fluid that your own wants fall behind the other's — and over time, you no longer know what you yourself want.\n\nWhat helps: choose out loud, from time to time. The restaurant, the weekend, the film. Your suppleness is worth even more when it starts from a visible center — and the other likes to know what YOU want, you.",
+        "Your risk: an adaptation so fluid that your own wants fall behind the other's — and over time, you no longer know what you yourself want.\n\nWhat helps: choose out loud, from time to time. The restaurant, the weekend, the film. Your suppleness is worth even more when it starts from a visible center — and the other likes to know what YOU want, you.",
     },
     suite: {
       titre: "Your way of loving is set.",

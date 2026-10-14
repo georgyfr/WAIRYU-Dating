@@ -8,8 +8,10 @@
  * quête. »
  *
  * Contrat :
- *  - UNE note (1-5) suffit — n'importe laquelle ouvre la suite ; la note ne
- *    change RIEN aux résultats (aucun scorer ne la lit — jamais).
+ *  - UNE réponse aux trois choix (mappée 5/3/1) — la note ne change RIEN aux
+ *    résultats (aucun scorer ne la lit — jamais).
+ *  - Task 78 : la suite n'est plus bloquée — un lien « Passer » ouvre la
+ *    suite sans note (marqueur local, jamais envoyé au serveur).
  *  - Un commentaire facultatif (500 caractères max).
  *  - Stockée localement (localStorage « wairyu.satisfaction ») ET copiée vers
  *    POST /api/satisfaction (fire-and-forget : l'avis ne doit jamais bloquer
@@ -39,18 +41,56 @@ const CLE_STOCKAGE = 'wairyu.satisfaction';
  *  TOUTES les quêtes (Task 73, retour fondateur). */
 export const QUETES_AVEC_AVIS: ReadonlySet<string> = new Set(QUETE_IDS);
 
-/** Les cinq niveaux de la barre — libellés simples, non jugés. */
-export const NIVEAUX_AVIS: readonly { valeur: 1 | 2 | 3 | 4 | 5; cle: string }[] = [
-  { valeur: 1, cle: 'Pas du tout' },
-  { valeur: 2, cle: 'Un peu' },
-  { valeur: 3, cle: 'Moyennement' },
-  { valeur: 4, cle: 'Oui' },
-  { valeur: 5, cle: 'Tout à fait' },
+/** Les trois choix de la barre — Task 78 (le fondateur a préféré la
+ *  suggestion qui corrige la page) : l'échelle à 5 niveaux ne ressemblait pas
+ *  aux réponses de la quête ; les trois choix reprennent les mêmes mots que
+ *  le moteur de résultats, ce qui permet de savoir quels paragraphes ne
+ *  conviennent pas. Mappés sur les valeurs 5/3/1 de l'échelle 1-5 (la table
+ *  D1 et les avis déjà envoyés restent compatibles). */
+export const CHOIX_AVIS: readonly { valeur: AvisSatisfaction['note']; cle: string }[] = [
+  { valeur: 5, cle: 'Oui, tout à fait' },
+  { valeur: 3, cle: 'En partie' },
+  { valeur: 1, cle: 'Pas vraiment' },
 ];
 
 /** Garde-fou de forme : 1|2|3|4|5 exactement (jamais « 0 truthy » ni texte). */
 function estNote(val: unknown): val is AvisSatisfaction['note'] {
   return val === 1 || val === 2 || val === 3 || val === 4 || val === 5;
+}
+
+/** Clé localStorage du marqueur « passé » — un objet { [queteId]: true }. */
+const CLE_PASSE = 'wairyu.satisfaction.passe';
+
+/** Task 78 — la suite n'est plus BLOQUÉE par l'avis (suggestion préférée du
+ *  fondateur : « ne pas bloquer la suite du voyage tant que la personne n'a
+ *  pas répondu : un lien Passer suffit »). Le marqueur est local uniquement —
+ *  rien n'est envoyé au serveur (une absence d'avis n'est pas un avis). */
+export function lireAvisPasse(queteId: string): boolean {
+  try {
+    const brut = window.localStorage.getItem(CLE_PASSE);
+    if (!brut) return false;
+    const tout = JSON.parse(brut) as unknown;
+    if (!tout || typeof tout !== 'object' || Array.isArray(tout)) return false;
+    return Boolean((tout as Record<string, unknown>)[queteId]);
+  } catch {
+    return false;
+  }
+}
+
+/** Marque la quête « passée » (la gate cesse de ramener au champ d'avis). */
+export function marquerAvisPasse(queteId: string): void {
+  try {
+    const brut = window.localStorage.getItem(CLE_PASSE);
+    const parse = brut ? (JSON.parse(brut) as unknown) : null;
+    const tout: Record<string, boolean> =
+      parse && typeof parse === 'object' && !Array.isArray(parse)
+        ? { ...(parse as Record<string, boolean>) }
+        : {};
+    tout[queteId] = true;
+    window.localStorage.setItem(CLE_PASSE, JSON.stringify(tout));
+  } catch {
+    /* stockage indisponible — la gate se rouvrira à la prochaine visite */
+  }
 }
 
 /** Lit l'avis d'une quête — null si absent ou corrompu (jamais d'exception). */

@@ -377,11 +377,14 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
         key: 'A',
         // Task 32 (critique fondateur §8) : « bienveillance » à 38 % se lit
         // « peu bienveillant » — l'axe réel est la confiance accordée.
-        // Task 74 (retour fondateur) : les items de l'axe parlent de franchise
-        // et de générosité, pas de confiance — le nom devient « Ta franchise
-        // bienveillante » (proposition du fondateur). sousLigne et lecture
-        // inchangées ; le scoring, lui, ne bouge jamais.
-        nom: 'Ta franchise bienveillante',
+        // Task 74 : renommée « Ta franchise bienveillante » (proposition).
+        // Task 78 (le fondateur PRÉFÈRE la suggestion qui corrige la page) :
+        // retour au nom simple « Ta bienveillance » — les deux facettes
+        // (générosité / franchise) sont DITES ENSEMBLE dans le texte de la
+        // carte (pont « généreux et franc »), le moteur ne doit pas noyer la
+        // dimension dans le nom. sousLigne et lecture inchangées ; le
+        // scoring, lui, ne bouge jamais.
+        nom: 'Ta bienveillance',
         sousLigne: 'le lien, la confiance, la franchise',
         genre: 'f',
         lecture:
@@ -404,27 +407,30 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
       // « Ton garde-fou : / Vigilance : / Ta piste : » disparaît au profit
       // du « Petit pas : » du fondateur.
       O: {
-        fort: 'Le nouveau t\'attire : des idées, des lieux, des rencontres différentes. Tu explores, et tu comprends facilement le point de vue des autres. Petit pas : garde au moins un repère stable (une habitude, un lieu, une personne) pour ne pas t\'éparpiller.',
+        // Task 78 — le Petit pas de l'ouverture reprend le mot du fondateur
+        // (suggestion préférée) : « garde un repère stable » (l'« au moins »
+        // disparaît). Le corps reste le repli du cas tout-milieu.
+        fort: 'Le nouveau t\'attire : des idées, des lieux, des rencontres différentes. Tu explores, et tu comprends facilement le point de vue des autres. Petit pas : garde un repère stable (une habitude, un lieu, une personne) pour ne pas t\'éparpiller.',
         equilibre: 'Tu aimes le nouveau, sans courir après lui : tu explores quand ça vaut la peine, et tu restes quand ça compte. Petit pas : de temps en temps, ose l\'inconnu juste pour voir ce qu\'il fait en toi.',
         doux: 'Tu aimes ce qui dure : les mêmes visages, les mêmes repères, les choses qu\'on connaît par cœur. Ce n\'est pas de la fermeture : c\'est de la constance. Petit pas : une petite nouveauté par mois, choisie par toi, suffit à garder la porte entrouverte.',
       },
       C: {
         fort: 'Ce que tu promets, tu le tiens. Tu aimes quand les choses sont en ordre, prévues, finies — et les gens te confient ce qui compte. Petit pas : quand l\'imprévu arrive, laisse-lui une place sans te le vivre comme un manquement.',
-        equilibre: 'Tu organises l\'essentiel et tu laisses le reste vivre. Tes journées ont une structure, sans être rigides. Petit pas : pour les grosses échéances, un peu de cadre te rendra service.',
+        equilibre: 'Tu organises l\'essentiel et tu laisses le reste vivre. Tes journées ont une structure, sans être rigides. Petit pas : pour les grosses échéances, fixe-toi une étape au milieu.',
         doux: 'Tu préfères improviser : tu t\'organises quand c\'est obligatoire, pas par plaisir. Ça marche, jusqu\'au jour où tout arrive en même temps. Petit pas : un rendez-vous avec toi-même par semaine — dix minutes, une liste — change la tension du reste.',
       },
       E: {
-        fort: 'Les autres te donnent de l\'énergie. Tu lances les conversations et tu mets l\'ambiance sans effort. Petit pas : garde aussi des moments calmes rien que pour toi : c\'est ce qui rend ton énergie durable.',
+        fort: 'Les autres te donnent de l\'énergie. Tu lances les conversations et tu mets l\'ambiance sans effort. Petit pas : garde aussi des moments calmes pour toi : ils rendent ton énergie durable.',
         equilibre: 'Tu es sociable quand ça a du sens, et silencieux quand il le faut. Les grands groupes t\'amusent, les tête-à-tête te nourrissent. Petit pas : repère ce dont tu as besoin après une longue journée de monde.',
         doux: 'Le calme te reconstruit : peu de gens, mais des vrais. Tu préfères écouter que remplir le silence — et ceux qui te connaissent savent la valeur de ce que tu dis. Petit pas : oser un geste spontané de temps en temps ouvre des portes que l\'attente ne verrait pas.',
       },
       A: {
-        fort: 'Pour toi, la relation passe avant le fait d\'avoir raison. Tu écoutes, tu attends avant de juger, tu donns sans compter. Petit pas : dire clairement non est aussi un cadeau, car ça rend tes oui plus vrais.',
+        fort: 'Pour toi, la relation passe avant le fait d\'avoir raison. Tu écoutes, tu attends avant de juger, tu donns sans compter. Petit pas : une franchise dite avec douceur se reçoit mieux, surtout avec ceux que tu aimes.',
         equilibre: 'Tu donnes beaucoup, et tu sais poser des limites : tu ne te laisses pas marcher dessus. Petit pas : garde l\'œil sur les personnes avec qui tu te forces à être doux.',
         doux: 'La confiance se mérite chez toi, et tu as de bonnes raisons d\'avoir appris ça. Petit pas : teste la confiance par petites touches plutôt que d\'attendre une certitude totale.',
       },
       S: {
-        fort: 'Quand les vagues arrivent, tu restes debout. Tu retrouves vite ton calme, et les autres s\'appuient sur toi, souvent sans que tu le dises. Petit pas : ta stabilité n\'est pas une armure : tu as le droit de laisser voir ce qui te remue.',
+        fort: 'Quand les vagues arrivent, tu restes debout. Tu retrouves vite ton calme, et les autres s\'appuient sur toi, souvent sans que tu le dises. Petit pas : ta stabilité n\'est pas une armure : tu as le droit de montrer ce qui te remue.',
         equilibre: 'Tu as des jours calmes et des jours de tempête — c\'est humain, et c\'est ton rythme. Tu connais déjà ce qui t\'apaise. Petit pas : fais-le assez tôt, avant que la fatigue ne décide pour toi.',
         doux: 'Tu ressens fort et longtemps — les remarques, les attentes, les scénarios. Ce n\'est pas une faiblesse : c\'est une antenne fine. Petit pas : des gestes simples et répétables — un souffle, une marche, une note écrite — raccourcissent le retour au calme.',
       },
@@ -439,28 +445,28 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     commentLire:
       'Les cinq barres viennent de TES réponses, à l\'instant. Chacune va de 0 à 100 : plus la barre est pleine, plus tes réponses penchent de ce côté — et rien d\'autre. Ce ne sont ni des notes, ni des cases : c\'est un instantané, celui de la personne qui a répondu aujourd\'hui. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi — relis-les comme un portrait qui parle, pas comme un bulletin.',
     ombreRelationnel: {
-      // Task 74 — V1 : TEXTE VERBATIM DU FONDATEUR, en deux paragraphes
-      // (séparés par \n\n — l'écran et le PDF rendent un paragraphe chacun).
-      // Task 77 — option ombre tranchée (le fondateur « je te laisse le choix »)
-      // : V2-V7 passent au MÊME CADRE 2 ¶ que sa V1 — « Voici le risque
-      // principal en relation : … » puis « Ce qui aide : … ». La formule
-      // atténuante « ta zone d'ombre peut donner » et l'écriture inclusive
-      // ·e/·se disparaissent (choix masculin-neutre Task 74) ; la substance de
-      // chaque variante est conservée. 1.2 suit déjà ce cadre (Task 76).
+      // Task 78 — FUSION OMBRE → « EN COUPLE » (le fondateur a préféré la
+      // suggestion qui corrige la page : « le même risque est dit trois
+      // fois… je fusionne la zone d'ombre dans En couple »). Le champ ne
+      // porte plus que le couple « Ton risque : … / Ce qui aide : … » (2 ¶,
+      // séparateur \n\n) — rendu SOUS la section « En couple », la section
+      // « Ta zone d'ombre en relation » disparaît de la page (quêtes
+      // QUETES_FUSION_OMBRE). V1 = la maquette du fondateur au mot près ; les
+      // autres suivent le même moule, la substance conservée.
       V1:
-        'Voici le risque principal en relation : tu lances un projet à deux avec enthousiasme, puis une nouvelle idée arrive et prend toute la place. L\'autre peut alors se demander si ça comptait vraiment pour toi, ou si seul le projet t\'enthousiasmait.\n\nCe qui aide : dire à voix haute quand une chose continue de compter pour toi, même si tu es déjà passé à autre chose. Un retour sur ce que vous avez commencé, un petit rappel, une promesse tenue. Ainsi, l\'autre n\'a plus à courir derrière tes envies : il sait que tu restes là.',
+        'Ton risque : lancer un projet à deux avec enthousiasme, puis qu\'une nouvelle idée prenne toute la place. L\'autre peut alors se demander si ça comptait vraiment pour toi.\n\nCe qui aide : dire à voix haute ce qui continue de compter pour toi, même quand tu es déjà ailleurs. Un retour sur ce que vous avez commencé, une promesse tenue. Et demande de temps en temps à quelle vitesse l\'autre a envie d\'avancer.',
       V2:
-        'Voici le risque principal en relation : tout est en ordre chez toi, et l\'autre finit par se sentir noté — chaque chose mal posée devient un dossier. Un imprévu dérègle le plan, et tu t\'accuses en premier, même quand tout ne dépendait pas de toi.\n\nCe qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à sa façon de temps en temps, sans garder la note. Quand l\'autre voit que sa façon de faire a sa place chez toi, ta solidité cesse de peser : elle porte.',
+        'Ton risque : tout est en ordre chez toi, et l\'autre finit par se sentir noté — chaque chose mal posée devient un dossier.\n\nCe qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à sa façon de temps en temps, sans garder la note. Quand l\'autre voit que sa façon de faire a sa place chez toi, ta solidité cesse de peser : elle porte.',
       V3:
-        'Voici le risque principal en relation : les silences te pèsent, alors tu les remplis. L\'autre peut confondre ta vitesse avec une indisponibilité à ce qui est lent — et se demander si tu es vraiment là quand rien ne bouge.\n\nCe qui aide : choisir une personne et un moment où tu restes sans remplir. Le silence choisi n\'est pas une absence : c\'est là que le lien descend d\'un étage, et que l\'autre découvre qu\'il n\'a pas besoin d\'animer pour t\'intéresser.',
+        'Ton risque : les silences te pèsent, alors tu les remplis. L\'autre peut confondre ta vitesse avec une indisponibilité à ce qui est lent — et se demander si tu es vraiment là quand rien ne bouge.\n\nCe qui aide : choisir une personne et un moment où tu restes sans remplir. Le silence choisi n\'est pas une absence : c\'est là que le lien descend d\'un étage. Et propose aussi des moments calmes, à deux, sans fond sonore.',
       V4:
-        'Voici le risque principal en relation : ta patience devient une demeure. Tu restes là où d\'autres seraient déjà partis, et le temps investi finit par peser plus lourd que la réalité. Pendant ce temps, tes propres besoins passent en dernier — et l\'autre ne le voit même pas.\n\nCe qui aide : un point régulier avec toi-même : « est-ce que je reste parce que c\'est bon, ou parce que je sais rester ? » Et dire à voix haute ce que toi tu portes, avant que ça pèse. La réponse honnête protège ton bien le plus précieux : ta présence.',
+        'Ton risque : ta patience devient une demeure. Tu restes là où d\'autres seraient déjà partis, et tes propres besoins passent en dernier — sans que l\'autre le voie.\n\nCe qui aide : un point régulier avec toi-même — « est-ce que je reste parce que c\'est bon, ou parce que je sais rester ? » Et dire à voix haute ce que toi tu portes, avant que ça pèse.',
       V5:
-        'Voici le risque principal en relation : la vague monte, elle te traverse en entier, et emporte la conversation. L\'autre peut avoir peur de la tempête sans savoir qu\'elle passe — et se souvenir du ton plus longtemps que du fond.\n\nCe qui aide : prévenir quand tu la sens monter — « ce n\'est pas toi, c\'est la vague ». Quatre mots qui changent tout, et un retour au calme que l\'autre apprend à ne plus redouter, parce qu\'il sait désormais qu\'il revient.',
+        'Ton risque : la vague monte, elle emporte la conversation. L\'autre peut avoir peur de la tempête sans savoir qu\'elle passe — et se souvenir du ton plus longtemps que du fond.\n\nCe qui aide : prévenir quand tu la sens monter — « ce n\'est pas toi, c\'est la vague ». Quatre mots qui changent tout, et un retour au calme que l\'autre apprend à ne plus redouter, parce qu\'il sait désormais qu\'il revient.',
       V6:
-        'Voici le risque principal en relation : ton monde intérieur est si confortable que l\'autre frappe longtemps sans savoir s\'il est invité. Ton silence peut se lire comme une distance — alors que dedans, tout est vivant.\n\nCe qui aide : ouvrir par petites portes. Partager un morceau de ton monde en premier, même maladroitement. Pour qui t\'aime, c\'est une invitation que cette personne attend peut-être depuis longtemps — et qu\'elle n\'oserait pas demander.',
+        'Ton risque : ton monde intérieur est si confortable que l\'autre frappe longtemps sans savoir s\'il est invité. Ton silence peut se lire comme une distance — alors que dedans, tout est vivant.\n\nCe qui aide : ouvrir par petites portes. Partager un morceau de ton monde en premier, même maladroitement. Pour qui t\'aime, c\'est une invitation que cette personne attend peut-être depuis longtemps — et qu\'elle n\'oserait pas demander.',
       V7:
-        'Voici le risque principal en relation : ton adaptation est si large que l\'autre ne sait parfois plus ce que toi tu veux. Tes désirs propres arrivent en deuxième — et l\'autre se retrouve à décider seul, sans le savoir.\n\nCe qui aide : prendre position à voix haute, une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, mais personne n\'aime deviner à l\'aveugle.',
+        'Ton risque : ton adaptation est si large que l\'autre ne sait parfois plus ce que toi tu veux. Tes désirs propres arrivent en deuxième — et l\'autre se retrouve à décider seul, sans le savoir.\n\nCe qui aide : prendre position à voix haute, une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, mais personne n\'aime deviner à l\'aveugle.',
     },
     suivante: '1.2',
     suite: {
@@ -542,19 +548,20 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     commentLire:
       'Deux barres, deux mouvements de ton cœur : le besoin de réassurance et le besoin d\'espace. Chacune va de 0 à 100, tirée de tes réponses d\'aujourd\'hui — plus elle est pleine, plus tes réponses penchent de ce côté. Elles ne s\'opposent pas : elles dansent ensemble, et c\'est leur équilibre qui dessine ta façon d\'aimer. Chaque barre est suivie de ce qu\'elle regarde et de ce qu\'elle dit de toi.',
     ombreRelationnel: {
-      // Task 76 — NOUVELLE VOIX : le cadre 2 paragraphes de la V1 1.1 du
-      // fondateur (« Voici le risque principal en relation : … » + « Ce qui
-      // aide : … », séparés par \n\n — l'écran et le PDF rendent un ¶ chacun).
+      // Task 78 — FUSION OMBRE → « EN COUPLE » (même cadre que 1.1 : « Ton
+      // risque : … / Ce qui aide : … », rendu sous la section « En couple »).
+      // La substance de chaque variante (Task 76) est conservée ; le geste du
+      // couple (« Prends l'habitude de … ») vit dans « Ce qui aide ».
       V1:
-        'Voici le risque principal en relation : ton calme devient si silencieux que l\'autre ne sait plus où il en est — les preuves qu\'on ne donne plus finissent par ressembler à de l\'oubli.\n\nCe qui aide : dire à voix haute ce qui est évident pour toi. Un « je suis bien », un « je reste », un retour sur ce que vous avez construit. Ce que tu vis tranquillement, l\'autre a besoin de l\'entendre pour le vivre pareil.',
+        'Ton risque : ton calme devient si silencieux que l\'autre ne sait plus où il en est — les preuves qu\'on ne donne plus finissent par ressembler à de l\'oubli.\n\nCe qui aide : dire à voix haute ce qui est évident pour toi. Un « je suis bien », un « je reste », un retour sur ce que vous avez construit. Ce que tu vis tranquillement, l\'autre a besoin de l\'entendre pour le vivre pareil.',
       V2:
-        'Voici le risque principal en relation : une antenne si tendue vers l\'autre que son silence devient un événement — tu interroges, tu vérifies, tu attends un signe qui n\'arrive pas.\n\nCe qui aide : demander clairement plutôt que décoder. « J\'ai besoin d\'entendre que tout va bien » est une force : c\'est la demande qui apaise, pas la réponse devinée.',
+        'Ton risque : ton antenne fait avancer le lien sur des hypothèses — tu interroges, tu vérifies, tu attends un signe qui n\'arrive pas, et certains partenaires se sentent surveillés.\n\nCe qui aide : demander clairement plutôt que décoder. « J\'ai besoin d\'entendre que tout va bien » est une force : c\'est la demande qui apaise, pas la réponse devinée.',
       V3:
-        'Voici le risque principal en relation : des pauses prises en silence que l\'autre vit comme un départ — ton besoin d\'air est légitime, son incertitude aussi.\n\nCe qui aide : annoncer le mouvement avant de le faire. « Je prends l\'air, je reviens. » La porte reste ouverte pendant que tu respires — et l\'autre cesse de compter les minutes.',
+        'Ton risque : des pauses prises en silence que l\'autre vit comme un départ — ton besoin d\'air est légitime, son incertitude aussi.\n\nCe qui aide : annoncer le mouvement avant de le faire. « Je prends l\'air, je reviens. » La porte reste ouverte pendant que tu respires — et l\'autre cesse de compter les minutes.',
       V4:
-        'Voici le risque principal en relation : deux vitesses que l\'autre vit comme des signaux contradictoires — tout, puis de l\'air, puis tout — sans savoir quelle version de toi va revenir.\n\nCe qui aide : nommer ton rythme une bonne fois. « Quand je m\'éloigne, ce n\'est pas la fin : c\'est mon rythme. » Une phrase dite tôt transforme un malentendu en terrain connu.',
+        'Ton risque : deux vitesses que l\'autre vit comme des signaux contradictoires — tout, puis de l\'air, puis tout — sans savoir quelle version de toi va revenir.\n\nCe qui aide : nommer ton rythme une bonne fois. « Quand je m\'éloigne, ce n\'est pas la fin : c\'est mon rythme. » Une phrase dite tôt transforme un malentendu en terrain connu.',
       V5:
-        'Voici le risque principal en relation : une adaptation si fluide que tes envies propres passent derrière celles de l\'autre — et qu\'à force, tu ne sais plus toi-même ce que tu veux.\n\nCe qui aide : choisir à voix haute, de temps en temps. Le restaurant, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre visible — et l\'autre aime savoir ce que TU veux, toi.',
+        'Ton risque : une adaptation si fluide que tes envies propres passent derrière celles de l\'autre — et qu\'à force, tu ne sais plus toi-même ce que tu veux.\n\nCe qui aide : choisir à voix haute, de temps en temps. Le restaurant, le week-end, le film. Ta souplesse vaut encore plus quand elle part d\'un centre visible — et l\'autre aime savoir ce que TU veux, toi.',
     },
     suivante: '1.3',
     suite: {
@@ -1317,13 +1324,30 @@ export function palierDe(pct: number): Palier {
   return pct >= 0.65 ? 'fort' : pct >= 0.4 ? 'equilibre' : 'doux';
 }
 
+/** Les quêtes où la zone d'ombre relationnelle est FONDUE dans « En couple »
+ *  (Task 78 — le fondateur a préféré la suggestion : « le même risque est dit
+ *  trois fois… je fusionne la zone d'ombre dans En couple »). Pour ces quêtes,
+ *  ombreRelationnel porte « Ton risque : … / Ce qui aide : … » et la section
+ *  séparée « Ta zone d'ombre en relation » n'est pas rendue. */
+export const QUETES_FUSION_OMBRE: ReadonlySet<string> = new Set(['1.1', '1.2']);
+
 /** Le libellé de palier, accordé au genre du nom de la tendance — format
  *  fondateur Task 35 : « Ton ouverture — 78/100 (très présente) ». Le
  *  qualitatif reste premier, le chiffre secondaire (leçon Task 32 : pas de
- *  « 78 % » qui pousse score → comparaison → classement). */
-export function labelPalier(palier: Palier, genre: 'f' | 'm'): string {
-  if (getLang() === 'en') return LABELS_PALIER_EN[palier] ?? palier;
-  if (palier === 'fort') return genre === 'f' ? 'très présente' : 'très présent';
+ *  « 78 % » qui pousse score → comparaison → classement).
+ *  Task 78 (maquette préférée du fondateur) : un cran plus fin — un barre
+ *  forte mais sous 70/100 se lit « présente » (la maquette : « 65/100 ·
+ *  présente » face à « 75/100 · très présente »). */
+export function labelPalier(palier: Palier, genre: 'f' | 'm', pct?: number): string {
+  const assezFort = typeof pct === 'number' ? pct >= 70 : true;
+  if (getLang() === 'en') {
+    if (palier === 'fort') return assezFort ? 'very strong' : 'present';
+    return LABELS_PALIER_EN[palier] ?? palier;
+  }
+  if (palier === 'fort') {
+    if (!assezFort) return genre === 'f' ? 'présente' : 'présent';
+    return genre === 'f' ? 'très présente' : 'très présent';
+  }
   if (palier === 'equilibre') return genre === 'f' ? 'équilibrée' : 'équilibré';
   return genre === 'f' ? 'plus discrète' : 'plus discret';
 }
@@ -1399,7 +1423,7 @@ export function construireApercuResultats(quete: QueteDef, reponses: Record<stri
       sousLigne: d.sousLigne,
       pct: Math.round(ratio * 100),
       palier,
-      palierLabel: labelPalier(palier, d.genre),
+      palierLabel: labelPalier(palier, d.genre, Math.round(ratio * 100)),
       texte: quete.accompagnement[d.key]?.[palier] ?? '',
       lecture: d.lecture,
     };

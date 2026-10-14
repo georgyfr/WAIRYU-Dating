@@ -44,6 +44,7 @@ import {
   mondeDeQuete,
   NOTA_BARRES,
   QUETES,
+  QUETES_FUSION_OMBRE,
   LIKERT,
   titreTendances,
   type IdQuete,
@@ -60,8 +61,20 @@ import { ancragesDeQuete } from '../lib/ancrage-likert';
 // (demande fondateur : « les réponses sont avérées vraies, effet barnum
 // minimisé ») — lecture seule du questionnaire, rien n'est modifié.
 import { sourcesDeQuete, type LigneSource } from '../lib/sources-sections';
-// Task 66 — la barre de satisfaction : la note du membre (1-5) ouvre la suite.
-import { QUETES_AVEC_AVIS, lireAvis, type AvisSatisfaction } from '../lib/satisfaction';
+// Task 78 — les ÉCHOS des tendances : les cartes citent ce que la personne a
+// VRAIMENT répondu (« ce que tu as répondu, ce que ça dit, un petit pas »), et
+// « Là où ça peut se compliquer » gagne sa ligne « Et tes réponses le disent »
+// — lecture seule, repli sur le texte de palier quand rien n'est tranché.
+import { texteTendanceDe, echoFreinesDe } from '../lib/echoes-tendances';
+// Task 66 — la barre de satisfaction : la réponse du membre ouvre la suite.
+// Task 78 — « Passer » : la suite n'est plus bloquée sans réponse.
+import {
+  QUETES_AVEC_AVIS,
+  lireAvis,
+  lireAvisPasse,
+  marquerAvisPasse,
+  type AvisSatisfaction,
+} from '../lib/satisfaction';
 import SatBarAvis from '../components/SatBarAvis';
 import { ECRAN_17, decode17 } from '../lib/quete-1-7';
 import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
@@ -415,6 +428,10 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const [avis, setAvis] = useState<AvisSatisfaction | null>(() => lireAvis(queteId));
   const [avisDemande, setAvisDemande] = useState<boolean>(false);
   const [defilerAvis, setDefilerAvis] = useState<boolean>(false);
+  // Task 78 — « Passer » : la quête peut être traversée sans réponse (marqueur
+  // local) ; l'action bloquée est retenue pour être exécutée après le passage.
+  const [avisPasse, setAvisPasse] = useState<boolean>(() => lireAvisPasse(queteId));
+  const actionBloqueeRef = useRef<null | 'suite' | 'carte' | 'home'>(null);
   const ancreAvisRef = useRef<HTMLDivElement | null>(null);
 
   const apercu = useMemo(
@@ -427,15 +444,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     [phase, queteId, etat.reponses],
   );
 
-  // Task 66 — la gate : pour les quêtes à avis, la suite ne s'ouvre qu'une
-  // fois la note envoyée — n'importe laquelle (jamais un seuil, jamais un
-  // filtre : le degré de satisfaction n'est PAS une donnée du moteur).
-  const gateAvis = QUETES_AVEC_AVIS.has(queteId) && !avis;
+  // Task 66 — la gate : pour les quêtes à avis, la suite ramène au champ —
+  // Task 78 : SANS bloquer (le lien « Passer » du champ ouvre la suite ; le
+  // marqueur local éteint la gate définitivement pour la quête). Jamais un
+  // seuil, jamais un filtre : le degré de satisfaction n'est PAS une donnée
+  // du moteur.
+  const gateAvis = QUETES_AVEC_AVIS.has(queteId) && !avis && !avisPasse;
 
-  /** Amène le champ de note à l'écran avec sa notice polie (v2 fondateur :
-   *  « il doit être redirigé vers le champ Envoyer ma note avec une petite
-   *  notice » — mots polis + le pourquoi de la note). */
-  const demanderAvis = useCallback(() => {
+  /** Amène le champ de réponse à l'écran avec sa notice polie, en retenant
+   *  l'action interrompue — « Passer » l'exécutera. */
+  const bloquerPourAvis = useCallback((action: 'suite' | 'carte' | 'home') => {
+    actionBloqueeRef.current = action;
     setAvisDemande(true);
     setDefilerAvis(true);
   }, []);
@@ -1432,27 +1451,54 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
     const carte = etat.carteId && quete.cartes[etat.carteId] ? quete.cartes[etat.carteId] : quete.cartes[quete.choisirVariante(quete.scorer(etat.reponses))];
     const arche = ARCHE[queteId][carte.id];
     const suivante = quete.suivante ? QUETES[quete.suivante] : null;
-    // Task 66 — la suite (CTA verbatim) est gated : sans note, on est ramené
-    // au champ « Envoyer ma note » avec sa notice polie.
+    // Task 66 — la suite est gated : sans réponse, retour au champ avec sa
+    // notice polie — Task 78 : l'action est RETENUE, « Passer » l'exécute.
     const allerLaSuite = () => {
       if (gateAvis) {
-        demanderAvis();
+        bloquerPourAvis(suivante ? 'suite' : 'home');
         return;
       }
       if (suivante) onAllerQuete(suivante.id);
       else onHome();
     };
     // Task 66 v2 — « Revenir à ma carte » (haut et bas de page) fait partie
-    // des actions bloquées : redirection vers le champ de note + notice.
+    // des actions bloquées : redirection vers le champ de réponse + notice.
     const revenirCarte = () => {
       if (gateAvis) {
-        demanderAvis();
+        bloquerPourAvis('carte');
         return;
       }
       setPhase('carte');
     };
+    // Task 78 — « Passer » : la réponse n'est plus obligatoire. Le marqueur
+    // local éteint la gate et l'action interrompue s'exécute tout de suite.
+    const passerAvis = () => {
+      marquerAvisPasse(queteId);
+      setAvisPasse(true);
+      setAvisDemande(false);
+      const action = actionBloqueeRef.current;
+      actionBloqueeRef.current = null;
+      if (action === 'suite' && suivante) onAllerQuete(suivante.id);
+      else if (action === 'home') onHome();
+      else if (action === 'carte') setPhase('carte');
+    };
     // Task 77 — les sources des champs de ce profil (mécanique, lecture seule).
     const sources = sourcesDeQuete(queteId, carte.id, etat.reponses);
+    // Task 78 — FUSION OMBRE → « EN COUPLE » : le « Ton risque / Ce qui aide »
+    // arrive sous le paragraphe couple, la section séparée disparaît (les
+    // sources des deux champs fusionnent, dédupliquées). L'écho des freines
+    // (« Et tes réponses le disent : … ») complète « Là où ça peut se
+    // compliquer » avec les réponses réelles.
+    const fusionOmbre = QUETES_FUSION_OMBRE.has(queteId);
+    const ombreParas = fusionOmbre
+      ? (typeof quete.ombreRelationnel[carte.id] === 'string'
+          ? (quete.ombreRelationnel[carte.id] as string).split('\n\n').filter((p) => p.trim().length > 0)
+          : [])
+      : [];
+    const sourcesCoupleFusion = fusionOmbre
+      ? [...sources.couple, ...sources.ombre.filter((l) => !sources.couple.some((c) => c.code === l.code))]
+      : sources.couple;
+    const echoFreines = echoFreinesDe(queteId, carte.id, etat.reponses);
     const nomDim = (k: string): string => quete.dims.find((d) => d.key === k)?.nom ?? k;
     const blocSources = (lignes: LigneSource[]) =>
       lignes.length === 0 ? null : (
@@ -1511,14 +1557,26 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
 
         <section className="q-sec q-profil-bloc" aria-label={tx('Là où ça peut se compliquer')}>
           <h3>{tx('Là où ça peut se compliquer')}</h3>
-          <p>{arche.freines}</p>
+          {/* Task 78 — l'écho des réponses (« Et tes réponses le disent : … »)
+              s'ajoute au texte : la preuve intégrée au propos, pas à part. */}
+          <p>
+            {arche.freines}
+            {echoFreines && <> {echoFreines}</>}
+          </p>
           {blocSources(sources.freines)}
         </section>
 
         <section className="q-sec q-profil-bloc" aria-label={tx('En couple')}>
           <h3>{tx('En couple')}</h3>
-          <p>{arche.couple}</p>
-          {blocSources(sources.couple)}
+          {/* Task 78 — FUSION : l'ouverture + « Ton risque : … » dans un
+              premier paragraphe, « Ce qui aide : … » dans le second — le même
+              risque n'est plus dit trois fois. */}
+          <p>
+            {arche.couple}
+            {ombreParas[0] && <> {ombreParas[0]}</>}
+          </p>
+          {ombreParas[1] && <p>{ombreParas[1]}</p>}
+          {blocSources(sourcesCoupleFusion)}
         </section>
 
         <section className="q-sec q-profil-bloc" aria-label={tx('Ce que ce profil te souffle')}>
@@ -1536,7 +1594,12 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             {titreTendances(apercu.bars.length)}
           </h3>
           <div className="q-det-bars">
-            {apercu.bars.map((b) => (
+            {apercu.bars.map((b) => {
+              // Task 78 — la carte cite ce que la personne a VRAIMENT répondu
+              // (« ce que tu as répondu, ce que ça dit, un petit pas ») ; le
+              // texte de palier reste le repli du cas tout-milieu.
+              const texteTendance = texteTendanceDe(queteId, b.key, etat.reponses, b.texte) ?? b.texte;
+              return (
               <div key={b.key} className="q-det-dim">
                 <div className="q-det-dim-head">
                   <span className="q-det-dim-nom">{b.nom}</span>
@@ -1550,55 +1613,61 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 <div className="q-bar" role="img" aria-label={`${b.nom} : ${b.pct} sur 100`}>
                   <span className="q-bar-fill" data-palier={b.palier} style={{ width: `${Math.max(b.pct, 2)}%` }} />
                 </div>
-                <p className="q-det-dim-texte">{b.texte}</p>
+                <p className="q-det-dim-texte">{texteTendance}</p>
                 {/* Task 65 — les réponses RÉELLES qui pèsent le plus dans le
                     chiffre : le membre vérifie lui-même sa tendance. Le sens
                     de chaque contribution est affiché (items inversés compris)
-                    et le titre s'assagit si la dim n'a que du milieu. */}
+                    et le titre s'assagit si la dim n'a que du milieu.
+                    Task 78 — repliées derrière « Voir mes réponses » : le bloc
+                    ouvert recouvrait le texte de la carte au-dessus. */}
                 {ancrages && (ancrages[b.key]?.length ?? 0) > 0 && (
-                  <div className="q-det-ancrage">
-                    {/* Task 74 (demande fondateur) — UN titre unique, plus
-                        simple : « Ce qui pèse dans ce score » ; chaque ligne
-                        lit « énoncé · réponse → fait monter/baisser la
-                        barre » (c'est plus simple que « pousse la barre
-                        vers le haut »). */}
-                    <p className="q-det-ancrage-titre">
-                      {tx('Ce qui pèse dans ce score')}
-                    </p>
-                    <ul>
-                      {ancrages[b.key].map((a) => (
-                        <li key={a.code}>
-                          <span className="q-det-ancrage-enonce">« {a.enonce} »</span>
-                          {' · '}
-                          <strong>{a.reponse}</strong>
-                          {a.sens === 'haut' && (
-                            <>
-                              {' → '}
-                              {tx('fait monter la barre')}
-                            </>
-                          )}
-                          {a.sens === 'bas' && (
-                            <>
-                              {' → '}
-                              {tx('fait baisser la barre')}
-                            </>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <details className="q-det-reponses">
+                    <summary>{tx('Voir mes réponses')}</summary>
+                    <div className="q-det-ancrage">
+                      {/* Task 74 (demande fondateur) — UN titre unique, plus
+                          simple : « Ce qui pèse dans ce score » ; chaque ligne
+                          lit « énoncé · réponse → fait monter/baisser la
+                          barre » (c'est plus simple que « pousse la barre
+                          vers le haut »). */}
+                      <p className="q-det-ancrage-titre">
+                        {tx('Ce qui pèse dans ce score')}
+                      </p>
+                      <ul>
+                        {ancrages[b.key].map((a) => (
+                          <li key={a.code}>
+                            <span className="q-det-ancrage-enonce">« {a.enonce} »</span>
+                            {' · '}
+                            <strong>{a.reponse}</strong>
+                            {a.sens === 'haut' && (
+                              <>
+                                {' → '}
+                                {tx('fait monter la barre')}
+                              </>
+                            )}
+                            {a.sens === 'bas' && (
+                              <>
+                                {' → '}
+                                {tx('fait baisser la barre')}
+                              </>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </details>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
           <p className="q-profil-nota">{NOTA_BARRES}</p>
         </section>
 
-        {/* Task 65 — LA ZONE D'OMBRE EN RELATION : le contenu par variante
-            (quete.ombreRelationnel, déjà écrit) n'était jamais rendu — c'est
-            la demande fondateur « très faible zone d'ombre ». Rendu seulement
-            quand le texte existe (quêtes exemptées : rien). */}
+        {/* Task 65 — LA ZONE D'OMBRE EN RELATION : rendue seulement quand le
+            texte existe ET que la quête n'est pas en fusion ombre → « En
+            couple » (Task 78 : le risque vit déjà dans la section couple). */}
         {(() => {
+          if (fusionOmbre) return null;
           const ombreRel = quete.ombreRelationnel[carte.id];
           if (typeof ombreRel !== 'string' || ombreRel.length === 0) return null;
           return (
@@ -1618,20 +1687,15 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
           );
         })()}
 
-        {/* Task 66 — TON AVIS COMTE : la barre de satisfaction. La note
-            (n'importe laquelle) ouvre la suite ; v2 fondateur : toute action
-            bloquée est redirigée ICI, et la notice polie — rendue au-dessus
-            du champ, toujours avec lui — explique pourquoi la note compte. */}
+        {/* Task 66 — TON AVIS COMPTE : la barre de satisfaction. Task 78 —
+            la suite n'est plus bloquée : la notice reste polie, le lien
+            « Passer » du champ exécute l'action interrompue. */}
         {QUETES_AVEC_AVIS.has(queteId) && (
           <div className="q-sat-ancre" ref={ancreAvisRef}>
             {gateAvis && avisDemande && (
               <aside className="q-sat-notice" role="status">
-                <strong>{tx("Cette action ne peut fonctionner qu'une fois ta note envoyée.")}</strong>
-                <p>
-                  {tx(
-                    'Merci de ta compréhension : ta note ne change rien à tes résultats, elle nous aide simplement à rendre chaque quête plus claire et plus utile. Une seule note suffit — elle ne prend qu\'un instant.',
-                  )}
-                </p>
+                <strong>{tx('Un instant — ton avis ouvre la suite.')}</strong>
+                <p>{tx('Il ne change rien à tes résultats. Tu peux aussi passer.')}</p>
               </aside>
             )}
             <SatBarAvis
@@ -1640,6 +1704,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 setAvis(a);
                 setAvisDemande(false);
               }}
+              onPasse={gateAvis ? passerAvis : undefined}
             />
           </div>
         )}
@@ -1695,21 +1760,22 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const suivante = quete.suivante ? QUETES[quete.suivante] : null;
   // Task 66 v2 — depuis la carte aussi, la suite est gated (retour fondateur :
   // « Retour à mon voyage » comme « Attaquer la quête suivante » amènent au
-  // champ de note, avec sa notice polie — la note ouvre la route ensuite).
-  const allerDetailsPourAvis = () => {
+  // champ de réponse, avec sa notice polie — Task 78 : « Passer » exécute
+  // l'action retenue).
+  const allerDetailsPourAvis = (action: 'suite' | 'home') => {
     setPhase('details');
-    demanderAvis();
+    bloquerPourAvis(action);
   };
   const quitterCarte = () => {
     if (gateAvis) {
-      allerDetailsPourAvis();
+      allerDetailsPourAvis('home');
       return;
     }
     onHome();
   };
   const attaquerSuite = () => {
     if (gateAvis) {
-      allerDetailsPourAvis();
+      allerDetailsPourAvis('suite');
       return;
     }
     if (suivante) onAllerQuete(suivante.id);
