@@ -1,0 +1,313 @@
+{
+ "package": "WTC-Q2-R1 (révision post-validation de WTC-Q2, commit 0c3aaab)",
+ "date": "2026-10-15",
+ "seed": 42,
+ "modifications_appliquees": {
+  "D-Q2-A": "gen() branche fqH/fqR : freq ~ Normal(fq, 0,5) borné [1;3], arrondi entier (T1 2,3/1,5 · T2 1,5/2,3 · T3 2,2/2,2 · T4 1,4/1,4) — pH/pR inchangés",
+  "D-Q2-B": "C5c reformulé en 3 règles (c1 SUPPRESSION · c2 MAINSLIBRES · c3 FALLTHROUGH) + 3 templates : SUPPRESSION_MASQUEE · MAINSLIBRES_EXPLIQUE · FALLTHROUGH_LEGER",
+  "D-Q2-C": "vides() corrigé dans le canonique (S-Q2-8 absorbé, sémantique identique)",
+  "D-Q2-D": "effectifs officiels 400 + 23 + 8 = 431 ; C2-FP recalculé sur les 400",
+  "D-Q2-E": "6 profils O7-NLP (4 classifiables confiance 0,80 · 2 sous seuil → NON-CLASSIFIABLE + force SILENCIEUSE) ; C3 étendu : 6/6 O7",
+  "D-Q2-F": "longitudinal() marqué NON TESTÉ (reporté WTC-SUIVI) — ne pénalise aucun critère"
+ },
+ "effectifs": {
+  "honnêtes": 400,
+  "piégés": 23,
+  "arêtes": 8,
+  "o7_nlp": 6,
+  "total": 437
+ },
+ "empreintes": {
+  "run1": "ab950c039a95bb3a371bd181bef5f14dc44448318ef94129adee5d099ec09a6a",
+  "run2": "ab950c039a95bb3a371bd181bef5f14dc44448318ef94129adee5d099ec09a6a",
+  "identiques": true
+ },
+ "criteres": {
+  "C1a": {
+   "detail": {
+    "T1_PERDRE": {
+     "n": 150,
+     "corrects": 119,
+     "taux": 0.7933
+    },
+    "T2_ETOUFFEE": {
+     "n": 100,
+     "corrects": 74,
+     "taux": 0.74
+    },
+    "T3_LESDEUX": {
+     "n": 50,
+     "corrects": 50,
+     "taux": 1.0
+    }
+   },
+   "global": 0.81,
+   "seuil": 0.82,
+   "pass": false,
+   "plafond_counts_les_deux": {
+    "T1_PERDRE": 0.05033364257812501,
+    "T2_ETOUFFEE": 0.014523355000000003,
+    "T3_LESDEUX": 0.45355824489550794
+   },
+   "note": "données corrigées fqH/fqR (D-Q2-A) ; le résidu théorique provient du chemin counts (cd ≥ 3 ∧ cp ≥ 2 → LES DEUX) : T1 ≈ 5,0 % · T2 ≈ 1,5 %"
+  },
+  "C1b": {
+   "t4_n": 100,
+   "t4_calmes": 0.85,
+   "t4_seuil": 0.8,
+   "t123_n": 300,
+   "fuite_t1t3": 0.0,
+   "fuite_seuil": 0.02,
+   "pass": true
+  },
+  "C1c": {
+   "detail": [
+    {
+     "arete": "E1_lesdeux_priorite",
+     "attendu": "LES DEUX",
+     "obtenu": "LES DEUX",
+     "palier": "🔴",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E2_perdre_pur",
+     "attendu": "PEUR DE PERDRE",
+     "obtenu": "PEUR DE PERDRE",
+     "palier": "🟠",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E3_suppression",
+     "attendu": "SIGNAL LÉGER NON NOMMÉ",
+     "obtenu": "SIGNAL LÉGER NON NOMMÉ",
+     "palier": "🟢",
+     "conv_index": 0.0,
+     "ok": true
+    },
+    {
+     "arete": "E4_lesdeux_counts",
+     "attendu": "LES DEUX",
+     "obtenu": "LES DEUX",
+     "palier": "🟠",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E5_alarme_sans_main",
+     "attendu": "ALARME SANS MAIN",
+     "obtenu": "ALARME SANS MAIN",
+     "palier": "🟢",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E6_zone_calme",
+     "attendu": "ZONE CALME",
+     "obtenu": "ZONE CALME",
+     "palier": "🟢",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E7_lesdeux_q1",
+     "attendu": "LES DEUX",
+     "obtenu": "LES DEUX",
+     "palier": "🟠",
+     "conv_index": 1.0,
+     "ok": true
+    },
+    {
+     "arete": "E8_palier_rouge",
+     "attendu": "palier == 🔴",
+     "obtenu": "ALARME SANS MAIN",
+     "palier": "🔴",
+     "conv_index": 0.0,
+     "ok": true
+    }
+   ],
+   "score": "8/8",
+   "pass": true
+  },
+  "C2": {
+   "sec_h5": "8/8",
+   "p_filtre": "5/5",
+   "effectif_FP": 400,
+   "faux_positifs_p_filtre_honnetes": [
+    "T3_LESDEUX-047"
+   ],
+   "faux_positifs_structurels_signal_sans_H5": [],
+   "taux_signal_par_groupe_honnetes": {
+    "T1_PERDRE": 0.4267,
+    "T2_ETOUFFEE": 0.07,
+    "T3_LESDEUX": 0.42,
+    "T4_CALME": 0.0
+   },
+   "note_definition_FP": "D-Q2-D : le FP est recalculé sur les 400 honnêtes (lecture (b) : p_filtre actif chez un honnête) ; lecture (a) structurelle (signal sans H5 coché) reportée à titre de contrôle — impossible par construction. Verdict sur (a) ET (b).",
+   "pass": false
+  },
+  "C3": {
+   "inc_simple": "6/6",
+   "inc_simple_ids": [
+    "P-INCS-01",
+    "P-INCS-02",
+    "P-INCS-03",
+    "P-INCS-04",
+    "P-INCS-05",
+    "P-INCS-06"
+   ],
+   "inc_double": "4/4",
+   "inc_double_ids": [
+    "P-INCD-01",
+    "P-INCD-02",
+    "P-INCD-03",
+    "P-INCD-04"
+   ],
+   "taux_honnetes_index_1": 0.94,
+   "seuil": 0.9,
+   "o7": "6/6",
+   "o7_detail": [
+    {
+     "profil": "O7-N01",
+     "regle": "confiance 0,80 ≥ 0,70 → catégorie routée == SÉCURISANT",
+     "confiance": 0.8,
+     "nlp_categorie": "SÉCURISANT",
+     "route": "SÉCURISANT",
+     "attendu": "SÉCURISANT",
+     "force": "SECURISANT",
+     "label": "ZONE CALME",
+     "palier": "🟢",
+     "ok": true
+    },
+    {
+     "profil": "O7-N02",
+     "regle": "confiance 0,80 ≥ 0,70 → catégorie routée == INVALIDATION",
+     "confiance": 0.8,
+     "nlp_categorie": "INVALIDATION",
+     "route": "INVALIDATION",
+     "attendu": "INVALIDATION",
+     "force": "SILENCIEUSE",
+     "label": "PEUR DE PERDRE",
+     "palier": "🟠",
+     "ok": true
+    },
+    {
+     "profil": "O7-N03",
+     "regle": "confiance 0,80 ≥ 0,70 → catégorie routée == MIXTE",
+     "confiance": 0.8,
+     "nlp_categorie": "MIXTE",
+     "route": "MIXTE",
+     "attendu": "MIXTE",
+     "force": "LUCIDITE",
+     "label": "LES DEUX",
+     "palier": "🟠",
+     "ok": true
+    },
+    {
+     "profil": "O7-N04",
+     "regle": "confiance 0,80 ≥ 0,70 → catégorie routée == COMPOSITE",
+     "confiance": 0.8,
+     "nlp_categorie": "COMPOSITE",
+     "route": "COMPOSITE",
+     "attendu": "COMPOSITE",
+     "force": "SILENCIEUSE",
+     "label": "PEUR D'ÊTRE ÉTOUFFÉE",
+     "palier": "🟠",
+     "ok": true
+    },
+    {
+     "profil": "O7-N05",
+     "regle": "confiance 0,62 < 0,70 → NON-CLASSIFIABLE + force SILENCIEUSE acceptée",
+     "confiance": 0.62,
+     "nlp_categorie": "INDÉTERMINÉ",
+     "route": "NON-CLASSIFIABLE",
+     "attendu": "NON-CLASSIFIABLE",
+     "force": "SILENCIEUSE",
+     "label": "ALARME SANS MAIN",
+     "palier": "🟢",
+     "ok": true
+    },
+    {
+     "profil": "O7-N06",
+     "regle": "confiance 0,55 < 0,70 → NON-CLASSIFIABLE + force SILENCIEUSE acceptée",
+     "confiance": 0.55,
+     "nlp_categorie": "AMBIGU",
+     "route": "NON-CLASSIFIABLE",
+     "attendu": "NON-CLASSIFIABLE",
+     "force": "SILENCIEUSE",
+     "label": "ALARME SANS MAIN",
+     "palier": "🟠",
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  "C5": {
+   "a_templates": {
+    "pass": true,
+    "score": "35/35",
+    "manquants": [],
+    "note": "D-Q2-B : 32 paires cause×cluster + 3 templates spéciaux (SUPPRESSION_MASQUEE · MAINSLIBRES_EXPLIQUE · FALLTHROUGH_LEGER) = 35"
+   },
+   "b_palier_recalcule": {
+    "total_calcules": 437,
+    "ecarts": [],
+    "pass": true,
+    "note": "effectifs officiels D-Q2-D : 431 sorties (400 honnêtes + 23 piégés + 8 arêtes) + 6 O7-NLP (D-Q2-E) = 437"
+   },
+   "c_regles": {
+    "c1_suppression": {
+     "effectif_supprimes": 35,
+     "violations": [],
+     "regle": "toute sortie d'index 0,00 porte une étiquette de chute (jamais d'OMBRE) — template SUPPRESSION_MASQUEE affiché",
+     "pass": true
+    },
+    "c2_mainslibres": {
+     "effectif_mainslibres": 27,
+     "violations_definition": [],
+     "verts_sur_ombre": 45,
+     "verts_ombre_mains_libres": 9,
+     "verts_ombre_alarme_calme": 36,
+     "verts_ombre_bande_ambree": 0,
+     "regle": "toute force MAINSLIBRES respecte la définition du moteur (profil ≠ RARES · somme < 0,30) — template MAINSLIBRES_EXPLIQUE affiché ; le paysage 🟢-OMBRE est reporté en donnée de continuité (mains libres somme < 0,30 · alarme calme à mains actives somme ≥ 0,60 · jamais dans la bande [0,30 ; 0,60[)",
+     "pass": true
+    },
+    "c3_fallthrough": {
+     "violations": [],
+     "regle": "routage exact des étiquettes de chute : ALARME SANS MAIN ⇔ i_alarm ≥ 5 · SIGNAL LÉGER NON NOMMÉ ⇔ i_alarm ≤ 4 — template FALLTHROUGH_LEGER affiché",
+     "pass": true
+    },
+    "continuite_q2": {
+     "zc_total": 87,
+     "zc_non_verts": [],
+     "verts_non_zc": 77,
+     "verts_non_zc_par_label": {
+      "PEUR DE PERDRE": 14,
+      "LES DEUX": 10,
+      "ALARME SANS MAIN": 11,
+      "PEUR D'ÊTRE ÉTOUFFÉE": 21,
+      "SIGNAL LÉGER NON NOMMÉ": 21
+     },
+     "note": "données de continuité avec le run initial (lectures historiques S-Q2-10) — ne constituent plus une règle"
+    }
+   },
+   "d_force": {
+    "forces_vides_ou_invalides": [],
+    "ombre_ou_calme_sans_force": [],
+    "pass": true
+   },
+   "pass": true
+  },
+  "C4": {
+   "empreinte_run1": "ab950c039a95bb3a371bd181bef5f14dc44448318ef94129adee5d099ec09a6a",
+   "empreinte_run2": "ab950c039a95bb3a371bd181bef5f14dc44448318ef94129adee5d099ec09a6a",
+   "identiques": true,
+   "pass": true,
+   "methode": "SHA-256 de la trame canonique JSON (profils + critères), ré-exécution intégrale du simulateur (exec frais)"
+  }
+ },
+ "bilan": "5/7",
+ "verdict": "À CORRIGER",
+ "note": 6
+}
