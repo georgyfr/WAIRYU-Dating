@@ -1,0 +1,220 @@
+{
+ "C1a": {
+  "detail": {
+   "T1_PERDRE": {
+    "n": 150,
+    "corrects": 100,
+    "taux": 0.6667
+   },
+   "T2_ETOUFFEE": {
+    "n": 100,
+    "corrects": 70,
+    "taux": 0.7
+   },
+   "T3_LESDEUX": {
+    "n": 50,
+    "corrects": 48,
+    "taux": 0.96
+   }
+  },
+  "global": 0.7267,
+  "seuil": 0.82,
+  "plafond_documente": 0.89,
+  "pass": false
+ },
+ "C1b": {
+  "t4_n": 100,
+  "t4_calmes": 0.92,
+  "t4_seuil": 0.8,
+  "t123_n": 300,
+  "fuite_t1t3": 0.0,
+  "fuite_seuil": 0.02,
+  "pass": true
+ },
+ "C1c": {
+  "detail": [
+   {
+    "arete": "E1_lesdeux_priorite",
+    "attendu": "LES DEUX",
+    "obtenu": "LES DEUX",
+    "palier": "🔴",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E2_perdre_pur",
+    "attendu": "PEUR DE PERDRE",
+    "obtenu": "PEUR DE PERDRE",
+    "palier": "🟠",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E3_suppression",
+    "attendu": "SIGNAL LÉGER NON NOMMÉ",
+    "obtenu": "SIGNAL LÉGER NON NOMMÉ",
+    "palier": "🟢",
+    "conv_index": 0.0,
+    "ok": true
+   },
+   {
+    "arete": "E4_lesdeux_counts",
+    "attendu": "LES DEUX",
+    "obtenu": "LES DEUX",
+    "palier": "🟠",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E5_alarme_sans_main",
+    "attendu": "ALARME SANS MAIN",
+    "obtenu": "ALARME SANS MAIN",
+    "palier": "🟢",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E6_zone_calme",
+    "attendu": "ZONE CALME",
+    "obtenu": "ZONE CALME",
+    "palier": "🟢",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E7_lesdeux_q1",
+    "attendu": "LES DEUX",
+    "obtenu": "LES DEUX",
+    "palier": "🟠",
+    "conv_index": 1.0,
+    "ok": true
+   },
+   {
+    "arete": "E8_palier_rouge",
+    "attendu": "palier == 🔴",
+    "obtenu": "ALARME SANS MAIN",
+    "palier": "🔴",
+    "conv_index": 0.0,
+    "ok": true
+   }
+  ],
+  "score": "8/8",
+  "pass": true
+ },
+ "C2": {
+  "sec_h5": "8/8",
+  "p_filtre": "5/5",
+  "faux_positifs_p_filtre_honnetes": [],
+  "faux_positifs_structurels_signal_sans_H5": [],
+  "taux_signal_par_groupe_honnetes": {
+   "T1_PERDRE": 0.38,
+   "T2_ETOUFFEE": 0.11,
+   "T3_LESDEUX": 0.38,
+   "T4_CALME": 0.0
+  },
+  "note_definition_FP": "la spec ne définit pas le FP ; deux lectures calculées : (a) structurel — signal sans H5 coché (impossible par construction) ; (b) exigeant — p_filtre actif chez un honnête. Verdict sur (a)+(b).",
+  "pass": true
+ },
+ "C3": {
+  "inc_simple": "6/6",
+  "inc_simple_ids": [
+   "P-INCS-01",
+   "P-INCS-02",
+   "P-INCS-03",
+   "P-INCS-04",
+   "P-INCS-05",
+   "P-INCS-06"
+  ],
+  "inc_double": "4/4",
+  "inc_double_ids": [
+   "P-INCD-01",
+   "P-INCD-02",
+   "P-INCD-03",
+   "P-INCD-04"
+  ],
+  "taux_honnetes_index_1": 0.9475,
+  "seuil": 0.9,
+  "pass": true
+ },
+ "C5": {
+  "a_templates": {
+   "pass": true,
+   "score": "32/32",
+   "manquants": []
+  },
+  "b_palier_recalcule": {
+   "total_calcules": 431,
+   "ecarts": [],
+   "pass": true,
+   "note_reference_spec": "la spec dit « 520 profils » (héritage Q1) ; effectif réel de ce run : 423 profils de simulation + 8 arêtes = 431 sorties — cf. S-Q2-2"
+  },
+  "c_zone_calme_vert": {
+   "zone_calme": 93,
+   "zc_non_verts": [
+    "T4_CALME-004",
+    "T4_CALME-053"
+   ],
+   "verts_non_zc": 56,
+   "verts_non_zc_par_label": {
+    "LES DEUX": 12,
+    "PEUR DE PERDRE": 10,
+    "ALARME SANS MAIN": 7,
+    "PEUR D'ÊTRE ÉTOUFFÉE": 15,
+    "SIGNAL LÉGER NON NOMMÉ": 12
+   },
+   "verts_sur_ombre": [
+    "T1_PERDRE-009",
+    "T1_PERDRE-014",
+    "T1_PERDRE-016",
+    "T1_PERDRE-017",
+    "T1_PERDRE-020",
+    "T1_PERDRE-026",
+    "T1_PERDRE-034",
+    "T1_PERDRE-062",
+    "T1_PERDRE-071",
+    "T1_PERDRE-114",
+    "T1_PERDRE-122",
+    "T1_PERDRE-130",
+    "T2_ETOUFFEE-017",
+    "T2_ETOUFFEE-020",
+    "T2_ETOUFFEE-033",
+    "T2_ETOUFFEE-034",
+    "T2_ETOUFFEE-045",
+    "T2_ETOUFFEE-046",
+    "T2_ETOUFFEE-053",
+    "T2_ETOUFFEE-057",
+    "T2_ETOUFFEE-065",
+    "T2_ETOUFFEE-067",
+    "T2_ETOUFFEE-071",
+    "T2_ETOUFFEE-072",
+    "T2_ETOUFFEE-073",
+    "T2_ETOUFFEE-074",
+    "T2_ETOUFFEE-079",
+    "T2_ETOUFFEE-086",
+    "T2_ETOUFFEE-098",
+    "T3_LESDEUX-009",
+    "T3_LESDEUX-032",
+    "T3_LESDEUX-035",
+    "T3_LESDEUX-048",
+    "P-INCD-01",
+    "P-INCD-02",
+    "P-INCD-03",
+    "P-INCD-04"
+   ],
+   "lecture_retenue": "c1 : tout ZONE CALME est 🟢 (100 %) ; c3 : aucun 🟢 porté par une étiquette d'OMBRE — la bijection stricte 🟢↔ZC est impossible par construction (E3/E5 : cf. S-Q2-3) ; c2 documentée à titre de donnée",
+   "pass": false
+  },
+  "d_force": {
+   "forces_vides_ou_invalides": [],
+   "ombre_ou_calme_sans_force": [],
+   "pass": true
+  },
+  "pass": false
+ },
+ "C4": {
+  "sha256_run1": "6a67ea5d93f54da544bf369960ea915c0eaf325c1b57b5bfac89af80851a1fd7",
+  "sha256_run2": "6a67ea5d93f54da544bf369960ea915c0eaf325c1b57b5bfac89af80851a1fd7",
+  "identique": true,
+  "pass": true
+ }
+}
