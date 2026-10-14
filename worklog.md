@@ -1816,3 +1816,44 @@ Stage Summary:
 - RÈGLE PRODUIT POSÉE (Task 80) : changer la QUESTION de l'avis re-questionne proprement — un avis posé sur une ancienne version de la question n'éteint jamais la question courante (marque de version en localStorage, D1 inchangée).
 - RAPPEL DE COMPORTEMENT (à dire au fondateur) : la bulle n'apparaît que sur les quêtes où la personne n'a NI répondu NI passé — s'il a déjà répondu/passé sur 1.1 (staging), c'est sur la SUIVANTE qu'il la verra.
 - En attente fondateur : (1) vérification en prod ; (2) décision sur l'item sommeil (signalé Task 78) ; (3) cadence pour 1.3+ ; (4) rotation des jetons (ils ont re-transité par le chat après le reset).
+---
+Task ID: 81
+Agent: orchestrateur (Z.ai Code)
+Task: Fondateur — inventaire complet des récoltes (chaque quête, chaque étape, chaque monde) pour revoir leur finalité dans la plateforme de rencontre. AUCUN code modifié (demande explicite).
+
+Work Log:
+- Lecture seule : lib/voyage.ts (11 mondes, 6 jalons, WORLD_DETAILS), lib/quetes.ts (registre 35 quêtes, sansCarte, formats), blocs CARTES des 35 modules quete-*.ts, lib/progression.ts (cartes vs écrans), lib/notifs.ts (fragment + sceau à la clôture d'un monde), components/InfoRecolte.tsx (registre des explications « à quoi ça sert dans les rencontres » — 8 types, Task 45).
+- Compilation : 35 quêtes jouables (M1-M7) → 30 quêtes produisent une carte (129 variantes au total), 5 sont des écrans de passage sans carte (1.7, 1.11, 2.8, 3.7, 4.3) ; 7 fragments + 7 sceaux à la clôture des mondes livrés ; 6 jalons (Carte → Miroir → Portrait de Monde → Portraits de Domaine → Portrait Intégral → Rencontre) ; 4.4 invisible par design ; M8-M11 promis, non jouables.
+- Liste hiérarchisée remise au fondateur dans le chat (aucun fichier produit, aucune modif code — honnêteté : lecture seule).
+
+Stage Summary:
+- INVENTAIRE REMIS : monde par monde, quête par quête, avec les noms verbatim des variantes de cartes et la nature de chaque récolte (carte/écran/badge/fragment/sceau/jalon).
+- CONSTAT CLÉ pour la revue du fondateur : le pop-up « à quoi ça sert dans les rencontres » existe DÉJÀ (InfoRecolte, Task 45) mais il est GÉNÉRIQUE PAR TYPE (carte, écran, fragment, sceau, pass, crédit) — aucune carte n'a encore de rôle matching SPÉCIFIQUE déclaré (filtre dur, accroche de conversation, révélateur de tension, partage social…). C'est le chantier que le fondateur ouvre.
+- En attente fondateur : décision sur la vocation de chaque récolte (le fondateur veut « les rendre puissants ») ; item sommeil (Task 78) toujours ouvert.
+---
+Task ID: 82
+Agent: orchestrateur (Z.ai Code)
+Task: Fondateur — avis critique sur deux propositions externes « économie des récoltes au service de la rencontre » (role_matching, vitrine, crédits, jalons-déblocages) et « suggestions Malife+ » (6 nouveaux types d'objets, matrice de compatibilité, 3 familles, gamification). Lecture seule, aucun code modifié.
+
+Work Log:
+- Analyse des deux propositions au regard de l'état réel : 8 types de gains existants (InfoRecolte générique par type), pass/crédits PRÊTS mais sans données (notifs.ts), scorers produisant des dims par quête (base d'une matrice), monétisation éteinte, M6/M7 badge 💎 informatif, 3.7/M8/M9 privés, PDF résultats gratuit aujourd'hui.
+- Avis remis dans le chat : ADOPTER (role_matching 5 rôles, vitrine 3 cartes, Duo de cartes, 1.11 → statut Prêt·e, fragments offerts « Lever un voile », 3 familles, indicateurs explicables sans pourcentage, distinction stricte pass/crédits, L'Éclat carte jointe, garde-fous §7) ; ADAPTER (filtres forts actifs dès complétion de 2.3/2.7 et PAS au Jalon 4 ; info-bulles par RÔLE et non par 129 cartes ; sceau ≠ anti-catfish ; badge culturel lié à M10 pas M5 ; météo 1.9 gratuite avec délai ; pas de streak quotidien) ; REPOUSSER/REFUSER (6 nouveaux types d'objets de la 2ᵉ proposition → mapper sur les 8 existants ; Pass Portrait payant — le portrait de soi jamais payant ; « Chemin inverse » priorité basse + consentement).
+- Réponses aux 6 décisions fondateur + séquence de build proposée (1. rôle_matching + familles + info-bulles par rôle → 2. indicateurs explicables sur dims + vitrine/clés → 3. crédits gagnés sans achat → 4. M10 → 5. Invisible/Événements).
+- Constat vocabulaire : les deux docs entrent en collision (Lanternes = dépense de crédits chez l'un, type d'objet chez l'autre ; Clés ≈ Cartes d'approche ; Sceaux de confiance vs Sceaux du monde) — proposer une glossaire unique / spec fusionnée sur demande.
+
+Stage Summary:
+- AVIS REMIS : la proposition 1 est le bon squelette (champ rôle + économie sur les 8 types existants) ; la proposition 2 apporte les meilleures garde-fous et la matrice explicative mais viole son propre conseil en créant 6 nouveaux types — fusion recommandée, pas addition.
+- CORRECTION DE FOND SIGNALEMENT : verrouiller les non-négociables (2.3) derrière le Jalon 4 ferait IGNORER les dealbreakers déclarés du membre au début du matching — filtres forts dès complétion de la quête.
+- Rien en production n'a changé (prod = 40e8f425) ; discussion design uniquement.
+---
+Task ID: 83
+Agent: orchestrateur (Z.ai Code)
+Task: Fondateur — « rédige la spec fusionnée unique (glossaire canonique + tableau carte-par-carte des rôles + copies des 5 info-bulles) ». DESIGN uniquement, aucun code modifié.
+
+Work Log:
+- Rédaction de docs/SPEC-ECONOMIE-RECOLTES.md (v1, brouillon à valider fondateur) : §0 dix décisions gravées (D1 filtres forts dès complétion, D2 portrait jamais payant, D3 info-bulles par rôle, D4 météo gratuite, D5 pas de streak, D6 crédits gagnés d'abord, D7 vocabulaire unique, D8 moteur sur dims + cartes en explication, D9 sceau ≠ anti-catfish, D10 badge culturel = M10) · §1 les 3 familles · §2 glossaire canonique (8 types existants + 13 usages/features + 5 passes + table des refus/fusions des collisions « Lanternes », « Cartes d'approche », « Sceaux de confiance », « Clé de révélation », « Jetons de proximité », « Chemin inverse ») · §3 les 5 rôles (filtre fort/souple, chimie du quotidien, accroche, après-match, état/jeu) · §4 tableau carte-par-carte des 30 cartes avec rôles + secondaires + comptage (5/4/10/4/6/1) + ladder jalons v1 + écrans (1.7/1.11/2.8/3.7/4.3/4.4) · §5 les 5 info-bulles FR+EN (intro/points/garde, interpolation {{carte}}) · §6 intangibles · §7 chantiers 1-5 + liste des [À VALIDER].
+- Docs uniquement : aucun fichier src touché, prod inchangée (40e8f425).
+
+Stage Summary:
+- SPEC FUSIONNÉE LIVRÉE : docs/SPEC-ECONOMIE-RECOLTES.md — un vocabulaire canonique, un rôle par carte, 5 copies de bulles prêtes à implanter dans InfoRecolte.
+- En attente fondateur : validation des [À VALIDER] (nom Lucioles, montants, ladder, rôles, copies) ; ensuite chantier 1 = champ role_matching + 3 familles + bulles par rôle.
