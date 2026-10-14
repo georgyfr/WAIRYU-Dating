@@ -1,0 +1,513 @@
+{
+  "C1": {
+    "aux_couverture_ci": {
+      "A": 0.962,
+      "B": 0.976
+    },
+    "aux_ponctuel": {
+      "A": 0.8,
+      "B": 0.794
+    },
+    "correspondances": 461,
+    "exactitude": 0.461,
+    "par_axe": {
+      "A": {
+        "correspondances": 233,
+        "exactitude": 0.466,
+        "total": 500
+      },
+      "B": {
+        "correspondances": 228,
+        "exactitude": 0.456,
+        "total": 500
+      }
+    },
+    "par_groupe": {
+      "G1": {
+        "A": {
+          "correspondances": 112,
+          "exactitude": 0.56,
+          "n": 200
+        },
+        "B": {
+          "correspondances": 109,
+          "exactitude": 0.545,
+          "n": 200
+        }
+      },
+      "G2": {
+        "A": {
+          "correspondances": 44,
+          "exactitude": 0.2933,
+          "n": 150
+        },
+        "B": {
+          "correspondances": 73,
+          "exactitude": 0.4867,
+          "n": 150
+        }
+      },
+      "G3": {
+        "A": {
+          "correspondances": 65,
+          "exactitude": 0.65,
+          "n": 100
+        },
+        "B": {
+          "correspondances": 31,
+          "exactitude": 0.31,
+          "n": 100
+        }
+      },
+      "G4": {
+        "A": {
+          "correspondances": 12,
+          "exactitude": 0.24,
+          "n": 50
+        },
+        "B": {
+          "correspondances": 15,
+          "exactitude": 0.3,
+          "n": 50
+        }
+      }
+    },
+    "pass": false,
+    "seuil": 0.9,
+    "total": 1000
+  },
+  "C2": {
+    "biais_global": -0.0094,
+    "erreur_max": 0.7043,
+    "erreur_moyenne": 0.1567,
+    "par_axe": {
+      "A": {
+        "biais": -0.0098,
+        "max": 0.6118,
+        "moyenne": 0.1524,
+        "rmse": 0.1913
+      },
+      "B": {
+        "biais": -0.0089,
+        "max": 0.7043,
+        "moyenne": 0.1611,
+        "rmse": 0.1974
+      }
+    },
+    "par_groupe": {
+      "G1": {
+        "A": 0.1524,
+        "B": 0.1463
+      },
+      "G2": {
+        "A": 0.1579,
+        "B": 0.1791
+      },
+      "G3": {
+        "A": 0.147,
+        "B": 0.1616
+      },
+      "G4": {
+        "A": 0.1461,
+        "B": 0.1657
+      }
+    },
+    "pass": false,
+    "rmse_global": 0.1944,
+    "seuil": 0.15
+  },
+  "C3": {
+    "detail_individuel": [
+      {
+        "detecte": true,
+        "id": "P01",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P02",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P03",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P04",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P05",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P06",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P07",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P08",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P09",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P10",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P11",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P12",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P13",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P14",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P15",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P16",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P17",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P18",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      },
+      {
+        "detecte": true,
+        "id": "P19",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      },
+      {
+        "detecte": true,
+        "id": "P20",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      }
+    ],
+    "detectes": 20,
+    "par_type": {
+      "acquiesceur": {
+        "detectes": 4,
+        "n": 4,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "lineaire": {
+        "detectes": 7,
+        "n": 7,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "speeder": {
+        "detectes": 6,
+        "n": 6,
+        "rqs": [
+          75
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "vigilance_ratee": {
+        "detectes": 3,
+        "n": 3,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      }
+    },
+    "pass": true,
+    "seuil": 17,
+    "total": 20
+  },
+  "C4": {
+    "identique": true,
+    "sha256_frames_run1": "c99b97cd405a0e5394b5bb43ae3df1440ac0dc42ee89c6fb9b2dfedc5a24e5a1",
+    "sha256_frames_run2": "c99b97cd405a0e5394b5bb43ae3df1440ac0dc42ee89c6fb9b2dfedc5a24e5a1",
+    "sha256_run1": "9fa4a4b12fd75b8b26bf91aa23da9a7a7be8cc036af68a2901417ccedcce9910",
+    "sha256_run2": "9fa4a4b12fd75b8b26bf91aa23da9a7a7be8cc036af68a2901417ccedcce9910"
+  },
+  "cronbach": {
+    "par_groupe": {
+      "G1": {
+        "A": 0.7533,
+        "B": 0.7505
+      },
+      "G2": {
+        "A": 0.7525,
+        "B": 0.7982
+      },
+      "G3": {
+        "A": 0.7387,
+        "B": 0.584
+      },
+      "G4": {
+        "A": 0.7175,
+        "B": 0.7824
+      }
+    },
+    "pool_A": 0.9155,
+    "pool_B": 0.9082
+  },
+  "frontieres": {
+    "A": {
+      "bien_tranchees": 199,
+      "deux_seuils_touches": 43,
+      "mal_tranchees": 267,
+      "n_frontieres": 466,
+      "taux_frontiere": 0.932
+    },
+    "B": {
+      "bien_tranchees": 200,
+      "deux_seuils_touches": 41,
+      "mal_tranchees": 271,
+      "n_frontieres": 471,
+      "taux_frontiere": 0.942
+    }
+  },
+  "meta": {
+    "ci90_demi": 0.41286,
+    "date": "2026-10-14",
+    "lectures": 1000,
+    "n_honnetes": 500,
+    "n_pieges": 20,
+    "projet": "WAIRYU Therapie Couple - Package WTC-Q1 - Quete 1",
+    "seed": 42,
+    "sem_axe": 0.25174
+  },
+  "rqs_honnetes": {
+    "aucune_penalite": 476,
+    "pen_contradiction": 1,
+    "pen_linearite": 23,
+    "pen_rythme": 0,
+    "pen_vigilance": 0,
+    "rqs_moyenne": 99.04,
+    "statuts": {
+      "OK": 476,
+      "PRUDENCE": 24
+    }
+  },
+  "sensibilite_items_inverses_litteraux": {
+    "c1_correspondances": 452,
+    "c1_exactitude": 0.452,
+    "c2_erreur_moyenne": 0.1956,
+    "c3_detectes": 20,
+    "note": "Lecture littérale : la réponse BRUTE des items inversés suit la latente positivement, donc corrigé = 5 − brut mesure l'inverse de la latente."
+  },
+  "stats_groupes": [
+    {
+      "alpha_A": 0.7533,
+      "alpha_B": 0.7505,
+      "ecart_mu_A": -0.0222,
+      "ecart_mu_B": -0.0751,
+      "groupe": "G1",
+      "moyenne_latente_A": 1.9835,
+      "moyenne_latente_B": 2.0421,
+      "moyenne_score_A": 1.9778,
+      "moyenne_score_B": 2.025,
+      "mu_A_param": 2.0,
+      "mu_B_param": 2.1,
+      "n": 200,
+      "nom": "tranquille",
+      "sd_score_A": 0.3718,
+      "sd_score_B": 0.3856
+    },
+    {
+      "alpha_A": 0.7525,
+      "alpha_B": 0.7982,
+      "ecart_mu_A": -0.0484,
+      "ecart_mu_B": 0.0095,
+      "groupe": "G2",
+      "moyenne_latente_A": 3.0853,
+      "moyenne_latente_B": 2.1165,
+      "moyenne_score_A": 3.0516,
+      "moyenne_score_B": 2.1095,
+      "mu_A_param": 3.1,
+      "mu_B_param": 2.1,
+      "n": 150,
+      "nom": "peur de perdre",
+      "sd_score_A": 0.3788,
+      "sd_score_B": 0.4201
+    },
+    {
+      "alpha_A": 0.7387,
+      "alpha_B": 0.584,
+      "ecart_mu_A": 0.0261,
+      "ecart_mu_B": -0.0208,
+      "groupe": "G3",
+      "moyenne_latente_A": 2.1087,
+      "moyenne_latente_B": 3.1924,
+      "moyenne_score_A": 2.1261,
+      "moyenne_score_B": 3.1792,
+      "mu_A_param": 2.1,
+      "mu_B_param": 3.2,
+      "n": 100,
+      "nom": "peur de dépendre",
+      "sd_score_A": 0.3753,
+      "sd_score_B": 0.2966
+    },
+    {
+      "alpha_A": 0.7175,
+      "alpha_B": 0.7824,
+      "ecart_mu_A": 0.1178,
+      "ecart_mu_B": -0.0106,
+      "groupe": "G4",
+      "moyenne_latente_A": 3.2269,
+      "moyenne_latente_B": 3.0621,
+      "moyenne_score_A": 3.2178,
+      "moyenne_score_B": 3.0894,
+      "mu_A_param": 3.1,
+      "mu_B_param": 3.1,
+      "n": 50,
+      "nom": "ambivalent",
+      "sd_score_A": 0.3547,
+      "sd_score_B": 0.3993
+    }
+  ]
+}
