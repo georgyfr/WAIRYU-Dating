@@ -54,6 +54,12 @@ import { ARCHE } from '../lib/quetes-plus';
 // Task 65 — l'ancrage des barres : les réponses réelles citées sous chaque
 // tendance (demande fondateur : les résultats doivent PROUVER, pas affirmer).
 import { ancragesDeQuete } from '../lib/ancrage-likert';
+// Task 77 — les sources des champs : sous chaque bloc du profil (Ta force,
+// Là où ça peut se compliquer, En couple, Ce que ce profil te souffle, Ta zone
+// d'ombre en relation), les questions RÉELLES qui portent le texte
+// (demande fondateur : « les réponses sont avérées vraies, effet barnum
+// minimisé ») — lecture seule du questionnaire, rien n'est modifié.
+import { sourcesDeQuete, type LigneSource } from '../lib/sources-sections';
 // Task 66 — la barre de satisfaction : la note du membre (1-5) ouvre la suite.
 import { QUETES_AVEC_AVIS, lireAvis, type AvisSatisfaction } from '../lib/satisfaction';
 import SatBarAvis from '../components/SatBarAvis';
@@ -1445,6 +1451,27 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
       }
       setPhase('carte');
     };
+    // Task 77 — les sources des champs de ce profil (mécanique, lecture seule).
+    const sources = sourcesDeQuete(queteId, carte.id, etat.reponses);
+    const nomDim = (k: string): string => quete.dims.find((d) => d.key === k)?.nom ?? k;
+    const blocSources = (lignes: LigneSource[]) =>
+      lignes.length === 0 ? null : (
+        <div className="q-src">
+          <p className="q-src-titre">{tx("D'après tes réponses :")}</p>
+          <ul>
+            {lignes.map((l) => (
+              <li key={l.code}>
+                <span className="q-src-dim">{nomDim(l.dim)}</span>
+                {' — '}
+                <span className="q-det-ancrage-enonce">« {l.enonce} »</span>
+                {' · '}
+                <strong>{l.reponse}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
     return (
       <main className="screen q-screen q-det qtv" aria-labelledby="q-det-title">
         <button type="button" className="q-back" onClick={revenirCarte}>
@@ -1479,21 +1506,25 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         <section className="q-sec q-profil-bloc" aria-label={tx('Ta force')}>
           <h3>{tx('Ta force')}</h3>
           <p>{arche.apportes}</p>
+          {blocSources(sources.force)}
         </section>
 
         <section className="q-sec q-profil-bloc" aria-label={tx('Là où ça peut se compliquer')}>
           <h3>{tx('Là où ça peut se compliquer')}</h3>
           <p>{arche.freines}</p>
+          {blocSources(sources.freines)}
         </section>
 
         <section className="q-sec q-profil-bloc" aria-label={tx('En couple')}>
           <h3>{tx('En couple')}</h3>
           <p>{arche.couple}</p>
+          {blocSources(sources.couple)}
         </section>
 
         <section className="q-sec q-profil-bloc" aria-label={tx('Ce que ce profil te souffle')}>
           <h3>{tx('Ce que ce profil te souffle')}</h3>
           <p>{arche.equilibre}</p>
+          {blocSources(sources.equilibre)}
         </section>
 
         <section className="q-sec q-profil-tendances" aria-label={titreTendances(apercu.bars.length)}>
@@ -1582,6 +1613,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 .map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
+              {blocSources(sources.ombre)}
             </section>
           );
         })()}

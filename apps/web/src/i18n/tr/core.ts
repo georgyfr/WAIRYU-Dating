@@ -195,6 +195,8 @@ export const CORE: Record<string, string> = {
   'fait monter la barre': 'moves the bar up',
   'fait baisser la barre': 'moves the bar down',
   "Ta zone d'ombre en relation": 'Your shadow side in relationships',
+  // ---- Task 77 — les sources des champs (traçabilité anti-barnum)
+  "D'après tes réponses :": 'From your answers:',
   // ---- Task 66 — la barre de satisfaction + la notice polie (v2)
   'Ton avis sur ces réponses': 'Your take on these answers',
   'Ton avis compte': 'Your voice counts',

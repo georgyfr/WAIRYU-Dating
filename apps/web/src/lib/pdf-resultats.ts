@@ -27,6 +27,8 @@
 import type { ApercuResultats, Palier, QueteDef } from './quetes';
 import { construireApercuResultats, mondeDeQuete, nomFichierPdf, NOTA_BARRES, titreTendances } from './quetes';
 import { ARCHE } from './quetes-plus';
+// Task 77 — les sources des champs dans le document (identiques à l'écran).
+import { sourcesDeQuete, type LigneSource } from './sources-sections';
 import { txSync } from '../i18n/tx-sync';
 import { getLang } from '../i18n/current';
 import { localeDevise } from '../i18n/currency';
@@ -83,6 +85,20 @@ export async function telechargerResultatsPdf(
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const apercu: ApercuResultats = construireApercuResultats(quete, reponses);
   const arche = ARCHE[quete.id][carte.id];
+  // Task 77 — les sources des champs (mécanique, lecture seule) : le même
+  // bloc « D'après tes réponses » que l'écran, imprimé sous chaque champ.
+  const sources = sourcesDeQuete(quete.id, carte.id, reponses);
+  const nomDim = (k: string): string => quete.dims.find((d) => d.key === k)?.nom ?? k;
+  const paraSources = (lignes: LigneSource[]): void => {
+    if (lignes.length === 0) return;
+    para(txSync("D'après tes réponses :"), { size: 8.8, couleur: ENCRE_DOUCE, gras: true });
+    for (const l of lignes) {
+      para(`${nomDim(l.dim)} — « ${l.enonce} » · ${l.reponse}`, {
+        size: 8.8,
+        couleur: ENCRE_DOUCE,
+      });
+    }
+  };
   const curseur = { y: 0 };
 
   const assurerPlace = (hauteur: number): void => {
@@ -182,12 +198,16 @@ export async function telechargerResultatsPdf(
   para(txSync('En résumé :') + ` « ${arche.devise} »`, { size: 10.5, italique: true, couleur: TURQUOISE, gras: true });
   para(txSync('Ta force'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.apportes, { size: 10 });
+  paraSources(sources.force);
   para(txSync('Là où ça peut se compliquer'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.freines, { size: 10 });
+  paraSources(sources.freines);
   para(txSync('En couple'), { size: 9.5, couleur: TURQUOISE, gras: true });
   para(arche.couple, { size: 10 });
+  paraSources(sources.couple);
   para(txSync('Ce que ce profil te souffle'), { size: 9.5, couleur: CORAIL, gras: true });
   para(arche.equilibre, { size: 10 });
+  paraSources(sources.equilibre);
 
   // ---- Tes N tendances (d'après tes réponses) — les mesures réelles
   section(titreTendances(apercu.bars.length));
@@ -225,6 +245,7 @@ export async function telechargerResultatsPdf(
     for (const p of ombreRel.split('\n\n').filter((x) => x.trim().length > 0)) {
       para(p, { size: 10 });
     }
+    paraSources(sources.ombre);
   }
 
   // ---- La suite de ton voyage (cliffhanger)

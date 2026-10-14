@@ -441,20 +441,26 @@ const REGISTRE_FR: Record<IdQuete, QueteDef> = {
     ombreRelationnel: {
       // Task 74 — V1 : TEXTE VERBATIM DU FONDATEUR, en deux paragraphes
       // (séparés par \n\n — l'écran et le PDF rendent un paragraphe chacun).
+      // Task 77 — option ombre tranchée (le fondateur « je te laisse le choix »)
+      // : V2-V7 passent au MÊME CADRE 2 ¶ que sa V1 — « Voici le risque
+      // principal en relation : … » puis « Ce qui aide : … ». La formule
+      // atténuante « ta zone d'ombre peut donner » et l'écriture inclusive
+      // ·e/·se disparaissent (choix masculin-neutre Task 74) ; la substance de
+      // chaque variante est conservée. 1.2 suit déjà ce cadre (Task 76).
       V1:
         'Voici le risque principal en relation : tu lances un projet à deux avec enthousiasme, puis une nouvelle idée arrive et prend toute la place. L\'autre peut alors se demander si ça comptait vraiment pour toi, ou si seul le projet t\'enthousiasmait.\n\nCe qui aide : dire à voix haute quand une chose continue de compter pour toi, même si tu es déjà passé à autre chose. Un retour sur ce que vous avez commencé, un petit rappel, une promesse tenue. Ainsi, l\'autre n\'a plus à courir derrière tes envies : il sait que tu restes là.',
       V2:
-        'En relation, ta zone d\'ombre peut donner : une maison impeccable et l\'autre qui se sent noté·e à chaque chose mal posée — ou toi, accablé·e par un imprévu que tu vis comme ta faute. Ce qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à SA façon de temps en temps — sans garder la note.',
+        'Voici le risque principal en relation : tout est en ordre chez toi, et l\'autre finit par se sentir noté — chaque chose mal posée devient un dossier. Un imprévu dérègle le plan, et tu t\'accuses en premier, même quand tout ne dépendait pas de toi.\n\nCe qui aide : annoncer tes standards au lieu de les faire deviner, et laisser l\'autre faire à sa façon de temps en temps, sans garder la note. Quand l\'autre voit que sa façon de faire a sa place chez toi, ta solidité cesse de peser : elle porte.',
       V3:
-        'En relation, ta zone d\'ombre peut donner : des soirées brillantes et des silences mal supportés — l\'autre peut confondre ta vitesse avec une indisponibilité à ce qui est lent. Ce qui aide : choisir une personne ET un moment où tu restes sans remplir. C\'est là, dans ce silence choisi, que le lien descend d\'un étage.',
+        'Voici le risque principal en relation : les silences te pèsent, alors tu les remplis. L\'autre peut confondre ta vitesse avec une indisponibilité à ce qui est lent — et se demander si tu es vraiment là quand rien ne bouge.\n\nCe qui aide : choisir une personne et un moment où tu restes sans remplir. Le silence choisi n\'est pas une absence : c\'est là que le lien descend d\'un étage, et que l\'autre découvre qu\'il n\'a pas besoin d\'animer pour t\'intéresser.',
       V4:
-        'En relation, ta zone d\'ombre peut donner : ta patience qui devient une demeure — tu restes là où d\'autres seraient déjà partis, et le temps investi finit par peser plus lourd que la réalité. Ce qui aide : un point régulier avec toi-même : « est-ce que je reste parce que c\'est bon, ou parce que je sais rester ? » La réponse, honnête, protège ton bien le plus précieux : ta présence.',
+        'Voici le risque principal en relation : ta patience devient une demeure. Tu restes là où d\'autres seraient déjà partis, et le temps investi finit par peser plus lourd que la réalité. Pendant ce temps, tes propres besoins passent en dernier — et l\'autre ne le voit même pas.\n\nCe qui aide : un point régulier avec toi-même : « est-ce que je reste parce que c\'est bon, ou parce que je sais rester ? » Et dire à voix haute ce que toi tu portes, avant que ça pèse. La réponse honnête protège ton bien le plus précieux : ta présence.',
       V5:
-        'En relation, ta zone d\'ombre peut donner : des hauts magnifiques et des bas qui emportent la conversation — l\'autre peut avoir peur de la tempête sans savoir qu\'elle passe. Ce qui aide : prévenir quand tu la sens monter : « ce n\'est pas toi, c\'est la vague » — quatre mots qui changent tout, et un retour au calme que l\'autre apprend à ne plus redouter.',
+        'Voici le risque principal en relation : la vague monte, elle te traverse en entier, et emporte la conversation. L\'autre peut avoir peur de la tempête sans savoir qu\'elle passe — et se souvenir du ton plus longtemps que du fond.\n\nCe qui aide : prévenir quand tu la sens monter — « ce n\'est pas toi, c\'est la vague ». Quatre mots qui changent tout, et un retour au calme que l\'autre apprend à ne plus redouter, parce qu\'il sait désormais qu\'il revient.',
       V6:
-        'En relation, ta zone d\'ombre peut donner : ton monde intérieur si confortable que l\'autre frappe longtemps sans savoir s\'il est invité. Ce qui aide : ouvrir par petites portes — partager un morceau de ton monde EN PREMIER, même maladroitement. Pour qui t\'aime, c\'est une invitation que cette personne attend peut-être depuis longtemps.',
+        'Voici le risque principal en relation : ton monde intérieur est si confortable que l\'autre frappe longtemps sans savoir s\'il est invité. Ton silence peut se lire comme une distance — alors que dedans, tout est vivant.\n\nCe qui aide : ouvrir par petites portes. Partager un morceau de ton monde en premier, même maladroitement. Pour qui t\'aime, c\'est une invitation que cette personne attend peut-être depuis longtemps — et qu\'elle n\'oserait pas demander.',
       V7:
-        'En relation, ta zone d\'ombre peut donner : une adaptabilité si large que l\'autre ne sait parfois plus ce que TU veux, toi. Ce qui aide : prendre position à voix haute une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, personne n\'aime deviner à l\'aveugle.',
+        'Voici le risque principal en relation : ton adaptation est si large que l\'autre ne sait parfois plus ce que toi tu veux. Tes désirs propres arrivent en deuxième — et l\'autre se retrouve à décider seul, sans le savoir.\n\nCe qui aide : prendre position à voix haute, une fois par jour — un choix, une envie, un refus. Ta polyvalence devient un don quand elle part d\'un centre visible : on aime les personnes difficiles à cerner, mais personne n\'aime deviner à l\'aveugle.',
     },
     suivante: '1.2',
     suite: {
