@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 794px 1123px; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #0a1628; }
+  @media screen {
+    html { height: auto; display: flex; justify-content: center; }
+    body { transform-origin: top center; scale: min(1, calc(100vh / 1123)); margin: 0 auto; }
+  }
+  .poster {
+    position: relative; width: 794px; height: 1123px;
+    background: #0a1628; font-family: 'Inter', 'Liberation Sans', 'DejaVu Sans', sans-serif;
+  }
+  .bg-layer { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+  .glow1 { position: absolute; left: -80px; top: -60px; width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(45,122,179,0.10) 0%, rgba(45,122,179,0) 70%); }
+  .glow2 { position: absolute; right: -60px; bottom: -40px; width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(77,168,218,0.08) 0%, rgba(77,168,218,0) 70%); }
+  .frame { position: absolute; left: 60px; right: 60px; top: 80px; bottom: 80px;
+    border: 2px solid #4da8da; z-index: 2; }
+  .kicker { position: absolute; left: 90px; top: 135px; width: 600px;
+    font-size: 11pt; font-weight: 300; letter-spacing: 5px; color: #4da8da;
+    text-transform: uppercase; }
+  .hero { position: absolute; left: 90px; top: 236px; max-width: 610px;
+    font-size: 46pt; font-weight: 900; line-height: 1.15; color: #e8f0f8;
+    text-shadow: 0 0 24px rgba(77,168,218,0.35); }
+  .summary { position: absolute; left: 90px; top: 505px; max-width: 520px;
+    font-size: 15px; line-height: 1.7; color: #7a9bb8; font-weight: 400; }
+  .org { position: absolute; left: 90px; top: 719px; max-width: 600px;
+    font-size: 18px; color: #e8f0f8; font-weight: 700; }
+  .org-sub { position: absolute; left: 90px; top: 752px; max-width: 600px;
+    font-size: 13px; color: #7a9bb8; font-weight: 300; }
+  .date { position: absolute; left: 90px; top: 1013px;
+    font-size: 10pt; color: #7a9bb8; letter-spacing: 3px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="poster">
+    <div class="bg-layer">
+      <div class="glow1"></div>
+      <div class="glow2"></div>
+    </div>
+    <div class="frame"></div>
+    <div class="kicker">Document de référence complet du programme</div>
+    <div class="hero">WAIRYU<br>Thérapie<br>Couple</div>
+    <div class="summary">Le document intégral de tout ce qui a été conçu depuis le début :
+      les 26 dimensions d'analyse, les 14 livrables d'infrastructure, les 110 quêtes
+      et leur standard, les mécanismes de calcul en 8 couches, le moteur de contexte
+      de Solène, la doctrine RIO, les garde-fous consolidés, les fonctionnalités
+      complémentaires, le protocole de test IA et le plan de conception des calculs
+      pour Data Insight.</div>
+    <div class="org">Programme WTC — Wairyu Thérapie Couple</div>
+    <div class="org-sub">Contexte de projet destiné à GLM Data Insight · Exécution stricte, signale sans corriger</div>
+    <div class="date">14 octobre 2026 · Version 1.0</div>
+  </div>
+</body>
+</html>

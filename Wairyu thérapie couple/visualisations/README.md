@@ -1,7 +1,7 @@
 # 📊 Visualisations — Wairyu Thérapie Couple
 
-> Dossier généré le **14/10/2026** · 5 graphiques PNG (≈1920×1080, 150 DPI, palette colorblind-friendly Okabe-Ito, libellés en français)
-> Source des données : `../OUTILS DE TERAPIE DU COUPLE.txt` (analyse documentaire d'extraits de recherche clinique)
+> Dossier généré le **14/10/2026** · 7 graphiques PNG (≈1920×1080, 150 DPI, palette colorblind-friendly, libellés en français)
+> Sources des données : `../OUTILS DE TERAPIE DU COUPLE.txt` (recherche clinique) et `../programme wairyu couple.txt` (document de référence du programme WTC)
 
 ---
 
@@ -14,6 +14,8 @@
 | 3 | [`BarChart_TestsValides_NbItems_2026-10-14.png`](BarChart_TestsValides_NbItems_2026-10-14.png) | **Longueur des questionnaires** (échelle logarithmique) : de KMSS (3 items) au Gottman Relationship Checkup (337 items), colorés par domaine. Stratégie en 3 temps : dépistage court → profil multidimensionnel → évaluation approfondie. |
 | 4 | [`BarChart_Parcours17Modules_2026-10-14.png`](BarChart_Parcours17Modules_2026-10-14.png) | **Parcours de reconstruction en 17 modules** : durées (valeurs médianes, 12–18 mois au total) et niveaux de priorité (Fondamentale M01–M05 · Essentielle M06–M10 · Critique M11–M14 · Importante M15–M17). |
 | 5 | [`BarChart_Tarification_Marche_2026-10-14.png`](BarChart_Tarification_Marche_2026-10-14.png) | **Positionnement tarifaire** (équivalent mensuel €, conversion indicative 1 $ ≈ 0,92 €) : Zenlove ≈ 3,3 € · Pragma ≈ 18 € · offre Hybride du projet 150–300 € · OurRitual ≈ 220–285 € · Regain ≈ 287–410 €. |
+| 6 | [`DonutChart_26Dimensions_ParBloc_2026-10-14.png`](DonutChart_26Dimensions_ParBloc_2026-10-14.png) | **Les 26 dimensions d'analyse du programme WTC** réparties en 6 blocs (Héritage 6 · Psychologique 4 · Relationnel 4 · Social-matériel 4 · Cycle de vie 4 · Sociétal 4), avec le détail des dimensions par bloc. Source : document de référence. |
+| 7 | [`BarChart_Quetes_Architecture_2026-10-14.png`](BarChart_Quetes_Architecture_2026-10-14.png) | **Architecture des ≈ 110 quêtes** : 16 dimensions majeures × 5 quêtes (80) · 6 standard × 4 (24) · 4 extensions × 3 (12) — gabarit universel, zone d'ombre + zone de force, 3 paliers vert/ambre/rouge. |
 
 ---
 
@@ -25,9 +27,10 @@
 
 ## Reproduction
 
-Le script de génération est disponible dans [`../scripts/generate_charts.py`](../scripts/generate_charts.py).
+Le script de génération est disponible dans [`../scripts/generate_charts.py`](../scripts/generate_charts.py) (graphiques 1–5) et [`../scripts/generate_charts_wtc.py`](../scripts/generate_charts_wtc.py) (graphiques 6–7).
 
 ```bash
 pip install matplotlib numpy
-python generate_charts.py   # régénère les 5 PNG dans ./download/
+python generate_charts.py      # régénère les graphiques 1–5
+python generate_charts_wtc.py  # régénère les graphiques 6–7
 ```
