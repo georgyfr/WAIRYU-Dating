@@ -1,0 +1,613 @@
+{
+  "C1a": {
+    "borne_basse": 0.87,
+    "borne_haute": 0.95,
+    "couverture": 0.899,
+    "par_axe": {
+      "A": 0.9,
+      "B": 0.898
+    },
+    "par_groupe": {
+      "G1": {
+        "A": 0.89,
+        "B": 0.915
+      },
+      "G2": {
+        "A": 0.9,
+        "B": 0.8667
+      },
+      "G3": {
+        "A": 0.92,
+        "B": 0.92
+      },
+      "G4": {
+        "A": 0.9,
+        "B": 0.88
+      }
+    },
+    "pass": true,
+    "pass_par_axe": {
+      "A": true,
+      "B": true
+    }
+  },
+  "C1b": {
+    "exactitude": 0.797,
+    "par_axe": {
+      "A": 0.8,
+      "B": 0.794
+    },
+    "par_groupe": {
+      "G1": {
+        "A": 0.83,
+        "B": 0.83
+      },
+      "G2": {
+        "A": 0.7667,
+        "B": 0.7733
+      },
+      "G3": {
+        "A": 0.78,
+        "B": 0.75
+      },
+      "G4": {
+        "A": 0.82,
+        "B": 0.8
+      }
+    },
+    "pass": true,
+    "plafond_theorique_documente": 0.805,
+    "seuil": 0.78
+  },
+  "C1c": {
+    "i_cons_sous_ou_egal_ponctuel": {
+      "definition": "niveau_conservateur ≤ niveau_ponctuel (en rang)",
+      "exigence": "100 %",
+      "pass": true,
+      "respectees": 1000,
+      "taux": 1.0,
+      "total": 1000,
+      "violations": []
+    },
+    "ii_max_1_cran_sous_latent": {
+      "definition": "rang(latent) − rang(conservateur) ≤ 1 (jamais > 1 cran sous niveau(latent))",
+      "exigence": "100 %",
+      "nb_violations": 2,
+      "pass": false,
+      "respectees": 998,
+      "taux": 0.998,
+      "total": 1000,
+      "violations": [
+        {
+          "axe": "A",
+          "ci": "[2.46 ; 3.10]",
+          "conservateur": "Tranquille",
+          "crans_sous_latent": 2,
+          "dist_min_seuil": 0.18,
+          "groupe": "G2",
+          "identifiant": "H291",
+          "latent": 3.2597,
+          "niveau_latent": "Forte",
+          "niveau_ponctuel": "Vive",
+          "niveaux_touches": "Tranquille, Vive",
+          "score": 2.78,
+          "terme": "(ii)"
+        },
+        {
+          "axe": "B",
+          "ci": "[2.57 ; 3.21]",
+          "conservateur": "Tranquille",
+          "crans_sous_latent": 2,
+          "dist_min_seuil": 0.29,
+          "groupe": "G3",
+          "identifiant": "H405",
+          "latent": 3.5943,
+          "niveau_latent": "Forte",
+          "niveau_ponctuel": "Vive",
+          "niveaux_touches": "Tranquille, Vive, Forte",
+          "score": 2.89,
+          "terme": "(ii)"
+        }
+      ]
+    },
+    "iii_accord_hors_frontiere": {
+      "accords": 63,
+      "definition": "score à ≥ 0,45 de tout seuil → conservateur == ponctuel",
+      "exigence": "≥ 85,0 %",
+      "n_eligibles": 63,
+      "pass": true,
+      "taux": 1.0
+    },
+    "pass": false
+  },
+  "C2": {
+    "biais_global": -0.0094,
+    "borne_basse": 0.14,
+    "borne_haute": 0.18,
+    "erreur_max": 0.7043,
+    "erreur_moyenne": 0.1567,
+    "par_axe": {
+      "A": {
+        "biais": -0.0098,
+        "max": 0.6118,
+        "moyenne": 0.1524,
+        "rmse": 0.1913
+      },
+      "B": {
+        "biais": -0.0089,
+        "max": 0.7043,
+        "moyenne": 0.1611,
+        "rmse": 0.1974
+      }
+    },
+    "par_groupe": {
+      "G1": {
+        "A": 0.1524,
+        "B": 0.1463
+      },
+      "G2": {
+        "A": 0.1579,
+        "B": 0.1791
+      },
+      "G3": {
+        "A": 0.147,
+        "B": 0.1616
+      },
+      "G4": {
+        "A": 0.1461,
+        "B": 0.1657
+      }
+    },
+    "pass": true,
+    "rmse_global": 0.1944,
+    "sem_implicite": 0.1964
+  },
+  "C3": {
+    "detail_individuel": [
+      {
+        "detecte": true,
+        "id": "P01",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P02",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P03",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P04",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P05",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P06",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P07",
+        "penalites": [
+          "linearite"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "lineaire"
+      },
+      {
+        "detecte": true,
+        "id": "P08",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P09",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P10",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P11",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P12",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P13",
+        "penalites": [
+          "rythme"
+        ],
+        "rqs": 75,
+        "statut": "PRUDENCE",
+        "type": "speeder"
+      },
+      {
+        "detecte": true,
+        "id": "P14",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P15",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P16",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P17",
+        "penalites": [
+          "contradiction"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "acquiesceur"
+      },
+      {
+        "detecte": true,
+        "id": "P18",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      },
+      {
+        "detecte": true,
+        "id": "P19",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      },
+      {
+        "detecte": true,
+        "id": "P20",
+        "penalites": [
+          "vigilance"
+        ],
+        "rqs": 80,
+        "statut": "PRUDENCE",
+        "type": "vigilance_ratee"
+      }
+    ],
+    "detectes": 20,
+    "par_type": {
+      "acquiesceur": {
+        "detectes": 4,
+        "n": 4,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "lineaire": {
+        "detectes": 7,
+        "n": 7,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "speeder": {
+        "detectes": 6,
+        "n": 6,
+        "rqs": [
+          75
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      },
+      "vigilance_ratee": {
+        "detectes": 3,
+        "n": 3,
+        "rqs": [
+          80
+        ],
+        "statuts": [
+          "PRUDENCE"
+        ]
+      }
+    },
+    "pass": true,
+    "seuil": 17,
+    "total": 20
+  },
+  "C4": {
+    "identique": true,
+    "sha256_frames_run1": "fc126659992c2f0f73bdfbf71d91b1c786b2e8e2c2a8381ec540b2ab3daf3a6c",
+    "sha256_frames_run2": "fc126659992c2f0f73bdfbf71d91b1c786b2e8e2c2a8381ec540b2ab3daf3a6c",
+    "sha256_run1": "393887f2149e9331fcd8ab2041f70b0d0a1009b9fbcb68392e1a5679cdc22d1f",
+    "sha256_run2": "393887f2149e9331fcd8ab2041f70b0d0a1009b9fbcb68392e1a5679cdc22d1f"
+  },
+  "cronbach": {
+    "delta_A": 0.0,
+    "delta_B": 0.0,
+    "non_regression": true,
+    "par_groupe": {
+      "G1": {
+        "A": 0.7533,
+        "B": 0.7505
+      },
+      "G2": {
+        "A": 0.7525,
+        "B": 0.7982
+      },
+      "G3": {
+        "A": 0.7387,
+        "B": 0.584
+      },
+      "G4": {
+        "A": 0.7175,
+        "B": 0.7824
+      }
+    },
+    "pool_A": 0.9155,
+    "pool_B": 0.9082,
+    "reference_run_initial": {
+      "pool_A": 0.9155,
+      "pool_B": 0.9082
+    }
+  },
+  "frontieres": {
+    "A": {
+      "deux_seuils_touches": 14,
+      "n_demotions": 227,
+      "n_frontieres": 408,
+      "par_groupe": {
+        "G1": {
+          "demotions": 81,
+          "frontieres": 160,
+          "n": 200
+        },
+        "G2": {
+          "demotions": 83,
+          "frontieres": 131,
+          "n": 150
+        },
+        "G3": {
+          "demotions": 36,
+          "frontieres": 79,
+          "n": 100
+        },
+        "G4": {
+          "demotions": 27,
+          "frontieres": 38,
+          "n": 50
+        }
+      },
+      "taux_demotion": 0.454,
+      "taux_frontiere": 0.816
+    },
+    "B": {
+      "deux_seuils_touches": 21,
+      "n_demotions": 232,
+      "n_frontieres": 415,
+      "par_groupe": {
+        "G1": {
+          "demotions": 78,
+          "frontieres": 160,
+          "n": 200
+        },
+        "G2": {
+          "demotions": 66,
+          "frontieres": 127,
+          "n": 150
+        },
+        "G3": {
+          "demotions": 62,
+          "frontieres": 88,
+          "n": 100
+        },
+        "G4": {
+          "demotions": 26,
+          "frontieres": 40,
+          "n": 50
+        }
+      },
+      "taux_demotion": 0.464,
+      "taux_frontiere": 0.83
+    }
+  },
+  "meta": {
+    "ci90_demi": 0.3198,
+    "ci90_demi_run_initial": 0.41286,
+    "date": "2026-10-14",
+    "lectures": 1000,
+    "n_honnetes": 500,
+    "n_pieges": 20,
+    "projet": "WAIRYU Therapie Couple - Package WTC-Q1-R1 - Quete 1 (révision post-validation)",
+    "revisions_appliquees": [
+      "D1-SEM structurel 0.195",
+      "D2-C1a/C1b/C1c",
+      "D3-C2 [0.14;0.18]",
+      "D4-items inverses confirmes",
+      "D5-C3/C4 re-verifies"
+    ],
+    "se_face": 0.38099,
+    "seed": 42,
+    "sem_axe": 0.195,
+    "sem_run_initial": 0.2517
+  },
+  "rqs_honnetes": {
+    "aucune_penalite": 476,
+    "pen_contradiction": 1,
+    "pen_linearite": 23,
+    "pen_rythme": 0,
+    "pen_vigilance": 0,
+    "rqs_moyenne": 99.04,
+    "statuts": {
+      "OK": 476,
+      "PRUDENCE": 24
+    }
+  },
+  "stats_groupes": [
+    {
+      "alpha_A": 0.7533,
+      "alpha_B": 0.7505,
+      "ecart_mu_A": -0.0222,
+      "ecart_mu_B": -0.0751,
+      "groupe": "G1",
+      "moyenne_latente_A": 1.9835,
+      "moyenne_latente_B": 2.0421,
+      "moyenne_score_A": 1.9778,
+      "moyenne_score_B": 2.025,
+      "mu_A_param": 2.0,
+      "mu_B_param": 2.1,
+      "n": 200,
+      "nom": "tranquille",
+      "sd_score_A": 0.3718,
+      "sd_score_B": 0.3856
+    },
+    {
+      "alpha_A": 0.7525,
+      "alpha_B": 0.7982,
+      "ecart_mu_A": -0.0484,
+      "ecart_mu_B": 0.0095,
+      "groupe": "G2",
+      "moyenne_latente_A": 3.0853,
+      "moyenne_latente_B": 2.1165,
+      "moyenne_score_A": 3.0516,
+      "moyenne_score_B": 2.1095,
+      "mu_A_param": 3.1,
+      "mu_B_param": 2.1,
+      "n": 150,
+      "nom": "peur de perdre",
+      "sd_score_A": 0.3788,
+      "sd_score_B": 0.4201
+    },
+    {
+      "alpha_A": 0.7387,
+      "alpha_B": 0.584,
+      "ecart_mu_A": 0.0261,
+      "ecart_mu_B": -0.0208,
+      "groupe": "G3",
+      "moyenne_latente_A": 2.1087,
+      "moyenne_latente_B": 3.1924,
+      "moyenne_score_A": 2.1261,
+      "moyenne_score_B": 3.1792,
+      "mu_A_param": 2.1,
+      "mu_B_param": 3.2,
+      "n": 100,
+      "nom": "peur de dépendre",
+      "sd_score_A": 0.3753,
+      "sd_score_B": 0.2966
+    },
+    {
+      "alpha_A": 0.7175,
+      "alpha_B": 0.7824,
+      "ecart_mu_A": 0.1178,
+      "ecart_mu_B": -0.0106,
+      "groupe": "G4",
+      "moyenne_latente_A": 3.2269,
+      "moyenne_latente_B": 3.0621,
+      "moyenne_score_A": 3.2178,
+      "moyenne_score_B": 3.0894,
+      "mu_A_param": 3.1,
+      "mu_B_param": 3.1,
+      "n": 50,
+      "nom": "ambivalent",
+      "sd_score_A": 0.3547,
+      "sd_score_B": 0.3993
+    }
+  ]
+}

@@ -1,0 +1,1001 @@
+﻿identifiant,population,groupe,axe,latent,attendu,score,ci_bas,ci_haut,type_lecture,lecture,niveaux_touches,niveau_ponctuel,niveau_conservateur,correspondance_ponctuelle_C1b,couverture_ci_C1a,erreur_absolue,crans_sous_latent_C1c_ii,dist_min_seuil,c1ciii_eligible,demotion_conservatrice
+H001,honnete,G1,A,2.106651,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.106651,1,0.2,False,True
+H001,honnete,G1,B,1.736006,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.043994,0,0.02,False,False
+H002,honnete,G1,A,2.227707,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.007707,0,0.38,False,False
+H002,honnete,G1,B,2.360139,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.030139,0,0.27,False,False
+H003,honnete,G1,A,2.218957,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.218957,1,0.2,False,True
+H003,honnete,G1,B,1.991729,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.431729,1,0.24,False,False
+H004,honnete,G1,A,2.007648,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.007648,1,0.2,False,True
+H004,honnete,G1,B,2.660623,Vive,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.330623,1,0.27,False,False
+H005,honnete,G1,A,2.045596,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.064404,1,0.31,False,True
+H005,honnete,G1,B,2.443959,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.113959,0,0.27,False,False
+H006,honnete,G1,A,1.686846,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.093154,0,0.02,False,False
+H006,honnete,G1,B,2.325164,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.215164,1,0.31,False,True
+H007,honnete,G1,A,1.744821,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.304821,0,0.36,False,False
+H007,honnete,G1,B,1.871049,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.018951,1,0.09,False,True
+H008,honnete,G1,A,2.732609,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.062609,1,0.07,False,True
+H008,honnete,G1,B,2.650674,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.129326,1,0.18,False,True
+H009,honnete,G1,A,2.610377,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.059623,1,0.07,False,True
+H009,honnete,G1,B,2.253648,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.186352,0,0.16,False,False
+H010,honnete,G1,A,2.296304,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.076304,0,0.38,False,False
+H010,honnete,G1,B,1.90017,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.01017,1,0.09,False,True
+H011,honnete,G1,A,1.191464,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.028536,0,0.58,True,False
+H011,honnete,G1,B,2.119024,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.119024,1,0.2,False,True
+H012,honnete,G1,A,2.13749,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.13749,1,0.2,False,True
+H012,honnete,G1,B,1.73581,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.15419,0,0.09,False,True
+H013,honnete,G1,A,2.387098,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.057098,0,0.27,False,False
+H013,honnete,G1,B,1.763268,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.236732,0,0.2,False,True
+H014,honnete,G1,A,2.152209,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.152209,1,0.2,False,True
+H014,honnete,G1,B,1.90415,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.31585,0,0.38,False,False
+H015,honnete,G1,A,2.071186,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.038814,1,0.31,False,True
+H015,honnete,G1,B,1.747012,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.187012,0,0.24,False,False
+H016,honnete,G1,A,2.699054,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.029054,1,0.07,False,True
+H016,honnete,G1,B,1.688185,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.248185,0,0.36,False,False
+H017,honnete,G1,A,2.164898,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.054898,1,0.31,False,True
+H017,honnete,G1,B,1.913292,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.023292,1,0.09,False,True
+H018,honnete,G1,A,1.880181,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.320181,1,0.24,False,False
+H018,honnete,G1,B,2.071444,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.148556,0,0.38,False,False
+H019,honnete,G1,A,1.639215,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.030785,0,0.13,False,False
+H019,honnete,G1,B,2.080066,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.190066,1,0.09,False,True
+H020,honnete,G1,A,2.415704,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.195704,0,0.38,False,False
+H020,honnete,G1,B,1.742782,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.257218,0,0.2,False,True
+H021,honnete,G1,A,1.982081,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.017919,1,0.2,False,True
+H021,honnete,G1,B,2.072095,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.037905,1,0.31,False,True
+H022,honnete,G1,A,1.6012,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.0412,0,0.24,False,False
+H022,honnete,G1,B,1.931566,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.178434,1,0.31,False,True
+H023,honnete,G1,A,1.322062,Discrète,1.11,0.79,1.43,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.212062,0,0.69,True,False
+H023,honnete,G1,B,2.3333,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.4433,1,0.09,False,True
+H024,honnete,G1,A,1.698189,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.081811,0,0.02,False,False
+H024,honnete,G1,B,2.267606,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.172394,0,0.16,False,False
+H025,honnete,G1,A,1.597197,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.292803,0,0.09,False,True
+H025,honnete,G1,B,2.069243,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.399243,1,0.13,False,False
+H026,honnete,G1,A,1.635444,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.034556,0,0.13,False,False
+H026,honnete,G1,B,2.486638,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.073362,0,0.04,False,False
+H027,honnete,G1,A,1.634235,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.035765,0,0.13,False,False
+H027,honnete,G1,B,1.742634,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.037366,0,0.02,False,False
+H028,honnete,G1,A,2.855796,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.364204,0,0.02,False,True
+H028,honnete,G1,B,1.61794,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.05206,0,0.13,False,False
+H029,honnete,G1,A,2.278226,Tranquille,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,False,False,0.611774,0,0.29,False,True
+H029,honnete,G1,B,2.163127,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.166873,0,0.27,False,False
+H030,honnete,G1,A,1.907924,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.312076,0,0.38,False,False
+H030,honnete,G1,B,1.859952,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.030048,1,0.09,False,True
+H031,honnete,G1,A,1.597779,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.037779,0,0.24,False,False
+H031,honnete,G1,B,1.432154,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.007846,0,0.36,False,False
+H032,honnete,G1,A,2.104129,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.434129,1,0.13,False,False
+H032,honnete,G1,B,2.410366,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.259634,0,0.07,False,True
+H033,honnete,G1,A,1.939952,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.280048,0,0.38,False,False
+H033,honnete,G1,B,1.554216,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.005784,0,0.24,False,False
+H034,honnete,G1,A,1.991868,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.211868,1,0.02,False,False
+H034,honnete,G1,B,2.801228,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.361228,1,0.16,False,False
+H035,honnete,G1,A,2.102527,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.007473,1,0.31,False,True
+H035,honnete,G1,B,1.543886,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.236114,0,0.02,False,False
+H036,honnete,G1,A,2.131932,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.088068,0,0.38,False,False
+H036,honnete,G1,B,1.705554,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.074446,0,0.02,False,False
+H037,honnete,G1,A,1.796772,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.203228,0,0.2,False,True
+H037,honnete,G1,B,2.343135,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.216865,0,0.04,False,False
+H038,honnete,G1,A,2.503547,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.056453,0,0.04,False,False
+H038,honnete,G1,B,2.04959,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.39041,0,0.16,False,False
+H039,honnete,G1,A,2.040105,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.150105,1,0.09,False,True
+H039,honnete,G1,B,2.21548,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.10548,1,0.31,False,True
+H040,honnete,G1,A,1.037613,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.182387,0,0.58,True,False
+H040,honnete,G1,B,2.018056,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.091944,1,0.31,False,True
+H041,honnete,G1,A,1.862786,Tranquille,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,False,False,0.422786,1,0.36,False,False
+H041,honnete,G1,B,2.148974,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.258974,1,0.09,False,True
+H042,honnete,G1,A,1.626342,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.043658,0,0.13,False,False
+H042,honnete,G1,B,2.080773,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.029227,1,0.31,False,True
+H043,honnete,G1,A,2.002899,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.222899,1,0.02,False,False
+H043,honnete,G1,B,2.028676,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.138676,1,0.09,False,True
+H044,honnete,G1,A,2.127584,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.127584,1,0.2,False,True
+H044,honnete,G1,B,1.845895,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.175895,1,0.13,False,False
+H045,honnete,G1,A,1.795712,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.125712,0,0.13,False,False
+H045,honnete,G1,B,1.915051,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.025051,1,0.09,False,True
+H046,honnete,G1,A,2.220079,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.110079,1,0.31,False,True
+H046,honnete,G1,B,2.69848,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.08152,1,0.18,False,True
+H047,honnete,G1,A,1.351743,Discrète,1.11,0.79,1.43,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.241743,0,0.69,True,False
+H047,honnete,G1,B,1.986006,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.316006,1,0.13,False,False
+H048,honnete,G1,A,2.145116,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.035116,1,0.31,False,True
+H048,honnete,G1,B,2.302532,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.302532,1,0.2,False,True
+H049,honnete,G1,A,1.784333,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.004333,0,0.02,False,False
+H049,honnete,G1,B,1.681972,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.121972,0,0.24,False,False
+H050,honnete,G1,A,2.178437,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.178437,1,0.2,False,True
+H050,honnete,G1,B,2.293151,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.183151,1,0.31,False,True
+H051,honnete,G1,A,2.019744,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.239744,1,0.02,False,False
+H051,honnete,G1,B,2.18588,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.07588,1,0.31,False,True
+H052,honnete,G1,A,1.523915,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.366085,0,0.09,False,True
+H052,honnete,G1,B,2.236754,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.016754,0,0.38,False,False
+H053,honnete,G1,A,2.071894,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.148106,0,0.38,False,False
+H053,honnete,G1,B,1.932671,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.042671,1,0.09,False,True
+H054,honnete,G1,A,1.988682,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.318682,1,0.13,False,False
+H054,honnete,G1,B,2.285743,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.175743,1,0.31,False,True
+H055,honnete,G1,A,2.490309,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.289691,0,0.18,False,True
+H055,honnete,G1,B,1.733449,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.156551,0,0.09,False,True
+H056,honnete,G1,A,1.757008,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.022992,0,0.02,False,False
+H056,honnete,G1,B,1.770062,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.100062,0,0.13,False,False
+H057,honnete,G1,A,1.390824,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.060824,0,0.47,True,False
+H057,honnete,G1,B,2.106067,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.216067,1,0.09,False,True
+H058,honnete,G1,A,1.722085,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.277915,0,0.2,False,True
+H058,honnete,G1,B,1.71512,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.27512,0,0.36,False,False
+H059,honnete,G1,A,2.048372,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.158372,1,0.09,False,True
+H059,honnete,G1,B,2.031757,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.141757,1,0.09,False,True
+H060,honnete,G1,A,1.688493,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.201507,0,0.09,False,True
+H060,honnete,G1,B,1.133064,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.086936,0,0.58,True,False
+H061,honnete,G1,A,2.517812,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.187812,0,0.27,False,False
+H061,honnete,G1,B,2.033475,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.033475,1,0.2,False,True
+H062,honnete,G1,A,1.969653,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.079653,1,0.09,False,True
+H062,honnete,G1,B,2.004204,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.334204,1,0.13,False,False
+H063,honnete,G1,A,2.215682,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.004318,0,0.38,False,False
+H063,honnete,G1,B,1.285515,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.065515,0,0.58,True,False
+H064,honnete,G1,A,1.78839,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,False,0.45839,0,0.47,True,False
+H064,honnete,G1,B,1.455165,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.125165,0,0.47,True,False
+H065,honnete,G1,A,1.957271,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.372729,0,0.27,False,False
+H065,honnete,G1,B,1.33261,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.10739,0,0.36,False,False
+H066,honnete,G1,A,2.365974,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.194026,0,0.04,False,False
+H066,honnete,G1,B,1.79713,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.01713,0,0.02,False,False
+H067,honnete,G1,A,1.974374,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.025626,1,0.2,False,True
+H067,honnete,G1,B,2.233445,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.326555,0,0.04,False,False
+H068,honnete,G1,A,1.862721,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.247279,1,0.31,False,True
+H068,honnete,G1,B,1.450116,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.230116,0,0.58,True,False
+H069,honnete,G1,A,2.450307,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.230307,0,0.38,False,False
+H069,honnete,G1,B,1.810617,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.079383,1,0.09,False,True
+H070,honnete,G1,A,1.638789,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.031211,0,0.13,False,False
+H070,honnete,G1,B,2.077838,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.077838,1,0.2,False,True
+H071,honnete,G1,A,1.590636,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.030636,0,0.24,False,False
+H071,honnete,G1,B,1.644323,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.025677,0,0.13,False,False
+H072,honnete,G1,A,2.269464,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.290536,0,0.04,False,False
+H072,honnete,G1,B,2.438704,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.001296,0,0.16,False,False
+H073,honnete,G1,A,2.097417,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.207417,1,0.09,False,True
+H073,honnete,G1,B,1.618385,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.381615,0,0.2,False,True
+H074,honnete,G1,A,1.782713,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.217287,0,0.2,False,True
+H074,honnete,G1,B,2.37517,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.06483,0,0.16,False,False
+H075,honnete,G1,A,2.17903,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.06903,1,0.31,False,True
+H075,honnete,G1,B,2.14958,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.03958,1,0.31,False,True
+H076,honnete,G1,A,2.314494,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.094494,0,0.38,False,False
+H076,honnete,G1,B,2.380252,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.160252,0,0.38,False,False
+H077,honnete,G1,A,2.009914,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.320086,0,0.27,False,False
+H077,honnete,G1,B,1.540018,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.019982,0,0.24,False,False
+H078,honnete,G1,A,1.458259,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.101741,0,0.24,False,False
+H078,honnete,G1,B,2.007124,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.102876,1,0.31,False,True
+H079,honnete,G1,A,1.688569,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.091431,0,0.02,False,False
+H079,honnete,G1,B,1.927714,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.072286,1,0.2,False,True
+H080,honnete,G1,A,1.611919,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.171919,0,0.36,False,False
+H080,honnete,G1,B,2.180311,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.259689,0,0.16,False,False
+H081,honnete,G1,A,2.116742,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.116742,1,0.2,False,True
+H081,honnete,G1,B,2.16493,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.16507,0,0.27,False,False
+H082,honnete,G1,A,1.755622,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.315622,0,0.36,False,False
+H082,honnete,G1,B,2.081951,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.138049,0,0.38,False,False
+H083,honnete,G1,A,2.358665,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.311335,0,0.07,False,True
+H083,honnete,G1,B,1.953606,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.063606,1,0.09,False,True
+H084,honnete,G1,A,2.259449,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.039449,0,0.38,False,False
+H084,honnete,G1,B,2.418206,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.141794,0,0.04,False,False
+H085,honnete,G1,A,2.336383,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.103617,0,0.16,False,False
+H085,honnete,G1,B,1.361517,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.078483,0,0.36,False,False
+H086,honnete,G1,A,2.302103,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.027897,0,0.27,False,False
+H086,honnete,G1,B,2.043398,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.153398,1,0.09,False,True
+H087,honnete,G1,A,1.879195,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.209195,1,0.13,False,False
+H087,honnete,G1,B,1.153664,Discrète,1.0,0.68,1.32,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.153664,0,0.8,True,False
+H088,honnete,G1,A,1.633518,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.073518,0,0.24,False,False
+H088,honnete,G1,B,2.304325,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.194325,1,0.31,False,True
+H089,honnete,G1,A,1.880686,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.229314,1,0.31,False,True
+H089,honnete,G1,B,2.137504,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.027504,1,0.31,False,True
+H090,honnete,G1,A,1.893879,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.113879,1,0.02,False,False
+H090,honnete,G1,B,2.483433,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.296567,0,0.18,False,True
+H091,honnete,G1,A,2.178748,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.041252,0,0.38,False,False
+H091,honnete,G1,B,1.612158,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.172158,0,0.36,False,False
+H092,honnete,G1,A,2.198956,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.088956,1,0.31,False,True
+H092,honnete,G1,B,1.840062,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.159938,1,0.2,False,True
+H093,honnete,G1,A,1.72012,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.27988,0,0.2,False,True
+H093,honnete,G1,B,1.908548,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.311452,0,0.38,False,False
+H094,honnete,G1,A,1.675873,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.104127,0,0.02,False,False
+H094,honnete,G1,B,2.529429,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.199429,0,0.27,False,False
+H095,honnete,G1,A,2.003343,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.333343,1,0.13,False,False
+H095,honnete,G1,B,1.714802,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.154802,0,0.24,False,False
+H096,honnete,G1,A,1.918756,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.028756,1,0.09,False,True
+H096,honnete,G1,B,2.0375,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.0725,1,0.31,False,True
+H097,honnete,G1,A,2.979894,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.020106,0,0.2,False,False
+H097,honnete,G1,B,1.971662,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.191662,1,0.02,False,False
+H098,honnete,G1,A,2.473088,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.143088,0,0.27,False,False
+H098,honnete,G1,B,2.738708,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.178708,1,0.04,False,False
+H099,honnete,G1,A,1.977686,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.087686,1,0.09,False,True
+H099,honnete,G1,B,2.026248,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.026248,1,0.2,False,True
+H100,honnete,G1,A,2.24994,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.02994,0,0.38,False,False
+H100,honnete,G1,B,1.685684,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,False,0.355684,0,0.47,True,False
+H101,honnete,G1,A,2.224811,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.444811,1,0.02,False,False
+H101,honnete,G1,B,2.331884,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.111884,0,0.38,False,False
+H102,honnete,G1,A,2.518159,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.188159,0,0.27,False,False
+H102,honnete,G1,B,2.140313,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.030313,1,0.31,False,True
+H103,honnete,G1,A,2.260517,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.150517,1,0.31,False,True
+H103,honnete,G1,B,2.37133,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.04133,0,0.27,False,False
+H104,honnete,G1,A,2.338643,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.118643,0,0.38,False,False
+H104,honnete,G1,B,1.987657,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.012343,1,0.2,False,True
+H105,honnete,G1,A,2.303036,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.026964,0,0.27,False,False
+H105,honnete,G1,B,2.349711,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.349711,1,0.2,False,True
+H106,honnete,G1,A,1.382384,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.177616,0,0.24,False,False
+H106,honnete,G1,B,2.292621,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.147379,0,0.16,False,False
+H107,honnete,G1,A,1.631526,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.258474,0,0.09,False,True
+H107,honnete,G1,B,1.886814,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.003186,1,0.09,False,True
+H108,honnete,G1,A,1.738832,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.068832,0,0.13,False,False
+H108,honnete,G1,B,1.725183,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.274817,0,0.2,False,True
+H109,honnete,G1,A,2.193857,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.476143,0,0.07,False,True
+H109,honnete,G1,B,2.053423,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.166577,0,0.38,False,False
+H110,honnete,G1,A,1.848301,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.068301,1,0.02,False,False
+H110,honnete,G1,B,2.268835,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.048835,0,0.38,False,False
+H111,honnete,G1,A,1.84535,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.15465,1,0.2,False,True
+H111,honnete,G1,B,1.549149,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.230851,0,0.02,False,False
+H112,honnete,G1,A,1.380078,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.050078,0,0.47,True,False
+H112,honnete,G1,B,2.742913,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.182913,1,0.04,False,False
+H113,honnete,G1,A,1.951971,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.281971,1,0.13,False,False
+H113,honnete,G1,B,2.35765,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.20235,0,0.04,False,False
+H114,honnete,G1,A,2.085672,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.024328,1,0.31,False,True
+H114,honnete,G1,B,2.080583,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.029417,1,0.31,False,True
+H115,honnete,G1,A,2.148487,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.038487,1,0.31,False,True
+H115,honnete,G1,B,2.106765,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.113235,0,0.38,False,False
+H116,honnete,G1,A,1.775644,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.215644,0,0.24,False,False
+H116,honnete,G1,B,2.692818,Vive,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.362818,1,0.27,False,False
+H117,honnete,G1,A,2.363739,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.076261,0,0.16,False,False
+H117,honnete,G1,B,1.684437,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.124437,0,0.24,False,False
+H118,honnete,G1,A,1.920386,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.079614,1,0.2,False,True
+H118,honnete,G1,B,2.275423,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.055423,0,0.38,False,False
+H119,honnete,G1,A,1.981074,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.018926,1,0.2,False,True
+H119,honnete,G1,B,2.295089,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.034911,0,0.27,False,False
+H120,honnete,G1,A,1.78526,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.11526,0,0.13,False,False
+H120,honnete,G1,B,2.408323,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.298323,1,0.31,False,True
+H121,honnete,G1,A,2.56494,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.45494,1,0.31,False,True
+H121,honnete,G1,B,2.135316,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.025316,1,0.31,False,True
+H122,honnete,G1,A,2.054177,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.055823,1,0.31,False,True
+H122,honnete,G1,B,1.139035,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.190965,0,0.47,True,False
+H123,honnete,G1,A,1.654557,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.235443,0,0.09,False,True
+H123,honnete,G1,B,1.908786,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.128786,1,0.02,False,False
+H124,honnete,G1,A,2.296161,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.033839,0,0.27,False,False
+H124,honnete,G1,B,1.943388,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.056612,1,0.2,False,True
+H125,honnete,G1,A,1.29485,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.03515,0,0.47,True,False
+H125,honnete,G1,B,1.743704,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.146296,0,0.09,False,True
+H126,honnete,G1,A,1.844492,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.045508,1,0.09,False,True
+H126,honnete,G1,B,2.427939,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.012061,0,0.16,False,False
+H127,honnete,G1,A,2.418886,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.021114,0,0.16,False,False
+H127,honnete,G1,B,2.135809,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.424191,0,0.04,False,False
+H128,honnete,G1,A,1.362315,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.032315,0,0.47,True,False
+H128,honnete,G1,B,2.493086,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.163086,0,0.27,False,False
+H129,honnete,G1,A,1.802644,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.022644,1,0.02,False,False
+H129,honnete,G1,B,1.862946,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.302946,1,0.24,False,False
+H130,honnete,G1,A,2.28721,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.17721,1,0.31,False,True
+H130,honnete,G1,B,2.538215,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.021785,0,0.04,False,False
+H131,honnete,G1,A,1.832642,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.057358,1,0.09,False,True
+H131,honnete,G1,B,2.082905,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.027095,1,0.31,False,True
+H132,honnete,G1,A,2.213076,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.346924,0,0.04,False,False
+H132,honnete,G1,B,2.034202,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.075798,1,0.31,False,True
+H133,honnete,G1,A,2.000752,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.219248,0,0.38,False,False
+H133,honnete,G1,B,1.643594,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.313594,0,0.47,True,False
+H134,honnete,G1,A,1.99945,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.10945,1,0.09,False,True
+H134,honnete,G1,B,2.138563,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.358563,1,0.02,False,False
+H135,honnete,G1,A,2.017124,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.017124,1,0.2,False,True
+H135,honnete,G1,B,2.003642,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.106358,1,0.31,False,True
+H136,honnete,G1,A,1.963258,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.073258,1,0.09,False,True
+H136,honnete,G1,B,1.572509,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.097491,0,0.13,False,False
+H137,honnete,G1,A,2.52925,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.03075,0,0.04,False,False
+H137,honnete,G1,B,2.731376,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.171376,1,0.04,False,False
+H138,honnete,G1,A,1.293615,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.036385,0,0.47,True,False
+H138,honnete,G1,B,2.071861,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.038139,1,0.31,False,True
+H139,honnete,G1,A,1.765994,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.014006,0,0.02,False,False
+H139,honnete,G1,B,2.232776,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.097224,0,0.27,False,False
+H140,honnete,G1,A,1.580172,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.199828,0,0.02,False,False
+H140,honnete,G1,B,2.037577,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.037577,1,0.2,False,True
+H141,honnete,G1,A,2.195341,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.134659,0,0.27,False,False
+H141,honnete,G1,B,2.043607,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.043607,1,0.2,False,True
+H142,honnete,G1,A,1.731009,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,False,0.401009,0,0.47,True,False
+H142,honnete,G1,B,1.927442,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.072558,1,0.2,False,True
+H143,honnete,G1,A,2.19766,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.13234,0,0.27,False,False
+H143,honnete,G1,B,1.675726,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.104274,0,0.02,False,False
+H144,honnete,G1,A,1.833928,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.166072,1,0.2,False,True
+H144,honnete,G1,B,1.80398,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.08602,1,0.09,False,True
+H145,honnete,G1,A,1.962476,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.147524,1,0.31,False,True
+H145,honnete,G1,B,2.06405,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.17405,1,0.09,False,True
+H146,honnete,G1,A,1.939617,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.060383,1,0.2,False,True
+H146,honnete,G1,B,1.41757,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.08757,0,0.47,True,False
+H147,honnete,G1,A,2.230619,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.120619,1,0.31,False,True
+H147,honnete,G1,B,2.870386,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.090386,1,0.18,False,True
+H148,honnete,G1,A,2.014833,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.014833,1,0.2,False,True
+H148,honnete,G1,B,1.982356,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.092356,1,0.09,False,True
+H149,honnete,G1,A,1.980978,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.019022,1,0.2,False,True
+H149,honnete,G1,B,2.488637,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.071363,0,0.04,False,False
+H150,honnete,G1,A,2.163272,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.053272,1,0.31,False,True
+H150,honnete,G1,B,2.300338,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.029662,0,0.27,False,False
+H151,honnete,G1,A,2.353189,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.206811,0,0.04,False,False
+H151,honnete,G1,B,2.475553,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.084447,0,0.04,False,False
+H152,honnete,G1,A,1.91782,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.52218,0,0.16,False,False
+H152,honnete,G1,B,2.390049,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.170049,0,0.38,False,False
+H153,honnete,G1,A,2.206939,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.206939,1,0.2,False,True
+H153,honnete,G1,B,2.160211,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.380211,1,0.02,False,False
+H154,honnete,G1,A,1.970254,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.249746,0,0.38,False,False
+H154,honnete,G1,B,2.142363,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.252363,1,0.09,False,True
+H155,honnete,G1,A,1.648782,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.021218,0,0.13,False,False
+H155,honnete,G1,B,1.602395,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.067605,0,0.13,False,False
+H156,honnete,G1,A,1.979089,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.020911,1,0.2,False,True
+H156,honnete,G1,B,2.406891,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.076891,0,0.27,False,False
+H157,honnete,G1,A,1.62445,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.04555,0,0.13,False,False
+H157,honnete,G1,B,1.61962,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.05962,0,0.24,False,False
+H158,honnete,G1,A,1.907472,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.017472,1,0.09,False,True
+H158,honnete,G1,B,1.99979,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.11021,1,0.31,False,True
+H159,honnete,G1,A,2.025401,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.084599,1,0.31,False,True
+H159,honnete,G1,B,1.932903,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.152903,1,0.02,False,False
+H160,honnete,G1,A,1.709022,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.149022,0,0.24,False,False
+H160,honnete,G1,B,2.150808,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.289192,0,0.16,False,False
+H161,honnete,G1,A,2.39754,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.16246,0,0.04,False,False
+H161,honnete,G1,B,2.088406,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.131594,0,0.38,False,False
+H162,honnete,G1,A,1.245538,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.194462,0,0.36,False,False
+H162,honnete,G1,B,2.29719,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.18719,1,0.31,False,True
+H163,honnete,G1,A,1.678007,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.101993,0,0.02,False,False
+H163,honnete,G1,B,2.441937,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.001937,0,0.16,False,False
+H164,honnete,G1,A,2.256978,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.073022,0,0.27,False,False
+H164,honnete,G1,B,2.501398,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.168602,0,0.07,False,True
+H165,honnete,G1,A,2.408801,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.078801,0,0.27,False,False
+H165,honnete,G1,B,1.656519,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.216519,0,0.36,False,False
+H166,honnete,G1,A,2.071981,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.368019,0,0.16,False,False
+H166,honnete,G1,B,2.415226,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.144774,0,0.04,False,False
+H167,honnete,G1,A,1.391354,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.171354,0,0.58,True,False
+H167,honnete,G1,B,1.794604,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.124604,0,0.13,False,False
+H168,honnete,G1,A,1.951801,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.171801,1,0.02,False,False
+H168,honnete,G1,B,1.425368,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.244632,0,0.13,False,False
+H169,honnete,G1,A,1.909588,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.019588,1,0.09,False,True
+H169,honnete,G1,B,2.055874,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.164126,0,0.38,False,False
+H170,honnete,G1,A,2.601383,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.161383,1,0.16,False,False
+H170,honnete,G1,B,2.375213,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.155213,0,0.38,False,False
+H171,honnete,G1,A,2.118637,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.228637,1,0.09,False,True
+H171,honnete,G1,B,1.974681,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.304681,1,0.13,False,False
+H172,honnete,G1,A,1.681182,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.098818,0,0.02,False,False
+H172,honnete,G1,B,2.039735,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.369735,1,0.13,False,False
+H173,honnete,G1,A,2.280475,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.280475,1,0.2,False,True
+H173,honnete,G1,B,2.624939,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.064939,1,0.04,False,False
+H174,honnete,G1,A,2.231236,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.011236,0,0.38,False,False
+H174,honnete,G1,B,2.094585,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.465415,0,0.04,False,False
+H175,honnete,G1,A,1.383259,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.053259,0,0.47,True,False
+H175,honnete,G1,B,1.873912,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.126088,1,0.2,False,True
+H176,honnete,G1,A,2.41024,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.19024,0,0.38,False,False
+H176,honnete,G1,B,1.407262,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.032738,0,0.36,False,False
+H177,honnete,G1,A,1.898792,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.118792,1,0.02,False,False
+H177,honnete,G1,B,2.268411,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.158411,1,0.31,False,True
+H178,honnete,G1,A,2.163179,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.276821,0,0.16,False,False
+H178,honnete,G1,B,1.807295,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.137295,1,0.13,False,False
+H179,honnete,G1,A,1.803675,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.526325,0,0.27,False,False
+H179,honnete,G1,B,2.225939,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.005939,0,0.38,False,False
+H180,honnete,G1,A,1.804185,Tranquille,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,False,False,0.364185,1,0.36,False,False
+H180,honnete,G1,B,1.943547,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.163547,1,0.02,False,False
+H181,honnete,G1,A,2.043405,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.176595,0,0.38,False,False
+H181,honnete,G1,B,2.525153,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.085153,0,0.16,False,False
+H182,honnete,G1,A,2.009378,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.009378,1,0.2,False,True
+H182,honnete,G1,B,2.471382,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.141382,0,0.27,False,False
+H183,honnete,G1,A,1.940257,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.059743,1,0.2,False,True
+H183,honnete,G1,B,2.23291,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.01291,0,0.38,False,False
+H184,honnete,G1,A,1.80471,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.08529,1,0.09,False,True
+H184,honnete,G1,B,3.252849,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.307151,0,0.36,False,False
+H185,honnete,G1,A,2.155538,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.155538,1,0.2,False,True
+H185,honnete,G1,B,2.062375,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.157625,0,0.38,False,False
+H186,honnete,G1,A,1.482304,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.152304,0,0.47,True,False
+H186,honnete,G1,B,1.552669,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.112669,0,0.36,False,False
+H187,honnete,G1,A,2.035732,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,False,0.404268,0,0.16,False,False
+H187,honnete,G1,B,1.992896,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.007104,1,0.2,False,True
+H188,honnete,G1,A,2.136019,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.136019,1,0.2,False,True
+H188,honnete,G1,B,1.799929,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.019929,0,0.02,False,False
+H189,honnete,G1,A,1.872216,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.017784,1,0.09,False,True
+H189,honnete,G1,B,2.790514,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.099486,1,0.29,False,True
+H190,honnete,G1,A,2.212181,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.322181,1,0.09,False,True
+H190,honnete,G1,B,1.616915,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.053085,0,0.13,False,False
+H191,honnete,G1,A,2.283425,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.283425,1,0.2,False,True
+H191,honnete,G1,B,1.780918,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.109082,0,0.09,False,True
+H192,honnete,G1,A,2.002708,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.112708,1,0.09,False,True
+H192,honnete,G1,B,1.282141,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.047859,0,0.47,True,False
+H193,honnete,G1,A,1.92641,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.25641,1,0.13,False,False
+H193,honnete,G1,B,2.04202,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.26202,1,0.02,False,False
+H194,honnete,G1,A,2.147308,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.182692,0,0.27,False,False
+H194,honnete,G1,B,2.308123,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.198123,1,0.31,False,True
+H195,honnete,G1,A,1.771977,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.008023,0,0.02,False,False
+H195,honnete,G1,B,2.193178,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.246822,0,0.16,False,False
+H196,honnete,G1,A,2.261337,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.151337,1,0.31,False,True
+H196,honnete,G1,B,2.041478,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.178522,0,0.38,False,False
+H197,honnete,G1,A,2.159491,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.489491,1,0.13,False,False
+H197,honnete,G1,B,2.529015,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.199015,0,0.27,False,False
+H198,honnete,G1,A,1.347469,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.127469,0,0.58,True,False
+H198,honnete,G1,B,1.838858,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.051142,1,0.09,False,True
+H199,honnete,G1,A,2.192268,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.137732,0,0.27,False,False
+H199,honnete,G1,B,1.376849,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.063151,0,0.36,False,False
+H200,honnete,G1,A,1.666424,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.113576,0,0.02,False,False
+H200,honnete,G1,B,1.89758,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.00758,1,0.09,False,True
+H201,honnete,G2,A,3.296805,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.076805,1,0.02,False,True
+H201,honnete,G2,B,2.439557,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.109557,0,0.27,False,False
+H202,honnete,G2,A,3.020723,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.130723,1,0.29,False,True
+H202,honnete,G2,B,2.103893,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.006107,1,0.31,False,True
+H203,honnete,G2,A,2.815539,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.145539,1,0.07,False,True
+H203,honnete,G2,B,2.365668,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.035668,0,0.27,False,False
+H204,honnete,G2,A,3.141243,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.141243,0,0.2,False,False
+H204,honnete,G2,B,2.304214,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.194214,1,0.31,False,True
+H205,honnete,G2,A,3.051137,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.051137,0,0.2,False,False
+H205,honnete,G2,B,2.217161,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.222839,0,0.16,False,False
+H206,honnete,G2,A,2.92299,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.07701,0,0.2,False,False
+H206,honnete,G2,B,2.814173,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.374173,1,0.16,False,False
+H207,honnete,G2,A,3.394974,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.174974,1,0.02,False,True
+H207,honnete,G2,B,1.530477,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.249523,0,0.02,False,False
+H208,honnete,G2,A,3.169066,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.160934,0,0.13,False,True
+H208,honnete,G2,B,2.848889,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.261111,0,0.09,False,False
+H209,honnete,G2,A,2.919489,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.139489,1,0.18,False,True
+H209,honnete,G2,B,1.80875,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.24875,1,0.24,False,False
+H210,honnete,G2,A,3.03807,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.07193,0,0.09,False,False
+H210,honnete,G2,B,1.842494,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.172494,1,0.13,False,False
+H211,honnete,G2,A,3.310284,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.090284,1,0.02,False,True
+H211,honnete,G2,B,2.6974,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.1374,1,0.04,False,False
+H212,honnete,G2,A,3.136702,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.136702,0,0.2,False,False
+H212,honnete,G2,B,2.258281,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.038281,0,0.38,False,False
+H213,honnete,G2,A,2.980247,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.129753,0,0.09,False,False
+H213,honnete,G2,B,2.333317,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.226683,0,0.04,False,False
+H214,honnete,G2,A,3.319832,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.099832,1,0.02,False,True
+H214,honnete,G2,B,1.922483,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.077517,1,0.2,False,True
+H215,honnete,G2,A,2.538842,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.538842,1,0.2,False,True
+H215,honnete,G2,B,2.200391,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.129609,0,0.27,False,False
+H216,honnete,G2,A,3.216109,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.003891,1,0.02,False,True
+H216,honnete,G2,B,2.164578,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.055422,0,0.38,False,False
+H217,honnete,G2,A,3.081025,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.138975,0,0.02,False,True
+H217,honnete,G2,B,2.285911,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.274089,0,0.04,False,False
+H218,honnete,G2,A,3.011736,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.011736,0,0.2,False,False
+H218,honnete,G2,B,2.350233,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.240233,1,0.31,False,True
+H219,honnete,G2,A,2.836272,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.166272,1,0.07,False,True
+H219,honnete,G2,B,1.593141,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.153141,0,0.36,False,False
+H220,honnete,G2,A,2.795788,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.424212,0,0.02,False,True
+H220,honnete,G2,B,2.008821,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.101179,1,0.31,False,True
+H221,honnete,G2,A,2.467932,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.247932,0,0.38,False,False
+H221,honnete,G2,B,2.204443,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.204443,1,0.2,False,True
+H222,honnete,G2,A,3.106232,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.223768,0,0.13,False,True
+H222,honnete,G2,B,2.463499,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.316501,0,0.18,False,True
+H223,honnete,G2,A,3.322438,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.102438,1,0.02,False,True
+H223,honnete,G2,B,2.339574,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.119574,0,0.38,False,False
+H224,honnete,G2,A,2.984141,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.204141,1,0.18,False,True
+H224,honnete,G2,B,2.520885,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.190885,0,0.27,False,False
+H225,honnete,G2,A,3.376651,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.156651,1,0.02,False,True
+H225,honnete,G2,B,2.621396,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.048604,1,0.07,False,True
+H226,honnete,G2,A,2.495649,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.055649,0,0.16,False,False
+H226,honnete,G2,B,2.31629,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.12371,0,0.16,False,False
+H227,honnete,G2,A,3.715609,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.064391,0,0.58,True,False
+H227,honnete,G2,B,1.942828,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.272828,1,0.13,False,False
+H228,honnete,G2,A,2.916143,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.246143,1,0.07,False,True
+H228,honnete,G2,B,2.776835,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,False,0.333165,0,0.09,False,False
+H229,honnete,G2,A,2.666796,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.113204,1,0.18,False,True
+H229,honnete,G2,B,2.348953,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.128953,0,0.38,False,False
+H230,honnete,G2,A,2.60366,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.16366,1,0.16,False,False
+H230,honnete,G2,B,1.75228,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.24772,0,0.2,False,True
+H231,honnete,G2,A,3.212937,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.212937,1,0.2,False,False
+H231,honnete,G2,B,1.634244,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.194244,0,0.36,False,False
+H232,honnete,G2,A,2.510438,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.180438,0,0.27,False,False
+H232,honnete,G2,B,2.644202,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.245798,1,0.29,False,True
+H233,honnete,G2,A,3.246762,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.136762,1,0.09,False,False
+H233,honnete,G2,B,1.842681,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.267319,1,0.31,False,True
+H234,honnete,G2,A,2.893641,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.333641,1,0.04,False,False
+H234,honnete,G2,B,1.50347,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.05653,0,0.24,False,False
+H235,honnete,G2,A,2.905042,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.125042,1,0.18,False,True
+H235,honnete,G2,B,2.088517,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.088517,1,0.2,False,True
+H236,honnete,G2,A,3.264163,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.065837,1,0.13,False,True
+H236,honnete,G2,B,1.792955,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.097045,0,0.09,False,True
+H237,honnete,G2,A,2.936659,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.156659,1,0.18,False,True
+H237,honnete,G2,B,1.999887,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.110113,1,0.31,False,True
+H238,honnete,G2,A,3.371889,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.188111,0,0.36,False,False
+H238,honnete,G2,B,2.091889,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.201889,1,0.09,False,True
+H239,honnete,G2,A,3.28461,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.17461,1,0.09,False,False
+H239,honnete,G2,B,1.477815,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.147815,0,0.47,True,False
+H240,honnete,G2,A,2.444094,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.225906,0,0.07,False,True
+H240,honnete,G2,B,1.604607,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.164607,0,0.36,False,False
+H241,honnete,G2,A,2.975587,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.134413,0,0.09,False,False
+H241,honnete,G2,B,1.900948,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.209052,1,0.31,False,True
+H242,honnete,G2,A,3.09387,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.31387,1,0.18,False,True
+H242,honnete,G2,B,1.803474,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.023474,1,0.02,False,False
+H243,honnete,G2,A,3.447494,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.227494,1,0.02,False,True
+H243,honnete,G2,B,2.175207,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.264793,0,0.16,False,False
+H244,honnete,G2,A,2.964075,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.184075,1,0.18,False,True
+H244,honnete,G2,B,3.000908,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.330908,1,0.07,False,True
+H245,honnete,G2,A,3.32204,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.00796,1,0.13,False,True
+H245,honnete,G2,B,2.135354,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.355354,1,0.02,False,False
+H246,honnete,G2,A,3.306,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.306,1,0.2,False,False
+H246,honnete,G2,B,1.861224,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.191224,1,0.13,False,False
+H247,honnete,G2,A,2.95744,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.04256,0,0.2,False,False
+H247,honnete,G2,B,2.071026,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.258974,0,0.27,False,False
+H248,honnete,G2,A,3.101002,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.101002,0,0.2,False,False
+H248,honnete,G2,B,2.285295,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.384705,0,0.07,False,True
+H249,honnete,G2,A,3.098535,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.011465,0,0.09,False,False
+H249,honnete,G2,B,3.11458,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.00458,0,0.09,False,False
+H250,honnete,G2,A,3.394682,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.045318,1,0.24,False,True
+H250,honnete,G2,B,1.667693,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.107693,0,0.24,False,False
+H251,honnete,G2,A,3.008673,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.321327,0,0.13,False,True
+H251,honnete,G2,B,2.631679,Vive,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,False,False,0.411679,1,0.38,False,False
+H252,honnete,G2,A,3.301606,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.191606,1,0.09,False,False
+H252,honnete,G2,B,2.254706,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.254706,1,0.2,False,True
+H253,honnete,G2,A,2.601694,Vive,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.271694,1,0.27,False,False
+H253,honnete,G2,B,1.964275,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.035725,1,0.2,False,True
+H254,honnete,G2,A,3.546978,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.216978,1,0.13,False,True
+H254,honnete,G2,B,2.243858,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.133858,1,0.31,False,True
+H255,honnete,G2,A,3.079571,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.299571,1,0.18,False,True
+H255,honnete,G2,B,2.531604,Tranquille,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,False,False,0.358396,0,0.29,False,True
+H256,honnete,G2,A,3.066218,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.263782,0,0.13,False,True
+H256,honnete,G2,B,1.353561,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.206439,0,0.24,False,False
+H257,honnete,G2,A,3.43408,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.23592,0,0.47,True,False
+H257,honnete,G2,B,2.420006,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.019994,0,0.16,False,False
+H258,honnete,G2,A,2.908941,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.091059,0,0.2,False,False
+H258,honnete,G2,B,2.536998,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.096998,0,0.16,False,False
+H259,honnete,G2,A,2.326234,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.233766,0,0.04,False,False
+H259,honnete,G2,B,2.247004,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.357004,1,0.09,False,True
+H260,honnete,G2,A,2.740795,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.070795,1,0.07,False,True
+H260,honnete,G2,B,2.026171,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.083829,1,0.31,False,True
+H261,honnete,G2,A,3.428227,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.011773,1,0.24,False,True
+H261,honnete,G2,B,2.391226,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.388774,0,0.18,False,True
+H262,honnete,G2,A,2.590998,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.079002,0,0.07,False,True
+H262,honnete,G2,B,1.925075,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.184925,1,0.31,False,True
+H263,honnete,G2,A,3.261058,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.261058,1,0.2,False,False
+H263,honnete,G2,B,2.156492,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.283508,0,0.16,False,False
+H264,honnete,G2,A,3.799782,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.129782,0,0.47,True,False
+H264,honnete,G2,B,2.380759,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.059241,0,0.16,False,False
+H265,honnete,G2,A,2.965612,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.034388,0,0.2,False,False
+H265,honnete,G2,B,1.702771,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.262771,0,0.36,False,False
+H266,honnete,G2,A,2.89946,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.00946,1,0.29,False,True
+H266,honnete,G2,B,1.852188,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.182188,1,0.13,False,False
+H267,honnete,G2,A,3.865442,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.195442,0,0.47,True,False
+H267,honnete,G2,B,2.321557,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.008443,0,0.27,False,False
+H268,honnete,G2,A,3.51769,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.29769,1,0.02,False,True
+H268,honnete,G2,B,2.053691,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.166309,0,0.38,False,False
+H269,honnete,G2,A,3.194598,Vive,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.245402,0,0.24,False,True
+H269,honnete,G2,B,2.018356,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.091644,1,0.31,False,True
+H270,honnete,G2,A,3.115754,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.115754,0,0.2,False,False
+H270,honnete,G2,B,1.694975,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.085025,0,0.02,False,False
+H271,honnete,G2,A,3.492311,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.162311,1,0.13,False,True
+H271,honnete,G2,B,1.957488,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.397488,1,0.24,False,False
+H272,honnete,G2,A,3.334848,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.114848,1,0.02,False,True
+H272,honnete,G2,B,2.469926,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.090074,0,0.04,False,False
+H273,honnete,G2,A,3.248957,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.081043,1,0.13,False,True
+H273,honnete,G2,B,2.061494,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.268506,0,0.27,False,False
+H274,honnete,G2,A,2.881071,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.118929,0,0.2,False,False
+H274,honnete,G2,B,2.122426,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.232426,1,0.09,False,True
+H275,honnete,G2,A,2.59053,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.07947,0,0.07,False,True
+H275,honnete,G2,B,1.938276,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.061724,1,0.2,False,True
+H276,honnete,G2,A,2.947698,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,False,0.387698,1,0.04,False,False
+H276,honnete,G2,B,2.166312,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.276312,1,0.09,False,True
+H277,honnete,G2,A,3.293913,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.266087,0,0.36,False,False
+H277,honnete,G2,B,1.929843,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.149843,1,0.02,False,False
+H278,honnete,G2,A,2.902871,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.097129,0,0.2,False,False
+H278,honnete,G2,B,1.934169,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.044169,1,0.09,False,True
+H279,honnete,G2,A,3.620085,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.049915,0,0.47,True,False
+H279,honnete,G2,B,1.812193,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.032193,1,0.02,False,False
+H280,honnete,G2,A,3.644636,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.204636,1,0.24,False,True
+H280,honnete,G2,B,2.350028,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.130028,0,0.38,False,False
+H281,honnete,G2,A,3.356661,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.083339,1,0.24,False,True
+H281,honnete,G2,B,2.196153,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.196153,1,0.2,False,True
+H282,honnete,G2,A,3.124261,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.205739,0,0.13,False,True
+H282,honnete,G2,B,1.179453,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,False,0.380547,0,0.24,False,False
+H283,honnete,G2,A,3.018281,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.018281,0,0.2,False,False
+H283,honnete,G2,B,2.335611,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.005611,0,0.27,False,False
+H284,honnete,G2,A,2.665523,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.114477,1,0.18,False,True
+H284,honnete,G2,B,2.058004,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.271996,0,0.27,False,False
+H285,honnete,G2,A,3.947328,Forte,3.89,3.57,4.21,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.057328,0,0.69,True,False
+H285,honnete,G2,B,2.164072,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.164072,1,0.2,False,True
+H286,honnete,G2,A,3.189976,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.299976,1,0.29,False,True
+H286,honnete,G2,B,2.281931,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.281931,1,0.2,False,True
+H287,honnete,G2,A,2.538568,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.131432,0,0.07,False,True
+H287,honnete,G2,B,2.146027,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.036027,1,0.31,False,True
+H288,honnete,G2,A,3.52114,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,False,0.41114,1,0.09,False,False
+H288,honnete,G2,B,1.945674,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.054326,1,0.2,False,True
+H289,honnete,G2,A,2.305188,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.415188,1,0.09,False,True
+H289,honnete,G2,B,1.994119,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.104119,1,0.09,False,True
+H290,honnete,G2,A,3.41389,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.14611,0,0.36,False,False
+H290,honnete,G2,B,1.862923,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.027077,1,0.09,False,True
+H291,honnete,G2,A,3.259667,Forte,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.479667,2,0.18,False,True
+H291,honnete,G2,B,2.275417,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.055417,0,0.38,False,False
+H292,honnete,G2,A,3.025997,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.135997,1,0.29,False,True
+H292,honnete,G2,B,1.999443,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,False,0.329443,1,0.13,False,False
+H293,honnete,G2,A,3.441487,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.111487,1,0.13,False,True
+H293,honnete,G2,B,1.9494,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.2794,1,0.13,False,False
+H294,honnete,G2,A,3.344158,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.095842,1,0.24,False,True
+H294,honnete,G2,B,1.920138,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.140138,1,0.02,False,False
+H295,honnete,G2,A,2.66618,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.11382,1,0.18,False,True
+H295,honnete,G2,B,1.383873,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.286127,0,0.13,False,False
+H296,honnete,G2,A,3.086436,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.023564,0,0.09,False,False
+H296,honnete,G2,B,2.744787,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.035213,1,0.18,False,True
+H297,honnete,G2,A,3.294921,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.265079,0,0.36,False,False
+H297,honnete,G2,B,2.215165,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.114835,0,0.27,False,False
+H298,honnete,G2,A,3.713448,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.043448,0,0.47,True,False
+H298,honnete,G2,B,2.37754,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.15754,0,0.38,False,False
+H299,honnete,G2,A,2.638311,Vive,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,False,False,0.418311,1,0.38,False,False
+H299,honnete,G2,B,2.535081,Tranquille,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,False,False,0.354919,0,0.29,False,True
+H300,honnete,G2,A,2.844367,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.155633,0,0.2,False,False
+H300,honnete,G2,B,1.961864,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.258136,0,0.38,False,False
+H301,honnete,G2,A,2.891309,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.221309,1,0.07,False,True
+H301,honnete,G2,B,2.667268,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.112732,1,0.18,False,True
+H302,honnete,G2,A,3.187105,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.407105,1,0.18,False,True
+H302,honnete,G2,B,2.649588,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.130412,1,0.18,False,True
+H303,honnete,G2,A,3.119183,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.119183,0,0.2,False,False
+H303,honnete,G2,B,2.546124,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.216124,0,0.27,False,False
+H304,honnete,G2,A,3.634893,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.194893,1,0.24,False,True
+H304,honnete,G2,B,1.694314,Discrète,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.085686,0,0.02,False,False
+H305,honnete,G2,A,3.445096,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.334904,0,0.58,True,False
+H305,honnete,G2,B,2.14103,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.29897,0,0.16,False,False
+H306,honnete,G2,A,3.00848,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.32152,0,0.13,False,True
+H306,honnete,G2,B,1.924333,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.254333,1,0.13,False,False
+H307,honnete,G2,A,2.75527,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.46473,0,0.02,False,True
+H307,honnete,G2,B,1.487121,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.047121,0,0.36,False,False
+H308,honnete,G2,A,3.483058,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.043058,1,0.24,False,True
+H308,honnete,G2,B,2.119745,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.119745,1,0.2,False,True
+H309,honnete,G2,A,3.025975,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.355975,1,0.07,False,True
+H309,honnete,G2,B,1.170693,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,False,0.499307,0,0.13,False,False
+H310,honnete,G2,A,3.137653,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.027653,0,0.09,False,False
+H310,honnete,G2,B,3.013877,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.206123,0,0.02,False,True
+H311,honnete,G2,A,3.173349,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.046651,0,0.02,False,True
+H311,honnete,G2,B,2.125419,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.015419,1,0.31,False,True
+H312,honnete,G2,A,3.13601,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.24601,1,0.29,False,True
+H312,honnete,G2,B,2.023732,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.133732,1,0.09,False,True
+H313,honnete,G2,A,2.825043,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.265043,1,0.04,False,False
+H313,honnete,G2,B,2.068173,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.068173,1,0.2,False,True
+H314,honnete,G2,A,3.04003,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.15003,1,0.29,False,True
+H314,honnete,G2,B,1.808359,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.028359,1,0.02,False,False
+H315,honnete,G2,A,2.9512,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.0488,0,0.2,False,False
+H315,honnete,G2,B,2.432345,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.007655,0,0.16,False,False
+H316,honnete,G2,A,3.231993,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.121993,1,0.09,False,False
+H316,honnete,G2,B,1.845506,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.264494,1,0.31,False,True
+H317,honnete,G2,A,3.295198,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.264802,0,0.36,False,False
+H317,honnete,G2,B,1.811504,Tranquille,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.251504,1,0.24,False,False
+H318,honnete,G2,A,3.326284,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.003716,1,0.13,False,True
+H318,honnete,G2,B,2.15248,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.28752,0,0.16,False,False
+H319,honnete,G2,A,2.532241,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.092241,0,0.16,False,False
+H319,honnete,G2,B,2.312805,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.312805,1,0.2,False,True
+H320,honnete,G2,A,3.269878,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.159878,1,0.09,False,False
+H320,honnete,G2,B,2.705964,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.035964,1,0.07,False,True
+H321,honnete,G2,A,3.253909,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.076091,1,0.13,False,True
+H321,honnete,G2,B,1.721042,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.161042,0,0.24,False,False
+H322,honnete,G2,A,3.35095,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.08905,1,0.24,False,True
+H322,honnete,G2,B,1.54096,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.34904,0,0.09,False,True
+H323,honnete,G2,A,3.249269,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.029269,1,0.02,False,True
+H323,honnete,G2,B,1.869155,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.130845,1,0.2,False,True
+H324,honnete,G2,A,2.814397,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.185603,0,0.2,False,False
+H324,honnete,G2,B,2.023781,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.086219,1,0.31,False,True
+H325,honnete,G2,A,2.787349,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.117349,1,0.07,False,True
+H325,honnete,G2,B,2.02185,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.13185,1,0.09,False,True
+H326,honnete,G2,A,2.897816,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.007816,1,0.29,False,True
+H326,honnete,G2,B,2.458945,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.238945,0,0.38,False,False
+H327,honnete,G2,A,3.001594,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.108406,0,0.09,False,False
+H327,honnete,G2,B,1.79912,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.09088,0,0.09,False,True
+H328,honnete,G2,A,2.985396,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.014604,0,0.2,False,False
+H328,honnete,G2,B,1.774228,Discrète,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.335772,0,0.31,False,True
+H329,honnete,G2,A,3.264903,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.044903,1,0.02,False,True
+H329,honnete,G2,B,2.065917,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.065917,1,0.2,False,True
+H330,honnete,G2,A,3.330419,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.110419,1,0.02,False,True
+H330,honnete,G2,B,1.838292,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.051708,1,0.09,False,True
+H331,honnete,G2,A,3.101634,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.228366,0,0.13,False,True
+H331,honnete,G2,B,2.762264,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.017736,1,0.18,False,True
+H332,honnete,G2,A,2.779975,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.109975,1,0.07,False,True
+H332,honnete,G2,B,1.738706,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,False,0.408706,0,0.47,True,False
+H333,honnete,G2,A,2.580499,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.250499,0,0.27,False,False
+H333,honnete,G2,B,2.265596,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.045596,0,0.38,False,False
+H334,honnete,G2,A,3.161947,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.168053,0,0.13,False,True
+H334,honnete,G2,B,1.969525,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.030475,1,0.2,False,True
+H335,honnete,G2,A,2.75548,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.13452,1,0.29,False,True
+H335,honnete,G2,B,2.501653,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.061653,0,0.16,False,False
+H336,honnete,G2,A,3.015511,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.094489,0,0.09,False,False
+H336,honnete,G2,B,2.754724,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.245276,0,0.2,False,False
+H337,honnete,G2,A,3.291638,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.038362,1,0.13,False,True
+H337,honnete,G2,B,2.66938,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.22938,1,0.16,False,False
+H338,honnete,G2,A,2.999201,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.330799,0,0.13,False,True
+H338,honnete,G2,B,1.772591,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.117409,0,0.09,False,True
+H339,honnete,G2,A,2.851677,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.038323,1,0.29,False,True
+H339,honnete,G2,B,2.564702,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,False,0.344702,0,0.38,False,False
+H340,honnete,G2,A,3.615119,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.055119,0,0.36,False,False
+H340,honnete,G2,B,2.360886,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.199114,0,0.04,False,False
+H341,honnete,G2,A,2.703826,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.033826,1,0.07,False,True
+H341,honnete,G2,B,1.914823,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.195177,1,0.31,False,True
+H342,honnete,G2,A,2.907433,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.092567,0,0.2,False,False
+H342,honnete,G2,B,3.135417,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.355417,1,0.18,False,True
+H343,honnete,G2,A,3.321176,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.101176,1,0.02,False,True
+H343,honnete,G2,B,1.857421,Tranquille,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,False,False,0.637421,1,0.58,True,False
+H344,honnete,G2,A,3.47253,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.08747,0,0.36,False,False
+H344,honnete,G2,B,1.869455,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.199455,1,0.13,False,False
+H345,honnete,G2,A,2.730882,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.159118,1,0.29,False,True
+H345,honnete,G2,B,2.124413,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.124413,1,0.2,False,True
+H346,honnete,G2,A,3.034089,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.295911,0,0.13,False,True
+H346,honnete,G2,B,1.908628,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.091372,1,0.2,False,True
+H347,honnete,G2,A,2.981901,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.018099,0,0.2,False,False
+H347,honnete,G2,B,1.390961,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.170961,0,0.58,True,False
+H348,honnete,G2,A,4.019237,Forte,3.89,3.57,4.21,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.129237,0,0.69,True,False
+H348,honnete,G2,B,1.918904,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.191096,1,0.31,False,True
+H349,honnete,G2,A,2.43185,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.10185,0,0.27,False,False
+H349,honnete,G2,B,1.598122,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.158122,0,0.36,False,False
+H350,honnete,G2,A,2.239051,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.019051,0,0.38,False,False
+H350,honnete,G2,B,1.536059,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.133941,0,0.13,False,False
+H351,honnete,G3,A,2.583032,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.143032,0,0.16,False,False
+H351,honnete,G3,B,3.135885,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.194115,0,0.13,False,True
+H352,honnete,G3,A,1.83759,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.05759,1,0.02,False,False
+H352,honnete,G3,B,3.179486,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.069486,0,0.09,False,False
+H353,honnete,G3,A,2.477214,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.037214,0,0.16,False,False
+H353,honnete,G3,B,3.210464,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.229536,1,0.24,False,True
+H354,honnete,G3,A,2.505048,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.164952,0,0.07,False,True
+H354,honnete,G3,B,3.557591,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,False,0.337591,1,0.02,False,True
+H355,honnete,G3,A,1.857117,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.077117,1,0.02,False,False
+H355,honnete,G3,B,3.009988,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.320012,0,0.13,False,True
+H356,honnete,G3,A,2.426918,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.013082,0,0.16,False,False
+H356,honnete,G3,B,3.481753,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.298247,0,0.58,True,False
+H357,honnete,G3,A,2.172342,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.157658,0,0.27,False,False
+H357,honnete,G3,B,3.583105,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.086895,0,0.47,True,False
+H358,honnete,G3,A,2.593646,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.186354,0,0.18,False,True
+H358,honnete,G3,B,3.178948,Vive,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,False,False,0.381052,-1,0.36,False,False
+H359,honnete,G3,A,2.738952,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.298952,1,0.16,False,False
+H359,honnete,G3,B,3.436018,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.106018,1,0.13,False,True
+H360,honnete,G3,A,2.474585,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.085415,0,0.04,False,False
+H360,honnete,G3,B,3.979961,Forte,3.89,3.57,4.21,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.089961,0,0.69,True,False
+H361,honnete,G3,A,1.926844,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.036844,1,0.09,False,True
+H361,honnete,G3,B,2.685215,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.204785,1,0.29,False,True
+H362,honnete,G3,A,1.54082,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.12918,0,0.13,False,False
+H362,honnete,G3,B,3.557451,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.227451,1,0.13,False,True
+H363,honnete,G3,A,1.895736,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.005736,1,0.09,False,True
+H363,honnete,G3,B,3.339671,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.119671,1,0.02,False,True
+H364,honnete,G3,A,2.062374,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.157626,0,0.38,False,False
+H364,honnete,G3,B,3.493731,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.066269,0,0.36,False,False
+H365,honnete,G3,A,2.120391,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.230391,1,0.09,False,True
+H365,honnete,G3,B,3.340917,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.230917,1,0.09,False,False
+H366,honnete,G3,A,2.288047,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.068047,0,0.38,False,False
+H366,honnete,G3,B,2.885988,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.105988,1,0.18,False,True
+H367,honnete,G3,A,3.103787,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.213787,1,0.29,False,True
+H367,honnete,G3,B,3.384423,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.055577,1,0.24,False,True
+H368,honnete,G3,A,2.031341,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.188659,0,0.38,False,False
+H368,honnete,G3,B,3.117865,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.212135,0,0.13,False,True
+H369,honnete,G3,A,2.384199,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.395801,0,0.18,False,True
+H369,honnete,G3,B,3.025053,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.245053,1,0.18,False,True
+H370,honnete,G3,A,1.89167,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.11167,1,0.02,False,False
+H370,honnete,G3,B,2.784079,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.215921,0,0.2,False,False
+H371,honnete,G3,A,2.384023,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.164023,0,0.38,False,False
+H371,honnete,G3,B,3.155046,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.174954,0,0.13,False,True
+H372,honnete,G3,A,2.780915,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.219085,0,0.2,False,False
+H372,honnete,G3,B,3.39626,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.04374,1,0.24,False,True
+H373,honnete,G3,A,2.106407,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.003593,1,0.31,False,True
+H373,honnete,G3,B,3.045135,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.174865,0,0.02,False,True
+H374,honnete,G3,A,2.172121,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.157879,0,0.27,False,False
+H374,honnete,G3,B,3.253268,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.253268,1,0.2,False,False
+H375,honnete,G3,A,1.924758,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.295242,0,0.38,False,False
+H375,honnete,G3,B,3.003006,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.003006,0,0.2,False,False
+H376,honnete,G3,A,2.444279,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.335721,0,0.18,False,True
+H376,honnete,G3,B,2.986791,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.123209,0,0.09,False,False
+H377,honnete,G3,A,2.778317,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.108317,1,0.07,False,True
+H377,honnete,G3,B,3.218146,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.218146,1,0.2,False,False
+H378,honnete,G3,A,2.092946,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.312946,1,0.02,False,False
+H378,honnete,G3,B,3.113789,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.216211,0,0.13,False,True
+H379,honnete,G3,A,2.242889,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.087111,0,0.27,False,False
+H379,honnete,G3,B,2.793452,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.123452,1,0.07,False,True
+H380,honnete,G3,A,1.775601,Discrète,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.334399,0,0.31,False,True
+H380,honnete,G3,B,2.965067,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.075067,1,0.29,False,True
+H381,honnete,G3,A,1.578934,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.248934,0,0.47,True,False
+H381,honnete,G3,B,2.738975,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.151025,1,0.29,False,True
+H382,honnete,G3,A,2.044674,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.065326,1,0.31,False,True
+H382,honnete,G3,B,3.134231,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.244231,1,0.29,False,True
+H383,honnete,G3,A,1.744289,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.074289,0,0.13,False,False
+H383,honnete,G3,B,3.205349,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.124651,1,0.13,False,True
+H384,honnete,G3,A,2.43399,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,False,0.43399,1,0.2,False,True
+H384,honnete,G3,B,2.889037,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.000963,1,0.29,False,True
+H385,honnete,G3,A,2.202495,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.017505,0,0.38,False,False
+H385,honnete,G3,B,2.926207,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.183793,0,0.09,False,False
+H386,honnete,G3,A,2.130352,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.130352,1,0.2,False,True
+H386,honnete,G3,B,3.554452,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,False,0.334452,1,0.02,False,True
+H387,honnete,G3,A,1.945996,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.165996,1,0.02,False,False
+H387,honnete,G3,B,3.433021,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.126979,0,0.36,False,False
+H388,honnete,G3,A,1.680344,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.209656,0,0.09,False,True
+H388,honnete,G3,B,3.271457,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.051457,1,0.02,False,True
+H389,honnete,G3,A,2.485616,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.045616,0,0.16,False,False
+H389,honnete,G3,B,2.808637,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.081363,1,0.29,False,True
+H390,honnete,G3,A,1.76735,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.09735,0,0.13,False,False
+H390,honnete,G3,B,3.463054,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.023054,1,0.24,False,True
+H391,honnete,G3,A,2.123452,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.013452,1,0.31,False,True
+H391,honnete,G3,B,3.124383,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.124383,0,0.2,False,False
+H392,honnete,G3,A,1.844235,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.045765,1,0.09,False,True
+H392,honnete,G3,B,3.279158,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.169158,1,0.09,False,False
+H393,honnete,G3,A,1.48783,Discrète,1.22,0.9,1.54,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.26783,0,0.58,True,False
+H393,honnete,G3,B,3.622375,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.157625,0,0.58,True,False
+H394,honnete,G3,A,2.46795,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.13795,0,0.27,False,False
+H394,honnete,G3,B,2.778771,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.218771,1,0.04,False,False
+H395,honnete,G3,A,1.866241,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.243759,1,0.31,False,True
+H395,honnete,G3,B,3.401557,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.038443,1,0.24,False,True
+H396,honnete,G3,A,1.825111,Tranquille,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.155111,1,0.13,False,False
+H396,honnete,G3,B,2.802413,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.087587,1,0.29,False,True
+H397,honnete,G3,A,1.564662,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.105338,0,0.13,False,False
+H397,honnete,G3,B,2.957859,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.152141,0,0.09,False,False
+H398,honnete,G3,A,2.369644,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.039644,0,0.27,False,False
+H398,honnete,G3,B,3.138806,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.081194,0,0.02,False,True
+H399,honnete,G3,A,1.882835,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,False,0.337165,0,0.38,False,False
+H399,honnete,G3,B,3.011303,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.341303,1,0.07,False,True
+H400,honnete,G3,A,1.627179,Discrète,1.44,1.12,1.76,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.187179,0,0.36,False,False
+H400,honnete,G3,B,3.148023,Vive,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.291977,0,0.24,False,True
+H401,honnete,G3,A,2.376899,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.046899,0,0.27,False,False
+H401,honnete,G3,B,3.002888,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,False,0.327112,0,0.13,False,True
+H402,honnete,G3,A,2.105978,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.114022,0,0.38,False,False
+H402,honnete,G3,B,2.983986,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.203986,1,0.18,False,True
+H403,honnete,G3,A,1.919851,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.029851,1,0.09,False,True
+H403,honnete,G3,B,2.923245,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.186755,0,0.09,False,False
+H404,honnete,G3,A,2.546276,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.216276,0,0.27,False,False
+H404,honnete,G3,B,3.309582,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.089582,1,0.02,False,True
+H405,honnete,G3,A,1.791884,Discrète,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.208116,0,0.2,False,True
+H405,honnete,G3,B,3.594334,Forte,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,False,False,0.704334,2,0.29,False,True
+H406,honnete,G3,A,2.46133,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.02133,0,0.16,False,False
+H406,honnete,G3,B,2.877345,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.207345,1,0.07,False,True
+H407,honnete,G3,A,2.347646,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,False,0.322354,0,0.07,False,True
+H407,honnete,G3,B,3.494712,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.164712,1,0.13,False,True
+H408,honnete,G3,A,2.457605,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.102395,0,0.04,False,False
+H408,honnete,G3,B,3.126427,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.126427,0,0.2,False,False
+H409,honnete,G3,A,2.099778,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.209778,1,0.09,False,True
+H409,honnete,G3,B,3.177585,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.287585,1,0.29,False,True
+H410,honnete,G3,A,2.694699,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.254699,1,0.16,False,False
+H410,honnete,G3,B,3.065598,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.044402,0,0.09,False,False
+H411,honnete,G3,A,1.325529,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.004471,0,0.47,True,False
+H411,honnete,G3,B,3.617803,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.057803,0,0.36,False,False
+H412,honnete,G3,A,1.911656,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.088344,1,0.2,False,True
+H412,honnete,G3,B,3.574842,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.134842,1,0.24,False,True
+H413,honnete,G3,A,2.2556,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.0356,0,0.38,False,False
+H413,honnete,G3,B,2.921379,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.298621,0,0.02,False,True
+H414,honnete,G3,A,2.059244,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.059244,1,0.2,False,True
+H414,honnete,G3,B,3.98951,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.31951,0,0.47,True,False
+H415,honnete,G3,A,1.444343,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.114343,0,0.47,True,False
+H415,honnete,G3,B,3.333945,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.003945,1,0.13,False,True
+H416,honnete,G3,A,2.312796,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.017204,0,0.27,False,False
+H416,honnete,G3,B,2.583377,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.023377,0,0.04,False,False
+H417,honnete,G3,A,1.911319,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.308681,0,0.38,False,False
+H417,honnete,G3,B,3.052844,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.277156,0,0.13,False,True
+H418,honnete,G3,A,2.501853,Tranquille,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.168147,0,0.07,False,True
+H418,honnete,G3,B,3.637958,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.197958,1,0.24,False,True
+H419,honnete,G3,A,1.57207,Discrète,1.33,1.01,1.65,NIVEAU,Discrète,Discrète,Discrète,Discrète,True,True,0.24207,0,0.47,True,False
+H419,honnete,G3,B,3.093228,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.236772,0,0.13,False,True
+H420,honnete,G3,A,2.004933,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.224933,1,0.02,False,False
+H420,honnete,G3,B,3.161414,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.058586,0,0.02,False,True
+H421,honnete,G3,A,2.356378,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.083622,0,0.16,False,False
+H421,honnete,G3,B,3.174029,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.155971,0,0.13,False,True
+H422,honnete,G3,A,1.943378,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.056622,1,0.2,False,True
+H422,honnete,G3,B,3.217143,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.002857,1,0.02,False,True
+H423,honnete,G3,A,1.703364,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.143364,0,0.24,False,False
+H423,honnete,G3,B,2.951225,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.048775,0,0.2,False,False
+H424,honnete,G3,A,2.137735,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.192265,0,0.27,False,False
+H424,honnete,G3,B,3.27951,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.16951,1,0.09,False,False
+H425,honnete,G3,A,1.621174,Discrète,1.56,1.24,1.88,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.061174,0,0.24,False,False
+H425,honnete,G3,B,2.868889,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.241111,0,0.09,False,False
+H426,honnete,G3,A,2.356714,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.026714,0,0.27,False,False
+H426,honnete,G3,B,3.346741,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.016741,1,0.13,False,True
+H427,honnete,G3,A,1.426821,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.243179,0,0.13,False,False
+H427,honnete,G3,B,3.143416,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.363416,1,0.18,False,True
+H428,honnete,G3,A,2.187714,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.032286,0,0.38,False,False
+H428,honnete,G3,B,3.570885,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.130885,1,0.24,False,True
+H429,honnete,G3,A,1.857143,Tranquille,1.78,1.46,2.1,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,False,True,0.077143,1,0.02,False,False
+H429,honnete,G3,B,3.386844,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.283156,0,0.47,True,False
+H430,honnete,G3,A,1.775326,Discrète,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.334674,0,0.31,False,True
+H430,honnete,G3,B,2.103156,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.116844,0,0.38,False,False
+H431,honnete,G3,A,2.321414,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.008586,0,0.27,False,False
+H431,honnete,G3,B,2.651047,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.128953,1,0.18,False,True
+H432,honnete,G3,A,2.461583,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.241583,0,0.38,False,False
+H432,honnete,G3,B,3.134854,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.134854,0,0.2,False,False
+H433,honnete,G3,A,1.51923,Discrète,1.67,1.35,1.99,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Discrète,Discrète,True,True,0.15077,0,0.13,False,False
+H433,honnete,G3,B,3.723353,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.053353,0,0.47,True,False
+H434,honnete,G3,A,2.132708,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.087292,0,0.38,False,False
+H434,honnete,G3,B,3.331588,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.221588,1,0.09,False,False
+H435,honnete,G3,A,2.195286,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.195286,1,0.2,False,True
+H435,honnete,G3,B,3.207616,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.232384,1,0.24,False,True
+H436,honnete,G3,A,1.999484,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.000516,1,0.2,False,True
+H436,honnete,G3,B,3.313657,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.126343,1,0.24,False,True
+H437,honnete,G3,A,2.029559,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.190441,0,0.38,False,False
+H437,honnete,G3,B,3.244641,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.085359,1,0.13,False,True
+H438,honnete,G3,A,1.773526,Discrète,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,False,0.336474,0,0.31,False,True
+H438,honnete,G3,B,3.200862,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.090862,1,0.09,False,False
+H439,honnete,G3,A,2.416669,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.023331,0,0.16,False,False
+H439,honnete,G3,B,3.248037,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.081963,1,0.13,False,True
+H440,honnete,G3,A,1.80638,Tranquille,2.11,1.79,2.43,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.30362,1,0.31,False,True
+H440,honnete,G3,B,3.286525,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.066525,1,0.02,False,True
+H441,honnete,G3,A,2.223094,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.216906,0,0.16,False,False
+H441,honnete,G3,B,3.62009,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.29009,1,0.13,False,True
+H442,honnete,G3,A,1.764546,Discrète,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,False,True,0.125454,0,0.09,False,True
+H442,honnete,G3,B,3.033467,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.033467,0,0.2,False,False
+H443,honnete,G3,A,1.895635,Tranquille,1.89,1.57,2.21,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.005635,1,0.09,False,True
+H443,honnete,G3,B,3.576236,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.136236,1,0.24,False,True
+H444,honnete,G3,A,2.041655,Tranquille,2.22,1.9,2.54,NIVEAU,Tranquille,Tranquille,Tranquille,Tranquille,True,True,0.178345,0,0.38,False,False
+H444,honnete,G3,B,3.590091,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.260091,1,0.13,False,True
+H445,honnete,G3,A,2.109296,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.109296,1,0.2,False,True
+H445,honnete,G3,B,2.944546,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.054546,1,0.29,False,True
+H446,honnete,G3,A,2.50759,Tranquille,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.06759,0,0.16,False,False
+H446,honnete,G3,B,3.149225,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.149225,0,0.2,False,False
+H447,honnete,G3,A,2.06982,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.26018,0,0.27,False,False
+H447,honnete,G3,B,3.221328,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.111328,1,0.09,False,False
+H448,honnete,G3,A,2.703762,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.076238,1,0.18,False,True
+H448,honnete,G3,B,2.938946,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.158946,1,0.18,False,True
+H449,honnete,G3,A,2.237234,Tranquille,2.0,1.68,2.32,FRONTIERE,entre Discrète et Tranquille,Discrète|Tranquille,Tranquille,Discrète,True,True,0.237234,1,0.2,False,True
+H449,honnete,G3,B,3.211391,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.008609,1,0.02,False,True
+H450,honnete,G3,A,2.509509,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.050491,0,0.04,False,False
+H450,honnete,G3,B,3.066237,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.066237,0,0.2,False,False
+H451,honnete,G4,A,3.399883,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.069883,1,0.13,False,True
+H451,honnete,G4,B,3.030474,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.299526,0,0.13,False,True
+H452,honnete,G4,A,3.378224,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.158224,1,0.02,False,True
+H452,honnete,G4,B,3.098164,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.098164,0,0.2,False,False
+H453,honnete,G4,A,3.381464,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.178536,0,0.36,False,False
+H453,honnete,G4,B,2.857447,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.077447,1,0.18,False,True
+H454,honnete,G4,A,3.58966,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.08034,0,0.47,True,False
+H454,honnete,G4,B,2.830248,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.059752,1,0.29,False,True
+H455,honnete,G4,A,3.333531,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.226469,0,0.36,False,False
+H455,honnete,G4,B,3.80043,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.13043,0,0.47,True,False
+H456,honnete,G4,A,2.719327,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.049327,1,0.07,False,True
+H456,honnete,G4,B,3.139609,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.139609,0,0.2,False,False
+H457,honnete,G4,A,3.716622,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.276622,1,0.24,False,True
+H457,honnete,G4,B,3.192758,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.082758,0,0.09,False,False
+H458,honnete,G4,A,3.212542,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.007458,1,0.02,False,True
+H458,honnete,G4,B,3.172035,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,False,0.392035,1,0.18,False,True
+H459,honnete,G4,A,3.277102,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.052898,1,0.13,False,True
+H459,honnete,G4,B,3.750962,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.029038,0,0.58,True,False
+H460,honnete,G4,A,3.336771,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.116771,1,0.02,False,True
+H460,honnete,G4,B,2.808886,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.081114,1,0.29,False,True
+H461,honnete,G4,A,3.201107,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.128893,1,0.13,False,True
+H461,honnete,G4,B,3.445183,Forte,3.89,3.57,4.21,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.444817,0,0.69,True,False
+H462,honnete,G4,A,3.446798,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.116798,1,0.13,False,True
+H462,honnete,G4,B,2.626739,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.043261,1,0.07,False,True
+H463,honnete,G4,A,3.159379,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.170621,0,0.13,False,True
+H463,honnete,G4,B,3.059149,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.059149,0,0.2,False,False
+H464,honnete,G4,A,3.500869,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.169131,0,0.47,True,False
+H464,honnete,G4,B,2.522883,Tranquille,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,False,True,0.257117,0,0.18,False,True
+H465,honnete,G4,A,3.414436,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.025564,1,0.24,False,True
+H465,honnete,G4,B,3.375327,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.064673,1,0.24,False,True
+H466,honnete,G4,A,2.873227,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.313227,1,0.04,False,False
+H466,honnete,G4,B,2.792821,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.012821,1,0.18,False,True
+H467,honnete,G4,A,2.536167,Tranquille,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.023833,0,0.04,False,False
+H467,honnete,G4,B,2.646479,Vive,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.316479,1,0.27,False,False
+H468,honnete,G4,A,3.446053,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.006053,1,0.24,False,True
+H468,honnete,G4,B,3.194872,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.194872,0,0.2,False,False
+H469,honnete,G4,A,3.463257,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.096743,0,0.36,False,False
+H469,honnete,G4,B,3.158176,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.171824,0,0.13,False,True
+H470,honnete,G4,A,2.504622,Tranquille,2.33,2.01,2.65,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,True,True,0.174622,0,0.27,False,False
+H470,honnete,G4,B,2.682023,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.012023,1,0.07,False,True
+H471,honnete,G4,A,3.082841,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.137159,0,0.02,False,True
+H471,honnete,G4,B,2.747214,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.077214,1,0.07,False,True
+H472,honnete,G4,A,3.479997,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,False,0.369997,1,0.09,False,False
+H472,honnete,G4,B,2.974384,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.194384,1,0.18,False,True
+H473,honnete,G4,A,3.09114,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.09114,0,0.2,False,False
+H473,honnete,G4,B,3.014009,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.234009,1,0.18,False,True
+H474,honnete,G4,A,2.810347,Vive,2.56,2.24,2.88,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.250347,1,0.04,False,False
+H474,honnete,G4,B,3.437768,Forte,3.89,3.57,4.21,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.452232,0,0.69,True,False
+H475,honnete,G4,A,3.328028,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.108028,1,0.02,False,True
+H475,honnete,G4,B,2.688498,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.248498,1,0.16,False,False
+H476,honnete,G4,A,3.951535,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.171535,0,0.58,True,False
+H476,honnete,G4,B,3.345979,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.015979,1,0.13,False,True
+H477,honnete,G4,A,2.72547,Vive,2.67,2.35,2.99,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.05547,1,0.07,False,True
+H477,honnete,G4,B,3.066197,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.066197,0,0.2,False,False
+H478,honnete,G4,A,3.354733,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,False,0.354733,1,0.2,False,False
+H478,honnete,G4,B,3.360886,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.419114,0,0.58,True,False
+H479,honnete,G4,A,2.920141,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.140141,1,0.18,False,True
+H479,honnete,G4,B,3.489108,Forte,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.269108,1,0.02,False,True
+H480,honnete,G4,A,2.893841,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.003841,1,0.29,False,True
+H480,honnete,G4,B,3.391571,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.048429,1,0.24,False,True
+H481,honnete,G4,A,3.114323,Vive,3.22,2.9,3.54,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.105677,0,0.02,False,True
+H481,honnete,G4,B,3.055505,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.274495,0,0.13,False,True
+H482,honnete,G4,A,3.448481,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,False,0.338481,1,0.09,False,False
+H482,honnete,G4,B,3.425773,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.134227,0,0.36,False,False
+H483,honnete,G4,A,3.267293,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.062707,1,0.13,False,True
+H483,honnete,G4,B,3.531452,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.028548,0,0.36,False,False
+H484,honnete,G4,A,3.350619,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.429381,0,0.58,True,False
+H484,honnete,G4,B,2.910277,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.130277,1,0.18,False,True
+H485,honnete,G4,A,3.259807,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.180193,1,0.24,False,True
+H485,honnete,G4,B,2.952157,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.047843,0,0.2,False,False
+H486,honnete,G4,A,2.932951,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.042951,1,0.29,False,True
+H486,honnete,G4,B,3.536443,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.133557,0,0.47,True,False
+H487,honnete,G4,A,3.389877,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.170123,0,0.36,False,False
+H487,honnete,G4,B,3.240046,Forte,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.240046,1,0.2,False,False
+H488,honnete,G4,A,3.564177,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.124177,1,0.24,False,True
+H488,honnete,G4,B,2.43135,Tranquille,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,False,False,0.45865,0,0.29,False,True
+H489,honnete,G4,A,3.119073,Vive,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,False,True,0.210927,0,0.13,False,True
+H489,honnete,G4,B,3.24295,Forte,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,False,True,0.13295,1,0.09,False,False
+H490,honnete,G4,A,2.880742,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.100742,1,0.18,False,True
+H490,honnete,G4,B,2.816957,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.073043,1,0.29,False,True
+H491,honnete,G4,A,3.019907,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.239907,1,0.18,False,True
+H491,honnete,G4,B,2.69965,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.19035,1,0.29,False,True
+H492,honnete,G4,A,3.604889,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.065111,0,0.47,True,False
+H492,honnete,G4,B,3.455857,Forte,3.78,3.46,4.1,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.324143,0,0.58,True,False
+H493,honnete,G4,A,3.308558,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.251442,0,0.36,False,False
+H493,honnete,G4,B,3.133095,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.023095,0,0.09,False,False
+H494,honnete,G4,A,3.615442,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.055442,0,0.36,False,False
+H494,honnete,G4,B,2.698265,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.191735,1,0.29,False,True
+H495,honnete,G4,A,3.092509,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.092509,0,0.2,False,False
+H495,honnete,G4,B,2.901077,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.098923,0,0.2,False,False
+H496,honnete,G4,A,2.859969,Vive,3.0,2.68,3.32,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.140031,0,0.2,False,False
+H496,honnete,G4,B,3.409834,Forte,3.67,3.35,3.99,NIVEAU,Forte,Forte,Forte,Forte,True,True,0.260166,0,0.47,True,False
+H497,honnete,G4,A,3.215242,Forte,3.56,3.24,3.88,NIVEAU,Forte,Forte,Forte,Forte,True,False,0.344758,0,0.36,False,False
+H497,honnete,G4,B,2.60308,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.17692,1,0.18,False,True
+H498,honnete,G4,A,3.059596,Vive,3.11,2.79,3.43,FRONTIERE,entre Vive et Forte,Vive|Forte,Vive,Vive,True,True,0.050404,0,0.09,False,False
+H498,honnete,G4,B,2.754574,Vive,2.78,2.46,3.1,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Vive,Tranquille,True,True,0.025426,1,0.18,False,True
+H499,honnete,G4,A,3.32503,Forte,3.44,3.12,3.76,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.11497,1,0.24,False,True
+H499,honnete,G4,B,2.85207,Vive,2.89,2.57,3.21,FRONTIERE,entre Tranquille et Forte,Tranquille|Vive|Forte,Vive,Tranquille,True,True,0.03793,1,0.29,False,True
+H500,honnete,G4,A,3.388397,Forte,3.33,3.01,3.65,FRONTIERE,entre Vive et Forte,Vive|Forte,Forte,Vive,True,True,0.058397,1,0.13,False,True
+H500,honnete,G4,B,2.752568,Vive,2.44,2.12,2.76,FRONTIERE,entre Tranquille et Vive,Tranquille|Vive,Tranquille,Tranquille,False,True,0.312568,1,0.16,False,False
