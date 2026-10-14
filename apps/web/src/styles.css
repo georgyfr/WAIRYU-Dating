@@ -9841,14 +9841,39 @@ button.r-tl-chip:hover {
     scroll-margin-top: 70px
 }
 
-/* La notice polie — toujours avec le champ, jamais loin des yeux. */
+/* La notice polie — toujours avec le champ, jamais loin des yeux.
+   Task 79 (retour fondateur) — elle devient une vraie INFO-BULLE : une queue
+   pointe le champ en dessous, la personne voit d'un coup d'œil où donner
+   son avis quand une action l'a renvoyée ici. */
 .q-sat-notice {
-    margin: 0 0 10px;
+    position: relative;
+    margin: 0 0 16px;
     padding: 12px 14px;
     background: #fdf6f4;
     border: 1px solid #f0d9d2;
     border-left: 4px solid var(--c-coral);
     border-radius: var(--radius)
+}
+
+/* La queue de l'info-bulle — liseré + intérieur, alignée sur le texte. */
+.q-sat-notice::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    bottom: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #f0d9d2
+}
+
+.q-sat-notice::after {
+    content: '';
+    position: absolute;
+    left: 23px;
+    bottom: -9px;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fdf6f4
 }
 
 .q-sat-notice strong {

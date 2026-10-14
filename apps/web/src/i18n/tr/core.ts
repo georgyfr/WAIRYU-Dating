@@ -191,9 +191,9 @@ export const CORE: Record<string, string> = {
   'En couple': 'As a couple',
   'Ce que ce profil te souffle': 'What this profile whispers to you',
   // ---- Task 65/74 — ancrage des barres + zone d'ombre en relation
-  'Ce qui pèse dans ce score': 'What moves this score',
-  'fait monter la barre': 'moves the bar up',
-  'fait baisser la barre': 'moves the bar down',
+  // Task 79 (retour fondateur) — les libellés directionnels « fait monter /
+  // baisser la barre » sont RETIRÉS : ils exposaient la mécanique du score.
+  'Ce qui pèse dans ce score': 'What goes into this score',
   "Ta zone d'ombre en relation": 'Your shadow side in relationships',
   // ---- Task 77 — les sources des champs (traçabilité anti-barnum)
   "D'après tes réponses :": 'From your answers:',
@@ -213,9 +213,11 @@ export const CORE: Record<string, string> = {
   'Ta réponse nous aide à améliorer les textes. Elle ne change pas tes résultats.':
     'Your answer helps us improve the texts. It does not change your results.',
   Passer: 'Skip',
-  'Un instant — ton avis ouvre la suite.': "One moment — your opinion opens what's next.",
-  'Il ne change rien à tes résultats. Tu peux aussi passer.':
-    'It does not change your results. You can also skip.',
+  // Task 79 (retour fondateur) — l'info-bulle du renvoi vers l'avis : elle
+  // dit ce qu'on attend, sans ambiguïté.
+  'Donne ton avis avant de continuer la quête.': 'Give your feedback before continuing the quest.',
+  'Choisis une réponse juste en dessous — ou passe. Tes résultats ne changent pas.':
+    'Pick an answer just below — or skip. Your results do not change.',
   // Task 78 — le repli des réponses sous chaque tendance.
   'Voir mes réponses': 'See my answers',
   "La suite de ton voyage": 'The next step of your journey',

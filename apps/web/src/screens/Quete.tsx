@@ -421,8 +421,9 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const [pdfEnCours, setPdfEnCours] = useState<boolean>(false);
   // Task 66 — la satisfaction : l'avis (note 1-5) est la clé qui ouvre la
   // suite — n'importe laquelle, elle ne change rien aux résultats. La notice
-  // (avisDemande) explique poliment pourquoi la note compte ; le défilement
-  // (defilerAvis) amène le champ « Envoyer ma note » à l'écran quelle que
+  // (avisDemande) est une info-bulle EXPLICITE (Task 79 — retour fondateur :
+  // la personne doit comprendre pourquoi elle est renvoyée ici) ; le
+  // défilement (defilerAvis) amène le champ d'avis à l'écran quelle que
   // soit l'action bloquée (quête suivante, Revenir à ma carte, Retour à mon
   // voyage — retour fondateur v2).
   const [avis, setAvis] = useState<AvisSatisfaction | null>(() => lireAvis(queteId));
@@ -1615,20 +1616,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                 </div>
                 <p className="q-det-dim-texte">{texteTendance}</p>
                 {/* Task 65 — les réponses RÉELLES qui pèsent le plus dans le
-                    chiffre : le membre vérifie lui-même sa tendance. Le sens
-                    de chaque contribution est affiché (items inversés compris)
-                    et le titre s'assagit si la dim n'a que du milieu.
+                    chiffre : le membre vérifie lui-même sa tendance.
                     Task 78 — repliées derrière « Voir mes réponses » : le bloc
-                    ouvert recouvrait le texte de la carte au-dessus. */}
+                    ouvert recouvrait le texte de la carte au-dessus.
+                    Task 79 (retour fondateur) — les mentions « fait monter /
+                    baisser la barre » sont retirées : elles exposaient la
+                    mécanique du score au lieu de la décrire. La ligne lit
+                    simplement « énoncé · réponse ». */}
                 {ancrages && (ancrages[b.key]?.length ?? 0) > 0 && (
                   <details className="q-det-reponses">
                     <summary>{tx('Voir mes réponses')}</summary>
                     <div className="q-det-ancrage">
-                      {/* Task 74 (demande fondateur) — UN titre unique, plus
-                          simple : « Ce qui pèse dans ce score » ; chaque ligne
-                          lit « énoncé · réponse → fait monter/baisser la
-                          barre » (c'est plus simple que « pousse la barre
-                          vers le haut »). */}
                       <p className="q-det-ancrage-titre">
                         {tx('Ce qui pèse dans ce score')}
                       </p>
@@ -1638,18 +1636,6 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                             <span className="q-det-ancrage-enonce">« {a.enonce} »</span>
                             {' · '}
                             <strong>{a.reponse}</strong>
-                            {a.sens === 'haut' && (
-                              <>
-                                {' → '}
-                                {tx('fait monter la barre')}
-                              </>
-                            )}
-                            {a.sens === 'bas' && (
-                              <>
-                                {' → '}
-                                {tx('fait baisser la barre')}
-                              </>
-                            )}
                           </li>
                         ))}
                       </ul>
@@ -1688,14 +1674,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         })()}
 
         {/* Task 66 — TON AVIS COMPTE : la barre de satisfaction. Task 78 —
-            la suite n'est plus bloquée : la notice reste polie, le lien
-            « Passer » du champ exécute l'action interrompue. */}
+            la suite n'est plus bloquée : le lien « Passer » du champ exécute
+            l'action interrompue. Task 79 (retour fondateur) — quand une
+            action est renvoyée ici, la notice devient une VRAIE info-bulle :
+            elle dit ce qu'on attend (« Donne ton avis avant de continuer
+            la quête ») et pointe le champ en dessous. */}
         {QUETES_AVEC_AVIS.has(queteId) && (
           <div className="q-sat-ancre" ref={ancreAvisRef}>
             {gateAvis && avisDemande && (
               <aside className="q-sat-notice" role="status">
-                <strong>{tx('Un instant — ton avis ouvre la suite.')}</strong>
-                <p>{tx('Il ne change rien à tes résultats. Tu peux aussi passer.')}</p>
+                <strong>{tx('Donne ton avis avant de continuer la quête.')}</strong>
+                <p>{tx('Choisis une réponse juste en dessous — ou passe. Tes résultats ne changent pas.')}</p>
               </aside>
             )}
             <SatBarAvis
