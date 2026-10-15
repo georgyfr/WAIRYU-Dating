@@ -1,0 +1,178 @@
+{
+  "bornes_d_std": {
+    "n_paires": 800,
+    "C1_plafond_pct": 77.62,
+    "C1_seuil_pct": 74.625,
+    "C2_plafond_pct": 100.0,
+    "C2_seuil_pct": 97.0,
+    "C3_plafond": 9,
+    "C3_seuil": 9,
+    "C5_plafond_pct": 100.0,
+    "C5_seuil_pct": 97.0,
+    "Boucle_plafond_pct": 100.0,
+    "Boucle_seuil_pct": 97.0,
+    "n_boucle_possible": 370,
+    "n_boucle_atteint": 370
+  },
+  "resume_configs": {
+    "BASE_SEREINE": 89,
+    "DANSE_QUI_TOURNE": 89,
+    "FEU_CROISE": 89,
+    "DISTANCE_POLIE": 89,
+    "MIXTE_SEREINE_POURSUITE": 89,
+    "MIXTE_SEREINE_RETRAIT": 89,
+    "MIXTE_SEREINE_FEU": 89,
+    "MIXTE_POURSUITE_FEU": 89,
+    "MIXTE_RETRAIT_FEU": 88
+  },
+  "C1": {
+    "attendu": 9,
+    "obtenu": 7,
+    "par_config": {
+      "BASE_SEREINE": {
+        "n": 89,
+        "n_correct": 73,
+        "pct": 82.02
+      },
+      "DANSE_QUI_TOURNE": {
+        "n": 89,
+        "n_correct": 67,
+        "pct": 75.28
+      },
+      "FEU_CROISE": {
+        "n": 89,
+        "n_correct": 72,
+        "pct": 80.9
+      },
+      "DISTANCE_POLIE": {
+        "n": 89,
+        "n_correct": 69,
+        "pct": 77.53
+      },
+      "MIXTE_SEREINE_POURSUITE": {
+        "n": 89,
+        "n_correct": 63,
+        "pct": 70.79
+      },
+      "MIXTE_SEREINE_RETRAIT": {
+        "n": 89,
+        "n_correct": 69,
+        "pct": 77.53
+      },
+      "MIXTE_SEREINE_FEU": {
+        "n": 89,
+        "n_correct": 74,
+        "pct": 83.15
+      },
+      "MIXTE_POURSUITE_FEU": {
+        "n": 89,
+        "n_correct": 66,
+        "pct": 74.16
+      },
+      "MIXTE_RETRAIT_FEU": {
+        "n": 88,
+        "n_correct": 68,
+        "pct": 77.27
+      }
+    },
+    "seuil_pct": 74.625,
+    "plafond_pct": 77.62,
+    "ok": false
+  },
+  "C2": {
+    "attendu_pct": 97.0,
+    "obtenu_pct": 100.0,
+    "n_desaccords": 0,
+    "n_total": 800,
+    "desaccords": [],
+    "symetrie_interne": {
+      "paires_testees": 16,
+      "asymetries": [],
+      "ok": true
+    },
+    "ok": true
+  },
+  "C3": {
+    "attendu_mot_pour_mot": 9,
+    "obtenu_mot_pour_mot": 9,
+    "templates": {
+      "BASE_SEREINE": {
+        "attendu": "Votre danse est posée. Chacun se tient à sa place, l'espace entre vous respire — c'est une assise qui se reconnaît des deux côtés.",
+        "obtenu": "Votre danse est posée. Chacun se tient à sa place, l'espace entre vous respire — c'est une assise qui se reconnaît des deux côtés.",
+        "ok_mot_pour_mot": true
+      },
+      "DANSE_QUI_TOURNE": {
+        "attendu": "Votre danse tourne. L'un avance quand l'autre recule, et le mouvement se répète. Ce n'est pas une faute — c'est un pas de danse que votre couple connaît.",
+        "obtenu": "Votre danse tourne. L'un avance quand l'autre recule, et le mouvement se répète. Ce n'est pas une faute — c'est un pas de danse que votre couple connaît.",
+        "ok_mot_pour_mot": true
+      },
+      "FEU_CROISE": {
+        "attendu": "Votre danse est vive. Les deux êtes en alerte, et les étincelles se croisent. L'intensité est réelle des deux côtés — ni l'un ni l'autre ne la subit seul.",
+        "obtenu": "Votre danse est vive. Les deux êtes en alerte, et les étincelles se croisent. L'intensité est réelle des deux côtés — ni l'un ni l'autre ne la subit seul.",
+        "ok_mot_pour_mot": true
+      },
+      "DISTANCE_POLIE": {
+        "attendu": "Votre danse se tient à distance. Chacun reste sur sa réserve, et le silence s'installe. C'est un retrait partagé, pas une indifférence.",
+        "obtenu": "Votre danse se tient à distance. Chacun reste sur sa réserve, et le silence s'installe. C'est un retrait partagé, pas une indifférence.",
+        "ok_mot_pour_mot": true
+      },
+      "MIXTE_SEREINE_POURSUITE": {
+        "attendu": "Votre danse est déséquilibrée. L'un est posé, l'autre avance — c'est un pas qui se cherche, pas un tort de l'un ou de l'autre.",
+        "obtenu": "Votre danse est déséquilibrée. L'un est posé, l'autre avance — c'est un pas qui se cherche, pas un tort de l'un ou de l'autre.",
+        "ok_mot_pour_mot": true
+      },
+      "MIXTE_SEREINE_RETRAIT": {
+        "attendu": "Votre danse s'écarte. L'un est posé, l'autre recule — c'est un écart qui se mesure, sans blâme pour le retrait.",
+        "obtenu": "Votre danse s'écarte. L'un est posé, l'autre recule — c'est un écart qui se mesure, sans blâme pour le retrait.",
+        "ok_mot_pour_mot": true
+      },
+      "MIXTE_SEREINE_FEU": {
+        "attendu": "Votre danse contraste. L'un est posé, l'autre est en alerte — l'intensité d'un côté ne nie pas le calme de l'autre.",
+        "obtenu": "Votre danse contraste. L'un est posé, l'autre est en alerte — l'intensité d'un côté ne nie pas le calme de l'autre.",
+        "ok_mot_pour_mot": true
+      },
+      "MIXTE_POURSUITE_FEU": {
+        "attendu": "Votre danse s'accélère. L'un avance, l'autre est en alerte — le mouvement et l'intensité se rencontrent, sans qu'aucun ait tort.",
+        "obtenu": "Votre danse s'accélère. L'un avance, l'autre est en alerte — le mouvement et l'intensité se rencontrent, sans qu'aucun ait tort.",
+        "ok_mot_pour_mot": true
+      },
+      "MIXTE_RETRAIT_FEU": {
+        "attendu": "Votre danse se crispe. L'un recule, l'autre est en alerte — le retrait et l'intensité se côtoient, c'est une configuration connue des couples.",
+        "obtenu": "Votre danse se crispe. L'un recule, l'autre est en alerte — le retrait et l'intensité se côtoient, c'est une configuration connue des couples.",
+        "ok_mot_pour_mot": true
+      }
+    },
+    "non_blamant": {
+      "templates_testes": 9,
+      "violations": [],
+      "ok": true
+    },
+    "ok": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "attendu_pct": 97.0,
+    "obtenu_pct": 100.0,
+    "n_violations": 0,
+    "n_total": 800,
+    "violations": [],
+    "ok": true
+  },
+  "config_obtenues_count": {
+    "BASE_SEREINE": 85,
+    "DANSE_QUI_TOURNE": 79,
+    "FEU_CROISE": 97,
+    "DISTANCE_POLIE": 75,
+    "MIXTE_SEREINE_POURSUITE": 87,
+    "MIXTE_SEREINE_RETRAIT": 91,
+    "MIXTE_SEREINE_FEU": 115,
+    "MIXTE_POURSUITE_FEU": 82,
+    "MIXTE_RETRAIT_FEU": 89
+  },
+  "stats_boucles": {
+    "n_boucles_probables": 370,
+    "n_avertissements_style": 28,
+    "pct_boucles": 46.25
+  },
+  "sha256_run": "c10a103cb7c113d136e0bfbd7e354251cfcab5fababf7a19cd9a29f8b6422a03"
+}
