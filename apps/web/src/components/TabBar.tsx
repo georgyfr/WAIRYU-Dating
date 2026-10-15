@@ -1,6 +1,8 @@
 /**
  * Barre d'onglets — 5 destinations (Task 24, ordre fondateur) :
- * Voyage · Mondes · QUÊTE · Parcourus · Récolte.
+ * Voyage · Mondes · QUÊTE · Parcourus · Récolte — + la 6ᵉ « Rencontres »
+ * AU JALON A SEULEMENT (Rencontre-E1, Task 94 / P1) : pas de tab fantôme
+ * pour un espace non ouvert — elle apparaît quand le Miroir est traversé.
  *
  * L'onglet Quête est l'ENDROIT où l'on se retrouve : quand une quête est
  * engagée (des réponses, pas encore terminée), un point corail s'allume sur
@@ -17,7 +19,7 @@
  */
 import { useI18n } from '../i18n/I18nProvider';
 
-export type Tab = 'voyage' | 'mondes' | 'quete' | 'parcourus' | 'recolte';
+export type Tab = 'voyage' | 'mondes' | 'quete' | 'parcourus' | 'recolte' | 'rencontres';
 
 function TabIcon({ id }: { id: Tab }) {
   const common = {
@@ -69,6 +71,15 @@ function TabIcon({ id }: { id: Tab }) {
       </svg>
     );
   }
+  if (id === 'rencontres') {
+    // Deux anneaux entrelacés : la Rencontre (le jalon 6 du voyage).
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="14" r="5.2" />
+        <circle cx="15" cy="10" r="5.2" />
+      </svg>
+    );
+  }
   // Panier de récolte : ce que le voyage construit.
   return (
     <svg {...common}>
@@ -87,11 +98,15 @@ const TABS: { id: Tab }[] = [
   { id: 'recolte' },
 ];
 
+/** La 6ᵉ destination — ajoutée SEULEMENT au jalon A (Miroir traversé). */
+const TAB_RENCONTRES: { id: Tab } = { id: 'rencontres' };
+
 export default function TabBar({
   active,
   onSelect,
   queteEnCours = false,
   badges,
+  rencontresOuvert = false,
 }: {
   /** L'onglet allumé — ou une vue hors tabs (portes/masquées : aucun onglet allumé). */
   active: Tab | 'portrait' | 'matchs' | 'masked' | 'quete';
@@ -100,6 +115,8 @@ export default function TabBar({
   queteEnCours: boolean;
   /** Les compteurs de nouveautés par onglet (Task 68) — absent = 0. */
   badges?: Partial<Record<Tab, number>>;
+  /** Jalon A atteint (Miroir 3/3) ⇒ la 6ᵉ tab « Rencontres » apparaît (Task 94). */
+  rencontresOuvert?: boolean;
 }) {
   const { tx } = useI18n();
   const LABELS: Record<Tab, string> = {
@@ -108,10 +125,12 @@ export default function TabBar({
     quete: tx('Quête'),
     parcourus: tx('Parcourus'),
     recolte: tx('Récolte'),
+    rencontres: tx('Rencontres'),
   };
+  const tabs = rencontresOuvert ? [...TABS, TAB_RENCONTRES] : TABS;
   return (
     <nav className="tabbar" aria-label={tx('Navigation principale')}>
-      {TABS.map((t) => {
+      {tabs.map((t) => {
         const n = badges?.[t.id] ?? 0;
         return (
           <button

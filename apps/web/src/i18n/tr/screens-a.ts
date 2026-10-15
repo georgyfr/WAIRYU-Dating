@@ -578,4 +578,42 @@ export const SCREENS_A: Record<string, string> = {
     'Your first discovery will open it — it will join this inventory.',
   'Pass et crédits : ton solde et tes usages s\'afficheront ici dès leur ouverture — gagnés en voyageant.':
     'Passes and credits: your balance and usage will show here once they open — earned by journeying.',
+
+  // ---- Rencontre-E1 (Task 94) — l'espace #/matchs au jalon A (SPEC-RENONCONTRE-E1 v1)
+  'Rencontres': 'Matches',
+  'Le Miroir est derrière toi. Certaines rencontres commencent ici.':
+    'The Mirror is behind you. Some matches begin here.',
+  'Des personnes réelles qui ont, comme toi, traversé le Miroir (1.1 → 1.3).':
+    'Real people who, like you, have crossed the Mirror (1.1 → 1.3).',
+  'Ta porte vers la rencontre': 'Your door to meeting people',
+  'Le Miroir — les quêtes terminées : {{faites}}/{{total}}':
+    'The Mirror — quests completed: {{faites}}/{{total}}',
+  'La porte s\u2019ouvrira dès que le Miroir sera traversé (1.1 → 1.3).':
+    'The door opens as soon as the Mirror is crossed (1.1 → 1.3).',
+  '{{n}} personne a fait un pas vers toi': '{{n}} person has made a move toward you',
+  '{{n}} personnes ont fait un pas vers toi': '{{n}} people have made a move toward you',
+  'Fais ton pas — tu sauras qui, seulement si c\u2019est réciproque.':
+    'Make your move — you\u2019ll know who only if it\u2019s mutual.',
+  'Dans le pool': 'In the pool',
+  'Personne dans le pool pour l\u2019instant': 'No one in the pool yet',
+  'Dès qu\u2019un·e membre franchira le Miroir, il·elle apparaîtra ici — jamais de profil inventé.':
+    'As soon as a member crosses the Mirror, they will appear here — no invented profiles, ever.',
+  'Voyageur·euse': 'Traveler',
+  'Monde 1 — Le Miroir': 'World 1 — The Mirror',
+  'Mondes franchis : {{n}}': 'Worlds crossed: {{n}}',
+  '{{nom}} — en cours': '{{nom}} — in progress',
+  'Ici depuis {{date}}': 'Here since {{date}}',
+  'Faire un pas': 'Make a move',
+  'Pas envoyé': 'Move sent',
+  'Retirer': 'Withdraw',
+  'Match': 'Match',
+  'C\u2019est un match — deux pas, une réciprocité.': 'It\u2019s a match — two moves, one mutuality.',
+  'Tes matchs': 'Your matches',
+  'Match avec {{pseudo}}': 'Match with {{pseudo}}',
+  'Le Voyage à Deux s\u2019ouvrira à deux — la conversation arrive dans une prochaine étape.':
+    'The Journey for Two will open for the two of you — conversations arrive in a next step.',
+  'Impossible de charger tes rencontres — réessaie.': 'Couldn\u2019t load your matches — try again.',
+  'Réessayer': 'Try again',
+  'Ce ne sont pas des notes — jamais de score, jamais de classement. La rencontre n\u2019est jamais payante.':
+    'These are not scores — no ratings, no rankings. Meeting people is never paid.',
 };

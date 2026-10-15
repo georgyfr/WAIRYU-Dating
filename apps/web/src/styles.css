@@ -10105,3 +10105,211 @@ button.r-tl-chip:hover {
         font-size: 13px
     }
 }
+
+/* ==========================================================================
+   RENCONTRE-E1 (Task 94) — l'espace #/matchs au jalon A.
+   SPEC : docs/SPEC-RENONCONTRE-E1.v1.md — D-R2 (jamais payante), D-R3
+   (jamais inventée), D-R4 (anti-score : la couleur est celle de la
+   Rencontre, jamais un score), P2 (plancher commun), P3 (pseudo +
+   profondeur seulement), P4 (pas aveugle).
+   ========================================================================== */
+
+.ren-section-title {
+    margin: 4px 0 0;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.ren-section-sub {
+    margin: 2px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--c-gray-blue)
+}
+
+.ren-liste {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px
+}
+
+.ren-banner {
+    padding: 13px 16px;
+    background: #fde4ec;
+    border: 1px solid #f7c9d8
+}
+
+.ren-banner p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--c-night)
+}
+
+.ren-banner-sub {
+    margin-top: 4px !important;
+    font-size: 12.5px !important;
+    color: #7a4a58 !important
+}
+
+.ren-banner-match {
+    background: #fff3d6;
+    border-color: #f0dcae
+}
+
+.ren-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px
+}
+
+.ren-avatar {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fde4ec;
+    color: #e2557b;
+    font-size: 18px;
+    font-weight: 900
+}
+
+.ren-avatar-match {
+    font-size: 20px
+}
+
+.ren-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.ren-nom {
+    font-size: 15.5px;
+    font-weight: 900;
+    color: var(--c-night);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.ren-depth {
+    font-size: 12.5px;
+    color: var(--c-gray-blue)
+}
+
+.ren-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px
+}
+
+.ren-chip {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #fde4ec;
+    color: #c14b6b;
+    white-space: nowrap
+}
+
+.ren-chip-ok {
+    background: #e4f4e4;
+    color: #3e9d5b
+}
+
+.ren-chip-match {
+    background: #fff3d6;
+    color: #b07d13
+}
+
+.ren-depuis {
+    font-size: 11.5px;
+    color: #8a93a0;
+    margin-top: 3px
+}
+
+.ren-actions {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px
+}
+
+.ren-pas {
+    border: none;
+    border-radius: 999px;
+    background: var(--c-coral);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 16px;
+    min-height: 40px;
+    cursor: pointer;
+    transition: transform .08s ease, background .15s ease
+}
+
+.ren-pas:hover {
+    background: var(--c-coral-deep)
+}
+
+.ren-pas:active {
+    transform: scale(.97)
+}
+
+.ren-pas:disabled,
+.ren-retirer:disabled {
+    opacity: .55;
+    cursor: default
+}
+
+.ren-retirer {
+    border: none;
+    background: transparent;
+    color: #8a93a0;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-decoration: underline;
+    padding: 2px 4px;
+    min-height: 24px;
+    cursor: pointer
+}
+
+.ren-retirer:hover {
+    color: var(--c-coral-deep)
+}
+
+.ren-note {
+    margin: 10px 2px 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+@media (max-width: 380px) {
+
+    .ren-card {
+        align-items: flex-start;
+        flex-direction: column
+    }
+
+    .ren-actions {
+        align-self: stretch;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between
+    }
+}

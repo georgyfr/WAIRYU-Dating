@@ -112,6 +112,12 @@ export const RATE_RULES = {
   // --- Task 73 (fondateur) : mot de passe optionnel pour les comptes email ---
   /** Créations de mot de passe (connecté) par IP : 5 / heure (l'utilisateur est déjà authentifié, c'est surtout anti-abus). */
   pwSetIp: { scope: 'pw:set:ip', windowSeconds: 3600, max: 5 },
+  // --- Rencontre-E1 (Task 94) ---
+  /** Lectures du pool de rencontre : 120 / heure (rafraîchissement écran large). */
+  rencontrePoolUser: { scope: 'ren:pool:user', windowSeconds: 3600, max: 120 },
+  /** « Faire un pas » : 30 / heure (un pas par personne et par destinataire
+   *  en plus — la borne mécanique anti-abus reste large). */
+  rencontrePasUser: { scope: 'ren:pas:user', windowSeconds: 3600, max: 30 },
   // --- Complétion d'inscription sociale différée (#/oauth-complete) ---
   /** POST /auth/oauth/complete : 20 / h par IP (cookie signé requis en amont, l'IP est le seul vecteur libre). */
   oauthCompleteIp: { scope: 'oauth:complete:ip', windowSeconds: 3600, max: 20 },

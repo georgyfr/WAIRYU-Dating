@@ -1263,7 +1263,7 @@ authRoutes.get('/account/export', async (c) => {
     .first<Record<string, unknown>>();
   if (!user) throw errors.unauthorized();
 
-  const [sessions, sessionsRecent, identities, devices, pushSubs, events, pw] = await Promise.all([
+  const [sessions, sessionsRecent, identities, devices, pushSubs, events, pw, pasEnvoyes, matchsExport] = await Promise.all([
     c.env.DB.prepare(
       `SELECT
          COUNT(*) FILTER (WHERE revoked_at IS NULL AND expires_at > ?) AS active,
@@ -1314,6 +1314,18 @@ authRoutes.get('/account/export', async (c) => {
       .bind(session.userId)
       .first<{ username: string; recovery_code_hash: string | null; created_at: number }>()
       .catch(() => null),
+    c.env.DB.prepare(
+      `SELECT id, vers, statut, cree_a FROM rencontre_pas WHERE de = ?1 ORDER BY cree_a DESC LIMIT 200`,
+    )
+      .bind(session.userId)
+      .all<Record<string, unknown>>()
+      .then((r) => r.results ?? [])
+      .catch(() => [] as Record<string, unknown>[]),
+    c.env.DB.prepare(`SELECT id, a, b, cree_a FROM rencontre_matchs WHERE a = ?1 OR b = ?1 ORDER BY cree_a DESC LIMIT 200`)
+      .bind(session.userId)
+      .all<Record<string, unknown>>()
+      .then((r) => r.results ?? [])
+      .catch(() => [] as Record<string, unknown>[]),
   ]);
 
   const body: AccountExport = {
@@ -1333,6 +1345,11 @@ authRoutes.get('/account/export', async (c) => {
       hasPassword: pw !== null,
       username: pw?.username ?? null,
       note: 'Aucun secret d\u2019authentification (hash de mot de passe, code de récupération) n\u2019est exporté — ils sont inutilisables hors du système et leur divulgation créerait un risque.',
+    },
+    rencontres: {
+      pasEnvoyes: pasEnvoyes,
+      matchs: matchsExport,
+      note: 'Rencontre-E1 : les pas que tu as faits (destinataire identifié par son identifiant technique — jamais de donnée d\u2019identité au-delà du pseudo) et les matchs issus de la réciprocité. Les pas reçus ne sont PAS listés : ils sont aveugles par conception — le serveur ne conserve pas de lien consultable par toi avant la réciprocité.',
     },
     consents: {
       email_verified_at: user['email_verified_at'] ?? null,
@@ -1379,6 +1396,10 @@ async function hardDeleteAccount(
   // La sauvegarde des réponses (Task 69-c) suit le compte : droit à
   // l'effacement — les états de quêtes rattachés au membre partent avec lui.
   await c.env.DB.prepare(`DELETE FROM reponses WHERE user_id = ?`).bind(userId).run();
+  // Rencontre-E1 (Task 94) : les pas (envoyés OU reçus) et les matchs partent
+  // avec le compte — purge immédiate, même doctrine (SPEC-RENONCONTRE-E1 P5).
+  await c.env.DB.prepare(`DELETE FROM rencontre_pas WHERE de = ?1 OR vers = ?1`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_matchs WHERE a = ?1 OR b = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM auth_password WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM users WHERE id = ?`).bind(userId).run();
 }

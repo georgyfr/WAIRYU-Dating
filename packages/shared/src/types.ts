@@ -300,6 +300,12 @@ export interface AccountExport {
     username: string | null;
     note: string;
   };
+  /** Rencontre-E1 (Task 94) — les pas envoyés et les matchs (RGPD art. 15). */
+  rencontres: {
+    pasEnvoyes: Record<string, unknown>[];
+    matchs: Record<string, unknown>[];
+    note: string;
+  };
   consents: Record<string, unknown>;
   audit: { note: string };
 }

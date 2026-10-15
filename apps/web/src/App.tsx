@@ -211,7 +211,13 @@ export default function App() {
 
   // Le point corail de l'onglet Quête — dérivé de la progression RÉELLE
   // (Task 45 : couvre LES 18 quêtes ouvertes, plus seulement le Monde 1).
-  const queteEnCours = useProgressionDetail().engagee;
+  const progressionDetail = useProgressionDetail();
+  const queteEnCours = progressionDetail.engagee;
+  // RENCONTRE-E1 (Task 94 / P1) : la 6ᵉ tab « Rencontres » apparaît AU JALON
+  // A — le Miroir est traversé (M1 3/3, état RÉEL local ; le serveur garde la
+  // vérité du contenu du pool). Avant le jalon A : 5 tabs, pas de tab fantôme.
+  const m1 = progressionDetail.parMonde['M1'];
+  const rencontresOuvert = !!m1 && m1.total > 0 && m1.faites === m1.total;
   // Les puces de nouveautés des onglets (Task 68) — dérivées de l'état RÉEL,
   // éteintes par la visite de l'onglet (effet ci-dessous).
   const inedits = useInedits();
@@ -398,7 +404,7 @@ export default function App() {
       }
       return;
     }
-    const h = DEST_HASH[dest];
+    const h = dest === 'rencontres' ? DEST_HASH.matchs : DEST_HASH[dest];
     if (window.location.hash === h) setStage(dest);
     else window.location.hash = h;
   };
@@ -826,7 +832,13 @@ export default function App() {
             }}
           />
         )}
-        <TabBar active={view} onSelect={go} queteEnCours={queteEnCours} badges={inedits} />
+        <TabBar
+          active={view === 'matchs' && rencontresOuvert ? 'rencontres' : view}
+          onSelect={go}
+          queteEnCours={queteEnCours}
+          badges={inedits}
+          rencontresOuvert={rencontresOuvert}
+        />
       </div>
     </>
   );

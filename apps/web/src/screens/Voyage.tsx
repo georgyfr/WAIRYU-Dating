@@ -578,27 +578,35 @@ export default function Voyage({ onExplore, onOpenWorld }: Props) {
         </div>
         <p className="v-section-sub">{tx('Ce que ton voyage construit, étape après étape — chaque découverte reste à toi.')}</p>
         <ol className="v-rec">
-          {MILESTONES.map((jalon) => (
-            <li key={jalon.num} className={jalon.status === 'now' ? 'v-rec-item v-rec-now' : 'v-rec-item'}>
-              <span className="v-rec-ico" style={{ background: jalon.tile.bg, color: jalon.tile.fg }} aria-hidden="true">
-                <VoyageIcon name={jalon.icon as VoyageIconName} size={21} />
-              </span>
-              <div className="v-rec-body">
-                <h3>
-                  {jalon.name}
-                  {jalon.status === 'now' ? (
-                    <span className="v-chip v-chip-now">
-                      <span className="v-chip-dot" aria-hidden="true" />
-                      {tx('En cours')}
-                    </span>
-                  ) : (
-                    <span className="v-chip v-chip-soon">{tx('À venir')}</span>
-                  )}
-                </h3>
-                <p>{jalon.desc}</p>
-              </div>
-            </li>
-          ))}
+          {MILESTONES.map((jalon) => {
+            // RENCONTRE-E1 (Task 94 / P1) : le jalon 6 « La Rencontre » passe
+            // de « À venir » à « Ouvert » dès que le Miroir est traversé
+            // (M1 3/3 — état RÉEL, même source que les 4 tuiles).
+            const m1 = parMonde['M1'];
+            const rencontreOuverte = jalon.num === 6 && !!m1 && m1.total > 0 && m1.faites === m1.total;
+            const enAvant = jalon.status === 'now' || rencontreOuverte;
+            return (
+              <li key={jalon.num} className={enAvant ? 'v-rec-item v-rec-now' : 'v-rec-item'}>
+                <span className="v-rec-ico" style={{ background: jalon.tile.bg, color: jalon.tile.fg }} aria-hidden="true">
+                  <VoyageIcon name={jalon.icon as VoyageIconName} size={21} />
+                </span>
+                <div className="v-rec-body">
+                  <h3>
+                    {jalon.name}
+                    {enAvant ? (
+                      <span className="v-chip v-chip-now">
+                        <span className="v-chip-dot" aria-hidden="true" />
+                        {jalon.status === 'now' ? tx('En cours') : tx('Ouvert')}
+                      </span>
+                    ) : (
+                      <span className="v-chip v-chip-soon">{tx('À venir')}</span>
+                    )}
+                  </h3>
+                  <p>{jalon.desc}</p>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </section>
 

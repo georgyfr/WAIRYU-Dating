@@ -1,6 +1,6 @@
-# SPEC RENCONTRE-E1 — v1.0 (2026-10-15)
+# SPEC RENCONTRE-E1 — v1.1 (2026-10-15)
 
-**Statut : DESIGN. Rien n'est implémenté. Prod inchangée (2187c750).**
+**Statut : E1 IMPLÉMENTÉ EN STAGING (Task 94 — GO fondateur : « implémente en staging », prod toujours sur feu vert). Prod inchangée (2187c750).**
 Débloquage de l'espace Rencontre à la fin du Monde 1 — exigence fondateur consignée verbatim, architecture en deux jalons, propositions numérotées **P** à valider, décisions fermées gravées **D-R**.
 
 ---
@@ -85,6 +85,20 @@ Tout ce qui n'est pas P1→P6 : conversations réelles (E2), quêtes à deux (E3
 5. **P4** : le premier pas est-il **aveugle** (l'autre voit « quelqu'un a fait un pas » sans nom tant qu'il n'a pas répondu — recommandé, plus doux) ou **nommé** ?
 6. Nom de l'espace dans la nav : « Rencontres » (recommandé — c'est le verbatim produit existant) ou autre.
 
+## 5 bis. Choix retenus par délégation (Task 94, révocables — staging)
+
+Le GO « implémente en staging » n'a pas tranché point par point ; les recommandations gravées de la spec ont été suivies, chacune révocable sans dette :
+
+1. **D-R1 validée telle quelle** — le périmètre fondateur (« Le Miroir seul ET tout le bloc 1.x ») mappe exactement les deux jalons : A ouvre (1.1→1.3), B approfondit (1.4→1.11).
+2. **P1 suivie (recommandation)** : 5 tabs avant le jalon A, 6ᵉ tab « Rencontres » (💞 deux anneaux) AU jalon A seulement. Le jalon 6 du Voyage passe « À venir » → « Ouvert » au jalon A.
+3. **P2-b : la règle « trie, n'exclut pas »** — pool = plancher mutuel jalon A (chacun voit chacun dès le Miroir 3/3) ; tri par territoires communs (mondes franchis identiques), puis profondeur, puis ancienneté. AUCUNE visibilité asymétrique (l'alternative « le moins avancé ne voit jamais au-dessus » n'est PAS implémentée — à valider si le fondateur la veut).
+4. **P3 suivie (recommandé)** : aucune carte exposée en E1 — pseudo + profondeur du voyage seulement. La table `rencontre_profils` n'existe donc PAS (rien à stocker) ; elle naîtra avec l'exposition des cartes.
+5. **P4 suivie (recommandé)** : le pas est AVEUGLE — le destinataire voit un COMPTE (« n personne(s) a fait un pas vers toi »), jamais qui ; la réciprocité (deux pas) crée le match et révéle les deux pseudos. Unmatch : E2.
+6. **Nom de l'espace : « Rencontres »** (verbatim produit existant) — tab, titre d'écran, i18n EN « Matches ».
+
+Écart documenté : `GET /api/rencontres` (liste séparée) est FONDU dans `GET /api/rencontres/pool` (une seule réponse : pool + pasRecus + matchs) — moins de round-trips, mêmes données. Endpoints livrés : `GET /api/rencontres/pool`, `POST /api/rencontres/pas`, `DELETE /api/rencontres/pas/{id}`.
+
 ## 6. Journal
 
+- **v1.1 (2026-10-15, Task 94)** — implémentation STAGING : migration 0012 (`rencontre_pas`, `rencontre_matchs`) · routes `rencontres.ts` (pool/pas/retrait, jalon A dérivé de `reponses` via json_extract, plancher mutuel, pas aveugle, match par réciprocité, rate limits ren:pool 120/h + ren:pas 30/h) · `hardDeleteAccount` étendu (purge immédiate des pas et matchs) · export RGPD étendu (section `rencontres`) · front : écran #/matchs réel (porte fermée → progression du Miroir ; porte ouverte → pool, pas, matchs, retrait), TabBar 6ᵉ tab conditionnelle, jalon 6 « Ouvert », i18n FR/EN, CSS dédié. Choix délégués consignés (§5 bis). Prod inchangée.
 - **v1.0 (2026-10-15)** — création : exigence fondateur consignée (Task 93), périmètre tranché (« Miroir ET bloc 1.x »), architecture E1 proposée, ancrage code vérifié (Rencontres.tsx, voyage.ts jalon 6 + M11, Task 69-c). Rien implémenté. Prod inchangée.
