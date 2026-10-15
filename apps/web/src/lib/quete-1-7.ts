@@ -12,11 +12,15 @@
  * décisions de la personne. » → CE QUI CHANGE (présentation seule) :
  *  - les libellés des options de Q1.7-01 deviennent des phrases simples, à la première
  *    personne, que tout le monde peut reconnaître ;
- *  - le mot technique du Livrable (TSA, TDAH, Dys, Anxiété) reste VISIBLE en
- *    sous-titre discret (ceux qui se reconnaissent dans le mot exact ne le perdent
- *    pas) — EXPLIQUES_17[i].terme ;
+ *  - TASK 96 (demande fondateur : « des choses comme neuro atypique, TDAH ou dyslexie
+ *    dyspraxie sont des mots que les gens ne connaissent pas — les gens ne vont pas
+ *    cocher ce qu'ils ne comprennent pas ») : le mot technique du Livrable (TSA, TDAH,
+ *    Dys) N'APPARAÎT PLUS dans la liste — il vit uniquement DANS le pop-up « ? », où
+ *    sa première phrase le nomme et le décode aussitôt ; EXPLIQUES_17[i].terme reste
+ *    la trace du mot du Livrable ;
  *  - un bouton « ? » par mot ouvre un pop-up explicatif en mots simples
- *    (EXPLIQUES_17[i].expli) — composant components/InfoFonctionnement.tsx ;
+ *    (EXPLIQUES_17[i].expli ; titre = la phrase cochable) — composant
+ *    components/InfoFonctionnement.tsx ;
  *  - « Autre (champ libre) » devient HONNÊTE : cocher « Autre chose me décrit » ouvre
  *    un vrai champ libre (TEXTE_LIBRE_17, plomberie textes existante — comme Q2.3-10),
  *    promesse du libellé tenue.
@@ -63,8 +67,8 @@ const QUESTIONS_17_FR: readonly Question17[] = [
     code: "Q1.7-01",
     question: "Coche ce qui te décrit, si tu veux le partager :",
     // 6 options, ordre et positions GELÉS (bitmask) — phrases simples
-    // (demande fondateur, Task 95) ; le mot technique vit en sous-titre
-    // (EXPLIQUES_17[i].terme), « Je ne souhaite pas le dire » reste 6ᵉ.
+    // (Task 95) ; AUCUN mot technique dans la liste (Task 96) — le « ? »
+    // ouvre le pop-up qui l'explique ; « Je ne souhaite pas le dire » reste 6ᵉ.
     options: [
       "Je perçois le monde différemment des autres",
       "Je suis vite distrait(e) et mon énergie déborde",
@@ -85,9 +89,11 @@ const QUESTIONS_17_FR: readonly Question17[] = [
 ];
 export const QUESTIONS_17 = avecEN(QUESTIONS_17_FR, EN_Q17.QUESTIONS_17);
 
-/** Une explication simple d'un mot technique — sous-titre + corps du pop-up. */
+/** Une explication simple d'un mot technique — corps du pop-up « ? » (Task 96 :
+ *  le terme n'est plus rendu dans la liste ; l'expli le nomme et le décode). */
 export interface Explic17 {
-  /** Le mot technique du Livrable, affiché en sous-titre discret. */
+  /** Le mot technique du Livrable — plus affiché dans la liste (Task 96) ;
+   *  le pop-up l'introduit et le décode dans sa première phrase (expli). */
   terme: string;
   /** Ce que le mot veut dire, en mots simples (corps du pop-up « ? »). */
   expli: string;

@@ -101,12 +101,13 @@ export const CORE: Record<string, string> = {
   'Tes lignes rouges — coches ce qui est rédhibitoire pour toi':
     'Your red lines — tick what is a deal-breaker for you',
   'Tes mots à toi — ils ne sont jamais reformulés.': 'Your own words — never reworded.',
-  // Task 95 — quête 1.7 « Ton fonctionnement » : phrases simples, sous-titre
-  // technique, pop-up « mots en clair » (demande fondateur).
-  'Expliquer ce mot': 'Explain this word',
+  // Task 95 → 96 — quête 1.7 « Ton fonctionnement » : phrases simples SEULES
+  // dans la liste (aucun jargon visible), pop-up « mots en clair » (demande
+  // fondateur) — le mot technique n'est plus un sous-titre (Task 96).
+  'Expliquer cette phrase': 'Explain this phrase',
   'Des mots pas clairs ? Voir les explications simples': 'Words unclear? See the plain explanations',
   'Pour t\'aider à choisir': 'To help you choose',
-  'Ce mot, en clair': 'This word, in plain words',
+  'En clair': 'In plain words',
   'Fermer l\'explication': 'Close the explanation',
   'Pourquoi on te demande ça': 'Why we ask you this',
   'Les mots, un par un': 'The words, one by one',

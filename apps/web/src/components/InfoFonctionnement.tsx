@@ -8,9 +8,11 @@
  * pourquoi de la question (INFO_17.pourquoi).
  *
  * DEUX MODES :
- *  - index (0-3)  : UN mot — le terme technique en titre, l'explication simple
- *    en corps (EXPLIQUES_17 — déjà dans la langue courante, ne JAMAIS repasser
- *    par tx()) ;
+ *  - index (0-3)  : UNE phrase — la phrase simple cochable en titre (celle du
+ *    bouton « ? »), l'explication simple en corps : sa première phrase NOMME le
+ *    mot technique du Livrable et le décode aussitôt (Task 96 — aucun jargon
+ *    hors du pop-up ; EXPLIQUES_17 — déjà dans la langue courante, ne JAMAIS
+ *    repasser par tx()) ;
  *  - 'tous'       : le glossaire — chapeau, pourquoi, les 4 mots un par un
  *    (chacun rappelle la phrase simple cochable), la garde honnête.
  *
@@ -90,8 +92,10 @@ export default function InfoFonctionnement({
       >
         <div className="w-modal-head">
           <div className="w-modal-title">
-            <small>{glossaire ? tx('Pour t\x27aider à choisir') : tx('Ce mot, en clair')}</small>
-            <h2 id="if-titre">{glossaire ? INFO_17.titre : (cible?.terme ?? '')}</h2>
+            <small>{glossaire ? tx('Pour t\x27aider à choisir') : tx('En clair')}</small>
+            <h2 id="if-titre">
+              {glossaire ? INFO_17.titre : (QUESTIONS_17[0].options[index] ?? '')}
+            </h2>
           </div>
           <button
             type="button"

@@ -7,7 +7,7 @@
  * orientations, booléens — ils restent côté FR.
  * « Je ne souhaite pas le dire » reste une option de première classe, à sa
  * position exacte (6ᵉ et dernière) ; EXPLIQUES_17 garde les mêmes index,
- * nulls compris (options sans sous-titre ni pop-up).
+ * nulls compris (options sans pop-up).
  */
 import type { L10n } from '../../apply';
 import type { Explic17, Question17 } from '../../../lib/quete-1-7';

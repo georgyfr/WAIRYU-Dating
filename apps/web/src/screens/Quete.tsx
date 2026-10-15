@@ -1217,10 +1217,11 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                   // (jamais une validation punitive).
                   const plein =
                     queteId === '3.7' && !on && compteSelections37(valeur ?? 0) >= GARDE_MAX_37;
-                  // Task 95 (demande fondateur) — 1.7 : la phrase simple en tête,
-                  // le mot technique en sous-titre discret, un « ? » par mot qui
-                  // ouvre le pop-up explicatif. Structure GELÉE : 6 options, mêmes
-                  // positions, bitmask inchangé — seuls les libellés s'éclairent.
+                  // Task 95 → 96 (demande fondateur) — 1.7 : la case affiche la
+                  // phrase simple SEULE. AUCUN mot technique dans la liste (« les
+                  // gens ne vont pas cocher ce qu'ils ne comprennent pas ») — le
+                  // « ? » ouvre le pop-up qui nomme et décode le mot en clair.
+                  // Structure GELÉE : 6 options, mêmes positions, bitmask inchangé.
                   const explic =
                     queteId === '1.7' && item.code === 'Q1.7-01' ? (EXPLIQUES_17[i] ?? null) : null;
                   const btn = (
@@ -1231,14 +1232,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                       disabled={plein}
                       onClick={() => enregistrerReponse(queteId, item.code, (valeur ?? 0) ^ bit)}
                     >
-                      {explic ? (
-                        <span className="q17-bloc">
-                          {interpolerMontants(opt, money)}
-                          <small className="q17-sous">{explic.terme}</small>
-                        </span>
-                      ) : (
-                        interpolerMontants(opt, money)
-                      )}
+                      {interpolerMontants(opt, money)}
                     </button>
                   );
                   if (!explic) return btn;
@@ -1248,7 +1242,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                       <button
                         type="button"
                         className="q17-info"
-                        aria-label={tx('Expliquer ce mot')}
+                        aria-label={tx('Expliquer cette phrase')}
                         onClick={() => setInfo17(i)}
                       >
                         ?
