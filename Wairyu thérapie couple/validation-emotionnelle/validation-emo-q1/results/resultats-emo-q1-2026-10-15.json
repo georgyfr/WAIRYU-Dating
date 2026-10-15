@@ -1,0 +1,794 @@
+{
+  "plafond_c1a": {
+    "plafond_global_pct": 71.25,
+    "plafonds_par_config": {
+      "G1_régulé": 64.0,
+      "G2_force_claire": 76.67,
+      "G3_explosif_vif": 71.25,
+      "G4_suppressif": 80.0
+    },
+    "plafond_min_config_pct": 64.0,
+    "estimation_superviseur_pct": "88.0-91.0",
+    "dans_estimation": false,
+    "ecart_estimation": -18.25,
+    "n_total": 400,
+    "n_correct": 285
+  },
+  "resume_groupes": {
+    "G1_régulé": 150,
+    "G2_force_claire": 120,
+    "G3_explosif_vif": 80,
+    "G4_suppressif": 50,
+    "SANS_FORCE": 40,
+    "SURCHARGE": 20,
+    "ASYM_RQS": 15
+  },
+  "C1a": {
+    "plafond_pct": 71.25,
+    "seuil_pct": 68.25,
+    "obtenu_pct": 71.25,
+    "n_correct": 285,
+    "n_total": 400,
+    "estimation_superviseur": "88-91%",
+    "ecart_estimation": -18.25,
+    "ok": true
+  },
+  "C1b": {
+    "attendu": 40,
+    "obtenu": 40,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C1c": {
+    "attendu": 20,
+    "obtenu": 20,
+    "ok": true,
+    "exemple_forces": [
+      "F-E1",
+      "F-E2"
+    ],
+    "exemple_exclues": [
+      "F-E3",
+      "F-E4",
+      "F-E5",
+      "F-E6"
+    ]
+  },
+  "C2": {
+    "attendu_pct": 99.0,
+    "obtenu_pct": 100.0,
+    "n_ok": 475,
+    "n_total": 475,
+    "n_desaccords_forces": 0,
+    "n_desaccords_classif": 0,
+    "desaccords_forces": [],
+    "desaccords_classif": [],
+    "ok": true
+  },
+  "C3": {
+    "attendu": 15,
+    "obtenu": 15,
+    "detail": {
+      "linearite": 0,
+      "contradiction": 0,
+      "les_deux": 15
+    },
+    "ok": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "c5a_templates": {
+      "attendu": 7,
+      "obtenu": 7,
+      "templates": {
+        "F-E1": {
+          "attendu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple connaît.",
+          "obtenu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple connaît.",
+          "ok": true
+        },
+        "F-E2": {
+          "attendu": "Le cœur qui pacifie : tu désamorses les tensions avant qu'elles montent — ta présence apaise le climat.",
+          "obtenu": "Le cœur qui pacifie : tu désamorses les tensions avant qu'elles montent — ta présence apaise le climat.",
+          "ok": true
+        },
+        "F-E3": {
+          "attendu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — la joie de l'autre te touche.",
+          "obtenu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — la joie de l'autre te touche.",
+          "ok": true
+        },
+        "F-E4": {
+          "attendu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est une assise.",
+          "obtenu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est une assise.",
+          "ok": true
+        },
+        "F-E5": {
+          "attendu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — c'est sur toi que la relation s'appuie quand ça tremble.",
+          "obtenu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — c'est sur toi que la relation s'appuie quand ça tremble.",
+          "ok": true
+        },
+        "F-E6": {
+          "attendu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — tu sais changer de canal pour toucher.",
+          "obtenu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — tu sais changer de canal pour toucher.",
+          "ok": true
+        },
+        "SILENCIEUSE": {
+          "attendu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+          "obtenu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+          "ok": true
+        }
+      },
+      "ok": true
+    },
+    "c5b_trace": {
+      "attendu": 20,
+      "obtenu": 20,
+      "traces": [
+        {
+          "groupe": "SANS_FORCE",
+          "id": "SANS_FORCE_0",
+          "classif": "RÉGULÉ",
+          "statut": "SILENCIEUSE",
+          "forces": [],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": false,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 4.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SANS_FORCE",
+          "id": "SANS_FORCE_1",
+          "classif": "RÉGULÉ",
+          "statut": "SILENCIEUSE",
+          "forces": [],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": false,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 4.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SANS_FORCE",
+          "id": "SANS_FORCE_2",
+          "classif": "RÉGULÉ",
+          "statut": "SILENCIEUSE",
+          "forces": [],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": false,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 4.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SANS_FORCE",
+          "id": "SANS_FORCE_3",
+          "classif": "RÉGULÉ",
+          "statut": "SILENCIEUSE",
+          "forces": [],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": false,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 4.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SANS_FORCE",
+          "id": "SANS_FORCE_4",
+          "classif": "RÉGULÉ",
+          "statut": "SILENCIEUSE",
+          "forces": [],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": false,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 4.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G2_force_claire",
+          "id": "G2_force_claire_0",
+          "classif": "RUMINANT",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": false,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.423,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 6.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G2_force_claire",
+          "id": "G2_force_claire_1",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.269,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 6.222,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G2_force_claire",
+          "id": "G2_force_claire_2",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.385,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 7.778,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G2_force_claire",
+          "id": "G2_force_claire_3",
+          "classif": "RÉGULÉ",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.346,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 5.444,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G2_force_claire",
+          "id": "G2_force_claire_4",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.231,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 11.111,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SURCHARGE",
+          "id": "SURCHARGE_0",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 16.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SURCHARGE",
+          "id": "SURCHARGE_1",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 16.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SURCHARGE",
+          "id": "SURCHARGE_2",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 16.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SURCHARGE",
+          "id": "SURCHARGE_3",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 16.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "SURCHARGE",
+          "id": "SURCHARGE_4",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E3",
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 1.0,
+            "linearite_ok": false,
+            "contradiction_er1_er2": 16.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G3_explosif_vif",
+          "id": "G3_explosif_vif_0",
+          "classif": "EXPLOSIF",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E4",
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": false,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.308,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 9.333,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G3_explosif_vif",
+          "id": "G3_explosif_vif_1",
+          "classif": "EXPLOSIF",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E4"
+          ],
+          "exclues_densite": [
+            "F-E5",
+            "F-E6"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": true
+          },
+          "rqs": {
+            "linearite": 0.385,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 9.778,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G3_explosif_vif",
+          "id": "G3_explosif_vif_2",
+          "classif": "EXPLOSIF",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E4"
+          ],
+          "exclues_densite": [
+            "F-E5"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": false,
+            "F-E3": false,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 0.308,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 6.667,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G3_explosif_vif",
+          "id": "G3_explosif_vif_3",
+          "classif": "EXPLOSIF",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E1",
+            "F-E2"
+          ],
+          "exclues_densite": [
+            "F-E4",
+            "F-E5"
+          ],
+          "conditions": {
+            "F-E1": true,
+            "F-E2": true,
+            "F-E3": false,
+            "F-E4": true,
+            "F-E5": true,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 0.462,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 9.333,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        },
+        {
+          "groupe": "G3_explosif_vif",
+          "id": "G3_explosif_vif_4",
+          "classif": "MIXTE",
+          "statut": "ACTIF",
+          "forces": [
+            "F-E3",
+            "F-E4"
+          ],
+          "exclues_densite": [],
+          "conditions": {
+            "F-E1": false,
+            "F-E2": false,
+            "F-E3": true,
+            "F-E4": true,
+            "F-E5": false,
+            "F-E6": false
+          },
+          "rqs": {
+            "linearite": 0.077,
+            "linearite_ok": true,
+            "contradiction_er1_er2": 6.0,
+            "contradiction_ok": false,
+            "rqs_ok": false
+          }
+        }
+      ],
+      "ok": true
+    },
+    "c5d_dsim": {
+      "ok": true
+    },
+    "ok": true
+  },
+  "stats_groupes": {
+    "G1_régulé": {
+      "n": 150,
+      "n_actif": 150,
+      "n_silencieux": 0,
+      "pct_silencieux": 0.0,
+      "classif_count": {
+        "RÉGULÉ": 96,
+        "EXPLOSIF": 0,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 0,
+        "MIXTE": 54
+      }
+    },
+    "G2_force_claire": {
+      "n": 120,
+      "n_actif": 120,
+      "n_silencieux": 0,
+      "pct_silencieux": 0.0,
+      "classif_count": {
+        "RÉGULÉ": 21,
+        "EXPLOSIF": 5,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 2,
+        "MIXTE": 92
+      }
+    },
+    "G3_explosif_vif": {
+      "n": 80,
+      "n_actif": 78,
+      "n_silencieux": 2,
+      "pct_silencieux": 2.5,
+      "classif_count": {
+        "RÉGULÉ": 0,
+        "EXPLOSIF": 57,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 1,
+        "MIXTE": 22
+      }
+    },
+    "G4_suppressif": {
+      "n": 50,
+      "n_actif": 48,
+      "n_silencieux": 2,
+      "pct_silencieux": 4.0,
+      "classif_count": {
+        "RÉGULÉ": 0,
+        "EXPLOSIF": 0,
+        "SUPPRESSIF": 40,
+        "RUMINANT": 0,
+        "MIXTE": 10
+      }
+    },
+    "SANS_FORCE": {
+      "n": 40,
+      "n_actif": 0,
+      "n_silencieux": 40,
+      "pct_silencieux": 100.0,
+      "classif_count": {
+        "RÉGULÉ": 40,
+        "EXPLOSIF": 0,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 0,
+        "MIXTE": 0
+      }
+    },
+    "SURCHARGE": {
+      "n": 20,
+      "n_actif": 20,
+      "n_silencieux": 0,
+      "pct_silencieux": 0.0,
+      "classif_count": {
+        "RÉGULÉ": 0,
+        "EXPLOSIF": 0,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 0,
+        "MIXTE": 20
+      }
+    },
+    "ASYM_RQS": {
+      "n": 15,
+      "n_actif": 15,
+      "n_silencieux": 0,
+      "pct_silencieux": 0.0,
+      "classif_count": {
+        "RÉGULÉ": 0,
+        "EXPLOSIF": 0,
+        "SUPPRESSIF": 0,
+        "RUMINANT": 0,
+        "MIXTE": 15
+      }
+    }
+  },
+  "sha256_run": "990447875e0d90984b9afc25c7d9cb256bfd504db272043040b1be91cf3eb680"
+}
