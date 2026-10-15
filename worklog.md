@@ -1970,3 +1970,16 @@ Work Log:
 Stage Summary:
 - Quête 1.4 VALIDÉE de bout en bout sur staging : gating, briefing, passation gelée, sélecteur V1/V5 aux deux bornes, barre exacte, accompagnement, ombre relationnelle, persistance locale+D1, atlas/récolte, FR/EN, purges propres. La quête est prête ; rien à réparer.
 - Exigence « Rencontre à la fin du Monde 1 » consignée → chantier Rencontre-E1 en attente de : (1) périmètre « monde 1 » (Miroir seul vs bloc 1.x), (2) définition du pool (mêmes quêtes terminées ?), (3) exposition TabBar vs écran dédié. Rien implémenté sans spec validée.
+---
+Task ID: 93-b
+Agent: orchestrateur (Zagent Code)
+Task: Tranchage fondateur du périmètre « Monde 1 » (réponse : « Le Miroir seul (1.1→1.3) ET tout le bloc 1.x (1.1→1.11) ») — rédaction de la SPEC-RENONCONTRE-E1 v1.0. DESIGN uniquement.
+
+Work Log:
+- Réponse fondateur interprétée : les deux jalons comptent — le Miroir OUVRE, le bloc 1.x APPROFONDIT (interprétation opérationnelle proposée dans la spec, corrigeable d'un mot). Consignée verbatim en tête de spec.
+- Ancrage code vérifié AVANT rédaction : Rencontres.tsx (placeholder honnête #/matchs), voyage.ts (jalon 6 « La Rencontre » status soon, Monde 11 « Se débloque à ton premier match — la rencontre n'est jamais payante », M2 résumé « …si tu es prêt·e à rencontrer », quête de passage 1.11 « Es-tu prêt·e à rencontrer ? », porte 04 « Tes rencontres », vocabulaire Voyage→Portrait→Affinités→Rencontre), progression.ts (« le 51ᵉ pas est la Rencontre »), Task 69-c (états de quêtes synchronisés D1 → le serveur peut dériver les jalons sans nouveau stockage), TabBar 5 tabs, Masque (decouvrir/messages/profil).
+- docs/SPEC-RENONCONTRE-E1.v1.md créé : 4 décisions gravées (D-R1 deux jalons · D-R2 jamais payante · D-R3 jamais de rencontre inventée · D-R4 anti-score), architecture P1→P7 (exposition tab 6ᵉ au jalon A · pool mutuel plancher Miroir 3/3 des deux côtés + tri par territoires communs · profil de rencontre consentement explicite sans photo · premier pas à réciprocité → premier match débloque le M11 · backend D1 3 tables + 4 endpoints + RGPD hardDelete étendu · honnêteté doctrine · phases E2 conversations / E3 Voyage à Deux), hors périmètre, 6 points [À VALIDER] numérotés pour le fondateur.
+- Aucun fichier src touché. Aucun contenu de quête modifié. Prod inchangée (2187c750). Rien implémenté.
+
+Stage Summary:
+- Rencontre-E1 spécifiée et prête pour validation : l'espace Rencontre s'ouvre au Miroir terminé (pool de membres au même plancher), le bloc 1.x complète la profondeur, le premier match ouvre le Voyage à Deux — tout ancré dans le verbatim produit existant. En attente : validation D-R1 + réponses aux 6 points ouverts avant tout dev.
