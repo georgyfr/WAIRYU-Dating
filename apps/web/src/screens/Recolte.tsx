@@ -56,6 +56,10 @@ interface Decouverte {
   nom: string;
   /** La date réelle d'obtention (termineeA, ISO). */
   date: string | null;
+  /** Le VERBATIM de la carte (lumière / ombre / tension) — depuis le registre
+   *  des quêtes (déjà dans la langue courante) : il alimente la fiche
+   *  différenciée de la modal (exigence fondateur 2026-10-15). */
+  carte: { lumiere: string; ombre: string; tension: string };
 }
 
 /** Un écran de passage RÉEL (1.7 / 1.11 / 2.8 — sans carte, jamais compté). */
@@ -286,7 +290,13 @@ export default function Recolte() {
       if (quete.sansCarte || !carte) {
         ecrans.push({ id, titre: quete.titre, date: e.termineeA });
       } else {
-        cartes.push({ id, titre: quete.titre, nom: carte.nom, date: e.termineeA });
+        cartes.push({
+          id,
+          titre: quete.titre,
+          nom: carte.nom,
+          date: e.termineeA,
+          carte: { lumiere: carte.lumiere, ombre: carte.ombre, tension: carte.tension },
+        });
       }
     }
     return {
@@ -405,6 +415,7 @@ export default function Recolte() {
           type: 'carte',
           nom: c.nom,
           titre: c.titre,
+          carte: c.carte,
           date: c.date,
           mondeNum: m.monde.num,
           mondeCode: m.monde.code,
@@ -720,6 +731,7 @@ export default function Recolte() {
                       type: 'carte',
                       nom: c.nom,
                       titre: c.titre,
+                      carte: c.carte,
                       date: c.date,
                       mondeNum: m.monde.num,
                       mondeCode: m.monde.code,
@@ -990,6 +1002,7 @@ export default function Recolte() {
                                 type: 'carte',
                                 nom: c.nom,
                                 titre: c.titre,
+                                carte: c.carte,
                                 date: c.date,
                                 mondeNum: w.num,
                                 mondeCode: w.code,
@@ -1348,6 +1361,7 @@ export default function Recolte() {
                                   type: 'carte',
                                   nom: c.nom,
                                   titre: c.titre,
+                                  carte: c.carte,
                                   date: c.date,
                                   mondeNum: m.monde.num,
                                   mondeCode: m.monde.code,

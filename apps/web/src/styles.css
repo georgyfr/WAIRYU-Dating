@@ -6814,6 +6814,44 @@ button.r-tl-chip:hover {
     font-size: 13px
 }
 
+/* La carte en ENTIER (repliable) — le verbatim lumière/ombre/tension de la
+   fiche différenciée (exigence fondateur 2026-10-15). */
+.ri-details {
+    margin: 2px 0 0;
+    border: 1px dashed var(--c-line);
+    border-radius: 11px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.55)
+}
+
+.ri-details summary {
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #2a9aa0;
+    user-select: none
+}
+
+.ri-details summary::marker {
+    color: #2a9aa0
+}
+
+.ri-details .ri-det {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #33424b
+}
+
+.ri-details .ri-det strong {
+    color: var(--c-night);
+    font-weight: 800
+}
+
+.ri-details .ri-det:first-of-type {
+    margin-top: 7px
+}
+
 .ri-premium {
     display: flex;
     flex-direction: column;

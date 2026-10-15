@@ -340,6 +340,20 @@ export const SCREENS_A: Record<string, string> = {
     'You decide what is visible and when — nothing appears without you.',
   'Ce n\'est ni un score, ni un diagnostic : une tendance mesurée sur tes réponses.':
     'It is neither a score nor a diagnosis: a tendency measured from your answers.',
+  // Fiche différenciée d'une carte (exigence fondateur 2026-10-15) — le
+  // verbatim lumière/ombre/tension vit dans le registre des quêtes (miroir EN
+  // i18n/content/en/registre-*.ts) ; ici : les gabarits de la fiche.
+  'Ta carte en entier': 'Your card in full',
+  'Ta lumière': 'Your light',
+  "Ta zone d'ombre": 'Your shadow side',
+  'Ta tension intérieure': 'Your inner tension',
+  'Sa tension — « {{tension}} » — est un début de conversation prêt : ce que tu essaies de tenir ensemble, l\'autre peut le comprendre.':
+    'Its tension — "{{tension}}" — is a ready-made conversation starter: what you are trying to hold together is something the other can understand.',
+  // Sceau et fragment différenciés par TERRITOIRE (la tagline du monde, déjà
+  // localisée dans lib/voyage.ts).
+  'La marque du monde « {{nom}} ». {{tagline}}': 'The mark of the world "{{nom}}". {{tagline}}',
+  'La pièce « {{nom}} » de ton Portrait. {{tagline}}':
+    'The "{{nom}}" piece of your Portrait. {{tagline}}',
   'Une étape du parcours qui ne produit pas de carte — elle produit de la confiance.':
     'A step of the journey that produces no card — it produces confidence.',
   'Ces écrans jalonnent le chemin entre deux découvertes.':

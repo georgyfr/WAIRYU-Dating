@@ -24,6 +24,7 @@
 import { useEffect, useRef } from 'react';
 import VoyageIcon from './VoyageIcons';
 import type { VoyageIconName } from './VoyageIcons';
+import { WORLDS } from '../lib/voyage';
 import { useI18n } from '../i18n/I18nProvider';
 import { formaterPrixFacturation } from '../i18n/currency';
 
@@ -45,6 +46,12 @@ export interface ItemRecolte {
   nom?: string;
   /** Le titre de la quête d'origine (carte). */
   titre?: string;
+  /** Le VERBATIM de la carte (lumière / ombre / tension) — depuis le registre
+   *  des quêtes (déjà dans la langue courante, ne JAMAIS repasser par tx()).
+   *  Présent = la fiche est différenciée : intro = la lumière, « Ta carte en
+   *  entier » repliable, la tension branchée dans les puces (exigence
+   *  fondateur 2026-10-15 : plus deux fiches identiques pour deux cartes). */
+  carte?: { lumiere: string; ombre: string; tension: string };
   /** La date réelle d'obtention (ISO). */
   date?: string | null;
   /** Le mois du voyage d'origine (1-11). */
@@ -249,6 +256,10 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
   }, [onClose]);
 
   const r = REGISTRE[item.type];
+  // Le monde d'origine (nom + tagline — déjà localisés dans voyage.ts) : il
+  // différencie les fiches sceau et fragment par TERRITOIRE traversé, pour les
+  // 11 mondes, sans aucun texte dupliqué (exigence fondateur 2026-10-15).
+  const monde = WORLDS.find((w) => w.num === item.mondeNum) ?? null;
   const dateCourte = (() => {
     if (!item.date) return null;
     try {
@@ -272,14 +283,38 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
           : tx(r.label);
 
   const intro =
-    item.type === 'jalon'
-      ? tx(JALON_INTRO[Math.min(6, Math.max(1, item.jalonNum ?? 1))])
-      : tx(r.intro);
+    item.carte
+      ? item.carte.lumiere
+      : item.type === 'jalon'
+        ? tx(JALON_INTRO[Math.min(6, Math.max(1, item.jalonNum ?? 1))])
+        : item.type === 'sceau' && monde
+          ? tx('La marque du monde « {{nom}} ». {{tagline}}', {
+              nom: monde.name,
+              tagline: monde.tagline,
+            })
+          : item.type === 'fragment' && monde
+            ? tx('La pièce « {{nom}} » de ton Portrait. {{tagline}}', {
+                nom: monde.name,
+                tagline: monde.tagline,
+              })
+            : tx(r.intro);
 
   const points =
     item.type === 'jalon'
       ? [tx(JALON_POINT[Math.min(6, Math.max(1, item.jalonNum ?? 1))])]
-      : r.points.map((p) => tx(p));
+      : item.carte
+        ? [
+            // Les deux règles permanentes, la tension VERBATIM de CETTE carte
+            // (interpolée une seule fois — jamais re-traduite), la visibilité.
+            tx(r.points[0]),
+            tx(r.points[1]),
+            tx(
+              'Sa tension — « {{tension}} » — est un début de conversation prêt : ce que tu essaies de tenir ensemble, l\'autre peut le comprendre.',
+              { tension: item.carte.tension },
+            ),
+            tx(r.points[2]),
+          ]
+        : r.points.map((p) => tx(p));
 
   const premium = item.type === 'mois' && item.mondeCode ? !item.traverse : false;
 
@@ -338,6 +373,24 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
 
           {item.titre && <p className="ri-sources">{item.titre}</p>}
           <p className="ri-intro">{intro}</p>
+
+          {item.carte && (
+            <details className="ri-details">
+              <summary>{tx('Ta carte en entier')}</summary>
+              <p className="ri-det">
+                <strong>{tx('Ta lumière')} — </strong>
+                {item.carte.lumiere}
+              </p>
+              <p className="ri-det">
+                <strong>{tx("Ta zone d'ombre")} — </strong>
+                {item.carte.ombre}
+              </p>
+              <p className="ri-det">
+                <strong>{tx('Ta tension intérieure')} — </strong>
+                {item.carte.tension}
+              </p>
+            </details>
+          )}
 
           <h3 className="ri-h3">{tx('À quoi ça sert dans les rencontres')}</h3>
           <ul className="ri-points">
