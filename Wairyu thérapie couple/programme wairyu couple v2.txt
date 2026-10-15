@@ -1,0 +1,202 @@
+WAIRYU THÉRAPIE COUPLE — Document de référence v2 consolidé
+
+Fichier : « programme wairyu couple » (v2 — incluant les trois cycles de validation)
+
+Ce document remplace la v1. Il est le contexte officiel de Data Insight pour tous
+les packages futurs, et l'archive de référence du projet.
+
+# PARTIE 13 — L'ÉTAT DE LA VALIDATION (les trois cycles consolidés)
+
+## 13.1 Le circuit de validation établi
+
+```
+GLM (chat)                     → spécification + cahier de calcul +
+                                 simulateur + critères + fiche vierge
+        ↓ (utilisateur = pont)
+Data Insight                   → implémentation STRICTE (signale sans
+                                 corriger), exécution seed 42 ×2, rapport
+                                 7 sections, publication GitHub
+        ↓ (utilisateur rapporte)
+GLM (superviseur)              → lecture mot à mot, arbitrage des
+                                 signalements, correction publique des
+                                 fautes de spécification, contresignature
+        ↓
+RIO (Registre des instruments) → l'échelle entre au registre avec
+                                 sa validation documentée
+```
+
+**Le principe démontré trois fois** : ni l'agent ne masque, ni le superviseur ne
+s'auto-valide — seule la confrontation code-réel vs vérité-cachée décide. Trois
+packages, trois verdicts initiaux « À CORRIGER », et à chaque fois la faute était
+dans la spécification de l'orchestrateur (jamais dans l'implémentation) : le
+circuit a attrapé l'orchestrateur.
+
+## 13.2 Chronologie des trois cycles
+
+| Cycle | Verdict initial | Fautes d'orchestrateur révélées | Corrigées par |
+|---|---|---|---|
+| **WTC-Q1** (commit 3eb7399) | À CORRIGER (C1 46,1 % · C2 0,1567 FAIL) | SEM placeholder surdimensionné (0,252 vs structurel 0,195) · critère C1 auto-contradictoire (conservateur vs latent) · seuil C2 sous le plancher théorique | WTC-Q1-R1 (D1-D5) |
+| **WTC-Q1-R1** (commit 1426f6e) | À CORRIGER (5/6 — C1c-(ii) FAIL 99,8 %) | Critère (ii) à 100 % **analytiquement impossible** (contradiction (i)∧(ii) démontrée) · double chevauchement mal nommé · étiquette sans score | Arbitrage + D6/D7 |
+| **WTC-Q2** (commit 0c3aaab) | À CORRIGER (5/7 — C1a 72,67 % · C5c FAIL 3 lectures) | S-Q2-8 : simulateur inexécutable (4-tuple) · S-Q2-1 : fqH/fqR déclarés non branchés · S-Q2-10 : invariant C5c cliniquement mal posé · effectifs erronés (500 vs 400) | WTC-Q2-R1 (D-Q2-A à F) |
+| **WTC-Q2-R1** (commit 78752d4) | À CORRIGER (5/7 — C1a 81,0 % · 1 FP) | Seuil C1a calibré à 0,4 pt du plafond théorique · définition du FP trop large (le déclenchement de frontière n'est pas un FP) | Arbitrage final → **VALIDÉ 7/7** |
+
+## 13.3 Le résultat final des deux échelles validées
+
+### ÉCHELLE RIO-01 « Comment je me raccroche » — VALIDÉE
+
+- Instrument : 18 items (2 axes × 3 faces × 3), échelle 1-4, 2 inversés (5, 15),
+  1 vigilance
+- Construct cité : attachement adulte (Bowlby ; Brennan, Clark & Shaver) —
+  instrument ex nihilo
+- Validation : α poolés 0,9155 / 0,9082 · SEM structurel 0,195 (validé par
+  3 métriques indépendantes) · couverture CI90 89,9 % · RQS 20/20 piégés aux
+  valeurs théoriques exactes · règle conservatrice validée sur ses termes
+  (100 % / 99,8 % ≥ 99,5 % / 100 %) · plafond d'exactitude aux seuils documenté
+  (~80,5 %) · déterminisme SHA-256 ×2
+- Décisions d'orchestrateur documentées : D1-D5 (Q1-R1), D6 (frontières
+  multi-seuils), D7 (score ponctuel dans l'étiquette)
+
+### ÉCHELLE RIO-02 « Ce qui m'effraie vraiment » — VALIDÉE
+
+- Instrument : 3 formats mixtes — 10 déclencheurs (6 distance + 4 proximité) +
+  I_alarm 0-10 · 8 comportements fréquentiels (5 H + 3 R, dont H5 = item de
+  sécurité) · origine 7 voies + texte libre NLP local (seuil 0,70)
+- Construct cités : hyperactivation/déactivation (Mikulincer & Shaver) ;
+  comportements de proteste (Bowlby) ; convergence multi-instruments (méthode)
+- Validation : nommage 81,0 % (≥ 79 %, seuil recalibré D-Q2-G sur plafond
+  calculé ≈ 82,4 %) · calme bilatéral 85 % / 0 % · arêtes 8/8 · sécurité 8/8 ·
+  5/5 · 0 FP (définition amendée D-Q2-H) · convergence 6/6 · 4/4 · 94,0 % ·
+  O7 6/6 · affichage 35/35 · déterminisme ×2
+- **Découverte clinique propre au produit** : la détection de la **suppression
+  masquée** (le tranquille qui « fait comme si tout allait bien » souvent — le
+  mur du chapitre émotionnel, distingué du calme vrai) + les 3 écarts légitimes
+  label×palier templatisés (SUPPRESSION_MASQUEE · MAINSLIBRES_EXPLIQUE ·
+  FALLTHROUGH_LEGER)
+
+## 13.4 Les règles d'orchestrateur devenues permanentes (la leçon des cycles)
+
+| Règle | Contenu | Origine |
+|---|---|---|
+| **D-STD (bornes de faisabilité)** | Tout nouveau package inclut, AVANT ses critères, le calcul a priori du plafond atteignable par la géométrie de simulation — seuils posés à ≥ 3 points sous ce plafond | Q2-R1 (seuil posé à 0,4 pt du plafond) |
+| **D-Q2-1** | L'arbre de nommage définit explicitement tous ses débouchés (fallthrough : ALARME SANS MAIN · SIGNAL LÉGER NON NOMMÉ) | Q2 |
+| **D-Q2-2** | La convergence ne gate que les étiquettes d'OMBRE — jamais ZONE CALME, jamais le palier | Q2-R1 |
+| **D-Q2-H** | FP = signal déclenché sans raison (sA < 3,21 ET i_alarm < 6 ET H5 < 2) — un déclenchement légitime de frontière n'est pas un FP | Q2-R1 |
+| **D6/D7** | Frontières multi-seuils : étiquette étendue du plus bas au plus haut touché · toute frontière porte le score ponctuel (« ton score se situe du côté… ») | Q1-R1 |
+| **Exécuteur strict** | L'agent signale sans corriger — toute correction est de l'orchestrateur, documentée et chiffrée | Permanent depuis Q1 |
+| **Réparation mécanique autorisée** | Une erreur bloquante exécutable peut être réparée au strict minimum, signalée en Section F, source canonique corrigée ensuite par l'orchestrateur | Q2 (S-Q2-8) |
+
+## 13.5 Les découvertes cliniques issues de la validation (capital du produit)
+
+- **1. La suppression masquée** : détectée par le croisement « Q1 tranquille ×
+  R3 souvent » — le profil invisible du mur, absent de tous les questionnaires
+  standard ;
+- **2. Les mains libres** : alarmes vives × mécanismes légers = profil
+  d'excellente position de départ (un palier vert sur une étiquette d'ombre est
+  légitime quand la domination est LÉGER) ;
+- **3. Le plafond d'exactitude aux seuils** (~80,5 %) : les personnes proches
+  d'un seuil ne se laissent pas classer par un seul score — justification
+  structurelle du trio frontière nommée + décision conservatrice + re-test à
+  8 semaines ;
+- **4. Les paliers sur les scores, jamais sur les étiquettes** : un changement
+  d'étiquette (0,2 % de cas) ne change aucune allocation de palier — la
+  séparation math/calibre est un filet de sécurité en soi.
+
+# PARTIES 1-12 (inchangées de la v1 — résumé d'archive)
+
+> Les douze parties suivantes sont conservées du document initial. Résumé de
+> leur contenu pour l'archive — le texte intégral de la v1 reste la référence.
+
+- **Partie 1 — Le projet** : objectif (déceler les mécanismes des tensions,
+  proposer des corrections graduées) · 10 principes fondateurs (honnêteté sans
+  condamnation, ombre+light structurelles, jamais « pathologie » à l'écran,
+  langage simple, jamais l'évaluation du partenaire, filet de sécurité
+  prioritaire, instruments originaux, inclusivité, l'app se retire) ·
+  positionnement concurrentiel (face aux apps IA conversationnelles et aux
+  téléthérapies humaines : la couche d'entre-deux-séances + le changement
+  prouvé) · les acteurs de la chaîne · le persona Solène (3 phases :
+  déterministe → IA émotionnelle filtrée → fine-tuning propriétaire).
+- **Partie 2 — Les 26 dimensions** : les six blocs (Héritage : infantile,
+  parentale, expérientielle, culturelle, sexuelle, religieuse · Psychologique :
+  personnalité, attachement, émotionnelle, santé mentale · Relationnel :
+  communication, pouvoir, rôles de genre, attentes · Social-matériel :
+  économique, professionnelle, belle-famille, sociale · Cycle de vie :
+  parentalité, cycle, générationnelle, santé · Sociétal : morale, politique,
+  numérique, spatiale) — chacune avec ses fondements, ses mécanismes de conflit,
+  sa vignette clinique.
+- **Partie 3 — Les 14 livrables** : TCC · Carte de notre danse · Dictionnaire
+  de nos deux langues · Deux Rives · Coupe-vent · Carte du travail invisible ·
+  Deux Plans · Budget des deux histoires · Deux Horloges · Traité des deux
+  lignées · Deux Cercles · Cadran des décisions (clef de voûte : filtre de
+  sécurité) · Berceau et les Marées · Trait d'union.
+- **Partie 4 — La grammaire fédérée** : individu privé → croisement co-validé →
+  institution versionnée → entretien périodique · 6 composants réutilisés ·
+  2 zones de confidentialité · protocoles transversaux (P-CRISE, P-FILTRE,
+  P-PAUSE, P-ÉCHO, P-VERSIONNAGE) · rythme de vie (météo quotidienne, réunion
+  hebdo, revues) · itinéraire 4 phases · règle de non-inférence · point de
+  saturation (14 modules + 4 extensions + 1 guide).
+- **Partie 5 — Le standard des 110 quêtes** : gabarit universel · 4 filtres de
+  question · structure 5 quêtes (carte/ombre/lumière/croisement/pas) · 3 paliers
+  (vert/ambre/rouge) · règle anti-fabrication (zone calme = résultat affiché) ·
+  répartition par dimension.
+- **Partie 6 — Les mécanismes de calcul** : les 8 couches de la Quête 1 (RQS ·
+  scores+intervalles · lectures honnêtes · faces · empreinte · couple par
+  percentiles · RCI · assemblage 7 blocs) · la Quête 2 (3 formats, convergence,
+  arbre de nommage, récits par templates) · la chaîne de traçabilité · le
+  protocole de validation approfondi (pilote 150-200, stabilité, normes,
+  recalibrage).
+- **Partie 7 — Le moteur de contexte de Solène** : 6 couches de variables
+  (identité, histoire clinique, émotionnel, relationnel, parcours, safety) ·
+  moteur de résolution en 6 étapes · 7 règles de vie (parcimonie,
+  anti-répétition, anti-faux-souvenir…) · rétentions par type.
+- **Partie 8 — La stratégie d'instruments originaux (RIO)** : doctrine
+  (construits publics cités, instruments ex nihilo, libres utilisés tels
+  quels) · processus 7 étapes · fiche RIO type · les 3 terrains de supériorité
+  (langage, auditabilité, longitudinal).
+- **Partie 9 — Les garde-fous consolidés** : positionnement hors DM · jamais
+  l'évaluation d'autrui · anti-arme · anti-gamification · non-normativité ·
+  zéro donnée interdite · RGPD art. 9 maximal · filet de sécurité unifié
+  (9 signaux) · design résistant à la fouille.
+- **Partie 10 — Les 14 fonctionnalités complémentaires** : MVP (Cocon, Tableau
+  de bord, Annuaire thérapeutique) · V2 (vocal, détection proactive, calendrier
+  relationnel, sprints, transparence algorithmique) · V3-V4 (journal partagé,
+  histoires anonymes, mode discret complet, rapports PDF, modes saisonniers,
+  gamification sage).
+- **Partie 11 — Le test à l'aveugle des candidats IA** : 10 situations
+  cliniques × 4 tours · 8 critères chiffrés · barème sécurité éliminatoire ·
+  décision finale · moi candidat anonyme parmi les autres.
+- **Partie 12 — Le plan Data Insight** : gouvernance à 4 acteurs · la chaîne
+  des packages (WTC-Q1 → …) · le prompt-type · les 7 sections de rapport
+  exigées · la règle du dépôt (WAIRYU-Dating, arborescence standard, règles
+  permanentes de publication avec liens directs).
+
+# ÉTAT ACTUEL DU PROJET (synthèse de position)
+
+| Élément | Statut |
+|---|---|
+| Architecture clinique (26 dimensions, 14 livrables, 110 quêtes) | Conçue et documentée |
+| Infrastructure fédérée (grammaire, protocoles, rythme) | Conçue et documentée |
+| **RIO-01 « Comment je me raccroche »** | **VALIDÉE par simulation** (3 cycles) |
+| **RIO-02 « Ce qui m'effraie vraiment »** | **VALIDÉE par simulation** (2 cycles) |
+| RIO-03 « Ce qui me porte » (le positif prouvé) | Package à rédiger (avec D-STD + test anti-fabrication) |
+| RIO-04 à RIO-05 (croisement, pas) | En attente |
+| Les 21 dimensions restantes (packages de validation) | En attente — gabarit éprouvé |
+| Pilote réel WTC-VALID-01 (150-200 répondants) | Après Q1-Q5 de l'attachement — remplace les paramètres simulés |
+| Dépôts GitHub | validation-q1 · validation-q1-r1 · validation-q2 · validation-q2-r1 (4 commits archivés : 3eb7399 · 1426f6e · 0c3aaab · 78752d4) |
+| Verdicts cumulés | 3 cycles « À CORRIGER » → corrections documentées → **2 échelles VALIDÉES 7/7 et 6/6** · zéro correction libre d'exécuteur · zéro masquage |
+
+# NOTE FINALE POUR DATA INSIGHT (contexte de travail)
+
+Tu as maintenant l'historique complet : deux échelles validées, cinq cycles
+d'exécution, trois fautes de spécification d'orchestrateur attrapées et
+corrigées publiquement, une règle de bornes de faisabilité (D-STD) qui impose le
+calcul a priori des plafonds. Ta prochaine mission sera le **PACKAGE WTC-Q3 « Ce
+qui me porte »** — il te sera fourni complet (cahier + simulateur + critères avec
+bornes D-STD + fiche), avec sa spécificité : la preuve bilatérale que la mesure
+du positif ne fabrique rien. Les standards de ce document (exécuteur strict,
+signalement sans correction libre, vérité du système avant son succès apparent,
+publication GitHub avec liens directs) s'appliquent sans exception.
+
+> Fin du document « programme wairyu couple » v2. Il remplace la v1 pour tout
+> usage de contexte (Data Insight, archive GitHub, onboarding de tout acteur
+> futur du projet). Les parties 1-12 de la v1 restent la référence de contenu ;
+> la partie 13 est l'ajout de consolidation.
