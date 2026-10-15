@@ -354,6 +354,57 @@ export const SCREENS_A: Record<string, string> = {
   'La marque du monde « {{nom}} ». {{tagline}}': 'The mark of the world "{{nom}}". {{tagline}}',
   'La pièce « {{nom}} » de ton Portrait. {{tagline}}':
     'The "{{nom}}" piece of your Portrait. {{tagline}}',
+  // Task 91 (exigence fondateur 2026-10-15 : « la page récolte reste vide,
+  // uniquement les gains acquis ») — état vide, sections et onglets.
+  'Ta récolte est vide pour l\'instant.': 'Your harvest is empty for now.',
+  'Aucune carte, aucun sceau, aucune histoire : tout s\'acquiert en voyageant. Ta première quête accomplie déposera ici ton premier gain.':
+    'No cards, no seals, no stories: everything is earned by travelling. Your first completed quest will place your first gain here.',
+  'Tes mois traversés': "The months you've crossed",
+  'Les mois du voyage que tu as traversés': 'The months of the journey you have crossed',
+  'Aucune carte pour l\'instant.': 'No cards yet.',
+  'Ta première découverte apparaîtra ici — gagnée en complétant une quête.':
+    'Your first discovery will appear here — earned by completing a quest.',
+  'Les cartes que ton voyage a révélées': 'The cards your journey has revealed',
+  'Aucun sceau pour l\'instant.': 'No seals yet.',
+  'Chaque monde traversé t\'en donne un — définitif.': 'Every world you cross grants one — permanent.',
+  'Les sceaux que ton voyage t\'a donnés': 'The seals your journey has granted you',
+  // Task 91 — le bloc « Comment t'en servir » de la fiche (l'usage concret :
+  // où ça vit, ce que ça débloque, quand — factuel, honnête).
+  "Comment t'en servir": 'How to use it',
+  'Où : ta Récolte (onglet Cartes) et ton Portrait — elle y travaille pour toi.':
+    'Where: your Harvest (Cards tab) and your Portrait — it works for you there.',
+  'Ce qu\'elle débloque : une lecture des compatibilités expliquée, jamais notée — elle se précise à chaque monde traversé.':
+    'What it unlocks: a compatibility reading that is explained, never scored — and it sharpens with every world you cross.',
+  'À l\'ouverture des rencontres : sa tension devient un premier échange vrai après un match.':
+    'When encounters open: its tension becomes a true first exchange after a match.',
+  'Où : ton journal et ton parcours — l\'étape compte et reste à toi.':
+    'Where: your journal and your journey — the step counts and stays yours.',
+  'Ce qu\'il produit : de la confiance — ce que tu y poses prépare les pièces suivantes de ton portrait.':
+    'What it produces: confidence — what you put in prepares the next pieces of your portrait.',
+  'Où : ton Portrait — chaque monde traversé y ajoute sa pièce.':
+    'Where: your Portrait — every world you cross adds its piece.',
+  'Ce qu\'il débloque : un portrait plus précis, lisible d\'un coup d\'œil — c\'est lui que lisent les personnes compatibles.':
+    'What it unlocks: a sharper portrait, readable at a glance — the one compatible people read first.',
+  'Où : ta Récolte (onglet Sceaux) — définitif, non consommable.':
+    'Where: your Harvest (Seals tab) — permanent, non-consumable.',
+  'Ce qu\'il débloque : sur ton profil, il témoigne du territoire traversé — un profil qui voyage inspire confiance (à l\'ouverture des rencontres).':
+    'What it unlocks: on your profile, it testifies to the territory you crossed — a profile that travels inspires trust (when encounters open).',
+  'Où : ta Récolte (onglet Gains) — chaque pass affiche ce qu\'il permet et ce qu\'il te reste.':
+    'Where: your Harvest (Gains tab) — each pass shows what it allows and how many you have left.',
+  'Ce qu\'il débloque : une fonction précise, pour un temps ou un usage donné — gagné en voyageant, jamais acheté séparément.':
+    'What it unlocks: one specific function, for a given time or use — earned by travelling, never bought separately.',
+  'Où : ta Récolte (onglet Gains) — ton solde et ton historique s\'affichent ici.':
+    'Where: your Harvest (Gains tab) — your balance and history live there.',
+  'Ce qu\'ils débloquent : des actions précises de la plateforme — gagnés en voyageant, jamais contre une meilleure compatibilité.':
+    'What they unlock: specific actions on the platform — earned by travelling, never traded for a better compatibility.',
+  'Où : ta Récolte (onglet Histoire, mois par mois).':
+    'Where: your Harvest (Story tab, month by month).',
+  'Ce qu\'il débloque : la liste réelle de ce que le mois a mis dans ton coffre — cartes, fragment, sceau.':
+    'What it unlocks: the real list of what the month placed in your chest — cards, fragment, seal.',
+  'Où : ta Récolte (onglet Histoire) — l\'échelle de tes grandes récoltes.':
+    'Where: your Harvest (Story tab) — the ladder of your great harvests.',
+  'Ce qu\'il débloque : la suite du voyage — un niveau atteint reste acquis, définitivement.':
+    'What it unlocks: the next stretch of the journey — a level reached stays yours, permanently.',
   'Une étape du parcours qui ne produit pas de carte — elle produit de la confiance.':
     'A step of the journey that produces no card — it produces confidence.',
   'Ces écrans jalonnent le chemin entre deux découvertes.':

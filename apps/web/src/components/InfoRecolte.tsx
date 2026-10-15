@@ -77,6 +77,13 @@ interface RegistreEntree {
   intro: string;
   /** Ce que ça fait sur la plateforme de rencontre — clés i18n FR. */
   points: readonly string[];
+  /** COMMENT T'EN SERVIR (exigence fondateur 2026-10-15 : « comment va-t-il
+   *  l'utiliser au niveau de la plateforme pour débloquer quoi, pour pouvoir
+   *  accéder à quel élément ») — Où ça vit, ce que ça débloque, quand.
+   *  Factuel : les fonctions non encore ouvertes sont dites « à l'ouverture ».
+   *  L'usage est de niveau TYPE (toutes les cartes se manient pareil) — la
+   *  différenciation reste dans le verbatim propre de chaque élément. */
+  usage: readonly string[];
   /** Ce que ce n'est PAS — la garde honnête. */
   garde: string;
 }
@@ -94,6 +101,11 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Elle donne à l\x27autre un vrai point de départ pour t\x27aborder : une tendance à te ressembler, pas une étiquette.',
       'Tu décides de ce qui est visible et du moment — rien n\x27apparaît sans toi.',
     ],
+    usage: [
+      'Où : ta Récolte (onglet Cartes) et ton Portrait — elle y travaille pour toi.',
+      'Ce qu\'elle débloque : une lecture des compatibilités expliquée, jamais notée — elle se précise à chaque monde traversé.',
+      'À l\'ouverture des rencontres : sa tension devient un premier échange vrai après un match.',
+    ],
     garde: 'Ce n\x27est ni un score, ni un diagnostic : une tendance mesurée sur tes réponses.',
   },
   ecran: {
@@ -105,6 +117,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     points: [
       'Ces écrans jalonnent le chemin entre deux découvertes.',
       'Ce que tu y poses prépare la suite de ton portrait — et reste à toi.',
+    ],
+    usage: [
+      'Où : ton journal et ton parcours — l\'étape compte et reste à toi.',
+      'Ce qu\'il produit : de la confiance — ce que tu y poses prépare les pièces suivantes de ton portrait.',
     ],
     garde: 'Un écran de passage ne juge rien : il te fait avancer.',
   },
@@ -118,6 +134,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Assemblés, tes fragments composent ton Portrait — ce que voient en premier les personnes compatibles avec toi.',
       'Chaque mois traversé ajoute une pièce : plus tu avances, plus ton portrait te ressemble.',
     ],
+    usage: [
+      'Où : ton Portrait — chaque monde traversé y ajoute sa pièce.',
+      'Ce qu\'il débloque : un portrait plus précis, lisible d\'un coup d\'œil — c\'est lui que lisent les personnes compatibles.',
+    ],
     garde: 'Ton portrait se lit comme une histoire — jamais comme une fiche à cocher.',
   },
   sceau: {
@@ -129,6 +149,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     points: [
       'Permanent et non consommable : il reste à toi, sans jamais révéler tes réponses.',
       'Sur la plateforme, il témoigne de ton parcours — un profil qui voyage inspire confiance.',
+    ],
+    usage: [
+      'Où : ta Récolte (onglet Sceaux) — définitif, non consommable.',
+      'Ce qu\'il débloque : sur ton profil, il témoigne du territoire traversé — un profil qui voyage inspire confiance (à l\'ouverture des rencontres).',
     ],
     garde: 'Un sceau ne s\x27achète pas et ne se perd pas : il se traverse.',
   },
@@ -142,6 +166,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Exemple : explorer une possibilité supplémentaire dans Découvrir.',
       'Chaque pass affichera ce qu\x27il permet et combien il en reste.',
     ],
+    usage: [
+      'Où : ta Récolte (onglet Gains) — chaque pass affiche ce qu\'il permet et ce qu\'il te reste.',
+      'Ce qu\'il débloque : une fonction précise, pour un temps ou un usage donné — gagné en voyageant, jamais acheté séparément.',
+    ],
     garde: 'Un pass n\x27achète jamais une meilleure compatibilité — les rencontres se construisent par le voyage.',
   },
   credit: {
@@ -153,6 +181,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     points: [
       'Certaines interactions se paieront en crédits — gagnés en voyageant.',
       'Ton solde, tes gains et tes usages s\x27afficheront dans ta récolte.',
+    ],
+    usage: [
+      'Où : ta Récolte (onglet Gains) — ton solde et ton historique s\'affichent ici.',
+      'Ce qu\'ils débloquent : des actions précises de la plateforme — gagnés en voyageant, jamais contre une meilleure compatibilité.',
     ],
     garde: 'Les crédits ne s\x27échangent jamais contre une meilleure compatibilité.',
   },
@@ -166,6 +198,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
       'Chaque mois construit une pièce de ton portrait — la vraie monnaie de tes rencontres.',
       'Traversé, un mois te laisse des cartes, un fragment et un sceau.',
     ],
+    usage: [
+      'Où : ta Récolte (onglet Histoire, mois par mois).',
+      'Ce qu\'il débloque : la liste réelle de ce que le mois a mis dans ton coffre — cartes, fragment, sceau.',
+    ],
     garde: 'Un mois s\x27ouvre après l\x27autre : le voyage reste la clé de tout.',
   },
   jalon: {
@@ -175,6 +211,10 @@ const REGISTRE: Record<TypeRecolte, RegistreEntree> = {
     label: 'Niveau du voyage',
     intro: 'Un niveau de ta récolte — ce qu\x27il débloque pour toi.',
     points: [],
+    usage: [
+      'Où : ta Récolte (onglet Histoire) — l\'échelle de tes grandes récoltes.',
+      'Ce qu\'il débloque : la suite du voyage — un niveau atteint reste acquis, définitivement.',
+    ],
     garde: 'Un niveau se franchit en voyageant — il ne s\x27achète pas.',
   },
 };
@@ -396,6 +436,17 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
           <ul className="ri-points">
             {points.map((p) => (
               <li key={p}>{p}</li>
+            ))}
+          </ul>
+
+          {/* COMMENT T'EN SERVIR (exigence fondateur 2026-10-15) — l'usage
+              concret sur la plateforme : où ça vit, ce que ça débloque,
+              quand. Factuel — les fonctions non ouvertes sont dites
+              « à l'ouverture » (honnêteté D19, jamais de promesse floue). */}
+          <h3 className="ri-h3">{tx("Comment t'en servir")}</h3>
+          <ul className="ri-points ri-points-usage">
+            {r.usage.map((u) => (
+              <li key={u}>{tx(u)}</li>
             ))}
           </ul>
 

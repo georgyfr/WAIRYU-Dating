@@ -8130,6 +8130,24 @@ button.r-tl-chip:hover {
     margin-top: 12px
 }
 
+/* RÉCOLTE VIDE pleine page (Task 91 — exigence fondateur : « la page récolte
+   reste vide, uniquement les gains acquis ») : l'état vide EST la page —
+   centré, respirant, aucun autre bloc. */
+.r-vide-page {
+    max-width: 460px;
+    margin: 48px auto 56px;
+    padding: 40px 24px;
+    gap: 10px
+}
+
+/* COMMENT T'EN SERVIR (Task 91) — la liste d'usage se distingue doucement
+   des points « à quoi ça sert » : mêmes puces, teinte neutre de fond. */
+.ri-points-usage {
+    background: rgba(42, 154, 160, 0.06);
+    border-radius: 12px;
+    padding: 10px 14px 10px 6px
+}
+
 /* ============================================================
    Monde 5 « Ton Héritage » — blocs ADDITIFS (Tasks 53)
    4.1 : l'écran génogramme (modalité NON COMPTEE — structure libre)

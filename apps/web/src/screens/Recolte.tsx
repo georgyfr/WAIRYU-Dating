@@ -348,22 +348,12 @@ export default function Recolte() {
     }
   }
 
-  // Le prochain monde de la timeline — la frontière, sinon le premier monde
-  // non livré (tout fait : « bientôt » désigne la suite du voyage).
-  const prochain =
-    arret?.monde ??
-    recolteMondes.find((m) => !m.livree)?.monde ??
-    null;
   // Les mondes qui ont déjà une HISTOIRE réelle (quêtes posées ou terminées).
   const histoires = recolteMondes.filter((m) => m.termine || m.faites > 0);
-  // Le teaser « ta prochaine découverte t'attend ici » ne s'affiche que si le
-  // prochain monde n'a PAS encore d'entrée réelle (sinon doublon dans la liste).
-  const teaser =
-    prochain && !histoires.some((m) => m.monde.code === prochain.code) ? prochain : null;
 
-  // Le statut RÉEL d'un jalon (même calcul pour la carte « En cours » et pour
-  // l'échelle complète de l'onglet Histoire — une seule source de vérité).
-  // Retourne 'atteint' | 'now' | le statut statique du jalon ('now' | 'soon').
+  // Le statut RÉEL d'un jalon (l'échelle de l'onglet Histoire — une seule
+  // source de vérité). Retourne 'atteint' | 'now' | le statut statique du
+  // jalon ('now' | 'soon').
   const statutJalon = (num: number, status: string): 'atteint' | 'now' | 'soon' =>
     num === 1
       ? recolte > 0
@@ -380,12 +370,6 @@ export default function Recolte() {
             ? 'now'
             : (status as 'now' | 'soon')
           : (status as 'now' | 'soon');
-
-  // La carte « EN COURS » de l'Aperçu — le premier jalon non atteint.
-  const jalonActif =
-    MILESTONES.find((j) => statutJalon(j.num, j.status) === 'now') ??
-    MILESTONES.find((j) => statutJalon(j.num, j.status) !== 'atteint') ??
-    MILESTONES[MILESTONES.length - 1];
 
   // Les DERNIÈRES CARTES réelles (carrousel de l'Aperçu) — tri par date
   // décroissante, toutes provenances confondues.
@@ -461,6 +445,35 @@ export default function Recolte() {
   // Du plus récent au tout premier — les non datés ferment la liste.
   gains.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 
+  // RÉCOLTE VIDE (exigence fondateur 2026-10-15 : « la page récolte reste
+  // vide, uniquement les gains acquis ») : aucun gain acquis = une page vide
+  // et honnête — PAS de catalogue, PAS de progression décorative, PAS de
+  // pass/crédits à 0. Tout ce qui n'est pas gagné n'existe pas à l'écran.
+  if (gains.length === 0) {
+    return (
+      <main className="screen rec2">
+        <header className="rec2-head">
+          <h1 className="rec2-title">{tx('Ma récolte')}</h1>
+          <p className="rec2-sub">{tx('Ton voyage, étape après étape')}</p>
+        </header>
+        <section aria-labelledby="r-vide2-title" className="r-vide r-vide-page">
+          <span className="r-vide-ico" aria-hidden="true">
+            <VoyageIcon name="scroll" size={22} />
+          </span>
+          <h2 id="r-vide2-title">{tx('Ta récolte est vide pour l\'instant.')}</h2>
+          <p>
+            {tx(
+              'Aucune carte, aucun sceau, aucune histoire : tout s\'acquiert en voyageant. Ta première quête accomplie déposera ici ton premier gain.',
+            )}
+          </p>
+          <a className="rec2-cta" href="#/mondes">
+            {tx('Continuer le voyage')}
+          </a>
+        </section>
+      </main>
+    );
+  }
+
   // LES PUCES DES ONGLETS INTERNES (Task 68, demande fondateur) : chaque
   // section annonce le nombre d'éléments ajoutés depuis sa dernière visite —
   // dérivé du MÊME registre des gains (aucune donnée nouvelle). Les non datés
@@ -482,18 +495,28 @@ export default function Recolte() {
   // autres onglets) + pass/crédits à 0 honnête (rien n'est inventé, §16) :
   // chaque tuile ouvre l'explication « à quoi ça sert » de son type.
   const nbEcrans = recolteMondes.reduce((n, m) => n + m.ecrans.length, 0);
-  const inventaire: {
+  // LES SOLDES RÉELS (ACQUIS-SEUL, fondateur 2026-10-15) : un pass ou un
+  // crédit non gagné n'apparaît NULLE PART — ni en tuile, ni à 0. Ces soldes
+  // suivront l'état réel (notifs/registre des gains) à leur ouverture ;
+  // aujourd'hui aucun gain de ce type n'existe : les tuiles pass/crédits de
+  // l'inventaire tombent d'elles-mêmes (filtre n > 0).
+  const soldePass = 0;
+  const soldeCredits = 0;
+  type InventaireTuile = {
     type: 'carte' | 'ecran' | 'fragment' | 'sceau' | 'pass' | 'credit';
     label: string;
     n: number;
-  }[] = [
+  };
+  const inventaireComplet: InventaireTuile[] = [
     { type: 'carte', label: tx('Cartes'), n: recolte },
     { type: 'ecran', label: tx('Écrans de passage'), n: nbEcrans },
     { type: 'fragment', label: tx('Fragments'), n: worldsDone },
     { type: 'sceau', label: tx('Sceaux'), n: worldsDone },
-    { type: 'pass', label: tx('Pass'), n: 0 },
-    { type: 'credit', label: tx('Crédits'), n: 0 },
+    { type: 'pass', label: tx('Pass'), n: soldePass },
+    { type: 'credit', label: tx('Crédits'), n: soldeCredits },
   ];
+  // ACQUIS-SEUL (fondateur) : un type sans gain acquis n'a pas de tuile.
+  const inventaire = inventaireComplet.filter((it) => it.n > 0);
 
   // Le contenu RÉEL de la fiche d'un mois (partagé par la grille des mondes
   // de l'Aperçu et par la vue « mois par mois » de l'Histoire).
@@ -673,41 +696,9 @@ export default function Recolte() {
         className="rec2-panel"
         hidden={onglet !== 'apercu'}
       >
-        {/* CARTE « EN COURS » — le jalon actif de l'échelle des grandes récoltes
-            (maquette : « EN COURS · NIVEAU x SUR 6 »). Clic → son explication. */}
-        {jalonActif && (
-          <button
-            type="button"
-            className="rec2-next"
-            onClick={() => ouvrirInfo({ type: 'jalon', jalonNum: jalonActif.num })}
-            aria-label={tx('Niveau {{n}} — à quoi ça sert ?', { n: jalonActif.num })}
-          >
-            <span
-              className="rec2-next-ico"
-              style={{ background: jalonActif.tile.bg, color: jalonActif.tile.fg }}
-              aria-hidden="true"
-            >
-              <VoyageIcon name={jalonActif.icon as VoyageIconName} size={24} />
-            </span>
-            <span className="rec2-next-body">
-              <small>
-                {/* Honnêteté : « En cours » seulement si le statut RÉEL du jalon
-                    est 'now' ; sinon « Prochaine » (premier non atteint). */}
-                {statutJalon(jalonActif.num, jalonActif.status) === 'now'
-                  ? tx('En cours · Niveau {{n}} sur {{t}}', { n: jalonActif.num, t: MILESTONES.length })
-                  : tx('Prochaine · Niveau {{n}} sur {{t}}', { n: jalonActif.num, t: MILESTONES.length })}
-              </small>
-              <strong>{jalonActif.name}</strong>
-              <span className="rec2-next-sub">{jalonActif.desc}</span>
-            </span>
-            <span className="rec2-next-chev" aria-hidden="true">
-              <Fleche />
-            </span>
-          </button>
-        )}
-
         {/* DERNIÈRES CARTES — le carrousel réel (maquette), clic → explication,
-            « Tout voir » bascule sur l'onglet Cartes. */}
+            « Tout voir » bascule sur l'onglet Cartes. Acquis-seul (fondateur) :
+            la section n'existe que s'il y a AU MOINS une carte obtenue. */}
         {recentes.length > 0 && (
           <section aria-labelledby="rec2-latest-title">
             <div className="rec2-sec-head">
@@ -751,117 +742,124 @@ export default function Recolte() {
           </section>
         )}
 
-        {/* TON PORTRAIT PREND FORME — la mosaïque 6 colonnes de la maquette :
-            pièce pleine = monde traversé (couleur réelle), en cours = bordure
-            pointillée teal, vide = tuile crème. Clic → explication fragment. */}
-        <section aria-labelledby="rec2-mos-title">
-          <div className="rec2-sec-head">
-            <h2 id="rec2-mos-title" className="rec2-h2">
-              {tx('Ton portrait prend forme')}
-            </h2>
-            <span className="rec2-count">
-              {tx('{{a}} / {{b}}', { a: worldsDone, b: WORLDS.length })}
-            </span>
-          </div>
-          <div
-            className="rec2-mos"
-            role="list"
-            aria-label={tx('Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}', { a: worldsDone, s: worldsDone > 1 ? 's' : '', b: WORLDS.length, s2: worldsDone > 1 ? 's' : '' })}
-          >
-            {worldsDone > 0 && (
+        {/* TON PORTRAIT PREND FORME — ACQUIS-SEUL (fondateur) : la mosaïque
+            n'affiche que les pièces RÉELLEMENT gagnées (mondes traversés) —
+            aucune tuile vide, aucune promesse. Masquée tant qu'aucun monde
+            n'est clos : un fragment non gagné n'existe pas à l'écran. */}
+        {worldsDone > 0 && (
+          <section aria-labelledby="rec2-mos-title">
+            <div className="rec2-sec-head">
+              <h2 id="rec2-mos-title" className="rec2-h2">
+                {tx('Ton portrait prend forme')}
+              </h2>
+              <span className="rec2-count">
+                {tx('{{a}} / {{b}}', { a: worldsDone, b: WORLDS.length })}
+              </span>
+            </div>
+            <div
+              className="rec2-mos"
+              role="list"
+              aria-label={tx('Le portrait en construction — {{a}} pièce{{s}} sur {{b}} assemblée{{s2}}', { a: worldsDone, s: worldsDone > 1 ? 's' : '', b: WORLDS.length, s2: worldsDone > 1 ? 's' : '' })}
+            >
               <span className="rec2-mos-spark" aria-hidden="true">
                 {tx('✨')}
               </span>
-            )}
-            {recolteMondes.map((m) => (
+              {recolteMondes
+                .filter((m) => m.termine)
+                .map((m) => (
+                  <button
+                    key={m.monde.code}
+                    type="button"
+                    role="listitem"
+                    className="rec2-tile rec2-tile-done"
+                    style={{ background: m.monde.tile.bg, color: m.monde.tile.fg }}
+                    title={m.monde.name}
+                    onClick={() =>
+                      ouvrirInfo({
+                        type: 'fragment',
+                        mondeNum: m.monde.num,
+                        mondeCode: m.monde.code,
+                        date: parMonde[m.monde.code]?.derniereA ?? null,
+                      })
+                    }
+                    aria-label={tx('Fragment du portrait — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
+                  >
+                    <VoyageIcon name={m.monde.icon as VoyageIconName} size={18} />
+                  </button>
+                ))}
+            </div>
+            <p className="rec2-caption">{tx('Chaque monde complété ajoute une pièce.')}</p>
+          </section>
+        )}
+
+        {/* TES MOIS TRAVERSÉS — ACQUIS-SEUL (fondateur) : seulement les mois
+            CLOS (récolte complète : cartes, écran(s), fragment, sceau).
+            Les mois à venir, en cours et premium N'EXISTENT PAS ici —
+            aucun catalogue global, aucune promesse (exigence 2026-10-15). */}
+        {recolteMondes.some((m) => m.termine) && (
+          <section aria-labelledby="rec2-worlds-title">
+            <div className="rec2-sec-head">
+              <h2 id="rec2-worlds-title" className="rec2-h2">
+                {tx('Tes mois traversés')}
+              </h2>
+            </div>
+            <div className="rec2-worlds" role="list" aria-label={tx('Les mois du voyage que tu as traversés')}>
+              {recolteMondes
+                .filter((m) => m.termine)
+                .map((m) => {
+                  const w = m.monde;
+                  return (
+                    <button
+                      key={w.code}
+                      type="button"
+                      role="listitem"
+                      className="rec2-w rec2-w-done"
+                      onClick={() => ouvrirInfo(infoMois(m))}
+                      aria-label={tx('La récolte du mois {{n}} — {{nom}}', { n: w.num, nom: w.name })}
+                    >
+                      <small>
+                        {w.num} · {tx('Terminé')}
+                      </small>
+                      <span>{w.name}</span>
+                    </button>
+                  );
+                })}
+            </div>
+          </section>
+        )}
+
+        {/* MES PASS / MES CRÉDITS — ACQUIS-SEUL (fondateur) : le duo ne
+            s'affiche que si un solde RÉEL existe (§16 : rien n'est inventé,
+            jamais de « 0 » décoratif). Les soldes vivent dans notifs/état —
+            aujourd'hui 0 partout : le duo reste donc invisible. */}
+        {(soldePass > 0 || soldeCredits > 0) && (
+          <div className="rec2-duo">
+            {soldePass > 0 && (
               <button
-                key={m.monde.code}
                 type="button"
-                role="listitem"
-                className={`rec2-tile ${m.termine ? 'rec2-tile-done' : m.livree ? 'rec2-tile-now' : ''}`}
-                style={m.termine ? { background: m.monde.tile.bg, color: m.monde.tile.fg } : undefined}
-                title={m.monde.name}
-                onClick={() =>
-                  ouvrirInfo({
-                    type: 'fragment',
-                    mondeNum: m.monde.num,
-                    mondeCode: m.monde.code,
-                    date: m.termine ? (parMonde[m.monde.code]?.derniereA ?? null) : null,
-                  })
-                }
-                aria-label={tx('Fragment du portrait — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
+                className="rec2-duo-card"
+                onClick={() => ouvrirInfo({ type: 'pass' })}
+                aria-label={tx('À quoi sert un pass ?')}
               >
-                {m.termine && <VoyageIcon name={m.monde.icon as VoyageIconName} size={18} />}
+                <small>{tx('Mes pass')}</small>
+                <strong>{soldePass}</strong>
+                <span>{tx('À quoi ça sert ?')}</span>
               </button>
-            ))}
+            )}
+            {soldeCredits > 0 && (
+              <button
+                type="button"
+                className="rec2-duo-card"
+                onClick={() => ouvrirInfo({ type: 'credit' })}
+                aria-label={tx('À quoi servent les crédits ?')}
+              >
+                <small>{tx('Mes crédits')}</small>
+                <strong>{soldeCredits}</strong>
+                <span>{tx('Comment en obtenir ?')}</span>
+              </button>
+            )}
           </div>
-          <p className="rec2-caption">{tx('Chaque monde complété ajoute une pièce.')}</p>
-        </section>
-
-        {/* LES 11 MONDES — la grille de la maquette (TERMINÉ / EN COURS /
-            À VENIR / PREMIUM). Clic → la fiche du mois (réelle ou promesse). */}
-        <section aria-labelledby="rec2-worlds-title">
-          <div className="rec2-sec-head">
-            <h2 id="rec2-worlds-title" className="rec2-h2">
-              {tx('Les {{n}} mondes', { n: WORLDS.length })}
-            </h2>
-            <span className="rec2-hint">{tx('Touche pour ouvrir')}</span>
-          </div>
-          <div className="rec2-worlds" role="list" aria-label={tx('La collection des 11 mondes')}>
-            {recolteMondes.map((m) => {
-              const w = m.monde;
-              const prem = !w.free && !m.termine;
-              const etat = m.termine
-                ? tx('Terminé')
-                : m.livree && m.faites > 0
-                  ? tx('En cours')
-                  : prem
-                    ? 'Premium'
-                    : tx('À venir');
-              return (
-                <button
-                  key={w.code}
-                  type="button"
-                  role="listitem"
-                  className={`rec2-w ${m.termine ? 'rec2-w-done' : m.livree && m.faites > 0 ? 'rec2-w-now' : prem ? 'rec2-w-prem' : 'rec2-w-soon'}`}
-                  onClick={() => ouvrirInfo(infoMois(m))}
-                  aria-label={tx('La récolte du mois {{n}} — {{nom}}', { n: w.num, nom: w.name })}
-                >
-                  <small>
-                    {w.num} · {etat}
-                  </small>
-                  <span>{w.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* MES PASS / MES CRÉDITS — le duo compact de la maquette (0 honnête —
-            rien n'est inventé, règle §16) ; l'explication complète vit dans le
-            pop-up « à quoi ça sert ». */}
-        <div className="rec2-duo">
-          <button
-            type="button"
-            className="rec2-duo-card"
-            onClick={() => ouvrirInfo({ type: 'pass' })}
-            aria-label={tx('À quoi sert un pass ?')}
-          >
-            <small>{tx('Mes pass')}</small>
-            <strong>0</strong>
-            <span>{tx('À quoi ça sert ?')}</span>
-          </button>
-          <button
-            type="button"
-            className="rec2-duo-card"
-            onClick={() => ouvrirInfo({ type: 'credit' })}
-            aria-label={tx('À quoi servent les crédits ?')}
-          >
-            <small>{tx('Mes crédits')}</small>
-            <strong>0</strong>
-            <span>{tx('Comment en obtenir ?')}</span>
-          </button>
-        </div>
+        )}
 
         {/* TES ESPACES — les 3 portes (conservées : rien n'est supprimé). */}
         <h2 className="rec2-h2 rec2-esp-t">{tx('Tes espaces')}</h2>
@@ -953,10 +951,27 @@ export default function Recolte() {
           <p className="rec2-note">
             {tx('Ce que ton voyage construit, étape après étape — chaque découverte reste à toi. Tes cartes décrivent des tendances, jamais des étiquettes : tu es toujours plus qu\'un profil.')}
           </p>
-          <div className="r-cartes" role="list" aria-label={tx('La collection des 11 mondes')}>
-            {recolteMondes.map((m) => {
-              const w = m.monde;
+          {/* ACQUIS-SEUL (fondateur) : seuls les mondes dont des cartes ont
+              été RÉELLEMENT obtenues apparaissent — aucun monde « à venir »,
+              aucune promesse. */}
+          {(() => {
+            const mondesCartes = recolteMondes.filter((m) => m.cartes.length > 0);
+            if (mondesCartes.length === 0) {
               return (
+                <section aria-labelledby="r-cartes-vide" className="r-vide">
+                  <span className="r-vide-ico" aria-hidden="true">
+                    <VoyageIcon name="gem" size={22} />
+                  </span>
+                  <h2 id="r-cartes-vide">{tx("Aucune carte pour l'instant.")}</h2>
+                  <p>{tx('Ta première découverte apparaîtra ici — gagnée en complétant une quête.')}</p>
+                </section>
+              );
+            }
+            return (
+              <div className="r-cartes" role="list" aria-label={tx('Les cartes que ton voyage a révélées')}>
+                {mondesCartes.map((m) => {
+                  const w = m.monde;
+                  return (
                 <article
                   key={w.code}
                   role="listitem"
@@ -981,85 +996,66 @@ export default function Recolte() {
                         <Coche />
                         {tx('Découverte')}
                       </span>
-                    ) : m.livree && m.faites > 0 ? (
+                    ) : (
                       <span className="v-chip v-chip-now">
                         <span className="v-chip-dot" aria-hidden="true" />
                         {tx('En cours')}
                       </span>
-                    ) : (
-                      <span className="v-chip v-chip-soon">{tx('À découvrir')}</span>
                     )}
                   </header>
-                  {m.cartes.length > 0 ? (
-                    <ul className="r-cm-list">
-                      {m.cartes.map((c) => (
-                        <li key={c.id} className="r-cm-dec">
-                          <button
-                            type="button"
-                            className="r-btn r-cm-dec-btn"
-                            onClick={() =>
-                              ouvrirInfo({
-                                type: 'carte',
-                                nom: c.nom,
-                                titre: c.titre,
-                                carte: c.carte,
-                                date: c.date,
-                                mondeNum: w.num,
-                                mondeCode: w.code,
-                                queteId: c.id,
-                              })
-                            }
-                            aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
-                          >
-                            <span className="r-cm-dec-ico" aria-hidden="true">
-                              <VoyageIcon name="gem" size={14} />
-                            </span>
-                            <span className="r-cm-dec-body">
-                              <strong>{c.nom}</strong>
-                              <small>
-                                {c.titre}
-                                {c.date ? ` · ${dateCourte(c.date, lang)}` : ''}
-                              </small>
-                            </span>
-                          </button>
-                          <a
-                            className="r-cm-lien"
-                            href={`#/quete/${c.id}/resultats`}
-                            aria-label={tx('Voir mes résultats en détail — {{nom}}', { nom: c.nom })}
-                          >
-                            {tx('Voir en détail')}
-                            <Fleche />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="r-cm-soft">
-                      {m.livree
-                        ? tx('Les découvertes de ce monde apparaîtront au fil de tes quêtes.')
-                        : tx('Cette pièce de ton portrait apparaîtra pendant ton voyage.')}
-                    </p>
-                  )}
+                  <ul className="r-cm-list">
+                    {m.cartes.map((c) => (
+                      <li key={c.id} className="r-cm-dec">
+                        <button
+                          type="button"
+                          className="r-btn r-cm-dec-btn"
+                          onClick={() =>
+                            ouvrirInfo({
+                              type: 'carte',
+                              nom: c.nom,
+                              titre: c.titre,
+                              carte: c.carte,
+                              date: c.date,
+                              mondeNum: w.num,
+                              mondeCode: w.code,
+                              queteId: c.id,
+                            })
+                          }
+                          aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
+                        >
+                          <span className="r-cm-dec-ico" aria-hidden="true">
+                            <VoyageIcon name="gem" size={14} />
+                          </span>
+                          <span className="r-cm-dec-body">
+                            <strong>{c.nom}</strong>
+                            <small>
+                              {c.titre}
+                              {c.date ? ` · ${dateCourte(c.date, lang)}` : ''}
+                            </small>
+                          </span>
+                        </button>
+                        <a
+                          className="r-cm-lien"
+                          href={`#/quete/${c.id}/resultats`}
+                          aria-label={tx('Voir mes résultats en détail — {{nom}}', { nom: c.nom })}
+                        >
+                          {tx('Voir en détail')}
+                          <Fleche />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                   {m.livree && m.faites > 0 && !m.termine && (
                     <p className="r-cm-meta">
                       {tx('{{faites}}/{{total}} étapes', { faites: m.faites, total: m.total })}
                     </p>
                   )}
-                  {!m.livree && (
-                    <p className="r-cm-meta">
-                      {tx('À découvrir dans le Monde {{n}}', { n: w.num })}
-                      {!w.free && (
-                        <span className="v-prem" aria-label="Premium">
-                          <VoyageIcon name="gem" size={10} strokeWidth={2.2} />
-                          <em>Premium</em>
-                        </span>
-                      )}
-                    </p>
-                  )}
                 </article>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
           {/* La DISTINCTION demandée (prompt §6) : la Carte du voyage ≠ Mes cartes. */}
           <p className="rec2-note">
             {tx('À ne pas confondre : la Carte du voyage trace ton chemin — tes cartes racontent ce que tu as découvert.')}
@@ -1087,55 +1083,59 @@ export default function Recolte() {
           <p className="rec2-note">
             {tx('Permanents et non consommables — chaque sceau marque un territoire que tu as traversé, et il reste à toi.')}
           </p>
-          <div className="r-sceaux" role="list" aria-label={tx('Les sceaux de ton parcours')}>
-            {recolteMondes.map((m) => {
+          {/* ACQUIS-SEUL (fondateur) : seuls les sceaux RÉELLEMENT gagnés
+              (mondes clos) apparaissent — ni « en cours », ni « à venir ». */}
+          {(() => {
+            const sceauxAcquis = recolteMondes.filter((m) => m.termine);
+            if (sceauxAcquis.length === 0) {
+              return (
+                <section aria-labelledby="r-sceaux-vide" className="r-vide">
+                  <span className="r-vide-ico" aria-hidden="true">
+                    <VoyageIcon name="star" size={22} />
+                  </span>
+                  <h2 id="r-sceaux-vide">{tx("Aucun sceau pour l'instant.")}</h2>
+                  <p>{tx('Chaque monde traversé t\'en donne un — définitif.')}</p>
+                </section>
+              );
+            }
+            return (
+              <div className="r-sceaux" role="list" aria-label={tx('Les sceaux que ton voyage t\'a donnés')}>
+            {sceauxAcquis.map((m) => {
               const cloture = parMonde[m.monde.code]?.derniereA ?? null;
               return (
                 <div key={m.monde.code} role="listitem">
                   <button
                     type="button"
-                    className={`r-sceau ${m.termine ? 'r-sceau-done' : m.livree && m.faites > 0 ? 'r-sceau-now' : ''}`}
+                    className="r-sceau r-sceau-done"
                     onClick={() =>
                       ouvrirInfo({
                         type: 'sceau',
                         mondeNum: m.monde.num,
                         mondeCode: m.monde.code,
-                        date: m.termine ? cloture : null,
+                        date: cloture,
                       })
                     }
                     aria-label={tx('Sceau — {{nom}} : à quoi ça sert ?', { nom: m.monde.name })}
                   >
                     <span
                       className="r-sceau-medal"
-                      style={
-                        m.termine
-                          ? { background: m.monde.tile.bg, color: m.monde.tile.fg, boxShadow: `0 0 0 4px ${m.monde.tile.bg}` }
-                          : m.livree && m.faites > 0
-                            ? { color: m.monde.tile.fg, borderColor: m.monde.tile.fg }
-                            : undefined
-                      }
+                      style={{ background: m.monde.tile.bg, color: m.monde.tile.fg, boxShadow: `0 0 0 4px ${m.monde.tile.bg}` }}
                       aria-hidden="true"
                     >
                       <VoyageIcon name={m.monde.icon as VoyageIconName} size={22} />
-                      {m.termine && (
-                        <span className="r-sceau-check" aria-hidden="true">
-                          <Coche />
-                        </span>
-                      )}
+                      <span className="r-sceau-check" aria-hidden="true">
+                        <Coche />
+                      </span>
                     </span>
                     <span className="r-sceau-name">{m.monde.name}</span>
-                    {m.termine && cloture ? (
-                      <span className="r-sceau-date">{dateCourte(cloture, lang)}</span>
-                    ) : m.livree && m.faites > 0 ? (
-                      <span className="r-sceau-etat">{tx('en cours')}</span>
-                    ) : (
-                      <span className="r-sceau-etat">{tx('à venir')}</span>
-                    )}
+                    {cloture && <span className="r-sceau-date">{dateCourte(cloture, lang)}</span>}
                   </button>
                 </div>
               );
             })}
-          </div>
+              </div>
+            );
+          })()}
         </section>
       </div>
 
@@ -1256,25 +1256,17 @@ export default function Recolte() {
         className="rec2-panel"
         hidden={onglet !== 'histoire'}
       >
-        {/* LES GRANDES RÉCOLTES — l'échelle des 6 jalons (relogée ici), hiérarchisée. */}
+        {/* LES GRANDES RÉCOLTES — ACQUIS-SEUL (fondateur) : l'échelle ne montre
+            que les jalons ATTEINTS — aucun « en cours », aucun « à venir ».
+            (Le jalon en cours vit dans le Voyage, pas dans la Récolte.) */}
         <section aria-labelledby="rec-jalons-title">
           <h2 id="rec-jalons-title" className="rec2-h2">
             {tx('Les étapes de ta récolte')}
           </h2>
           <ol className="v-rec">
-            {MILESTONES.map((jalon) => {
-              const statut = statutJalon(jalon.num, jalon.status);
+            {MILESTONES.filter((jalon) => statutJalon(jalon.num, jalon.status) === 'atteint').map((jalon) => {
               return (
-                <li
-                  key={jalon.num}
-                  className={
-                    statut === 'atteint'
-                      ? 'v-rec-item v-rec-done'
-                      : statut === 'now'
-                        ? 'v-rec-item v-rec-now'
-                        : 'v-rec-item'
-                  }
-                >
+                <li key={jalon.num} className="v-rec-item v-rec-done">
                   <span
                     className="v-rec-ico"
                     style={{ background: jalon.tile.bg, color: jalon.tile.fg }}
@@ -1288,19 +1280,10 @@ export default function Recolte() {
                     </small>
                     <h3>
                       {jalon.name}
-                      {statut === 'atteint' ? (
-                        <span className="v-chip v-chip-done">
-                          <Coche />
-                          {tx('Atteint')}
-                        </span>
-                      ) : statut === 'now' ? (
-                        <span className="v-chip v-chip-now">
-                          <span className="v-chip-dot" aria-hidden="true" />
-                          {tx('En cours')}
-                        </span>
-                      ) : (
-                        <span className="v-chip v-chip-soon">{tx('À venir')}</span>
-                      )}
+                      <span className="v-chip v-chip-done">
+                        <Coche />
+                        {tx('Atteint')}
+                      </span>
                     </h3>
                     <p>{jalon.desc}</p>
                     <button
@@ -1447,29 +1430,15 @@ export default function Recolte() {
                 </div>
               </li>
             ))}
-            {teaser && (
-              <li className="r-tl-item r-tl-next">
-                <span className="r-tl-node r-tl-node-off" aria-hidden="true">
-                  <VoyageIcon name="lock" size={15} strokeWidth={2.2} />
-                </span>
-                <div className="r-tl-body">
-                  <small className="r-tl-etape">
-                    {tx('Monde {{n}} sur {{total}}', { n: teaser.num, total: WORLDS.length })} ·{' '}
-                    <strong>{tx('bientôt')}</strong>
-                  </small>
-                  <h3>{teaser.name}</h3>
-                  <p className="r-tl-attente">{tx('Ta prochaine découverte t\'attend ici.')}</p>
-                </div>
-              </li>
-            )}
           </ol>
         </section>
 
-        {/* TA RÉCOLTE, MOIS PAR MOIS — la vue mensuelle (demande fondateur Task 45 :
-            « organiser les récoltes par mois ») : un mois = un monde du voyage,
-            sa récolte RÉELLE ou sa promesse (WORLD_DETAILS), et la fiche
-            « récolte du mois » cliquable — avec le raccord premium honnête
-            (PRIX_PREMIUM, i18n/currency.ts) pour les mois payants. */}
+        {/* TA RÉCOLTE, MOIS PAR MOIS — ACQUIS-SEUL (fondateur) : seuls les mois
+            TRAVERSÉS apparaissent, avec leur récolte RÉELLE. Les mois à venir
+            et premium n'existent pas ici (aucune promesse, aucun catalogue) —
+            la chaîne paywall reste dans InfoRecolte (décision §5 en attente)
+            mais n'est plus atteignable depuis la Récolte. */}
+        {recolteMondes.some((m) => m.termine) && (
         <section aria-labelledby="r-mois-title">
           <h2 id="r-mois-title" className="rec2-h2">
             {tx('Ta récolte, mois par mois')}
@@ -1478,27 +1447,16 @@ export default function Recolte() {
             {tx('Onze mois, onze récoltes — ce que chaque mois du voyage met dans ton coffre.')}
           </p>
           <ol className="r-mois" aria-label={tx('La récolte de chaque mois du voyage')}>
-            {recolteMondes.map((m) => {
+            {recolteMondes
+              .filter((m) => m.termine)
+              .map((m) => {
               const w = m.monde;
-              const sousTitre = m.termine
-                ? tx('{{x}} carte{{s}} · 1 fragment · 1 sceau', {
+              const sousTitre = tx('{{x}} carte{{s}} · 1 fragment · 1 sceau', {
                     x: m.cartes.length,
                     s: m.cartes.length > 1 ? 's' : '',
-                  })
-                : m.livree && m.faites > 0
-                  ? tx('{{faites}}/{{total}} étapes', { faites: m.faites, total: m.total })
-                  : tx('{{n}} étapes à venir', { n: w.quests });
+                  });
               return (
-                <li
-                  key={w.code}
-                  className={
-                    m.termine
-                      ? 'r-mois-item r-mois-done'
-                      : m.livree && m.faites > 0
-                        ? 'r-mois-item r-mois-now'
-                        : 'r-mois-item'
-                  }
-                >
+                <li key={w.code} className="r-mois-item r-mois-done">
                   <button
                     type="button"
                     className="r-mois-row"
@@ -1515,15 +1473,7 @@ export default function Recolte() {
                     <span className="r-mois-body">
                       <small>{tx('Mois {{n}} sur 11', { n: w.num })}</small>
                       <strong>{w.name}</strong>
-                      <span className="r-mois-sub">
-                        {sousTitre}
-                        {!w.free && (
-                          <span className="v-prem" aria-label="Premium">
-                            <VoyageIcon name="gem" size={10} strokeWidth={2.2} />
-                            <em>Premium</em>
-                          </span>
-                        )}
-                      </span>
+                      <span className="r-mois-sub">{sousTitre}</span>
                     </span>
                     <Fleche />
                   </button>
@@ -1532,6 +1482,7 @@ export default function Recolte() {
             })}
           </ol>
         </section>
+        )}
       </div>
 
       {/* LE POP-UP EXPLICATIF — « à quoi ça sert dans les rencontres ». */}
