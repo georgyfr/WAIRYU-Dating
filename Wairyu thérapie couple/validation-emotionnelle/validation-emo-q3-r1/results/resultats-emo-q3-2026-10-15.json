@@ -1,0 +1,342 @@
+{
+  "n_total": 475,
+  "plafonds": {
+    "H1_silencieux_pct": 15.83,
+    "borne_d_q3_j": "25-45%",
+    "ecart_borne": "9.17 pts SOUS la borne min (25%)"
+  },
+  "C1a": {
+    "attendu": 40,
+    "obtenu": 40,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C1b": {
+    "attendu": 20,
+    "obtenu": 20,
+    "ok": true,
+    "exemple_forces": [
+      "F-E1",
+      "F-E2"
+    ],
+    "exemple_exclues": [
+      "F-E3",
+      "F-E4",
+      "F-E5",
+      "F-E6"
+    ]
+  },
+  "C1c": {
+    "attendu_pct": 50.0,
+    "obtenu_pct": 87.5,
+    "n_actif": 70,
+    "n_total": 80,
+    "ok": true
+  },
+  "C2": {
+    "attendu_pct": 99.0,
+    "obtenu_pct": 100.0,
+    "n_match": 475,
+    "n_total": 475,
+    "n_desaccords": 0,
+    "desaccords": [],
+    "ok": true
+  },
+  "C3a": {
+    "attendu": 15,
+    "obtenu": 15,
+    "ok": true,
+    "all_violations": 0,
+    "all_violations_detail": [],
+    "eliminatoire": true
+  },
+  "C3b": {
+    "attendu": 0,
+    "obtenu": 0,
+    "ok": true,
+    "inventions": []
+  },
+  "C4_placeholder": true,
+  "C5a": {
+    "attendu": 7,
+    "obtenu": 7,
+    "templates": {
+      "F-E1": {
+        "attendu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple vit déjà.",
+        "obtenu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple vit déjà.",
+        "ok": true
+      },
+      "F-E2": {
+        "attendu": "Le cœur qui pacifie : tu désamorces les tensions avant qu'elles montent — tu sais ramener l'air.",
+        "obtenu": "Le cœur qui pacifie : tu désamorces les tensions avant qu'elles montent — tu sais ramener l'air.",
+        "ok": true
+      },
+      "F-E3": {
+        "attendu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — tu sais doubler la joie.",
+        "obtenu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — tu sais doubler la joie.",
+        "ok": true
+      },
+      "F-E4": {
+        "attendu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est la compétence la plus rare.",
+        "obtenu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est la compétence la plus rare.",
+        "ok": true
+      },
+      "F-E5": {
+        "attendu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — tu es là, encore, et encore.",
+        "obtenu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — tu es là, encore, et encore.",
+        "ok": true
+      },
+      "F-E6": {
+        "attendu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — c'est le change qui fait les couples.",
+        "obtenu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — c'est le change qui fait les couples.",
+        "ok": true
+      },
+      "SILENCIEUSE": {
+        "attendu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+        "obtenu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+        "ok": true
+      }
+    },
+    "manquants": [],
+    "ok": true
+  },
+  "C5b": {
+    "ok": true,
+    "seuils": "D-ÉCHELLE : 3,00 (milieu échelle 5 pts) — seuils 2,5/3/4 documentés"
+  },
+  "C5c": {
+    "ok": true,
+    "sigma": "0,60"
+  },
+  "C5d": {
+    "ok": true
+  },
+  "C5": {
+    "c5a_templates": {
+      "attendu": 7,
+      "obtenu": 7,
+      "templates": {
+        "F-E1": {
+          "attendu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple vit déjà.",
+          "obtenu": "Le cœur qui écoute : tu accueilles l'émotion de l'autre sans la corriger ni la minimiser — c'est une force que ton couple vit déjà.",
+          "ok": true
+        },
+        "F-E2": {
+          "attendu": "Le cœur qui pacifie : tu désamorces les tensions avant qu'elles montent — tu sais ramener l'air.",
+          "obtenu": "Le cœur qui pacifie : tu désamorces les tensions avant qu'elles montent — tu sais ramener l'air.",
+          "ok": true
+        },
+        "F-E3": {
+          "attendu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — tu sais doubler la joie.",
+          "obtenu": "Le cœur qui célèbre : tu réponds aux bonnes nouvelles avec enthousiasme — tu sais doubler la joie.",
+          "ok": true
+        },
+        "F-E4": {
+          "attendu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est la compétence la plus rare.",
+          "obtenu": "Le cœur qui réclame : tu formules tes besoins clairement, tu ne les laisses pas deviner — c'est la compétence la plus rare.",
+          "ok": true
+        },
+        "F-E5": {
+          "attendu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — tu es là, encore, et encore.",
+          "obtenu": "Le cœur qui tient : tu traverses les tempêtes sans abandonner — tu es là, encore, et encore.",
+          "ok": true
+        },
+        "F-E6": {
+          "attendu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — c'est le change qui fait les couples.",
+          "obtenu": "Le cœur qui convertit : tu donnes dans la devise de l'autre, pas dans la tienne — c'est le change qui fait les couples.",
+          "ok": true
+        },
+        "SILENCIEUSE": {
+          "attendu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+          "obtenu": "Ton cœur est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+          "ok": true
+        }
+      },
+      "manquants": [],
+      "ok": true
+    },
+    "c5b_d_echelle": {
+      "ok": true,
+      "seuils": "D-ÉCHELLE : 3,00 (milieu échelle 5 pts) — seuils 2,5/3/4 documentés"
+    },
+    "c5c_d_param": {
+      "ok": true,
+      "sigma": "0,60"
+    },
+    "c5d_dsim": {
+      "ok": true
+    },
+    "ok": true
+  },
+  "stats_groupes": {
+    "H1_silencieux": {
+      "n": 120,
+      "silencieux": 19,
+      "actif": 101,
+      "forces_count": {
+        "0": 19,
+        "1": 20,
+        "2": 81
+      },
+      "cap_count": {
+        "AC": 0,
+        "PC": 91,
+        "AD": 0,
+        "PD": 29
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 83,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 37
+      },
+      "pct_silencieux": 15.83
+    },
+    "H2_cap_ac": {
+      "n": 100,
+      "silencieux": 0,
+      "actif": 100,
+      "forces_count": {
+        "0": 0,
+        "1": 0,
+        "2": 100
+      },
+      "cap_count": {
+        "AC": 71,
+        "PC": 29,
+        "AD": 0,
+        "PD": 0
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 43,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 57
+      },
+      "pct_silencieux": 0.0
+    },
+    "H3_ecoute_tient": {
+      "n": 100,
+      "silencieux": 0,
+      "actif": 100,
+      "forces_count": {
+        "0": 0,
+        "1": 0,
+        "2": 100
+      },
+      "cap_count": {
+        "AC": 32,
+        "PC": 35,
+        "AD": 22,
+        "PD": 11
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 41,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 59
+      },
+      "pct_silencieux": 0.0
+    },
+    "H4_journal_actif": {
+      "n": 80,
+      "silencieux": 0,
+      "actif": 80,
+      "forces_count": {
+        "0": 0,
+        "1": 0,
+        "2": 80
+      },
+      "cap_count": {
+        "AC": 38,
+        "PC": 26,
+        "AD": 11,
+        "PD": 5
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 10,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 70
+      },
+      "pct_silencieux": 0.0
+    },
+    "SANS_PREUVE": {
+      "n": 40,
+      "silencieux": 40,
+      "actif": 0,
+      "forces_count": {
+        "0": 40,
+        "1": 0,
+        "2": 0
+      },
+      "cap_count": {
+        "AC": 0,
+        "PC": 40,
+        "AD": 0,
+        "PD": 0
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 40,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 0
+      },
+      "pct_silencieux": 100.0
+    },
+    "SURCHARGE": {
+      "n": 20,
+      "silencieux": 0,
+      "actif": 20,
+      "forces_count": {
+        "0": 0,
+        "1": 0,
+        "2": 20
+      },
+      "cap_count": {
+        "AC": 20,
+        "PC": 0,
+        "AD": 0,
+        "PD": 0
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 0,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 20
+      },
+      "pct_silencieux": 0.0
+    },
+    "CAP_NON_AC": {
+      "n": 15,
+      "silencieux": 0,
+      "actif": 15,
+      "forces_count": {
+        "0": 0,
+        "1": 0,
+        "2": 15
+      },
+      "cap_count": {
+        "AC": 0,
+        "PC": 5,
+        "AD": 4,
+        "PD": 6
+      },
+      "journal_count": {
+        "NON_RENSEIGNÉ": 0,
+        "PARTIEL": 0,
+        "SILENCIEUX": 0,
+        "ACTIF": 15
+      },
+      "pct_silencieux": 0.0
+    }
+  },
+  "cap_global": {
+    "AC": 161,
+    "PC": 226,
+    "AD": 37,
+    "PD": 51
+  },
+  "indice_capitalisation_global": 0.577,
+  "sha256_run": "6d7a40c42e5616caadc217d4d195ef389ece0a33d392854a2c9b2dd778e3afb3"
+}
