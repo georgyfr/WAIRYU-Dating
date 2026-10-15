@@ -101,6 +101,18 @@ export const CORE: Record<string, string> = {
   'Tes lignes rouges — coches ce qui est rédhibitoire pour toi':
     'Your red lines — tick what is a deal-breaker for you',
   'Tes mots à toi — ils ne sont jamais reformulés.': 'Your own words — never reworded.',
+  // Task 95 — quête 1.7 « Ton fonctionnement » : phrases simples, sous-titre
+  // technique, pop-up « mots en clair » (demande fondateur).
+  'Expliquer ce mot': 'Explain this word',
+  'Des mots pas clairs ? Voir les explications simples': 'Words unclear? See the plain explanations',
+  'Pour t\'aider à choisir': 'To help you choose',
+  'Ce mot, en clair': 'This word, in plain words',
+  'Fermer l\'explication': 'Close the explanation',
+  'Pourquoi on te demande ça': 'Why we ask you this',
+  'Les mots, un par un': 'The words, one by one',
+  'Tes mots, si les cases ne suffisent pas — tu peux aussi laisser vide.':
+    'Your own words, if the boxes are not enough — you can also leave it empty.',
+  'Écris librement — tes mots ne sont jamais reformulés.': 'Write freely — your words are never rewritten.',
   'Valider ma sélection': 'Confirm my selection',
   'Rien n\'est jugé ici : la liste vide est un cadre ouvert, une réponse complète.':
     'Nothing is judged here: an empty list is an open frame, a complete answer.',

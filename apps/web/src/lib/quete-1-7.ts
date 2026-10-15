@@ -1,34 +1,49 @@
 /**
  * Quête 1.7 « Ton fonctionnement » — Monde 2 « Le Volant » — ÉCRAN SPÉCIAL SANS CARTE.
  *
- * Contenu FIDÈLE au Livrable M2-1.7-Ton-Fonctionnement (source gelé PARTIE 7, l. 2498-2510 ;
- * charte PARTIE 7 « LES DEUX ÉCRANS SPÉCIAUX (sans carte) », l. 3298-3333) :
- *  - QUESTIONS_17 : les 2 questions déclaratives opt-in VERBATIM (01-tableau-des-items,
- *    transcription machine : 06-fiche-computation-EXEMPLE) — « Je ne souhaite pas le dire »
- *    est une option de PREMIÈRE CLASSE, à sa position exacte du Livrable (6ᵉ et dernière
- *    des options de Q1.7-01) ;
- *  - deck17 : ordre de passation FIXE 01 → 02 — séquence de CONSENTEMENT (02-plan-de-passage :
- *    sans mélange, sans graine, sans verdict ; la visibilité 02 ne se décide que sur ce qui a
- *    déjà été déclaré en 01) ;
- *  - ECRAN_17 : l'écran de confiance de fin de quête, VERBATIM (cartes.yaml, charte PARTIE 7 —
- *    PAS de carte, PAS de partage) ;
- *  - BRIEFING.annonce : l'ouverture VERBATIM (05-ecran-d-intro — la 3ᵉ phrase compte 25 mots,
- *    dérive documentée : la fidélité VERBATIM au source gelé prime sur la règle des 22 mots).
+ * Contenu issu du Livrable M2-1.7-Ton-Fonctionnement (source gelé PARTIE 7, l. 2498-2510 ;
+ * charte PARTIE 7 « LES DEUX ÉCRANS SPÉCIAUX (sans carte) », l. 3298-3333).
  *
- * RÈGLES DE LA QUÊTE (00-README) :
+ * TASK 95 — RÉVISION D'AFFICHAGE À LA DEMANDE DU FONDATEUR (consignée verbatim au
+ * worklog) : « Je ne sais pas pourquoi tu as mis des termes et techniques spécifiques
+ * au thème de la psychologie… Pourquoi ne pas mettre des phrases assez simples qui
+ * pourront permettre aux gens de se reconnaître ? Et pourquoi même pas avec un bouton
+ * pop-up qui essaie d'expliquer ce que c'est afin de mieux faciliter le choix des
+ * décisions de la personne. » → CE QUI CHANGE (présentation seule) :
+ *  - les libellés des options de Q1.7-01 deviennent des phrases simples, à la première
+ *    personne, que tout le monde peut reconnaître ;
+ *  - le mot technique du Livrable (TSA, TDAH, Dys, Anxiété) reste VISIBLE en
+ *    sous-titre discret (ceux qui se reconnaissent dans le mot exact ne le perdent
+ *    pas) — EXPLIQUES_17[i].terme ;
+ *  - un bouton « ? » par mot ouvre un pop-up explicatif en mots simples
+ *    (EXPLIQUES_17[i].expli) — composant components/InfoFonctionnement.tsx ;
+ *  - « Autre (champ libre) » devient HONNÊTE : cocher « Autre chose me décrit » ouvre
+ *    un vrai champ libre (TEXTE_LIBRE_17, plomberie textes existante — comme Q2.3-10),
+ *    promesse du libellé tenue.
+ * CE QUI NE CHANGE PAS (structure gelée) :
+ *  - 6 options, MÊME ORDRE, MÊMES POSITIONS — la réponse reste un BITMASK bit à bit
+ *    (les réponses déjà enregistrées décodent sans migration) ;
+ *  - « Je ne souhaite pas le dire » reste une option de PREMIÈRE CLASSE en 6ᵉ position ;
+ *  - l'ordre de passation FIXE 01 → 02 (séquence de consentement, sans mélange) ;
+ *  - Q1.7-02 (la visibilité) : libellés inchangés ;
+ *  - ECRAN_17 : l'écran de confiance de fin de quête, VERBATIM (cartes.yaml).
+ *
+ * QUESTIONS_17 / deck17 (règles de la quête, 00-README) :
  *  - SANS score, SANS dimension, SANS carte, SANS miroir (EXEMPTÉ, Constitution [7]) —
  *    scorerNul / choisirVariante → '' ne servent qu'au contrat du registre ;
  *  - opt-in STRICT : aucune case pré-cochée, aucune valeur par défaut orientante ;
  *  - la donnée est RÉVOCABLE par design : modifiable/effaçable à tout moment, depuis le profil ;
- *  - AUCUN signal de sécurité (verbatim usage moteur) — les seuils des détecteurs réinitialisés
- *    restent au document trames (hors dépôt, FM-018 / [11-b]) : aucun seuil n'apparaît ici ;
- *  - pas de diagnostic [2] : la personne coche des mots pour se décrire elle-même.
+ *  - AUCUN signal de sécurité (verbatim usage moteur) ;
+ *  - pas de diagnostic [2] : la personne coche des mots pour se décrire elle-même —
+ *    les pop-ups le rappellent (garde INFO_17).
  *
  * CODAGE DES RÉPONSES (couche app, pour l'écran de rappel — voir CODAGE_17 et decode17) :
  *  - Q1.7-01 (multi) : la réponse est un BITMASK — bit 0 = option 1 cochée, bit 1 = option 2
  *    cochée, … ; « Je ne souhaite pas le dire » se décode comme un libellé ordinaire ;
  *  - Q1.7-02 (binaire) : la valeur = index de l'option + 1 (1 = « Oui, affiche-le sur mon
- *    profil », 2 = « Non, garde-le privé ») ; 0 = pas de réponse (défaut d'usage : « Non »).
+ *    profil », 2 = « Non, garde-le privé ») ; 0 = pas de réponse (défaut d'usage : « Non ») ;
+ *  - TEXTE_LIBRE_17 : le champ libre de « Autre chose me décrit » vit dans etat.textes
+ *    (jamais dans le bitmask, jamais parsé — les mots de la personne, comme Q2.3-10).
  */
 
 import type { ItemPassation } from './quetes';
@@ -42,18 +57,20 @@ export interface Question17 {
   multi: boolean;
 }
 
-/** Les 2 questions opt-in — VERBATIM (01-tableau-des-items, ordre du Livrable). */
+/** Les 2 questions opt-in — ordre du Livrable ; libellés Q1.7-01 simplifiés (Task 95). */
 const QUESTIONS_17_FR: readonly Question17[] = [
   {
     code: "Q1.7-01",
     question: "Coche ce qui te décrit, si tu veux le partager :",
-    // 6 options, ordre du Livrable — « Je ne souhaite pas le dire » : option de première classe.
+    // 6 options, ordre et positions GELÉS (bitmask) — phrases simples
+    // (demande fondateur, Task 95) ; le mot technique vit en sous-titre
+    // (EXPLIQUES_17[i].terme), « Je ne souhaite pas le dire » reste 6ᵉ.
     options: [
-      "Neuro-atypique (TSA)",
-      "TDAH",
-      "Dys (dyslexie, dyspraxie…)",
-      "Anxiété que je gère",
-      "Autre (champ libre)",
+      "Je perçois le monde différemment des autres",
+      "Je suis vite distrait(e) et mon énergie déborde",
+      "Lire, écrire ou m'organiser me demande un gros effort",
+      "Je m'inquiète souvent, mais j'apprends à l'apaiser",
+      "Autre chose me décrit — j'écris mes mots",
       "Je ne souhaite pas le dire",
     ],
     multi: true,
@@ -67,6 +84,64 @@ const QUESTIONS_17_FR: readonly Question17[] = [
   },
 ];
 export const QUESTIONS_17 = avecEN(QUESTIONS_17_FR, EN_Q17.QUESTIONS_17);
+
+/** Une explication simple d'un mot technique — sous-titre + corps du pop-up. */
+export interface Explic17 {
+  /** Le mot technique du Livrable, affiché en sous-titre discret. */
+  terme: string;
+  /** Ce que le mot veut dire, en mots simples (corps du pop-up « ? »). */
+  expli: string;
+}
+
+/** Les explications simples de Q1.7-01 — MÊME INDEX que les options ; null =
+ *  l'option se comprend seule (pas de sous-titre, pas de bouton « ? »).
+ *  Task 95, demande fondateur : « un bouton pop-up qui essaie d'expliquer
+ *  ce que c'est afin de mieux faciliter le choix ». Jamais un diagnostic. */
+const EXPLIQUES_17_FR: readonly (Explic17 | null)[] = [
+  {
+    terme: "Neuro-atypique (TSA)",
+    expli:
+      "TSA veut dire « Trouble du spectre de l'autisme ». En clair : ton cerveau traite les sons, les lumières, les émotions et les liens avec les autres à sa façon — souvent avec une intensité que les autres ne voient pas. Beaucoup de personnes autistes aiment les routines claires et les sujets qui les passionnent. C'est un fonctionnement, pas un défaut.",
+  },
+  {
+    terme: "TDAH",
+    expli:
+      "TDAH veut dire « Trouble de l'attention, avec ou sans hyperactivité ». En clair : rester concentré(e) sur ce qui ne te passionne pas coûte cher, et tenir en place demande un effort constant. En échange, beaucoup de personnes TDAH pensent vite, sentent fort et improvisent bien. Ici, personne ne te demande de te corriger.",
+  },
+  {
+    terme: "Dys (dyslexie, dyspraxie…)",
+    expli:
+      "Les « Dys » regroupent la dyslexie (les mots), la dyspraxie (les gestes et l'organisation), la dyscalculie (les nombres)… Ce n'est ni de la paresse, ni un manque d'intelligence : le cerveau passe par un autre chemin. Beaucoup de personnes ont bâti leurs propres astuces — ici, elles comptent pour ce qu'elles sont : de la force.",
+  },
+  {
+    terme: "Anxiété que je gère",
+    expli:
+      "C'est quand le mental anticipe le pire, même quand tout va bien — et que tu as appris à t'apaiser, à ta manière. Le mot important est « que je gère » : tu n'as pas besoin d'être « guéri(e) » pour cocher. Et si tu préfères ne rien dire, c'est un droit.",
+  },
+  null, // « Autre chose me décrit » — le libellé suffit (un vrai champ libre s'ouvre)
+  null, // « Je ne souhaite pas le dire » — une réponse complète, pas besoin d'explication
+];
+export const EXPLIQUES_17 = avecEN(EXPLIQUES_17_FR, EN_Q17.EXPLIQUES_17);
+
+/** Le pop-up « tous les mots » (lien sous la liste) — le POURQUOI de la question
+ *  (demande fondateur : « je ne sais vraiment pas à quoi cela sert ») + la garde. */
+const INFO_17_FR = {
+  titre: "Ces mots, en clair",
+  chapeau:
+    "Personne ne te teste ici. Tu coches des mots pour te décrire, seulement si tu le veux. Voici ce qu'ils veulent dire, simplement.",
+  pourquoi: [
+    "Ça aide l'app à te proposer des personnes à l'aise avec ton fonctionnement — et t'évite d'avoir à tout expliquer seul(e), au début.",
+    "Ça prévient les malentendus : la personne que tu rencontres le sait, si tu l'as affiché sur ton profil.",
+    "Rien n'est noté, rien ne part sans ton choix — et tu peux tout modifier ou effacer depuis ton profil.",
+  ],
+  garde:
+    "Rien de tout cela n'est un diagnostic, rien n'entre dans un score — et tu peux tout modifier ou effacer depuis ton profil.",
+};
+export const INFO_17 = avecEN(INFO_17_FR, EN_Q17.INFO_17);
+
+/** Le code GELÉ du champ libre de « Autre chose me décrit » — vit dans
+ *  etat.textes (plomberie Q2.3-10/4.2/4.3 : jamais dans le bitmask, jamais parsé). */
+export const TEXTE_LIBRE_17 = 'Q1.7-01-TEXTE';
 
 /** Le deck réel : 2 items, ordre FIXE 01 → 02 (séquence de consentement — sans mélange). */
 export function deck17(): ItemPassation[] {
@@ -83,7 +158,7 @@ export function deck17(): ItemPassation[] {
 
 /** Documentation du codage des réponses (couche app — jamais rendu à l'utilisateur [3]). */
 export const CODAGE_17 =
-  "multi: la réponse est un BITMASK (bit 0 = option 1 cochée, bit 1 = option 2 cochée, …) · binaire: la valeur = index de l'option + 1";
+  "multi: la réponse est un BITMASK (bit 0 = option 1 cochée, bit 1 = option 2 cochée, …) · binaire: la valeur = index de l'option + 1 · texte libre « Autre » : etat.textes['Q1.7-01-TEXTE'] (jamais parsé)";
 
 /** Décode une réponse en libellés choisis — sert à l'écran de rappel. */
 export function decode17(code: Question17['code'], valeur: number): string[] {

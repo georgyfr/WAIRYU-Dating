@@ -10313,3 +10313,143 @@ button.r-tl-chip:hover {
         justify-content: space-between
     }
 }
+
+/* ============================================================
+   QUÊTE 1.7 « Ton fonctionnement » — Task 95 (demande fondateur) :
+   phrases simples + mot technique en sous-titre + bouton « ? » qui
+   ouvre le pop-up explicatif + lien glossaire + VRAI champ « Autre ».
+   PRÉSENTATION SEULE — 6 options, positions gelées, bitmask inchangé.
+   Scopé .qtv — le reste de l'app est intact. Cibles ≥ 44 px.
+   ============================================================ */
+.qtv .q17-ligne {
+    display: flex;
+    align-items: stretch;
+    gap: 8px
+}
+
+.qtv .q17-ligne .q-choix-btn {
+    flex: 1
+}
+
+.qtv .q17-bloc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    width: 100%
+}
+
+.qtv .q17-sous {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--q-mute)
+}
+
+.qtv .q17-info {
+    flex: 0 0 44px;
+    width: 44px;
+    min-height: 48px;
+    border-radius: 16px;
+    border: 1.5px solid var(--q-line);
+    background: var(--q-card);
+    color: var(--q-teal);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer
+}
+
+.qtv .q17-info:hover,
+.qtv .q17-info:focus-visible {
+    background: var(--q-tint);
+    border-color: var(--q-teal-bd)
+}
+
+.qtv .q17-lien {
+    margin-top: 2px;
+    background: none;
+    border: none;
+    padding: 6px 2px;
+    min-height: 44px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--q-mute);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer
+}
+
+.qtv .q17-lien:hover {
+    color: var(--q-teal)
+}
+
+.qtv .q17-libre {
+    margin-top: 2px
+}
+
+/* — le pop-up « mots en clair » (réutilise w-overlay / w-modal) — */
+.qtv .if-modal {
+    max-width: 460px
+}
+
+.qtv .if-chapeau {
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 4px
+}
+
+.qtv .if-h3 {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--q-teal);
+    margin: 18px 0 8px
+}
+
+.qtv .if-points {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14.5px;
+    line-height: 1.5
+}
+
+.qtv .if-entree {
+    padding: 12px 0;
+    border-top: 1px solid var(--q-line)
+}
+
+.qtv .if-entree strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 4px
+}
+
+.qtv .if-entree p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--q-mute)
+}
+
+.qtv .if-expli {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.6
+}
+
+.qtv .if-garde {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    background: var(--q-tint);
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--q-mute)
+}

@@ -76,7 +76,9 @@ import {
   type AvisSatisfaction,
 } from '../lib/satisfaction';
 import SatBarAvis from '../components/SatBarAvis';
-import { ECRAN_17, decode17 } from '../lib/quete-1-7';
+// Task 95 — les mots de 1.7 en clair : sous-titre technique + bouton « ? »
+// + champ libre « Autre » (demande fondateur : phrases simples + pop-up).
+import { ECRAN_17, decode17, EXPLIQUES_17, TEXTE_LIBRE_17 } from '../lib/quete-1-7';
 import { SORTIES_111, chemin111 } from '../lib/quete-1-11';
 import { LIBRE_CODE } from '../lib/quete-2-3';
 import { INTENTION_CODE, intentionAffichee, MESSAGE_DOUX } from '../lib/quete-2-5';
@@ -106,6 +108,7 @@ import { useProgression } from '../lib/progression';
 import { useI18n } from '../i18n/I18nProvider';
 import { interpolerMontants } from '../i18n/apply';
 import PartageCarteModal from '../components/PartageCarteModal';
+import InfoFonctionnement from '../components/InfoFonctionnement';
 import type { CartePartageable } from '../components/CarteTypes';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
@@ -409,6 +412,9 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
   const [reprise] = useState<boolean>(() => !etat.terminee && aDesReponses);
   const [montreReprise, setMontreReprise] = useState<boolean>(reprise);
   const [partageOuvert, setPartageOuvert] = useState<boolean>(false);
+  // Task 95 — le pop-up « mots en clair » de 1.7 : index d'option, 'tous'
+  // (glossaire + pourquoi de la question), ou null (fermé).
+  const [info17, setInfo17] = useState<number | 'tous' | null>(null);
   // Monde 5 · 4.1 — les figures libres de l'écran génogramme (modalité NON
   // COMPTEE du Livrable : local à cet écran, sérialisé dans les textes au
   // geste « Continuer » — jamais rendu hors de cet écran, jamais scoré).
@@ -1211,19 +1217,64 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
                   // (jamais une validation punitive).
                   const plein =
                     queteId === '3.7' && !on && compteSelections37(valeur ?? 0) >= GARDE_MAX_37;
-                  return (
+                  // Task 95 (demande fondateur) — 1.7 : la phrase simple en tête,
+                  // le mot technique en sous-titre discret, un « ? » par mot qui
+                  // ouvre le pop-up explicatif. Structure GELÉE : 6 options, mêmes
+                  // positions, bitmask inchangé — seuls les libellés s'éclairent.
+                  const explic =
+                    queteId === '1.7' && item.code === 'Q1.7-01' ? (EXPLIQUES_17[i] ?? null) : null;
+                  const btn = (
                     <button
-                      key={opt}
                       type="button"
                       className={on ? 'q-choix-btn q-choix-btn-on' : 'q-choix-btn'}
                       aria-pressed={on}
                       disabled={plein}
                       onClick={() => enregistrerReponse(queteId, item.code, (valeur ?? 0) ^ bit)}
                     >
-                      {interpolerMontants(opt, money)}
+                      {explic ? (
+                        <span className="q17-bloc">
+                          {interpolerMontants(opt, money)}
+                          <small className="q17-sous">{explic.terme}</small>
+                        </span>
+                      ) : (
+                        interpolerMontants(opt, money)
+                      )}
                     </button>
                   );
+                  if (!explic) return btn;
+                  return (
+                    <div className="q17-ligne" key={opt}>
+                      {btn}
+                      <button
+                        type="button"
+                        className="q17-info"
+                        aria-label={tx('Expliquer ce mot')}
+                        onClick={() => setInfo17(i)}
+                      >
+                        ?
+                      </button>
+                    </div>
+                  );
                 })}
+                {queteId === '1.7' && item.code === 'Q1.7-01' && (
+                  <button type="button" className="q17-lien" onClick={() => setInfo17('tous')}>
+                    {tx('Des mots pas clairs ? Voir les explications simples')}
+                  </button>
+                )}
+                {queteId === '1.7' &&
+                  item.code === 'Q1.7-01' &&
+                  ((valeur ?? 0) & (1 << 4)) !== 0 && (
+                    <label className="q-check-libre q17-libre">
+                      <span>{tx('Tes mots, si les cases ne suffisent pas — tu peux aussi laisser vide.')}</span>
+                      <textarea
+                        value={etat.textes?.[TEXTE_LIBRE_17] ?? ''}
+                        maxLength={500}
+                        rows={3}
+                        onChange={(e) => enregistrerTexte(queteId, TEXTE_LIBRE_17, e.target.value)}
+                        placeholder={tx('Écris librement — tes mots ne sont jamais reformulés.')}
+                      />
+                    </label>
+                  )}
                 <button
                   type="button"
                   className="btn btn-accent q-choix-valider"
@@ -1261,6 +1312,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             {tx('Faire une pause — tes réponses restent')}
           </button>
         </div>
+        {info17 !== null && <InfoFonctionnement index={info17} onClose={() => setInfo17(null)} />}
       </main>
     );
   }
@@ -1408,12 +1460,17 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
             <div className="q-ecran-recap">
               {deck.map((it) => {
                 const labels = decode17(it.code as 'Q1.7-01' | 'Q1.7-02', etat.reponses[it.code] ?? 0);
+                // Task 95 — les mots de « Autre chose me décrit » voyagent avec
+                // les cases cochées (les mots de la personne, jamais reformulés).
+                const mots17 =
+                  it.code === 'Q1.7-01' ? (etat.textes?.[TEXTE_LIBRE_17] ?? '').trim() : '';
+                const contenu17 = [...labels, ...(mots17 ? [mots17] : [])];
                 return (
                   <p key={it.code} className="q-ecran-ligne">
                     <strong>{it.text}</strong>
                     <br />
-                    {labels.length > 0
-                      ? labels.join(' · ')
+                    {contenu17.length > 0
+                      ? contenu17.join(' · ')
                       : tx("Tu n'as rien coché pour le moment — c'est une réponse complète.")}
                   </p>
                 );
