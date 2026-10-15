@@ -1914,3 +1914,19 @@ Work Log:
 Stage Summary:
 - Task 91 CONFIRMÉE vivante sur staging après restauration du sandbox : acquis-seul (D21), usage plateforme dans les fiches (D23), FR+EN, page vide propre. Rien à réparer.
 - Restent les 3 décisions fondateur en attente : (1) FEU VERT PROD pour Tasks 90+91, (2) paywall §5 (chaîne désormais inatteignable depuis la Récolte), (3) paramètres D22 (fonctions échantillonnables, durées, coûts).
+---
+Task ID: 90-91-prod
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT FONDATEUR (« Feu vert prod — Tasks 90 + 91 peuvent partir ensemble ») — déploiement production des fiches différenciées (Task 90) et de la Récolte acquis-seul + usage plateforme (Task 91).
+
+Work Log:
+- Feu vert explicite reçu du fondateur ; dépôt propre (7e7f59d), staging déjà validé 3× (Task 90, Task 91 session, Task 91-v).
+- bash deploy.sh production (typecheck API 0 erreur → build Vite → migrations D1 wairyu-prod remote → wrangler deploy) : version 2187c750-5c8b-47da-8113-b4f8bd3b1336, 6 assets uploadés, Worker + cron (10 3 * * *) redéployés.
+- Vérifications : /api/health {ok:true, env:production} ; bundle servi = index-BQvbwh_d.js ; MD5 bundle prod = MD5 bundle staging (8b3757d03d80dcff9ac3b1ec93100b67) — byte-to-byte identique au bundle validé E2E ; chaînes D21/D23 présentes (r-vide-page, « Ta récolte est vide », « Comment t'en servir »).
+- Smoke E2E prod (navigateur automatisé) : accueil rendu (heading + Start), console sans erreur bloquante (warnings Turnstile 600010 typiques du headless). Turnstile PROD actif : register API direct → 403 (attendu) ; inscription UI stoppée au challenge interactif (non résolvable automatisé — comportement de sécurité voulu). Compte e2e jamais créé → rien à purger. NOTE : Tasks 90+91 n'ont modifié AUCUN fichier auth/Turnstile.
+- Écran notifications push (« Push server: ready ») visible sur l'accueil prod — service push armé.
+
+Stage Summary:
+- PROD = staging = code main : les fiches différenciées (90) et la Récolte inventaire d'acquis + usage plateforme (91) sont EN LIGNE sur https://wairyu.wairyu.workers.dev (version 2187c750, bundle index-BQvbwh_d.js).
+- Le fondateur peut vérifier visuellement : page Récolte d'un compte neuf = page vide honnête ; après une quête = fiche « À quoi ça sert » différenciée avec Où / Ce que ça débloque / Quand.
+- Restent ouverts : paywall §5 (chaîne inatteignable depuis la Récolte) · paramètres D22 (échantillonnage premium).
