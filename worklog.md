@@ -2057,3 +2057,26 @@ Stage Summary:
 - La liste de la quête 1.7 ne contient plus AUCUN mot technique : phrases simples cochables seules ; le mot du Livrable (TSA/TDAH/Dys) ne vit plus que DANS le pop-up « ? », nommé et décodé dans sa première phrase. FR et EN. Structure gelée intacte (bitmask/ordre/écran de confiance), persistance D1 vérifiée.
 - Visible en staging (c5c2d4f0). PROD TOUJOURS SUR FEU VERT : rien déployé en production — le fondateur regarde la prod (2187c750), qui n'a encore NI Task 95 NI Task 96 ; prod partira sur son feu vert explicite.
 - 2 observations consignées pour décisions futures : course latente du premier boot (×1, non reproduite ×7) ; héritage inter-comptes du local après purge sans déconnexion (Task 69-c, à arbitrer).
+---
+Task ID: 97
+Agent: orchestrateur (Z.ai Code)
+Task: FEU VERT PROD fondateur (verbatim : « feu vert prod ») — déploiement de tout le staging validé (Tasks 94/95/96) vers la production, migration D1 0012 incluse, puis vérification prod sans pollution (aucun compte créé).
+
+Work Log:
+- ÉTAT REPRIS : Task 96 (fd890da) non poussée + origin en avance de 2 commits docs (d901b61, 7a5ea81 — WTC-EMO-Q1, autre machine, docs seuls). Rebase linéaire de Task 96 sur origin/main → 1255620, push OK, main = origin/main.
+- PRÉ-VOL : staging health {ok:true,env:"staging"} ; prod health {ok:true,env:"production"} ; /api/rencontres/pool sur PROD → 404 (routes absentes, prod = ancienne version 2187c750) — attendu et confirmé avant déploiement.
+- DÉPLOIEMENT : set -a + source SECRETS-WAIRYU-LOCAL.txt (jamais affiché) + bash deploy.sh production → tsc 0 erreur · vite build OK · migrations D1 wairyu-prod (0012_rencontres appliquée — vérifié après : « No migrations to apply! ») · wrangler deploy (default env = production).
+- NOUVELLE VERSION PROD : Version ID 0ad65655-6a25-4d21-92d1-002093840747 (remplace 2187c750-5c8b-47da-8113-b4f8bd3b1336). Bundle front prod = index-qp0bYaZ9.js — IDENTIQUE au staging Task 96 (parité byte à byte, E2E staging FR+EN transférable).
+- VÉRIFICATIONS PROD :
+  - health {ok:true,env:"production"} ✓ ; cron 10 3 * * * redéployé ✓.
+  - /api/rencontres/pool SANS session → 401 {error:"unauthorized"} (la route Rencontres existe désormais en prod + protégée) ✓.
+  - D1 wairyu-prod : rencontre_pas=0, rencontre_matchs=0 (tables 0012 propres), users=4 (comptes réels intacts, +1 usage réel depuis Task 94, aucune trace de test).
+  - Bundle prod : contient les 6 phrases simples FR de la quête 1.7 (« Je perçois le monde différemment des autres », etc.) + le code des pop-ups (TDAH/TSA ne vivent que dans les explications « ? ») ✓.
+  - NAVIGATEUR (agent-browser 390×844, sans compte) : https://wairyu.wairyu.workers.dev rend l'accueil complet (logo, promesse, 3 points d'honnêteté, bouton Démarrer, console notifications « Push server: ready »), 0 erreur page, index.html sert bien index-qp0bYaZ9.js. AUCUN compte créé, AUCUNE donnée touchée (Turnstile actif en prod — vérification sans pollution, même doctrine que Task 90-91-prod).
+- CONTENU PASSÉ EN PROD (tout validé E2E en staging) : Task 94 Rencontre-E1 (API pool/pas/retrait/match, migration 0012, écran #/matchs, 6ᵉ tab conditionnelle, RGPD étendu purge+export) · Task 95 quête 1.7 (phrases simples + pop-up « ? » + champ Autre réel) · Task 96 quête 1.7 (zéro jargon dans la liste, le mot technique ne vit que dans le pop-up) · commits docs WTC (sans impact code).
+- AUCUN secret committé. Aucune structure gelée touchée (le déploiement ne change aucun contenu ; ordre/scoring/PASSATION verbatim de main).
+- Reste en file (fondateur) : quêtes 1.5→1.11 du Volant ; 2 observations Task 96 (course latente premier boot ×1/×8 ; héritage inter-comptes local après purge sans déconnexion).
+
+Stage Summary:
+- PROD DÉPLOYÉE ET VÉRIFIÉE : wairyu.wairyu.workers.dev tourne désormais sur 0ad65655 (même code que staging c5c2d4f0) — la Rencontre (E1) et la quête 1.7 « en phrases de tout le monde » sont EN LIGNE pour les vrais utilisateurs. Migration 0012 appliquée, tables propres, comptes réels intacts, aucune donnée de test créée en prod.
+- prod = staging = main (1255620). Le cycle « staging d'abord, prod sur feu vert » reprend pour la suite : quêtes 1.5→1.11 du Volant.
