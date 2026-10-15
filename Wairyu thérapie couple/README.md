@@ -31,6 +31,7 @@ Data Insight et comme archive de référence. Il contient :
 | [programme wairyu couple.txt](programme%20wairyu%20couple.txt) | texte intégral v1 (27,8 Ko) | **Référence de contenu des parties 1-12** (désignée par la v2 elle-même) |
 | [OUTILS DE TERAPIE DU COUPLE.txt](OUTILS%20DE%20TERAPIE%20DU%20COUPLE.txt) | recherche clinique (200,9 Ko) | Sources : efficacité, 67 instruments, parcours, marché |
 | [rapports/programme wairyu couple.pdf](rapports/programme%20wairyu%20couple.pdf) | PDF v2 + couverture HTML | Copie d'archive dans `rapports/` (la v1 reste consultable dans l'historique git, commit 15ce3fa) |
+| [rapports/rapport-consolidation-v2-2026-10-15.md](rapports/rapport-consolidation-v2-2026-10-15.md) | Rapport de consolidation v2 | **Rapport du 15/10/2026** : état de la validation, chronologie des cycles, règles permanentes, découvertes cliniques, suite (WTC-Q3) |
 
 ---
 
@@ -43,8 +44,8 @@ Wairyu thérapie couple/
 ├── programme wairyu couple v2.txt   ← source texte de la v2
 ├── programme wairyu couple.txt      ← texte intégral v1 (parties 1-12)
 ├── OUTILS DE TERAPIE DU COUPLE.txt  ← recherche clinique amont
-├── rapports/                        ← PDF + couverture HTML (archive)
-├── visualisations/                  ← 9 visuels + index de lecture
+├── rapports/                        ← RAPPORT de consolidation v2 + PDF + couverture (archive)
+├── visualisations/                  ← 10 visuels + index de lecture
 ├── scripts/                         ← scripts de génération (charts + PDF)
 ├── validation-q1/                   ← PACKAGE WTC-Q1   (verdict initial)
 ├── validation-q1-r1/                ← PACKAGE WTC-Q1-R1 (révision D1-D5)
