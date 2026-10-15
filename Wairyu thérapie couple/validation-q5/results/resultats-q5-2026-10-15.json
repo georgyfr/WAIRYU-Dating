@@ -1,0 +1,131 @@
+{
+  "bornes_d_std": {
+    "n_profils": 180,
+    "C1_plafond_pct": 100.0,
+    "C1_seuil_pct": 97.0,
+    "C2_plafond_pct": 100.0,
+    "C2_seuil_pct": 97.0,
+    "C3_plafond_pct": 100.0,
+    "C3_plafond_par_config_min_pct": 100.0,
+    "C3_seuil_pct": 97.0,
+    "C5_plafond_pct": 100.0,
+    "C5_seuil_pct": 97.0,
+    "plafonds_par_config": {
+      "RASSUREE×ZONE_CALME": 100.0,
+      "EN_QUETE×ZONE_CALME": 100.0,
+      "SUR_LA_RA×ZONE_CALME": 100.0,
+      "RASSUREE×PEUR_DE_PERDRE": 100.0,
+      "EN_QUETE×PEUR_DE_PERDRE": 100.0,
+      "SUR_LA_RA×PEUR_DE_PERDRE": 100.0,
+      "RASSUREE×PEUR_D_ETRE_ETOUFFEE": 100.0,
+      "EN_QUETE×PEUR_D_ETRE_ETOUFFEE": 100.0,
+      "SUR_LA_RA×PEUR_D_ETRE_ETOUFFEE": 100.0
+    }
+  },
+  "resume_groupes": {
+    "CELEBRE": 60,
+    "AJUSTEMENT": 60,
+    "REPRISE": 60
+  },
+  "C1": {
+    "attendu_pct": 97.0,
+    "obtenu_pct": 100.0,
+    "n_correct": 180,
+    "n_total": 180,
+    "n_violations": 0,
+    "violations": [],
+    "ok": true
+  },
+  "C2": {
+    "cas_types": {
+      "CELEBRE": {
+        "jours": 9,
+        "categorie": "CELEBRE",
+        "ok_cat": true,
+        "ok_sanction": true,
+        "ok_message": true,
+        "message": "Tu as tenu 9 jours sur 14 (ou plus). C'est une assise réelle — pas un échec les jours manqués. Le pas est entré dans ta semaine. Tu peux le garder tel quel, ou l'ajuster si tu sens qu'il pourrait mieux te aller."
+      },
+      "AJUSTEMENT": {
+        "jours": 7,
+        "categorie": "AJUSTEMENT",
+        "ok_cat": true,
+        "ok_sanction": true,
+        "ok_message": true,
+        "message": "Tu as tenu 7 jours sur 14. C'est un début d'assise — pas un échec. Les jours manqués ne sont pas une faute. Peut-être le pas demande-t-il un ajustement : plus petit, plus simple, mieux placé dans ta journée. La suite du parcours t'aide à le voir."
+      },
+      "REPRISE": {
+        "jours": 3,
+        "categorie": "REPRISE",
+        "ok_cat": true,
+        "ok_sanction": true,
+        "ok_message": true,
+        "message": "Tu as tenu 3 jours sur 14. Ce n'est pas un échec — c'est un signal. Le pas tel qu'il est ne tient pas dans ta vie actuelle. Peut-être est-il trop grand, mal placé, ou le moment n'est pas le bon. La suite du parcours t'aide à le reprendre, autrement, sans pression."
+      }
+    },
+    "anti_perfectionnisme": {
+      "messages_testes": 3,
+      "violations": [],
+      "ok": true
+    },
+    "n_violations": 0,
+    "violations": [],
+    "ok": true
+  },
+  "C3": {
+    "attendu_pct": 97.0,
+    "obtenu_pct": 100.0,
+    "n_correct": 180,
+    "n_total": 180,
+    "n_violations": 0,
+    "n_desaccords_pas": 0,
+    "desaccords_pas": [],
+    "ok": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "attendu_pct": 97.0,
+    "obtenu_pct": 100.0,
+    "n_conformes": 180,
+    "n_total": 180,
+    "n_violations": 0,
+    "violations": [],
+    "rappels_doux_check": {
+      "rappels_testes": 3,
+      "violations": [],
+      "ok": true
+    },
+    "ok": true
+  },
+  "pas_distribution": {
+    "P1": 21,
+    "P2": 42,
+    "P3": 39,
+    "P4": 21,
+    "P5": 39,
+    "P6": 18
+  },
+  "categorie_par_groupe": {
+    "CELEBRE": {
+      "CELEBRE": 60,
+      "AJUSTEMENT": 0,
+      "REPRISE": 0
+    },
+    "AJUSTEMENT": {
+      "CELEBRE": 0,
+      "AJUSTEMENT": 60,
+      "REPRISE": 0
+    },
+    "REPRISE": {
+      "CELEBRE": 0,
+      "AJUSTEMENT": 0,
+      "REPRISE": 60
+    }
+  },
+  "face_distribution": {
+    "RASSUREE": 60,
+    "EN_QUETE": 60,
+    "SUR_LA_RA": 60
+  },
+  "sha256_run": "015f7e9dfbe4e24b9b089891967295e7a9877b7760adf94a0f94c0673a69c596"
+}
