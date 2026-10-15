@@ -1,0 +1,23 @@
+{
+  "cas": {
+    "NON_RENSEIGNE": "NON_RENSEIGNE",
+    "PARTIEL": "PARTIEL",
+    "SILENCIEUX": "SILENCIEUX",
+    "ACTIF": "ACTIF"
+  },
+  "miroir_vide": {
+    "c3_vide_c4_vide": {
+      "cle_non_standard": false,
+      "interpretation": "aucune force déclarée"
+    },
+    "c3_vide_c4_plein": {
+      "presumes": [
+        "P",
+        "R",
+        "T"
+      ],
+      "interpretation": "certaines de tes forces restent invisibles à tes yeux"
+    },
+    "crash": false
+  }
+}

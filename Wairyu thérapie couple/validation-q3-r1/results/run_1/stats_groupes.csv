@@ -1,0 +1,5 @@
+groupe,taux_ge1_force_pct,taux_silencieuse_pct,nb_0,nb_1,nb_2
+G1_force_faible,86.0,14.0,21,35,94
+G2_force_claire,100.0,0.0,0,0,120
+G3_perdre_vive,100.0,0.0,0,0,80
+G4_dependre,100.0,0.0,0,0,50

@@ -1,0 +1,6 @@
+indicateur,avant_Q3,apres_R1,cause
+C1a anti-fabrication (SANS_FORCE → SILENCIEUSE),0/40,40/40,S-Q3-2 clos par D-Q3-R1-A (voie B supprimée)
+C2 vérité croisée (400),"91,25 %",100.00 %,S-Q3-5/S-Q3-4 clos par D-Q3-R1-B (table F1 alignée)
+SILENCIEUSES échantillon,0/475,61/475,conséquence de D-Q3-R1-A
+G1 SILENCIEUSES,0/150,21/150,conséquence de D-Q3-R1-A
+Statuts journal atteignables,3/4 (SILENCIEUX inatteignable),"4/4 (N ∈ [0,8))",D-Q3-R1-H

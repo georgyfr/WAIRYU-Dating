@@ -1,0 +1,158 @@
+{
+  "D1_silencieuse": {
+    "groupe": "G1_force_faible",
+    "id": 14,
+    "note": "S-Q3-13 re-testée : une G1 SILENCIEUSE existe dans l'échantillon depuis D-Q3-R1-A",
+    "moteur": [],
+    "silencieuse": true,
+    "gabarit_affiche": "SILENCIEUSE — rien n'est encore assez marqué pour être nommé ; c'est un constat, pas un défaut."
+  },
+  "D2_g2_2forces": {
+    "groupe": "G2_force_claire",
+    "id": 0,
+    "entrees": {
+      "c1_mode": "PRES",
+      "c2": 3,
+      "c3": [
+        "E",
+        "H",
+        "Pr"
+      ],
+      "sA": 2.677,
+      "sB": 2.031,
+      "h_norm": 0.196,
+      "r_norm": 0.082,
+      "label_ombre": "PEUR DE PERDRE",
+      "journal": {
+        "T": 5,
+        "U": 7,
+        "L": 0,
+        "M": 1,
+        "N": 0,
+        "phrases": null,
+        "complete": true
+      }
+    },
+    "forces": [
+      "F1",
+      "F2"
+    ],
+    "trace": {
+      "F1": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F2": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F3": {
+        "A": true,
+        "B": true,
+        "C": false,
+        "retenue": true
+      },
+      "F4": {
+        "A": false,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F5": {
+        "A": false,
+        "B": false,
+        "C": false,
+        "retenue": false
+      },
+      "F6": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      }
+    }
+  },
+  "D3_surcharge": {
+    "groupe": "TRAP_SURCHARGE",
+    "id": 0,
+    "forces_retenues": [
+      "F1",
+      "F3"
+    ],
+    "exclues_par_densite": [
+      "F2",
+      "F4",
+      "F5",
+      "F6"
+    ],
+    "trace": {
+      "F1": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F2": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F3": {
+        "A": true,
+        "B": true,
+        "C": true,
+        "retenue": true
+      },
+      "F4": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F5": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      },
+      "F6": {
+        "A": true,
+        "B": false,
+        "C": true,
+        "retenue": true
+      }
+    }
+  },
+  "D4_asym_miroir": {
+    "groupe": "TRAP_ASYM_MIROIR",
+    "c3": [
+      "E",
+      "C",
+      "H"
+    ],
+    "c4": [
+      "P",
+      "R",
+      "T"
+    ],
+    "miroir": {
+      "partages": [],
+      "secrets": [
+        "C",
+        "E",
+        "H"
+      ],
+      "presumes": [
+        "P",
+        "R",
+        "T"
+      ],
+      "interpretation": "certaines de tes forces restent invisibles à tes yeux"
+    }
+  }
+}

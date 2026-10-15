@@ -1930,3 +1930,21 @@ Stage Summary:
 - PROD = staging = code main : les fiches différenciées (90) et la Récolte inventaire d'acquis + usage plateforme (91) sont EN LIGNE sur https://wairyu.wairyu.workers.dev (version 2187c750, bundle index-BQvbwh_d.js).
 - Le fondateur peut vérifier visuellement : page Récolte d'un compte neuf = page vide honnête ; après une quête = fiche « À quoi ça sert » différenciée avec Où / Ce que ça débloque / Quand.
 - Restent ouverts : paywall §5 (chaîne inatteignable depuis la Récolte) · paramètres D22 (échantillonnage premium).
+---
+Task ID: 92
+Agent: orchestrateur (Z.ai Code)
+Task: « allons à la quête suivante » — WTC-Q3-R1, la révision attendue de RIO-03 « Ce qui me porte » (verdict Q3 : À CORRIGER 5/7). Réponse d'orchestrateur exécutée, exécution seed 42 ×2, publication.
+
+Work Log:
+- Sandbox re-réinitialisé (2e fois) : secrets recréés, re-clone main (c730f18). Lecture complète du circuit WTC : hub, rapport Q3 (Sections A-G), code core/simulateur/validateur Q3, format de référence Q2-R1.
+- 8 DÉCISIONS D-Q3-R1-A à H gravées en tête du moteur et du simulateur corrigés : (A) voie B de F6 supprimée — le label d'ombre ne crée pas de force (S-Q3-2, éliminatoire) ; (B) voie A de F1 alignée mot pour mot sur la table (« présence » seule OU « espace » ET sB ≥ 2,61 ; SOL exclu ; `or c2>=2` retiré de la vérité ; sB vivant — S-Q3-3/4/5) ; (C) label_ombre dérivé des scores du profil (S-Q3-8) ; (D) p_c2 branché comme espérance c2~N(p_c2,1) écrêté (S-Q3-6) ; (E) code mort supprimé (S-Q3-7) ; (F) clé `presumes` cohérente (S-Q3-9) ; (G) `complete` vérifié (S-Q3-10) ; (H) N ∈ [0,8) + 6 templates d'affichage honnêtes fournis (S-Q3-11/12).
+- D-STD recalculée AVANT les critères : wtc_q3_ddstd_r1.py, Monte-Carlo 1M/groupe, seed 20261015 (indépendant) — plafonds ≥1 force : G1 85,46 % · G2 99,94 % · G3 99,99 % · G4 100 % ; seuils maintenus (C1b à 17,94 pts sous le plafond G2 ; C2 3 pts sous 100 %).
+- Exécution R1 : seed 42 ×2, SHA-256 bundle ×2 IDENTIQUES (1e445ea8…) — VERDICT VALIDÉ 7/7, note 10/10 : C1a 40/40 (0/40 → 40/40) · C2 100,00 % (91,25 % → 100 %, 0 désaccord) · C1b 100 % · C1c banque 400/400 max2 400/400 SURCHARGE 20/20 · C3 15/15 · C5 4/4 (61/475 SILENCIEUSES réelles, 4/4 statuts, templates 6/6).
+- NOUVEAU signalement S-Q3-R1-1 (honnêteté) : la borne d'intention du cahier « G1 35-50 % SILENCIEUSES » est inatteignable par la géométrie même du cahier (plafond réel 14,5 % ; observé 14,0 %) — faute de spécification attrapée par D-STD avant l'exécution, documentée sans impact critère. Décision RIO attendue si l'intention doit être honorée (ajuster la géométrie G1 du cahier, jamais le moteur).
+- Notes d'intégrité : SHA intermédiaire 0d3014ff (pré-nettoyage de 2 f-strings du validateur) cité dans le README avec vérification des valeurs mesurées inchangées ; bornes D-STD calculées par script séparé à seed distinct (aucune calibration sur les données officielles).
+- Livrables : validation-q3-r1/ (5 scripts, 12 fichiers results + run_1/run_2, 4 figures 1920×1080 Okabe-Ito) ; README package avec comparaison avant/après + liens ; hub mis à jour (packages, échelles RIO-03 ✅ VALIDÉE 2 cycles, verdicts cumulés 6 → 3 échelles validées, arbre).
+- Aucun verbatim de quête ni fichier app touché.
+
+Stage Summary:
+- RIO-03 « Ce qui me porte » : VALIDÉE par simulation (2 cycles) — 3 échelles RIO validées. Premier verdict VALIDÉ d'un cycle de révision du circuit (Q1 et Q2 avaient demandé un arbitrage final).
+- Ouverts pour la suite : S-Q3-R1-1 (décision RIO sur la géométrie G1) · intitulés cliniques des 6 forces (cahier hors dépôt) · WTC-Q4 (prochaine échelle, à fournir par le fondateur).

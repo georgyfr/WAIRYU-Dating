@@ -1,0 +1,8 @@
+critere,seuil,observe,verdict
+C1a,40/40 (100 %),40/40,PASS
+C1b,>= 82 %,100.0 %,PASS
+C1c,100 % banque + <= 2 + SURCHARGE 20/20 exactement 2,banque 400/400 · max2 400/400 · SURCHARGE 20/20 exactement 2,PASS
+C2,>= 97 %,100.00 %,PASS
+C3,15/15 + c3 vides sans crash,15/15 · crash vide: False,PASS
+C4,SHA-256 identique ×2,voir consolidation,A-CONSOLIDER
+C5,a·b·c·d 4/4,a 1/1 cas unitaire + échantillon 61/475 SILENCIEUSES (S-Q3-15 re-testée) · b 20/20 · c 4/4 statuts (S-Q3-11 re-testée : SILENCIEUX atteignable) · d templates 6/6 fournis (S-Q3-12 clos),PASS

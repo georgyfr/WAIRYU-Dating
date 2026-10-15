@@ -1,0 +1,1678 @@
+{
+  "run": "1",
+  "seed": 42,
+  "dsim": "⚠ D-SIM : résultats issus de simulations (seed 42) — la mécanique de mesure est validée ou non, pas la prévalence clinique.",
+  "criteres": {
+    "C1a": {
+      "seuil": "40/40 (100 %)",
+      "observe": "40/40",
+      "pass": true
+    },
+    "C1b": {
+      "seuil": ">= 82 %",
+      "observe": "100.0 %",
+      "pass": true
+    },
+    "C1c": {
+      "seuil": "100 % banque + <= 2 + SURCHARGE 20/20 exactement 2",
+      "observe": "banque 400/400 · max2 400/400 · SURCHARGE 20/20 exactement 2",
+      "pass": true
+    },
+    "C2": {
+      "seuil": ">= 97 %",
+      "observe": "100.00 %",
+      "pass": true
+    },
+    "C3": {
+      "seuil": "15/15 + c3 vides sans crash",
+      "observe": "15/15 · crash vide: False",
+      "pass": true
+    },
+    "C4": {
+      "seuil": "SHA-256 identique ×2",
+      "observe": "1e445ea8… vs 1e445ea8… — IDENTIQUES",
+      "pass": true
+    },
+    "C5": {
+      "seuil": "a·b·c·d 4/4",
+      "observe": "a 1/1 cas unitaire + échantillon 61/475 SILENCIEUSES (S-Q3-15 re-testée) · b 20/20 · c 4/4 statuts (S-Q3-11 re-testée : SILENCIEUX atteignable) · d templates 6/6 fournis (S-Q3-12 clos)",
+      "pass": true
+    }
+  },
+  "c2_pct": 100.0,
+  "c2_accords": 400,
+  "n400": 400,
+  "stats": {
+    "matrice": {
+      "G1_force_faible": {
+        "F1": 50,
+        "F2": 52,
+        "F3": 39,
+        "F4": 42,
+        "F5": 17,
+        "F6": 23
+      },
+      "G2_force_claire": {
+        "F1": 79,
+        "F2": 69,
+        "F3": 33,
+        "F4": 35,
+        "F5": 10,
+        "F6": 14
+      },
+      "G3_perdre_vive": {
+        "F1": 34,
+        "F2": 24,
+        "F3": 78,
+        "F4": 11,
+        "F5": 4,
+        "F6": 9
+      },
+      "G4_dependre": {
+        "F1": 50,
+        "F2": 37,
+        "F3": 2,
+        "F4": 6,
+        "F5": 3,
+        "F6": 2
+      }
+    },
+    "nb_dist": {
+      "G1_force_faible": {
+        "0": 21,
+        "1": 35,
+        "2": 94
+      },
+      "G2_force_claire": {
+        "0": 0,
+        "1": 0,
+        "2": 120
+      },
+      "G3_perdre_vive": {
+        "0": 0,
+        "1": 0,
+        "2": 80
+      },
+      "G4_dependre": {
+        "0": 0,
+        "1": 0,
+        "2": 50
+      }
+    },
+    "sil_g1": 21,
+    "voies": {
+      "A": 682,
+      "B": 187,
+      "C": 377
+    },
+    "voies_journal": 377,
+    "invention": 0,
+    "sf_total": 40,
+    "sf_silencieuse": 40,
+    "surcharge_retenues": [
+      "F1|F3"
+    ],
+    "surcharge_exclues_exemple": [
+      "F2",
+      "F4",
+      "F5",
+      "F6"
+    ],
+    "sil_egl": 61,
+    "n475": 475,
+    "g1_silencieuse_exemple": {
+      "groupe": "G1_force_faible",
+      "id": 14
+    }
+  },
+  "exemples": {
+    "D1_silencieuse": {
+      "groupe": "G1_force_faible",
+      "id": 14,
+      "note": "S-Q3-13 re-testée : une G1 SILENCIEUSE existe dans l'échantillon depuis D-Q3-R1-A",
+      "moteur": [],
+      "silencieuse": true,
+      "gabarit_affiche": "SILENCIEUSE — rien n'est encore assez marqué pour être nommé ; c'est un constat, pas un défaut."
+    },
+    "D2_g2_2forces": {
+      "groupe": "G2_force_claire",
+      "id": 0,
+      "entrees": {
+        "c1_mode": "PRES",
+        "c2": 3,
+        "c3": [
+          "E",
+          "H",
+          "Pr"
+        ],
+        "sA": 2.677,
+        "sB": 2.031,
+        "h_norm": 0.196,
+        "r_norm": 0.082,
+        "label_ombre": "PEUR DE PERDRE",
+        "journal": {
+          "T": 5,
+          "U": 7,
+          "L": 0,
+          "M": 1,
+          "N": 0,
+          "phrases": null,
+          "complete": true
+        }
+      },
+      "forces": [
+        "F1",
+        "F2"
+      ],
+      "trace": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F3": {
+          "A": true,
+          "B": true,
+          "C": false,
+          "retenue": true
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      }
+    },
+    "D3_surcharge": {
+      "groupe": "TRAP_SURCHARGE",
+      "id": 0,
+      "forces_retenues": [
+        "F1",
+        "F3"
+      ],
+      "exclues_par_densite": [
+        "F2",
+        "F4",
+        "F5",
+        "F6"
+      ],
+      "trace": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F3": {
+          "A": true,
+          "B": true,
+          "C": true,
+          "retenue": true
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      }
+    },
+    "D4_asym_miroir": {
+      "groupe": "TRAP_ASYM_MIROIR",
+      "c3": [
+        "E",
+        "C",
+        "H"
+      ],
+      "c4": [
+        "P",
+        "R",
+        "T"
+      ],
+      "miroir": {
+        "partages": [],
+        "secrets": [
+          "C",
+          "E",
+          "H"
+        ],
+        "presumes": [
+          "P",
+          "R",
+          "T"
+        ],
+        "interpretation": "certaines de tes forces restent invisibles à tes yeux"
+      }
+    }
+  },
+  "trace_log": [
+    {
+      "groupe": "G1_force_faible",
+      "id": 0,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 1,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": true,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": true,
+        "F2": false,
+        "F3": false,
+        "F4": true,
+        "F5": true,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 2,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": true,
+        "F5": true,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 3,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 4,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 5,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": true,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 6,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": true,
+        "F4": true,
+        "F5": true,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 7,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": true,
+        "F4": true,
+        "F5": true,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 8,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": true,
+        "F5": true,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": true,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": true
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 9,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": true,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": true,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 10,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": true,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 11,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 12,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": true,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 13,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": true,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 14,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 15,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": true,
+        "F3": false,
+        "F4": true,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 16,
+      "trace_moteur": {
+        "F1": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 17,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": true,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 18,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F6": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": true,
+        "F3": false,
+        "F4": false,
+        "F5": true,
+        "F6": false
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    },
+    {
+      "groupe": "G1_force_faible",
+      "id": 19,
+      "trace_moteur": {
+        "F1": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F2": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F3": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F4": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "retenue": false
+        },
+        "F5": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        },
+        "F6": {
+          "A": true,
+          "B": false,
+          "C": false,
+          "retenue": true
+        }
+      },
+      "audit_A": {
+        "F1": true,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": true,
+        "F6": true
+      },
+      "audit_B": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "audit_C": {
+        "F1": false,
+        "F2": false,
+        "F3": false,
+        "F4": false,
+        "F5": false,
+        "F6": false
+      },
+      "coherent": true
+    }
+  ],
+  "statuts_journal": {
+    "NON_RENSEIGNE": "NON_RENSEIGNE",
+    "PARTIEL": "PARTIEL",
+    "SILENCIEUX": "SILENCIEUX",
+    "ACTIF": "ACTIF"
+  },
+  "miroir_vide": {
+    "c3_vide_c4_vide": {
+      "cle_non_standard": false,
+      "interpretation": "aucune force déclarée"
+    },
+    "c3_vide_c4_plein": {
+      "presumes": [
+        "P",
+        "R",
+        "T"
+      ],
+      "interpretation": "certaines de tes forces restent invisibles à tes yeux"
+    },
+    "crash": false
+  },
+  "gabarit_silencieuse": {
+    "profil": {
+      "c1_mode": "RIEN",
+      "c2": 0,
+      "c3": [],
+      "c4": [],
+      "sA": 2.0,
+      "sB": 2.0,
+      "h_norm": 0.1,
+      "r_norm": 0.1,
+      "label_ombre": "ZONE CALME",
+      "journal": null
+    },
+    "moteur": [],
+    "silencieuse": true,
+    "verite": [],
+    "gabarit": "SILENCIEUSE — rien n'est encore assez marqué pour être nommé ; c'est un constat, pas un défaut.",
+    "ok": true
+  },
+  "template_silencieuse": "SILENCIEUSE — rien n'est encore assez marqué pour être nommé ; c'est un constat, pas un défaut.",
+  "templates_forces": {
+    "F1": "F1 — le ressourcement déclaré : tu l'as nommée toi-même, elle travaille pour toi sans être notée.",
+    "F2": "F2 — la reconnaissance au quotidien : tes réponses la montrent en acte, pas en intention.",
+    "F3": "F3 — l'élan maintenu : ton énergie et tes mots la portent — elle se voit quand ça compte.",
+    "F4": "F4 — la joie partagée : ce que tu célèbres chez l'autre est une vraie ressource de la relation.",
+    "F5": "F5 — la pause réparatrice : savoir poser est une force de la relation, pas une fuite.",
+    "F6": "F6 — la tendresse du quotidien : les petits gestes du jour réparent plus que les grands discours."
+  },
+  "sha_bundle": "1e445ea8956c88c14298fb0a2ffe5abc54222ccceae135a4490d82360ceb275f"
+}

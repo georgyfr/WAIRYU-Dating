@@ -1,0 +1,63 @@
+{
+  "seed": 20261015,
+  "n_mc_par_groupe": 1000000,
+  "methode": "Monte-Carlo 1M/groupe, rng dédié seed 20261015 (+ offset par groupe), moteur R1 — calculé AVANT les runs officiels ; plafond = p̂ ; intervalle officiel n = p̂ ± 3·sqrt(p̂(1−p̂)/n_officiel)",
+  "groupes": {
+    "G1_force_faible": {
+      "plafond_ge1_force_pct": 85.457,
+      "intervalle_n_officiel_pct": [
+        76.82,
+        94.09
+      ],
+      "plafond_silencieuse_pct": 14.543,
+      "n_officiel": 150
+    },
+    "G2_force_claire": {
+      "plafond_ge1_force_pct": 99.941,
+      "intervalle_n_officiel_pct": [
+        99.28,
+        100.0
+      ],
+      "plafond_silencieuse_pct": 0.059,
+      "n_officiel": 120
+    },
+    "G3_perdre_vive": {
+      "plafond_ge1_force_pct": 99.993,
+      "intervalle_n_officiel_pct": [
+        99.71,
+        100.0
+      ],
+      "plafond_silencieuse_pct": 0.007,
+      "n_officiel": 80
+    },
+    "G4_dependre": {
+      "plafond_ge1_force_pct": 99.995,
+      "intervalle_n_officiel_pct": [
+        99.7,
+        100.0
+      ],
+      "plafond_silencieuse_pct": 0.005,
+      "n_officiel": 50
+    }
+  },
+  "controle_seuils": {
+    "C1b": {
+      "seuil_pct": 82.0,
+      "plafond_g2_pct": 99.941,
+      "ecart_pts": 17.94,
+      "ok_ge3pts": true
+    },
+    "C2": {
+      "seuil_pct": 97.0,
+      "plafond_pct": 100.0,
+      "ecart_pts": 3.0,
+      "ok_ge3pts": true,
+      "note": "plafond 100 % (moteur == vérité, D-Q3-R1-B) — tout < 100 % est un écart réel à expliquer"
+    },
+    "C1a": {
+      "seuil": "40/40",
+      "plafond": "100 % (pièges mécaniquement sans voie ; voie B supprimée, D-Q3-R1-A)",
+      "ok_ge3pts": true
+    }
+  }
+}

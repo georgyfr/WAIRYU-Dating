@@ -2,7 +2,7 @@
 
 > Point d'entrée de tout le programme WTC dans ce dépôt : document de référence officiel,
 > arbre de navigation des packages de validation, statut des échelles RIO et règles
-> permanentes issues des cycles. Mis à jour le **15/10/2026** (consolidation v2).
+> permanentes issues des cycles. Mis à jour le **15/10/2026** (cycle WTC-Q3-R1).
 
 ---
 
@@ -51,7 +51,8 @@ Wairyu thérapie couple/
 ├── validation-q1-r1/                ← PACKAGE WTC-Q1-R1 (révision D1-D5)
 ├── validation-q2/                   ← PACKAGE WTC-Q2   (verdict initial)
 ├── validation-q2-r1/                ← PACKAGE WTC-Q2-R1 (révision D-Q2-A à F)
-└── validation-q3/                   ← PACKAGE WTC-Q3   (« Ce qui me porte » — À CORRIGER)
+├── validation-q3/                   ← PACKAGE WTC-Q3   (« Ce qui me porte » — À CORRIGER)
+└── validation-q3-r1/                ← PACKAGE WTC-Q3-R1 (révision D-Q3-R1-A à H — VALIDÉ)
 ```
 
 ---
@@ -66,6 +67,7 @@ Wairyu thérapie couple/
 | **WTC-Q2-R1** | `78752d4` | Révision D-Q2-A à F (fqH/fqR branchés · 35 templates · 6 O7-NLP · 431 officiels) | À CORRIGER (5/7 — C1a 81,0 % · 1 FP) | [validation-q2-r1/](validation-q2-r1/) |
 | **Arbitrages finaux** | — | Q1-R1 : D6/D7 · Q2-R1 : D-Q2-G (seuil 79 %) + D-Q2-H (définition FP) | **RIO-01 VALIDÉE 6/6 · RIO-02 VALIDÉE 7/7** | (décisions orchestrateur, cf. Partie 13 du PDF) |
 | **WTC-Q3** | (ce dépôt) | Quête 3 « Ce qui me porte » (RIO-03, le positif) — banque fermée 6 forces, anti-fabrication bilatérale | **À CORRIGER (5/7 — C1a 0/40 anti-fabrication · C2 91,25 %)** | [validation-q3/](validation-q3/) |
+| **WTC-Q3-R1** | (ce dépôt) | Révision D-Q3-R1-A à H (voie B F6 supprimée · table F1 alignée · p_c2 branché · templates fournis · bornes D-STD seed 20261015) | **VALIDÉ (7/7 — note 10/10)** | [validation-q3-r1/](validation-q3-r1/) |
 
 Chaque dossier contient : `README.md` (verdict + visuels intégrés + liens de téléchargement
 directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sections A-G),
@@ -79,13 +81,9 @@ directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sect
 |---|---|---|---|
 | **RIO-01 « Comment je me raccroche »** | 18 items (2 axes × 3 faces × 3), échelle 1-4, 2 inversés (5, 15), 1 vigilance — construct : attachement adulte (Bowlby ; Brennan, Clark & Shaver) | ✅ **VALIDÉE par simulation** (3 cycles) | α poolés 0,9155 / 0,9082 · SEM structurel 0,195 (3 métriques concordantes) · couverture CI90 89,9 % · exactitude 79,7 % (plafond ~80,5 % documenté) · RQS 20/20 · règle conservatrice 100 % / 99,8 % ≥ 99,5 % · SHA-256 ×2 · décisions D1-D5, D6, D7 |
 | **RIO-02 « Ce qui m'effraie vraiment »** | 3 formats mixtes : 10 déclencheurs (6 distance + 4 proximité) + I_alarm 0-10 · 8 comportements (5 H + 3 R, H5 = sécurité) · origine 7 voies + NLP local (seuil 0,70) — constructs : Mikulincer & Shaver ; Bowlby | ✅ **VALIDÉE par simulation** (2 cycles) | Nommage 81,0 % (≥ 79 %, D-Q2-G sur plafond ≈ 82,4 %) · calme bilatéral 85 % / 0 % · arêtes 8/8 · sécurité 8/8 · 5/5 · 0 FP (D-Q2-H) · convergence 6/6 · 4/4 · 94,0 % · O7-NLP 6/6 · affichage 35/35 · SHA-256 ×2 |
-| **RIO-03 « Ce qui me porte »** | 4 composantes : 4 confirmations déclaratives (C1-C4) · entrées héritées Q1/Q2 · journal 7 jours · banque fermée de 6 forces (max 2, sinon SILENCIEUSE) — constructs : capitalisation (Gable & Reis) ; forces de caractère (VIA/Peterson) ; sécurité acquise (Main) | ❌ **WTC-Q3 exécuté : À CORRIGER** (5/7 — C1a anti-fabrication 0/40, S-Q3-2 : voie B F6 « ZONE CALME » absente de la table ; C2 91,25 %, S-Q3-5) | révision WTC-Q3-R1 attendue — le moteur n'invente rien (0 invention sur 475) |
+| **RIO-03 « Ce qui me porte »** | 4 composantes : 4 confirmations déclaratives (C1-C4) · entrées héritées Q1/Q2 · journal 7 jours · banque fermée de 6 forces (max 2, sinon SILENCIEUSE) — constructs : capitalisation (Gable & Reis) ; forces de caractère (VIA/Peterson) ; sécurité acquise (Main) | ✅ **VALIDÉE par simulation** (2 cycles) | Q3-R1 : anti-fabrication 40/40 · C2 100,00 % (400/400, 0 désaccord) · banque 400/400 · limite 2 400/400 · SURCHARGE 20/20 · miroir 15/15 · SHA ×2 `1e445ea8…` · 61/475 SILENCIEUSES réelles · décisions D-Q3-R1-A à H · ouvert : S-Q3-R1-1 (borne d'intention G1 vs géométrie) |
 
-**Verdicts cumulés** : 5 verdicts « À CORRIGER » publiés (WTC-Q1, Q1-R1, Q2, Q2-R1, Q3) — à
-chaque fois des fautes de spécification d'orchestrateur attrapées par le circuit et
-corrigées publiquement, jamais de faute d'implémentation → 2 échelles VALIDÉES · zéro
-correction libre d'exécuteur · zéro masquage. **Le circuit a attrapé l'orchestrateur
-quatre fois sur quatre.**
+**Verdicts cumulés** : 6 verdicts publiés (WTC-Q1, Q1-R1, Q2, Q2-R1, Q3, **Q3-R1 = premier verdict VALIDÉ d'un cycle de révision**) — cinq verdicts « À CORRIGER » à chaque fois des fautes de spécification d'orchestrateur attrapées par le circuit et corrigées publiquement, jamais de faute d'implémentation → **3 échelles VALIDÉES** · zéro correction libre d'exécuteur · zéro masquage. **Le circuit a attrapé l'orchestrateur quatre fois sur quatre — puis la cinquième faute (S-Q3-R1-1) a été attrapée par la règle D-STD elle-même, avant l'exécution.**
 
 ---
 
@@ -93,7 +91,7 @@ quatre fois sur quatre.**
 
 | Règle | Contenu | Origine |
 |---|---|---|
-| **D-STD (bornes de faisabilité)** | Tout nouveau package calcule, AVANT ses critères, le plafond atteignable par la géométrie de simulation — seuils posés à ≥ 3 points sous ce plafond | Q2-R1 (seuil posé à 0,4 pt du plafond) |
+| **D-STD (bornes de faisabilité)** | Tout nouveau package calcule, AVANT ses critères, le plafond atteignable par la géométrie de simulation — seuils posés à ≥ 3 points sous ce plafond. **Rattrapée au vif en Q3-R1** : la borne d'intention « G1 35-50 % SILENCIEUSES » était inatteignable par la géométrie du cahier (S-Q3-R1-1) | Q2-R1 (seuil posé à 0,4 pt du plafond) · Q3-R1 (S-Q3-R1-1) |
 | **D-Q2-1** | L'arbre de nommage définit explicitement tous ses débouchés (fallthrough : ALARME SANS MAIN · SIGNAL LÉGER NON NOMMÉ) | Q2 |
 | **D-Q2-2** | La convergence ne gate que les étiquettes d'OMBRE — jamais ZONE CALME, jamais le palier | Q2-R1 |
 | **D-Q2-H** | FP = signal déclenché sans raison (sA < 3,21 ET i_alarm < 6 ET H5 < 2) — un déclenchement légitime de frontière n'est pas un FP | Q2-R1 |
