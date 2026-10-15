@@ -1,0 +1,438 @@
+{
+  "n_total": 440,
+  "plafonds": {
+    "C1a": {
+      "plafond_pct": 87.63,
+      "seuil_pct": 81.0,
+      "par_groupe": {
+        "E1_invalidant_pur": {
+          "pct": 86.0,
+          "correct": 172,
+          "total": 200
+        },
+        "E2_invalide_code": {
+          "pct": 86.0,
+          "correct": 172,
+          "total": 200
+        },
+        "E3_boucle_complete": {
+          "pct": 82.5,
+          "correct": 132,
+          "total": 160
+        },
+        "E4_sain": {
+          "pct": 95.0,
+          "correct": 190,
+          "total": 200
+        }
+      }
+    },
+    "C1b": {
+      "plafond_pct": 70.0,
+      "seuil_pct": 83.0,
+      "par_groupe": {
+        "E2_invalide_code": {
+          "pct": 83.0,
+          "correct": 83,
+          "total": 100
+        },
+        "E3_boucle_complete": {
+          "pct": 71.25,
+          "correct": 57,
+          "total": 80
+        },
+        "E5_code_sain": {
+          "pct": 0.0,
+          "correct": 0,
+          "total": 20
+        }
+      },
+      "e5_pct": 0.0,
+      "e5_seuil": 90.0
+    },
+    "C1c": {
+      "plafond_pct": 96.5,
+      "seuil_pct": 85.0,
+      "par_groupe": {
+        "E1_invalidant_pur": {
+          "pct": 100.0,
+          "correct": 100,
+          "total": 100
+        },
+        "E2_invalide_code": {
+          "pct": 87.0,
+          "correct": 87,
+          "total": 100
+        },
+        "E3_boucle_complete": {
+          "pct": 98.75,
+          "correct": 79,
+          "total": 80
+        },
+        "E4_sain": {
+          "pct": 100.0,
+          "correct": 100,
+          "total": 100
+        },
+        "E5_code_sain": {
+          "pct": 100.0,
+          "correct": 20,
+          "total": 20
+        }
+      }
+    }
+  },
+  "C1a": {
+    "plafond_pct": 87.63,
+    "seuil_pct": 81.0,
+    "obtenu_pct": 87.63,
+    "par_groupe": {
+      "E1_invalidant_pur": {
+        "pct": 86.0,
+        "correct": 172,
+        "total": 200
+      },
+      "E2_invalide_code": {
+        "pct": 86.0,
+        "correct": 172,
+        "total": 200
+      },
+      "E3_boucle_complete": {
+        "pct": 82.5,
+        "correct": 132,
+        "total": 160
+      },
+      "E4_sain": {
+        "pct": 95.0,
+        "correct": 190,
+        "total": 200
+      }
+    },
+    "ok": true
+  },
+  "C1b": {
+    "plafond_pct": 70.0,
+    "seuil_pct": 83.0,
+    "obtenu_pct": 70.0,
+    "par_groupe": {
+      "E2_invalide_code": {
+        "pct": 83.0,
+        "correct": 83,
+        "total": 100
+      },
+      "E3_boucle_complete": {
+        "pct": 71.25,
+        "correct": 57,
+        "total": 80
+      },
+      "E5_code_sain": {
+        "pct": 0.0,
+        "correct": 0,
+        "total": 20
+      }
+    },
+    "e5_pct": 0.0,
+    "e5_seuil": 90.0,
+    "ok": false
+  },
+  "C1c": {
+    "plafond_pct": 96.5,
+    "seuil_pct": 85.0,
+    "obtenu_pct": 96.5,
+    "par_groupe": {
+      "E1_invalidant_pur": {
+        "pct": 100.0,
+        "correct": 100,
+        "total": 100
+      },
+      "E2_invalide_code": {
+        "pct": 87.0,
+        "correct": 87,
+        "total": 100
+      },
+      "E3_boucle_complete": {
+        "pct": 98.75,
+        "correct": 79,
+        "total": 80
+      },
+      "E4_sain": {
+        "pct": 100.0,
+        "correct": 100,
+        "total": 100
+      },
+      "E5_code_sain": {
+        "pct": 100.0,
+        "correct": 20,
+        "total": 20
+      }
+    },
+    "ok": true
+  },
+  "C2": {
+    "details": {
+      "applicables": 180,
+      "index_ge_050": 180,
+      "crash": 0
+    },
+    "par_groupe": {
+      "E2_invalide_code": {
+        "applicables": 100,
+        "index_ge_050": 100,
+        "index_moyen": 1.0
+      },
+      "E3_boucle_complete": {
+        "applicables": 80,
+        "index_ge_050": 80,
+        "index_moyen": 0.98
+      }
+    },
+    "ok": true
+  },
+  "C3": {
+    "c3a": {
+      "violations": 0,
+      "attendu": 0,
+      "ok": true,
+      "details": []
+    },
+    "c3b": {
+      "violations": 0,
+      "attendu": 0,
+      "ok": true,
+      "details": []
+    },
+    "c3c": {
+      "violations": 0,
+      "attendu": 0,
+      "ok": true,
+      "details": []
+    },
+    "eliminatoire": true,
+    "ok": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "c5a_d_echelle": {
+      "ok": true,
+      "seuil": 3.0
+    },
+    "c5b_d_param": {
+      "ok": true,
+      "sigma": "0.60"
+    },
+    "c5c_templates": {
+      "ok": true,
+      "donnee": 3,
+      "recue": 3
+    },
+    "c5d_heritage": {
+      "ok": true
+    },
+    "ok": true
+  },
+  "stats_groupes": {
+    "E1_invalidant_pur": {
+      "n": 100,
+      "palier_count": {
+        "🟢": 0,
+        "🟠": 100,
+        "🔴": 0
+      },
+      "moy_inv_d": 4.15,
+      "moy_inv_r": 1.97,
+      "moy_rc": 1.96,
+      "moy_rc_d": 2.95,
+      "moy_re_1": 2.01,
+      "moy_re_2": 2.03
+    },
+    "E2_invalide_code": {
+      "n": 100,
+      "palier_count": {
+        "🟢": 4,
+        "🟠": 96,
+        "🔴": 0
+      },
+      "moy_inv_d": 1.98,
+      "moy_inv_r": 4.22,
+      "moy_rc": 3.78,
+      "moy_rc_d": 1.84,
+      "moy_re_1": 3.43,
+      "moy_re_2": 3.69
+    },
+    "E3_boucle_complete": {
+      "n": 80,
+      "palier_count": {
+        "🟢": 0,
+        "🟠": 38,
+        "🔴": 42
+      },
+      "moy_inv_d": 3.88,
+      "moy_inv_r": 3.77,
+      "moy_rc": 3.57,
+      "moy_rc_d": 2.08,
+      "moy_re_1": 3.83,
+      "moy_re_2": 4.05
+    },
+    "E4_sain": {
+      "n": 100,
+      "palier_count": {
+        "🟢": 96,
+        "🟠": 4,
+        "🔴": 0
+      },
+      "moy_inv_d": 1.54,
+      "moy_inv_r": 1.67,
+      "moy_rc": 1.94,
+      "moy_rc_d": 3.85,
+      "moy_re_1": 2.04,
+      "moy_re_2": 2.19
+    },
+    "E5_code_sain": {
+      "n": 20,
+      "palier_count": {
+        "🟢": 20,
+        "🟠": 0,
+        "🔴": 0
+      },
+      "moy_inv_d": 1.68,
+      "moy_inv_r": 1.6,
+      "moy_rc": 3.47,
+      "moy_rc_d": 4.3,
+      "moy_re_1": 2.05,
+      "moy_re_2": 2.05
+    },
+    "SANS_SIGNAL": {
+      "n": 30,
+      "palier_count": {
+        "🟢": 30,
+        "🟠": 0,
+        "🔴": 0
+      },
+      "moy_inv_d": 1.0,
+      "moy_inv_r": 1.0,
+      "moy_rc": 1.0,
+      "moy_rc_d": 5.0,
+      "moy_re_1": 1.0,
+      "moy_re_2": 2.0
+    },
+    "GRAVE": {
+      "n": 10,
+      "palier_count": {
+        "🟢": 0,
+        "🟠": 0,
+        "🔴": 10
+      },
+      "moy_inv_d": 4.67,
+      "moy_inv_r": 2.0,
+      "moy_rc": 4.0,
+      "moy_rc_d": 2.0,
+      "moy_re_1": 4.0,
+      "moy_re_2": 4.0
+    }
+  },
+  "matrice_zones": {
+    "ABSENT": {
+      "ABSENT": 108,
+      "OCCASIONNEL": 10,
+      "FRÉQUENT": 72
+    },
+    "OCCASIONNEL": {
+      "ABSENT": 7,
+      "OCCASIONNEL": 2,
+      "FRÉQUENT": 32
+    },
+    "FRÉQUENT": {
+      "ABSENT": 72,
+      "OCCASIONNEL": 43,
+      "FRÉQUENT": 54
+    }
+  },
+  "matrice_par_groupe": {
+    "E1_invalidant_pur": {
+      "ABSENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      },
+      "OCCASIONNEL": {
+        "ABSENT": 3,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      },
+      "FRÉQUENT": {
+        "ABSENT": 72,
+        "OCCASIONNEL": 25,
+        "FRÉQUENT": 0
+      }
+    },
+    "E2_invalide_code": {
+      "ABSENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 2,
+        "FRÉQUENT": 72
+      },
+      "OCCASIONNEL": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 26
+      },
+      "FRÉQUENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      }
+    },
+    "E3_boucle_complete": {
+      "ABSENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      },
+      "OCCASIONNEL": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 2,
+        "FRÉQUENT": 6
+      },
+      "FRÉQUENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 18,
+        "FRÉQUENT": 54
+      }
+    },
+    "E4_sain": {
+      "ABSENT": {
+        "ABSENT": 90,
+        "OCCASIONNEL": 6,
+        "FRÉQUENT": 0
+      },
+      "OCCASIONNEL": {
+        "ABSENT": 4,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      },
+      "FRÉQUENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      }
+    },
+    "E5_code_sain": {
+      "ABSENT": {
+        "ABSENT": 18,
+        "OCCASIONNEL": 2,
+        "FRÉQUENT": 0
+      },
+      "OCCASIONNEL": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      },
+      "FRÉQUENT": {
+        "ABSENT": 0,
+        "OCCASIONNEL": 0,
+        "FRÉQUENT": 0
+      }
+    }
+  },
+  "sha256_run": "1df53890d2d96d2b3878fb504b68c05545ca81751a8ad81666217dc47cc30fae"
+}
