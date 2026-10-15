@@ -93,7 +93,7 @@ Plafond de coïncidence C2 : 100 % attendu par le package — observé **91.25 %
 ```
 ════════════════════════════════════════════════════════
 FICHE WTC-Q3 — « Ce qui me porte »
-Exécuté par Data Insight · 2026-10-15 · seed 42 · commit [push]
+Exécuté par Data Insight · 2026-10-15 · seed 42 · commit 09b8683 (publication)
 C1a anti-fabrication 40/40       :     0/40  FAIL
 C1b anti-négligence ≥ 82 %       :  100.0 %  PASS
 C1c banque + limite 2 (20/20)    : banque 400/400 · max2 400/400 · SURCHARGE 20/20 exactement 2  PASS
