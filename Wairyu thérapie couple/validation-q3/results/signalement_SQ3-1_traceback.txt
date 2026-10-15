@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "/home/z/my-project/repo-work/WAIRYU-Dating/Wairyu thérapie couple/validation-q3/src/wtc_q3_simulator.py", line 72, in <module>
+    "G1_force_faible":  gen(150, 2.0, 2.0, 0.20, 1.0, 0.15, 0.4),
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z/my-project/repo-work/WAIRYU-Dating/Wairyu thérapie couple/validation-q3/src/wtc_q3_simulator.py", line 26, in gen
+    "c4": sorted(set(c3) & set(rng.sample(
+                               ^^^^^^^^^^
+AttributeError: 'numpy.random._generator.Generator' object has no attribute 'sample'

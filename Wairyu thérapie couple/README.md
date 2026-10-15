@@ -50,7 +50,8 @@ Wairyu thérapie couple/
 ├── validation-q1/                   ← PACKAGE WTC-Q1   (verdict initial)
 ├── validation-q1-r1/                ← PACKAGE WTC-Q1-R1 (révision D1-D5)
 ├── validation-q2/                   ← PACKAGE WTC-Q2   (verdict initial)
-└── validation-q2-r1/                ← PACKAGE WTC-Q2-R1 (révision D-Q2-A à F)
+├── validation-q2-r1/                ← PACKAGE WTC-Q2-R1 (révision D-Q2-A à F)
+└── validation-q3/                   ← PACKAGE WTC-Q3   (« Ce qui me porte » — À CORRIGER)
 ```
 
 ---
@@ -64,6 +65,7 @@ Wairyu thérapie couple/
 | **WTC-Q2** | `0c3aaab` | Quête 2 « Ce qui m'effraie vraiment » (RIO-02) — 431 sorties, 7 critères | À CORRIGER (5/7 — C1a 72,67 % · C5c) | [validation-q2/](validation-q2/) |
 | **WTC-Q2-R1** | `78752d4` | Révision D-Q2-A à F (fqH/fqR branchés · 35 templates · 6 O7-NLP · 431 officiels) | À CORRIGER (5/7 — C1a 81,0 % · 1 FP) | [validation-q2-r1/](validation-q2-r1/) |
 | **Arbitrages finaux** | — | Q1-R1 : D6/D7 · Q2-R1 : D-Q2-G (seuil 79 %) + D-Q2-H (définition FP) | **RIO-01 VALIDÉE 6/6 · RIO-02 VALIDÉE 7/7** | (décisions orchestrateur, cf. Partie 13 du PDF) |
+| **WTC-Q3** | (ce dépôt) | Quête 3 « Ce qui me porte » (RIO-03, le positif) — banque fermée 6 forces, anti-fabrication bilatérale | **À CORRIGER (5/7 — C1a 0/40 anti-fabrication · C2 91,25 %)** | [validation-q3/](validation-q3/) |
 
 Chaque dossier contient : `README.md` (verdict + visuels intégrés + liens de téléchargement
 directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sections A-G),
@@ -77,12 +79,13 @@ directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sect
 |---|---|---|---|
 | **RIO-01 « Comment je me raccroche »** | 18 items (2 axes × 3 faces × 3), échelle 1-4, 2 inversés (5, 15), 1 vigilance — construct : attachement adulte (Bowlby ; Brennan, Clark & Shaver) | ✅ **VALIDÉE par simulation** (3 cycles) | α poolés 0,9155 / 0,9082 · SEM structurel 0,195 (3 métriques concordantes) · couverture CI90 89,9 % · exactitude 79,7 % (plafond ~80,5 % documenté) · RQS 20/20 · règle conservatrice 100 % / 99,8 % ≥ 99,5 % · SHA-256 ×2 · décisions D1-D5, D6, D7 |
 | **RIO-02 « Ce qui m'effraie vraiment »** | 3 formats mixtes : 10 déclencheurs (6 distance + 4 proximité) + I_alarm 0-10 · 8 comportements (5 H + 3 R, H5 = sécurité) · origine 7 voies + NLP local (seuil 0,70) — constructs : Mikulincer & Shaver ; Bowlby | ✅ **VALIDÉE par simulation** (2 cycles) | Nommage 81,0 % (≥ 79 %, D-Q2-G sur plafond ≈ 82,4 %) · calme bilatéral 85 % / 0 % · arêtes 8/8 · sécurité 8/8 · 5/5 · 0 FP (D-Q2-H) · convergence 6/6 · 4/4 · 94,0 % · O7-NLP 6/6 · affichage 35/35 · SHA-256 ×2 |
-| **RIO-03 « Ce qui me porte »** | (le positif prouvé) | 🔜 Package WTC-Q3 à rédiger | avec bornes de faisabilité D-STD + test anti-fabrication |
+| **RIO-03 « Ce qui me porte »** | 4 composantes : 4 confirmations déclaratives (C1-C4) · entrées héritées Q1/Q2 · journal 7 jours · banque fermée de 6 forces (max 2, sinon SILENCIEUSE) — constructs : capitalisation (Gable & Reis) ; forces de caractère (VIA/Peterson) ; sécurité acquise (Main) | ❌ **WTC-Q3 exécuté : À CORRIGER** (5/7 — C1a anti-fabrication 0/40, S-Q3-2 : voie B F6 « ZONE CALME » absente de la table ; C2 91,25 %, S-Q3-5) | révision WTC-Q3-R1 attendue — le moteur n'invente rien (0 invention sur 475) |
 
-**Verdicts cumulés** : 3 cycles « À CORRIGER » → fautes de spécification attrapées par le
-circuit et corrigées publiquement par l'orchestrateur → 2 échelles VALIDÉES · zéro
+**Verdicts cumulés** : 5 verdicts « À CORRIGER » publiés (WTC-Q1, Q1-R1, Q2, Q2-R1, Q3) — à
+chaque fois des fautes de spécification d'orchestrateur attrapées par le circuit et
+corrigées publiquement, jamais de faute d'implémentation → 2 échelles VALIDÉES · zéro
 correction libre d'exécuteur · zéro masquage. **Le circuit a attrapé l'orchestrateur
-trois fois sur trois.**
+quatre fois sur quatre.**
 
 ---
 

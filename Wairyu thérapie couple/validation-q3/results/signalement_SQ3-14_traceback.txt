@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/home/z/my-project/repo-work/WAIRYU-Dating/Wairyu thérapie couple/validation-q3/src/wtc_q3_simulator.py", line 62, in forces_vraies
+    cond = {f: (ca[f] or cb[f] or cj[f])
+                         ~~^^^
+KeyError: 'F4'
