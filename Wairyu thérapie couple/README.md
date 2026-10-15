@@ -44,7 +44,7 @@ Wairyu thérapie couple/
 ├── programme wairyu couple.txt      ← texte intégral v1 (parties 1-12)
 ├── OUTILS DE TERAPIE DU COUPLE.txt  ← recherche clinique amont
 ├── rapports/                        ← PDF + couverture HTML (archive)
-├── visualisations/                  ← 8 graphiques + index de lecture
+├── visualisations/                  ← 9 visuels + index de lecture
 ├── scripts/                         ← scripts de génération (charts + PDF)
 ├── validation-q1/                   ← PACKAGE WTC-Q1   (verdict initial)
 ├── validation-q1-r1/                ← PACKAGE WTC-Q1-R1 (révision D1-D5)

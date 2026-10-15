@@ -1,6 +1,6 @@
 # 📊 Visualisations — Wairyu Thérapie Couple
 
-> Dossier généré le **14-15/10/2026** · 8 graphiques PNG (1920×1080, 150 DPI, palette colorblind-friendly Okabe-Ito, libellés en français)
+> Dossier généré le **14-15/10/2026** · 9 visuels PNG (1920×1080, 150 DPI, palette colorblind-friendly Okabe-Ito, libellés en français)
 > Sources des données : `../OUTILS DE TERAPIE DU COUPLE.txt` (recherche clinique) et `../programme wairyu couple.txt` (document de référence du programme WTC)
 
 ---
@@ -17,6 +17,7 @@
 | 6 | [`DonutChart_26Dimensions_ParBloc_2026-10-14.png`](DonutChart_26Dimensions_ParBloc_2026-10-14.png) | **Les 26 dimensions d'analyse du programme WTC** réparties en 6 blocs (Héritage 6 · Psychologique 4 · Relationnel 4 · Social-matériel 4 · Cycle de vie 4 · Sociétal 4), avec le détail des dimensions par bloc. Source : document de référence. |
 | 7 | [`BarChart_Quetes_Architecture_2026-10-14.png`](BarChart_Quetes_Architecture_2026-10-14.png) | **Architecture des ≈ 110 quêtes** : 16 dimensions majeures × 5 quêtes (80) · 6 standard × 4 (24) · 4 extensions × 3 (12) — gabarit universel, zone d'ombre + zone de force, 3 paliers vert/ambre/rouge. |
 | 8 | [`Dashboard_EtatValidation_QuatreCycles_2026-10-15.png`](Dashboard_EtatValidation_QuatreCycles_2026-10-15.png) | **L'état de la validation (v2 consolidée, Partie 13)** — 4 panneaux : (A) critères satisfaits par cycle (2/4 · 5/6 · 5/7 · 5/7 · **7/7 arbitré**) ; (B) trajectoire du nommage correct 46,1 → 72,7 → 81,0 % vs plafond ≈ 82,4 % et seuils 82 %/79 % ; (C) métriques finales RIO-01 (α 0,9155/0,9082 · couverture 89,9 % · RQS 20/20…) ; (D) critères RIO-02 après arbitrage (nommage 81,0 % · calme 85 %/0 % · 0 FP · O7 6/6 · 35/35…). |
+| 9 | [`Table_EtatActuelProjet_2026-10-15.png`](Table_EtatActuelProjet_2026-10-15.png) | **État actuel du projet — synthèse de position** (tableau structuré du document de référence v2) : architecture et infrastructure conçues · RIO-01 VALIDÉE (3 cycles) · RIO-02 VALIDÉE (2 cycles) · RIO-03 = prochain package (WTC-Q3, bornes D-STD) · 4 commits archivés · verdicts cumulés : zéro correction libre, zéro masquage. |
 
 ---
 
@@ -28,7 +29,7 @@
 
 ## Reproduction
 
-Le script de génération est disponible dans [`../scripts/generate_charts.py`](../scripts/generate_charts.py) (graphiques 1–5), [`../scripts/generate_charts_wtc.py`](../scripts/generate_charts_wtc.py) (graphiques 6–7) et [`../scripts/generate_charts_etat_validation.py`](../scripts/generate_charts_etat_validation.py) (graphique 8 — données lues exclusivement dans la Partie 13 du document de référence v2).
+Le script de génération est disponible dans [`../scripts/generate_charts.py`](../scripts/generate_charts.py) (graphiques 1–5), [`../scripts/generate_charts_wtc.py`](../scripts/generate_charts_wtc.py) (graphiques 6–7) et [`../scripts/generate_charts_etat_validation.py`](../scripts/generate_charts_etat_validation.py) (graphique 8 — données lues exclusivement dans la Partie 13 du document de référence v2) ; le visuel 9 est un tableau structuré rendu via Playwright+CSS — source HTML : [`../scripts/etat_table_source.html`](../scripts/etat_table_source.html) + [`../scripts/render_etat_table.js`](../scripts/render_etat_table.js).
 
 ```bash
 pip install matplotlib numpy

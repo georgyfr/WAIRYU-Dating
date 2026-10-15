@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; background: #ffffff;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; color: #142840; }
+  .page { position: relative; width: 1920px; height: 1080px; padding: 58px 72px 0 72px; }
+
+  /* ---- En-tête ---- */
+  .kicker { font-size: 15px; letter-spacing: 4px; color: #2d7ab3;
+    text-transform: uppercase; font-weight: 300; }
+  .titlebar { display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: 10px; padding-bottom: 18px; border-bottom: 3px solid #1a4a7a; }
+  h1 { font-size: 42px; font-weight: 700; color: #1a4a7a; }
+  .datebadge { font-size: 16px; color: #5a7a96; letter-spacing: 2px;
+    text-transform: uppercase; padding-bottom: 6px; }
+
+  /* ---- Table ---- */
+  table { width: 100%; border-collapse: collapse; margin-top: 6px;
+    table-layout: fixed; }
+  th { background: #1a4a7a; color: #ffffff; font-size: 19.5px; font-weight: 700;
+    text-align: left; padding: 19px 22px; letter-spacing: 0.5px; }
+  th.col-el { width: 44%; }
+  th.col-st { width: 56%; }
+  td { font-size: 19px; line-height: 1.45; padding: 17px 22px;
+    border-bottom: 1px solid #c0d0e2; vertical-align: middle; }
+  tr:nth-child(even) td { background: #eef3fa; }
+  td.el { font-weight: 700; }
+  td.st { color: #33506b; }
+  .rowwrap { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .pill { flex: 0 0 auto; font-size: 13.5px; font-weight: 700; letter-spacing: 1.2px;
+    padding: 7px 16px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; }
+  .p-valide  { background: #009E73; color: #ffffff; }
+  .p-concu   { background: #2d7ab3; color: #ffffff; }
+  .p-next    { background: #E69F00; color: #ffffff; }
+  .p-attente { background: #8b99a8; color: #ffffff; }
+  .p-archive { background: #ffffff; color: #1a4a7a; border: 2px solid #1a4a7a; }
+  /* Barre d'accent à gauche des lignes clés */
+  tr.acc-val td:first-child { box-shadow: inset 5px 0 0 #009E73; }
+  tr.acc-next td:first-child { box-shadow: inset 5px 0 0 #E69F00; }
+
+  /* ---- Pied ---- */
+  .footer { position: absolute; left: 72px; right: 72px; bottom: 34px;
+    border-top: 1px solid #c0d0e2; padding-top: 12px; }
+  .footer p { font-size: 13.5px; color: #666666; line-height: 1.5; }
+  .footer .src { color: #555555; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Wairyu Thérapie Couple · Document de référence v2 consolidée</div>
+  <div class="titlebar">
+    <h1>État actuel du projet — synthèse de position</h1>
+    <div class="datebadge">15 octobre 2026 · consolidation a770870</div>
+  </div>
+
+  <table>
+    <tr><th class="col-el">Élément</th><th class="col-st">Statut</th></tr>
+    <tr>
+      <td class="el">Architecture clinique — 26 dimensions · 14 livrables · 110 quêtes</td>
+      <td><div class="rowwrap"><span>Conçue, documentée</span><span class="pill p-concu">Conçue · documentée</span></div></td>
+    </tr>
+    <tr>
+      <td class="el">Infrastructure fédérée — grammaire · protocoles · rythme de vie</td>
+      <td><div class="rowwrap"><span>Conçue, documentée</span><span class="pill p-concu">Conçue · documentée</span></div></td>
+    </tr>
+    <tr class="acc-val">
+      <td class="el">RIO-01 « Comment je me raccroche »</td>
+      <td><div class="rowwrap"><span>VALIDÉE par simulation — 3 cycles (WTC-Q1 · Q1-R1 · arbitrage D6/D7)</span><span class="pill p-valide">Validée</span></div></td>
+    </tr>
+    <tr class="acc-val">
+      <td class="el">RIO-02 « Ce qui m'effraie vraiment »</td>
+      <td><div class="rowwrap"><span>VALIDÉE par simulation — 2 cycles (WTC-Q2 · Q2-R1 · arbitrage D-Q2-G/H)</span><span class="pill p-valide">Validée</span></div></td>
+    </tr>
+    <tr class="acc-next">
+      <td class="el">RIO-03 « Ce qui me porte » (le positif prouvé)</td>
+      <td><div class="rowwrap"><span>Package WTC-Q3 à rédiger — avec bornes de faisabilité D-STD + test anti-fabrication</span><span class="pill p-next">Prochain package</span></div></td>
+    </tr>
+    <tr>
+      <td class="el">RIO-04 à RIO-05 (croisement, pas)</td>
+      <td><div class="rowwrap"><span>En attente</span><span class="pill p-attente">En attente</span></div></td>
+    </tr>
+    <tr>
+      <td class="el">Les 21 dimensions restantes (packages de validation)</td>
+      <td><div class="rowwrap"><span>En attente — gabarit éprouvé</span><span class="pill p-attente">En attente</span></div></td>
+    </tr>
+    <tr>
+      <td class="el">Pilote réel WTC-VALID-01 (150-200 répondants)</td>
+      <td><div class="rowwrap"><span>Après Q1-Q5 de l'attachement — remplace les paramètres simulés</span><span class="pill p-attente">Planifié</span></div></td>
+    </tr>
+    <tr>
+      <td class="el">Dépôts GitHub — WAIRYU-Dating · « Wairyu thérapie couple »</td>
+      <td><div class="rowwrap"><span>validation-q1 · validation-q1-r1 · validation-q2 · validation-q2-r1 — 4 commits archivés : 3eb7399 · 1426f6e · 0c3aaab · 78752d4</span><span class="pill p-archive">Archivé · 4 commits</span></div></td>
+    </tr>
+    <tr class="acc-val">
+      <td class="el">Verdicts cumulés</td>
+      <td><div class="rowwrap"><span>3 cycles « À CORRIGER » → corrections documentées → <b>2 échelles VALIDÉES 7/7 et 6/6</b> · zéro correction libre d'exécuteur · zéro masquage</span><span class="pill p-valide">Circuit vérifié</span></div></td>
+    </tr>
+  </table>
+
+  <div class="footer">
+    <p class="src">Source : « programme wairyu couple » v2 consolidée — ÉTAT ACTUEL DU PROJET · cycles WTC-Q1 (3eb7399) → Q1-R1 (1426f6e) → Q2 (0c3aaab) → Q2-R1 (78752d4) · consolidation v2 : PDF officiel + README hub (a770870, 15/10/2026) · Data Insight</p>
+  </div>
+</div>
+</body>
+</html>
