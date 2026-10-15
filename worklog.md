@@ -1857,3 +1857,24 @@ Work Log:
 Stage Summary:
 - SPEC FUSIONNÉE LIVRÉE : docs/SPEC-ECONOMIE-RECOLTES.md — un vocabulaire canonique, un rôle par carte, 5 copies de bulles prêtes à implanter dans InfoRecolte.
 - En attente fondateur : validation des [À VALIDER] (nom Lucioles, montants, ladder, rôles, copies) ; ensuite chantier 1 = champ role_matching + 3 familles + bulles par rôle.
+---
+Task ID: 90
+Agent: orchestrateur (Z.ai Code)
+Task: Fondateur — « chaque carte doit fournir des informations propres à ce que cette carte est supposée faire et non donner le même texte à chaque fois » (3 captures #/recolte prod : L'Apprenti·e / Le·La Jardinier·se des saisons). Implémentation du cahier §3, vérification E2E staging, préparation feu vert prod.
+
+Work Log:
+- CONSTAT DE REPRISE : le correctif avait été implémenté et poussé par la session perdue (commit 37b690f — InfoRecolte + Recolte + i18n screens-a + styles), et le STAGING sert déjà le bundle corrigé (index-DNsBkT7E.js) — mais la PROD n'a JAMAIS été redéployée (40e8f425 / index-DoXcSwo1.js) : c'est ce que voient les captures du fondateur. Aucune entrée Task 90 n'existait au worklog.
+- ENVIRONNEMENT (10ᵉ+ reset) : SECRETS-WAIRYU-LOCAL.txt recréé (chmod 600, JAMAIS committé) ; jeton Cloudflare vérifié actif (expire 2026-12-30) ; re-clone main (37b690f en tête) ; bun install 258 paquets.
+- INTÉGRITÉ PROUVÉE : tsc API 0 erreur ; vite build vert → hash local index-DNsBkT7E.js IDENTIQUE au bundle servi par staging — le déployé = le committé.
+- E2E STAGING (agent-browser, compte e2e-fiche-90 créé via /api/auth/password/register — Turnstile sauté en staging par design) : injection localStorage 1.3=V6 (L'Apprenti·e) + 1.5=V4 (Le·La Jardinier·se) puis 1.1+1.2 (clôture Monde 1).
+- PREUVES FR (langue des captures fondateur) : L'Apprenti·e → intro = SA lumière (« Tu es en train d'apprendre à connaître ce qui bouge en toi… »), « Ta carte en entier » repliable, tension « avancer sans exiger d'arriver. » dans les puces. Le·La Jardinier·se → intro = SA lumière (« Tu attends que la saison soit bonne : la somme qui double… »), ombre « Le jardinier qui attend trop la saison voit parfois la fenêtre se fermer… », tension « viser juste, sans laisser filer les portes qui ne sonnent qu'une fois. ». DEUX FICHES RADICALEMENT DIFFÉRENTES — le texte générique « La réponse de ton voyage à une question sur toi… » a disparu (0 occurrence).
+- PREUVES EN : The Apprentice / The Gardener of Seasons — mêmes différenciations, gabarits EN actifs (« Your card in full », « Its tension — "…" — is a ready-made conversation starter »).
+- PREUVES SCEAUX (différenciation par TERRITOIRE) : Sceau M1 « La marque du monde "Le Miroir". Tu regardes qui tu es : personnalité, attachement, émotions… » ≠ Sceau M2 « La marque du monde "Le Volant". Tu reprends la main : ton contrôle, ta façon de penser… ». Fragments : même mécanisme (même monde → même tagline, nom de pièce propre).
+- HYGIÈNE : console + erreurs page vides ; captures /tmp/e2e-apprenti-fr.png + /tmp/e2e-jardinier-fr.png ; compte E2E purgé (DELETE /api/account → {deleted:true}) ; navigateur fermé.
+- DOCS : SPEC v1.4 + CAHIER v1.0 sandbox ↔ repo DIFF synchronisés. Worklog Task 90 apposé (repo + sandbox). Commit + push main.
+- LA CHAÎNE PAYWALL DES MOIS N'A PAS ÉTÉ TOUCHÉE (décision §5 du cahier toujours ouverte).
+
+Stage Summary:
+- LE CORRECTIF DEMANDÉ EST VIVANT ET VÉRIFIÉ SUR STAGING : plus AUCUNE fiche générique pour les cartes — chaque carte parle de ce qu'ELLE est (verbatim lumière/ombre/tension), chaque sceau du territoire qu'IL marque. FR et EN.
+- LA PROD N'A PAS CHANGÉ (40e8f425) — feu vert du fondateur requis ; le déploiement prod est prêt (mêmes artefacts que staging, hash prouvé).
+- Rappel fondateur : décision paywall §5 (a: retirer le verrou / b: réviser D18) toujours en attente.
