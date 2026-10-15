@@ -251,4 +251,17 @@ export const SCREENS_B: Record<string, string> = {
   'Monde traversé !': 'World crossed!',
   'Les {{n}} pas de ce monde sont derrière toi — ce que tu y as récolté reste à toi.':
     'All {{n}} steps of this world are behind you — what you gathered here stays yours.',
+
+  // ---- PortailRencontre.tsx (Task 99 — le seuil du Monde 1 traversé)
+  '{{nom}} est traversé': '{{nom}} is crossed',
+  'Un seuil s’ouvre devant toi': 'A threshold opens before you',
+  'Tu as franchi les {{n}} pas de ce monde et tes récoltes t’accompagnent. Deux chemins s’offrent à toi — choisis celui que tu veux : tu pourras toujours passer de l’un à l’autre.':
+    'You have crossed all {{n}} steps of this world, and your harvest comes with you. Two paths open before you — choose the one you want: you can always switch from one to the other.',
+  'Tes récoltes méritées': 'Your earned harvest',
+  'Entrer sur WAIRYU Rencontre': 'Enter WAIRYU Rencontre',
+  'Découvre ceux qui, comme toi, ont traversé leur Miroir.':
+    'Meet those who, like you, have crossed their Mirror.',
+  'Ton portrait continue de se dessiner — d’autres mondes t’attendent.':
+    'Your portrait keeps taking shape — other worlds await you.',
+  'La rencontre n’est jamais payante.': 'Meeting someone is never behind a paywall.',
 };

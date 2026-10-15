@@ -1,0 +1,326 @@
+/* ═══════════════════════════════════════════════════════════
+   PortailRencontre (Task 99) — le seuil du Monde 1 traversé :
+   les récoltes méritées, deux chemins (Rencontre / voyage).
+   Ambiance cérémoniale : rayons lents, lueurs dorées qui
+   montent, halo pulsant. 100 % CSS, sans dépendance.
+   `prefers-reduced-motion` éteint l'animationnel (fondu calme).
+   ═══════════════════════════════════════════════════════════ */
+
+.pr-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1410; /* au-dessus de FeteMonde (1400) — il s'ouvre APRÈS sa fermeture */
+  background: radial-gradient(120% 90% at 50% 6%, #1d3a4f 0%, var(--c-night-deep) 58%, #0b1822 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  animation: pr-fade 0.35s ease-out;
+}
+
+@keyframes pr-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Le décor (ciel) ── */
+.pr-ciel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* La gerbe de rayons — plus lente et plus douce que la fête : un seuil. */
+.pr-rayons {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  width: 150vmax;
+  height: 150vmax;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    rgba(245, 241, 230, 0.055) 0deg 9deg,
+    transparent 9deg 28deg
+  );
+  -webkit-mask-image: radial-gradient(closest-side, #000 0%, transparent 60%);
+  mask-image: radial-gradient(closest-side, #000 0%, transparent 60%);
+  animation: pr-tour 40s linear infinite;
+}
+
+@keyframes pr-tour {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Les lueurs dorées qui montent — l'or des récoltes s'élève, sobre. */
+.pr-lueur {
+  position: absolute;
+  bottom: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5d76e 0%, rgba(245, 215, 110, 0) 70%);
+  opacity: 0;
+  animation-name: pr-monte;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pr-monte {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.75;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateY(-108dvh) scale(0.55);
+    opacity: 0;
+  }
+}
+
+/* Étincelles — scintillement doux. */
+.pr-etincelle {
+  position: absolute;
+  font-size: 16px;
+  opacity: 0;
+  animation: pr-scintille 3s ease-in-out infinite;
+}
+
+@keyframes pr-scintille {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+/* ── La carte du seuil ── */
+.pr-carte {
+  position: relative;
+  z-index: 2;
+  background: var(--c-white);
+  border-radius: 26px;
+  border-top: 6px solid var(--pr-fg);
+  box-shadow: 0 26px 70px rgba(11, 24, 34, 0.5);
+  padding: 28px 22px 22px;
+  width: 100%;
+  max-width: 400px;
+  max-height: min(88dvh, 660px);
+  overflow-y: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: pr-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes pr-pop {
+  from {
+    transform: scale(0.86) translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* L'emblème — les deux anneaux entrelacés, halo pulsant aux couleurs du monde. */
+.pr-embleme {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 2px auto 4px;
+  border-radius: 50%;
+  background: var(--pr-bg);
+  color: var(--pr-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 32px rgba(15, 31, 44, 0.28);
+  animation: pr-flotte 3.6s ease-in-out infinite;
+}
+
+.pr-embleme::before {
+  content: '';
+  position: absolute;
+  inset: -11px;
+  border-radius: 50%;
+  border: 2.5px solid var(--pr-fg);
+  opacity: 0.4;
+  animation: pr-halo 2.5s ease-out infinite;
+}
+
+@keyframes pr-flotte {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pr-halo {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.32);
+    opacity: 0;
+  }
+}
+
+.pr-kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--pr-fg);
+  margin: 0;
+}
+
+.pr-titre {
+  font-size: 25px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.2;
+  margin: 0;
+  outline: none; /* le focus y est posé au clavier — le halo des boutons suffit */
+}
+
+.pr-texte {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--c-gray-blue);
+  margin: 0;
+}
+
+/* ── Les récoltes méritées ── */
+.pr-recoltes-titre {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-night);
+  opacity: 0.65;
+  margin: 8px 0 2px;
+}
+
+.pr-recoltes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pr-recolte {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--pr-bg);
+  border: 1px solid rgba(15, 31, 44, 0.07);
+  border-left: 4px solid var(--pr-fg);
+  border-radius: 13px;
+  padding: 9px 13px;
+  text-align: left;
+  animation: pr-recolte-vient 0.45s ease-out backwards;
+}
+
+.pr-recolte:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.pr-recolte:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+@keyframes pr-recolte-vient {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pr-recolte-carte {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-night);
+}
+
+.pr-recolte-quete {
+  font-size: 12.5px;
+  color: var(--c-gray-blue);
+}
+
+/* ── Les deux chemins ── */
+.pr-choix {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pr-choix-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  min-height: 44px;
+}
+
+.pr-choix-sous {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.82;
+}
+
+.pr-foot {
+  font-size: 11.5px;
+  color: var(--c-gray-blue);
+  opacity: 0.8;
+  margin: 4px 0 0;
+}
+
+/* ── prefers-reduced-motion : tout l'animationnel s'éteint — reste un
+      fondu calme, lisible, complet (accessibilité). ── */
+@media (prefers-reduced-motion: reduce) {
+  .pr-rayons,
+  .pr-lueur,
+  .pr-etincelle,
+  .pr-embleme,
+  .pr-embleme::before,
+  .pr-recolte,
+  .pr-carte {
+    animation: none !important;
+  }
+
+  .pr-lueur,
+  .pr-etincelle {
+    display: none;
+  }
+}

@@ -18,6 +18,8 @@ import { useInedits, marquerVu } from './lib/inedit';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
 import FeteMonde from './components/FeteMonde';
+import PortailRencontre from './components/PortailRencontre';
+import { portailDejaVu, marquerPortailVu } from './lib/portail-rencontre';
 import InfoRecolteModal, { itemDeNotif, type ItemRecolte } from './components/InfoRecolte';
 import {
   libelleNotif,
@@ -214,6 +216,14 @@ export default function App() {
    *  jamais la carte, elle la prolonge). Déclenchée par Quete (onClotureMonde)
    *  uniquement sur complétion fraîche d'un monde jamais fêté sur l'appareil. */
   const [fete, setFete] = useState<{ code: string; apres: () => void } | null>(null);
+  /** Task 99 — LE PORTAIL DE LA RENCONTRE : demande fondateur — quand les
+   *  quêtes du monde 1 sont finies « avec ses récoltes méritées, un choix
+   *  d'accéder au site de rencontre ou de continuer le voyage se présente ».
+   *  S'ouvre à la FERMETURE de la fête du Monde 1 (une seule fois par
+   *  appareil, drapeau portail-rencontre.ts) ; le `apres` de la fête reste
+   *  RETENU jusqu'au choix : « Entrer sur WAIRYU Rencontre » navigue vers
+   *  la Rencontre, « Continuer le voyage » exécute la navigation retenue. */
+  const [portail, setPortail] = useState<{ apres: () => void } | null>(null);
 
   // Le point corail de l'onglet Quête — dérivé de la progression RÉELLE
   // (Task 45 : couvre LES 18 quêtes ouvertes, plus seulement le Monde 1).
@@ -561,6 +571,31 @@ export default function App() {
           onFermer={() => {
             const apres = fete.apres;
             setFete(null);
+            // Task 99 — LE PORTAIL DE LA RENCONTRE : au seuil du Monde 1 (une
+            // seule fois par appareil), le choix fondateur s'ouvre APRÈS la
+            // fête — la navigation retenue attend le choix du voyageur.
+            if (fete.code === 'M1' && !portailDejaVu()) {
+              marquerPortailVu();
+              setPortail({ apres });
+              return;
+            }
+            apres();
+          }}
+        />
+      )}
+      {/* Task 99 — LE PORTAIL DE LA RENCONTRE : les récoltes méritées, puis
+          les DEUX chemins. Le choix n'est pas un verrou — la tab « Rencontres »
+          reste visible au jalon A, le voyage reste accessible partout. */}
+      {portail && (
+        <PortailRencontre
+          code="M1"
+          onEntrer={() => {
+            setPortail(null);
+            go('rencontres');
+          }}
+          onContinuer={() => {
+            const apres = portail.apres;
+            setPortail(null);
             apres();
           }}
         />

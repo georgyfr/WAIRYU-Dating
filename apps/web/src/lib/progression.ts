@@ -129,8 +129,35 @@ export function useProgression(): Progression {
   return useSyncExternalStore(souscrireEtat, snapshot, snapshot);
 }
 
-/** La progression RÉELLE + le détail PAR MONDE (l'atlas #/mondes, la fiche
+/** LA PROGRESSION RÉELLE + le détail PAR MONDE (l'atlas #/mondes, la fiche
  *  WorldModal) — même bus, même cache que useProgression. */
 export function useProgressionDetail(): ProgressionDetail {
   return useSyncExternalStore(souscrireEtat, snapshot, snapshot);
+}
+
+/** LES RÉCOLTES MÉRITÉES d'un monde (Task 99 — le Portail de la Rencontre) :
+ *  pour chaque quête du monde, son titre et la CARTE obtenue (nom verbatim)
+ *  si elle existe — les écrans sans carte (1.7, 1.11, 2.8) ne produisent pas
+ *  de carte et n'apparaissent pas. L'état RÉEL (etatDe), jamais inventé :
+ *  une quête terminée sans carte affichable est simplement absente. */
+export interface RecolteMonde {
+  /** L'id de la quête ('1.1'…). */
+  queteId: IdQuete;
+  /** Le titre de la quête (définition livrée). */
+  titre: string;
+  /** Le nom de la carte obtenue (ex. « L'Élan chaleureux ») — absent si la
+   *  quête est sans carte ou si la carte n'est pas résolue. */
+  carteNom: string | null;
+}
+
+export function recoltesDuMonde(code: string): RecolteMonde[] {
+  const i = CODES_PAR_MONDE.indexOf(code);
+  if (i < 0) return [];
+  return QUIDS_PAR_MONDE[i]
+    .map((id) => {
+      const e = etatDe(id);
+      const carteNom = e.carteId ? (QUETES[id].cartes[e.carteId]?.nom ?? null) : null;
+      return { queteId: id, titre: QUETES[id].titre, carteNom };
+    })
+    .filter((r) => r.carteNom !== null);
 }
