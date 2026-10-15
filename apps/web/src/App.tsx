@@ -17,6 +17,7 @@ import TabBar, { type Tab } from './components/TabBar';
 import { useInedits, marquerVu } from './lib/inedit';
 import PushToast from './components/PushToast';
 import CongratsOverlay from './components/CongratsOverlay';
+import FeteMonde from './components/FeteMonde';
 import InfoRecolteModal, { itemDeNotif, type ItemRecolte } from './components/InfoRecolte';
 import {
   libelleNotif,
@@ -208,6 +209,11 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   /** Monde demandé depuis la carte du Voyage ⇒ fiche auto-ouverte dans Mondes (consommée une fois). */
   const [pendingWorld, setPendingWorld] = useState<string | null>(null);
+  /** Task 98 — LA FÊTE DU MONDE : le code du monde à célébrer + la navigation
+   *  RETENUE (elle s'exécute à la fermeture de l'overlay — la fête ne cache
+   *  jamais la carte, elle la prolonge). Déclenchée par Quete (onClotureMonde)
+   *  uniquement sur complétion fraîche d'un monde jamais fêté sur l'appareil. */
+  const [fete, setFete] = useState<{ code: string; apres: () => void } | null>(null);
 
   // Le point corail de l'onglet Quête — dérivé de la progression RÉELLE
   // (Task 45 : couvre LES 18 quêtes ouvertes, plus seulement le Monde 1).
@@ -546,6 +552,19 @@ export default function App() {
     <>
       <PushToast />
       {congratsOverlay}
+      {/* Task 98 — LA FÊTE DU MONDE : rendue AU-DESSUS de tout (z-index 1400).
+          À la fermeture, la navigation retenue s'exécute (mondes / voyage /
+          quête suivante) — la fête prolonge la carte, elle ne la remplace pas. */}
+      {fete && (
+        <FeteMonde
+          code={fete.code}
+          onFermer={() => {
+            const apres = fete.apres;
+            setFete(null);
+            apres();
+          }}
+        />
+      )}
       {/* LE TOAST DE RÉCOLTE — une lumière douce quand une pièce apparaît
           (demande fondateur : « des notifications apparaissent »). Cliquer
           ouvre l'explication de la récolte. */}
@@ -830,6 +849,7 @@ export default function App() {
             onAllerQuete={(id) => {
               window.location.hash = `#/quete/${id}`;
             }}
+            onClotureMonde={(code, apres) => setFete({ code, apres })}
           />
         )}
         <TabBar

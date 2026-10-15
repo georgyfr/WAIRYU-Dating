@@ -245,4 +245,10 @@ export const SCREENS_B: Record<string, string> = {
   'Ton inscription est enregistrée — ta session reste active, plus jamais besoin de te réinscrire. Retrouve cette annonce et tes notifications dans le journal (onglet Profil).':
     'Your sign-up is saved — your session stays active, you will never have to sign up again. Find this announcement and your notifications in the journal (Profile tab).',
   "C'est parti": "Let's go",
+
+  // ---- FeteMonde.tsx (Task 98 — la fête du monde traversé)
+  'Monde {{n}}': 'World {{n}}',
+  'Monde traversé !': 'World crossed!',
+  'Les {{n}} pas de ce monde sont derrière toi — ce que tu y as récolté reste à toi.':
+    'All {{n}} steps of this world are behind you — what you gathered here stays yours.',
 };

@@ -1,0 +1,258 @@
+/* ═══════════════════════════════════════════════════════════
+   FeteMonde (Task 98) — la célébration d'un monde traversé :
+   pluie de confettis, gerbe de rayons, emblème en halo pulsant,
+   étincelles. 100 % CSS, sans dépendance. `prefers-reduced-motion`
+   éteint l'animationnel (reste un fondu calme).
+   ═══════════════════════════════════════════════════════════ */
+
+.fm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400; /* au-dessus de CongratsOverlay (1200) et des modales (1300) */
+  background: radial-gradient(120% 90% at 50% 6%, #1d3a4f 0%, var(--c-night-deep) 58%, #0b1822 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  animation: fm-fade 0.35s ease-out;
+}
+
+@keyframes fm-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Le décor (ciel) ── */
+.fm-ciel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* La gerbe de rayons — disque conique qui tourne lentement, masqué en douceur. */
+.fm-rayons {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  width: 150vmax;
+  height: 150vmax;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    rgba(245, 241, 230, 0.07) 0deg 8deg,
+    transparent 8deg 26deg
+  );
+  -webkit-mask-image: radial-gradient(closest-side, #000 0%, transparent 62%);
+  mask-image: radial-gradient(closest-side, #000 0%, transparent 62%);
+  animation: fm-tour 28s linear infinite;
+}
+
+@keyframes fm-tour {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Confettis rectangles — tombent en culbutant. */
+.fm-conf {
+  position: absolute;
+  top: -22px;
+  width: 9px;
+  height: 15px;
+  border-radius: 2.5px;
+  opacity: 0;
+  animation-name: fm-tombe;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Confettis emojis — même pluie, forme libre. */
+.fm-conf-emoji {
+  position: absolute;
+  top: -40px;
+  font-style: normal;
+  font-size: 21px;
+  opacity: 0;
+  animation-name: fm-tombe;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fm-tombe {
+  0% {
+    transform: translateY(0) rotate3d(1, 1, 0, 0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.95;
+  }
+  88% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(112dvh) rotate3d(1, 1, 0.3, 620deg);
+    opacity: 0;
+  }
+}
+
+/* Étincelles — scintillement doux. */
+.fm-etincelle {
+  position: absolute;
+  font-size: 17px;
+  opacity: 0;
+  animation: fm-scintille 2.6s ease-in-out infinite;
+}
+
+@keyframes fm-scintille {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+/* ── La carte ── */
+.fm-carte {
+  position: relative;
+  z-index: 2;
+  background: var(--c-white);
+  border-radius: 26px;
+  border-top: 6px solid var(--fm-fg);
+  box-shadow: 0 26px 70px rgba(11, 24, 34, 0.5);
+  padding: 30px 24px 26px;
+  width: 100%;
+  max-width: 400px;
+  max-height: min(86dvh, 640px);
+  overflow-y: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  animation: fm-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes fm-pop {
+  from {
+    transform: scale(0.82) translateY(18px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* L'emblème du monde — flotte dans un halo qui pulse, aux couleurs du monde. */
+.fm-embleme {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  margin: 2px auto 6px;
+  border-radius: 32px;
+  background: var(--fm-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 32px rgba(15, 31, 44, 0.28);
+  animation: fm-flotte 3.4s ease-in-out infinite;
+}
+
+.fm-embleme span {
+  font-size: 54px;
+  line-height: 1;
+}
+
+.fm-embleme::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 40px;
+  border: 2.5px solid var(--fm-fg);
+  opacity: 0.4;
+  animation: fm-halo 2.3s ease-out infinite;
+}
+
+@keyframes fm-flotte {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes fm-halo {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.fm-kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fm-fg);
+  margin: 0;
+}
+
+.fm-titre {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--c-night);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.fm-nom {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--fm-fg);
+  margin: 0;
+}
+
+.fm-texte {
+  font-size: 15px;
+  color: var(--c-gray-blue);
+  line-height: 1.55;
+  margin: 0 0 6px;
+}
+
+/* ── Accessibilité : la fête sans mouvement ── */
+@media (prefers-reduced-motion: reduce) {
+  .fm-rayons,
+  .fm-conf,
+  .fm-conf-emoji,
+  .fm-etincelle {
+    animation: none;
+    opacity: 0; /* le décor mobile disparaît — reste la page calme */
+  }
+  .fm-conf,
+  .fm-conf-emoji {
+    display: none;
+  }
+  .fm-embleme,
+  .fm-embleme::before,
+  .fm-carte,
+  .fm-backdrop {
+    animation: none;
+  }
+  .fm-embleme::before {
+    opacity: 0.25; /* un liseré doux, figé */
+  }
+}

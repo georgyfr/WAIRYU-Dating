@@ -104,7 +104,8 @@ import {
 } from '../lib/quete-state';
 import { marquerMondeEnCours } from '../lib/mondes-state';
 import { TOTAL_STEPS, WORLDS } from '../lib/voyage';
-import { useProgression } from '../lib/progression';
+import { useProgressionDetail } from '../lib/progression';
+import { feteDejaVue, marquerFeteVue } from '../lib/fete-monde';
 import { useI18n } from '../i18n/I18nProvider';
 import { interpolerMontants } from '../i18n/apply';
 import PartageCarteModal from '../components/PartageCarteModal';
@@ -376,16 +377,69 @@ interface Props {
   onHome: () => void;
   /** Enchaîner sur la quête suivante (deep-link #/quete/{id}). */
   onAllerQuete: (id: IdQuete) => void;
+  /** Task 98 — LA FÊTE DU MONDE : appelé quand une sortie de l'écran final
+   *  clôt un monde fraîchement terminé (complétion de CETTE session, jamais
+   *  fêtée sur cet appareil). App.tsx ouvre l'overlay FeteMonde et exécute
+   *  `apres` à la fermeture (la navigation attend la fin de la fête). */
+  onClotureMonde: (code: string, apres: () => void) => void;
 }
 
-export default function Quete({ queteId, resultatsInitiale = false, onExit, onHome, onAllerQuete }: Props) {
+export default function Quete({
+  queteId,
+  resultatsInitiale = false,
+  onExit: onExitBrut,
+  onHome: onHomeBrut,
+  onAllerQuete: onAllerQueteBrut,
+  onClotureMonde,
+}: Props) {
   const { tx, money } = useI18n();
   const quete = QUETES[queteId];
   const etat = useEtatQuete(queteId);
   // Les étapes réellement franchies (quêtes terminées) — la progression RÉELLE
   // calculée depuis l'état, sur le même bus réactif que useEtatQuete.
-  const progression = useProgression();
+  // Task 98 : le DÉTAIL par monde (parMonde) sert aussi à détecter la clôture
+  // d'un monde (faites === total) au moment où elle arrive.
+  const progression = useProgressionDetail();
   const monde = mondeDeQuete(queteId);
+
+  // ------------------------------------------------------------------
+  // Task 98 — LA FÊTE DU MONDE (demande fondateur : « lorsqu'un monde est
+  // terminé avec succès, une page de célébration avec effet spéciaux et
+  // d'animation apparaît »).
+  //
+  // DÉCLENCHEMENT HONNÊTE (trois conditions, toutes nécessaires) :
+  //  1. `mondeFraisTermine` — la complétion VIENT de se produire dans cette
+  //     session (posé par l'effet de complétion ci-dessous) — on ne célèbre
+  //     jamais un monde traversé avant l'arrivée de la fête ni à la relecture ;
+  //  2. `mondeComplet` — toutes les quêtes livrées du monde sont terminées
+  //     (bus de progression RÉEL, jamais inventé) ;
+  //  3. `!feteDejaVue(code)` — UNE fête par monde et par appareil (drapeau
+  //     `wairyu.fete.{code}`, posé AVANT l'ouverture : un rechargement
+  //     pendant la fête ne la rejoue pas).
+  //
+  // La fête s'ouvre quand la personne QUITTE l'écran final (carte ou écran de
+  // clôture) — elle ne cache jamais la carte qu'elle vient de gagner. Les
+  // trois sorties (onExit / onHome / onAllerQuete) passent par `sortieVers` :
+  // la navigation est RETENUE et s'exécute à la fermeture de la fête (App.tsx).
+  const mondeFraisTermine = useRef(false);
+  const progresMonde = progression.parMonde[monde.code];
+  const mondeComplet = !!progresMonde && progresMonde.total > 0 && progresMonde.faites === progresMonde.total;
+
+  const sortieVers = (naviguer: () => void): void => {
+    if (mondeFraisTermine.current && mondeComplet && !feteDejaVue(monde.code)) {
+      mondeFraisTermine.current = false;
+      marquerFeteVue(monde.code);
+      onClotureMonde(monde.code, naviguer);
+      return;
+    }
+    naviguer();
+  };
+  // Les MÊMES noms que les props : chaque site d'appel existant (boutons de
+  // sortie de la carte, des écrans de clôture, actions différées de la gate
+  // d'avis) est intercepté sans toucher une seule ligne de rendu.
+  const onExit = (): void => sortieVers(onExitBrut);
+  const onHome = (): void => sortieVers(onHomeBrut);
+  const onAllerQuete = (id: IdQuete): void => sortieVers(() => onAllerQueteBrut(id));
 
   const deck = useMemo<ItemPassation[]>(() => quete.deck(), [quete]);
   const repondues = deck.filter((it) => etat.reponses[it.code] !== undefined).length;
@@ -506,6 +560,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         // « Je préfère ne pas dire » — deux sorties complètes, Livrable 4.3).
         if (queteId === '4.3' && etat.reponses[OUVERTE_43] === undefined) return;
         marquerTerminee(queteId, null);
+        mondeFraisTermine.current = true; // Task 98 — la fête du monde s'arme ici
         setPhase('ecran');
         return;
       }
@@ -525,6 +580,7 @@ export default function Quete({ queteId, resultatsInitiale = false, onExit, onHo
         return;
       const carteId = etat.carteId ?? quete.choisirVariante(quete.scorer(etat.reponses));
       marquerTerminee(queteId, carteId);
+      mondeFraisTermine.current = true; // Task 98 — la fête du monde s'arme ici
       setPhase('carte');
     }
   }, [phase, repondues, deck.length, etat.carteId, etat.reponses, quete, queteId]);
