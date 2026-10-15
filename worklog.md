@@ -1899,3 +1899,18 @@ Stage Summary:
 - LA RÉCOLTE EST UN INVENTAIRE, PLUS UN CATALOGUE : page vide si aucun gain ; sinon uniquement cartes/sceaux/fragments/mois/jalons RÉELLEMENT acquis, sur les 5 onglets, FR et EN. Chaque fiche dit maintenant OÙ ça vit, CE QUE ça débloque, QUAND.
 - D21/D23 vivantes sur staging (75ac6828) ; D22 (échantillonnage premium) gravée en §9 v1.5 avec paramètres [À VALIDER] — PAS implémentée, les fonctions premium n'existent pas encore (nous y reviendrons, comme dit le fondateur).
 - En attente fondateur : feu vert prod (Tasks 90+91) · décision paywall §5 (désormais inatteignable depuis la Récolte) · paramètres D22.
+---
+Task ID: 91-v
+Agent: orchestrateur (Z.ai Code)
+Task: Vérification indépendante post-restauration sandbox — Task 91 (acquis-seul D21 + usage D23) vivant sur staging ; état des lieux pour le fondateur (« c'est quoi la suite ? »).
+
+Work Log:
+- Sandbox réinitialisé (dépôt + secrets absents) : SECRETS-WAIRYU-LOCAL.txt recréé (chmod 600), re-clone main (HEAD 51d563b ; code récolte = 1489ca4), bun install 258 paquets.
+- Intégrité : tsc web 0 erreur ; build local = index-BQvbwh_d.js = bundle servi en staging (byte-hash identique). Prod toujours sur index-DoXcSwo1.js (ancien) — inchangée, comme requis.
+- E2E STAGING indépendant (compte e2e-91-verif, purge OK) : S1 compte neuf → page vide honnête (« Your harvest is empty for now » + CTA « Continue the journey », 0 onglet, 0 catalogue) ✓ ; S2 quête 1.3 terminée PAR L'UI (20 items Likert cliqués, révélation « New discovery: The Apprentice ») → Récolte 5 onglets, 1 carte, fiche EN « HOW TO USE IT » (Where / What it unlocks / When + footer anti-score) ✓ ; S3 quêtes 1.1+1.2 terminées par l'UI (The Tightrope Walker, Balance in Motion) → monde 1 clos : sceau « The Mirror » différencié par territoire + « WHAT IT DOES IN YOUR ENCOUNTERS », fragment portrait, registre « Gains acquis » (résumé par type + chronologique), phrase dynamique héros ✓ ; FR (bascule UI) : « Ma récolte », « Cartes — 2 nouveautés », fiche « À QUOI ÇA SERT DANS LES RENCONTRES » (Où / Ce qu'elle débloque / À l'ouverture des rencontres) + « Ta carte en entier » ✓.
+- Constat de méthode (utile pour les prochains E2E) : une injection brute localStorage de wairyu.quete.* N'EST PAS vue par l'app tant qu'elle n'est pas relue par le cache mémoire (Map etats de quete-state, pas d'écouteur 'storage') — au boot suivant la restauration D1 l'arbitre (local sans majA non vide → l'appareil actif gagne, push vers D1). Le chemin fiable = terminer les quêtes par l'UI. Comportement d'app NORMAL, pas un bug.
+- Console : 0 erreur / 0 warning. Compte e2e purgé (DELETE /api/account → deleted:true). Aucun fichier src touché.
+
+Stage Summary:
+- Task 91 CONFIRMÉE vivante sur staging après restauration du sandbox : acquis-seul (D21), usage plateforme dans les fiches (D23), FR+EN, page vide propre. Rien à réparer.
+- Restent les 3 décisions fondateur en attente : (1) FEU VERT PROD pour Tasks 90+91, (2) paywall §5 (chaîne désormais inatteignable depuis la Récolte), (3) paramètres D22 (fonctions échantillonnables, durées, coûts).
