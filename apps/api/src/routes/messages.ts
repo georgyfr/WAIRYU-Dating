@@ -40,7 +40,7 @@ export const messagesRoutes = new Hono<AppEnv>();
 const CORPS_MAX = 2000;
 const DETAILS_MAX = 1000;
 const PAGE = 100;
-const MOTIFS = ['spam', 'harcelement', 'contenu_inapproprie', 'faux_profil', 'autre'] as const;
+const MOTIFS = ['escroquerie_ou_argent', 'harcelement', 'faux_profil', 'contenu_inapproprie', 'fetichisant', 'autre'] as const;
 type Motif = (typeof MOTIFS)[number];
 
 /** Exige une session valide ; retourne {sessionId, userId}. */
@@ -77,7 +77,7 @@ async function contexteMatch(
   const bloq = await db
     .prepare(
       `SELECT 1 AS ok FROM rencontre_blocages
-       WHERE (bloqueur = ?1 AND bloque = ?2) OR (bloqueur = ?2 AND bloque = ?1) LIMIT 1`,
+       WHERE (par = ?1 AND contre = ?2) OR (par = ?2 AND contre = ?1) LIMIT 1`,
     )
     .bind(userId, autreId)
     .first<{ ok: number }>();
@@ -240,19 +240,19 @@ messagesRoutes.get('/rencontres/:matchId/messages', async (c) => {
       .bind(ctx.matchId)
       .first<{ n: number }>();
     const { results } = await c.env.DB.prepare(
-      `SELECT msg.id, msg.de, msg.corps, msg.lang, msg.cree_a
+      `SELECT msg.id, msg.de, msg.corps, msg.langue, msg.cree_a
        FROM rencontre_messages msg
        WHERE msg.match_id = ?1 ${where}
        ORDER BY msg.cree_a DESC, msg.id DESC
        LIMIT ${PAGE}`,
     )
       .bind(...bind)
-      .all<{ id: string; de: string; corps: string; lang: string; cree_a: string }>();
+      .all<{ id: string; de: string; corps: string; langue: string; cree_a: string }>();
     const messages = (results ?? []).reverse().map((m) => ({
       id: m.id,
       deMoi: m.de === session.userId,
       corps: m.corps,
-      lang: m.lang,
+      lang: m.langue,
       creeA: m.cree_a,
     }));
 
@@ -313,7 +313,7 @@ messagesRoutes.post('/rencontres/:matchId/messages', async (c) => {
     const id = crypto.randomUUID();
     const creeA = new Date().toISOString();
     await c.env.DB.prepare(
-      `INSERT INTO rencontre_messages (id, match_id, de, corps, lang, cree_a) VALUES (?1, ?2, ?3, ?4, ?5, ?6)`,
+      `INSERT INTO rencontre_messages (id, match_id, de, corps, langue, cree_a) VALUES (?1, ?2, ?3, ?4, ?5, ?6)`,
     )
       .bind(id, ctx.matchId, session.userId, texte, lang, creeA)
       .run();
@@ -487,10 +487,10 @@ messagesRoutes.post('/rencontres/:matchId/blocage', async (c) => {
   if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
   try {
     await c.env.DB.prepare(
-      `INSERT INTO rencontre_blocages (bloqueur, bloque, cree_a) VALUES (?1, ?2, ?3)
-       ON CONFLICT (bloqueur, bloque) DO NOTHING`,
+      `INSERT INTO rencontre_blocages (id, par, contre, cree_a) VALUES (?1, ?2, ?3, ?4)
+       ON CONFLICT (par, contre) DO NOTHING`,
     )
-      .bind(session.userId, ctx.autreId, new Date().toISOString())
+      .bind(crypto.randomUUID(), session.userId, ctx.autreId, new Date().toISOString())
       .run();
     // D-E2-7 : messages CONSERVÉS, match conservé, l'autre JAMAIS informé.
     return c.json({ ok: true });
@@ -566,8 +566,8 @@ messagesRoutes.post('/rencontres/signalements', async (c) => {
   try {
     // Aucune vérification d'existence de `signe` : pas d'oracle d'énumération.
     await c.env.DB.prepare(
-      `INSERT INTO rencontre_signalements (id, signaleur, signe, motif, details, match_id, traite, cree_a)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)`,
+      `INSERT INTO rencontre_signalements (id, de, contre, motif, detail, match_id, statut, cree_a)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 'ouvert', ?7)`,
     )
       .bind(crypto.randomUUID(), session.userId, signe, motif, details && details.length > 0 ? details : null, matchId, new Date().toISOString())
       .run();

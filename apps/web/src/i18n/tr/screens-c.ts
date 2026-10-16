@@ -50,10 +50,11 @@ export const SCREENS_C: Record<string, string> = {
   'Aucune de ces actions n\u2019est jamais visible de l\u2019autre personne.':
     'None of these actions is ever visible to the other person.',
   'Signaler': 'Report',
-  'Spam': 'Spam',
+  'Escroquerie ou demande d\'argent': 'Scam or money requests',
   'Harcèlement': 'Harassment',
   'Contenu inapproprié': 'Inappropriate content',
   'Faux profil': 'Fake profile',
+  'Comportement fétichisant': 'Fetishizing behaviour',
   'Autre': 'Other',
   'Détails (facultatif)': 'Details (optional)',
   'Envoyer le signalement': 'Send the report',

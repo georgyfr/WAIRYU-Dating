@@ -1334,12 +1334,12 @@ authRoutes.get('/account/export', async (c) => {
       .all<Record<string, unknown>>()
       .then((r) => r.results ?? [])
       .catch(() => [] as Record<string, unknown>[]),
-    c.env.DB.prepare(`SELECT id, signe, motif, match_id, cree_a FROM rencontre_signalements WHERE signaleur = ?1 ORDER BY cree_a DESC LIMIT 100`)
+    c.env.DB.prepare(`SELECT id, contre AS signe, motif, detail, match_id, statut, cree_a FROM rencontre_signalements WHERE de = ?1 ORDER BY cree_a DESC LIMIT 100`)
       .bind(session.userId)
       .all<Record<string, unknown>>()
       .then((r) => r.results ?? [])
       .catch(() => [] as Record<string, unknown>[]),
-    c.env.DB.prepare(`SELECT bloque, cree_a FROM rencontre_blocages WHERE bloqueur = ?1 ORDER BY cree_a DESC LIMIT 100`)
+    c.env.DB.prepare(`SELECT contre AS bloque, cree_a FROM rencontre_blocages WHERE par = ?1 ORDER BY cree_a DESC LIMIT 100`)
       .bind(session.userId)
       .all<Record<string, unknown>>()
       .then((r) => r.results ?? [])
@@ -1443,8 +1443,8 @@ async function hardDeleteAccount(
   ).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_lus WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_reveals WHERE user_id = ?`).bind(userId).run();
-  await c.env.DB.prepare(`DELETE FROM rencontre_blocages WHERE bloqueur = ?1 OR bloque = ?1`).bind(userId).run();
-  await c.env.DB.prepare(`DELETE FROM rencontre_signalements WHERE signaleur = ?1 OR signe = ?1`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_blocages WHERE par = ?1 OR contre = ?1`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_signalements WHERE de = ?1 OR contre = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_pas WHERE de = ?1 OR vers = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_matchs WHERE a = ?1 OR b = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM auth_password WHERE user_id = ?`).bind(userId).run();

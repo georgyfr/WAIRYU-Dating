@@ -30,7 +30,7 @@ import {
 } from '../lib/messages-client';
 import VoyageIcon from '../components/VoyageIcons';
 
-const MOTIFS = ['spam', 'harcelement', 'contenu_inapproprie', 'faux_profil', 'autre'] as const;
+const MOTIFS = ['escroquerie_ou_argent', 'harcelement', 'faux_profil', 'contenu_inapproprie', 'fetichisant', 'autre'] as const;
 
 export default function MessagesEspace({ onNonLus, monId }: { onNonLus: (n: number) => void; monId: string | null }) {
   const { tx, lang } = useI18n();
@@ -352,10 +352,11 @@ export default function MessagesEspace({ onNonLus, monId }: { onNonLus: (n: numb
                   <label key={mo} className="msg-sig-opt">
                     <input type="radio" name="motif" checked={motif === mo} onChange={() => setMotif(mo)} />
                     {tx({
-                      spam: 'Spam',
+                      escroquerie_ou_argent: 'Escroquerie ou demande d\'argent',
                       harcelement: 'Harcèlement',
-                      contenu_inapproprie: 'Contenu inapproprié',
                       faux_profil: 'Faux profil',
+                      contenu_inapproprie: 'Contenu inapproprié',
+                      fetichisant: 'Comportement fétichisant',
                       autre: 'Autre',
                     }[mo])}
                   </label>

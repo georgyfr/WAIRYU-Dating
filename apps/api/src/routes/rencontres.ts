@@ -180,7 +180,7 @@ rencontresRoutes.get('/rencontres/pool', async (c) => {
         .all<{ id: string; a: string; b: string; cree_a: string }>()
         .then((r) => r.results ?? []),
       c.env.DB.prepare(
-        `SELECT bloqueur, bloque FROM rencontre_blocages WHERE bloqueur = ?1 OR bloque = ?1`,
+        `SELECT par AS bloqueur, contre AS bloque FROM rencontre_blocages WHERE par = ?1 OR contre = ?1`,
       )
         .bind(session.userId)
         .all<{ bloqueur: string; bloque: string }>()
@@ -301,7 +301,7 @@ rencontresRoutes.post('/rencontres/pas', async (c) => {
     // D-E2-7 — blocage (un des deux sens) : le pas est NEUTRE (ok:true sans
     // effet) — jamais d'erreur qui confirmerait le blocage au bloqué.
     const bloq = await c.env.DB.prepare(
-      `SELECT 1 AS ok FROM rencontre_blocages WHERE (bloqueur = ?1 AND bloque = ?2) OR (bloqueur = ?2 AND bloque = ?1) LIMIT 1`,
+      `SELECT 1 AS ok FROM rencontre_blocages WHERE (par = ?1 AND contre = ?2) OR (par = ?2 AND contre = ?1) LIMIT 1`,
     )
       .bind(session.userId, vers)
       .first<{ ok: number }>();

@@ -127,7 +127,7 @@ export class ChatRoom implements DurableObject {
       }
       // Blocage (un des deux sens) → envoi refusé, silencieux pour l'autre.
       const bloq = await this.env.DB.prepare(
-        `SELECT 1 AS ok FROM rencontre_blocages WHERE (bloqueur = ?1 AND bloque = ?2) OR (bloqueur = ?2 AND bloque = ?1) LIMIT 1`,
+        `SELECT 1 AS ok FROM rencontre_blocages WHERE (par = ?1 AND contre = ?2) OR (par = ?2 AND contre = ?1) LIMIT 1`,
       )
         .bind(match.a, match.b)
         .first<{ ok: number }>();
@@ -139,7 +139,7 @@ export class ChatRoom implements DurableObject {
       const id = crypto.randomUUID();
       const creeA = new Date().toISOString();
       await this.env.DB.prepare(
-        `INSERT INTO rencontre_messages (id, match_id, de, corps, lang, cree_a) VALUES (?1, ?2, ?3, ?4, ?5, ?6)`,
+        `INSERT INTO rencontre_messages (id, match_id, de, corps, langue, cree_a) VALUES (?1, ?2, ?3, ?4, ?5, ?6)`,
       ).bind(id, matchId, userId, texte, lang, creeA).run();
 
       const diffusion = JSON.stringify({

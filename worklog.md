@@ -2205,3 +2205,20 @@ Work Log:
 
 Stage Summary:
 - RENCONTRE-E2 reconstruit, prouvé en local (28 vérifs), poussé. Prochaines étapes : staging (migration 0014 + AI binding) → vérifs réelles staging (dont WS wss:// réel) → prod sur feu vert du fondateur.
+
+---
+Task ID: 107-b
+Agent: orchestrateur (Z.ai Code)
+Task: Adaptation au schéma staging réel — découverte d'une migration parallèle (0013_rencontres_messages déjà appliquée en staging avec un schéma français : langue, par/contre, de/contre, 6 motifs, statut modération).
+
+Work Log:
+- Diagnostique du déploiement staging : « no such column: bloque » → introspection D1 staging : 3 tables E2 existent DÉJÀ (messages/blocages/signalements, 0 données, schéma d'une session parallèle), routes E2 non déployées.
+- Décision : ADAPTER le code au schéma existant (respect du déploiement antérieur, schéma plus riche : motifs escroquerie_ou_argent/fetichisant, statut ouvert/traite/rejete) — jamais de DROP de ce qui tourne.
+- Migration 0014 (jamais appliquée) supprimée → 0015_rencontre_e2.sql : reprend le schéma staging À L'IDENTIQUE pour la prod (IF NOT EXISTS → no-op staging) + ajoute rencontre_lus et rencontre_reveals.
+- Code aligné : messages.ts/chat-room.ts (langue), blocages par/contre (+ id UUID), signalements de/contre/detail/statut, auth.ts purge+export, rencontres.ts pool/pas.
+- Front : 6 motifs de signalement + i18n EN (Escroquerie ou demande d'argent, Comportement fétichisant).
+- E2E local renforcé (DROP tables E2 locales + untrack 0015 + motif harcelement) : 27 verts / 0 rouge.
+- Vérifications : tsc API/web 0 erreur.
+
+Stage Summary:
+- E2 aligné au schéma de production réel ; prêt pour staging (0015 = complément) puis prod.
