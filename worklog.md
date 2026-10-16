@@ -2170,3 +2170,21 @@ Work Log:
 
 Stage Summary:
 - 6 items d'audit corrigés (BE-012 + 5 FE), poussés sur origin/main. Le shell hors ligne nécessite le SW : désormais enregistré au boot pour tous les appareils. Les corrections partiront en staging/prod avec le prochain déploiement (identifiants Cloudflare toujours en attente du fondateur ; feu vert prod sécurité déjà donné, les fixes FE/BE-012 suivront sur son feu vert).
+
+---
+Task ID: 106
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur « TOKEN WAIRYU » (tokens Cloudflare re-fournis après le message annulé) — déploiement staging + production de la sécurité Task 104 ET des correctifs Task 105, avec vérifications réelles.
+
+Work Log:
+- Environnement restauré : SECRETS-WAIRYU-LOCAL.txt complété (CLOUDFLARE_API_TOKEN + ACCOUNT_ID, chmod 600, jamais en CLI/URL) ; /user/tokens/verify → status « active ».
+- Découverte : Task 105 était DÉJÀ poussée par le tour précédent de la session (5748f69 dans origin/main) — re-vérifié intégralement de façon indépendante : diffs conformes (BE-012 littéral déplacé slot 10→11 ; FE-002 sans dangerouslySetInnerHTML ; FE-003 SW fetch+wairyu-shell-v1 ; FE-004 deps [tx] ; FE-005 401≠réseau + marqueur persistant ; FE-006 286 LOC mortes supprimées, Masque conservé), tsc API/web 0 erreur, vite build OK (10,46 s), node --check sw.js OK.
+- STAGING déployé via executer.sh staging (typecheck → build → migrations D1 → wrangler) : version e62080f0. Vérifications RÉELLES : /api/health OK ; endpoint session + Origin hostile (evil-localhost.attacker.com) → 401 SANS access-control-allow-origin (BE-004 effectif) ; Origin http://localhost:5173 reflétée (dev Vite OK) ; /sw.js servi avec addEventListener('fetch') + wairyu-shell-v1 (FE-003) ; migration 0013 : table audit_admin présente en D1 staging.
+- PREUVE avant/après BE-004 sur endpoint session /api/rencontres/pool avec origine hostile : STAGING corrigé → AUCUN ACAO ; PROD ancienne version (0ad65655) → ACAO réflexif + credentials:true (bug vivant) → justification du déploiement prod.
+- PRODUCTION déployée via executer.sh prod : version 98adef82, /api/health OK (env:"production"). Vérifications RÉELLES : Origin hostile → 401 SANS ACAO (fix effectif en prod) ; localhost dev reflété ; /sw.js avec handler fetch ; build servi contient la tagline sans <br> (FE-002) ; migration 0013 : audit_admin présente en D1 prod.
+- Sanity BE-012 en D1 prod : device_push_subscriptions = 3 lignes, 0 suspecte (open_count > 100 : aucune) — données existantes NON corrompues ; le fix protège les futures souscriptions.
+- WORKLOG sandbox /home/z/my-project/worklog.md mis à jour (reconstruit après resets si absent).
+
+Stage Summary:
+- Task 104 (4 failles sécurité) + Task 105 (BE-012 + 5 FE) DÉPLOYÉES ET VÉRIFIÉES en staging ET en production. Prod = https://wairyu.wairyu.workers.dev (98adef82), staging = https://wairyu-staging.wairyu.workers.dev (e62080f0).
+- RESTE : rotation recommandée des tokens Cloudflare/GitHub (exposés 2 fois dans le chat, dont 1 message annulé) ; reconstruction E2 (chat temps réel, signalement/blocage, REVEAL, migrations 0014+) ; les 7 problèmes du message ANNULÉ restent NON traités (users.email UNIQUE, CTA portail, fallback SPA, orphelins, tables vides, énumération login, images D1) — en attente de confirmation explicite du fondateur.
