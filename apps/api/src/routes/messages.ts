@@ -444,11 +444,11 @@ messagesRoutes.post('/rencontres/:matchId/traduire', async (c) => {
   if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
 
   try {
-    const message = await c.env.DB.prepare(`SELECT id, de, corps, lang FROM rencontre_messages WHERE id = ?1 AND match_id = ?2 LIMIT 1`)
+    const message = await c.env.DB.prepare(`SELECT id, de, corps, langue FROM rencontre_messages WHERE id = ?1 AND match_id = ?2 LIMIT 1`)
       .bind(messageId, ctx.matchId)
-      .first<{ id: string; de: string; corps: string; lang: string }>();
+      .first<{ id: string; de: string; corps: string; langue: string }>();
     if (!message) return c.json({ ok: false, error: 'not_found' }, 404);
-    if (message.lang === vers) {
+    if (message.langue === vers) {
       // Déjà dans la langue demandée : pas d'appel IA, pas de coût.
       return c.json({ ok: true, traduction: message.corps, deja: true });
     }
