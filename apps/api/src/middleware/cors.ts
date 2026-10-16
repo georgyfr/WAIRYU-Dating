@@ -10,9 +10,28 @@
 import { cors } from 'hono/cors';
 import type { AppEnv } from '../env';
 
+/**
+ * BE-004 (audit sécurité Task 104) : correspondance EXACTE du hostname.
+ * L'ancien test par sous-chaîne (`origin.includes('localhost')`) laissait
+ * passer n'importe quelle origine contenant « localhost » ou « 127.0.0.1 »
+ * en sous-domaine/path (ex. https://evil-localhost.attacker.com), ce qui
+ * reflétait l'origine avec credentials:true — vol de cookies de session
+ * possible sur tous les GET /api/*. Désormais : seul localhost/127.0.0.1
+ * EXACT (tout port, dev Vite) est reflété ; toute autre origine → null.
+ */
+export function originDevAutorisee(origin: string): boolean {
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== 'http:' && protocol !== 'https:') return false;
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+  } catch {
+    return false;
+  }
+}
+
 export const devCors = () =>
   cors({
-    origin: (origin) => (origin?.includes('localhost') || origin?.includes('127.0.0.1') ? origin : null),
+    origin: (origin) => (origin && originDevAutorisee(origin) ? origin : null),
     allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'X-Requested-With'],
     credentials: true,

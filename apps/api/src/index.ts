@@ -99,12 +99,28 @@ function assetlinksResponse(env: Env): Response {
   });
 }
 
+/**
+ * BE-008 (audit sécurité Task 104) — garde fail-fast au démarrage de chaque
+ * requête API : sans SESSION_HMAC_KEY valide, l'API refuse de servir plutôt
+ * que de signer/vérifier avec une clé indéfinie (cookies forgeables).
+ * Double protection avec la garde interne de lib/session.ts (hmac()).
+ */
+function assertSessionHmacKey(env: Env): void {
+  const key = env.SESSION_HMAC_KEY;
+  if (typeof key !== 'string' || key.length < 32) {
+    throw new Error(
+      'CONFIG: SESSION_HMAC_KEY absente ou trop courte (< 32 caractères) — API arrêtée (fail-closed).',
+    );
+  }
+}
+
 export default {
   fetch(request: Request, env: Env, ctx: ExecutionContext): Response | Promise<Response> {
     const url = new URL(request.url);
     // L'API passe toujours par Hono (run_worker_first couvre /api/*, /admin/*
     // et /.well-known/assetlinks.json)
     if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin')) {
+      assertSessionHmacKey(env);
       return app.fetch(request, env, ctx);
     }
     if (url.pathname === '/.well-known/assetlinks.json') {

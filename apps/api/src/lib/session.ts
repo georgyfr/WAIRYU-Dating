@@ -14,6 +14,14 @@ function toBase64url(buf: ArrayBuffer): string {
 }
 
 async function hmac(input: string, key: string): Promise<string> {
+  // BE-008 (audit sécurité Task 104) : sans clé, AUCUNE signature ne doit
+  // être calculée — TextEncoder coercerait `undefined` en la chaîne
+  // « undefined » (clé prévisible : cookies forgeables). Fail-closed.
+  if (typeof key !== 'string' || key.length < 32) {
+    throw new Error(
+      'CONFIG: SESSION_HMAC_KEY absente ou trop courte (< 32) — signature session refusée (fail-closed).',
+    );
+  }
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
     encoder.encode(key),

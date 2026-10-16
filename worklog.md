@@ -2132,3 +2132,23 @@ Stage Summary:
 - Le seuil fondateur est en place : quand les quêtes du Monde 1 sont finies, après la fête, LE PORTAIL s'ouvre — « Un seuil s'ouvre devant toi », les récoltes méritées (les cartes réelles du Miroir) et les DEUX chemins : « Entrer sur WAIRYU Rencontre » (mène à #/matchs) ou « Continuer le voyage » (reprend la navigation naturelle). Échap = continuer (choix sûr). Le choix n'est pas un verrou : les deux mondes restent accessibles partout, toujours. FR et EN. Une seule fois par appareil ; jamais rétroactif (honnêteté) ; structure gelée intacte.
 - Visible en staging (7219d0b8). PROD TOUJOURS SUR FEU VERT (0ad65655 inchangé).
 - Avis produit transmis au fondateur dans la réponse (modes interracial + événement de Claude : forts sur la compatibilité-avant-l'origine, l'accompagnement interculturel et la sécurité ; recommandation : noyau d'abord, couches de mode ensuite ; événements = hybride progressif Wairyu→partenaires→membres vérifiés).
+
+---
+Task ID: 104
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur (« corrige par toi même ces erreurs détectées dans l'audit ») — 4 failles sécurité backend (BE-004, BE-008, BE-006, BE-005) + feu vert reçu : « staging vérifié → feu vert prod pour la sécurité seule ».
+
+Work Log:
+- RESET #8 entre les tours : tout le local perdu (Tasks 100-103 non poussées définitivement perdues, secrets perdus). Nouvelle doctrine : chaque tour boucle clone→code→vérifs→commit→push dans le même tour.
+- BE-004 (CORS) — middleware/cors.ts : nouvelle fonction originDevAutorisee() par correspondance EXACTE du hostname (localhost / 127.0.0.1 / [::1], protocole http/https uniquement, try/catch sur URL invalide). L'ancien `origin?.includes('localhost')` reflétait n'importe quelle origine contenant la sous-chaîne (https://evil-localhost.attacker.com) avec credentials:true → vol de cookies de session sur tous les GET /api/*. Validée par 9 cas de test node (9/9 PASS, y compris le vecteur d'attaque exact de l'audit).
+- BE-008 (HMAC) — double garde fail-closed : (1) index.ts assertSessionHmacKey() appelée dans fetch() pour /api/* et /admin/* — throw si SESSION_HMAC_KEY absente ou < 32 caractères (l'API refuse de servir) ; (2) lib/session.ts hmac() — throw avant tout calcul si clé absente/< 32 (l'ancien code coercerait `undefined` en la chaîne « undefined » via TextEncoder → cookies forgeables).
+- BE-006 (audit_admin) — migration 0013_audit_admin.sql (CREATE TABLE IF NOT EXISTS + 2 index, doctrine repo : pas de FK, commentaires) ; routes/auth.ts auditMinorRefused : le `.catch(() => {})` avalant l'échec est SUPPRIMÉ — l'échec d'audit remonte (fail-closed), le refus du mineur demeure (aucun INSERT users n'a eu lieu), l'échec est visible via app.onError. La table n'existait nulle part : l'audit P0 âge n'a JAMAIS été persisté avant ce vol.
+- BE-005 (RGPD hardDeleteAccount) — 3 purges ajoutées AVANT la suppression des sessions : notification_events (user_id) ; satisfaction (session_id IN sessions du compte — la table n'a PAS de user_id, purge par jointure, d'où l'ordre) ; password_resets (user_id, token_hash — 3ᵉ trou découvert par sweep RGPD complet des 17 tables, non listé par l'audit, même doctrine). Sweep vérifié : toutes les tables à user_id/session_id sont désormais purgées (account_deletions = tombstone volontaire 30 j ; metrics/rate_limits agrégés sans user).
+- VÉRIFICATIONS : bun install OK ; npx tsc --noEmit apps/api → 0 erreur ; npx tsc --noEmit apps/web → 0 erreur ; npx vite build → ✓ 10,35 s (warning taille de chunk préexistant, cosmétique). Aucune suite de tests unitaires dans le repo (constat).
+- HORS PÉRIMÈTRE constaté : script racine typecheck:web référence @wairyu/web mais le package s'appelle wairyu-web (script mort, non corrigé — hors périmètre sécurité).
+- openCors laissé tel quel (endpoints publics device-based, credentials:false — aucun cookie émis, cohérent avec son commentaire de design).
+- Commit : sécurité(Task 104) — déploiement staging puis prod sur feu vert fondateur en attente des CLOUDFLARE_API_TOKEN/ACCOUNT_ID (reset #8 a perdu les valeurs ; GITHUB_TOKEN re-fourni ce tour).
+
+Stage Summary:
+- Les 4 failles de l'audit sont corrigées dans le code (main local, poussées sur origin/main). Migration 0013 à appliquer en staging (deploy.sh le fait automatiquement). Comportement nouveau : API fail-closed sans SESSION_HMAC_KEY valide ; échec d'audit P0 âge = 500 visible au lieu d'être avalé ; suppression de compte = purge RGPD complète (3 tables de plus).
+- En attente pour déployer : CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (à re-envoyer par le fondateur). Déploiement : bash /home/z/executer.sh staging → vérification health + E2E smoke → feu vert prod déjà donné par le fondateur pour la sécurité seule.

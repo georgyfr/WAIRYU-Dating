@@ -118,11 +118,14 @@ async function auditMinorRefused(
        VALUES ('system', 'signup_minor_refused', NULL, ?, ?, ?)`,
     )
     .bind(identifierHash, JSON.stringify({ flow, stage }), Math.floor(Date.now() / 1000))
-    .run()
-    .catch(() => {
-      // Table audit_admin posée à l'Étape 7 : l'audit ne doit jamais casser
-      // le refus d'inscription (le 403 est la protection réelle).
-    });
+    .run();
+  // BE-006 (audit sécurité Task 104) : l'ancien `.catch(() => {})` avalait
+  // l'échec — et la table audit_admin n'était créée par AUCUNE migration,
+  // donc l'audit P0 âge n'a JAMAIS été persisté. La table est posée par
+  // 0013_audit_admin.sql ; l'échec d'écriture remonte désormais (fail-
+  // closed) : le refus du mineur demeure (aucun compte créé — l'INSERT
+  // users n'a pas encore eu lieu), l'échec est visible dans les logs
+  // Worker via app.onError. Traçabilité légale non négociable.
 }
 
 /**
@@ -1388,6 +1391,20 @@ async function hardDeleteAccount(
   //    liaisons de notifications détachées ; compte supprimé.
   //    (La purge des médias Cloudinary suivra avec l'Étape 3.)
   await revokeAllSessions(c, userId);
+  // BE-005 (audit sécurité Task 104) — trou RGPD : trois tables rattachées
+  // au membre n'étaient pas purgées à la suppression du compte :
+  //  - notification_events (journal de notifications, user_id) ;
+  //  - satisfaction (notes liées par session_id, JAMAIS purgée — purge via
+  //    les sessions du compte, donc AVANT la suppression de sessions) ;
+  //  - password_resets (user_id, token_hash — découvert au sweep RGPD
+  //    complet mené avec BE-005, même doctrine de purge immédiate).
+  await c.env.DB.prepare(`DELETE FROM notification_events WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(
+    `DELETE FROM satisfaction WHERE session_id IN (SELECT id FROM sessions WHERE user_id = ?)`,
+  )
+    .bind(userId)
+    .run();
+  await c.env.DB.prepare(`DELETE FROM password_resets WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM sessions WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM oauth_identities WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM device_push_subscriptions WHERE user_id = ?`).bind(userId).run();
