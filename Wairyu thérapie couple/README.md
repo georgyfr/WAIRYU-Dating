@@ -132,6 +132,7 @@ Wairyu thérapie couple/
 | **D-CANAL** | Le code source ne transite plus par l'IM gateway. Production locale. Vérification par SHA ×2 + rapport + inventaire. | Faute n°32 (pré-attrapée) |
 | **D-CANAL-2** | Séquence : production → exécution ×2 → SHA ×2 → publication → message pointeurs → audit → contresignature. Un résumé sans SHA ne clôture pas le cycle. | Q5 émotionnel |
 | **D-EMPREINTE** (prospective) | Le SHA-256 porte sur le contenu des résultats, jamais sur un horodatage. | Q5 émotionnel |
+| **D-CRISE** | Court-circuit de crise AVANT l'arbre de priorité — filet 3919/3114 + orientation, JAMAIS de pas de couple en crise. Seuils hérités H5/RIO-02. | Q5 émotionnel (verrouillage SM) |
 | **D-Q2-1 / D-Q2-2 / D-Q2-H / D6 / D7** | (Voir registre précédent — inchangées) | Q1-Q2 attachement |
 | **Exécuteur strict** | L'agent signale sans corriger — toute correction est de l'orchestrateur, documentée. | Permanent |
 
