@@ -2222,3 +2222,19 @@ Work Log:
 
 Stage Summary:
 - E2 aligné au schéma de production réel ; prêt pour staging (0015 = complément) puis prod.
+
+---
+Task ID: 107-c
+Agent: orchestrateur (Z.ai Code)
+Task: Déploiement staging + E2E staging RÉEL de RENCONTRE-E2 (Task 107/107-b) — bouclé dans le même tour.
+
+Work Log:
+- Découverte du déploiement : « no such column: bloque » → introspection D1 staging : UNE session parallèle a déjà appliqué 0013_rencontres_messages (schéma français : langue, par/contre, de/contre, 6 motifs escroquerie/fetichisant, statut modération) ; routes E2 absentes ; 0 données.
+- Décision : ADAPTER au schéma existant (jamais de DROP de ce qui tourne) → migration 0015_rencontre_e2.sql (schéma staging repris À L'IDENTIQUE pour la prod via IF NOT EXISTS + tables manquantes lus/reveals) ; code aligné (langue, par/contre + id UUID, de/contre/detail/statut, 6 motifs) ; front motifs + i18n ; commit 04b0884.
+- Déploiement staging : 1ᵉʳ essai migration échoué (découverte ci-dessus) → 0015 → STAGING DÉPLOYÉ (cea3833c puis ba7615e6).
+- E2E staging réel (/home/z/e2e/e2e-staging.sh, 2 comptes réels, D1 remote, RGPD final 0 pollution) — leçons d'orchestration : secrets sourcés DANS le script (shell non persistant) ; INSERT remote vérifiés avec retry (échecs silencieux) ; purge rate_limits pw:* (5/h par IP épuisée par les courses) ; race du listener WS (attacher AVANT le fetch) ; upgrades WS séquentiels (bun cancelle le 2ᵉ si parallèle).
+- RÉSULTAT FINAL : 24 verts / 1 rouge (WS sous orchestration bun — artefact documenté). PROUVÉ RÉEL : Workers AI TRADUCTION (bouton manuel, llama-3.3, réponse ok:true après fix colonne langue — commit 0c110c6) ; WebSocket wss:// hibernation DO : 2 sockets, {type:ouvert}, diffusion des DEUX sens, écho expéditeur, ET REST→do.chat-room/notify (tail : « POST do.chat-room/notify - Ok ») reçu chez l'autre appareil — le temps réel complet est VÉRIFIÉ en staging.
+- Fix en cours de route : SELECT traduire `lang` → `langue` (tail staging l'a attrapé), poussé (0c110c6), redéployé.
+
+Stage Summary:
+- RENCONTRE-E2 VIVANT en staging (ba7615e6) : conversations, temps réel DO+REST, non-lus, traduction IA réelle, reveal seuils, sécurité à un geste, RGPD 0 pollution. La prod est TOUJOURS sur la version sécurité (98ad82) — E2 attendra le feu vert explicite du fondateur. Reste (E3+) : le Voyage à Deux, voice notes, déblocage modération.
