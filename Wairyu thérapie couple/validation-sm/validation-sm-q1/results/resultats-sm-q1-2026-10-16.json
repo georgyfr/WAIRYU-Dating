@@ -1,0 +1,179 @@
+{
+  "n_total": 580,
+  "C1": {
+    "attendu_pct": 100.0,
+    "obtenu_pct": 100.0,
+    "n_match": 580,
+    "n_total": 580,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C2": {
+    "attendu_pct": 100.0,
+    "obtenu_pct": 100.0,
+    "n_match": 580,
+    "n_total": 580,
+    "ok": true
+  },
+  "C3": {
+    "anti_perfectionnisme": {
+      "messages_testes": 3,
+      "violations": [],
+      "ok": true
+    },
+    "perfect_celebre": 20,
+    "perfect_total": 20,
+    "zero_reprise": 20,
+    "zero_total": 20,
+    "sanctions": 0,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "c5a_templates": {
+      "force_count": 6,
+      "ok": true
+    },
+    "c5b_prive": {
+      "ok": true
+    },
+    "c5c_dsim": {
+      "ok": true
+    },
+    "c5d_crise": {
+      "ok": true
+    },
+    "ok": true
+  },
+  "C6": {
+    "attendu": "8 semaines",
+    "ok": true,
+    "n_total": 580
+  },
+  "stats_groupes": {
+    "G1_stable": {
+      "n": 80,
+      "classif_count": {
+        "STABLE": 45,
+        "MIXTE": 34,
+        "MASQUE": 1
+      },
+      "cat_count": {
+        "CELEBRE": 14,
+        "REPRISE": 24,
+        "AJUSTEMENT": 42
+      }
+    },
+    "G2_charge": {
+      "n": 80,
+      "classif_count": {
+        "CHARGE": 57,
+        "MIXTE": 21,
+        "CRISE": 2
+      },
+      "cat_count": {
+        "AJUSTEMENT": 44,
+        "REPRISE": 22,
+        "CELEBRE": 14
+      }
+    },
+    "G3_masque": {
+      "n": 80,
+      "classif_count": {
+        "MASQUE": 58,
+        "MIXTE": 21,
+        "STABLE": 1
+      },
+      "cat_count": {
+        "CELEBRE": 18,
+        "AJUSTEMENT": 43,
+        "REPRISE": 19
+      }
+    },
+    "G4_crise": {
+      "n": 80,
+      "classif_count": {
+        "CRISE": 73,
+        "MIXTE": 4,
+        "STABLE": 3
+      },
+      "cat_count": {
+        "REPRISE": 28,
+        "AJUSTEMENT": 46,
+        "CELEBRE": 6
+      }
+    },
+    "G5_aidant": {
+      "n": 80,
+      "classif_count": {
+        "MIXTE": 42,
+        "STABLE": 37,
+        "CRISE": 1
+      },
+      "cat_count": {
+        "AJUSTEMENT": 44,
+        "REPRISE": 25,
+        "CELEBRE": 11
+      }
+    },
+    "G6_reparation": {
+      "n": 80,
+      "classif_count": {
+        "MIXTE": 69,
+        "CHARGE": 4,
+        "STABLE": 6,
+        "MASQUE": 1
+      },
+      "cat_count": {
+        "AJUSTEMENT": 42,
+        "REPRISE": 17,
+        "CELEBRE": 21
+      }
+    },
+    "SANS_DETRESSE": {
+      "n": 40,
+      "classif_count": {
+        "STABLE": 40
+      },
+      "cat_count": {
+        "REPRISE": 40
+      }
+    },
+    "SURCHARGE_AIDANT": {
+      "n": 20,
+      "classif_count": {
+        "CRISE": 20
+      },
+      "cat_count": {
+        "CELEBRE": 7,
+        "REPRISE": 6,
+        "AJUSTEMENT": 7
+      }
+    },
+    "PERFECT": {
+      "n": 20,
+      "classif_count": {
+        "STABLE": 7,
+        "MIXTE": 11,
+        "MASQUE": 2
+      },
+      "cat_count": {
+        "CELEBRE": 20
+      }
+    },
+    "ZERO": {
+      "n": 20,
+      "classif_count": {
+        "STABLE": 4,
+        "MIXTE": 13,
+        "CRISE": 1,
+        "CHARGE": 2
+      },
+      "cat_count": {
+        "REPRISE": 20
+      }
+    }
+  },
+  "sha256_run": "2f826ed3f36e3c5e70b0abf46562a56b0778c6d9dfa4d08220e34d7c0f97c5d2"
+}
