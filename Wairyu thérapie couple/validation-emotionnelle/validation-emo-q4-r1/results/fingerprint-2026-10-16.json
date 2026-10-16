@@ -1,9 +1,9 @@
 {
-  "results/fingerprint-2026-10-16.json": "43df763b559114f36296e98a11bfdc2c2bb4aa4fc98571c8f8cd7acc13ac5e4d",
-  "results/rapport-emo-q4-2026-10-16.md": "ea3569d4456c7ada2f725e3d881b7ed77c904fd840c81c89d1bba407238c9997",
-  "results/resultats-emo-q4-2026-10-16.json": "711b21b188bfc689f1bf0e49c3ecde9a78df267b3394f0155d0794d3b8d5bff1",
-  "figures/fig1_c1_par_config.png": "93fb9dd9b9aa3cde8274909323a1ab62cb2a7d9e15a6d31090d29a17eec9e77f",
-  "figures/fig2_distribution_configs.png": "94d79b46658b9bcedcb3fa196cce0c8f50b04cc96c3eb6134ad0b743283e8084",
+  "results/fingerprint-2026-10-16.json": "0868af5d8a689c2732a563638dcc371b2ed94af3a5644e7fc02e65a38a6824d8",
+  "results/rapport-emo-q4-2026-10-16.md": "0d0275a172e2246a2ef3bbc3c616ef15a234950cec9f8e792b7dcac6a34a02c8",
+  "results/resultats-emo-q4-2026-10-16.json": "2f1b711b3216e782f32731558e7c48bb2fcc5d6cd62d5c51b1adb8b42aa9b83a",
+  "figures/fig1_c1_par_config.png": "ee8ca10b9361cf1573a275f55d66c15af3698e7f1d9f4651da6ded9af331f713",
+  "figures/fig2_distribution_configs.png": "c8bc2342152b44a1996a01d91689ec84961a8e8f00a2676440e14a48eaad08eb",
   "figures/fig3_boucles_bids.png": "d03995fa2465bb8194291beaa3e03b51b67383ac0eba0a633e9e02e7fd4a9323",
   "figures/fig4_paires_explosives.png": "1184b5c2137096eb9857c9d42936960ac33729f34154b0a683be946f906fa8e3"
 }

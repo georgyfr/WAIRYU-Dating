@@ -13,28 +13,28 @@
 
 | Critère | Attendu | Obtenu | Verdict |
 |---------|---------|--------|---------|
-| **C1** 9 configurations (D-STD-2 par config) | 9/9 | 2/9 | ❌ FAIL |
+| **C1** 9 configurations (D-STD-2 par config) | 9/9 | 6/9 | ❌ FAIL |
 | **C2** Symétrie p1×p2 = p2×p1 | 100 % | 100.0 % (450/450, 0 violation, 0 désaccord sim) | ✅ PASS |
 | **C3** Anti-verdict (ÉLIMINATOIRE) | 0/0/0 | C3a=0 · C3b=0 · C3c=0 | ✅ PASS |
 | **C4** SHA-256 ×2 | identiques | identiques | ✅ PASS |
 | **C5** Affichage (templates + boucle ensemble + D-SIM + pas comparaison) | 4/4 | templates=✅ · ensemble=✅ · D-SIM=✅ · pas comparaison=✅ | ✅ PASS |
 
-SHA-256 exécution 1 : `5837225e4f0d78c654a8694c657610b66f383733d0e61ed6cc3c3140cf662994`
-SHA-256 exécution 2 : `5837225e4f0d78c654a8694c657610b66f383733d0e61ed6cc3c3140cf662994`
+SHA-256 exécution 1 : `8e9e6b1cb72ef7e5a316380facb8e88a2a5f7c6a2049723868daf8ac6c01fb63`
+SHA-256 exécution 2 : `8e9e6b1cb72ef7e5a316380facb8e88a2a5f7c6a2049723868daf8ac6c01fb63`
 
 ### C1 — Détail par configuration (D-STD-2)
 
 | Configuration | N | Correct | % | Seuil | Verdict |
 |---------------|---|---------|---|-------|---------|
-| LANGUE COMMUNE | 50 | 41 | 82.0 % | 72 % | ✅ |
-| DONNEUR NON CONVERTI (A) | 50 | 34 | 68.0 % | 77 % | ❌ |
-| DONNEUR NON CONVERTI (B) | 50 | 30 | 60.0 % | 77 % | ❌ |
-| LANGUE DORMANTE | 50 | 33 | 66.0 % | 67 % | ❌ |
+| LANGUE COMMUNE | 50 | 39 | 78.0 % | 72 % | ✅ |
+| DONNEUR NON CONVERTI (A) | 50 | 45 | 90.0 % | 77 % | ✅ |
+| DONNEUR NON CONVERTI (B) | 50 | 43 | 86.0 % | 77 % | ✅ |
+| LANGUE DORMANTE | 50 | 50 | 100.0 % | 67 % | ✅ |
 | CROISÉE (À CONVERTIR) | 50 | 0 | 0.0 % | 62 % | ❌ |
 | MIXTE POURSUITE | 50 | 10 | 20.0 % | 82 % | ❌ |
 | MIXTE RETRAIT | 50 | 5 | 10.0 % | 82 % | ❌ |
 | FEU CROISÉ | 50 | 42 | 84.0 % | 82 % | ✅ |
-| ÉQUILIBRÉE MIXTE | 50 | 12 | 24.0 % | 57 % | ❌ |
+| ÉQUILIBRÉE MIXTE | 50 | 36 | 72.0 % | 57 % | ✅ |
 
 ---
 
@@ -63,15 +63,15 @@ et seuil documenté.
 
 | Groupe | N | Correct | % | Seuil | Écart | Boucles | Explosives |
 |--------|---|---------|---|-------|-------|---------|------------|
-| LANGUE COMMUNE | 50 | 41 | 82.0 % | 72 % | +10.00 | 11 | 0 |
-| DONNEUR NON CONVERTI (A) | 50 | 34 | 68.0 % | 77 % | -9.00 | 18 | 0 |
-| DONNEUR NON CONVERTI (B) | 50 | 30 | 60.0 % | 77 % | -17.00 | 14 | 0 |
-| LANGUE DORMANTE | 50 | 33 | 66.0 % | 67 % | -1.00 | 8 | 0 |
+| LANGUE COMMUNE | 50 | 39 | 78.0 % | 72 % | +6.00 | 11 | 0 |
+| DONNEUR NON CONVERTI (A) | 50 | 45 | 90.0 % | 77 % | +13.00 | 18 | 0 |
+| DONNEUR NON CONVERTI (B) | 50 | 43 | 86.0 % | 77 % | +9.00 | 14 | 0 |
+| LANGUE DORMANTE | 50 | 50 | 100.0 % | 67 % | +33.00 | 8 | 0 |
 | CROISÉE (À CONVERTIR) | 50 | 0 | 0.0 % | 62 % | -62.00 | 10 | 0 |
 | MIXTE POURSUITE | 50 | 10 | 20.0 % | 82 % | -62.00 | 11 | 2 |
 | MIXTE RETRAIT | 50 | 5 | 10.0 % | 82 % | -72.00 | 5 | 2 |
 | FEU CROISÉ | 50 | 42 | 84.0 % | 82 % | +2.00 | 48 | 44 |
-| ÉQUILIBRÉE MIXTE | 50 | 12 | 24.0 % | 57 % | -33.00 | 10 | 3 |
+| ÉQUILIBRÉE MIXTE | 50 | 36 | 72.0 % | 57 % | +15.00 | 10 | 3 |
 
 ![C1 par config](../figures/fig1_c1_par_config.png)
 
@@ -124,14 +124,14 @@ et seuil documenté.
 
 - **Paire** : ÉQUILIBRÉE MIXTE #ÉQUILIBRÉE MIXTE_0
 - **Config attendue** : ÉQUILIBRÉE MIXTE
-- **Config obtenue (moteur)** : LANGUE COMMUNE (❌ incorrect)
-- **Config sim (vérité croisée)** : LANGUE COMMUNE (✅)
-- **Symétrie A↔B** : True (config_swap = LANGUE COMMUNE)
+- **Config obtenue (moteur)** : ÉQUILIBRÉE MIXTE (✅ correct)
+- **Config sim (vérité croisée)** : ÉQUILIBRÉE MIXTE (✅)
+- **Symétrie A↔B** : True (config_swap = ÉQUILIBRÉE MIXTE)
 - **Devise A** : {'paroles': 'ALIGNE', 'temps': 'ALIGNE', 'contact': 'ALIGNE'}
 - **Devise B** : {'paroles': 'RECIPROQUE', 'temps': 'MIXTE_LEGER', 'contact': 'ALIGNE'}
 - **Boucle bids** : asymétrique=True (écart_A=1, écart_B=2)
 - **Co-régulation** : paire_explosive=False
-- **Template config** : > Vos deux langues se parlent — vous êtes alignés sur les trois canaux. C'est une richesse que peu de couples ont.
+- **Template config** : > Vos deux langues se répondent sur les canaux, avec quelques différences — c'est le paysage le plus courant des couples réels. À explorer, pas à corriger.
 
 ---
 
@@ -141,30 +141,26 @@ et seuil documenté.
 
 | Configuration | N | % |
 |---------------|---|---|
-| LANGUE COMMUNE | 121 | 26.9 % |
-| DONNEUR NON CONVERTI (A) | 61 | 13.6 % |
-| DONNEUR NON CONVERTI (B) | 41 | 9.1 % |
-| LANGUE DORMANTE | 33 | 7.3 % |
-| CROISÉE (À CONVERTIR) | 0 | 0.0 % |
+| LANGUE COMMUNE | 60 | 13.3 % |
+| DONNEUR NON CONVERTI (A) | 80 | 17.8 % |
+| DONNEUR NON CONVERTI (B) | 46 | 10.2 % |
+| LANGUE DORMANTE | 50 | 11.1 % |
+| CROISÉE (À CONVERTIR) | 3 | 0.7 % |
 | MIXTE POURSUITE | 10 | 2.2 % |
 | MIXTE RETRAIT | 5 | 1.1 % |
 | FEU CROISÉ | 43 | 9.6 % |
-| ÉQUILIBRÉE MIXTE | 136 | 30.2 % |
+| ÉQUILIBRÉE MIXTE | 153 | 34.0 % |
 
 - **Boucles des bids actives** : 135/450 (30.0 %)
 - **Paires explosives** : 51/450 (11.3 %)
 
 ### Vérification de la borne D-STD-2
 
-- Configurations atteignant leur seuil : **2/9**
-- **7 configuration(s) sous le seuil** ❌ :
-  - DONNEUR NON CONVERTI (A) : 68.0 % < 77 %
-  - DONNEUR NON CONVERTI (B) : 60.0 % < 77 %
-  - LANGUE DORMANTE : 66.0 % < 67 %
+- Configurations atteignant leur seuil : **6/9**
+- **3 configuration(s) sous le seuil** ❌ :
   - CROISÉE (À CONVERTIR) : 0.0 % < 62 %
   - MIXTE POURSUITE : 20.0 % < 82 %
   - MIXTE RETRAIT : 10.0 % < 82 %
-  - ÉQUILIBRÉE MIXTE : 24.0 % < 57 %
 
 ![Boucles bids](../figures/fig3_boucles_bids.png)
 

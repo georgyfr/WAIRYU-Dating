@@ -73,34 +73,30 @@ GROUPES_CROISES = {
 
 def config_vraie(donne_A, recoit_A, donne_B, recoit_B,
                  er1_A, er1_B, boucle_active, inv_A, inv_B):
-    """M2 (R1) — D-VÉRITÉ : ré-implémentation INDÉPENDANTE de
-    configuration_devises (logique canal dominant alignée).
+    """M2 (R1 v3) — D-VÉRITÉ : ré-implémentation INDÉPENDANTE de
+    configuration_devises (logique moyennes par canal alignée).
     L'inventaire croisé attend 9/9 = 9/9."""
-    vivacite = {c: donne_A[c] + donne_B[c] + recoit_A[c] + recoit_B[c]
-                for c in CANALS}
-    canal_dominant = max(CANALS, key=lambda c: vivacite[c])
+    dA_m = round(sum(donne_A[c] for c in CANALS) / 3, 2)
+    rA_m = round(sum(recoit_A[c] for c in CANALS) / 3, 2)
+    dB_m = round(sum(donne_B[c] for c in CANALS) / 3, 2)
+    rB_m = round(sum(recoit_B[c] for c in CANALS) / 3, 2)
     if er1_A >= 3.0 and er1_B >= 3.0 and boucle_active:
         return "FEU CROISÉ"
     if boucle_active and inv_A == "FRÉQUENT" and inv_B == "ABSENT":
         return "MIXTE POURSUITE"
     if boucle_active and inv_B == "FRÉQUENT" and inv_A == "ABSENT":
         return "MIXTE RETRAIT"
-    dA = donne_A[canal_dominant]
-    rA = recoit_A[canal_dominant]
-    dB = donne_B[canal_dominant]
-    rB = recoit_B[canal_dominant]
-    if dA >= 3 and rA >= 3 and dB >= 3 and rB >= 3:
+    if dA_m >= 3 and rA_m >= 2.5 and dB_m >= 3 and rB_m >= 2.5:
         return "LANGUE COMMUNE"
-    if dA >= 4 and rA <= 2:
+    if dA_m >= 4 and rA_m <= 2.5:
         return "DONNEUR NON CONVERTI (A)"
-    if dB >= 4 and rB <= 2:
+    if dB_m >= 4 and rB_m <= 2.5:
         return "DONNEUR NON CONVERTI (B)"
-    if dA <= 2 and rA <= 2 and dB <= 2 and rB <= 2:
+    if dA_m <= 2.5 and rA_m <= 2.5 and dB_m <= 2.5 and rB_m <= 2.5:
         return "LANGUE DORMANTE"
-    canal_don_fort_A = max(CANALS, key=lambda c: donne_A[c])
-    canal_don_fort_B = max(CANALS, key=lambda c: donne_B[c])
-    if (donne_A[canal_don_fort_A] >= 4 and
-            donne_B[canal_don_fort_B] >= 4 and
-            canal_don_fort_A != canal_don_fort_B):
+    canal_don_A = max(CANALS, key=lambda c: donne_A[c])
+    canal_don_B = max(CANALS, key=lambda c: donne_B[c])
+    if (donne_A[canal_don_A] >= 4 and donne_B[canal_don_B] >= 4
+            and canal_don_A != canal_don_B):
         return "CROISÉE (À CONVERTIR)"
     return "ÉQUILIBRÉE MIXTE"

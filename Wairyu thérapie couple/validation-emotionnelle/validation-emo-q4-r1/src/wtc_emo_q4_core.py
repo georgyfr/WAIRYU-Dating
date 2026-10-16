@@ -62,44 +62,47 @@ def co_regulation(er1_A, er1_B):
 def configuration_devises(donne_A, recoit_A, donne_B, recoit_B,
                           er1_A, er1_B, boucle_active,
                           inv_A, inv_B):
-    """M1 (R1) — D-EMO-5 : classification par canal dominant.
-    Le canal dominant = celui avec la plus forte vivacité
-    (somme donne+recoit des 4 partenaires). La devise sur ce
-    canal décide, pas la majorité des canaux.
-    donne_A/recoit_A/B : dicts {canal: int 1-5} (valeurs brutes).
-    er1_A/er1_B : faces explosion (Q1) pour co-régulation.
-    boucle_active : boucle des bids.
-    inv_A/inv_B : zones d'invalidation (Q2) pour MIXTE POURSUITE/RETRAIT."""
-    vivacite = {c: donne_A[c] + donne_B[c] + recoit_A[c] + recoit_B[c]
-                for c in CANALS}
-    canal_dominant = max(CANALS, key=lambda c: vivacite[c])
+    """M1 (R1 v3) — D-EMO-5 + moyennes par canal (faute n°29 corrigée).
+    Les propriétés globales (LANGUE COMMUNE, DONNEUR, DORMANTE) sont
+    évaluées sur la MOYENNE des 3 canaux (réduit le bruit de √3).
+    Seule CROISÉE reste canal-spécifique (pattern par nature)."""
+    # Moyennes par canal (réduisent le bruit de √3)
+    dA_m = round(sum(donne_A[c] for c in CANALS) / 3, 2)
+    rA_m = round(sum(recoit_A[c] for c in CANALS) / 3, 2)
+    dB_m = round(sum(donne_B[c] for c in CANALS) / 3, 2)
+    rB_m = round(sum(recoit_B[c] for c in CANALS) / 3, 2)
 
+    # FEU CROISÉ (priorité sécurité)
     if er1_A >= 3.0 and er1_B >= 3.0 and boucle_active:
         return "FEU CROISÉ"
+
+    # MIXTE POURSUITE / RETRAIT (priorité boucle)
     if boucle_active and inv_A == "FRÉQUENT" and inv_B == "ABSENT":
         return "MIXTE POURSUITE"
     if boucle_active and inv_B == "FRÉQUENT" and inv_A == "ABSENT":
         return "MIXTE RETRAIT"
 
-    dA = donne_A[canal_dominant]
-    rA = recoit_A[canal_dominant]
-    dB = donne_B[canal_dominant]
-    rB = recoit_B[canal_dominant]
-
-    if dA >= 3 and rA >= 3 and dB >= 3 and rB >= 3:
+    # LANGUE COMMUNE : les deux donnent ET reçoivent bien (moyennes)
+    if dA_m >= 3 and rA_m >= 2.5 and dB_m >= 3 and rB_m >= 2.5:
         return "LANGUE COMMUNE"
-    if dA >= 4 and rA <= 2:
+
+    # DONNEUR NON CONVERTI : un donne fort (moyenne), LUI-MÊME reçoit peu
+    if dA_m >= 4 and rA_m <= 2.5:
         return "DONNEUR NON CONVERTI (A)"
-    if dB >= 4 and rB <= 2:
+    if dB_m >= 4 and rB_m <= 2.5:
         return "DONNEUR NON CONVERTI (B)"
-    if dA <= 2 and rA <= 2 and dB <= 2 and rB <= 2:
+
+    # LANGUE DORMANTE : les deux donnent et reçoivent peu (moyennes)
+    if dA_m <= 2.5 and rA_m <= 2.5 and dB_m <= 2.5 and rB_m <= 2.5:
         return "LANGUE DORMANTE"
-    canal_don_fort_A = max(CANALS, key=lambda c: donne_A[c])
-    canal_don_fort_B = max(CANALS, key=lambda c: donne_B[c])
-    if (donne_A[canal_don_fort_A] >= 4 and
-            donne_B[canal_don_fort_B] >= 4 and
-            canal_don_fort_A != canal_don_fort_B):
+
+    # CROISÉE : canal-spécifique (le seul pattern qui exige le niveau canal)
+    canal_don_A = max(CANALS, key=lambda c: donne_A[c])
+    canal_don_B = max(CANALS, key=lambda c: donne_B[c])
+    if (donne_A[canal_don_A] >= 4 and donne_B[canal_don_B] >= 4
+            and canal_don_A != canal_don_B):
         return "CROISÉE (À CONVERTIR)"
+
     return "ÉQUILIBRÉE MIXTE"
 
 TEMPLATES_DEVISES = {
