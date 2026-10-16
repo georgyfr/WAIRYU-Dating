@@ -237,7 +237,10 @@ button {
     opacity: .82;
     line-height: 1.3;
     margin-top: 2px;
-    letter-spacing: .1px
+    letter-spacing: .1px;
+    /* FE-002 (audit Task 105) : rend le \n de la clé i18n comme un saut de
+       ligne (remplace l'ancien <br> injecté via dangerouslySetInnerHTML). */
+    white-space: pre-line
 }
 
 .ah-right {

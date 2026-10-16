@@ -24,9 +24,9 @@ apps/web/
     ├── styles.css             # design system — tokens = palette validée
     ├── App.tsx                # navigation Welcome → TabBar (3 onglets)
     ├── components/TabBar.tsx  # barre sticky bottom + safe-area iOS
-    └── screens/               # Welcome · Discover · Messages · Profile
+    └── screens/               # Welcome · Voyage · Mondes · Quête · Récolte · Portrait · Rencontres · Auth · Masque
 ```
 
-- Données affichées : profils de démonstration explicitement badgés (le moteur arrive).
+- Espaces dating (#/decouvrir, #/messages, #/profil) : page d'attente « Masque » (« Cet espace n'est pas encore ouvert ») — ouverture progressive par étages, jamais de cul-de-sac. (FE-006 : les anciens écrans de démonstration Discover/Messages/Profile, jamais rendus, ont été supprimés.)
 - Déploiement : cible Cloudflare (à documenter dans une prochaine vague).
 - Éthique de marque conservée : photos consenties · matching explicable · la rencontre n'est jamais payante.

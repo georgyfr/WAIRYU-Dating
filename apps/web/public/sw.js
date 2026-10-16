@@ -1,7 +1,14 @@
 /**
- * Service Worker wairyu — notifications Web Push (porté du cœur v1, Étape 6.8).
- * Minimal volontairement : aucune interception de fetch (le cache immutable
- * est géré par les en-têtes Workers Assets).
+ * Service Worker wairyu — notifications Web Push (porté du cœur v1, Étape 6.8)
+ * + shell hors ligne (audit FE-003).
+ *
+ * Offline shell : interception de fetch MINIMALE et sûre —
+ *  - jamais /api/*, /admin, ni le non-GET (toujours réseau, jamais périmé) ;
+ *  - navigation (shell SPA) : réseau d'abord, repli sur l'index caché —
+ *    l'utilisateur hors gamme qui reload garde l'application (les quêtes
+ *    localStorage fonctionnent, le shell ne « disparaît » plus) ;
+ *  - /assets/* (noms hachés Vite, immuables) : cache d'abord.
+ * Le reste (icônes, manifest, sw.js lui-même) : non intercepté.
  *
  * Anti-doublon (leçon v1 Task 53) :
  *  - page visible (premier plan) → PAS de notification système : le SW
@@ -14,12 +21,76 @@
  *    la bulle OS avec le nom de l'app, comme WhatsApp Web.
  */
 
+/** Cache du shell (index + assets hachés). Incrémenter pour tout invalider. */
+const SHELL_CACHE = 'wairyu-shell-v1';
+
 self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    (async () => {
+      // Purge des caches d'une version antérieure (changement de SHELL_CACHE).
+      const cles = await caches.keys();
+      await Promise.all(cles.filter((k) => k !== SHELL_CACHE).map((k) => caches.delete(k)));
+      await self.clients.claim();
+    })(),
+  );
+});
+
+/**
+ * FE-003 — shell hors ligne, volontairement conservatif : seuls la navigation
+ * (index) et /assets/* (hashés = immuables) sont interceptés. Aucun risque de
+ * servir une API périmée : /api/*, /admin et le non-GET passent toujours par
+ * le réseau, ainsi que tout origin tiers.
+ */
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  let url;
+  try {
+    url = new URL(req.url);
+  } catch {
+    return;
+  }
+  if (url.origin !== self.location.origin) return;
+  const chemin = url.pathname;
+  if (chemin.startsWith('/api/') || chemin.startsWith('/admin')) return;
+
+  // Navigation (chargement du shell SPA) : réseau d'abord — l'index frais est
+  // mis en cache ; hors ligne, on sert l'index caché.
+  const accept = req.headers.get('accept') || '';
+  if (req.mode === 'navigate' || accept.includes('text/html')) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res.ok) {
+            const copie = res.clone();
+            caches.open(SHELL_CACHE).then((c) => c.put('/', copie));
+          }
+          return res;
+        })
+        .catch(() => caches.match('/').then((r) => r || Response.error())),
+    );
+    return;
+  }
+
+  // Assets Vite (noms hachés, immuables) : cache d'abord, réseau ensuite.
+  if (chemin.startsWith('/assets/')) {
+    event.respondWith(
+      caches.match(req).then((hit) => {
+        if (hit) return hit;
+        return fetch(req).then((res) => {
+          if (res.ok) {
+            const copie = res.clone();
+            caches.open(SHELL_CACHE).then((c) => c.put(req, copie));
+          }
+          return res;
+        });
+      }),
+    );
+  }
 });
 
 self.addEventListener('push', (event) => {

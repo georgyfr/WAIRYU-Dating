@@ -10,7 +10,9 @@
 
 export const CORE: Record<string, string> = {
   // ---- en-tête (App.tsx)
-  "Apprendre aujourd'hui,<br>explorer demain": "Learn today,<br>explore tomorrow",
+  // FE-002 (audit Task 105) : le saut de ligne est un vrai \n (plus de <br>
+  // dans la chaîne — rendu via white-space: pre-line, fini dangerouslySetInnerHTML).
+  "Apprendre aujourd'hui,\nexplorer demain": "Learn today,\nexplore tomorrow",
   'Bonjour,': 'Hello,',
   Voyageur: 'Traveler',
   'Notifications ({{n}} nouvelles)': 'Notifications ({{n}} new)',

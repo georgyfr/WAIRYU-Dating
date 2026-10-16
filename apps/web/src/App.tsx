@@ -46,6 +46,7 @@ import {
   brancherSynchroReponses,
   definirAuthentifie,
   restaurerReponses,
+  sessionLocalePresente,
 } from './lib/sync-reponses';
 import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import { useI18n } from './i18n/I18nProvider';
@@ -250,33 +251,59 @@ export default function App() {
   useEffect(() => {
     void registerDeviceOpen();
     void autoArmWebPush();
+    // FE-003 (audit Task 105) : le service worker est enregistré AU BOOT pour
+    // TOUS les appareils — pas seulement à l'armement du push (avant, un
+    // appareil sans permission notifications n'avait AUCUN SW, donc aucun
+    // shell hors ligne). Idempotent ; sans serviceWorker (navigateurs
+    // anciens) : no-op, l'app fonctionne en ligne comme avant.
+    if ('serviceWorker' in navigator) {
+      void navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
 
-    void fetchMe()
-      .then((u) => {
-        setMe(u);
-        setAuthenticated(true);
-        // SAUVEGARDE QUI TE SUIT PARTOUT (Task 69-c) : session existante ⇒
-        // armement de la synchro + restauration des réponses du COMPTE (les
-        // états D1 plus récents que le local remplacent le local, les écrans
-        // se re-rendent via le bus).
-        brancherSynchroReponses();
-        definirAuthentifie(true);
-        void restaurerReponses();
-        // Session existante : (re)lie l'appareil au compte — cible des
-        // notifications. Si une félicitations est EN ATTENTE (création dont
-        // la liaison avait échoué — ex. 2ᵉ compte sur le même appareil avant
-        // le correctif rebind), l'overlay s'affiche à cette ouverture ; la
-        // bulle OS part par ailleurs (force:true côté serveur).
-        void linkDevice(getDeviceId())
-          .then((lr) => {
-            if (lr.congrats) setCongrats(lr.congratsVia ?? 'email');
-          })
-          .catch(() => {});
-      })
-      .catch((e: unknown) => {
-        if (e instanceof ApiError && e.status === 401) setAuthenticated(false);
-        else setAuthenticated(false); // erreur réseau → écran d'auth, retentera
-      });
+    /** Session acceptée (boot ou reprise réseau) : état + synchro Task 69-c
+     *  (les états D1 plus récents que le local remplacent le local, les
+     *  écrans se re-rendent via le bus) + restauration du compte + liaison
+     *  appareil (cible des notifications ; félicitations EN ATTENTE ⇒
+     *  overlay à cette ouverture, bulle OS partie par ailleurs). */
+    const adopteSession = (u: MeResponse): void => {
+      setMe(u);
+      setAuthenticated(true);
+      brancherSynchroReponses();
+      definirAuthentifie(true);
+      void restaurerReponses();
+      void linkDevice(getDeviceId())
+        .then((lr) => {
+          if (lr.congrats) setCongrats(lr.congratsVia ?? 'email');
+        })
+        .catch(() => {});
+    };
+
+    /** Vérifie la session. `reprise` = 2ᵉ tentative après erreur réseau : en
+     *  cas de nouvel échec, on reste en mode dégradé SANS re-programmer (pas
+     *  de boucle infinie de requêtes). */
+    const verifieSession = (reprise: boolean): void => {
+      void fetchMe()
+        .then((u) => adopteSession(u))
+        .catch((e: unknown) => {
+          if (e instanceof ApiError && e.status === 401) {
+            // Vraie fin de session (cookie expiré/révoqué) → écran d'auth ;
+            // le marqueur local de session est purgé.
+            definirAuthentifie(false);
+            setAuthenticated(false);
+          } else if (sessionLocalePresente()) {
+            // FE-005 (audit Task 105) : erreur réseau/5xx/timeout ≠ fin de
+            // session — on NE déconnecte PAS : mode dégradé (shell + états
+            // locaux des quêtes) et, au premier échec seulement, une reprise
+            // de la vérification à 10 s.
+            setAuthenticated(true);
+            if (!reprise) window.setTimeout(() => verifieSession(true), 10000);
+          } else {
+            // Aucune session connue sur cet appareil → écran d'auth.
+            setAuthenticated(false);
+          }
+        });
+    };
+    verifieSession(false);
 
     const onHash = () => setRoute(readRoute());
     window.addEventListener('hashchange', onHash);
@@ -404,7 +431,10 @@ export default function App() {
       window.alert(notice);
     }
     window.location.hash = '';
-  }, []);
+    // FE-004 (audit Task 105) : tx dans les deps — si la langue change pendant
+    // le redirect OAuth, le message repart dans la bonne langue. La garde
+    // `startsWith('#/?')` rend toute re-exécution ultérieure inoffensive.
+  }, [tx]);
 
   /** Synchronise l'URL ↔ l'état : l'onglet Quête calcule SA quête à retrouver. */
   const go = (dest: Exclude<Dest, 'masked'>): void => {
@@ -641,10 +671,9 @@ export default function App() {
               <span className="brand">
                 Wai<span className="brand-accent">ryu</span>
               </span>
-              <span
-                className="ah-tagline"
-                dangerouslySetInnerHTML={{ __html: tx("Apprendre aujourd'hui,<br>explorer demain") }}
-              />
+              {/* FE-002 (audit Task 105) : plus de dangerouslySetInnerHTML — le
+                  saut de ligne vit dans la clé i18n, rendu via pre-line (CSS). */}
+              <span className="ah-tagline">{tx("Apprendre aujourd'hui,\nexplorer demain")}</span>
             </div>
           </div>
           <div className="ah-right">

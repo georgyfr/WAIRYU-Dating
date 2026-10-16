@@ -135,9 +135,31 @@ export function brancherSynchroReponses(): void {
   });
 }
 
-/** App.tsx pose l'état d'authentification après fetchMe/login/logout. */
+/** Marqueur local « une session a existé sur cet appareil » — survit au reload
+ *  (hors ligne compris). Sert à NE PAS déconnecter l'utilisateur sur une
+ *  simple erreur réseau au boot (audit FE-005) : 401 = vraie fin de session
+ *  (marqueur purgé), erreur réseau = mode dégradé si le marqueur est présent. */
+const CLE_SESSION_LOCALE = 'wairyu.session.presente';
+
+/** App.tsx pose l'état d'authentification après fetchMe/login/logout.
+ *  Le marqueur est PERSISTÉ (localStorage) en plus du drapeau mémoire. */
 export function definirAuthentifie(v: boolean): void {
   authentifie = v;
+  try {
+    if (v) localStorage.setItem(CLE_SESSION_LOCALE, '1');
+    else localStorage.removeItem(CLE_SESSION_LOCALE);
+  } catch {
+    /* localStorage indisponible (navigation privée) — drapeau mémoire seul */
+  }
+}
+
+/** Y a-t-il eu une session sur cet appareil ? (lecture tolérante aux erreurs) */
+export function sessionLocalePresente(): boolean {
+  try {
+    return localStorage.getItem(CLE_SESSION_LOCALE) === '1';
+  } catch {
+    return false;
+  }
 }
 
 /** Restaure les réponses du COMPTE vers cet appareil (au login / au boot

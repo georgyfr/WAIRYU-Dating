@@ -2152,3 +2152,21 @@ Work Log:
 Stage Summary:
 - Les 4 failles de l'audit sont corrigées dans le code (main local, poussées sur origin/main). Migration 0013 à appliquer en staging (deploy.sh le fait automatiquement). Comportement nouveau : API fail-closed sans SESSION_HMAC_KEY valide ; échec d'audit P0 âge = 500 visible au lieu d'être avalé ; suppression de compte = purge RGPD complète (3 tables de plus).
 - En attente pour déployer : CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (à re-envoyer par le fondateur). Déploiement : bash /home/z/executer.sh staging → vérification health + E2E smoke → feu vert prod déjà donné par le fondateur pour la sécurité seule.
+
+---
+Task ID: 105
+Agent: orchestrateur (Z.ai Code)
+Task: Demande fondateur (« et ceci ») — audit BE-012 + FE-002/003/004/005/006 corrigés (le message précédent « TOKEN WAIRYU + 7 problèmes » ayant été annulé, seuls les items de CE message sont traités).
+
+Work Log:
+- BE-012 (push.ts:331) : le littéral `1` était en slot 10 (last_open_at) au lieu du slot 11 (open_count) → last_open_at=1 (1970) et open_count=now (~1,76 Md) pour toute nouvelle souscription push. Corrigé : littéral déplacé au slot 11 (open_count=1, aligné sur le schéma DEFAULT 1 et le pattern canonique devices). Vérifié par script : 14 colonnes = 13 binds + 1 littéral.
+- FE-002 (App.tsx:646) : dangerouslySetInnerHTML supprimé — la tagline passe par un vrai \n dans la clé i18n (core.ts FR+EN mis à jour) rendu via white-space: pre-line (styles.css). Aucune autre occurrence réelle dans App.tsx.
+- FE-003 (public/sw.js) : interception fetch MINIMALE ajoutée — navigation = réseau d'abord + repli index caché (offline shell) ; /assets/* (hashés immuables) = cache d'abord ; JAMAIS /api/*, /admin, non-GET, tiers. Cache wairyu-shell-v1 + purge des caches antérieurs à l'activate. DÉCOUVERTE : le SW n'était enregistré que lors de l'armement push (après permission) → il est maintenant enregistré AU BOOT pour tous (App.tsx, idempotent, no-op sans serviceWorker).
+- FE-005 (App.tsx fetchMe) : 401 ≠ erreur réseau. 401 = vraie fin de session (marqueur local purgé, écran auth) ; erreur réseau/5xx = PAS de déconnexion si une session a existé sur l'appareil (mode dégradé shell+quêtes locales) + UNE reprise de vérification à 10 s (pas de boucle : la 2ᵉ tentative ne re-programme pas). Sans session connue → écran auth (comportement correct). Nouveau marqueur persistant localStorage wairyu.session.presente (sync-reponses.ts : definirAuthentifie persiste, sessionLocalePresente() lit, try/catch navigation privée).
+- FE-004 (App.tsx:373) : effect OAuth — tx ajouté aux deps ([tx]) ; la garde startsWith('#/?') rend la re-exécution inoffensive.
+- FE-006 : Discover.tsx (50 LOC démo), Messages.tsx (21 LOC), Profile.tsx (215 LOC, ancien écran RGPD réimplémenté inline dans App.tsx — handleLogout/handleExport y vivent déjà) = code mort (ZÉRO import vérifié par grep repo) → git rm. Masque.tsx CONSERVÉ (c'est la vraie page d'attente active des routes #/decouvrir #/messages #/profil). README corrigé (écrans réels + note de suppression).
+- VÉRIFICATIONS : node --check sw.js OK ; tsc API 0 erreur ; tsc web 0 erreur ; vite build OK (9,76 s) ; script d'alignement binds 14=13+1 PASS ; 0 référence résiduelle (ancienne clé i18n, fichiers supprimés, dangerouslySetInnerHTML réel).
+- Hors périmètre assumé : les 7 problèmes du message ANNULÉ par le fondateur (users.email UNIQUE, CTA portail, fallback SPA HTML, orphelins, tables vides, énumération login, images D1) ne sont PAS traités — en attente de sa confirmation explicite.
+
+Stage Summary:
+- 6 items d'audit corrigés (BE-012 + 5 FE), poussés sur origin/main. Le shell hors ligne nécessite le SW : désormais enregistré au boot pour tous les appareils. Les corrections partiront en staging/prod avec le prochain déploiement (identifiants Cloudflare toujours en attente du fondateur ; feu vert prod sécurité déjà donné, les fixes FE/BE-012 suivront sur son feu vert).

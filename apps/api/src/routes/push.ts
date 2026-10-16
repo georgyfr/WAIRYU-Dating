@@ -328,7 +328,7 @@ pushRoutes.post('/push/subscribe', async (c) => {
   await c.env.DB.prepare(
     `INSERT INTO device_push_subscriptions
        (id, device_id, endpoint, p256dh, auth, platform, user_agent, user_id, first_open_at, last_open_at, open_count, welcome_pending, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
      ON CONFLICT (device_id) DO UPDATE SET
        endpoint = excluded.endpoint, p256dh = excluded.p256dh, auth = excluded.auth,
        platform = excluded.platform, user_agent = excluded.user_agent,
