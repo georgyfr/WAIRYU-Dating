@@ -16,6 +16,7 @@ import { authRoutes } from './routes/auth';
 import { satisfactionRoutes } from './routes/satisfaction';
 import { reponsesRoutes } from './routes/reponses';
 import { rencontresRoutes } from './routes/rencontres';
+import { messagesRoutes } from './routes/messages';
 import { ChatRoom } from './do/chat-room';
 import { APP } from '@wairyu/shared';
 
@@ -55,6 +56,7 @@ app.route('/api', authRoutes);
 app.route('/api', satisfactionRoutes);
 app.route('/api', reponsesRoutes);
 app.route('/api', rencontresRoutes);
+app.route('/api', messagesRoutes);
 app.route('/admin', adminRoutes);
 
 // ---- Gestion d'erreurs unifiée ----

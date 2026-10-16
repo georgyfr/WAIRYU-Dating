@@ -300,10 +300,18 @@ export interface AccountExport {
     username: string | null;
     note: string;
   };
-  /** Rencontre-E1 (Task 94) — les pas envoyés et les matchs (RGPD art. 15). */
+  /** Rencontre-E1/E2 (Tasks 94/107) — pas, matchs, messages et sécurité (RGPD art. 15). */
   rencontres: {
     pasEnvoyes: Record<string, unknown>[];
     matchs: Record<string, unknown>[];
+    /** Mes messages envoyés (R.E2) — corps inclus, c'est le droit d'accès. */
+    messages: Record<string, unknown>[];
+    /** Signalements que j'ai FAITS + blocages posés (les signalements REÇUS ne sont jamais exportés : confidentialité modération). */
+    securite: {
+      signalements: Record<string, unknown>[];
+      blocages: Record<string, unknown>[];
+      note: string;
+    };
     note: string;
   };
   consents: Record<string, unknown>;

@@ -81,6 +81,8 @@ export const RATE_RULES = {
   chatTicketUser: { scope: 'chat:tk:user', windowSeconds: 3600, max: 60 },
   /** Boîte de réception (page Messages + badge d'onglet) — polling léger autorisé : 240 / h. */
   chatListUser: { scope: 'chat:list:user', windowSeconds: 3600, max: 240 },
+  /** Traductions Workers AI (bouton manuel, D-E2-5) : 60 / heure (coût IA borné). */
+  messagesTranslateUser: { scope: 'chat:tr:user', windowSeconds: 3600, max: 60 },
 
   // --- Étape 7 : sécurité & modération ---
   /** Démarrages de vérification selfie : 5 / jour (anti-abus de la file). */

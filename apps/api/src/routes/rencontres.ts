@@ -162,8 +162,9 @@ rencontresRoutes.get('/rencontres/pool', async (c) => {
     }
 
     // MES pas (par destinataire) + les pas reçus (AVEUGLES : un compte, un nom)
-    // + MES matchs.
-    const [mesPasMap, pasRecusRows, matchsRows] = await Promise.all([
+    // + MES matchs + les blocages qui me concernent (D-E2-7 : deux sens — le
+    // bloqué comme le bloqueur ne se voient plus dans le pool, silencieusement).
+    const [mesPasMap, pasRecusRows, matchsRows, blocagesRows] = await Promise.all([
       mesPas(c.env.DB, session.userId),
       c.env.DB.prepare(
         `SELECT COUNT(*) AS n FROM rencontre_pas rp
@@ -178,7 +179,20 @@ rencontresRoutes.get('/rencontres/pool', async (c) => {
         .bind(session.userId)
         .all<{ id: string; a: string; b: string; cree_a: string }>()
         .then((r) => r.results ?? []),
+      c.env.DB.prepare(
+        `SELECT bloqueur, bloque FROM rencontre_blocages WHERE bloqueur = ?1 OR bloque = ?1`,
+      )
+        .bind(session.userId)
+        .all<{ bloqueur: string; bloque: string }>()
+        .then((r) => r.results ?? []),
     ]);
+
+    const exclusDuPool = new Set<string>();
+    for (const b of blocagesRows) {
+      exclusDuPool.add(b.bloqueur);
+      exclusDuPool.add(b.bloque);
+    }
+    exclusDuPool.delete(session.userId);
 
     const partenairesMatch = new Map<string, { id: string; creeA: string }>();
     for (const m of matchsRows) {
@@ -200,6 +214,7 @@ rencontresRoutes.get('/rencontres/pool', async (c) => {
     const candidats: Membre[] = [];
     for (const [uid, m] of parMembre) {
       if (!JALON_A.every((q) => m.terminees.has(q))) continue; // plancher mutuel
+      if (exclusDuPool.has(uid)) continue; // blocage (D-E2-7) : silencieux, ni vu ni connu
       const p = profondeurDe(m.terminees);
       candidats.push({ ...m, uid, communs: communsDe(m.terminees), franchis: p.mondesFranchis });
     }
@@ -283,6 +298,15 @@ rencontresRoutes.post('/rencontres/pas', async (c) => {
   if (vers === session.userId) return c.json({ ok: false, error: 'invalid_target' }, 400);
 
   try {
+    // D-E2-7 — blocage (un des deux sens) : le pas est NEUTRE (ok:true sans
+    // effet) — jamais d'erreur qui confirmerait le blocage au bloqué.
+    const bloq = await c.env.DB.prepare(
+      `SELECT 1 AS ok FROM rencontre_blocages WHERE (bloqueur = ?1 AND bloque = ?2) OR (bloqueur = ?2 AND bloque = ?1) LIMIT 1`,
+    )
+      .bind(session.userId, vers)
+      .first<{ ok: number }>();
+    if (bloq) return c.json({ ok: true, match: false });
+
     // Le plancher est MUTUEL : moi ET l'autre devons avoir le jalon A,
     // l'autre doit exister et être actif.
     const [moiA, cible] = await Promise.all([

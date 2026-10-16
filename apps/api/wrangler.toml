@@ -31,6 +31,10 @@ id = "583f084a0d834cd9adc8711270857170"
 name = "CHAT_ROOM"
 class_name = "ChatRoom"
 
+# ---------- Workers AI (RENCONTRE-E2 : traduction à la demande, D-E2-5) ----------
+[ai]
+binding = "AI"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["ChatRoom"]
@@ -83,6 +87,10 @@ id = "f07ee4cd03984d15b8a7fc70ca3ace80"
 [[env.staging.durable_objects.bindings]]
 name = "CHAT_ROOM"
 class_name = "ChatRoom"
+
+# ---------- Workers AI (staging — même binding, même usage) ----------
+[env.staging.ai]
+binding = "AI"
 
 [env.staging.triggers]
 crons = ["40 3 * * *"]

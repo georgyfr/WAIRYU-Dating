@@ -27,6 +27,6 @@ apps/web/
     └── screens/               # Welcome · Voyage · Mondes · Quête · Récolte · Portrait · Rencontres · Auth · Masque
 ```
 
-- Espaces dating (#/decouvrir, #/messages, #/profil) : page d'attente « Masque » (« Cet espace n'est pas encore ouvert ») — ouverture progressive par étages, jamais de cul-de-sac. (FE-006 : les anciens écrans de démonstration Discover/Messages/Profile, jamais rendus, ont été supprimés.)
+- Espaces dating : #/decouvrir et #/profil restent sur la page d'attente « Masque » (ouverture progressive par étages, jamais de cul-de-sac). **#/messages est OUVERT (RENCONTRE-E2, Task 107)** : la conversation naît d'un match (deux pas réciproques) — messages persistés D1, temps réel WebSocket (DO ChatRoom) avec fallback REST, non-lus, traduction au bouton manuel (Workers AI), révélation consentie aux seuils REVEAL (15 messages ET 7 jours, double oui), sécurité à un geste (signalement confidentiel, blocage silencieux, unmatch qui efface tout). (FE-006 : les anciens écrans de démonstration Discover/Messages/Profile, jamais rendus, ont été supprimés.)
 - Déploiement : cible Cloudflare (à documenter dans une prochaine vague).
 - Éthique de marque conservée : photos consenties · matching explicable · la rencontre n'est jamais payante.

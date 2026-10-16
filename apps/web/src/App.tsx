@@ -7,6 +7,7 @@ import Recolte from './screens/Recolte';
 import Portrait from './screens/Portrait';
 import Rencontres from './screens/Rencontres';
 import Masque from './screens/Masque';
+import MessagesEspace from './screens/MessagesEspace';
 import Quete from './screens/Quete';
 import PrototypeResultats from './screens/PrototypeResultats';
 import Auth from './screens/Auth';
@@ -56,9 +57,10 @@ import type { MeResponse, PushEventRow } from '@wairyu/shared';
 
 /**
  * L'app À CE NIVEAU est 100 % Voyage : les 5 onglets Voyage · Mondes · Quête ·
- * Parcourus · Récolte ; les espaces dating (#/decouvrir, #/messages, #/profil)
- * sont MASQUÉS — la page d'attente les remplace, les anciens écrans restent
- * dans le dépôt prêts à rouvrir (demande fondateur, réversible).
+ * Parcourus · Récolte ; les espaces dating (#/decouvrir, #/profil) restent
+ * MASQUÉS — la page d'attente les remplace. EXCEPTION R.E2 (Task 107) :
+ * #/messages est OUVERT derrière un match (la conversation naît de deux pas
+ * réciproques — jamais de découverte de nouveaux visages ici).
  *
  * La navigation est HASH-driven : l'URL est synchronisée avec la vue et les
  * routes sont deep-linkables au chargement (#/quete/1.1, #/reset?t=…, etc.).
@@ -67,13 +69,13 @@ import type { MeResponse, PushEventRow } from '@wairyu/shared';
  * (readRoute `au`, Tn → lireEtatQuete, App `Xh`).
  */
 
-type Stage = 'welcome' | Tab | 'portrait' | 'matchs' | 'masked';
+type Stage = 'welcome' | Tab | 'portrait' | 'matchs' | 'masked' | 'messages';
 
 /** Destinations de go() — l'onglet Quête ne passe PAS par DEST_HASH : #/quete est une Route dédiée. */
-type Dest = Tab | 'portrait' | 'matchs' | 'masked';
+type Dest = Tab | 'portrait' | 'matchs' | 'masked' | 'messages';
 
-/** Les vues adressables par le hash des tabs (les dating → 'masked'). */
-type TabRoute = 'voyage' | 'mondes' | 'parcourus' | 'recolte' | 'portrait' | 'matchs' | 'masked';
+/** Les vues adressables par le hash des tabs (R.E2 : #/messages est réel). */
+type TabRoute = 'voyage' | 'mondes' | 'parcourus' | 'recolte' | 'portrait' | 'matchs' | 'masked' | 'messages';
 
 /** Hash → vue (l'onglet Quête n'y figure pas : #/quete a SA route). */
 const TAB_HASHES: Record<string, TabRoute> = {
@@ -84,7 +86,7 @@ const TAB_HASHES: Record<string, TabRoute> = {
   '#/portrait': 'portrait',
   '#/matchs': 'matchs',
   '#/decouvrir': 'masked',
-  '#/messages': 'masked',
+  '#/messages': 'messages',
   '#/profil': 'masked',
 };
 
@@ -96,6 +98,7 @@ const DEST_HASH: Record<Exclude<TabRoute, 'masked'>, string> = {
   recolte: '#/recolte',
   portrait: '#/portrait',
   matchs: '#/matchs',
+  messages: '#/messages',
 };
 
 /** Routes spéciales portées par le hash (tabs, quête, OAuth, reset email, Meta). */
@@ -238,6 +241,8 @@ export default function App() {
   // Les puces de nouveautés des onglets (Task 68) — dérivées de l'état RÉEL,
   // éteintes par la visite de l'onglet (effet ci-dessous).
   const inedits = useInedits();
+  /** R.E2 — badge de messages non lus, remonté par MessagesEspace (polling/WS). */
+  const [nonLusChat, setNonLusChat] = useState(0);
 
   // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
   const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
@@ -903,6 +908,7 @@ export default function App() {
         {view === 'portrait' && <Portrait />}
         {view === 'matchs' && <Rencontres />}
         {view === 'masked' && <Masque />}
+        {view === 'messages' && <MessagesEspace onNonLus={setNonLusChat} monId={me?.userId ?? null} />}
         {view === 'quete' && (
           <Quete
             key={queteResultats ? `${queteCourante}-resultats` : queteCourante}
@@ -917,10 +923,10 @@ export default function App() {
           />
         )}
         <TabBar
-          active={view === 'matchs' && rencontresOuvert ? 'rencontres' : view}
+          active={view === 'matchs' && rencontresOuvert ? 'rencontres' : view === 'messages' ? 'rencontres' : view}
           onSelect={go}
           queteEnCours={queteEnCours}
-          badges={inedits}
+          badges={{ ...inedits, rencontres: nonLusChat }}
           rencontresOuvert={rencontresOuvert}
         />
       </div>

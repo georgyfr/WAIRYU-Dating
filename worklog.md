@@ -2188,3 +2188,20 @@ Work Log:
 Stage Summary:
 - Task 104 (4 failles sécurité) + Task 105 (BE-012 + 5 FE) DÉPLOYÉES ET VÉRIFIÉES en staging ET en production. Prod = https://wairyu.wairyu.workers.dev (98adef82), staging = https://wairyu-staging.wairyu.workers.dev (e62080f0).
 - RESTE : rotation recommandée des tokens Cloudflare/GitHub (exposés 2 fois dans le chat, dont 1 message annulé) ; reconstruction E2 (chat temps réel, signalement/blocage, REVEAL, migrations 0014+) ; les 7 problèmes du message ANNULÉ restent NON traités (users.email UNIQUE, CTA portail, fallback SPA, orphelins, tables vides, énumération login, images D1) — en attente de confirmation explicite du fondateur.
+
+---
+Task ID: 107
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur « Reconstruction E2 » (chat temps réel, signalement/blocage/unmatch, REVEAL, migrations 0014+) — 3ᵉ reconstitution du chantier perdu aux resets (Tasks 100-105 jamais poussés), cette fois BOUCLÉE et poussée dans le même tour. Les « 7 problèmes » du message annulé sont hors périmètre (autre projet, fondateur).
+
+Work Log:
+- Reconstitution guidée par le worklog sandbox (Tasks 100-105 : D-E2-1..11, Workers AI llama-3.3, blocage silencieux deux sens, REVEAL{15msg/7j} du shared, rate rules orphelines déjà posées, DO ChatRoom stub 501).
+- Migration 0014_rencontre_chat.sql : rencontre_messages/lus/blocages/signalements/reveals (additive, conventions 0012, aucune table existante touchée).
+- Backend : routes/messages.ts (10 endpoints : conversations, historique 100/page, envoi REST avec notify DO, marque lu, reveal aux 2 seuils ET double oui, traduction AI bouton manuel fail-graceful 503, blocage silencieux, unmatch purge tout + pas retirés, signalements confidentiels sans oracle, WS /rencontres/:matchId/ws → DO hibernation) ; DO ChatRoom complet (hibernation, re-vérification D1 à chaque envoi, anti-spam D1 partagé avec REST, broadcast, /notify pour le fallback REST) ; pool/pas durcis blocage deux sens (pool caché, pas neutre) ; RGPD export étendu (messages/signalements/blocages) + purge physique 5 tables E2 ; rate rules branchées (chatSendUser, chatListUser, chatTicketUser, chatRevealUser, chatUnmatchUser, safetyReportUser, + messagesTranslateUser 60/h ajoutée) ; env.ts AI? + wrangler.toml [ai] prod+staging.
+- Front : lib/messages-client.ts ; screens/MessagesEspace.tsx (liste, fil, bulles, WS temps réel avec reconnexion + polling 20 s, traduction sous la bulle, bandeau révélation-progress sans pression, modale sécurité signaler/bloquer/unmatch) ; App.tsx porte #/messages réelle + badge non-lus TabBar ; Rencontres.tsx bouton « Ouvrir la conversation » (sessionStorage deep-link) ; i18n EN screens-c.ts (48 clés) ; CSS .msg-* (~370 l., palette thème).
+- E2E local /home/z/e2e/e2e-local.sh reconstruit avec les leçons (d1 --json + jq, jalon A inséré en D1, purge locale des tables/quotas persistants, port libre + sanity, pkill workerd) : 27 verts / 0 rouge bloquant — jalon A → pas → match → REST → non-lus/lu → reveal refusé (seuil) → signalement → blocage (pool caché, envoi neutre) → unmatch (purge 0/0, pas retirés) → blocage+signalement SURVIVENT → RGPD (7/7 tables vides, compte A disparu). Temps réel PRUVÉ séparément (bun mini-tests : 2 sockets, {type:ouvert}, diffusion des deux sens, écho expéditeur, REST→notify ; 101 serveur répétés). Instabilité WS locale miniflare sous orchestration documentée dans le script (meilleur effort) — preuve définitive attendue en staging réel.
+- Vérifications : tsc API 0 erreur, tsc web 0 erreur, vite build OK (9,87 s).
+- Hors périmètre assumé (fondateur) : les 7 problèmes du message annulé (autre projet) — non traités.
+
+Stage Summary:
+- RENCONTRE-E2 reconstruit, prouvé en local (28 vérifs), poussé. Prochaines étapes : staging (migration 0014 + AI binding) → vérifs réelles staging (dont WS wss:// réel) → prod sur feu vert du fondateur.

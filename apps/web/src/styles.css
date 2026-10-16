@@ -10443,3 +10443,374 @@ button.r-tl-chip:hover {
     line-height: 1.5;
     color: var(--q-mute)
 }
+
+/* ============================================================
+   R.E2 — Les conversations (#/messages, Task 107)
+   .msg-* : liste, fil, bulles, révélation, sécurité.
+   Palette du thème (turquoise/night) — aucune couleur nouvelle.
+   ============================================================ */
+
+/* ---- l'écran ---- */
+.msg-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - 76px);
+}
+
+/* ---- la liste des conversations ---- */
+.msg-conv {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    padding: 14px 16px;
+    margin-bottom: 10px
+}
+
+.msg-conv-avatar {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    display: grid;
+    place-items: center;
+    color: var(--c-turquoise-deep)
+}
+
+.msg-conv-corps {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.msg-conv-titre {
+    font-weight: 700;
+    color: var(--c-night)
+}
+
+.msg-conv-apercu {
+    font-size: .86rem;
+    color: var(--c-gray-blue);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.msg-badge {
+    flex: none;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: var(--c-coral);
+    color: var(--c-white);
+    font-size: .75rem;
+    font-weight: 700;
+    display: grid;
+    place-items: center
+}
+
+.msg-info p,
+.msg-vide,
+.msg-erreur {
+    color: var(--c-gray-blue);
+    font-size: .95rem
+}
+
+.msg-erreur {
+    color: var(--c-coral-deep)
+}
+
+/* ---- l'en-tête du fil ---- */
+.msg-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0 6px
+}
+
+.msg-retour,
+.msg-securite {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--c-line);
+    background: var(--c-white);
+    color: var(--c-night);
+    display: grid;
+    place-items: center;
+    cursor: pointer
+}
+
+.msg-head-nom {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0
+}
+
+.msg-head-titre {
+    font-weight: 800;
+    color: var(--c-night);
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.msg-reveal-badge {
+    flex: none;
+    font-size: .74rem;
+    font-weight: 700;
+    color: var(--c-turquoise-deep);
+    border: 1px solid var(--c-turquoise-light);
+    border-radius: 999px;
+    padding: 2px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px
+}
+
+/* ---- la bandeau révélation ---- */
+.msg-reveal-bar {
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin: 4px 0 8px;
+    font-size: .85rem;
+    color: var(--c-gray-blue);
+    text-align: center
+}
+
+.msg-reveal-cta {
+    font-size: .85rem;
+    padding: 8px 14px
+}
+
+/* ---- le fil ---- */
+.msg-fil {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 2px 12px
+}
+
+.msg-vide {
+    text-align: center;
+    padding: 24px 12px
+}
+
+.msg-ligne {
+    display: flex;
+    flex-direction: column;
+    max-width: 82%
+}
+
+.msg-moi {
+    align-self: flex-end;
+    align-items: flex-end
+}
+
+.msg-autre {
+    align-self: flex-start;
+    align-items: flex-start
+}
+
+.msg-bulle {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    box-shadow: var(--shadow)
+}
+
+.msg-moi .msg-bulle {
+    background: var(--c-turquoise-light);
+    border-color: var(--c-turquoise)
+}
+
+.msg-texte {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--c-night)
+}
+
+.msg-trad {
+    margin: 6px 0 0;
+    padding-top: 6px;
+    border-top: 1px dashed var(--c-line);
+    font-size: .84rem;
+    font-style: italic;
+    color: var(--c-gray-blue)
+}
+
+.msg-trad-btn {
+    margin-top: 4px;
+    border: none;
+    background: none;
+    color: var(--c-turquoise-deep);
+    font-size: .74rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 0
+}
+
+.msg-trad-btn:disabled {
+    color: var(--c-gray-blue);
+    cursor: default
+}
+
+.msg-heure {
+    font-size: .68rem;
+    color: var(--c-gray-blue);
+    padding: 0 4px
+}
+
+/* ---- flash / envoi / blocage ---- */
+.msg-flash {
+    margin: 0 0 6px;
+    font-size: .84rem;
+    color: var(--c-turquoise-deep);
+    text-align: center
+}
+
+.msg-bloque {
+    margin: 6px 0 12px;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--c-gray-blue)
+}
+
+.msg-envoi {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0 12px
+}
+
+.msg-saisie {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font: inherit;
+    color: var(--c-night);
+    background: var(--c-white)
+}
+
+.msg-saisie:focus {
+    outline: 2px solid var(--c-turquoise);
+    outline-offset: 1px
+}
+
+.msg-envoi-btn {
+    flex: none
+}
+
+/* ---- la modale sécurité ---- */
+.msg-modale {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 44, .55);
+    display: grid;
+    place-items: center;
+    z-index: 60;
+    padding: 16px
+}
+
+.msg-modale-carte {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    padding: 18px;
+    width: min(420px, 100%);
+    max-height: 86dvh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 12px 40px rgba(15, 31, 44, .3)
+}
+
+.msg-modale-titre {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--c-night)
+}
+
+.msg-modale-p {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--c-gray-blue)
+}
+
+.msg-sig {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px 12px;
+    margin: 0
+}
+
+.msg-sig legend {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--c-night);
+    padding: 0 4px
+}
+
+.msg-sig-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .88rem;
+    color: var(--c-night);
+    padding: 3px 0;
+    cursor: pointer
+}
+
+.msg-sig-details {
+    width: 100%;
+    margin-top: 8px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    font: inherit;
+    font-size: .85rem;
+    color: var(--c-night);
+    resize: vertical
+}
+
+.msg-btn-soft,
+.msg-btn-danger,
+.msg-btn-fermer {
+    width: 100%
+}
+
+.msg-btn-danger {
+    background: var(--c-coral);
+    color: var(--c-white)
+}
+
+.msg-btn-fermer {
+    background: none;
+    border: 1px solid var(--c-line);
+    color: var(--c-gray-blue)
+}
+
+/* ---- bouton conversation dans Rencontres ---- */
+.ren-conv-btn {
+    flex: none;
+    font-size: .8rem;
+    padding: 7px 12px
+}

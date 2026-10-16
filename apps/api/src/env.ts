@@ -8,6 +8,12 @@ export interface Env {
   CHAT_ROOM: DurableObjectNamespace;
   /** Assets statiques du front (React+Vite). */
   ASSETS: Fetcher;
+  /**
+   * Workers AI (RENCONTRE-E2, D-E2-5 : traduction à la demande, bouton
+   * manuel). Absent ⇒ l'endpoint répond 503 « traduction_indisponible »
+   * proprement — JAMAIS de crash, le chat reste fonctionnel sans IA.
+   */
+  AI?: Ai;
 
   // ---- Variables ----
   ENVIRONMENT: 'production' | 'staging';

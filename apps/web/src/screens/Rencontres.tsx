@@ -218,10 +218,22 @@ export default function Rencontres() {
                     })}
                   </span>
                 </span>
+                {/* R.E2 (Task 107) : la conversation naît du match — la porte
+                    #/messages est réelle. L'id passe par sessionStorage (le
+                    hash #/messages est une porte, pas un deep-link de match). */}
+                <button
+                  className="btn btn-accent ren-conv-btn"
+                  onClick={() => {
+                    sessionStorage.setItem('wairyu.ouvrirConversation', m.id);
+                    window.location.hash = '#/messages';
+                  }}
+                >
+                  {tx('Ouvrir la conversation')}
+                </button>
               </article>
             ))}
           </div>
-          <p className="ren-note">{tx('Le Voyage à Deux s\u2019ouvrira à deux — la conversation arrive dans une prochaine étape.')}</p>
+          <p className="ren-note">{tx('Une conversation, c\u2019est du temps et des mots — la révélation se mérite (15 messages et 7 jours).')}</p>
         </section>
       )}
 
