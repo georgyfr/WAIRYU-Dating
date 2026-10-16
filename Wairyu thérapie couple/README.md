@@ -2,7 +2,7 @@
 
 > Point d'entrée de tout le programme WTC dans ce dépôt : document de référence officiel,
 > arbre de navigation des packages de validation, statut des échelles RIO et règles
-> permanentes issues des cycles. Mis à jour le **15/10/2026** (cycle WTC-Q3-R1).
+> permanentes issues des cycles. Mis à jour le **16/10/2026** (cycle WTC-EMO-Q5 — dimension émotionnelle complète 5/5).
 
 ---
 
@@ -10,28 +10,13 @@
 
 **➡️ [`programme wairyu couple.pdf`](programme%20wairyu%20couple.pdf)** — version 2.0 du 15/10/2026, 7 pages A4
 
-C'est **le document canonique du projet** : il remplace la v1 comme contexte officiel de
-Data Insight et comme archive de référence. Il contient :
-
-- **Partie 13 — L'état de la validation** : le circuit à quatre acteurs (GLM → Data
-  Insight → GLM superviseur → RIO), la chronologie des cycles WTC-Q1 → Q2-R1, le résultat
-  final des deux échelles validées, les règles d'orchestrateur devenues permanentes
-  (D-STD, D-Q2-1, D-Q2-2, D-Q2-H, D6/D7…) et les découvertes cliniques issues de la
-  validation (suppression masquée, mains libres, plafond d'exactitude ~80,5 %) ;
-- **Parties 1-12 (résumé d'archive)** : projet, 26 dimensions, 14 livrables, grammaire
-  fédérée, standard des 110 quêtes, mécanismes de calcul, moteur Solène, doctrine RIO,
-  garde-fous, fonctionnalités, test IA à l'aveugle, plan Data Insight ;
-- **État actuel du projet** + note finale pour Data Insight (prochain package : WTC-Q3
-  « Ce qui me porte », avec bornes de faisabilité D-STD intégrées dès la rédaction).
-
 | Téléchargement direct | Fichier | Rôle |
 |---|---|---|
-| [programme wairyu couple.pdf](programme%20wairyu%20couple.pdf) | PDF v2 (7 p.) | **Document de référence officiel — remplace la v1** |
+| [programme wairyu couple.pdf](programme%20wairyu%20couple.pdf) | PDF v2 (7 p.) | **Document de référence officiel** |
 | [programme wairyu couple v2.txt](programme%20wairyu%20couple%20v2.txt) | source texte v2 | Texte intégral de la v2 consolidée |
-| [programme wairyu couple.txt](programme%20wairyu%20couple.txt) | texte intégral v1 (27,8 Ko) | **Référence de contenu des parties 1-12** (désignée par la v2 elle-même) |
+| [programme wairyu couple.txt](programme%20wairyu%20couple.txt) | texte intégral v1 (27,8 Ko) | **Référence de contenu des parties 1-12** |
 | [OUTILS DE TERAPIE DU COUPLE.txt](OUTILS%20DE%20TERAPIE%20DU%20COUPLE.txt) | recherche clinique (200,9 Ko) | Sources : efficacité, 67 instruments, parcours, marché |
-| [rapports/programme wairyu couple.pdf](rapports/programme%20wairyu%20couple.pdf) | PDF v2 + couverture HTML | Copie d'archive dans `rapports/` (la v1 reste consultable dans l'historique git, commit 15ce3fa) |
-| [rapports/rapport-consolidation-v2-2026-10-15.md](rapports/rapport-consolidation-v2-2026-10-15.md) | Rapport de consolidation v2 | **Rapport du 15/10/2026** : état de la validation, chronologie des cycles, règles permanentes, découvertes cliniques, suite (WTC-Q3) |
+| [rapports/rapport-consolidation-v2-2026-10-15.md](rapports/rapport-consolidation-v2-2026-10-15.md) | Rapport de consolidation v2 | Rapport du 15/10/2026 |
 
 ---
 
@@ -40,50 +25,89 @@ Data Insight et comme archive de référence. Il contient :
 ```
 Wairyu thérapie couple/
 ├── README.md                        ← ce fichier (hub)
-├── programme wairyu couple.pdf      ← DOCUMENT DE RÉFÉRENCE v2 consolidée
-├── programme wairyu couple v2.txt   ← source texte de la v2
+├── programme wairyu couple.pdf      ← DOCUMENT DE RÉFÉRENCE v2
 ├── programme wairyu couple.txt      ← texte intégral v1 (parties 1-12)
 ├── OUTILS DE TERAPIE DU COUPLE.txt  ← recherche clinique amont
-├── rapports/                        ← RAPPORT de consolidation v2 + PDF + couverture (archive)
-├── visualisations/                  ← 10 visuels + index de lecture
-├── scripts/                         ← scripts de génération (charts + PDF)
-├── validation-q1/                   ← PACKAGE WTC-Q1   (verdict initial)
-├── validation-q1-r1/                ← PACKAGE WTC-Q1-R1 (révision D1-D5)
-├── validation-q2/                   ← PACKAGE WTC-Q2   (verdict initial)
-├── validation-q2-r1/                ← PACKAGE WTC-Q2-R1 (révision D-Q2-A à F)
-├── validation-q3/                   ← PACKAGE WTC-Q3   (« Ce qui me porte » — À CORRIGER)
-└── validation-q3-r1/                ← PACKAGE WTC-Q3-R1 (révision D-Q3-R1-A à H — VALIDÉ)
+├── rapports/                        ← rapport de consolidation v2
+├── visualisations/                  ← visuels + index
+├── scripts/                         ← scripts de génération
+│
+│  ═══ Dimension ATTACHEMENT (5/5 VALIDÉE) ═══
+├── validation-q1/                   ← WTC-Q1 (RIO-01, verdict initial)
+├── validation-q1-r1/                ← WTC-Q1-R1 (révision)
+├── validation-q2/                   ← WTC-Q2 (RIO-02, verdict initial)
+├── validation-q2-r1/                ← WTC-Q2-R1 (révision)
+├── validation-q3/                   ← WTC-Q3 (RIO-03, verdict initial)
+├── validation-q3-r1/                ← WTC-Q3-R1 (RIO-03 VALIDÉ)
+├── validation-q4/                   ← WTC-Q4 (RIO-04, croisement couple)
+├── validation-q5/                   ← WTC-Q5 (RIO-05, pas + suivi)
+│
+│  ═══ Dimension ÉMOTIONNELLE (5/5 VALIDÉE) ═══
+├── validation-emotionnelle/
+│   ├── fondation/                   ← Fondation v1.1 (structure, items, forces)
+│   ├── validation-emo-q1/           ← WTC-EMO-Q1 (RIO-06, météo intérieure)
+│   ├── validation-emo-q2/           ← WTC-EMO-Q2 (RIO-07, initial)
+│   ├── validation-emo-q2-r1/        ← WTC-EMO-Q2-R1 (RIO-07, révision)
+│   ├── validation-emo-q3/           ← WTC-EMO-Q3 (RIO-08, initial)
+│   ├── validation-emo-q3-r1/        ← WTC-EMO-Q3-R1 (RIO-08 VALIDÉ)
+│   ├── validation-emo-q4/           ← WTC-EMO-Q4 (RIO-09, initial)
+│   ├── validation-emo-q4-r1/        ← WTC-EMO-Q4-R1 (révision 1)
+│   ├── validation-emo-q4-r2/        ← WTC-EMO-Q4-R2 (révision 2)
+│   ├── validation-emo-q4-r3/        ← WTC-EMO-Q4-R3 (RIO-09 VALIDÉ)
+│   └── validation-emo-q5/           ← WTC-EMO-Q5 (RIO-10 VALIDÉ)
+│
+│  ═══ PILOTE RÉEL ═══
+└── validation-valid-01/             ← WTC-VALID-01/01 (protocole d'étude)
 ```
 
 ---
 
 ## 🧭 Les packages de validation — liens directs
 
-| Package | Commit | Objet | Verdict publié | Dossier |
-|---|---|---|---|---|
-| **WTC-Q1** | `3eb7399` | Quête 1 « Comment je me raccroche » (RIO-01) — 500 honnêtes + 20 piégés, critères C1-C4 | À CORRIGER (C1 46,1 % · C2 0,1567) | [validation-q1/](validation-q1/) |
-| **WTC-Q1-R1** | `1426f6e` | Révision D1-D5 (SEM structurel 0,195 · C1a/C1b/C1c · C2 [0,14;0,18]) | À CORRIGER (5/6 — C1c-(ii) 99,8 %) | [validation-q1-r1/](validation-q1-r1/) |
-| **WTC-Q2** | `0c3aaab` | Quête 2 « Ce qui m'effraie vraiment » (RIO-02) — 431 sorties, 7 critères | À CORRIGER (5/7 — C1a 72,67 % · C5c) | [validation-q2/](validation-q2/) |
-| **WTC-Q2-R1** | `78752d4` | Révision D-Q2-A à F (fqH/fqR branchés · 35 templates · 6 O7-NLP · 431 officiels) | À CORRIGER (5/7 — C1a 81,0 % · 1 FP) | [validation-q2-r1/](validation-q2-r1/) |
-| **Arbitrages finaux** | — | Q1-R1 : D6/D7 · Q2-R1 : D-Q2-G (seuil 79 %) + D-Q2-H (définition FP) | **RIO-01 VALIDÉE 6/6 · RIO-02 VALIDÉE 7/7** | (décisions orchestrateur, cf. Partie 13 du PDF) |
-| **WTC-Q3** | (ce dépôt) | Quête 3 « Ce qui me porte » (RIO-03, le positif) — banque fermée 6 forces, anti-fabrication bilatérale | **À CORRIGER (5/7 — C1a 0/40 anti-fabrication · C2 91,25 %)** | [validation-q3/](validation-q3/) |
-| **WTC-Q3-R1** | (ce dépôt) | Révision D-Q3-R1-A à H (voie B F6 supprimée · table F1 alignée · p_c2 branché · templates fournis · bornes D-STD seed 20261015) | **VALIDÉ (7/7 — note 10/10)** | [validation-q3-r1/](validation-q3-r1/) |
+### Dimension ATTACHEMENT (RIO-01 à RIO-05)
 
-Chaque dossier contient : `README.md` (verdict + visuels intégrés + liens de téléchargement
-directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sections A-G),
-`figures/` (PNG 1920×1080, 150 DPI).
+| Package | RIO | Verdict | Dossier |
+|---|---|---|---|
+| WTC-Q1 / Q1-R1 | RIO-01 « Comment je me raccroche » | ✅ VALIDÉE 6/6 (3 cycles) | [validation-q1/](validation-q1/) · [validation-q1-r1/](validation-q1-r1/) |
+| WTC-Q2 / Q2-R1 | RIO-02 « Ce qui m'effraie vraiment » | ✅ VALIDÉE 7/7 (2 cycles) | [validation-q2/](validation-q2/) · [validation-q2-r1/](validation-q2-r1/) |
+| WTC-Q3 / Q3-R1 | RIO-03 « Ce qui me porte » | ✅ VALIDÉE 7/7 (2 cycles) | [validation-q3/](validation-q3/) · [validation-q3-r1/](validation-q3-r1/) |
+| WTC-Q4 | RIO-04 « Notre danse » | ✅ VALIDÉE (option a, D-STD-2) | [validation-q4/](validation-q4/) |
+| WTC-Q5 | RIO-05 « Mon premier pas » | ✅ VALIDÉE 5/5 (10/10) | [validation-q5/](validation-q5/) |
+
+### Dimension ÉMOTIONNELLE (RIO-06 à RIO-10)
+
+| Package | RIO | Verdict | Dossier |
+|---|---|---|---|
+| WTC-EMO-Q1 | RIO-06 « Ma météo intérieure » | ✅ VALIDÉ 7/7 | [validation-emotionnelle/validation-emo-q1/](validation-emotionnelle/validation-emo-q1/) |
+| WTC-EMO-Q2 / Q2-R1 | RIO-07 « Ce que je n'arrive pas à dire » | ✅ VALIDÉ (arbitré) | [validation-emotionnelle/validation-emo-q2/](validation-emotionnelle/validation-emo-q2/) · [validation-emo-q2-r1/](validation-emotionnelle/validation-emo-q2-r1/) |
+| WTC-EMO-Q3 / Q3-R1 | RIO-08 « Ce que mon cœur sait faire » | ✅ VALIDÉ 8/8 | [validation-emotionnelle/validation-emo-q3/](validation-emotionnelle/validation-emo-q3/) · [validation-emo-q3-r1/](validation-emotionnelle/validation-emo-q3-r1/) |
+| WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ (arbitré) | [validation-emotionnelle/validation-emo-q4/](validation-emotionnelle/validation-emo-q4/) · [validation-emo-q4-r3/](validation-emotionnelle/validation-emo-q4-r3/) |
+| WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 | [validation-emotionnelle/validation-emo-q5/](validation-emotionnelle/validation-emo-q5/) |
+
+### Pilote réel
+
+| Package | Objet | Statut | Dossier |
+|---|---|---|---|
+| WTC-VALID-01/01 | Protocole d'étude (150-200 répondants) | ⏳ En attente contresignature + conseil clinique | [validation-valid-01/](validation-valid-01/) |
 
 ---
 
 ## 🧪 État des échelles RIO
 
-| Échelle | Instrument | Statut | Résultats clés (post-arbitrage) |
+| Échelle | Instrument | Statut | Résultats clés |
 |---|---|---|---|
-| **RIO-01 « Comment je me raccroche »** | 18 items (2 axes × 3 faces × 3), échelle 1-4, 2 inversés (5, 15), 1 vigilance — construct : attachement adulte (Bowlby ; Brennan, Clark & Shaver) | ✅ **VALIDÉE par simulation** (3 cycles) | α poolés 0,9155 / 0,9082 · SEM structurel 0,195 (3 métriques concordantes) · couverture CI90 89,9 % · exactitude 79,7 % (plafond ~80,5 % documenté) · RQS 20/20 · règle conservatrice 100 % / 99,8 % ≥ 99,5 % · SHA-256 ×2 · décisions D1-D5, D6, D7 |
-| **RIO-02 « Ce qui m'effraie vraiment »** | 3 formats mixtes : 10 déclencheurs (6 distance + 4 proximité) + I_alarm 0-10 · 8 comportements (5 H + 3 R, H5 = sécurité) · origine 7 voies + NLP local (seuil 0,70) — constructs : Mikulincer & Shaver ; Bowlby | ✅ **VALIDÉE par simulation** (2 cycles) | Nommage 81,0 % (≥ 79 %, D-Q2-G sur plafond ≈ 82,4 %) · calme bilatéral 85 % / 0 % · arêtes 8/8 · sécurité 8/8 · 5/5 · 0 FP (D-Q2-H) · convergence 6/6 · 4/4 · 94,0 % · O7-NLP 6/6 · affichage 35/35 · SHA-256 ×2 |
-| **RIO-03 « Ce qui me porte »** | 4 composantes : 4 confirmations déclaratives (C1-C4) · entrées héritées Q1/Q2 · journal 7 jours · banque fermée de 6 forces (max 2, sinon SILENCIEUSE) — constructs : capitalisation (Gable & Reis) ; forces de caractère (VIA/Peterson) ; sécurité acquise (Main) | ✅ **VALIDÉE par simulation** (2 cycles) | Q3-R1 : anti-fabrication 40/40 · C2 100,00 % (400/400, 0 désaccord) · banque 400/400 · limite 2 400/400 · SURCHARGE 20/20 · miroir 15/15 · SHA ×2 `1e445ea8…` · 61/475 SILENCIEUSES réelles · décisions D-Q3-R1-A à H · ouvert : S-Q3-R1-1 (borne d'intention G1 vs géométrie) |
+| **RIO-01** « Comment je me raccroche » | 18 items, 2 axes × 3 faces — attachement (Bowlby) | ✅ VALIDÉE (3 cycles) | α 0,9155/0,9082 · SEM 0,195 · couverture 89,9 % |
+| **RIO-02** « Ce qui m'effraie vraiment » | 10 déclencheurs + I_alarm + 8 comportements (H5) | ✅ VALIDÉE (2 cycles) | Nommage 81,0 % · 0 FP · convergence 6/6 |
+| **RIO-03** « Ce qui me porte » | Banque fermée 6 forces, SILENCIEUSE honnête | ✅ VALIDÉE (2 cycles) | Anti-fabrication 40/40 · C2 100 % |
+| **RIO-04** « Notre danse » | 9 configurations de couple, boucle poursuite-retrait | ✅ VALIDÉE (option a) | Symétrie 100 % · borne alerte 70 % |
+| **RIO-05** « Mon premier pas » | Pas + suivi 14 jours, anti-perfectionnisme | ✅ VALIDÉE (10/10) | C1 100 % · 0 sanction |
+| **RIO-06** « Ma météo intérieure » | 3 sous-échelles × 3 faces, échelle 5 points | ✅ VALIDÉ (7/7) | F-E2 corrigée (faute n°16) · plafond C1a 71,25 % |
+| **RIO-07** « Ce que je n'arrive pas à dire » | Invalidation + reproche-code + boucle réassurance | ✅ VALIDÉ (arbitré) | C3 anti-culpabilisation 0/0/0 · convergence 180/180 |
+| **RIO-08** « Ce que mon cœur sait faire » | Banque fermée 6 forces émotionnelles + SILENCIEUSE | ✅ VALIDÉ (8/8) | Anti-fabrication 40/40 · CAP_NON_AC 15/15 · D-DENSITÉ |
+| **RIO-09** « Nos deux langues » | 3 canaux × donne/reçoit, 9 configurations, bids | ✅ VALIDÉ (arbitré) | Symétrie 100 % · anti-verdict 0/0/0 · moyennes par canal |
+| **RIO-10** « Mon premier geste du cœur » | Arbre priorité 8 pas, suivi 14j, anti-perfectionnisme | ✅ VALIDÉ (6/6) | C1 100 % (520/520) · PERFECT 20/20 · ZERO 20/20 · 0 sanction |
 
-**Verdicts cumulés** : 6 verdicts publiés (WTC-Q1, Q1-R1, Q2, Q2-R1, Q3, **Q3-R1 = premier verdict VALIDÉ d'un cycle de révision**) — cinq verdicts « À CORRIGER » à chaque fois des fautes de spécification d'orchestrateur attrapées par le circuit et corrigées publiquement, jamais de faute d'implémentation → **3 échelles VALIDÉES** · zéro correction libre d'exécuteur · zéro masquage. **Le circuit a attrapé l'orchestrateur quatre fois sur quatre — puis la cinquième faute (S-Q3-R1-1) a été attrapée par la règle D-STD elle-même, avant l'exécution.**
+**Total : 10 instruments RIO validés sur 26 dimensions. Deux dimensions complètes : attachement (5/5) + émotionnelle (5/5).**
 
 ---
 
@@ -91,30 +115,48 @@ directs), `src/` (code exécuté), `results/` (CSV/JSON + `rapport.md` en 7 sect
 
 | Règle | Contenu | Origine |
 |---|---|---|
-| **D-STD (bornes de faisabilité)** | Tout nouveau package calcule, AVANT ses critères, le plafond atteignable par la géométrie de simulation — seuils posés à ≥ 3 points sous ce plafond. **Rattrapée au vif en Q3-R1** : la borne d'intention « G1 35-50 % SILENCIEUSES » était inatteignable par la géométrie du cahier (S-Q3-R1-1) | Q2-R1 (seuil posé à 0,4 pt du plafond) · Q3-R1 (S-Q3-R1-1) |
-| **D-Q2-1** | L'arbre de nommage définit explicitement tous ses débouchés (fallthrough : ALARME SANS MAIN · SIGNAL LÉGER NON NOMMÉ) | Q2 |
-| **D-Q2-2** | La convergence ne gate que les étiquettes d'OMBRE — jamais ZONE CALME, jamais le palier | Q2-R1 |
-| **D-Q2-H** | FP = signal déclenché sans raison (sA < 3,21 ET i_alarm < 6 ET H5 < 2) — un déclenchement légitime de frontière n'est pas un FP | Q2-R1 |
-| **D6 / D7** | Frontières multi-seuils : étiquette étendue du plus bas au plus haut touché · toute frontière porte le score ponctuel | Q1-R1 |
-| **Exécuteur strict** | L'agent signale sans corriger — toute correction est de l'orchestrateur, documentée et chiffrée | Permanent depuis Q1 |
-| **Réparation mécanique autorisée** | Une erreur bloquante exécutable peut être réparée au strict minimum, signalée en Section F | Q2 (S-Q2-8) |
-| **Publication avec liens directs** | Tout livrable est poussé ET listé avec lien de téléchargement direct dans le README du dossier concerné | Permanente |
+| **D-STD** | Bornes calculées AVANT les critères, sur CODE réel. Seuils ≥ 3 pts sous plafond. | Q2-R1 · Q3-R1 |
+| **D-STD-2** | Plafond PAR CONFIGURATION, pas seulement global. | Q4 attachement |
+| **D-Q3-J** | Bornes conditionnelles à la géométrie du simulateur. | Q3-R1 attachement |
+| **D-ENV** | Tout handoff vérifie l'état réel de l'environnement cible avant de prescrire une mission. | Transfert superviseur |
+| **D-HIST** | Avant de produire une mission, vérifier l'état du dépôt GitHub pour éviter les ré-exécutions en double. | Faute n°15 bis |
+| **D-TABLE** | Voies d'activation identiques dans la table déclarée et le code. Étendue aux conditions de forces. | Q3 attachement · Q3 émotionnel |
+| **D-VÉRITÉ** | La table de vérité cachée ne contient que des labels démontrés par l'arbre du moteur, et réciproquement. Inventaire croisé AVANT exécution. | Faute n°18 |
+| **D-DENSITÉ** | Toutes les forces d'une banque ont un nombre comparable de voies (±1). | Faute n°21 |
+| **D-NOMENCLATURE** | Les labels portent un nom unique, valable partout (moteur, simulateur, écrans, documents). | Faute n°23 |
+| **D-GÉOMÉTRIE** | Avant de poser un seuil, calculer la probabilité d'atteinte. Si < 20 %, redéfinir la condition. | Faute n°24 |
+| **D-ÉCHELLE** | Tous les seuils ancrés au milieu de l'échelle (3,00 pour 5 points). | Faute n°17 |
+| **D-PARAM** | Le bruit du simulateur est spécifié explicitement (σ = 0,60). Identique aux bornes D-STD. | Q1 émotionnel |
+| **D-TRANSMISSION** | Tout code fourni à un exécuteur est re-vérifié après transmission. Si absent, l'exécuteur signale. | Faute n°20 |
+| **D-TYPE** | Test d'exécutable avec données minimales avant implémentation. | Faute n°25 |
+| **D-CANAL** | Le code source ne transite plus par l'IM gateway. Production locale. Vérification par SHA ×2 + rapport + inventaire. | Faute n°32 (pré-attrapée) |
+| **D-CANAL-2** | Séquence : production → exécution ×2 → SHA ×2 → publication → message pointeurs → audit → contresignature. Un résumé sans SHA ne clôture pas le cycle. | Q5 émotionnel |
+| **D-EMPREINTE** (prospective) | Le SHA-256 porte sur le contenu des résultats, jamais sur un horodatage. | Q5 émotionnel |
+| **D-Q2-1 / D-Q2-2 / D-Q2-H / D6 / D7** | (Voir registre précédent — inchangées) | Q1-Q2 attachement |
+| **Exécuteur strict** | L'agent signale sans corriger — toute correction est de l'orchestrateur, documentée. | Permanent |
+
+---
+
+## 📊 Fautes d'orchestrateur documentées
+
+**Total : 32 fautes** (dont 2 pré-attrapées par l'exécuteur avant exécution).
+
+Les fautes 1-15 sont issues des cycles d'attachement (Q1-Q5). Les fautes 15 bis à 32 sont issues des cycles émotionnels (Q1-Q5) et du transfert de superviseur. Chaque faute a produit une règle permanente documentée dans la table ci-dessus.
 
 ---
 
 ## 📊 Visualisation de synthèse
 
-![État de la validation — quatre cycles, deux échelles validées](visualisations/Dashboard_EtatValidation_QuatreCycles_2026-10-15.png)
+![État de la validation](visualisations/Dashboard_EtatValidation_QuatreCycles_2026-10-15.png)
 
-Index complet et lecture guidée : [`visualisations/README.md`](visualisations/README.md).
+Index complet : [`visualisations/README.md`](visualisations/README.md).
 
 ---
 
 ## ⚙️ Méthode commune à tous les packages
 
-- Exécution **seed 42 ×2** avec vérification SHA-256 des livrables (déterminisme) ;
-- Rapport en **7 sections A-G** (critères, matrices, stats, tracés, analyse, signalements,
-  verdict + note sur barème déclaré) ;
+- Exécution **seed 42 ×2** avec vérification SHA-256 (déterminisme) ;
+- Rapport en **7 sections A-G** (critères, matrices, stats, tracés, analyse, signalements, verdict) ;
 - Les signalements (S-…) sont **documentés sans correction libre** ;
-- La contresignature des fiches et les arbitrages appartiennent à l'orchestrateur (GLM
-  superviseur) — cf. Partie 13.1 du PDF.
+- **D-CANAL** : production locale du code (non transmis par IM gateway) → exécution ×2 → SHA ×2 → publication → message pointeurs → audit superviseur → contresignature ;
+- La contresignature des fiches et les arbitrages appartiennent à l'orchestrateur (GLM superviseur).
