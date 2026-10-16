@@ -2238,3 +2238,16 @@ Work Log:
 
 Stage Summary:
 - RENCONTRE-E2 VIVANT en staging (ba7615e6) : conversations, temps réel DO+REST, non-lus, traduction IA réelle, reveal seuils, sécurité à un geste, RGPD 0 pollution. La prod est TOUJOURS sur la version sécurité (98ad82) — E2 attendra le feu vert explicite du fondateur. Reste (E3+) : le Voyage à Deux, voice notes, déblocage modération.
+
+---
+Task ID: 107-d
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert prod du fondateur (« feu vert prod ») — déploiement de RENCONTRE-E2 (Tasks 107/107-b/107-c, HEAD 8fe04b8) en production, bouclé et vérifié dans le même tour.
+
+Work Log:
+- Pré-vols : token Cloudflare vérifié « active » (jamais affiché, via wrapper) ; secrets complets ; wrapper executer.sh intact ; tomllib confirme wrangler.toml valide ([[migrations]] tag v1, ChatRoom new_sqlite_classes ; suspicion d'un `[igrations]]` corrompu levée — artéfact d'affichage) ; tsc web 0 erreur (vite build ne typecheck pas) ; 10 endpoints E2 inventoriés.
+- Déploiement : `bash /home/z/executer.sh prod` → tsc API 0 erreur, vite build OK (6 nouveaux assets), migrations D1 wairyu-prod (0015_rencontre_e2.sql), `wrangler deploy` → **Version ID 0d1b9259-cae7-49d3-a2ee-2dd40a36eb30**, bindings confirmés : CHAT_ROOM (Durable Object), AI (Workers AI), DB (wairyu-prod), CONFIG (KV), ASSETS ; cron 10 3 * * * maintenu.
+- Vérifications réelles prod : /api/health → {"ok":true,"env":"production"} ; D1 prod introspectée → 7/7 tables (rencontre_messages, rencontre_lus, rencontre_blocages, rencontre_signalements, rencontre_reveals, + matchs/pas préexistants) ; GET /api/rencontres/conversations sans session → 401 ; GET /api/rencontres/:matchId/ws sans session → 401 ; POST /api/rencontres/signalements sans session → 401 ; CORS hostile (evil-localhost.attacker.com sur /api/rencontres/pool) → 401 SANS access-control-allow-origin (sécurité Task 104 intacte) ; sw.js servi avec ses 6 addEventListener ; bundles front servis (index-DwaA8zIi.js 200, chunk lazy index.es-Bzutuva8.js 200).
+
+Stage Summary:
+- RENCONTRE-E2 EN PRODUCTION (0d1b9259) : conversations, chat temps réel DO hibernation + fallback REST/notify, non-lus, REVEAL {15 msg/7j + double oui}, traduction IA llama-3.3 à la demande, signalements (6 motifs) / blocage silencieux deux sens / unmatch avec purge, RGPD étendu (export + purge physique 5 tables E2), rate rules chat. Staging et prod alignés sur le même code (8fe04b8). Reste (E3+, à valider) : le Voyage à Deux, voice notes, déblocage modération. Rotation des jetons TOUJOURS recommandée (exposés 3× dans le chat, non rotés).
