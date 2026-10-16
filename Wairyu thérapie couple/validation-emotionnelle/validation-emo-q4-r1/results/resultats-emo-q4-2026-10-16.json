@@ -13,15 +13,15 @@
       },
       "DONNEUR NON CONVERTI (A)": {
         "n": 50,
-        "n_correct": 0,
-        "pct": 0.0,
+        "n_correct": 34,
+        "pct": 68.0,
         "seuil": 77,
         "ok": false
       },
       "DONNEUR NON CONVERTI (B)": {
         "n": 50,
-        "n_correct": 0,
-        "pct": 0.0,
+        "n_correct": 30,
+        "pct": 60.0,
         "seuil": 77,
         "ok": false
       },
@@ -125,10 +125,10 @@
       "paires_explosives": 0,
       "config_count": {
         "LANGUE COMMUNE": 41,
-        "DONNEUR NON CONVERTI (A)": 5,
-        "DONNEUR NON CONVERTI (B)": 3,
+        "DONNEUR NON CONVERTI (A)": 3,
+        "DONNEUR NON CONVERTI (B)": 6,
         "LANGUE DORMANTE": 0,
-        "CROISÉE (À CONVERTIR)": 1,
+        "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 0,
@@ -138,39 +138,39 @@
     },
     "DONNEUR NON CONVERTI (A)": {
       "n": 50,
-      "correct": 0,
+      "correct": 34,
       "boucles_actives": 18,
       "paires_explosives": 0,
       "config_count": {
         "LANGUE COMMUNE": 4,
-        "DONNEUR NON CONVERTI (A)": 0,
+        "DONNEUR NON CONVERTI (A)": 34,
         "DONNEUR NON CONVERTI (B)": 0,
         "LANGUE DORMANTE": 0,
         "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 0,
-        "ÉQUILIBRÉE MIXTE": 46
+        "ÉQUILIBRÉE MIXTE": 12
       },
-      "pct_correct": 0.0
+      "pct_correct": 68.0
     },
     "DONNEUR NON CONVERTI (B)": {
       "n": 50,
-      "correct": 0,
+      "correct": 30,
       "boucles_actives": 14,
       "paires_explosives": 0,
       "config_count": {
         "LANGUE COMMUNE": 5,
         "DONNEUR NON CONVERTI (A)": 0,
-        "DONNEUR NON CONVERTI (B)": 0,
+        "DONNEUR NON CONVERTI (B)": 30,
         "LANGUE DORMANTE": 0,
         "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 0,
-        "ÉQUILIBRÉE MIXTE": 45
+        "ÉQUILIBRÉE MIXTE": 15
       },
-      "pct_correct": 0.0
+      "pct_correct": 60.0
     },
     "LANGUE DORMANTE": {
       "n": 50,
@@ -197,14 +197,14 @@
       "paires_explosives": 0,
       "config_count": {
         "LANGUE COMMUNE": 11,
-        "DONNEUR NON CONVERTI (A)": 0,
-        "DONNEUR NON CONVERTI (B)": 1,
+        "DONNEUR NON CONVERTI (A)": 24,
+        "DONNEUR NON CONVERTI (B)": 0,
         "LANGUE DORMANTE": 0,
         "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 0,
-        "ÉQUILIBRÉE MIXTE": 38
+        "ÉQUILIBRÉE MIXTE": 15
       },
       "pct_correct": 0.0
     },
@@ -215,14 +215,14 @@
       "paires_explosives": 2,
       "config_count": {
         "LANGUE COMMUNE": 8,
-        "DONNEUR NON CONVERTI (A)": 10,
+        "DONNEUR NON CONVERTI (A)": 0,
         "DONNEUR NON CONVERTI (B)": 0,
         "LANGUE DORMANTE": 0,
         "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 10,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 1,
-        "ÉQUILIBRÉE MIXTE": 21
+        "ÉQUILIBRÉE MIXTE": 31
       },
       "pct_correct": 20.0
     },
@@ -234,13 +234,13 @@
       "config_count": {
         "LANGUE COMMUNE": 10,
         "DONNEUR NON CONVERTI (A)": 0,
-        "DONNEUR NON CONVERTI (B)": 11,
+        "DONNEUR NON CONVERTI (B)": 1,
         "LANGUE DORMANTE": 0,
         "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 5,
         "FEU CROISÉ": 0,
-        "ÉQUILIBRÉE MIXTE": 24
+        "ÉQUILIBRÉE MIXTE": 34
       },
       "pct_correct": 10.0
     },
@@ -269,10 +269,10 @@
       "paires_explosives": 3,
       "config_count": {
         "LANGUE COMMUNE": 34,
-        "DONNEUR NON CONVERTI (A)": 1,
-        "DONNEUR NON CONVERTI (B)": 2,
+        "DONNEUR NON CONVERTI (A)": 0,
+        "DONNEUR NON CONVERTI (B)": 4,
         "LANGUE DORMANTE": 0,
-        "CROISÉE (À CONVERTIR)": 1,
+        "CROISÉE (À CONVERTIR)": 0,
         "MIXTE POURSUITE": 0,
         "MIXTE RETRAIT": 0,
         "FEU CROISÉ": 0,
@@ -281,5 +281,5 @@
       "pct_correct": 24.0
     }
   },
-  "sha256_run": "5c513d325839e25b2a49cd9bfa9ec3ff9782fd6e5d8b3384e43e81538b62e22e"
+  "sha256_run": "5837225e4f0d78c654a8694c657610b66f383733d0e61ed6cc3c3140cf662994"
 }

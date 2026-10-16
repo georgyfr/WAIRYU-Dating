@@ -88,9 +88,9 @@ def configuration_devises(donne_A, recoit_A, donne_B, recoit_B,
 
     if dA >= 3 and rA >= 3 and dB >= 3 and rB >= 3:
         return "LANGUE COMMUNE"
-    if dA >= 4 and rB <= 2:
+    if dA >= 4 and rA <= 2:
         return "DONNEUR NON CONVERTI (A)"
-    if dB >= 4 and rA <= 2:
+    if dB >= 4 and rB <= 2:
         return "DONNEUR NON CONVERTI (B)"
     if dA <= 2 and rA <= 2 and dB <= 2 and rB <= 2:
         return "LANGUE DORMANTE"

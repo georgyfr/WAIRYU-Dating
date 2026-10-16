@@ -19,16 +19,16 @@
 | **C4** SHA-256 ×2 | identiques | identiques | ✅ PASS |
 | **C5** Affichage (templates + boucle ensemble + D-SIM + pas comparaison) | 4/4 | templates=✅ · ensemble=✅ · D-SIM=✅ · pas comparaison=✅ | ✅ PASS |
 
-SHA-256 exécution 1 : `5c513d325839e25b2a49cd9bfa9ec3ff9782fd6e5d8b3384e43e81538b62e22e`
-SHA-256 exécution 2 : `5c513d325839e25b2a49cd9bfa9ec3ff9782fd6e5d8b3384e43e81538b62e22e`
+SHA-256 exécution 1 : `5837225e4f0d78c654a8694c657610b66f383733d0e61ed6cc3c3140cf662994`
+SHA-256 exécution 2 : `5837225e4f0d78c654a8694c657610b66f383733d0e61ed6cc3c3140cf662994`
 
 ### C1 — Détail par configuration (D-STD-2)
 
 | Configuration | N | Correct | % | Seuil | Verdict |
 |---------------|---|---------|---|-------|---------|
 | LANGUE COMMUNE | 50 | 41 | 82.0 % | 72 % | ✅ |
-| DONNEUR NON CONVERTI (A) | 50 | 0 | 0.0 % | 77 % | ❌ |
-| DONNEUR NON CONVERTI (B) | 50 | 0 | 0.0 % | 77 % | ❌ |
+| DONNEUR NON CONVERTI (A) | 50 | 34 | 68.0 % | 77 % | ❌ |
+| DONNEUR NON CONVERTI (B) | 50 | 30 | 60.0 % | 77 % | ❌ |
 | LANGUE DORMANTE | 50 | 33 | 66.0 % | 67 % | ❌ |
 | CROISÉE (À CONVERTIR) | 50 | 0 | 0.0 % | 62 % | ❌ |
 | MIXTE POURSUITE | 50 | 10 | 20.0 % | 82 % | ❌ |
@@ -64,8 +64,8 @@ et seuil documenté.
 | Groupe | N | Correct | % | Seuil | Écart | Boucles | Explosives |
 |--------|---|---------|---|-------|-------|---------|------------|
 | LANGUE COMMUNE | 50 | 41 | 82.0 % | 72 % | +10.00 | 11 | 0 |
-| DONNEUR NON CONVERTI (A) | 50 | 0 | 0.0 % | 77 % | -77.00 | 18 | 0 |
-| DONNEUR NON CONVERTI (B) | 50 | 0 | 0.0 % | 77 % | -77.00 | 14 | 0 |
+| DONNEUR NON CONVERTI (A) | 50 | 34 | 68.0 % | 77 % | -9.00 | 18 | 0 |
+| DONNEUR NON CONVERTI (B) | 50 | 30 | 60.0 % | 77 % | -17.00 | 14 | 0 |
 | LANGUE DORMANTE | 50 | 33 | 66.0 % | 67 % | -1.00 | 8 | 0 |
 | CROISÉE (À CONVERTIR) | 50 | 0 | 0.0 % | 62 % | -62.00 | 10 | 0 |
 | MIXTE POURSUITE | 50 | 10 | 20.0 % | 82 % | -62.00 | 11 | 2 |
@@ -142,14 +142,14 @@ et seuil documenté.
 | Configuration | N | % |
 |---------------|---|---|
 | LANGUE COMMUNE | 121 | 26.9 % |
-| DONNEUR NON CONVERTI (A) | 16 | 3.6 % |
-| DONNEUR NON CONVERTI (B) | 17 | 3.8 % |
+| DONNEUR NON CONVERTI (A) | 61 | 13.6 % |
+| DONNEUR NON CONVERTI (B) | 41 | 9.1 % |
 | LANGUE DORMANTE | 33 | 7.3 % |
-| CROISÉE (À CONVERTIR) | 2 | 0.4 % |
+| CROISÉE (À CONVERTIR) | 0 | 0.0 % |
 | MIXTE POURSUITE | 10 | 2.2 % |
 | MIXTE RETRAIT | 5 | 1.1 % |
 | FEU CROISÉ | 43 | 9.6 % |
-| ÉQUILIBRÉE MIXTE | 203 | 45.1 % |
+| ÉQUILIBRÉE MIXTE | 136 | 30.2 % |
 
 - **Boucles des bids actives** : 135/450 (30.0 %)
 - **Paires explosives** : 51/450 (11.3 %)
@@ -158,8 +158,8 @@ et seuil documenté.
 
 - Configurations atteignant leur seuil : **2/9**
 - **7 configuration(s) sous le seuil** ❌ :
-  - DONNEUR NON CONVERTI (A) : 0.0 % < 77 %
-  - DONNEUR NON CONVERTI (B) : 0.0 % < 77 %
+  - DONNEUR NON CONVERTI (A) : 68.0 % < 77 %
+  - DONNEUR NON CONVERTI (B) : 60.0 % < 77 %
   - LANGUE DORMANTE : 66.0 % < 67 %
   - CROISÉE (À CONVERTIR) : 0.0 % < 62 %
   - MIXTE POURSUITE : 20.0 % < 82 %
