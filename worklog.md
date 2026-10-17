@@ -2266,3 +2266,19 @@ Work Log:
 
 Stage Summary:
 - Infra restaurée, PAT GitHub neuf opérationnel. Prochain chantier (Task 109) : espace de modération.
+
+---
+Task ID: 109
+Agent: orchestrateur (Z.ai Code)
+Task: Espace de modération (Task 109) — backend admin + console #/admin, E2E local 13 verts, staging déployé et vérifié. Prod en attente du feu vert du fondateur.
+
+Work Log:
+- Backend (apps/api/src/routes/admin.ts réécrit) : garde Bearer ADMIN_TOKEN FACTORISÉE (temps constant, fail-closed 503/401 — sémantique identique à l'ancien inline, /usage + /satisfaction non-régressifs) ; 4 endpoints nouveaux : GET /admin/moderation/apercu (8 compteurs via DB.batch), GET /admin/moderation/signalements (filtre statut ouvert|traite|rejete|tous, pagination, pseudos résolus via users.display_name + auth_password.username — même règle pseudoDe que messages.ts), POST /admin/moderation/signalements/:id (statut traite|rejete UNIQUEMENT, 400 sinon, 404 inconnu, INSERT audit_admin : admin='fondateur', action='moderation_signalement_*', target_user=signalé, details JSON {signalement, motif, statut_precedent}), GET /admin/moderation/blocages.
+- Front : lib/admin-client.ts (jeton UNIQUEMENT en sessionStorage, Bearer, ErreurAdmin avec statut) ; screens/Moderation.tsx (porte à jeton → aperçu 8 cartes → vues Signalements/Blocages → filtres statut → trancher avec double confirmation visuelle, boutons 44px, états vides/erreur/chargement) ; App.tsx route #/admin hors navigation (modèle prototype-resultats, indépendante de la session) ; CSS .adm-* (~300 l., palette de l'app : nuit/turquoise/corail).
+- E2E local /home/z/e2e/e2e-moderation.sh (reconstruit, leçons Task 107) : 13 verts / 0 rouge — garde 401×2, compteurs, pseudos, 400 filtre, trancher, apercu post-action, audit_admin (action+cible+details), 404, 400 statut interdit, blocages, /admin/usage avec et sans jeton. Corrections en route : created_at/updated_at NOT NULL (users, auth_password), purge users/auth_password en tête.
+- Piège détecté : sandbox frais → npx tsc installait le FAUX paquet tsc@2.0.4 (0 typecheck réel). Corrigé : bun install (258 paquets) puis bunx tsc → réel. tsc shared/api/web : 0 erreur. vite build OK (10,3 s).
+- Déploiement staging (d047f5c) : Version 1483df2a. Vérifié : apercu sans jeton → 401, /admin/usage sans jeton → 401, bundle admin 200, SPA sert le nouveau bundle.
+- Activité réelle prod (compteurs, sans PII) : 0 signalement, 0 blocage, 0 message — E2 en prod depuis hier soir, aucun usage réel encore.
+
+Stage Summary:
+- Console prête : https://wairyu-staging.wairyu.workers.dev/#/admin (jeton ADMIN_TOKEN, sessionStorage uniquement). Chaque décision tracée dans audit_admin. Structure des tests/outils/questionnaires JAMAIS touchée. PROD EN ATTENTE DE FEU VERT.
