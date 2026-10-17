@@ -444,7 +444,7 @@ def _rapport_cd_ef_g(L, r, v, par_id, sha1, sha2, n_ok):
     # --- Section G ---
     L.append("## Section G — Verdict")
     L.append("")
-    L.append(f"### Verdict : **{'VALIDÉ' if n_ok == 7 else 'REFUSÉ'}")
+    L.append(f"### Verdict : **{'VALIDÉ' if n_ok == 7 else 'REFUSÉ'}**")
     L.append("")
     L.append(f"### Note : **{n_ok}/7**")
     L.append("")
@@ -455,8 +455,9 @@ def _rapport_cd_ef_g(L, r, v, par_id, sha1, sha2, n_ok):
     L.append("")
     L.append("### RIO-13")
     L.append("")
-    L.append("RIO-13 « Ce que notre lien sait porter » — publié, en audit "
-             "(auto-audit pont sur origin après push, puis contresignature).")
+    L.append("RIO-13 « Ce que notre lien sait porter » — contresigné "
+             "(pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, "
+             "empreinte 0ae85f46… inchangée).")
     L.append("")
     L.append("### Inventaire structurel")
     L.append("")

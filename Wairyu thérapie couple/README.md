@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-13 « Ce que notre lien sait porter » publié — en audit ; RIO-12 contresigné).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-13 « Ce que notre lien sait porter » contresigné — 13/13 RIO).
 
 ---
 
@@ -28,13 +28,13 @@ Wairyu thérapie couple/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 contresignés · RIO-13 en audit) ═══
+│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés) ═══
 ├── validation-sm/
 │   ├── SM-Q2-SPEC.md · SM-Q3-SPEC.md (verrouillée 18/10)
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
 │   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
 │   ├── validation-sm-q2/ (RIO-12 — contresigné)
-│   └── validation-sm-q3/ (RIO-13 — publié, en audit)
+│   └── validation-sm-q3/ (RIO-13 — contresigné)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -64,13 +64,13 @@ Wairyu thérapie couple/
 | WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ |
 | WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 |
 
-### Dimension SANTÉ MENTALE (RIO-11 · RIO-12 contresignés · RIO-13 en audit)
+### Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés)
 
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ✅ Contresigné (R3 VALIDÉ 6/6, SHA bb2551dd…) |
 | WTC-SM-Q2 | RIO-12 « Ce que je porte pour toi » | ✅ Contresigné (VALIDÉ 6/6 simulation, SHA f57fc089…) |
-| WTC-SM-Q3 | RIO-13 « Ce que notre lien sait porter » | 🔄 VALIDÉ 7/7 (simulation) — publié, en audit (SHA 0ae85f46…) |
+| WTC-SM-Q3 | RIO-13 « Ce que notre lien sait porter » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 0ae85f46…) |
 
 ### Pilote réel
 
@@ -78,7 +78,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 12 instruments RIO contresignés (RIO-01 à RIO-12) + RIO-13 validé par simulation, en audit. 2 dimensions complètes.**
+**Total : 13 instruments RIO contresignés (RIO-01 à RIO-13). 2 dimensions complètes ; santé mentale 3/5.**
 
 ---
 
@@ -136,6 +136,7 @@ Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, t
 | E-SM-10 | Erratum éditorial 580 → 500 (leftover R2 dans rapport R3) | ✅ Clôturé par le présent commit |
 | E-SM-9 | 2 réclamations fausses sur 6 au message pointeurs R3 | ✅ Clôturé par le présent commit |
 | E-SM-11 | Faux positif : le fix Task 115 était bien en place (ligne 47 = [[migrations]], vérifié cat-file sha1 + raw.githubusercontent, bit-identique) — les lectures affichées du littéral double-crochet étaient tronquées par la couche canal (séquence crochet+m) | ✅ Clôturé (faux positif — faute n°36) |
+| E-SM-12 | Rapport Q3 : balise de gras ouverte sans fermeture sur la ligne « Verdict » (valeur VALIDÉ correcte, rendu dégradé) | ✅ Clôturé (générateur corrigé, rapport régénéré — SHA résultats inchangé 0ae85f46…) |
 
 ---
 

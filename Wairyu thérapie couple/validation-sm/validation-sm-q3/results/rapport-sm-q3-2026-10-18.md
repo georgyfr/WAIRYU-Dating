@@ -188,7 +188,7 @@ D-CRISE (hérité) · D-GÉOMÉTRIE · D-ÉCHELLE · D-PARAM · D-VÉRITÉ · D-
 
 ## Section G — Verdict
 
-### Verdict : **VALIDÉ
+### Verdict : **VALIDÉ**
 
 ### Note : **7/7**
 
@@ -198,7 +198,7 @@ D-CRISE (hérité) · D-GÉOMÉTRIE · D-ÉCHELLE · D-PARAM · D-VÉRITÉ · D-
 
 ### RIO-13
 
-RIO-13 « Ce que notre lien sait porter » — publié, en audit (auto-audit pont sur origin après push, puis contresignature).
+RIO-13 « Ce que notre lien sait porter » — contresigné (pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 0ae85f46… inchangée).
 
 ### Inventaire structurel
 
