@@ -1,0 +1,152 @@
+{
+  "n_total": 540,
+  "C1": {
+    "d_verite": {
+      "faces_count": 9,
+      "faces_attendu": 9,
+      "sous_echelles_count": 3,
+      "sous_echelles_attendu": 3,
+      "labels_count": 6,
+      "labels": [
+        "CHARGE",
+        "CRISE",
+        "CRISIS_MODE",
+        "MASQUE",
+        "MIXTE",
+        "STABLE"
+      ],
+      "ok": true
+    },
+    "labels_croise": true,
+    "classif_match_pct": 100.0,
+    "n_match": 540,
+    "n_total": 540,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C2": {
+    "d_echelle": {
+      "seuils": {
+        "MID": 3.0,
+        "DOMINANCE": 3.5,
+        "CRISE": 4.0
+      },
+      "ok": true
+    },
+    "deterministe": true,
+    "ok": true
+  },
+  "C3": {
+    "sensibilite_pct": 100.0,
+    "specificite_pct": 100.0,
+    "vp": 28,
+    "fn": 0,
+    "vn": 459,
+    "fp": 0,
+    "n_hors_bande": 487,
+    "n_dans_bande": 53,
+    "crise_vraie_voie_h5": 0,
+    "h5_hors_perimetre": false,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "ok": true,
+    "figures_attendu": 4
+  },
+  "C6": {
+    "pas_funcs_found": [],
+    "ok": true
+  },
+  "stats_groupes": {
+    "G1_stable": {
+      "n": 80,
+      "classif_count": {
+        "STABLE": 37,
+        "MIXTE": 43
+      },
+      "crises": 0,
+      "dans_bande": 0
+    },
+    "G2_charge": {
+      "n": 80,
+      "classif_count": {
+        "CHARGE": 54,
+        "MIXTE": 25,
+        "STABLE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0
+    },
+    "G3_masque": {
+      "n": 80,
+      "classif_count": {
+        "MASQUE": 57,
+        "MIXTE": 22,
+        "STABLE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0
+    },
+    "G4_crise": {
+      "n": 80,
+      "classif_count": {
+        "CRISE": 80
+      },
+      "crises": 80,
+      "dans_bande": 52
+    },
+    "G5_aidant": {
+      "n": 80,
+      "classif_count": {
+        "STABLE": 44,
+        "MIXTE": 35,
+        "MASQUE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0
+    },
+    "G6_reparation": {
+      "n": 80,
+      "classif_count": {
+        "MIXTE": 65,
+        "STABLE": 5,
+        "CHARGE": 1,
+        "MASQUE": 9
+      },
+      "crises": 0,
+      "dans_bande": 1
+    },
+    "SANS_DETRESSE": {
+      "n": 40,
+      "classif_count": {
+        "STABLE": 39,
+        "MIXTE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0
+    },
+    "SURCHARGE_AIDANT": {
+      "n": 20,
+      "classif_count": {
+        "STABLE": 18,
+        "MIXTE": 2
+      },
+      "crises": 0,
+      "dans_bande": 0
+    }
+  },
+  "tableau_centres": {
+    "sigma_item": 0.6,
+    "n_items_sm_c1": 4,
+    "sigma_eff_sm_c1": 0.3,
+    "trois_sigma": 0.9,
+    "seuil_crise": 4.0,
+    "borne_non_crise": 3.1,
+    "borne_crise": 4.9,
+    "bande_exclue": "[3.10, 4.90]",
+    "note": "σ_eff = σ_item/√n = 0.60/√4 = 0.30. 3σ_eff = 0.90. Bande exclue [3.10, 4.90]. Non-crise: μ ≤ 3.10. Crise: μ ≥ 4.90 (borné 5.0)."
+  },
+  "sha256_run": "9080acc2e0e7f6db07bdf3a0f8ff02e2c1761b8721d8b7b40406cd4de8ceffda"
+}

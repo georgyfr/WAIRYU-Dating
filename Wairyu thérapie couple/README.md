@@ -84,6 +84,12 @@ Wairyu thérapie couple/
 | WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ (arbitré) | [validation-emotionnelle/validation-emo-q4/](validation-emotionnelle/validation-emo-q4/) · [validation-emo-q4-r3/](validation-emotionnelle/validation-emo-q4-r3/) |
 | WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 | [validation-emotionnelle/validation-emo-q5/](validation-emotionnelle/validation-emo-q5/) |
 
+### Dimension SANTÉ MENTALE (RIO-11 en attente)
+
+| Package | RIO | Verdict | Dossier |
+|---|---|---|---|
+| WTC-SM-Q1 / Q1-R1 / Q1-R2 / Q1-R3 | RIO-11 « Ma détresse et la leur » | ⏳ Audit en cours (R3 : VALIDÉ 6/6, SHA bb2551dd…) | [validation-sm/validation-sm-q1-r1/](validation-sm/validation-sm-q1-r1/) · [validation-sm-q1-r2/](validation-sm/validation-sm-q1-r2/) · [validation-sm-q1-r3/](validation-sm/validation-sm-q1-r3/) |
+
 ### Pilote réel
 
 | Package | Objet | Statut | Dossier |
@@ -130,6 +136,8 @@ Wairyu thérapie couple/
 | **D-TRANSMISSION** | Tout code fourni à un exécuteur est re-vérifié après transmission. Si absent, l'exécuteur signale. | Faute n°20 |
 | **D-TYPE** | Test d'exécutable avec données minimales avant implémentation. | Faute n°25 |
 | **D-CANAL** | Le code source ne transite plus par l'IM gateway. Production locale. Vérification par SHA ×2 + rapport + inventaire. | Faute n°32 (pré-attrapée) |
+| **D-GÉOMÉTRIE** | Avant de poser un seuil de classification, calculer la probabilité d atteinte. Si < 20 %, redéfinir la condition. R3 : σ_eff = σ_item/√n, bande [seuil ± 3σ_eff] exclue, crise_vraie sur μ vrai. |
+| **D-CANAL-3** | Les secrets ne transitent JAMAIS par le canal IM — renouvellement et injection hors bande par le pont. |
 | **D-CANAL-2** | Séquence : production → exécution ×2 → SHA ×2 → publication → message pointeurs → audit → contresignature. Un résumé sans SHA ne clôture pas le cycle. | Q5 émotionnel |
 | **D-EMPREINTE** (prospective) | Le SHA-256 porte sur le contenu des résultats, jamais sur un horodatage. | Q5 émotionnel |
 | **D-CRISE** | Court-circuit de crise AVANT l'arbre de priorité — filet 3919/3114 + orientation, JAMAIS de pas de couple en crise. Seuils hérités H5/RIO-02. | Q5 émotionnel (verrouillage SM) |
@@ -140,7 +148,7 @@ Wairyu thérapie couple/
 
 ## 📊 Fautes d'orchestrateur documentées
 
-**Total : 32 fautes** (dont 2 pré-attrapées par l'exécuteur avant exécution).
+**Total : 35 fautes (dont 3 pré-attrapées). F33 (scope ambigu, pré-attrapée) · F34 (critères Q5 collés sur Q1) · F35 (C3 posé à 100/100 sans géométrie simulateur → D-GÉOMÉTRIE).** (dont 2 pré-attrapées par l'exécuteur avant exécution).
 
 Les fautes 1-15 sont issues des cycles d'attachement (Q1-Q5). Les fautes 15 bis à 32 sont issues des cycles émotionnels (Q1-Q5) et du transfert de superviseur. Chaque faute a produit une règle permanente documentée dans la table ci-dessus.
 

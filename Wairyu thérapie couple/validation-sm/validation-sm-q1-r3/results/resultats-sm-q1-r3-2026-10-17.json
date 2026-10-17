@@ -1,0 +1,229 @@
+{
+  "n_total": 500,
+  "C1": {
+    "d_verite": {
+      "faces_count": 9,
+      "faces_attendu": 9,
+      "sous_echelles_count": 3,
+      "sous_echelles_attendu": 3,
+      "labels_count": 6,
+      "labels": [
+        "CHARGE",
+        "CRISE",
+        "CRISIS_MODE",
+        "MASQUE",
+        "MIXTE",
+        "STABLE"
+      ],
+      "ok": true
+    },
+    "labels_croise": true,
+    "classif_match_pct": 100.0,
+    "n_match": 500,
+    "n_total": 500,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C2": {
+    "d_echelle": {
+      "seuils": {
+        "MID": 3.0,
+        "DOMINANCE": 3.5,
+        "CRISE": 4.0
+      },
+      "ok": true
+    },
+    "deterministe": true,
+    "ok": true
+  },
+  "C3": {
+    "sensibilite_pct": 100.0,
+    "specificite_pct": 100.0,
+    "vp": 40,
+    "fn": 0,
+    "vn": 408,
+    "fp": 0,
+    "n_hors_bande": 448,
+    "n_dans_bande": 52,
+    "reconcilie": 500,
+    "reconcilie_ok": true,
+    "vp_h5": 20,
+    "fn_h5": 0,
+    "n_h5": 20,
+    "h5_dans_perimetre": true,
+    "h5_source": "RIO-02 (héritage) — voie H5 testée comme voie de déclenchement D-CRISE",
+    "bande_detail": {
+      "total": 52,
+      "crise_vraie": 50,
+      "crise_detectee": 50,
+      "non_crise_vraie": 2,
+      "non_crise_detectee": 2
+    },
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "ok": true,
+    "figures_attendu": 4
+  },
+  "C6": {
+    "pas_funcs_found": [],
+    "ok": true
+  },
+  "stats_groupes": {
+    "G1_stable": {
+      "n": 70,
+      "classif_count": {
+        "STABLE": 32,
+        "MIXTE": 38
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    },
+    "G2_charge": {
+      "n": 70,
+      "classif_count": {
+        "CHARGE": 51,
+        "MIXTE": 17,
+        "STABLE": 2
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    },
+    "G3_masque": {
+      "n": 70,
+      "classif_count": {
+        "MIXTE": 19,
+        "MASQUE": 50,
+        "STABLE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    },
+    "G4_crise": {
+      "n": 70,
+      "classif_count": {
+        "CRISE": 70
+      },
+      "crises": 70,
+      "dans_bande": 50,
+      "h5": 0
+    },
+    "G5_aidant": {
+      "n": 70,
+      "classif_count": {
+        "STABLE": 39,
+        "MIXTE": 28,
+        "CHARGE": 2,
+        "MASQUE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    },
+    "G6_reparation": {
+      "n": 70,
+      "classif_count": {
+        "MIXTE": 55,
+        "MASQUE": 3,
+        "CHARGE": 4,
+        "STABLE": 8
+      },
+      "crises": 0,
+      "dans_bande": 2,
+      "h5": 0
+    },
+    "G7_h5": {
+      "n": 20,
+      "classif_count": {
+        "CRISE": 20
+      },
+      "crises": 20,
+      "dans_bande": 0,
+      "h5": 20
+    },
+    "SANS_DETRESSE": {
+      "n": 40,
+      "classif_count": {
+        "STABLE": 39,
+        "MIXTE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    },
+    "SURCHARGE_AIDANT": {
+      "n": 20,
+      "classif_count": {
+        "STABLE": 19,
+        "MIXTE": 1
+      },
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0
+    }
+  },
+  "tableau_centres": {
+    "sigma_item": 0.6,
+    "n_items_sm_c1": 4,
+    "sigma_eff_sm_c1": 0.3,
+    "trois_sigma": 0.9,
+    "seuil_crise": 4.0,
+    "borne_non_crise": 3.1,
+    "borne_crise": 4.9,
+    "bande_exclue": "[3.10, 4.90]",
+    "note": "σ_eff = σ_item/√n = 0.60/√4 = 0.30. 3σ_eff = 0.90. Bande exclue [3.10, 4.90]. Non-crise: μ ≤ 3.10. Crise: μ ≥ 4.90 (borné 5.0)."
+  },
+  "centres_classes": {
+    "G1_stable": {
+      "mu_c1": 2.0,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "G2_charge": {
+      "mu_c1": 2.0,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "G3_masque": {
+      "mu_c1": 2.0,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "G4_crise": {
+      "mu_c1": 4.9,
+      "h5": false,
+      "crise_attendue": true
+    },
+    "G5_aidant": {
+      "mu_c1": 2.0,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "G6_reparation": {
+      "mu_c1": 2.5,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "G7_h5": {
+      "mu_c1": 2.0,
+      "h5": true,
+      "crise_attendue": true
+    },
+    "SANS_DETRESSE": {
+      "mu_c1": 1.0,
+      "h5": false,
+      "crise_attendue": false
+    },
+    "SURCHARGE_AIDANT": {
+      "mu_c1": 1.0,
+      "h5": false,
+      "crise_attendue": false
+    }
+  },
+  "sha256_run": "bb2551dddc73d955e01439459f123a984ff9083ed238cec545b4eb3ca92da4b3"
+}

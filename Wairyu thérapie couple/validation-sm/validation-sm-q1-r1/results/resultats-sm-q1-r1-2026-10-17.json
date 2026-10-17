@@ -1,0 +1,153 @@
+{
+  "n_total": 540,
+  "C1": {
+    "d_verite": {
+      "faces_count": 9,
+      "faces_attendu": 9,
+      "sous_echelles_count": 3,
+      "sous_echelles_attendu": 3,
+      "labels_count": 6,
+      "labels": [
+        "CHARGE",
+        "CRISE",
+        "CRISIS_MODE",
+        "MASQUE",
+        "MIXTE",
+        "STABLE"
+      ],
+      "ok": true
+    },
+    "labels_moteur": [
+      "CHARGE",
+      "CRISE",
+      "CRISIS_MODE",
+      "MASQUE",
+      "MIXTE",
+      "STABLE"
+    ],
+    "labels_sim": [
+      "CHARGE",
+      "CRISE",
+      "CRISIS_MODE",
+      "MASQUE",
+      "MIXTE",
+      "STABLE"
+    ],
+    "d_verite_croise": true,
+    "classif_match_pct": 100.0,
+    "n_match": 540,
+    "n_total": 540,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C2": {
+    "d_echelle": {
+      "seuils": {
+        "MID": 3.0,
+        "DOMINANCE": 3.5,
+        "CRISE": 4.0
+      },
+      "ok": true
+    },
+    "deterministe": true,
+    "ok": true
+  },
+  "C3": {
+    "sensibilite_pct": 92.5,
+    "specificite_pct": 95.65,
+    "n_crise_attendus": 80,
+    "n_crise_detectes": 74,
+    "n_non_crise": 460,
+    "n_faux_positifs": 20,
+    "ok": false,
+    "eliminatoire": true
+  },
+  "C4_placeholder": true,
+  "C5": {
+    "ok": true,
+    "figures_attendu": 4
+  },
+  "C6": {
+    "pas_funcs_found": [],
+    "ok": true
+  },
+  "stats_groupes": {
+    "G1_stable": {
+      "n": 80,
+      "classif_count": {
+        "STABLE": 41,
+        "MIXTE": 37,
+        "MASQUE": 2
+      },
+      "crises": 0
+    },
+    "G2_charge": {
+      "n": 80,
+      "classif_count": {
+        "CHARGE": 51,
+        "MIXTE": 26,
+        "STABLE": 1,
+        "CRISE": 2
+      },
+      "crises": 2
+    },
+    "G3_masque": {
+      "n": 80,
+      "classif_count": {
+        "MASQUE": 49,
+        "MIXTE": 30,
+        "STABLE": 1
+      },
+      "crises": 0
+    },
+    "G4_crise": {
+      "n": 80,
+      "classif_count": {
+        "CRISE": 74,
+        "MIXTE": 2,
+        "STABLE": 4
+      },
+      "crises": 74
+    },
+    "G5_aidant": {
+      "n": 80,
+      "classif_count": {
+        "MIXTE": 38,
+        "STABLE": 39,
+        "CHARGE": 1,
+        "CRISE": 1,
+        "MASQUE": 1
+      },
+      "crises": 1
+    },
+    "G6_reparation": {
+      "n": 80,
+      "classif_count": {
+        "MASQUE": 3,
+        "MIXTE": 59,
+        "STABLE": 9,
+        "CRISE": 4,
+        "CHARGE": 5
+      },
+      "crises": 4
+    },
+    "SANS_DETRESSE": {
+      "n": 40,
+      "classif_count": {
+        "STABLE": 38,
+        "MIXTE": 2
+      },
+      "crises": 0
+    },
+    "SURCHARGE_AIDANT": {
+      "n": 20,
+      "classif_count": {
+        "MIXTE": 5,
+        "CRISE": 13,
+        "CHARGE": 2
+      },
+      "crises": 13
+    }
+  },
+  "sha256_run": "d7a43163a28c49dc2c3bc6e788d4885cdec6d91e8f4626e47598daea2cd2ebed"
+}
