@@ -2320,3 +2320,20 @@ Work Log:
 
 Stage Summary:
 - Task 110 EN PRODUCTION (ec034794) ET VÉRIFIÉE EN PROD RÉEL : PBKDF2 600k chaîné avec migration transparente prouvée sur un hash historique réel, recovery-email sous preuve de mot de passe, sessions révoquées véridiques, vapid sans cache d'échec, alias me canonique. Staging (428a70c8) et prod alignés. Compte test purgé (0/0/0/0), compteurs purgés. Le 1 compte réel historique migrera à sa prochaine connexion (transparent). Note : le rate_limit pw:login:ip de NOTRE IP de test expire ≤1h (compteur anonyme).
+
+---
+Task ID: 112
+Agent: orchestrateur (Z.ai Code)
+Task: Session SPEC uniquement (GO fondateur) — rédaction de docs/SPEC-RENONCONTRE-E3.v1.md « Le Voyage à Deux ». Zéro code, zéro déploiement.
+
+Work Log:
+- Ancrage produit vérifié : M11 voyage.ts (6 quêtes, tagline « questions croisées, réponses partagées, rendez-vous préparé », status soon, toujours gratuit, débloqué au premier match) ; économie v1.5 §2.2 (Révélation progressive 1.mots→2.cartes→3.voix→4.photo, Duo de cartes, Rendez-vous préparé D16 gratuit, Fragments de connexion « terre-plein de M11 », récolte M11 « la récompense, c'est la réponse de l'autre ») ; format gravé « texte, puis voix, puis photo, toujours avec le consentement des deux ».
+- Ancrage code vérifié : badge « Révélés ✦ » E2 (2 lignes rencontre_reveals = la porte de la voix) ; reponses 0011 (dérivation jalon A E1 réutilisable pour l'intersection de quêtes du Duo et le Statut Prêt·e 1.11) ; règle chatVoiceUser déjà posée ; LUCIOLES ABSENTES DU CODE (Étape 8) → E3 ne peut pas en dépendre ; R2 binding dispo.
+- SPEC écrite : 9 décisions gravées (D-E3-1 ouverture aux DEUX sur match · D-E3-2 ordre texte→voix→photo non négociable · D-E3-3 la demande se voit, le refus jamais · D-E3-4 jamais une note de la relation · D-E3-5 récompense jamais conditionnée au sensible + tout gratuit · D-E3-6 média privé-paire SANS URL publique, voyage par le Worker · D-E3-7 blocage/unmatch gèle et purge E3 · D-E3-8 mécanique + pilote, les 6 quêtes restent Phase C4 · D-E3-9 RGPD total).
+- 3 volets : A quêtes croisées/Duo (niveau 2 cartes) · B révélation voix (≤60 s/512 Ko) + photo (1/membre, niveau 4 Prêt·e des deux) · C récoltes à deux (pilote 3 questions croisées, Rendez-vous préparé par règles locales SANS IA v1, compteur fragments non-dépensable).
+- Architecture : P1 dans le fil (pas d'espace séparé) · P2 R2 natif par le Worker (Cloudinary rejeté : tiers + données intimes) · P3 table voiles, chaque niveau SA porte + double oui · P4 medias table + EXIF strip client canvas · P5 duo par intersection reponses · P6 a2/a2_reponses · P7 compteur dérivé · P8 7 endpoints + 5 rate rules + migration 0017 additive (4-5 tables) · P9 purge R2 dans hardDeleteAccount + accès modérateur au média signalé tracé audit_admin.
+- 10 points [À VALIDER] numérotés pour le fondateur (rythme du build, R2, porte voix = seuils E2, limites médias, EXIF, RDV règles locales vs AI, co-écriture du contenu pilote, compteur, accès média signalé, nom).
+- Commit a4423b0 (docs only), poussé. Aucun code, prod inchangée (ec034794).
+
+Stage Summary:
+- SPEC-RENONCONTRE-E3.v1.md prête : tout est ancré dans le verbatim produit existant (aucune invention de doctrine), la mécanique est indépendante du contenu C4. En attente des réponses du fondateur aux 10 points avant tout dev.
