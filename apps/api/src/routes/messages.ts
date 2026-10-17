@@ -577,3 +577,695 @@ messagesRoutes.post('/rencontres/signalements', async (c) => {
     return c.json({ ok: false, error: 'store_unavailable' }, 500);
   }
 });
+
+/* ==================================================================== */
+/* RENCONTRE-E3 « Le Voyage à Deux » (Task 115) — SPEC v1.1             */
+/* Décisions gravées D-E3-1..9 + G-E3-P1..P10 :                          */
+/*  - D-E3-1  tout E3 exige un match existant (contexteMatch) ;          */
+/*  - D-E3-2  ordre texte → voix → photo : chaque niveau SA porte ;      */
+/*  - D-E3-3  la demande se voit, le refus JAMAIS (aucun statut refusé); */
+/*  - D-E3-4  jamais une note de la relation ;                           */
+/*  - D-E3-5  la récompense, c'est la réponse de l'autre — tout gratuit; */
+/*  - D-E3-6  médias privés-paire PAR le Worker (R2, zéro URL publique); */
+/*  - D-E3-7  blocage gèle tout E3 ; unmatch purge états + objets R2 ;   */
+/*  - D-E3-8  mécanique + pilote de contenu (A2_PILOTE) ;                */
+/*  - D-E3-9  RGPD total (purge étendue dans routes/auth.ts).            */
+/*  - G-E3-P8 le compteur « fragments » est DÉRIVÉ (COUNT), jamais stocké*/
+/* ==================================================================== */
+
+import { A2_MEDIAS, A2_PILOTE } from '@wairyu/shared';
+import type { A2Carte } from '@wairyu/shared';
+
+/** Format une carte de quête : les VALEURS de l'état (ordre stable), jamais
+ *  les clés internes (D-E3-5 : réponses FORMATÉES, pas l'état brut). Max 8
+ *  lignes, 300 caractères chacune — c'est une carte, pas une archive. */
+function carteDe(etatBrut: string | null): A2Carte | null {
+  if (!etatBrut) return null;
+  try {
+    const etat = JSON.parse(etatBrut) as unknown;
+    if (!etat || typeof etat !== 'object') return null;
+    const valeurs = Object.values(etat as Record<string, unknown>);
+    const lignes: string[] = [];
+    for (const v of valeurs) {
+      if (v === null || v === undefined) continue;
+      if (typeof v === 'string' && v.trim().length > 0) lignes.push(v.trim().slice(0, 300));
+      else if (typeof v === 'number' || typeof v === 'boolean') lignes.push(String(v));
+      else if (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === 'string')) {
+        lignes.push(v.join(', ').slice(0, 300));
+      }
+      if (lignes.length >= 8) break;
+    }
+    return lignes.length > 0 ? { quete: '', lignes } : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Les statuts « Prêt·e » (quête 1.11 franchie) des deux membres — dérivés
+ *  de `reponses` (même dérivation que le jalon A : AUCUN nouveau stockage). */
+async function etatPretes(db: D1Database, userId: string, autreId: string) {
+  const { results } = await db
+    .prepare(
+      `SELECT user_id FROM reponses
+       WHERE quete = '1.11' AND json_extract(etat, '$.terminee') = 1
+         AND user_id IN (?1, ?2)`,
+    )
+    .bind(userId, autreId)
+    .all<{ user_id: string }>();
+  const set = new Set((results ?? []).map((r) => r.user_id));
+  return { moi: set.has(userId), autre: set.has(autreId) };
+}
+
+/** L'état complet des voiles d'une paire (portes + consentements + ouverture). */
+async function etatVoiles(
+  db: D1Database,
+  matchId: string,
+  userId: string,
+  autreId: string,
+  matchCreeA: string,
+  totalMessages: number,
+) {
+  const { results } = await db
+    .prepare(`SELECT niveau, user_id FROM rencontre_voiles WHERE match_id = ?1`)
+    .bind(matchId)
+    .all<{ niveau: number; user_id: string }>();
+  const oui = new Set((results ?? []).map((r) => `${r.niveau}:${r.user_id}`));
+  type VoileEtat = {
+    moi: boolean;
+    autre: boolean;
+    ouvert: boolean;
+    porte: boolean | null;
+    seuils?: { messages: number; messagesRequis: number; jours: number; joursRequis: number };
+  };
+  const construire = (n: number): VoileEtat => ({
+    moi: oui.has(`${n}:${userId}`),
+    autre: oui.has(`${n}:${autreId}`),
+    ouvert: false,
+    porte: null,
+  });
+  const v2 = construire(2);
+  v2.ouvert = v2.moi && v2.autre;
+  v2.porte = true; // le match suffit (D-E3-1)
+
+  const jours = Math.floor((Date.now() - new Date(matchCreeA).getTime()) / 86_400_000);
+  const seuilAtteint = totalMessages >= REVEAL.minMessages && jours >= REVEAL.minDays;
+  const v3 = construire(3);
+  v3.ouvert = v3.moi && v3.autre;
+  // G-E3-P3 : la porte de la voix = niveau 2 ouvert DES DEUX + seuils E2 gravés.
+  v3.porte = v2.ouvert && seuilAtteint;
+  v3.seuils = {
+    messages: totalMessages,
+    messagesRequis: REVEAL.minMessages,
+    jours,
+    joursRequis: REVEAL.minDays,
+  };
+
+  const pretes = await etatPretes(db, userId, autreId);
+  const v4 = construire(4);
+  v4.ouvert = v4.moi && v4.autre;
+  // G-E3-P9/D-E3-5 : la photo exige le Statut Prêt·e DES DEUX — jamais d'argent.
+  v4.porte = v3.ouvert && pretes.moi && pretes.autre;
+  return { voiles: { cartes: v2, voix: v3, photo: v4 }, pretes };
+}
+
+/** Les quêtes complétées par LES DEUX (intersection terminee) — base du Duo. */
+async function quetesCroisees(db: D1Database, userId: string, autreId: string): Promise<string[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT r1.quete AS quete FROM reponses r1
+       JOIN reponses r2 ON r2.quete = r1.quete AND r2.user_id = ?2
+       WHERE r1.user_id = ?1
+         AND json_extract(r1.etat, '$.terminee') = 1
+         AND json_extract(r2.etat, '$.terminee') = 1
+       ORDER BY r1.quete`,
+    )
+    .bind(userId, autreId)
+    .all<{ quete: string }>();
+  return (results ?? []).map((r) => r.quete);
+}
+
+/** La réponse d'un membre à une quête donnée (lignes formatées, carte). */
+async function carteMembre(db: D1Database, userId: string, quete: string): Promise<A2Carte | null> {
+  const row = await db
+    .prepare(`SELECT etat FROM reponses WHERE user_id = ?1 AND quete = ?2 LIMIT 1`)
+    .bind(userId, quete)
+    .first<{ etat: string }>();
+  const carte = carteDe(row?.etat ?? null);
+  return carte ? { quete, lignes: carte.lignes } : null;
+}
+
+/** La question de dialogue du Duo pour une quête (pilote, tournée stable). */
+function questionDuoPour(quete: string, lang: 'fr' | 'en'): string {
+  const idx = Math.abs(
+    [...quete].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) | 0, 7),
+  ) % A2_PILOTE.questionsDuo.length;
+  const q = A2_PILOTE.questionsDuo[idx] ?? A2_PILOTE.questionsDuo[0];
+  return q[lang];
+}
+
+/** L'état de l'activité croisée d'une paire (null si jamais commencée). */
+async function etatActivite(
+  db: D1Database,
+  matchId: string,
+  userId: string,
+  autreId: string,
+  lang: 'fr' | 'en',
+) {
+  const act = await db
+    .prepare(`SELECT id, statut FROM rencontre_a2 WHERE match_id = ?1 LIMIT 1`)
+    .bind(matchId)
+    .first<{ id: string; statut: 'en_cours' | 'devoilee' }>();
+  if (!act) return null;
+  const { results } = await db
+    .prepare(`SELECT user_id, question_id, corps FROM rencontre_a2_reponses WHERE activite_id = ?1`)
+    .bind(act.id)
+    .all<{ user_id: string; question_id: string; corps: string }>();
+  const par = new Map<string, Map<string, string>>();
+  for (const r of results ?? []) {
+    if (!par.has(r.user_id)) par.set(r.user_id, new Map());
+    par.get(r.user_id)!.set(r.question_id, r.corps);
+  }
+  const mes = par.get(userId) ?? new Map();
+  const siens = par.get(autreId) ?? new Map();
+  const completeMoi = A2_PILOTE.questionsCroisees.every((q) => mes.has(q.id));
+  const completeAutre = A2_PILOTE.questionsCroisees.every((q) => siens.has(q.id));
+  const devoilee = act.statut === 'devoilee' || (completeMoi && completeAutre);
+  return {
+    id: act.id,
+    statut: devoilee ? ('devoilee' as const) : ('en_cours' as const),
+    questions: A2_PILOTE.questionsCroisees.map((q) => ({
+      id: q.id,
+      texte: q[lang],
+      maReponse: devoilee || mes.has(q.id) ? (mes.get(q.id) ?? null) : null,
+      reponseAutre: devoilee ? (siens.get(q.id) ?? null) : null,
+    })),
+    completeMoi,
+    completeAutre,
+  };
+}
+
+/** Le Rendez-vous préparé (G-E3-P6 : règles locales TRANSPARENTES, pas d'IA).
+ *  Dérivé des réponses croisées q3 (le temps libre imaginé par chacun). */
+function deriverRdv(
+  activite: NonNullable<Awaited<ReturnType<typeof etatActivite>>> | null,
+): { idees: { titre: string; pourquoi: string }[]; question: string } | null {
+  if (!activite || activite.statut !== 'devoilee') return null;
+  const q3Moi = activite.questions.find((q) => q.id === 'q3')?.maReponse ?? null;
+  const q3Autre = activite.questions.find((q) => q.id === 'q3')?.reponseAutre ?? null;
+  const extrait = (s: string | null) => (s && s.length > 0 ? `« ${s.slice(0, 80)} »` : '…');
+  return {
+    idees: A2_PILOTE.ideesRdv.map((i) => ({
+      titre: i.fr,
+      pourquoi: `${i.pourquoiFr} — ton idée : ${extrait(q3Moi)} · la sienne : ${extrait(q3Autre)}`,
+    })),
+    question: 'Qui choisit le lieu ? L’autre choisit l’heure.',
+  };
+}
+
+const VOIX_MIMES = ['audio/webm', 'audio/mp4', 'audio/aac', 'audio/ogg', 'audio/mpeg'] as const;
+const PHOTO_MIMES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+
+/* ------------------------------------------------------------------ */
+/* E3 — L'état complet du Voyage à Deux (une requête, tout dérivé)     */
+/* ------------------------------------------------------------------ */
+messagesRoutes.get('/rencontres/:matchId/a2/etat', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2VoileUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2VoileUser.scope);
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+
+  const lang = c.req.query('lang') === 'en' ? 'en' : ('fr' as 'fr' | 'en');
+  try {
+    const match = await c.env.DB.prepare(`SELECT cree_a FROM rencontre_matchs WHERE id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ cree_a: string }>();
+    const total = await c.env.DB.prepare(`SELECT COUNT(*) AS n FROM rencontre_messages WHERE match_id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ n: number }>();
+    const { voiles, pretes } = await etatVoiles(
+      c.env.DB, ctx.matchId, session.userId, ctx.autreId,
+      match?.cree_a ?? new Date().toISOString(), total?.n ?? 0,
+    );
+
+    // ---- Le Duo (volet A) : intersection + consentements + cartes ----
+    const croisees = await quetesCroisees(c.env.DB, session.userId, ctx.autreId);
+    const { results: consents } = await c.env.DB.prepare(
+      `SELECT quete, user_id FROM rencontre_duo WHERE match_id = ?1`,
+    )
+      .bind(ctx.matchId)
+      .all<{ quete: string; user_id: string }>();
+    const duoOui = new Set((consents ?? []).map((r) => `${r.quete}:${r.user_id}`));
+    const duo: {
+      quete: string; consentMoi: boolean; consentAutre: boolean; ouvert: boolean;
+      carteMoi: A2Carte | null; carteAutre: A2Carte | null; question: string | null;
+    }[] = [];
+    for (const quete of croisees) {
+      const consentMoi = duoOui.has(`${quete}:${session.userId}`);
+      const consentAutre = duoOui.has(`${quete}:${ctx.autreId}`);
+      const ouvert = consentMoi && consentAutre;
+      duo.push({
+        quete,
+        consentMoi,
+        consentAutre,
+        ouvert,
+        carteMoi: ouvert ? await carteMembre(c.env.DB, session.userId, quete) : null,
+        carteAutre: ouvert ? await carteMembre(c.env.DB, ctx.autreId, quete) : null,
+        question: ouvert ? questionDuoPour(quete, lang) : null,
+      });
+    }
+
+    // ---- Les récoltes à deux (volet C) ----
+    const activite = await etatActivite(c.env.DB, ctx.matchId, session.userId, ctx.autreId, lang);
+    const rdv = deriverRdv(activite);
+    const duoOuverts = duo.filter((d) => d.ouvert).length;
+    const fragments = duoOuverts + (activite?.statut === 'devoilee' ? 1 : 0);
+
+    // ---- Les médias (volet B) ----
+    const { results: medias } = await c.env.DB.prepare(
+      `SELECT id, user_id, type, duree_s, octets, cree_a FROM rencontre_medias
+       WHERE match_id = ?1 ORDER BY cree_a DESC LIMIT 100`,
+    )
+      .bind(ctx.matchId)
+      .all<{ id: string; user_id: string; type: 'voix' | 'photo'; duree_s: number | null; octets: number; cree_a: string }>();
+    const tous = (medias ?? []).map((m) => ({
+      id: m.id, type: m.type, dureeS: m.duree_s, octets: m.octets, creeA: m.cree_a,
+      deMoi: m.user_id === session.userId,
+    }));
+    const photoMoi = tous.find((m) => m.type === 'photo' && m.deMoi) ?? null;
+    const photoAutre = tous.find((m) => m.type === 'photo' && !m.deMoi) ?? null;
+
+    return c.json({
+      ok: true,
+      voiles,
+      pretes,
+      duo,
+      activite,
+      rdv,
+      fragments,
+      mediaPhoto: { moi: photoMoi, autre: photoAutre },
+      voix: tous.filter((m) => m.type === 'voix').slice(0, 50),
+    });
+  } catch (e) {
+    console.error('[a2] etat failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/* E3 — Lever un voile (niveaux 2/3/4) : la demande se voit, le refus   */
+/*      jamais (D-E3-3) — deux lignes = ouvert.                         */
+/* ------------------------------------------------------------------ */
+messagesRoutes.post('/rencontres/:matchId/voile', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2VoileUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2VoileUser.scope);
+
+  let corps: unknown;
+  try {
+    corps = await c.req.json();
+  } catch {
+    return c.json({ ok: false, error: 'invalid_body' }, 400);
+  }
+  const niveau = (corps as { niveau?: unknown })?.niveau;
+  if (niveau !== 2 && niveau !== 3 && niveau !== 4) {
+    return c.json({ ok: false, error: 'invalid_body' }, 400);
+  }
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404); // D-E3-7
+
+  try {
+    const match = await c.env.DB.prepare(`SELECT cree_a FROM rencontre_matchs WHERE id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ cree_a: string }>();
+    const total = await c.env.DB.prepare(`SELECT COUNT(*) AS n FROM rencontre_messages WHERE match_id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ n: number }>();
+    const { voiles } = await etatVoiles(
+      c.env.DB, ctx.matchId, session.userId, ctx.autreId,
+      match?.cree_a ?? new Date().toISOString(), total?.n ?? 0,
+    );
+    const etatNiveau = niveau === 2 ? voiles.cartes : niveau === 3 ? voiles.voix : voiles.photo;
+    if (etatNiveau.ouvert) return c.json({ ok: true, deja: true });
+    if (etatNiveau.porte === false) {
+      return c.json({ ok: false, error: 'voile_porte', voiles }, 403);
+    }
+    await c.env.DB.prepare(
+      `INSERT INTO rencontre_voiles (id, match_id, niveau, user_id, cree_a)
+       VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (match_id, niveau, user_id) DO NOTHING`,
+    )
+      .bind(crypto.randomUUID(), ctx.matchId, niveau, session.userId, new Date().toISOString())
+      .run();
+    return c.json({ ok: true });
+  } catch (e) {
+    console.error('[a2] voile failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/* E3 — Le Duo : consentir « mettre en regard » (par quête)             */
+/* ------------------------------------------------------------------ */
+messagesRoutes.post('/rencontres/:matchId/duo/:quete', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2DuoUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2DuoUser.scope);
+
+  const quete = c.req.param('quete');
+  if (!/^[1-5]\.\d{1,2}$/.test(quete)) return c.json({ ok: false, error: 'invalid_body' }, 400);
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404);
+
+  try {
+    // La quête doit être complétée par LES DEUX (l'intersection est la porte).
+    const croisees = await quetesCroisees(c.env.DB, session.userId, ctx.autreId);
+    if (!croisees.includes(quete)) return c.json({ ok: false, error: 'duo_indisponible' }, 403);
+
+    await c.env.DB.prepare(
+      `INSERT INTO rencontre_duo (id, match_id, quete, user_id, cree_a)
+       VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (match_id, quete, user_id) DO NOTHING`,
+    )
+      .bind(crypto.randomUUID(), ctx.matchId, quete, session.userId, new Date().toISOString())
+      .run();
+    const { results } = await c.env.DB.prepare(
+      `SELECT user_id FROM rencontre_duo WHERE match_id = ?1 AND quete = ?2`,
+    )
+      .bind(ctx.matchId, quete)
+      .all<{ user_id: string }>();
+    const oui = new Set((results ?? []).map((r) => r.user_id));
+    const estOuvert = oui.has(session.userId) && oui.has(ctx.autreId);
+    return c.json({
+      ok: true,
+      ouvert: estOuvert,
+      carteMoi: estOuvert ? await carteMembre(c.env.DB, session.userId, quete) : null,
+      carteAutre: estOuvert ? await carteMembre(c.env.DB, ctx.autreId, quete) : null,
+      question: estOuvert ? questionDuoPour(quete, 'fr') : null,
+    });
+  } catch (e) {
+    console.error('[a2] duo failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/* E3 — L'activité « Trois questions croisées » : créer + répondre      */
+/*      (répondre = consentir ; le dévoilement est STRUCTUREL).          */
+/* ------------------------------------------------------------------ */
+messagesRoutes.post('/rencontres/:matchId/a2/activites', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2ActiviteUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2ActiviteUser.scope);
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404);
+  try {
+    const existante = await c.env.DB.prepare(`SELECT id FROM rencontre_a2 WHERE match_id = ?1 LIMIT 1`)
+      .bind(ctx.matchId)
+      .first<{ id: string }>();
+    if (existante) return c.json({ ok: true, id: existante.id, deja: true });
+    const id = crypto.randomUUID();
+    await c.env.DB.prepare(
+      `INSERT INTO rencontre_a2 (id, match_id, titre, statut, cree_a)
+       VALUES (?1, ?2, 'trois_questions', 'en_cours', ?3)`,
+    )
+      .bind(id, ctx.matchId, new Date().toISOString())
+      .run();
+    return c.json({ ok: true, id });
+  } catch (e) {
+    console.error('[a2] activite create failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+messagesRoutes.post('/rencontres/:matchId/a2/activites/:id/repondre', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2ActiviteUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2ActiviteUser.scope);
+
+  const activiteId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(activiteId)) return c.json({ ok: false, error: 'invalid_body' }, 400);
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404);
+
+  let corps: unknown;
+  try {
+    corps = await c.req.json();
+  } catch {
+    return c.json({ ok: false, error: 'invalid_body' }, 400);
+  }
+  const reps = (corps as { reponses?: Record<string, unknown> })?.reponses;
+  if (!reps || typeof reps !== 'object') return c.json({ ok: false, error: 'invalid_body' }, 400);
+  const propes: { id: string; corps: string }[] = [];
+  for (const q of A2_PILOTE.questionsCroisees) {
+    const v = reps[q.id];
+    if (typeof v !== 'string' || v.trim().length === 0 || v.length > 1000) {
+      return c.json({ ok: false, error: 'invalid_body' }, 400); // les TROIS, complètes
+    }
+    propes.push({ id: q.id, corps: v.trim() });
+  }
+
+  try {
+    const act = await c.env.DB.prepare(
+      `SELECT id FROM rencontre_a2 WHERE id = ?1 AND match_id = ?2 LIMIT 1`,
+    )
+      .bind(activiteId, ctx.matchId)
+      .first<{ id: string }>();
+    if (!act) return c.json({ ok: false, error: 'not_found' }, 404);
+    const now = new Date().toISOString();
+    for (const r of propes) {
+      await c.env.DB.prepare(
+        `INSERT INTO rencontre_a2_reponses (id, activite_id, user_id, question_id, corps, cree_a)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+         ON CONFLICT (activite_id, user_id, question_id)
+         DO UPDATE SET corps = excluded.corps`,
+      )
+        .bind(crypto.randomUUID(), activiteId, session.userId, r.id, r.corps, now)
+        .run();
+    }
+    // Le dévoilement STRUCTUREL : les deux × trois réponses présentes.
+    const compte = await c.env.DB.prepare(
+      `SELECT COUNT(DISTINCT user_id) AS u, COUNT(*) AS n
+       FROM rencontre_a2_reponses WHERE activite_id = ?1`,
+    )
+      .bind(activiteId)
+      .first<{ u: number; n: number }>();
+    if (compte && compte.u >= 2 && compte.n >= 6) {
+      await c.env.DB.prepare(
+        `UPDATE rencontre_a2 SET statut = 'devoilee', devoilee_a = ?2
+         WHERE id = ?1 AND statut = 'en_cours'`,
+      )
+        .bind(activiteId, now)
+        .run();
+    }
+    return c.json({ ok: true });
+  } catch (e) {
+    console.error('[a2] repondre failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/* E3 — Les médias privés-paire (G-E3-P2 : PAR le Worker, R2 natif)     */
+/* ------------------------------------------------------------------ */
+messagesRoutes.post('/rencontres/:matchId/media', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2MediaPutUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2MediaPutUser.scope);
+  if (!c.env.MEDIA) return c.json({ ok: false, error: 'media_indisponible' }, 503);
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404);
+
+  let forme: FormData;
+  try {
+    forme = await c.req.formData();
+  } catch {
+    return c.json({ ok: false, error: 'invalid_body' }, 400);
+  }
+  const type = String(forme.get('type') ?? '');
+  const fichier: unknown = forme.get('file');
+  const dureeSBrut = Number(forme.get('dureeS') ?? 0);
+  if ((type !== 'voix' && type !== 'photo') || !(fichier instanceof File)) {
+    return c.json({ ok: false, error: 'invalid_body' }, 400);
+  }
+  const mime = (fichier.type || '').toLowerCase();
+  if (type === 'voix') {
+    if (!VOIX_MIMES.some((m) => mime.startsWith(m))) return c.json({ ok: false, error: 'type_refuse' }, 415);
+    if (fichier.size > A2_MEDIAS.voixMaxOctets) return c.json({ ok: false, error: 'trop_lourd' }, 413);
+    if (!Number.isFinite(dureeSBrut) || dureeSBrut < 1 || dureeSBrut > A2_MEDIAS.voixMaxSecondes) {
+      return c.json({ ok: false, error: 'trop_long' }, 413);
+    }
+  } else {
+    if (!PHOTO_MIMES.some((m) => mime.startsWith(m))) return c.json({ ok: false, error: 'type_refuse' }, 415);
+    if (fichier.size > A2_MEDIAS.photoMaxOctets) return c.json({ ok: false, error: 'trop_lourd' }, 413);
+  }
+
+  try {
+    // La PORTE du niveau (D-E3-2) : voix exige le voile 3 ouvert, photo le 4.
+    const match = await c.env.DB.prepare(`SELECT cree_a FROM rencontre_matchs WHERE id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ cree_a: string }>();
+    const total = await c.env.DB.prepare(`SELECT COUNT(*) AS n FROM rencontre_messages WHERE match_id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ n: number }>();
+    const { voiles } = await etatVoiles(
+      c.env.DB, ctx.matchId, session.userId, ctx.autreId,
+      match?.cree_a ?? new Date().toISOString(), total?.n ?? 0,
+    );
+    const requis = type === 'voix' ? voiles.voix.ouvert : voiles.photo.ouvert;
+    if (!requis) return c.json({ ok: false, error: 'voile_ferme' }, 403);
+
+    // La photo : UNE active par membre — l'ancienne est purgée (R2 + ligne).
+    if (type === 'photo') {
+      const anciennes = await c.env.DB.prepare(
+        `SELECT id, r2_key FROM rencontre_medias WHERE match_id = ?1 AND user_id = ?2 AND type = 'photo'`,
+      )
+        .bind(ctx.matchId, session.userId)
+        .all<{ id: string; r2_key: string }>();
+      for (const a of anciennes.results ?? []) {
+        await c.env.MEDIA!.delete(a.r2_key);
+        await c.env.DB.prepare(`DELETE FROM rencontre_medias WHERE id = ?1`).bind(a.id).run();
+      }
+    }
+
+    const id = crypto.randomUUID();
+    const cle = `media/a2/${ctx.matchId}/${id}`;
+    const octets = await c.env.MEDIA.put(cle, fichier, { httpMetadata: { contentType: mime } });
+    if (!octets) return c.json({ ok: false, error: 'media_indisponible' }, 503);
+    await c.env.DB.prepare(
+      `INSERT INTO rencontre_medias (id, match_id, user_id, type, r2_key, duree_s, octets, mime, cree_a)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`,
+    )
+      .bind(id, ctx.matchId, session.userId, type, cle,
+        type === 'voix' ? Math.trunc(dureeSBrut) : null, fichier.size, mime, new Date().toISOString())
+      .run();
+    return c.json({
+      ok: true,
+      media: { id, type, dureeS: type === 'voix' ? Math.trunc(dureeSBrut) : null, octets: fichier.size, creeA: new Date().toISOString(), deMoi: true },
+    });
+  } catch (e) {
+    console.error('[a2] media put failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+messagesRoutes.get('/rencontres/:matchId/media/:id', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2MediaGetUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2MediaGetUser.scope);
+  if (!c.env.MEDIA) return c.json({ ok: false, error: 'media_indisponible' }, 503);
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404); // D-E3-7
+  const mediaId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(mediaId)) return c.json({ ok: false, error: 'invalid_body' }, 400);
+
+  try {
+    const meta = await c.env.DB.prepare(
+      `SELECT type, r2_key, mime FROM rencontre_medias WHERE id = ?1 AND match_id = ?2 LIMIT 1`,
+    )
+      .bind(mediaId, ctx.matchId)
+      .first<{ type: 'voix' | 'photo'; r2_key: string; mime: string }>();
+    if (!meta) return c.json({ ok: false, error: 'not_found' }, 404);
+    // Le voile du niveau doit être OUVERT DES DEUX pour TOUTE lecture (D-E3-6).
+    const match = await c.env.DB.prepare(`SELECT cree_a FROM rencontre_matchs WHERE id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ cree_a: string }>();
+    const total = await c.env.DB.prepare(`SELECT COUNT(*) AS n FROM rencontre_messages WHERE match_id = ?1`)
+      .bind(ctx.matchId)
+      .first<{ n: number }>();
+    const { voiles } = await etatVoiles(
+      c.env.DB, ctx.matchId, session.userId, ctx.autreId,
+      match?.cree_a ?? new Date().toISOString(), total?.n ?? 0,
+    );
+    const ouvert = meta.type === 'voix' ? voiles.voix.ouvert : voiles.photo.ouvert;
+    if (!ouvert) return c.json({ ok: false, error: 'voile_ferme' }, 403);
+
+    const objet = await c.env.MEDIA.get(meta.r2_key);
+    if (!objet) return c.json({ ok: false, error: 'not_found' }, 404);
+    const entetes = new Headers();
+    entetes.set('content-type', meta.mime || objet.httpMetadata?.contentType || 'application/octet-stream');
+    entetes.set('cache-control', 'private, no-store');
+    entetes.set('content-length', String(objet.size));
+    return new Response(objet.body, { headers: entetes });
+  } catch (e) {
+    console.error('[a2] media get failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});
+
+messagesRoutes.delete('/rencontres/:matchId/media/:id', async (c) => {
+  let session: { sessionId: string; userId: string };
+  try {
+    session = requireAuth(c);
+  } catch {
+    return nonAutorise(c);
+  }
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.a2MediaPutUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.a2MediaPutUser.scope);
+  if (!c.env.MEDIA) return c.json({ ok: false, error: 'media_indisponible' }, 503);
+
+  const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
+  if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  const mediaId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(mediaId)) return c.json({ ok: false, error: 'invalid_body' }, 400);
+
+  try {
+    // L'auteur seul supprime SON média — purge R2 IMMÉDIATE (P4).
+    const meta = await c.env.DB.prepare(
+      `SELECT id, user_id, r2_key FROM rencontre_medias WHERE id = ?1 AND match_id = ?2 LIMIT 1`,
+    )
+      .bind(mediaId, ctx.matchId)
+      .first<{ id: string; user_id: string; r2_key: string }>();
+    if (!meta || meta.user_id !== session.userId) return c.json({ ok: false, error: 'not_found' }, 404);
+    await c.env.MEDIA.delete(meta.r2_key);
+    await c.env.DB.prepare(`DELETE FROM rencontre_medias WHERE id = ?1`).bind(meta.id).run();
+    return c.json({ ok: true });
+  } catch (e) {
+    console.error('[a2] media delete failed', e);
+    return c.json({ ok: false, error: 'store_unavailable' }, 500);
+  }
+});

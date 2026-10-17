@@ -324,4 +324,20 @@ export const CORE: Record<string, string> = {
   'Ta page — une question, un champ libre': 'Your page — a question, a free field',
   'Ta page reste sur cet appareil — jamais citée, jamais montrée.':
     'Your page stays on this device — never quoted, never shown.',
+
+  // ---- MODÉRATION & APPEL (Task 115-b, G-MA-1..6) — l'écran de sanction.
+  // Le message NEUTRE GRAVÉ vient du serveur (/api/me/sanction) et s'affiche
+  // TEL QUEL, hors dictionnaire — seul le CHROME de l'écran se traduit ici.
+  'Ton compte est en pause': 'Your account is paused',
+  'Une relecture humaine est possible — sans délai garanti.':
+    'A human review is possible — with no guaranteed timeline.',
+  'Demander une relecture': 'Ask for a review',
+  'Explique en tes mots — une personne lira ta demande (1000 caractères au plus).':
+    'Explain in your own words — a person will read your request (1000 characters max).',
+  '{{n}} caractères restants': '{{n}} characters left',
+  'Envoyer ma demande': 'Send my request',
+  'Ta demande n\u2019a pas pu partir — réessaie.': 'Your request couldn\u2019t be sent — try again.',
+  'Ta demande est enregistrée — une relecture humaine suivra, sans délai garanti.':
+    'Your request is recorded — a human review will follow, with no guaranteed timeline.',
+  'Ta demande de relecture est en cours.': 'Your review request is in progress.',
 };

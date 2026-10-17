@@ -54,7 +54,8 @@ import { QUETE_IDS, type IdQuete } from './lib/quetes';
 import { useI18n } from './i18n/I18nProvider';
 import { DEVISES, type CurrencyCode } from './i18n/currency';
 import type { Lang } from './i18n/current';
-import type { MeResponse, PushEventRow } from '@wairyu/shared';
+import { fetchMaSanction, poserAppel } from './lib/a2-client';
+import type { MeResponse, MeSanctionResponse, PushEventRow } from '@wairyu/shared';
 
 /**
  * L'app À CE NIVEAU est 100 % Voyage : les 5 onglets Voyage · Mondes · Quête ·
@@ -192,6 +193,130 @@ function readRoute(): Route {
   return tab ? { name: 'tab', tab } : { name: 'default' };
 }
 
+/**
+ * L'ÉCRAN DE SANCTION (Task 115-b, G-MA-1..6) — remplace TOUT l'app en N2
+ * (« Pause complète ») et la seule vue Rencontre en N1 (« Pause Rencontre »).
+ *
+ * Doctrine gravée : la sanction se voit (pas de sanction fantôme, M-6) mais
+ * reste NEUTRE — le message reçu du serveur s'affiche TEL QUEL, sans nom,
+ * sans motif (G-MA-4). Le chemin d'appel existe TOUJOURS (M-5 / G-MA-3) :
+ * « Demander une relecture » → ≤ 1000 caractères, un appel actif à la fois.
+ * Honnêteté : aucun délai promis — « sans délai garanti ».
+ */
+function EcranSanction({
+  sanction,
+  compact = false,
+  onLogout,
+}: {
+  sanction: { niveau: 1 | 2; message: string | null; appelPose: boolean };
+  /** N1 : la vue s'insère DANS l'app (la TabBar reste — le voyage reste ouvert). */
+  compact?: boolean;
+  onLogout: () => void;
+}) {
+  const { tx } = useI18n();
+  const [appelOuvert, setAppelOuvert] = useState(false);
+  const [texte, setTexte] = useState('');
+  const [envoi, setEnvoi] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
+  const [appelPose, setAppelPose] = useState(sanction.appelPose);
+  const [confirme, setConfirme] = useState(false);
+
+  const envoieAppel = async (): Promise<void> => {
+    const message = texte.trim();
+    if (message.length === 0 || envoi) return;
+    setEnvoi(true);
+    setErreur(null);
+    try {
+      await poserAppel(message);
+      setAppelPose(true);
+      setConfirme(true);
+      setAppelOuvert(false);
+      setTexte('');
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 409) {
+        // Un appel est déjà posé (course ou double envoi) — l'état rattrape.
+        setAppelPose(true);
+        setAppelOuvert(false);
+      } else {
+        setErreur(tx('Ta demande n\u2019a pas pu partir — réessaie.'));
+      }
+    } finally {
+      setEnvoi(false);
+    }
+  };
+
+  return (
+    <main className={compact ? 'san-ecran san-ecran-compact' : 'san-ecran'}>
+      {!compact && (
+        <header className="san-tete">
+          <img src="/icons/icon-192.png" alt="Logo Wairyu" className="san-logo" />
+          <span className="san-marque">
+            Wai<span className="san-marque-accent">ryu</span>
+          </span>
+        </header>
+      )}
+      <section className="san-carte" aria-live="polite">
+        <h1 className="san-titre">{tx('Ton compte est en pause')}</h1>
+        {/* G-MA-4 — le message neutre GRAVÉ : reçu du serveur, affiché tel quel. */}
+        <p className="san-message">
+          {sanction.message ?? tx('Une relecture humaine est possible — sans délai garanti.')}
+        </p>
+
+        {appelPose && !confirme && (
+          <p className="san-etat" role="status">{tx('Ta demande de relecture est en cours.')}</p>
+        )}
+        {confirme && (
+          <p className="san-etat san-etat-ok" role="status">
+            {tx('Ta demande est enregistrée — une relecture humaine suivra, sans délai garanti.')}
+          </p>
+        )}
+
+        {!appelPose && !confirme && !appelOuvert && (
+          <button type="button" className="btn btn-accent san-btn" onClick={() => setAppelOuvert(true)}>
+            {tx('Demander une relecture')}
+          </button>
+        )}
+
+        {appelOuvert && (
+          <form
+            className="san-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void envoieAppel();
+            }}
+          >
+            <label className="san-label" htmlFor="san-appel-texte">
+              {tx('Explique en tes mots — une personne lira ta demande (1000 caractères au plus).')}
+            </label>
+            <textarea
+              id="san-appel-texte"
+              className="san-textarea"
+              value={texte}
+              maxLength={1000}
+              rows={5}
+              onChange={(e) => setTexte(e.target.value)}
+            />
+            <span className="san-compteur">{tx('{{n}} caractères restants', { n: 1000 - texte.length })}</span>
+            {erreur && <p className="san-erreur" role="alert">{erreur}</p>}
+            <div className="san-actions">
+              <button type="submit" className="btn btn-primary san-btn" disabled={texte.trim().length === 0 || envoi}>
+                {envoi ? tx('Envoi…') : tx('Envoyer ma demande')}
+              </button>
+              <button type="button" className="btn san-btn" onClick={() => setAppelOuvert(false)}>
+                {tx('Annuler')}
+              </button>
+            </div>
+          </form>
+        )}
+
+        <button type="button" className="btn san-btn san-logout" onClick={onLogout}>
+          {tx('Se déconnecter')}
+        </button>
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
   const { tx, lang, devise, setLangue, setDevise } = useI18n();
   const [stage, setStage] = useState<Stage>('welcome');
@@ -246,6 +371,12 @@ export default function App() {
   const inedits = useInedits();
   /** R.E2 — badge de messages non lus, remonté par MessagesEspace (polling/WS). */
   const [nonLusChat, setNonLusChat] = useState(0);
+  /** MODÉRATION & APPEL (Task 115-b, G-MA-1..6) — l'état de sanction du
+   *  compte, chargé AU BOOT AUTHENTIFIÉ. Niveau 2 ⇒ TOUT l'app devient
+   *  l'écran de sanction ; niveau 1 ⇒ l'onglet Rencontre se masque et la
+   *  tentative d'y aller montre l'écran. Le message serveur est NEUTRE et
+   *  GRAVÉ (G-MA-4) — l'app l'affiche TEL QUEL, jamais retouché. */
+  const [sanction, setSanction] = useState<MeSanctionResponse | null>(null);
 
   // La quête que l'onglet Quête affiche (reprise immédiate au point d'arrêt).
   const [queteCourante, setQueteCourante] = useState<IdQuete>(() => prochaineQuete());
@@ -279,6 +410,12 @@ export default function App() {
       brancherSynchroReponses();
       definirAuthentifie(true);
       void restaurerReponses();
+      // G-MA-1..6 — l'état de sanction se lit au boot (route liste blanche
+      // N2 : elle reste répondante même en pause complète). Échec réseau ⇒
+      // fail-open niveau 0 : le SERVEUR reste la vraie garde de toute écriture.
+      void fetchMaSanction()
+        .then(setSanction)
+        .catch(() => setSanction({ ok: true, niveau: 0, message: null, appelPose: false }));
       void linkDevice(getDeviceId())
         .then((lr) => {
           if (lr.congrats) setCongrats(lr.congratsVia ?? 'email');
@@ -521,6 +658,11 @@ export default function App() {
     brancherSynchroReponses();
     definirAuthentifie(true);
     void restaurerReponses();
+    // Task 115-b — l'état de sanction se lit aussi après une connexion fraîche
+    // (le boot l'avait fait, mais un compte sanctionné peut se reconnecter ici).
+    void fetchMaSanction()
+      .then(setSanction)
+      .catch(() => setSanction({ ok: true, niveau: 0, message: null, appelPose: false }));
     // Recharge le profil pour le bonjour de l'en-tête (post-inscription, le
     // boot l'avait obtenu en 401 — me était resté null).
     void fetchMe()
@@ -595,6 +737,20 @@ export default function App() {
 
   // ---- Connecté : app — L'ACCUEIL EST LE VOYAGE (demande fondateur) ----
   const view: Exclude<Stage, 'welcome'> = stage === 'welcome' ? 'voyage' : stage;
+  // MODÉRATION & APPEL (Task 115-b) — G-MA-1 : N2 « Pause complète » ⇒ TOUT
+  // l'app est remplacée par l'écran de sanction (sessions vivantes : la
+  // lecture du niveau s'est faite au boot sur une route liste blanche N2).
+  // G-MA-2 : N1 « Pause Rencontre » ⇒ l'app reste vivante, l'onglet Rencontre
+  // se masque et la vue Rencontre devient l'écran de sanction (en bannière).
+  const niveauSanction = sanction?.niveau ?? 0;
+  if (niveauSanction === 2 && sanction) {
+    return (
+      <EcranSanction
+        sanction={{ niveau: 2, message: sanction.message, appelPose: sanction.appelPose }}
+        onLogout={handleLogout}
+      />
+    );
+  }
   const rawName = (me?.displayName ?? '').trim() || (me?.username ?? '').trim();
   const firstName = (rawName.split(/\s+/)[0] || tx('Voyageur')).slice(0, 14);
   const initial = firstName.charAt(0).toUpperCase();
@@ -912,7 +1068,16 @@ export default function App() {
         {view === 'parcourus' && <Parcourus />}
         {view === 'recolte' && <Recolte />}
         {view === 'portrait' && <Portrait />}
-        {view === 'matchs' && <Rencontres />}
+        {view === 'matchs' &&
+          (niveauSanction === 1 && sanction ? (
+            <EcranSanction
+              sanction={{ niveau: 1, message: sanction.message, appelPose: sanction.appelPose }}
+              compact
+              onLogout={handleLogout}
+            />
+          ) : (
+            <Rencontres />
+          ))}
         {view === 'masked' && <Masque />}
         {view === 'messages' && <MessagesEspace onNonLus={setNonLusChat} monId={me?.userId ?? null} />}
         {view === 'quete' && (
@@ -933,7 +1098,9 @@ export default function App() {
           onSelect={go}
           queteEnCours={queteEnCours}
           badges={{ ...inedits, rencontres: nonLusChat }}
-          rencontresOuvert={rencontresOuvert}
+          // G-MA-2 : l'onglet Rencontre se masque en N1 (le pool répond déjà
+          // vide côté serveur ; les fils existants restent en lecture seule).
+          rencontresOuvert={rencontresOuvert && niveauSanction === 0}
         />
       </div>
     </>

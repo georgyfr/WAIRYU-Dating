@@ -18,6 +18,7 @@
 import { Hono } from 'hono';
 import type { Context } from 'hono';
 import type { AppEnv } from '../env';
+import { MESSAGE_SANCTION } from '../middleware/sanction';
 import { errors, AppError } from '../lib/errors';
 // P0 âge — validateur strict unique (inscriptions), chemin mineur 403.
 import { MinorAgeError, validateBirthDateISO } from '../lib/age';
@@ -1355,6 +1356,19 @@ authRoutes.get('/account/export', async (c) => {
       .catch(() => [] as Record<string, unknown>[]),
   ]);
 
+  // RENCONTRE-E3 (D-E3-9) : réponses croisées + MÉTADONNÉES médias (jamais
+  // les octets — volumétrie ; les réponses JSON, elles, partent intégralement).
+  const a2Act = await c.env.DB.prepare(
+    `SELECT id, titre, statut, cree_a, devoilee_a FROM rencontre_a2
+     WHERE match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1)`,
+  ).bind(session.userId).all<Record<string, unknown>>().then((r) => r.results ?? []).catch(() => []);
+  const a2Rep = await c.env.DB.prepare(
+    `SELECT question_id, corps, cree_a FROM rencontre_a2_reponses WHERE user_id = ?1`,
+  ).bind(session.userId).all<Record<string, unknown>>().then((r) => r.results ?? []).catch(() => []);
+  const a2Med = await c.env.DB.prepare(
+    `SELECT id, type, duree_s, octets, mime, cree_a FROM rencontre_medias WHERE user_id = ?1`,
+  ).bind(session.userId).all<Record<string, unknown>>().then((r) => r.results ?? []).catch(() => []);
+
   const body: AccountExport = {
     exportedAt: new Date().toISOString(),
     format: 'wairyu-export-v1',
@@ -1383,6 +1397,11 @@ authRoutes.get('/account/export', async (c) => {
         blocages: blocagesExport,
         note: 'R.E2 : les signalements que tu as faits (motif horodaté — jamais d\u2019issue, la modération est confidentielle) et les blocages que tu as posés (l\u2019autre n\u2019en est jamais informé). Les signalements REÇUS ne sont pas exportés : confidentialité de la modération.',
       },
+    },
+    voyageADeux: {
+      activites: a2Act,
+      reponses: a2Rep,
+      mediasMeta: a2Med,
     },
     consents: {
       email_verified_at: user['email_verified_at'] ?? null,
@@ -1455,6 +1474,31 @@ async function hardDeleteAccount(
   await c.env.DB.prepare(`DELETE FROM rencontre_reveals WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_blocages WHERE par = ?1 OR contre = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_signalements WHERE de = ?1 OR contre = ?1`).bind(userId).run();
+  // RENCONTRE-E3 (Task 115, D-E3-9) : tout le Voyage à Deux part avec le
+  // compte — objets R2 D'ABORD (médias de MES matchs), puis les 4 tables.
+  try {
+    if (c.env.MEDIA) {
+      const cles = await c.env.DB.prepare(
+        `SELECT DISTINCT r2_key FROM rencontre_medias
+         WHERE user_id = ?1 OR match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1)`,
+      ).bind(userId).all<{ r2_key: string }>();
+      for (const k of cles.results ?? []) {
+        if (k.r2_key) await c.env.MEDIA.delete(k.r2_key);
+      }
+    }
+  } catch {
+    /* R2 indisponible : la purge D1 ci-dessous reste la vérité (les octets
+       orphelins seront inaccessibles — aucun media_key consultable). */
+  }
+  await c.env.DB.prepare(`DELETE FROM rencontre_medias WHERE user_id = ?1 OR match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1)`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_a2_reponses WHERE activite_id IN (SELECT id FROM rencontre_a2 WHERE match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1) OR user_id IS ?1)`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_a2 WHERE match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1)`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_voiles WHERE match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1) OR user_id = ?1`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM rencontre_duo WHERE match_id IN (SELECT id FROM rencontre_matchs WHERE a = ?1 OR b = ?1) OR user_id = ?1`).bind(userId).run();
+  // MODÉRATION & APPEL (Task 115) : sanctions/appels du compte — l'historique
+  // d'audit (0013) conserve le trajet SANS identité exploitable.
+  await c.env.DB.prepare(`DELETE FROM moderation_appels WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM moderation_sanctions WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_pas WHERE de = ?1 OR vers = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM rencontre_matchs WHERE a = ?1 OR b = ?1`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM auth_password WHERE user_id = ?`).bind(userId).run();
@@ -1473,6 +1517,75 @@ authRoutes.delete('/account', async (c) => {
   clearSessionCookie(c);
   await bumpMetric(c.env.DB, 'account_deleted');
   return c.json({ deleted: true });
+});
+
+// ---------------------------------------------------------------------------
+// MODÉRATION & APPEL (Task 115) — SPEC v1.1, G-MA-3..5.
+//   GET  /me/sanction : l'état de sanction du compte (message NEUTRE gravé,
+//                       jamais le nom du signalant — M-6).
+//   POST /me/appel    : « Demander une relecture » — 1 appel actif à la
+//                       fois, ≤ 1000 caractères, 3/j (modAppelUser).
+// Ces deux routes restent OUVERTES en N2 (liste blanche sanction.ts) : une
+// sanction sans chemin d'appel n'existe pas dans ce produit (M-5).
+// ---------------------------------------------------------------------------
+authRoutes.get('/me/sanction', async (c) => {
+  const session = await requireAuth(c);
+  const san = await c.env.DB.prepare(
+    `SELECT id, niveau, cree_a FROM moderation_sanctions
+     WHERE user_id = ? AND levee_a IS NULL ORDER BY cree_a DESC LIMIT 1`,
+  )
+    .bind(session.userId)
+    .first<{ id: string; niveau: number; cree_a: string }>();
+  if (!san) return c.json({ ok: true, niveau: 0, message: null, appelPose: false });
+  const appel = await c.env.DB.prepare(
+    `SELECT id FROM moderation_appels WHERE sanction_id = ? LIMIT 1`,
+  )
+    .bind(san.id)
+    .first<{ id: string }>();
+  return c.json({
+    ok: true,
+    niveau: san.niveau === 2 ? 2 : 1,
+    message: MESSAGE_SANCTION,
+    appelPose: !!appel,
+  });
+});
+
+authRoutes.post('/me/appel', async (c) => {
+  const session = await requireAuth(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.modAppelUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.modAppelUser.scope);
+
+  const body = (await c.req.json().catch(() => null)) as { message?: unknown } | null;
+  const message = typeof body?.message === 'string' ? body.message.trim() : '';
+  if (message.length === 0 || message.length > 1000) {
+    throw errors.badRequest('Ton message de relecture doit faire entre 1 et 1000 caractères.');
+  }
+  const san = await c.env.DB.prepare(
+    `SELECT id FROM moderation_sanctions WHERE user_id = ? AND levee_a IS NULL ORDER BY cree_a DESC LIMIT 1`,
+  )
+    .bind(session.userId)
+    .first<{ id: string }>();
+  if (!san) throw errors.badRequest('Aucune sanction active à relire.');
+  const existant = await c.env.DB.prepare(
+    `SELECT id FROM moderation_appels WHERE sanction_id = ? LIMIT 1`,
+  )
+    .bind(san.id)
+    .first<{ id: string }>();
+  if (existant) throw errors.conflict('Ta demande de relecture est déjà enregistrée.');
+  const id = crypto.randomUUID();
+  await c.env.DB.prepare(
+    `INSERT INTO moderation_appels (id, user_id, sanction_id, message, statut, cree_a)
+     VALUES (?, ?, ?, ?, 'ouvert', ?)`,
+  )
+    .bind(id, session.userId, san.id, message, new Date().toISOString())
+    .run();
+  await c.env.DB.prepare(
+    `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
+     VALUES ('system', 'appel_pose', ?, ?, ?, strftime('%s','now'))`,
+  )
+    .bind(session.userId, id, JSON.stringify({ sanctionId: san.id }))
+    .run();
+  return c.json({ ok: true, appelId: id });
 });
 
 // ---------------------------------------------------------------------------

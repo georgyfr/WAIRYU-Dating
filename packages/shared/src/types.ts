@@ -283,6 +283,12 @@ export interface OAuthCompleteResponse {
  * étapes 3+ étendront la structure (les champs s'ajoutent, jamais cassés).
  */
 export interface AccountExport {
+  /** RENCONTRE-E3 (Task 115) : réponses croisées + métadonnées médias (les octets audio restent hors export — volumétrie). */
+  voyageADeux?: {
+    activites: Record<string, unknown>[];
+    reponses: Record<string, unknown>[];
+    mediasMeta: Record<string, unknown>[];
+  };
   exportedAt: string;
   format: 'wairyu-export-v1';
   user: Record<string, unknown>;
@@ -316,4 +322,102 @@ export interface AccountExport {
   };
   consents: Record<string, unknown>;
   audit: { note: string };
+}
+
+// ---------------------------------------------------------------------------
+// RENCONTRE-E3 « Le Voyage à Deux » (Task 115) — contrats A2 (SPEC v1.1)
+// ---------------------------------------------------------------------------
+
+/** L'état d'un voile pour le membre qui demande : la demande se voit, le
+ *  refus jamais (D-E3-3) — il n'existe AUCUN statut « refusé ». */
+export interface A2VoileEtat {
+  moi: boolean;
+  autre: boolean;
+  ouvert: boolean;
+  /** Porte franchie ? null = niveau sans porte (2 : le match suffit). */
+  porte: boolean | null;
+  /** Progression de la porte (niveau 3 : seuils E2). */
+  seuils?: { messages: number; messagesRequis: number; jours: number; joursRequis: number };
+}
+
+/** Une carte de quête (D-E3-5 : réponses FORMATÉES, jamais l'état brut). */
+export interface A2Carte {
+  quete: string;
+  lignes: string[];
+}
+
+export interface A2DuoItem {
+  quete: string;
+  consentMoi: boolean;
+  consentAutre: boolean;
+  ouvert: boolean;
+  /** Renseignées seulement à l'ouverture (double oui). */
+  carteMoi: A2Carte | null;
+  carteAutre: A2Carte | null;
+  /** Question de dialogue prête à poser (pilote, tournée par quête). */
+  question: string | null;
+}
+
+export interface A2ActiviteEtat {
+  id: string;
+  statut: 'en_cours' | 'devoilee';
+  questions: {
+    id: string;
+    texte: string;
+    maReponse: string | null;
+    reponseAutre: string | null;
+  }[];
+  completeMoi: boolean;
+  completeAutre: boolean;
+}
+
+export interface A2RdvEtat {
+  idees: { titre: string; pourquoi: string }[];
+  question: string;
+}
+
+export interface A2MediaInfo {
+  id: string;
+  type: 'voix' | 'photo';
+  dureeS: number | null;
+  octets: number;
+  creeA: string;
+  deMoi: boolean;
+}
+
+/** GET /api/rencontres/:matchId/a2/etat — TOUT le Voyage à Deux d'une paire. */
+export interface A2EtatResponse {
+  ok: true;
+  voiles: { cartes: A2VoileEtat; voix: A2VoileEtat; photo: A2VoileEtat };
+  /** Statut « Prêt·e » (quête 1.11 franchie, dérivée de `reponses`). */
+  pretes: { moi: boolean; autre: boolean };
+  duo: A2DuoItem[];
+  activite: A2ActiviteEtat | null;
+  rdv: A2RdvEtat | null;
+  /** Le compteur « votre chemin à deux : N récoltes » (G-E3-P8, dérivé). */
+  fragments: number;
+  mediaPhoto: { moi: A2MediaInfo | null; autre: A2MediaInfo | null };
+  /** Les notes vocales de la paire (fil, plus récentes d'abord, 50 max). */
+  voix: A2MediaInfo[];
+}
+
+/** GET /api/me/sanction — l'état de sanction du compte (G-MA-4 : neutre). */
+export interface MeSanctionResponse {
+  ok: true;
+  niveau: 0 | 1 | 2;
+  /** Message neutre gravé si niveau > 0 — jamais le nom du signalant. */
+  message: string | null;
+  /** L'appel existe-t-il déjà pour cette sanction ? */
+  appelPose: boolean;
+}
+
+export interface ModerationAppel {
+  id: string;
+  userId: string;
+  pseudo: string | null;
+  sanctionId: string;
+  sanctionNiveau: number;
+  message: string;
+  statut: 'ouvert' | 'accepte' | 'rejete';
+  creeA: string;
 }

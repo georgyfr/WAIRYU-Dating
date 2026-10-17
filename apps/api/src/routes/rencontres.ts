@@ -112,6 +112,25 @@ rencontresRoutes.get('/rencontres/pool', async (c) => {
   if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.rencontrePoolUser.scope);
 
   try {
+    // MODÉRATION & APPEL (Task 115, G-MA-1) : en N1 « Pause Rencontre », le
+    // sanctionné n'apparaît plus ET ne voit plus — le pool répond vide et
+    // la porte jalonA est fermée (l'écran reste honnête, pas d'explication
+    // du pourquoi ici : l'écran de sanction porte le message gravé).
+    if (c.get('sanction') !== 0) {
+      // Shape identique à la porte fermée (plancher mutuel) — même écran
+      // honnête côté front, aucune donnée d'autrui ne sort.
+      return c.json({
+        ok: true,
+        jalonA: false,
+        jalonB: false,
+        pasRecus: 0,
+        total: 0,
+        pool: [],
+        matchs: [],
+        moi: { mondes: [], jalonB: false },
+      });
+    }
+
     // Mon propre état de quêtes (jalon A / jalon B).
     const { results: miennes } = await c.env.DB.prepare(
       `SELECT quete FROM reponses WHERE user_id = ?1 AND json_extract(etat,'$.terminee') = 1`,

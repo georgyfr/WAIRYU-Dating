@@ -7,6 +7,7 @@ import { Hono } from 'hono';
 import type { AppEnv, Env } from './env';
 import { errorBody, errors, reqId, AppError } from './lib/errors';
 import { sessionMiddleware } from './middleware/session';
+import { sanctionMiddleware, MESSAGE_SANCTION } from './middleware/sanction';
 import { devCors, openCors } from './middleware/cors';
 import { usageMiddleware } from './middleware/usage';
 import { healthRoutes } from './routes/health';
@@ -48,6 +49,9 @@ app.use('/admin/*', usageMiddleware('1'));
 
 // ---- Session (cookie signé → D1) ----
 app.use('/api/*', sessionMiddleware);
+
+// ---- Sanctions actives (MODÉRATION & APPEL, Task 115) ----
+app.use('/api/*', sanctionMiddleware);
 
 // ---- Routes ----
 app.route('/api', healthRoutes);

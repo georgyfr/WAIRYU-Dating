@@ -14,6 +14,12 @@ export interface Env {
    * proprement — JAMAIS de crash, le chat reste fonctionnel sans IA.
    */
   AI?: Ai;
+  /**
+   * R2 — médias privés-paire (RENCONTRE-E3, G-E3-P2 : la voix et la photo
+   * voyagent PAR le Worker, jamais d'URL publique). Absent ⇒ les endpoints
+   * médias répondent 503 « media_indisponible » proprement (fail-graceful).
+   */
+  MEDIA?: R2Bucket;
 
   // ---- Variables ----
   ENVIRONMENT: 'production' | 'staging';
@@ -70,6 +76,12 @@ export interface AppVars {
   } | null;
   /** true si la session a été prolongée lors de cette requête (TTL glissant). */
   sessionRenewed: boolean;
+  /**
+   * Niveau de sanction ACTIVE du compte (MODÉRATION & APPEL, Task 115) :
+   * 0 = aucune · 1 = Pause Rencontre · 2 = Pause complète. Posé par
+   * sessionMiddleware, appliqué par sanctionMiddleware.
+   */
+  sanction: 0 | 1 | 2;
 }
 
 export type AppEnv = Env & { Bindings: Env; Variables: AppVars };

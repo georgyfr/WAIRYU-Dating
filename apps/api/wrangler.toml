@@ -35,6 +35,15 @@ class_name = "ChatRoom"
 [ai]
 binding = "AI"
 
+# ---------- R2 (RENCONTRE-E3 : médias privés-paire, G-E3-P2 — zéro tiers) ----------
+# ⏳ EN ATTENTE D'ACTIVATION R2 par le fondateur (dashboard → R2 → Enable).
+#    Une fois activé + buckets créés (wairyu-media / wairyu-media-staging),
+#    décommenter les 2 blocs ci-dessous et le bloc staging : le code répond
+#    alors 503 media_indisponible propre tant que le binding est absent.
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "wairyu-media"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["ChatRoom"]
@@ -91,6 +100,11 @@ class_name = "ChatRoom"
 # ---------- Workers AI (staging — même binding, même usage) ----------
 [env.staging.ai]
 binding = "AI"
+
+# ---------- R2 staging (G-E3-P2) — à réactiver avec le bloc prod ----------
+# [[env.staging.r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "wairyu-media-staging"
 
 [env.staging.triggers]
 crons = ["40 3 * * *"]

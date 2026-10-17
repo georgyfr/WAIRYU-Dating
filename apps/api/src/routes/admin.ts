@@ -256,3 +256,193 @@ adminRoutes.get('/moderation/blocages', async (c) => {
 
 // Référence à errors pour l'usage futur des autres routes admin (Étape 7+).
 void errors;
+
+/* ==================================================================== */
+/* MODÉRATION & APPEL (Task 115) — SPEC v1.1, M-1..7 + G-MA-1..6        */
+/*  - Pose/levée de sanctions (N1/N2) — TOUTE action tracée audit_admin ; */
+/*  - File d'appels in-app (accepter = lever, sans trace pour les autres)*/ 
+/*  - Accès au média signalé (G-E3-P9) : unique cas d'accès humain,      */
+/*    tracé, jamais pour la gestion courante.                            */
+/* ==================================================================== */
+
+import { MESSAGE_SANCTION } from '../middleware/sanction';
+import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
+
+/** Trace une action de modération (M-2 : aucune action hors audit).
+ *  target_user = le compte concerné s'il existe ; les identifiants techniques
+ *  (appel/media) vivent dans details. */
+async function tracer(c: Context<AppEnv>, action: string, targetUser: string | null, details: unknown) {
+  await c.env.DB.prepare(
+    `INSERT INTO audit_admin (admin, action, target_user, target_id, details, created_at)
+     VALUES ('fondateur', ?, ?, NULL, ?, strftime('%s','now'))`,
+  )
+    .bind(action, targetUser, JSON.stringify(details ?? {}))
+    .run();
+}
+
+// GET /admin/moderation/appels?statut=ouvert — la file des relectures.
+adminRoutes.get('/moderation/appels', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  const statut = c.req.query('statut');
+  const where = statut === 'ouvert' || statut === 'accepte' || statut === 'rejete'
+    ? `WHERE a.statut = '${statut}'`
+    : '';
+  const { results } = await c.env.DB.prepare(
+    `SELECT a.id, a.user_id, a.sanction_id, a.message, a.statut, a.cree_a,
+            s.niveau AS sanction_niveau, s.cree_a AS sanction_cree_a,
+            u.display_name AS dn, ap.username AS un
+     FROM moderation_appels a
+     LEFT JOIN moderation_sanctions s ON s.id = a.sanction_id
+     LEFT JOIN users u ON u.id = a.user_id
+     LEFT JOIN auth_password ap ON ap.user_id = a.user_id
+     ${where}
+     ORDER BY a.cree_a DESC LIMIT 200`,
+  ).all<Record<string, string | number | null>>();
+  return c.json({
+    ok: true,
+    appels: (results ?? []).map((r) => ({
+      id: r.id,
+      userId: r.user_id,
+      pseudo: pseudoDe(r.dn as string | null, r.un as string | null),
+      sanctionId: r.sanction_id,
+      sanctionNiveau: r.sanction_niveau,
+      message: r.message,
+      statut: r.statut,
+      creeA: r.cree_a,
+      sanctionCreeA: r.sanction_cree_a,
+    })),
+  });
+});
+
+// POST /admin/moderation/appels/:id {decision: 'accepte'|'rejete'}
+// accepte ⇒ sanction LEVÉE (levee_par 'appel_accepte', M-5/G-MA-6).
+adminRoutes.post('/moderation/appels/:id', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  const appelId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(appelId)) throw errors.badRequest('Identifiant invalide.');
+  const body = (await c.req.json().catch(() => null)) as { decision?: unknown } | null;
+  const decision = body?.decision;
+  if (decision !== 'accepte' && decision !== 'rejete') {
+    throw errors.badRequest("Décision invalide (accepte | rejete).");
+  }
+  const appel = await c.env.DB.prepare(
+    `SELECT id, sanction_id, statut FROM moderation_appels WHERE id = ? LIMIT 1`,
+  ).bind(appelId).first<{ id: string; sanction_id: string; statut: string }>();
+  if (!appel) throw errors.notFound();
+  if (appel.statut !== 'ouvert') throw errors.badRequest('Appel déjà tranché.');
+
+  await c.env.DB.prepare(
+    `UPDATE moderation_appels SET statut = ?, traite_a = ? WHERE id = ?`,
+  ).bind(decision, new Date().toISOString(), appelId).run();
+
+  if (decision === 'accepte') {
+    const levee = new Date().toISOString();
+    await c.env.DB.prepare(
+      `UPDATE moderation_sanctions SET levee_a = ?, levee_par = 'appel_accepte'
+       WHERE id = ? AND levee_a IS NULL`,
+    ).bind(levee, appel.sanction_id).run();
+  }
+  await tracer(c, `appel_${decision}`, appelId, { sanctionId: appel.sanction_id });
+  return c.json({ ok: true, sanctionLevee: decision === 'accepte' });
+});
+
+// POST /admin/moderation/sanctions {userId, niveau, signalementId?, details?}
+adminRoutes.post('/moderation/sanctions', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.modAdminAction, 'console');
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.modAdminAction.scope);
+
+  const body = (await c.req.json().catch(() => null)) as {
+    userId?: unknown; niveau?: unknown; signalementId?: unknown; details?: unknown;
+  } | null;
+  const userId = typeof body?.userId === 'string' ? body.userId : '';
+  const niveau = body?.niveau;
+  const signalementId = typeof body?.signalementId === 'string' ? body.signalementId : null;
+  const details = typeof body?.details === 'string' ? body.details.slice(0, 500) : null;
+  if (!/^[0-9a-f-]{16,64}$/i.test(userId) || (niveau !== 1 && niveau !== 2)) {
+    throw errors.badRequest('userId + niveau (1|2) requis.');
+  }
+  const active = await c.env.DB.prepare(
+    `SELECT id, niveau FROM moderation_sanctions WHERE user_id = ? AND levee_a IS NULL LIMIT 1`,
+  ).bind(userId).first<{ id: string; niveau: number }>();
+  if (active) throw errors.conflict(`Une sanction N${active.niveau} est déjà active pour ce compte.`);
+
+  const id = crypto.randomUUID();
+  await c.env.DB.prepare(
+    `INSERT INTO moderation_sanctions (id, user_id, niveau, signalement_id, details, cree_a)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  )
+    .bind(id, userId, niveau, signalementId, details, new Date().toISOString())
+    .run();
+  await tracer(c, `sanction_n${niveau}`, userId, { sanctionId: id, signalementId, details });
+  return c.json({ ok: true, sanctionId: id, message: MESSAGE_SANCTION });
+});
+
+// POST /admin/moderation/sanctions/:id/lever — levée manuelle (appel traité
+// hors système, erreur constatée…) — toujours tracée.
+adminRoutes.post('/moderation/sanctions/:id/lever', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  const sanctionId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(sanctionId)) throw errors.badRequest('Identifiant invalide.');
+  const res = await c.env.DB.prepare(
+    `UPDATE moderation_sanctions SET levee_a = ?, levee_par = 'admin'
+     WHERE id = ? AND levee_a IS NULL`,
+  ).bind(new Date().toISOString(), sanctionId).run();
+  if (!res.meta.changes) throw errors.notFound();
+  await tracer(c, 'sanction_levee', sanctionId, {});
+  return c.json({ ok: true });
+});
+
+// GET /admin/moderation/medias?matchId= — les MÉTADONNÉES d'un match signalé.
+adminRoutes.get('/moderation/medias', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  const matchId = c.req.query('matchId') ?? '';
+  if (!/^[0-9a-f-]{16,64}$/i.test(matchId)) throw errors.badRequest('matchId requis.');
+  const { results } = await c.env.DB.prepare(
+    `SELECT m.id, m.user_id, m.type, m.duree_s, m.octets, m.mime, m.cree_a,
+            u.display_name AS dn, ap.username AS un
+     FROM rencontre_medias m
+     LEFT JOIN users u ON u.id = m.user_id
+     LEFT JOIN auth_password ap ON ap.user_id = m.user_id
+     WHERE m.match_id = ?1 ORDER BY m.cree_a DESC LIMIT 100`,
+  ).bind(matchId).all<Record<string, string | number | null>>();
+  return c.json({
+    ok: true,
+    medias: (results ?? []).map((r) => ({
+      id: r.id,
+      userId: r.user_id,
+      type: r.type,
+      dureeS: r.duree_s,
+      octets: r.octets,
+      mime: r.mime,
+      creeA: r.cree_a,
+      auteur: pseudoDe(r.dn as string | null, r.un as string | null),
+    })),
+  });
+});
+
+// GET /admin/moderation/medias/:id — LE flux du média (G-E3-P9). Unique cas
+// d'accès humain aux médias, TRACÉ AVANT l'envoi (audit inconditionnel).
+adminRoutes.get('/moderation/medias/:id', async (c) => {
+  const refuse = gardeAdmin(c);
+  if (refuse) return refuse;
+  if (!c.env.MEDIA) throw errors.notFound();
+  const mediaId = c.req.param('id');
+  if (!/^[0-9a-f-]{16,64}$/i.test(mediaId)) throw errors.badRequest('Identifiant invalide.');
+  const meta = await c.env.DB.prepare(
+    `SELECT r2_key, mime, match_id, user_id FROM rencontre_medias WHERE id = ? LIMIT 1`,
+  ).bind(mediaId).first<{ r2_key: string; mime: string; match_id: string; user_id: string }>();
+  if (!meta) throw errors.notFound();
+  await tracer(c, 'media_consulte', meta.user_id, { matchId: meta.match_id, mediaId });
+  const objet = await c.env.MEDIA.get(meta.r2_key);
+  if (!objet) throw errors.notFound();
+  const entetes = new Headers();
+  entetes.set('content-type', meta.mime || objet.httpMetadata?.contentType || 'application/octet-stream');
+  entetes.set('cache-control', 'private, no-store');
+  return new Response(objet.body, { headers: entetes });
+});

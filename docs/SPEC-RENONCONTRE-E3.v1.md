@@ -1,4 +1,4 @@
-# SPEC — RENCONTRE-E3 « Le Voyage à Deux » (v1, Task 112)
+# SPEC — RENCONTRE-E3 « Le Voyage à Deux » (v1.1, Tasks 112/115)
 
 Phases du volet Rencontre : **E1 le pas et le match (livré) → E2 les conversations (livré) → E3 le Voyage à Deux (CE document).**
 
@@ -85,19 +85,22 @@ Routes étendues dans `messages.ts` (même `requireAuth` + `contexteMatch` + blo
 
 Les 6 quêtes complètes du M11 (Phase C4) · la monnaie Lucioles et toute activité payante (Étape 8) · appels audio/vidéo temps réel · géolocalisation · La Table du monde / événements · le Carnet de rencontre · l'exposition de cartes dans le pool E1 · le déblocage post-blocage (décision modération séparée, item 3 du menu).
 
-## 6. [À VALIDER] — décisions fondateur restantes
+## 6. Décisions fondateur — GRAVÉES (v1.1, GO « OK tout » 2026-10-17)
 
-1. **Le rythme du build** : les trois volets en UNE passe staging (recommandé — un seul déploiement, un flag par volet, tes vérifications sur l'ensemble) ou volet par volet avec ta validation entre chaque.
-2. **P2** : le stockage **R2 natif par le Worker** (recommandé — zéro tiers, zéro URL publique) ou Cloudinary (plan v1).
-3. **P3** : la porte de la voix = **les seuils E2 gravés (15 messages + 7 jours) + double oui** (recommandé) — l'alternative « fragments combinés » est impossible avant Étape 8.
-4. **P4** : les limites médias — voix webm/opus ≤ 60 s / 512 Ko, photo ≤ 4 Mo (recommandé, ce sont les règles du plan) ou d'autres.
-5. **P4** : le strip EXIF par **re-encode canvas côté client** (recommandé — l'original ne quitte jamais l'appareil avec ses métadonnées) ou strip serveur.
-6. **P6** : le Rendez-vous préparé par **règles locales transparentes** (recommandé) ou Workers AI.
-7. **P6** : le **contenu pilote** — je propose des drafts (3 questions croisées + 2-3 questions de dialogue) au tour suivant, ou tu les co-écris avec moi maintenant.
-8. **P7** : le compteur « votre chemin à deux : N récoltes » (recommandé — visible mais jamais un score) ou rien du tout en v1.
-9. **P9** : l'accès du modérateur au **média signalé** (recommandé — nécessaire pour trancher, tracé dans audit_admin) ou signalement = purge immédiate sans relecture.
-10. **Le nom visible** : « Le Voyage à Deux » (verbatim M11, recommandé) ou autre.
+Les 10 points ouverts de v1.0 sont désormais **décisions gravées** (G-E3-P1..P10) — le fondateur a validé les recommandations en bloc :
+
+1. **G-E3-P1 — Rythme** : les trois volets en UNE passe staging, un flag par volet, vérifications fondateur sur l'ensemble.
+2. **G-E3-P2 — Stockage** : R2 natif par le Worker (zéro tiers, zéro URL publique). Cloudinary rejeté.
+3. **G-E3-P3 — Porte de la voix** : seuils E2 gravés (15 messages + 7 jours) + double oui.
+4. **G-E3-P4 — Limites médias** : voix webm/opus ≤ 60 s / 512 Ko · photo ≤ 4 Mo.
+5. **G-E3-P5 — EXIF** : re-encode canvas côté client (l'original ne quitte jamais l'appareil avec ses métadonnées).
+6. **G-E3-P6 — Rendez-vous préparé** : règles locales transparentes, PAS d'IA en v1.
+7. **G-E3-P7 — Contenu pilote** : l'agent propose des drafts (3 questions croisées + 2-3 questions de dialogue) au tour suivant.
+8. **G-E3-P8 — Compteur** : « votre chemin à deux : N récoltes », dérivé, jamais un score.
+9. **G-E3-P9 — Accès média signalé** : le modérateur peut ouvrir un média signalé via la console — unique cas d'accès humain, tracé `audit_admin`.
+10. **G-E3-P10 — Nom visible** : « Le Voyage à Deux » (verbatim M11).
 
 ## 7. Journal
 
+- **v1.1 (2026-10-17, Task 115)** — GO fondateur « OK tout » : les 10 points ouverts deviennent les décisions gravées G-E3-P1..P10 (sans modification d'aucune reco). Le build suit : une passe staging (G-E3-P1).
 - **v1.0 (2026-10-17, Task 112)** — création, session SPEC uniquement (GO fondateur). Ancrage produit vérifié : M11 voyage.ts (6 quêtes, tagline, soon, gratuit), économie v1.5 §2.2 (Révélation progressive 4 niveaux, Duo, Rendez-vous préparé, Fragments de connexion, « la récompense, c'est la réponse de l'autre »), format gravé « texte → voix → photo, consentement des deux ». Ancrage code vérifié : badge Révélés ✦ E2, reponses 0011 (dérivation jalon A E1 réutilisable), chatVoiceUser posée, Lucioles absentes du code, R2 dispo. 9 décisions gravées (D-E3-1..9), 10 points ouverts numérotés. Rien implémenté, prod inchangée (ec034794).

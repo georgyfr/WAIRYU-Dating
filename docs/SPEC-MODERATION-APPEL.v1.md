@@ -1,4 +1,4 @@
-# SPEC — MODÉRATION & APPEL (v1, Task 114)
+# SPEC — MODÉRATION & APPEL (v1.1, Tasks 114/115)
 
 Complément direct de la Task 109 (console `#/admin`) et de la SPEC E3 §9. Statut : SESSION SPEC UNIQUEMENT — rien d'implémenté, prod inchangée (42b8d538).
 
@@ -48,14 +48,16 @@ signalement (E2) → relecture console (média signalé si E3-P9 validé, accès
 ### P6 — Croisement E3
 Si la spec E3 est validée (P9), l'accès du modérateur au média signalé passe par la même console, tracé `audit_admin`, unique cas d'accès humain aux médias — jamais pour la gestion courante.
 
-## 3. [À VALIDER] — points fondateur (numérotés)
+## 3. Décisions fondateur — GRAVÉES (v1.1, GO « OK tout » 2026-10-17)
 
-1. **Deux niveaux N1/N2** (recommandé) ou un seul niveau « pause » unique.
-2. **N1 lecture seule sur les fils existants** (recommandé — la paire opposée n'est pas punie par la disparition du fil) ou masquage complet des fils.
-3. **Appel in-app** (recommandé, P4) ou email externe.
-4. **Message de sanction neutre gravé** : « Ton compte est en pause après un signalement. Une relecture humaine est possible — sans délai garanti. » (recommandé) ou autre formulation.
-5. **1 appel actif à la fois, ≤ 1000 caractères, 3/j** (recommandé) ou plus permissif.
-6. **L'appel accepté lève la sanction sans trace pour les autres** (recommandé — M-5) ou l'appel accepté laisse une mention interne (audit only — c'est déjà le cas).
+Les 6 points ouverts de v1.0 sont désormais **décisions gravées** (G-MA-1..6) — le fondateur a validé les recommandations en bloc :
+
+1. **G-MA-1 — Deux niveaux** : N1 « Pause Rencontre » et N2 « Pause complète ».
+2. **G-MA-2 — Fils existants en lecture seule** pour le compte sanctionné (N1) — la paire opposée n'est pas punie par la disparition du fil.
+3. **G-MA-3 — Appel in-app** : bouton « Demander une relecture » + table `moderation_appels` + section Appels dans la console.
+4. **G-MA-4 — Message de sanction neutre gravé** : « Ton compte est en pause après un signalement. Une relecture humaine est possible — sans délai garanti. »
+5. **G-MA-5 — 1 appel actif à la fois, ≤ 1000 caractères, 3/j** (`modAppelUser`).
+6. **G-MA-6 — Appel accepté = zéro trace pour les autres** (levée sans stigmate ; l'audit interne conserve le trajet).
 
 ## 4. Hors périmètre
 
@@ -63,4 +65,5 @@ Ban IP / anti-abus réseau · modération automatique du contenu (IA) · délég
 
 ## 5. Journal
 
+- **v1.1 (2026-10-17, Task 115)** — GO fondateur « OK tout » : les 6 points ouverts deviennent les décisions gravées G-MA-1..6 (sans modification d'aucune reco). Le build suit ( même passe staging que E3).
 - **v1.0 (2026-10-17, Task 114)** — création après constat : la console Task 109 ne sait que CLASSER (aucune mesure) et aucun recours n'existe. État gravé vérifié (0015, 0013, admin.ts, Moderation.tsx). 7 décisions gravées (M-1..7), 6 propositions (P1..6), 6 points ouverts numérotés. Rien implémenté.

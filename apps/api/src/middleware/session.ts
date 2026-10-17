@@ -19,6 +19,7 @@ const RENEW_THRESHOLD_S = 90 * 86400;
 export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
   c.set('session', null);
   c.set('sessionRenewed', false);
+  c.set('sanction', 0);
 
   const raw = getCookie(c, SESSION_COOKIE_NAME);
   const signed = await verifySessionCookie(raw, c.env.SESSION_HMAC_KEY);
@@ -40,6 +41,22 @@ export async function sessionMiddleware(c: Context<AppEnv>, next: Next) {
       // Compte supprimé/banni → session morte immédiatement.
       if (row.user_status !== 'banned' && row.user_status !== 'deleted') {
         c.set('session', { sessionId: signed.sid, userId: row.user_id });
+
+        // MODÉRATION & APPEL (Task 115) — la sanction ACTIVE du compte (si
+        // any) est lue à CHAQUE requête authentifiée : levée = rétablie
+        // immédiatement, zéro cache (M-5 : révocable, sans délai fantôme).
+        try {
+          const san = await c.env.DB.prepare(
+            `SELECT niveau FROM moderation_sanctions
+             WHERE user_id = ? AND levee_a IS NULL
+             ORDER BY cree_a DESC LIMIT 1`,
+          )
+            .bind(row.user_id)
+            .first<{ niveau: number }>();
+          if (san) c.set('sanction', san.niveau === 2 ? 2 : 1);
+        } catch {
+          /* table absente (avant migration) → aucune sanction */
+        }
 
         // TTL glissant (décision fondateur : compte reste connecté) — si
         // moins de 90 jours restants, prolonge au TTL plein (365 j - 1 j de

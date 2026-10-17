@@ -132,6 +132,22 @@ export const RATE_RULES = {
   // --- Complétion d'inscription sociale différée (#/oauth-complete) ---
   /** POST /auth/oauth/complete : 20 / h par IP (cookie signé requis en amont, l'IP est le seul vecteur libre). */
   oauthCompleteIp: { scope: 'oauth:complete:ip', windowSeconds: 3600, max: 20 },
+  // --- RENCONTRE-E3 (Task 115) : Le Voyage à Deux ---
+  /** Demandes de levée de voile (niveaux 2/3/4) : 30 / heure. */
+  a2VoileUser: { scope: 'a2:voile:user', windowSeconds: 3600, max: 30 },
+  /** Consentements Duo par quête : 30 / heure. */
+  a2DuoUser: { scope: 'a2:duo:user', windowSeconds: 3600, max: 30 },
+  /** Créations + réponses d'activités croisées : 20 / heure. */
+  a2ActiviteUser: { scope: 'a2:act:user', windowSeconds: 3600, max: 20 },
+  /** Uploads de médias (voix/photo) : 20 / heure. */
+  a2MediaPutUser: { scope: 'a2:mput:user', windowSeconds: 3600, max: 20 },
+  /** Lectures de médias (stream R2 via le Worker) : 120 / heure. */
+  a2MediaGetUser: { scope: 'a2:mget:user', windowSeconds: 3600, max: 120 },
+  /** Demandes d'appel de sanction : 3 / jour (G-MA-5). */
+  modAppelUser: { scope: 'mod:appel:user', windowSeconds: 86400, max: 3 },
+  // --- MODÉRATION & APPEL (Task 115) ---
+  /** Actions du modérateur (pose/levée/tranchage appel) : 60 / heure. */
+  modAdminAction: { scope: 'mod:adm:user', windowSeconds: 3600, max: 60 },
 } as const satisfies Record<string, RateRule>;
 
 export interface RateResult {

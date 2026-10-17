@@ -11098,3 +11098,743 @@ button.r-tl-chip:hover {
     font-size: .9rem;
     padding: 18px 0
 }
+
+/* =====================================================================
+   RENCONTRE-E3 « Le Voyage à Deux » (Task 115-b) — le bandeau du fil.
+   Une vue à deux, section par section — jamais un score (D-E3-4).
+   Mobile-first ; classes métier camelCase ; variables --c-* de l'app.
+   ===================================================================== */
+
+.a2-bandeau {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: 4px 0 8px;
+    overflow: hidden
+}
+
+.a2-bandeau-tete {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 48px;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer
+}
+
+.a2-bandeau-titre {
+    flex: none;
+    font-weight: 800;
+    color: var(--c-turquoise-deep);
+    font-size: .95rem
+}
+
+.a2-bandeau-compteur {
+    flex: 1;
+    min-width: 0;
+    font-size: .78rem;
+    color: var(--c-gray-blue);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.a2-bandeau-chev {
+    flex: none;
+    color: var(--c-gray-blue);
+    transition: transform .2s ease
+}
+
+.a2-bandeau-chev-ouvert {
+    transform: rotate(180deg)
+}
+
+.a2-corps {
+    border-top: 1px solid var(--c-line);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    /* La vue à deux ne chasse jamais le fil : dépliée, elle défile sur
+       elle-même (listes longues = hauteur plafonnée + scroll doux). */
+    max-height: min(62dvh, 560px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ddd5c2 transparent
+}
+
+.a2-corps::-webkit-scrollbar {
+    width: 8px
+}
+
+.a2-corps::-webkit-scrollbar-thumb {
+    background: #ddd5c2;
+    border-radius: 999px
+}
+
+.a2-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.a2-titre-section {
+    margin: 0;
+    font-size: .76rem;
+    font-weight: 900;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--c-night);
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--c-line)
+}
+
+.a2-doux {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--c-gray-blue);
+    line-height: 1.5
+}
+
+.a2-attente {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--c-turquoise-deep);
+    background: var(--c-cream);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px
+}
+
+.a2-flash {
+    margin: 0;
+    font-size: .84rem;
+    color: var(--c-coral-deep);
+    background: var(--c-cream);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    text-align: center
+}
+
+.a2-btn {
+    align-self: flex-start;
+    font-size: .9rem;
+    padding: 10px 18px
+}
+
+.a2-btn-fonce {
+    min-height: 44px;
+    border: 1px solid var(--c-line);
+    background: var(--c-cream);
+    color: var(--c-night);
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: .9rem;
+    font-weight: 800;
+    cursor: pointer
+}
+
+.a2-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+/* ---- a) les cartes duo : deux colonnes, côte à côte ---- */
+.a2-carte-duo {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.a2-carte-titre {
+    margin: 0;
+    font-size: .88rem;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.a2-duo-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px
+}
+
+.a2-duo-col {
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    min-width: 0
+}
+
+.a2-duo-col h5 {
+    margin: 0 0 6px;
+    font-size: .7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--c-turquoise-deep)
+}
+
+.a2-carte-ligne {
+    margin: 0 0 4px;
+    font-size: .84rem;
+    color: var(--c-night);
+    white-space: pre-wrap;
+    word-break: break-word
+}
+
+.a2-carte-ligne:last-child {
+    margin-bottom: 0
+}
+
+.a2-question {
+    margin: 4px 0 0;
+    padding: 8px 10px;
+    border-left: 3px solid var(--c-turquoise);
+    background: var(--c-white);
+    border-radius: var(--radius-sm);
+    font-size: .88rem;
+    font-style: italic;
+    color: var(--c-night)
+}
+
+/* ---- b) la voix : enregistreur + bulles ---- */
+.a2-rec {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    padding: 8px 12px
+}
+
+.a2-rec-point {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c-coral);
+    animation: a2-pulse 1.2s ease-in-out infinite
+}
+
+@keyframes a2-pulse {
+
+    0%,
+    100% {
+        opacity: .35
+    }
+
+    50% {
+        opacity: 1
+    }
+}
+
+.a2-rec-timer {
+    flex: 1;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .a2-rec-point {
+        animation: none
+    }
+}
+
+.a2-apercu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px
+}
+
+.a2-apercu audio,
+.a2-voix audio {
+    width: 100%;
+    min-height: 44px
+}
+
+.a2-voix {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px
+}
+
+.a2-voix-moi {
+    border-color: var(--c-turquoise-light);
+    background: var(--c-cream)
+}
+
+.a2-voix-meta {
+    font-size: .72rem;
+    color: var(--c-gray-blue)
+}
+
+.a2-suppr {
+    align-self: flex-start;
+    border: none;
+    background: none;
+    color: var(--c-gray-blue);
+    font-size: .76rem;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 10px 0;
+    min-height: 44px;
+    min-width: 44px;
+    text-align: left
+}
+
+.a2-suppr:hover {
+    color: var(--c-coral-deep)
+}
+
+/* ---- c) la photo : deux cadres, en-tête de section ---- */
+.a2-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px
+}
+
+.a2-photo {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0
+}
+
+.a2-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-line);
+    background: var(--c-cream)
+}
+
+.a2-photo figcaption {
+    font-size: .7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--c-turquoise-deep)
+}
+
+.a2-photo-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden
+}
+
+.a2-photo-ajout,
+.a2-photo-vide {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1.5px dashed var(--c-turquoise);
+    border-radius: var(--radius-sm);
+    background: var(--c-cream);
+    color: var(--c-turquoise-deep);
+    font-size: .82rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px;
+    min-height: 44px
+}
+
+.a2-photo-ajout {
+    cursor: pointer
+}
+
+.a2-photo-ajout:has(input:focus-visible) {
+    outline: 2px solid var(--c-turquoise-deep);
+    outline-offset: 2px
+}
+
+.a2-photo-vide {
+    border-color: var(--c-line);
+    color: var(--c-gray-blue);
+    font-weight: 400
+}
+
+/* ---- d) l'activité « Trois questions croisées » ---- */
+.a2-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.a2-champ {
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.a2-champ span {
+    font-size: .85rem;
+    color: var(--c-night);
+    font-weight: 700
+}
+
+.a2-champ textarea {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font: inherit;
+    font-size: .88rem;
+    color: var(--c-night);
+    background: var(--c-white);
+    resize: vertical;
+    min-height: 64px
+}
+
+.a2-champ textarea:focus {
+    outline: 2px solid var(--c-turquoise);
+    outline-offset: 1px
+}
+
+.a2-qa {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+/* ---- e) le rendez-vous préparé ---- */
+.a2-rdv-idees {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.a2-rdv-idee {
+    background: var(--c-cream);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.a2-rdv-idee strong {
+    font-size: .88rem;
+    color: var(--c-night)
+}
+
+.a2-rdv-idee span {
+    font-size: .8rem;
+    color: var(--c-gray-blue);
+    line-height: 1.45
+}
+
+.a2-note {
+    margin: 0;
+    font-size: .76rem;
+    font-style: italic;
+    color: var(--c-gray-blue);
+    text-align: center
+}
+
+/* =====================================================================
+   MODÉRATION & APPEL (Task 115-b) — écran de sanction (G-MA-1..6) +
+   console : appels, poses de mesure, médias tracés.
+   ===================================================================== */
+
+/* ---- l'écran de sanction (plein écran N2 · bannière N1 dans l'app) ---- */
+.san-ecran {
+    min-height: 100dvh;
+    background: var(--c-cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom))
+}
+
+.san-ecran-compact {
+    min-height: auto;
+    justify-content: flex-start;
+    padding: 4px 16px 12px
+}
+
+.san-tete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px
+}
+
+.san-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    box-shadow: var(--shadow)
+}
+
+.san-marque {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.san-marque-accent {
+    color: var(--c-turquoise-deep)
+}
+
+.san-carte {
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 26px 22px;
+    width: min(420px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: center
+}
+
+.san-ecran-compact .san-carte {
+    border-radius: var(--radius);
+    padding: 18px
+}
+
+.san-titre {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--c-night)
+}
+
+.san-message {
+    margin: 0;
+    font-size: .95rem;
+    line-height: 1.55;
+    color: var(--c-gray-blue)
+}
+
+.san-etat {
+    margin: 0;
+    font-size: .88rem;
+    color: var(--c-turquoise-deep);
+    background: var(--c-cream);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px
+}
+
+.san-etat-ok {
+    color: var(--c-night)
+}
+
+.san-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left
+}
+
+.san-label {
+    font-size: .82rem;
+    color: var(--c-gray-blue)
+}
+
+.san-textarea {
+    width: 100%;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font: inherit;
+    font-size: .92rem;
+    color: var(--c-night);
+    background: var(--c-white);
+    resize: vertical
+}
+
+.san-textarea:focus {
+    outline: 2px solid var(--c-turquoise);
+    outline-offset: 1px
+}
+
+.san-compteur {
+    align-self: flex-end;
+    font-size: .74rem;
+    color: var(--c-gray-blue);
+    font-variant-numeric: tabular-nums
+}
+
+.san-erreur {
+    margin: 0;
+    font-size: .84rem;
+    color: var(--c-coral-deep)
+}
+
+.san-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+.san-btn {
+    font-size: .92rem;
+    padding: 12px 18px;
+    min-height: 48px
+}
+
+.san-actions .san-btn {
+    flex: 1
+}
+
+.san-logout {
+    border: 1px solid var(--c-line);
+    background: none;
+    color: var(--c-gray-blue)
+}
+
+.san-logout:hover {
+    color: var(--c-night)
+}
+
+/* ---- console : pose de mesure + appels + médias tracés ---- */
+.adm-note {
+    margin: 0;
+    font-size: .84rem;
+    color: var(--c-gray-blue);
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px
+}
+
+.adm-mesures {
+    border: 1px dashed var(--c-coral);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.btn-danger-admin {
+    background: var(--c-coral);
+    color: var(--c-white)
+}
+
+.btn-danger-admin:hover {
+    background: var(--c-coral-deep)
+}
+
+.adm-badge-n1 {
+    background: var(--c-turquoise-deep);
+    color: var(--c-white)
+}
+
+.adm-badge-n2 {
+    background: var(--c-coral-deep);
+    color: var(--c-white)
+}
+
+.adm-badge-voix,
+.adm-badge-photo {
+    background: var(--c-night);
+    color: var(--c-cream)
+}
+
+.adm-medias {
+    margin-top: 10px;
+    border-top: 1px dashed var(--c-line);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.adm-medias-toggle {
+    align-self: flex-start;
+    border: none;
+    background: none;
+    color: var(--c-turquoise-deep);
+    font-size: .84rem;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 10px 0;
+    min-height: 44px;
+    min-width: 44px;
+    text-align: left
+}
+
+.adm-medias-avis {
+    margin: 0;
+    font-size: .76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--c-coral-deep)
+}
+
+.adm-liste-medias {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 8px
+}
+
+.adm-media {
+    border-bottom: 1px dashed var(--c-line)
+}
+
+.adm-media:last-child {
+    border-bottom: none
+}
+
+.adm-media-auteur {
+    font-size: .8rem;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.adm-media-btn {
+    font-size: .8rem;
+    padding: 8px 14px;
+    min-height: 44px
+}
+
+.adm-media-img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-line)
+}
+
+.adm-media audio {
+    width: 100%;
+    min-height: 44px
+}
