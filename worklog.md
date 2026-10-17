@@ -2370,3 +2370,23 @@ Work Log:
 
 Stage Summary:
 - Jeton GitHub frais et vérifié, prêt pour les prochains déploiements. Rappel restant de l'entretien : rotation des jetons Cloudflare + refresh STATUS.md.
+
+---
+Task ID: 113
+Agent: Z.ai Code (session principale)
+Task: Feu vert fondateur — déploiement production de la Task 112 (5 correctifs FE) + mémorisation du jeton Cloudflare.
+
+Work Log:
+- Jeton Cloudflare fourni par le fondateur → remplacé dans /home/z/SECRETS-WAIRYU-LOCAL.txt (CLOUDFLARE_API_TOKEN, chmod 600). Verify API : success:true, status active, expire 2026-12-30. L'id a6ad9b4a… fourni = le CLOUDFLARE_ACCOUNT_ID déjà en place (inchangé).
+- bash /home/z/executer.sh prod → build vite + upload 8 assets + wrangler deploy. Version prod : 42b8d538-ea10-447b-a076-5891a0a4d15f. Cron 10 3 * * * intact.
+- PREUVES en prod réel (https://wairyu.wairyu.workers.dev) :
+  - FE-009 : index.html → 0 occurrence fonts.googleapis/gstatic ; /fonts/figtree-latin.woff2 → 200 (20 156 o) ; /fonts/fraunces-latin.woff2 → 200 (36 620 o) ; CSS prod contient les @font-face variables Figtree/Fraunces ; Nunito inchangée (200).
+  - FE-012 : CSS prod .ah-bell{width:44px} + .pw-toggle{width:44px} vérifiés.
+  - FE-008 : bundle JS → 14 occurrences credentials:"same-origin" (7 nouvelles : push-client, recolte-push, sync-reponses ×4, admin-client).
+  - FE-007/010 : typecheck exit 0 avant build ; twa-manifest.json 36 (côté APK, prendra effet au prochain rebuild bubblewrap — web inchangé par ce point).
+  - Régressions : / 200 ; /api/auth/config 200 ; /api/me sans session → 401 (garde Task 111 intacte) ; manifest.webmanifest intact.
+- Note sécurité : ni le PAT GitHub ni le jeton CF ne figurent dans un fichier versionné ; seul SECRETS-WAIRYU-LOCAL.txt (non versionné, chmod 600) les porte.
+
+Stage Summary:
+- Task 112 EN PRODUCTION avec preuves réelles : CDN Google Fonts supprimé (doctrine auto-hébergé respectée), credentials explicites partout (14), touch targets 44px, PushToast i18n réactif, TWA manifest aligné 36.
+- Jetons GitHub + Cloudflare frais, vérifiés et mémorisés une fois pour toutes dans le secrets local. Prochaines étapes : session SPEC E3 (validation des 10 points), deblocage modération/recours, STATUS.md à rafraîchir.
