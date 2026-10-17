@@ -150,6 +150,24 @@
     font-display: swap
 }
 
+/* FE-009 (audit) : Fraunces + Figtree (refonte « Ma récolte ») AUTO-HÉBERGÉES
+   — doctrine « auto-hébergé » : plus aucune dépendance au CDN Google Fonts.
+   Les deux woff2 sont VARIABLES (axe wght), un seul fichier par famille
+   couvre tous les poids utilisés (Figtree 400-700, Fraunces 600-700). */
+@font-face {
+    font-family: Figtree;
+    src: url(/fonts/figtree-latin.woff2) format("woff2-variations");
+    font-weight: 300 900;
+    font-display: swap
+}
+
+@font-face {
+    font-family: Fraunces;
+    src: url(/fonts/fraunces-latin.woff2) format("woff2-variations");
+    font-weight: 300 900;
+    font-display: swap
+}
+
 html,
 body {
     font-family: system-ui, -apple-system, SF Pro Display, Segoe UI, Roboto, Nunito, sans-serif;
@@ -252,8 +270,9 @@ button {
 
 .ah-bell {
     position: relative;
-    width: 42px;
-    height: 42px;
+    /* FE-012 (audit) : 44px = seuil WCAG 2.5.5 touch target (avant : 42px). */
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1.5px solid #d8d2c2;
     background: var(--c-white);
@@ -990,8 +1009,9 @@ a.btn {
     right: 6px;
     top: 50%;
     transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
+    /* FE-012 (audit) : 44px = seuil WCAG touch target (avant : 42px). */
+    width: 44px;
+    height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;

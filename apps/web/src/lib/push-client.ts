@@ -97,6 +97,9 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
+    // FE-008 (audit) : credentials explicite — la session vit dans un cookie
+    // httpOnly SameSite=Lax ; ne jamais dépendre du défaut du navigateur.
+    credentials: 'same-origin',
     ...init,
     headers: { 'content-type': 'application/json', ...(init?.headers ?? {}) },
   });

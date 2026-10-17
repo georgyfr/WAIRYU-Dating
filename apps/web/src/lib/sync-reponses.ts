@@ -95,12 +95,16 @@ async function pousser(id: string): Promise<void> {
   try {
     if (etatVide(e)) {
       // L'utilisateur a tout effacé : la sauvegarde suit (DELETE).
-      await fetch(`/api/reponses/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      await fetch(`/api/reponses/${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        credentials: 'same-origin', // FE-008 (audit) : cookie de session explicite
+      });
       return;
     }
     const majA = lireMajA(id) ?? new Date().toISOString();
     await fetch(`/api/reponses/${encodeURIComponent(id)}`, {
       method: 'PUT',
+      credentials: 'same-origin', // FE-008 (audit) : cookie de session explicite
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ etat: { ...e, majA } }),
     });
@@ -116,6 +120,7 @@ async function pousserAvec(id: string, e: EtatQuete): Promise<void> {
     const majA = lireMajA(id) ?? new Date().toISOString();
     await fetch(`/api/reponses/${encodeURIComponent(id)}`, {
       method: 'PUT',
+      credentials: 'same-origin', // FE-008 (audit) : cookie de session explicite
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ etat: { ...e, majA } }),
     });
@@ -169,7 +174,7 @@ export async function restaurerReponses(): Promise<number> {
   if (!authentifie) return 0;
   let nombre = 0;
   try {
-    const res = await fetch('/api/reponses');
+    const res = await fetch('/api/reponses', { credentials: 'same-origin' }); // FE-008 (audit)
     if (!res.ok) return 0;
     const data = (await res.json()) as {
       ok?: boolean;

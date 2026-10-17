@@ -2337,3 +2337,23 @@ Work Log:
 
 Stage Summary:
 - SPEC-RENONCONTRE-E3.v1.md prête : tout est ancré dans le verbatim produit existant (aucune invention de doctrine), la mécanique est indépendante du contenu C4. En attente des réponses du fondateur aux 10 points avant tout dev.
+
+---
+Task ID: 112
+Agent: Z.ai Code (session principale)
+Task: Vérifier les 6 bugs Frontend MOYENNE (FE-007→FE-012) rapportés par le fondateur, corriger ceux encore présents, zéro déploiement.
+
+Work Log:
+- FE-007 (i18n non réactif dans PushToast) : CONFIRMÉ → PushToast.tsx passe de getLang() (singleton hors React) à useI18n() (contexte) — hook remonté avant le return conditionnel, libellés fermer/ouvrir réactifs par construction même si setLangue cessait un jour de recharger la page.
+- FE-008 (credentials manquants sur certains fetch) : CONFIRMÉ PARTIELLEMENT → auth-client, messages-client, rencontres-client, FbComplete, satisfaction étaient déjà propres ; corrigés : push-client.ts (api générique), recolte-push.ts (notify-recolte), sync-reponses.ts (4 fetch : DELETE/PUT×2/GET /api/reponses), admin-client.ts (cohérence, Bearer inchangé). Tout à credentials:'same-origin' explicite.
+- FE-009 (Google Fonts CDN) : CONFIRMÉ → index.html chargeait Fraunces/Figtree via fonts.googleapis.com. Auto-hébergé : public/fonts/figtree-latin.woff2 (20 Ko) + fraunces-latin.woff2 (37 Ko) téléchargés depuis gstatic (polices VARIABLES, même URL tous poids côté Google) ; @font-face ajoutés dans styles.css à côté de Nunito (pattern woff2-variations, font-weight 300 900) ; preconnect+stylesheet CDN retirés de index.html. Français couvert par le subset latin (é è à ç = U+0000-00FF). Aucune référence CDN restante dans le code livré.
+- FE-010 (TWA incohérent) : CONFIRMÉ → twa-manifest.json targetSdkVersion 35 → 36 (build.gradle : compileSdk 36 + targetSdk 36, inchangés). Harmonisé.
+- FE-011 (logique d'identité fragile dans Profile.tsx:87) : OBSOLÈTE → Profile.tsx a été git rm lors de FE-006 (worklog Task antérieure, ligne 2167) ; la logique d'identité vit inline dans App.tsx (displayName→username→'Voyageur', troncation 14, initial uppercase) et est robuste. Rien à corriger.
+- FE-012 (touch cibles 42px) : CONFIRMÉ → seuls 2 vrais touch targets sous 44px : .ah-bell (bouton cloche header) et .pw-toggle (bouton œil mot de passe) → 44px. Les 3 autres occurrences 42px (.rec-state-ico, .r-cm-ico, .r-suche-ico) sont des icônes décoratives dans des cartes, PAS des cibles tactiles → laissées telles quelles.
+- Typecheck web : npx tsc --noEmit → EXIT 0 (node_modules racine purgée par le reset sandbox, typecheck direct dans apps/web).
+- Grep post-fix : plus aucune référence fonts.googleapis/gstatic dans apps (le seul reste est un rapport de build TWA généré, non livré).
+
+Stage Summary:
+- 5 bugs corrigés (FE-007/008/009/010/012), 1 obsolète (FE-011). Aucune route ni logique métier touchée : composant toast, 4 clients fetch, CSS fonts+tailles, manifest TWA.
+- 56,5 Ko de woff2 ajoutés (2 fichiers variables) contre 6 requêtes tierces supprimées — conformité doctrine « auto-hébergé ».
+- Non déployé : attend le feu vert du fondateur (déploiement prod via bash /home/z/executer.sh prod ; le TWA nécessiterait aussi un rebuild bubblewrap/gradle pour prendre le manifest 36 en compte côté APK — pas urgent, l'APK actuel vise 36 via build.gradle).

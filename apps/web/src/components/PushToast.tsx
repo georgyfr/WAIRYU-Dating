@@ -18,7 +18,7 @@
  *     destination du push (ex. #/recolte — « Ouvre ton coffre du voyageur »).
  */
 import { useEffect, useState } from 'react';
-import { getLang } from '../i18n/current';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface ToastItem {
   id: number;
@@ -34,6 +34,11 @@ const DUREE_DEFAUT_MS = 10_000;
 
 export default function PushToast() {
   const [items, setItems] = useState<ToastItem[]>([]);
+  // FE-007 (audit) : la langue passe par le CONTEXTE React (useI18n) — si la
+  // langue change sans rechargement, le libellé se met à jour. Aujourd'hui
+  // setLangue recharge la page, mais ce composant ne doit pas dépendre de ce
+  // détail d'implémentation : il est réactif par construction.
+  const { lang } = useI18n();
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
@@ -71,8 +76,8 @@ export default function PushToast() {
   };
 
   if (items.length === 0) return null;
-  const libelleFermer = getLang() === 'en' ? 'Dismiss notification' : 'Fermer la notification';
-  const libelleOuvrir = getLang() === 'en' ? 'Open' : 'Ouvrir';
+  const libelleFermer = lang === 'en' ? 'Dismiss notification' : 'Fermer la notification';
+  const libelleOuvrir = lang === 'en' ? 'Open' : 'Ouvrir';
   return (
     <div className="push-toasts" role="status" aria-live="polite">
       {items.map((t) => (

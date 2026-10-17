@@ -52,7 +52,13 @@ async function appel<T>(path: string, init?: RequestInit): Promise<T> {
 
   let res: Response;
   try {
-    res = await fetch(path, { ...init, headers });
+    res = await fetch(path, {
+      // FE-008 (audit) : credentials explicite (le jeton Bearer reste la voie
+      // d'authentification admin ; le cookie sert aux routes de session).
+      credentials: 'same-origin',
+      ...init,
+      headers,
+    });
   } catch {
     throw new ErreurAdmin(0, 'Réseau injoignable.');
   }

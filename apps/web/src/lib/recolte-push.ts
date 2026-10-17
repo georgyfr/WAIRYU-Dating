@@ -86,6 +86,8 @@ export async function pousserRecoltes(nouveautes: NotifRecolte[]): Promise<void>
 
     const res = await fetch('/api/push/notify-recolte', {
       method: 'POST',
+      // FE-008 (audit) : credentials explicite (cookie de session).
+      credentials: 'same-origin',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ items: candidats, lang: getLang() }),
     });
