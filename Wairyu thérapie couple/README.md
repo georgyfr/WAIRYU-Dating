@@ -73,7 +73,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 11 instruments RIO validés + RIO-11 contresigné. 2 dimensions complètes.**
+**Total : 11 instruments RIO validés (RIO-01 à RIO-11). 2 dimensions complètes.**
 
 ---
 
