@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **17/10/2026** (REGISTRE-32 clôturé — RIO-11 contresigné).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-12 « Ce que je porte pour toi » publié — en audit).
 
 ---
 
@@ -28,10 +28,12 @@ Wairyu thérapie couple/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 contresigné) ═══
+│  ═══ Dimension SANTÉ MENTALE (RIO-11 contresigné · RIO-12 en audit) ═══
 ├── validation-sm/
+│   ├── SM-Q2-SPEC.md
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
-│   └── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
+│   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
+│   └── validation-sm-q2/ (RIO-12 — publié, en audit)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -66,6 +68,7 @@ Wairyu thérapie couple/
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ✅ Contresigné (R3 VALIDÉ 6/6, SHA bb2551dd…) |
+| WTC-SM-Q2 | RIO-12 « Ce que je porte pour toi » | 🔄 VALIDÉ 6/6 (simulation) — publié, en audit (SHA f57fc089…) |
 
 ### Pilote réel
 
@@ -73,7 +76,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 11 instruments RIO validés (RIO-01 à RIO-11). 2 dimensions complètes.**
+**Total : 11 instruments RIO contresignés (RIO-01 à RIO-11) + RIO-12 validé par simulation, en audit. 2 dimensions complètes.**
 
 ---
 

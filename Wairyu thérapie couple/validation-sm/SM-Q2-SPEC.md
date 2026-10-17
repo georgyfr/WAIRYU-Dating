@@ -32,6 +32,8 @@ Q2 est **bipartite** (comme RIO-01 attachement), pas tripartite. Justification :
 
 **Total : 6 faces × 3 items = 18 items** (comme RIO-01). Échelle 5 points (D-ÉCHELLE 3,00).
 
+**[Note verrouillage — éditée au commit du package]** : 4 items/face = **24 items** — à 3 items, σ_eff = 0,346 et la borne crise 4,0 + 3σ_eff = 5,04 dépasse le plafond 5,0 : géométrie infaisable (leçon E-SM-7/R2 documentée).
+
 ---
 
 ## 3. Mécanismes de tension (le « quoi se dérègle »)
@@ -84,7 +86,7 @@ Q2 est **bipartite** (comme RIO-01 attachement), pas tripartite. Justification :
 
 **Confrontation effectuée** :
 - Fondation v1.1 (commit `7a5ea81`) : ne contient PAS de fondation SM (elle contient la fondation émotionnelle). La dimension SM a été spécifiée directement en SPEC-11-B1 (proposition narrative) puis verrouillée par le superviseur.
-- Q1-R3 (commit `7d44b75`) : 9 faces (SM-D1/D2/D3, SM-A1/A2/A3, SM-C1/C2/C3) → Q2 reprend les 6 faces A+B (A1/A2/A3 deviennent Axe A, B1/B2/B3 deviennent Axe B). Les faces C (SM-C1/C2/C3) restent en Q1 (contrat de soin).
+- Q1-R3 (commit `7d44b75`) : 9 faces (SM-D1/D2/D3, SM-A1/A2/A3, SM-C1/C2/C3) → Q2 reprend les 3 faces A (héritées de Q1, deviennent Axe A) et crée 3 faces B **NOUVELLES** (B1/B2/B3 — sans équivalent Q1, ancrage « La frontière co-étiquetée », ligne 133). Les faces C (SM-C1/C2/C3) restent en Q1 (contrat de soin) ; SM-C1 demeure voie héritée du D-CRISE. [Correction §6 : Q1-R3 n'a PAS de faces B — SUP-CRED-1]
 - **E-SM-3 clôturé** : pointer interne = `programme wairyu couple.txt` ligne 101, vérifiable publiquement.
 
 ---

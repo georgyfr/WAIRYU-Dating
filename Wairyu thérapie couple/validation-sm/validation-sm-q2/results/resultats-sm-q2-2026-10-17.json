@@ -1,0 +1,243 @@
+{
+  "n_total": 520,
+  "C1": {
+    "d_verite": {
+      "faces_count": 6,
+      "faces_attendu": 6,
+      "faces_a": 3,
+      "faces_b": 3,
+      "items_par_face": 4,
+      "items_total": 24,
+      "items_total_attendu": 24,
+      "voie_heritee": "SM-C1",
+      "labels_count": 7,
+      "labels": [
+        "CRISE",
+        "CRISIS_MODE",
+        "HOSTILE",
+        "MIXTE",
+        "STABLE",
+        "SURIMPLIQUÉ",
+        "ÉPUISÉ"
+      ],
+      "faces_b_classifiantes": false,
+      "ok": true
+    },
+    "labels_croise": true,
+    "classif_match_pct": 100.0,
+    "n_match": 520,
+    "n_total": 520,
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C2": {
+    "d_echelle": {
+      "seuils": {
+        "MID": 3.0,
+        "CLASSIF": 3.5,
+        "CRISE": 4.0
+      },
+      "ok": true
+    },
+    "deterministe": true,
+    "axes_testes": [
+      "A",
+      "B",
+      "voie_heritee"
+    ],
+    "ok": true
+  },
+  "C3": {
+    "sensibilite_pct": 100.0,
+    "specificite_pct": 100.0,
+    "vp": 52,
+    "fn": 0,
+    "vn": 342,
+    "fp": 0,
+    "n_hors_bande": 394,
+    "n_dans_bande": 126,
+    "reconcilie": 520,
+    "reconcilie_ok": true,
+    "voies": {
+      "A2": {
+        "vp": 23,
+        "fn": 0,
+        "n_voie_vraie": 70,
+        "peuplee": true
+      },
+      "SM-C1": {
+        "vp": 9,
+        "fn": 0,
+        "n_voie_vraie": 20,
+        "peuplee": true
+      },
+      "H5": {
+        "vp": 20,
+        "fn": 0,
+        "n_voie_vraie": 20,
+        "peuplee": true
+      }
+    },
+    "trois_voies_peuplees": true,
+    "test_frontiere": {
+      "a2_4.00": true,
+      "a2_3.99": false,
+      "smc1_4.00": true,
+      "smc1_3.99": false,
+      "ok": true
+    },
+    "bascule_g3": {
+      "n": 70,
+      "bascule_crise_moteur": 14,
+      "taux_observed_pct": 20.0,
+      "theorie_continue_pct": 15.87,
+      "fallthrough_stable": 9,
+      "note": "bascules attendues DANS la bande [3.10, 4.90] → exclues du décompte C3 ; grain entier des items (arrondi 1-5) élargit la variance effective vs l'approximation continue"
+    },
+    "bande_detail": {
+      "total": 126,
+      "crise_vraie": 58,
+      "crise_detectee": 72,
+      "non_crise_vraie": 68,
+      "non_crise_detectee": 54
+    },
+    "ok": true,
+    "eliminatoire": true
+  },
+  "C6": {
+    "pas_funcs_found": [],
+    "ok": true
+  },
+  "stats_groupes": {
+    "G1_stable": {
+      "n": 70,
+      "classif_count": {
+        "STABLE": 70
+      },
+      "correct": 70,
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0,
+      "role": "aidant sans charge excessive (base)"
+    },
+    "G2_epuise": {
+      "n": 70,
+      "classif_count": {
+        "ÉPUISÉ": 70
+      },
+      "correct": 70,
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0,
+      "role": "épuisement élevé, présence maintenue"
+    },
+    "G3_surimplique_bande": {
+      "n": 70,
+      "classif_count": {
+        "SURIMPLIQUÉ": 47,
+        "STABLE": 9,
+        "CRISE": 14
+      },
+      "correct": 47,
+      "crises": 14,
+      "dans_bande": 67,
+      "h5": 0,
+      "role": "piège SURCHARGE_AIDANT (b) — surimplication en bande"
+    },
+    "G4_surimplique_crise": {
+      "n": 70,
+      "classif_count": {
+        "CRISE": 70
+      },
+      "correct": 70,
+      "crises": 70,
+      "dans_bande": 47,
+      "h5": 0,
+      "role": "piège SURCHARGE_AIDANT (a) — surimplication sévère"
+    },
+    "G5_hostile": {
+      "n": 70,
+      "classif_count": {
+        "HOSTILE": 70
+      },
+      "correct": 70,
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0,
+      "role": "hostilité installée (EE), sans surimplication"
+    },
+    "G6_frontieres": {
+      "n": 70,
+      "classif_count": {
+        "STABLE": 70
+      },
+      "correct": 70,
+      "crises": 0,
+      "dans_bande": 1,
+      "h5": 0,
+      "role": "frontières B hautes — test B non classifiantes"
+    },
+    "G9_mixte_aidant": {
+      "n": 20,
+      "classif_count": {
+        "MIXTE": 20
+      },
+      "correct": 20,
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0,
+      "role": "deux faces A hautes — n_high = 2"
+    },
+    "G7_h5": {
+      "n": 20,
+      "classif_count": {
+        "CRISE": 20
+      },
+      "correct": 20,
+      "crises": 20,
+      "dans_bande": 0,
+      "h5": 20,
+      "role": "voie H5 héritée (RIO-02)"
+    },
+    "G8_sm_c1_crise": {
+      "n": 20,
+      "classif_count": {
+        "CRISE": 20
+      },
+      "correct": 20,
+      "crises": 20,
+      "dans_bande": 11,
+      "h5": 0,
+      "role": "voie SM-C1 héritée (Q1)"
+    },
+    "SANS_CHARGE": {
+      "n": 40,
+      "classif_count": {
+        "STABLE": 40
+      },
+      "correct": 40,
+      "crises": 0,
+      "dans_bande": 0,
+      "h5": 0,
+      "role": "piège anti-fabrication (tout bas)"
+    }
+  },
+  "tableau_centres": {
+    "sigma_item": 0.6,
+    "n_items_par_face": 4,
+    "sigma_eff": 0.3,
+    "trois_sigma": 0.9,
+    "seuil_classif": 3.5,
+    "seuil_crise": 4.0,
+    "borne_non_crise": 3.1,
+    "borne_crise": 4.9,
+    "bande_exclue": "[3.10, 4.90]",
+    "voies": {
+      "A2": "Q2 (surimplication sévère) — nouvelle",
+      "SM-C1": "héritée Q1 (contrôle coercitif)",
+      "H5": "héritée RIO-02 (binaire, sans score)"
+    },
+    "note": "24 items = 6 faces × 4. σ_eff = 0.60/√4 = 0.30. 3σ_eff = 0.90. Bande exclue [3.10, 4.90] sur les 2 voies score (A2 et SM-C1). Crise : centres μ = 4.90. Non-crise : centres ≤ 2.50, sauf SURIMPLIQUÉ en bande (centre 3.70 verrouillé, bascule théorique 15,9 % en continu — confrontée à l'observé)."
+  },
+  "sha256_run": "f57fc089e85861b51ac4955231e0bae9f7f73d6cf7995f7025b2f2c006aa1a98"
+}
