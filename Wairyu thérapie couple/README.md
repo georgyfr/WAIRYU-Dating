@@ -31,7 +31,7 @@ Wairyu thérapie couple/
 │  ═══ Dimension SANTÉ MENTALE (RIO-11 contresigné) ═══
 ├── validation-sm/
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
-│   └── validation-sm-q1-r3/ (R3 VALIDÉ, en audit)
+│   └── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -98,6 +98,7 @@ Wairyu thérapie couple/
 | **D-CANAL** | Code non transmis par IM gateway. Production locale. Vérification par SHA ×2 + rapport + inventaire. | Faute n°32 (pré-attrapée) |
 | **D-CANAL-2** | Séquence : production → exécution ×2 → SHA ×2 → publication → message pointeurs → audit → contresignature. | Q5 émotionnel |
 | **D-CANAL-3** | Secrets jamais par canal IM — renouvellement hors bande par le pont. | Q5 émotionnel |
+| **D-LECTURE** | Tout audit d'un littéral sensible se fait par comparaison in-sandbox (booléen/sha1), jamais par lecture affichée — la couche canal tronque les séquences sensibles. | Faute n°36 (E-SM-11) |
 | **D-EMPREINTE** | SHA-256 sur contenu des résultats, jamais sur horodatage. | Q5 émotionnel |
 | **D-CRISE** | Court-circuit de crise AVANT l'arbre — filet 3919/3114. JAMAIS de pas de couple en crise. | Verrouillage SM |
 | **D-Q2-1 / D-Q2-2 / D-Q2-H / D6 / D7** | (Voir registre précédent) | Q1-Q2 attachement |
@@ -107,9 +108,9 @@ Wairyu thérapie couple/
 
 ## 📊 Fautes d'orchestrateur
 
-**Total : 35 fautes (dont 3 pré-attrapées).**
+**Total : 36 fautes (dont 4 pré-attrapées).**
 
-Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, transfert superviseur, dimension Santé mentale.
+Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, transfert superviseur, dimension Santé mentale. Faute 36 : prise en main pont (E-SM-11 faux positif d'affichage).
 
 ---
 
@@ -129,6 +130,7 @@ Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, t
 | E-SM-8 | Réconciliation fermante non déclarée (R2) — levé R3 | ✅ Clôturé |
 | E-SM-10 | Erratum éditorial 580 → 500 (leftover R2 dans rapport R3) | ✅ Clôturé par le présent commit |
 | E-SM-9 | 2 réclamations fausses sur 6 au message pointeurs R3 | ✅ Clôturé par le présent commit |
+| E-SM-11 | Faux positif : le fix Task 115 était bien en place (ligne 47 = [[migrations]], vérifié cat-file sha1 + raw.githubusercontent, bit-identique) — les lectures affichées du littéral double-crochet étaient tronquées par la couche canal (séquence crochet+m) | ✅ Clôturé (faux positif — faute n°36) |
 
 ---
 

@@ -2444,3 +2444,17 @@ Work Log:
 Stage Summary:
 - E3 mécanique complète + MODÉRATION & APPEL livrés en staging (42b8d538 prod inchangée). SEUL MANQUE : l'activation R2 par le fondateur (dashboard → R2 → Enable) puis je recrée les buckets, décommente le binding, redéploie — les médias (voix/photo) passeront de 503 gracieux à fonctionnels.
 - Le fondateur vérifie le staging (G-E3-P1) : un vrai parcours à deux (2 comptes → pas → match → cartes → voix/bloqué R2 → questions croisées → RDV) + console #/admin (poser mesure, appel, levée).
+
+---
+Task ID: ERRATUM-E-SM-11-FAUX-POSITIF
+Agent: WTC-Pont (superviseur)
+Task: Erratum E-SM-11 — faux positif d'affichage ; faute n°36 (pré-attrapée).
+
+Work Log:
+- E-SM-11 (« wrangler.toml réparé mais fix absent du diff ») est un FAUX POSITIF : git cat-file (lecture sha1-vérifiée) et raw.githubusercontent.com prouvent que la ligne 47 du blob HEAD 9015726 contient bien [[migrations]] (bit-identique au contenu servi par GitHub ; git fsck propre).
+- Cause racine : la couche d'affichage du canal agent tronque la séquence « crochet+m » dans les sorties d'outils — toute lecture texte du littéral double-crochet affichait l'état « corrompu » alors que le disque, les objets git et GitHub étaient corrects. Le message Task 115 de l'exécuteur (« corrompu → corrompu ») enregistrait la même illusion.
+- Conséquence : AUCUN fix wrangler n'était nécessaire ; le commit « wrangler+E-SM-11 » prévu par l'ordre SUP-CRED-2 est ANNULÉ. La clôture d'INCIDENT-D-CANAL3-2 reste conditionnelle au premier push par clé propre (il portera le package Q2).
+- Faute n°36 (superviseur, pré-attrapée) : signal levé sur lecture affichée sans vérification sha1. Règle permanente D-LECTURE : tout audit d'un littéral sensible passe par comparaison in-sandbox (booléen/sha1), jamais par lecture affichée.
+
+Stage Summary:
+- E-SM-11 clôturé en faux positif ; registre + règle D-LECTURE gravés ; faute n°36 enregistrée ; le push Q2 part en un commit package + registre.
