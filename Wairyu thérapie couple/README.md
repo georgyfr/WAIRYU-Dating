@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **17/10/2026** (REGISTRE-32 clôturé — RIO-11 en audit).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **17/10/2026** (REGISTRE-32 clôturé — RIO-11 contresigné).
 
 ---
 
@@ -28,7 +28,7 @@ Wairyu thérapie couple/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 en audit) ═══
+│  ═══ Dimension SANTÉ MENTALE (RIO-11 contresigné) ═══
 ├── validation-sm/
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
 │   └── validation-sm-q1-r3/ (R3 VALIDÉ, en audit)
@@ -61,11 +61,11 @@ Wairyu thérapie couple/
 | WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ |
 | WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 |
 
-### Dimension SANTÉ MENTALE (RIO-11 en audit)
+### Dimension SANTÉ MENTALE (RIO-11 contresigné)
 
 | Package | RIO | Verdict |
 |---|---|---|
-| WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ⏳ Audit en cours (R3 VALIDÉ 6/6, SHA bb2551dd…) |
+| WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ✅ Contresigné (R3 VALIDÉ 6/6, SHA bb2551dd…) |
 
 ### Pilote réel
 
@@ -73,7 +73,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 10 instruments RIO validés + RIO-11 en audit. 2 dimensions complètes.**
+**Total : 11 instruments RIO validés + RIO-11 contresigné. 2 dimensions complètes.**
 
 ---
 
@@ -127,6 +127,7 @@ Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, t
 | E-SM-6 | Voie H5 non peuplée (R2) — résolue R3 (G7 20/20) | ✅ Clôturé |
 | E-SM-7 | Source circulaire n=4 — levé R3 (définition instrument) | ✅ Clôturé |
 | E-SM-8 | Réconciliation fermante non déclarée (R2) — levé R3 | ✅ Clôturé |
+| E-SM-10 | Erratum éditorial 580 → 500 (leftover R2 dans rapport R3) | ✅ Clôturé par le présent commit |
 | E-SM-9 | 2 réclamations fausses sur 6 au message pointeurs R3 | ✅ Clôturé par le présent commit |
 
 ---
