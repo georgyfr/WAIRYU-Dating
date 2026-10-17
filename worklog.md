@@ -2282,3 +2282,20 @@ Work Log:
 
 Stage Summary:
 - Console prête : https://wairyu-staging.wairyu.workers.dev/#/admin (jeton ADMIN_TOKEN, sessionStorage uniquement). Chaque décision tracée dans audit_admin. Structure des tests/outils/questionnaires JAMAIS touchée. PROD EN ATTENTE DE FEU VERT.
+
+---
+Task ID: 110
+Agent: orchestrateur (Z.ai Code)
+Task: Résolution des 5 problèmes backend MOYENNE (BE-007, BE-009, BE-010, BE-011, BE-001) — E2E local 18 verts, staging déployé + test décisif PBKDF2 chaîné réussi. Prod en attente du feu vert du fondateur.
+
+Work Log:
+- BE-007 (PBKDF2) : DÉCOUVERTE PLATEFORME — workerd REFUSE PBKDF2 > 100 000 itérations (NotSupportedError capturé via tail staging, pas une limite CPU). Solution : CHAÎNAGE 6 rondes × 100k = 600k de coût attaquant (OWASP 2023 atteint malgré la contrainte) ; formats auto-descriptifs « pbkdf2$iter$salt$hash » (historique) et « pbkdf2c$iter$rounds$salt$hash » (courant) ; verifyPassword lit schéma depuis la chaîne ; rehash TRANSPARENT au login (estFormatCourant) — prouvé en staging réel : login historique 200 en 0,87s → base devient pbkdf2c$100000$6$ → re-login chaîné 200 en 0,54s → mauvais mot de passe 401.
+- BE-009 (/account/recovery-email) : AVANT — écrasait users.email sans vérification, sans rate-limit, avec email_verified_at=NULL. APRÈS — demande (session + mot de passe actuel SI le compte en a un + rate-limits emailChangeUser 5/h + emailChangeIp 10/h) → code 6 chiffres à la NOUVELLE adresse (sendEmailChangeEmail, mode dev staging) → confirm (/account/recovery-email/confirm, emailChangeVerifyUser 10/h, verifyOtpRow réutilisé avec comptage d'essais) → SEULEMENT LÀ users.email change, VÉRIFIÉ. Migration 0016_email_change.sql (table email_changes, PK user_id, purge RGPD ajoutée à hardDeleteAccount). Aucune UI front n'existait — API seule sécurisée.
+- BE-010 (/auth/password/change) : rate-limit pwChangeUser 10/h ajouté ; revokeOtherSessions (nouveau, lib/auth.ts) garde la session COURANTE (l'utilisateur vient de prouver son identité) et révoque les AUTRES ; revokedOthers rapporte le compte RÉEL (l'ancien code révoquait tout puis recréait une session — champ menteur). Prouvé : 3 sessions → revokedOthers=2, /api/me courant 200, autre 401.
+- BE-011 (lib/push.ts vapid) : les échecs ne sont PLUS JAMAIS mis en cache (secrets absents, paire incohérente, importKey en erreur) — seul le SUCCÈS est mémoïsé ; un secret posé ou une erreur transitoire se rétablit au prochain appel, sans redéploiement. (Correctif de code — pas de test runtime dédié, documenté.)
+- BE-001 : /api/me extrait en meHandler servi sous /api/me (COMPAT : TWA/PWA existantes) ET /api/auth/me (CANONIQUE) ; front auth-client.ts migré vers la forme canonique. Alias prouvé (200 local + 401 sans session en staging).
+- E2E /home/z/e2e/e2e-securite.sh : 18 verts / 0 rouge. Corrections en route : grep BRE ($ = ancre) → -F + simple quotes ; attente T6 = 2 (3 sessions existantes) ; login renvoie {userId,username} sans ok ; [:17] pour le préfixe chaîné.
+- Vérifications : tsc api/web 0 erreur, vite build OK. Déploiements staging : 68ac6f5a (échec 600k direct — découverte plateforme) puis 428a70c8 (chaîné — tout vert). Commits 0483abe + 1bebb9e.
+
+Stage Summary:
+- Les 5 problèmes MOYENNE résolus et prouvés. Rehash progressif : les vrais comptes migrent vers 600k au fil de leurs connexions. Prod en attente de feu vert. Note honnête : le rehash ne s'applique qu'aux COMPTES À MOT DE PASSE (pseudo+mdp) ; les comptes OAuth/email-OTP n'ont pas de hash PBKDF2 (rien à renforcer).
