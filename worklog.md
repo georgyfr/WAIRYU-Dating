@@ -2251,3 +2251,18 @@ Work Log:
 
 Stage Summary:
 - RENCONTRE-E2 EN PRODUCTION (0d1b9259) : conversations, chat temps réel DO hibernation + fallback REST/notify, non-lus, REVEAL {15 msg/7j + double oui}, traduction IA llama-3.3 à la demande, signalements (6 motifs) / blocage silencieux deux sens / unmatch avec purge, RGPD étendu (export + purge physique 5 tables E2), rate rules chat. Staging et prod alignés sur le même code (8fe04b8). Reste (E3+, à valider) : le Voyage à Deux, voice notes, déblocage modération. Rotation des jetons TOUJOURS recommandée (exposés 3× dans le chat, non rotés).
+
+---
+Task ID: 108
+Agent: orchestrateur (Z.ai Code)
+Task: Reprise après DEUX resets sandbox consécutifs — récupération complète + vérification audit logs Cloudflare (promesse au fondateur).
+
+Work Log:
+- Resets ≈9ᵉ et 10ᵉ : repo, secrets, wrapper, /home/z/e2e perdus à chaque fois. Récupérés à chaque tour : secrets recréés (token CF « active »), clone (dépôt public), HEAD 11736fa intact, executer.sh reconstruit à l'identique.
+- Audit logs CF 7 j : 100 événements — 0 connexion au compte, 17 script_deploy cohérents avec notre historique (Tasks 104→107-d). Aucune anomalie : clés non utilisées par un tiers.
+- Santé : prod/staging verts, guards E2 (401) et CORS hostile (rejet sans ACAO) intacts.
+- Décision fondateur : jetons conservés jusqu'à la fin du projet, révocation à ce moment-là. PAT GitHub ROTÉ (nouveau fine-grained, l'ancien était différent) — installé, vérifié (login georgyfr, push ✓, admin ✓).
+- /home/z/e2e (e2e-local.sh, e2e-staging.sh) perdu avec les resets — à reconstruire au besoin depuis les leçons Task 107/107-c.
+
+Stage Summary:
+- Infra restaurée, PAT GitHub neuf opérationnel. Prochain chantier (Task 109) : espace de modération.
