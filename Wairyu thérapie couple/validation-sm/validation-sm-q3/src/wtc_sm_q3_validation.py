@@ -294,6 +294,7 @@ def generer_rapport(r, profils, sha1, sha2):
     L.append(f"SHA-256 exécution 1 : `{sha1}`")
     L.append(f"SHA-256 exécution 2 : `{sha2}`")
     L.append("")
+    L.append(f"> Texte SILENCIEUSE verrouillé (A4, mot pour mot) : « {r['C7']['texte_mot_pour_mot']} »")
     L.append("---")
     L.append("")
     L.append("## Section B — Géométrie (D-GÉOMÉTRIE) + voies héritées + frontière")

@@ -25,6 +25,7 @@
 SHA-256 exécution 1 : `0ae85f467501759467b8672ed7d9738c18a43d2c7d81478bef15dd25b8b44a4b`
 SHA-256 exécution 2 : `0ae85f467501759467b8672ed7d9738c18a43d2c7d81478bef15dd25b8b44a4b`
 
+> Texte SILENCIEUSE verrouillé (A4, mot pour mot) : « Votre lien est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça. »
 ---
 
 ## Section B — Géométrie (D-GÉOMÉTRIE) + voies héritées + frontière
