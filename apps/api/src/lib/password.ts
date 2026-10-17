@@ -5,10 +5,12 @@ import { errors } from './errors';
  *
  * Pourquoi PBKDF2 via WebCrypto et pas bcrypt/argon2 : Workers n'a PAS de
  * lib natives — crypto.subtle.deriveBits est la primitive conforme disponible,
- * PBKDF2-SHA256 100k itérations + sel 16 o par compte. Le stockage est une
+ * PBKDF2-SHA256 600k itérations (OWASP 2023 — BE-007, ancien 100k) + sel 16 o
+ * par compte. Le stockage est une
  * chaîne auto-descriptive « pbkdf2$<iterations>$<salt hex>$<hash hex> » : les
  * itérations peuvent monter plus tard sans casser les hash existants
- * (verifyPassword lit les itérations DEPUIS la chaîne).
+ * (verifyPassword lit les itérations DEPUIS la chaîne, et la connexion
+ * rehashe transparent les comptes à l'ancienne force).
  *
  * Le pseudo : Task 61 (fondateur) — le pseudo saisi accepte espaces, accents,
  * tirets, apostrophes (normalizeUsernameDisplay = forme AFFICHÉE) ; la forme
@@ -21,9 +23,21 @@ import { errors } from './errors';
  * affichée UNE fois à l'inscription.
  */
 
-export const PBKDF2_ITERATIONS = 100_000;
+export const PBKDF2_ITERATIONS = 600_000; // OWASP 2023 (PBKDF2-HMAC-SHA256 ≥ 600k) — BE-007
 export const SALT_BYTES = 16;
 export const KEY_BITS = 256;
+
+/**
+ * Itérations portées par une chaîne stockée « pbkdf2$<iter>$… » (0 si
+ * malformée). Sert au rehash transparent : à la connexion, un hash à
+ * l'ancienne force (100k) est recalculé à la force courante — BE-007.
+ */
+export function iterationsDe(stored: string): number {
+  const [scheme, iterRaw] = stored.split('$');
+  if (scheme !== 'pbkdf2') return 0;
+  const n = Number.parseInt(iterRaw ?? '', 10);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
 
 /**
  * Forme canonique de recherche : minuscule, accents repliés, tout ce qui

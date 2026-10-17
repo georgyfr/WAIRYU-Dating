@@ -110,7 +110,7 @@ export function facebookComplete(birthDate: string): Promise<FacebookCompleteRes
 }
 
 export function fetchMe(): Promise<MeResponse> {
-  return api<MeResponse>('/api/me');
+  return api<MeResponse>('/api/auth/me');
 }
 
 export function logout(): Promise<{ ok: true }> {

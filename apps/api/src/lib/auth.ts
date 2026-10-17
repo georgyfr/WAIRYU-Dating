@@ -97,3 +97,24 @@ export async function revokeAllSessions(c: Context<AppEnv>, userId: string): Pro
     .run();
   return res.meta.changes ?? 0;
 }
+
+/**
+ * Révoque toutes les sessions de l'utilisateur SAUF celle fournie
+ * (BE-010 — Task 110) : après un changement de mot de passe, l'appareil
+ * courant reste connecté (l'utilisateur vient de prouver son identité),
+ * les autres appareils sont déconnectés. Retourne le nombre RÉEL de
+ * sessions autres révoquées — le champ revokedOthers ne ment plus.
+ */
+export async function revokeOtherSessions(
+  c: Context<AppEnv>,
+  userId: string,
+  keepSessionId: string,
+): Promise<number> {
+  const now = Math.floor(Date.now() / 1000);
+  const res = await c.env.DB.prepare(
+    `UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND id != ? AND revoked_at IS NULL`,
+  )
+    .bind(now, userId, keepSessionId)
+    .run();
+  return res.meta.changes ?? 0;
+}

@@ -52,6 +52,15 @@ export const RATE_RULES = {
   discoverInvisibleUser: { scope: 'disc:inv:user', windowSeconds: 86400, max: 10 },
   /** QUOTA gratuit : 1 Rewind/jour. */
   discoverRewindUser: { scope: 'disc:rew:user', windowSeconds: 86400, max: 1 },
+  // --- Task 110 (BE-009/BE-010) : sécurité du compte ---
+  /** Demandes de changement d'email par utilisateur : 5 / heure. */
+  emailChangeUser: { scope: 'email:chg:user', windowSeconds: 3600, max: 5 },
+  /** Demandes de changement d'email par IP : 10 / heure. */
+  emailChangeIp: { scope: 'email:chg:ip', windowSeconds: 3600, max: 10 },
+  /** Confirmations de changement d'email par utilisateur : 10 / heure (brute-force killer). */
+  emailChangeVerifyUser: { scope: 'email:ver:user', windowSeconds: 3600, max: 10 },
+  /** Changements de mot de passe par utilisateur : 10 / heure (anti brute-force du mot de passe actuel). */
+  pwChangeUser: { scope: 'pw:chg:user', windowSeconds: 3600, max: 10 },
   /** Réponses aux demandes/handshakes : 60 / heure. */
   discoverRespondUser: { scope: 'disc:resp:user', windowSeconds: 3600, max: 60 },
   /** Passerelle (proposition + réponse) : 30 / heure. */

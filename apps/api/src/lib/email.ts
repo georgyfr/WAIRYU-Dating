@@ -199,3 +199,75 @@ export async function sendPasswordResetEmail(
   }
   return { channel: 'email' };
 }
+
+// ---------------------------------------------------------------------------
+// BE-009 (Task 110) — changement d'email de récupération : le code part vers
+// la NOUVELLE adresse (seul le détenteur réel de la boîte peut confirmer).
+// ---------------------------------------------------------------------------
+
+/** gabarit HTML — même gabarit que l'OTP (marque, code à 6 chiffres). */
+function emailChangeHtml(code: string, minutes: number): string {
+  return `<!doctype html><html lang="fr"><body style="margin:0;padding:0;background:#f6f4f1;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:520px;margin:0 auto;padding:32px 24px;">
+    <p style="font-size:22px;font-weight:bold;color:#1f2a44;margin:0 0 4px;">w<span style="color:#e0693c;">a</span>iryu</p>
+    <h1 style="font-size:18px;color:#1f2a44;margin:16px 0 8px;">Confirmez votre nouvelle adresse</h1>
+    <p style="font-size:14px;color:#4a4a4a;line-height:1.6;margin:0 0 20px;">
+      Voici le code qui confirme cette nouvelle adresse pour votre compte wairyu.
+      Il est valable ${minutes} minutes.
+    </p>
+    <div style="background:#ffffff;border:1px solid #e5e0da;border-radius:12px;padding:24px;text-align:center;">
+      <span style="font-size:34px;letter-spacing:10px;font-weight:bold;color:#1f2a44;">${code}</span>
+    </div>
+    <p style="font-size:13px;color:#4a4a4a;line-height:1.6;margin:20px 0 0;">
+      Vous n'avez pas demandé ce changement ? Ignorez cet email — votre adresse actuelle reste inchangée.
+      Ne partagez jamais ce code, un membre de l'équipe wairyu ne vous le demandera jamais.
+    </p>
+  </div></body></html>`;
+}
+
+function emailChangeText(code: string, minutes: number): string {
+  return `Votre code de confirmation wairyu : ${code} (valable ${minutes} minutes).\nIl confirme la nouvelle adresse de votre compte.\nVous n'avez pas demandé ce changement ? Ignorez cet email — rien ne change.`;
+}
+
+/** Envoie le code de confirmation du changement d'email (10 min). */
+export async function sendEmailChangeEmail(env: Env, to: string, code: string): Promise<SendOtpResult> {
+  const minutes = 10;
+
+  // --- Mode dev (staging sans clé) : code renvoyé à l'écran ---
+  if (!emailProviderConfigured(env)) {
+    if (env.ENVIRONMENT === 'staging') {
+      console.log(JSON.stringify({ level: 'warn', dev_otp: true, purpose: 'email_change', to_domain: to.split('@')[1], code }));
+      return { channel: 'dev', devCode: code };
+    }
+    throw new AppError(
+      503,
+      'not_configured',
+      "L'envoi d'emails n'est pas encore configuré. Revenez très bientôt.",
+    );
+  }
+
+  const res = await fetch(BREVO_URL, {
+    method: 'POST',
+    headers: {
+      'api-key': env.BREVO_API_KEY,
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'wairyu', email: env.EMAIL_FROM },
+      to: [{ email: to }],
+      subject: `${code} — confirmez votre nouvelle adresse wairyu`,
+      htmlContent: emailChangeHtml(code, minutes),
+      textContent: emailChangeText(code, minutes),
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    console.error(
+      JSON.stringify({ level: 'error', brevo_status: res.status, detail: detail.slice(0, 300) }),
+    );
+    throw errors.internal("L'envoi de l'email a échoué. Réessayez dans quelques minutes.");
+  }
+  return { channel: 'email' };
+}

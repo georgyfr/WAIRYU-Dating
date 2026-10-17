@@ -93,7 +93,10 @@ async function vapid(env: {
   const pubB64 = env.VAPID_PUBLIC_KEY;
   const privB64 = env.VAPID_PRIVATE_KEY;
   if (!pubB64 || !privB64) {
-    vapidCache = null;
+    // BE-011 (Task 110) : un échec n'est JAMAIS mis en cache — un secret posé
+    // (wrangler secret put) ou une erreur transitoire doit pouvoir se rétablir
+    // au prochain appel, sans redéploiement. Seul le SUCCÈS est mémoïsé
+    // (importKey est coûteux).
     return null;
   }
   try {
@@ -131,13 +134,12 @@ async function vapid(env: {
     const pairOk = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, verifyKey, probeSig, probe);
     if (!pairOk) {
       console.error(JSON.stringify({ push: 'vapid_pair_mismatch', hint: 'VAPID_PUBLIC_KEY ne correspond pas à VAPID_PRIVATE_KEY' }));
-      vapidCache = null;
-      return null;
+      return null; // BE-011 : pas de cache d'échec — retry au prochain appel
     }
     vapidCache = { publicKey: pubB64, privateKey: key, subject: env.VAPID_SUBJECT ?? 'mailto:admin@wairyu.app' };
   } catch (err) {
     console.error(JSON.stringify({ push: 'vapid_import_failed', err: String(err) }));
-    vapidCache = null;
+    return null; // BE-011 : pas de cache d'échec — retry au prochain appel
   }
   return vapidCache;
 }

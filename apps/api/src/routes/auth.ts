@@ -34,7 +34,7 @@ import {
 } from '../lib/otp';
 import { RATE_RULES, hitRateLimit, rateLimitedError } from '../lib/ratelimit';
 import { verifyTurnstile } from '../lib/turnstile';
-import { emailProviderConfigured, sendOtpEmail, sendPasswordResetEmail } from '../lib/email';
+import { emailProviderConfigured, sendEmailChangeEmail, sendOtpEmail, sendPasswordResetEmail } from '../lib/email';
 import {
   googleConfigured,
   buildAuthorizeUrl,
@@ -51,6 +51,8 @@ import {
   normalizeRecoveryCode,
   hashPassword,
   verifyPassword,
+  iterationsDe,
+  PBKDF2_ITERATIONS,
   // alias : auth.ts importe déjà sha256Hex depuis lib/otp (les deux coexistent).
   sha256Hex as sha256HexPw,
 } from '../lib/password';
@@ -64,6 +66,7 @@ import {
   createSession,
   clearSessionCookie,
   revokeAllSessions,
+  revokeOtherSessions,
   revokeCurrentSession,
 } from '../lib/auth';
 import { signValue, verifySignature } from '../lib/session';
@@ -1211,8 +1214,12 @@ authRoutes.post('/auth/logout-all', async (c) => {
 // ---------------------------------------------------------------------------
 // GET /api/me — profil de l'utilisateur authentifié (schéma v2 — l'Étape 3
 // ajoutera les champs profil : birth_date ISO, gender, orientation, intent…)
+// BE-001 (Task 110) : la même réponse est servie sous DEUX préfixes —
+// /api/auth/me (CANONIQUE, aligné sur le préfixe /auth/*) et /api/me
+// (COMPATIBILITÉ : TWA/PWA déjà déployées, deep-links, clients existants).
+// Le front n'utilise plus que la forme canonique.
 // ---------------------------------------------------------------------------
-authRoutes.get('/me', async (c) => {
+async function meHandler(c: Context<AppEnv>): Promise<Response> {
   const session = await requireAuth(c);
   const user = await c.env.DB.prepare(
     `SELECT u.id, u.email, u.display_name, u.email_verified_at, u.status, u.plan, u.created_at,
@@ -1251,7 +1258,10 @@ authRoutes.get('/me', async (c) => {
     sessionRenewed: c.get('sessionRenewed') ?? false,
   };
   return c.json(body);
-});
+}
+
+authRoutes.get('/me', meHandler);
+authRoutes.get('/auth/me', meHandler);
 
 // ---------------------------------------------------------------------------
 // RGPD — droit d'accès : GET /api/account/export (JSON téléchargeable)
@@ -1426,6 +1436,7 @@ async function hardDeleteAccount(
     .bind(userId)
     .run();
   await c.env.DB.prepare(`DELETE FROM password_resets WHERE user_id = ?`).bind(userId).run();
+  await c.env.DB.prepare(`DELETE FROM email_changes WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM sessions WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM oauth_identities WHERE user_id = ?`).bind(userId).run();
   await c.env.DB.prepare(`DELETE FROM device_push_subscriptions WHERE user_id = ?`).bind(userId).run();
@@ -1665,6 +1676,14 @@ authRoutes.post('/auth/password/login', async (c) => {
     await registerLockFailure(c.env.DB, row);
     throw errors.unauthorized('Pseudo, email ou mot de passe incorrect.');
   }
+  // BE-007 (Task 110) — rehash transparent : un hash à l'ancienne force
+  // (ex. 100k) est recalculé à la force courante (600k) lors de la connexion.
+  // Rien ne change pour l'utilisateur ; le stockage se durcit tout seul.
+  if (iterationsDe(row.password_hash) < PBKDF2_ITERATIONS) {
+    await c.env.DB.prepare(`UPDATE auth_password SET password_hash = ?, updated_at = ? WHERE user_id = ?`)
+      .bind(await hashPassword(password), Math.floor(Date.now() / 1000), row.user_id)
+      .run();
+  }
   const user = await c.env.DB.prepare(`SELECT status FROM users WHERE id = ? LIMIT 1`)
     .bind(row.user_id)
     .first<{ status: string }>();
@@ -1818,6 +1837,10 @@ authRoutes.post('/auth/password/reset', async (c) => {
 
 authRoutes.post('/auth/password/change', async (c) => {
   const session = await requireAuth(c);
+  // BE-010 (Task 110) : rate-limit sur la preuve « mot de passe actuel » —
+  // sans elle, un pirate avec la session seule pourrait brute-forcer.
+  const rlChg = await hitRateLimit(c.env.DB, RATE_RULES.pwChangeUser, session.userId);
+  if (!rlChg.allowed) throw rateLimitedError(rlChg.retryAfterSeconds, RATE_RULES.pwChangeUser.scope);
   const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
   const currentPassword = typeof payload?.current_password === 'string' ? payload.current_password : '';
   const newPassword = typeof payload?.new_password === 'string' ? payload.new_password : '';
@@ -1834,8 +1857,11 @@ authRoutes.post('/auth/password/change', async (c) => {
   await c.env.DB.prepare(`UPDATE auth_password SET password_hash = ?, updated_at = ? WHERE user_id = ?`)
     .bind(await hashPassword(newPassword), now, session.userId)
     .run();
-  const revoked = await revokeAllSessions(c, session.userId);
-  await createSession(c, session.userId);
+  // BE-010 (Task 110) : la session COURANTE reste valide (l'utilisateur vient
+  // de prouver son identité avec son mot de passe actuel — le recréer était
+  // du gaspillage et rendait le champ revokedOthers menteur). Les AUTRES
+  // appareils sont déconnectés, et le compte retourné est le compte RÉEL.
+  const revoked = await revokeOtherSessions(c, session.userId, session.sessionId);
   await bumpMetric(c.env.DB, 'password_change');
   return c.json({ ok: true, revokedOthers: revoked });
 });
@@ -1890,16 +1916,107 @@ authRoutes.post('/auth/password/set', async (c) => {
 
 // Email de récupération (connecté) : remplace le placeholder par un vrai
 // email — sert UNIQUEMENT à retrouver le mot de passe (jamais affiché).
+// ---------------------------------------------------------------------------
+// POST /api/account/recovery-email — DEMANDE de changement d'email (BE-009,
+// Task 110). AVANT : écrasait users.email immédiatement — sans vérification,
+// sans rate-limit, sans preuve d'identité au-delà du cookie. APRÈS :
+// session + mot de passe actuel (SI le compte en a un) + rate-limit
+// user/IP → code 6 chiffres envoyé à la NOUVELLE adresse → users.email
+// n'est touché QU'À la confirmation (/account/recovery-email/confirm),
+// avec email_verified_at renseigné. Jamais plus d'email non vérifié en base.
+// ---------------------------------------------------------------------------
 authRoutes.post('/account/recovery-email', async (c) => {
   const session = await requireAuth(c);
+  const ip = await ipHash(c);
+  const rlUser = await hitRateLimit(c.env.DB, RATE_RULES.emailChangeUser, session.userId);
+  if (!rlUser.allowed) throw rateLimitedError(rlUser.retryAfterSeconds, RATE_RULES.emailChangeUser.scope);
+  const rlIp = await hitRateLimit(c.env.DB, RATE_RULES.emailChangeIp, ip);
+  if (!rlIp.allowed) throw rateLimitedError(rlIp.retryAfterSeconds, RATE_RULES.emailChangeIp.scope);
+
   const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
   const email = normalizeEmail(payload?.email as string | undefined);
   if (!email) throw errors.badRequest('Adresse email invalide.');
   if (isPlaceholderEmail(email)) throw errors.badRequest('Adresse email invalide.');
+
+  // Preuve d'identité supplémentaire : le mot de passe actuel, quand le
+  // compte en possède un (comptes Google/Facebook/email-OTP sans mot de
+  // passe : la vérification par code à la NOUVELLE adresse reste la barrière).
+  const pw = await c.env.DB.prepare(`SELECT password_hash FROM auth_password WHERE user_id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ password_hash: string }>();
+  if (pw) {
+    const currentPassword = typeof payload?.current_password === 'string' ? payload.current_password : '';
+    if (!currentPassword) throw errors.badRequest('Indique ton mot de passe actuel pour confirmer ce changement.');
+    const okPw = await verifyPassword(currentPassword, pw.password_hash);
+    if (!okPw) throw errors.unauthorized('Mot de passe actuel incorrect.');
+  }
+
+  const actuel = await c.env.DB.prepare(`SELECT email FROM users WHERE id = ? LIMIT 1`)
+    .bind(session.userId)
+    .first<{ email: string }>();
+  if (email === actuel?.email) {
+    throw errors.badRequest('Ceci est déjà ton adresse email.');
+  }
+  const pris = await c.env.DB.prepare(`SELECT id FROM users WHERE email = ? AND id != ? LIMIT 1`)
+    .bind(email, session.userId)
+    .first<{ id: string }>();
+  if (pris) throw errors.conflict('Cet email est déjà utilisé sur un autre compte wairyu.');
+
+  // Code à la NOUVELLE adresse (écrase tout changement en cours — même
+  // doctrine que auth_codes : UN code actif par compte).
+  const code = generateOtpCode();
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(
+    `INSERT INTO email_changes (user_id, email_new, code_hash, attempts, created_at, expires_at)
+     VALUES (?1, ?2, ?3, 0, ?4, ?5)
+     ON CONFLICT (user_id) DO UPDATE SET
+       email_new = excluded.email_new, code_hash = excluded.code_hash,
+       attempts = 0, created_at = excluded.created_at, expires_at = excluded.expires_at,
+       consumed_at = NULL`,
+  )
+    .bind(session.userId, email, await sha256Hex(code), now, now + OTP.ttlSeconds)
+    .run();
+
+  const sent = await sendEmailChangeEmail(c.env, email, code);
+  await bumpMetric(c.env.DB, 'recovery_email_pending');
+  return c.json(sent.channel === 'dev' ? { ok: true, pending: true, devCode: sent.devCode } : { ok: true, pending: true });
+});
+
+// POST /api/account/recovery-email/confirm — CONFIRMATION du changement
+// (code reçu à la NOUVELLE adresse). C'est SEULEMENT ici que users.email
+// change — et il sort VÉRIFIÉ (email_verified_at = now).
+authRoutes.post('/account/recovery-email/confirm', async (c) => {
+  const session = await requireAuth(c);
+  const rl = await hitRateLimit(c.env.DB, RATE_RULES.emailChangeVerifyUser, session.userId);
+  if (!rl.allowed) throw rateLimitedError(rl.retryAfterSeconds, RATE_RULES.emailChangeVerifyUser.scope);
+
+  const payload = (await c.req.json().catch(() => null)) as Record<string, unknown> | null;
+  const code = typeof payload?.code === 'string' ? payload.code.trim() : '';
+  if (!code) throw errors.badRequest('Indique le code reçu à ta nouvelle adresse.');
+
+  const pending = await c.env.DB.prepare(
+    `SELECT email_new, code_hash, attempts, created_at, expires_at, consumed_at
+       FROM email_changes WHERE user_id = ? LIMIT 1`,
+  )
+    .bind(session.userId)
+    .first<{ email_new: string; code_hash: string; attempts: number; created_at: number; expires_at: number; consumed_at: number | null }>();
+  if (!pending) throw errors.badRequest('Aucun changement en cours. Demande un nouveau code.');
+
+  try {
+    await verifyOtpRow(pending, code);
+  } catch (err) {
+    if (err instanceof AppErrorOtpInvalid || err instanceof AppErrorOtpLocked) {
+      await c.env.DB.prepare(`UPDATE email_changes SET attempts = attempts + 1 WHERE user_id = ?`)
+        .bind(session.userId)
+        .run();
+    }
+    throw err;
+  }
+
   const now = Math.floor(Date.now() / 1000);
   try {
-    await c.env.DB.prepare(`UPDATE users SET email = ?, email_verified_at = NULL, updated_at = ? WHERE id = ?`)
-      .bind(email, now, session.userId)
+    await c.env.DB.prepare(`UPDATE users SET email = ?, email_verified_at = ?, updated_at = ? WHERE id = ?`)
+      .bind(pending.email_new, now, now, session.userId)
       .run();
   } catch (err) {
     if (String(err).includes('UNIQUE')) {
@@ -1907,7 +2024,9 @@ authRoutes.post('/account/recovery-email', async (c) => {
     }
     throw err;
   }
-  return c.json({ ok: true, email });
+  await c.env.DB.prepare(`DELETE FROM email_changes WHERE user_id = ?`).bind(session.userId).run();
+  await bumpMetric(c.env.DB, 'recovery_email_confirmed');
+  return c.json({ ok: true, email: pending.email_new, emailVerified: true });
 });
 
 // État « identifiants » (connecté) : le front de Réglages affiche ce qui est
