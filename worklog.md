@@ -2333,7 +2333,7 @@ Work Log:
 - 3 volets : A quêtes croisées/Duo (niveau 2 cartes) · B révélation voix (≤60 s/512 Ko) + photo (1/membre, niveau 4 Prêt·e des deux) · C récoltes à deux (pilote 3 questions croisées, Rendez-vous préparé par règles locales SANS IA v1, compteur fragments non-dépensable).
 - Architecture : P1 dans le fil (pas d'espace séparé) · P2 R2 natif par le Worker (Cloudinary rejeté : tiers + données intimes) · P3 table voiles, chaque niveau SA porte + double oui · P4 medias table + EXIF strip client canvas · P5 duo par intersection reponses · P6 a2/a2_reponses · P7 compteur dérivé · P8 7 endpoints + 5 rate rules + migration 0017 additive (4-5 tables) · P9 purge R2 dans hardDeleteAccount + accès modérateur au média signalé tracé audit_admin.
 - 10 points [À VALIDER] numérotés pour le fondateur (rythme du build, R2, porte voix = seuils E2, limites médias, EXIF, RDV règles locales vs AI, co-écriture du contenu pilote, compteur, accès média signalé, nom).
-- Commit a4423b0 (docs only), poussé. Aucun code, prod inchangée (ec034794).
+- Commit 8fd4a34 (docs only), poussé. Aucun code, prod inchangée (ec034794).
 
 Stage Summary:
 - SPEC-RENONCONTRE-E3.v1.md prête : tout est ancré dans le verbatim produit existant (aucune invention de doctrine), la mécanique est indépendante du contenu C4. En attente des réponses du fondateur aux 10 points avant tout dev.
