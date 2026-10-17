@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-12 « Ce que je porte pour toi » publié — en audit).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-12 « Ce que je porte pour toi » contresigné — 12/12 RIO).
 
 ---
 
@@ -28,12 +28,12 @@ Wairyu thérapie couple/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 contresigné · RIO-12 en audit) ═══
+│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 contresignés) ═══
 ├── validation-sm/
 │   ├── SM-Q2-SPEC.md
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
 │   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
-│   └── validation-sm-q2/ (RIO-12 — publié, en audit)
+│   └── validation-sm-q2/ (RIO-12 — contresigné)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -63,12 +63,12 @@ Wairyu thérapie couple/
 | WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ |
 | WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 |
 
-### Dimension SANTÉ MENTALE (RIO-11 contresigné)
+### Dimension SANTÉ MENTALE (RIO-11 · RIO-12 contresignés)
 
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ✅ Contresigné (R3 VALIDÉ 6/6, SHA bb2551dd…) |
-| WTC-SM-Q2 | RIO-12 « Ce que je porte pour toi » | 🔄 VALIDÉ 6/6 (simulation) — publié, en audit (SHA f57fc089…) |
+| WTC-SM-Q2 | RIO-12 « Ce que je porte pour toi » | ✅ Contresigné (VALIDÉ 6/6 simulation, SHA f57fc089…) |
 
 ### Pilote réel
 
@@ -76,7 +76,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 11 instruments RIO contresignés (RIO-01 à RIO-11) + RIO-12 validé par simulation, en audit. 2 dimensions complètes.**
+**Total : 12 instruments RIO contresignés (RIO-01 à RIO-12). 2 dimensions complètes.**
 
 ---
 
@@ -125,7 +125,7 @@ Fautes 1-15 : cycles d'attachement. Fautes 15 bis à 35 : cycles émotionnels, t
 | E-EMO-Q5-2 | Publication avant contresignature, SHA absents — compensé par audit public | ✅ Clôturé |
 | E-SM-1 | Critères Q5 sur quête de mesure, contradiction non signalée | ✅ Clôturé (R1) |
 | E-SM-2 | Reformulation récidive C5 — matériau présent | ✅ Clôturé |
-| E-SM-3 | Source interne non citée ; pointer exigé au verrouillage Q2 | ⏠ En attente Q2 |
+| E-SM-3 | Source interne non citée ; pointer exigé au verrouillage Q2 | ✅ Clôturé au commit de contresignature RIO-12 (pointer vérifié verbatim — rapport Q2 Section F) |
 | E-SM-4 | SHA unique au message pointeurs — réparé R2 | ✅ Clôturé |
 | E-SM-5 | Réconciliation non présentée (R2) — résolue R3 | ✅ Clôturé |
 | E-SM-6 | Voie H5 non peuplée (R2) — résolue R3 (G7 20/20) | ✅ Clôturé |
