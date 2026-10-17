@@ -2357,3 +2357,16 @@ Stage Summary:
 - 5 bugs corrigés (FE-007/008/009/010/012), 1 obsolète (FE-011). Aucune route ni logique métier touchée : composant toast, 4 clients fetch, CSS fonts+tailles, manifest TWA.
 - 56,5 Ko de woff2 ajoutés (2 fichiers variables) contre 6 requêtes tierces supprimées — conformité doctrine « auto-hébergé ».
 - Non déployé : attend le feu vert du fondateur (déploiement prod via bash /home/z/executer.sh prod ; le TWA nécessiterait aussi un rebuild bubblewrap/gradle pour prendre le manifest 36 en compte côté APK — pas urgent, l'APK actuel vise 36 via build.gradle).
+
+---
+Task ID: 112-bis
+Agent: Z.ai Code (session principale)
+Task: Rotation du jeton GitHub (demande fondateur — suite à la reco « entretien 15 min »).
+
+Work Log:
+- Nouveau PAT (fine-grained, github_pat_…) fourni par le fondateur dans le chat → remplacé en ligne 1 de /home/z/SECRETS-WAIRYU-LOCAL.txt (fichier NON versionné), chmod 600 appliqué.
+- Vérification réelle : GET /repos/georgyfr/WAIRYU-Dating via API GitHub → HTTP 200 ; git fetch origin main avec le nouveau jeton → OK. Ancien jeton écrasé (plus aucune copie du PAT dans un fichier versionné ni dans le worklog).
+- L'ancien PAT exposé 3× au chat est désormais inutile aux scripts : tous les scripts (push/pull) lisent GITHUB_TOKEN depuis SECRETS-WAIRYU-LOCAL.txt.
+
+Stage Summary:
+- Jeton GitHub frais et vérifié, prêt pour les prochains déploiements. Rappel restant de l'entretien : rotation des jetons Cloudflare + refresh STATUS.md.
