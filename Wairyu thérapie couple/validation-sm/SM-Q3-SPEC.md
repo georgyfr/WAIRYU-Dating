@@ -1,8 +1,9 @@
-# PROPOSITION SPEC — WTC-SM-Q3 « Ce que notre lien sait porter » (RIO-13)
+# SPEC VERROUILLÉE — WTC-SM-Q3 « Ce que notre lien sait porter » (RIO-13)
 
-> **Document de spécification narrative — proposition en attente de verrouillage fondateur.**
-> D-CANAL : production locale après verrouillage. Zéro code tant que non verrouillé.
+> **Document de spécification VERROUILLÉ — fondateur, 18/10/2026 (arbitrages A1-A4 prononcés).**
+> D-CANAL : production locale — zéro code produit avant verrouillage (respecté).
 > D-HIST : confrontation fondation effectuée (voir §7).
+> **Arbitrages : A1 3,50 tel quel · A2 faces seules · A3 override · A4 mot pour mot.**
 
 ---
 
@@ -46,27 +47,27 @@ Modèle géométrique du verrouillage SM-Q2 appliqué tel quel : **4 items/face*
 
 Principe hérité de la banque émotionnelle (`fondation/03-banque-forces.md` v1.1) : **banque fermée (6 forces, pas plus), sélection déterministe, conditions évaluables, max 2 forces par profil, statut SILENCIEUSE honnête**.
 
-| Force | Ancrage source (mot pour mot) | Voie 1 — face | Voie 2 — carnet « rives » (proposition, à arbitrer A2) |
-|-------|-------------------------------|---------------|--------------------------------------------------------|
-| **F-S1** « Le plan des jours durs » | ligne 134 | SM-P1 ≥ 3,50 | carnet J ≥ 4/7 (jours durs planifiés) |
-| **F-S2** « La frontière co-étiquetée » | lignes 133-134 | SM-N1 ≥ 3,50 | carnet N ≥ 4/7 (cas re-étiquetés correctement) |
-| **F-S3** « Les rituels de deux adultes » | ligne 134 | SM-P2 ≥ 3,50 | carnet R ≥ 4/7 (rituels tenus) |
-| **F-S4** « La revue mensuelle » | ligne 135 | SM-P3 ≥ 3,50 | carnet V ≥ 4/7 (revues faites) |
-| **F-S5** « Ma rive, ta rive » | ligne 133 | SM-N2 ≥ 3,50 | carnet J ≥ 3/7 ET R ≥ 3/7 (partage assumé) |
-| **F-S6** « Le soin qui ne dévore pas » | ligne 113 (fusion) | SM-N3 ≥ 3,50 | carnet V ≥ 3/7 ET N ≥ 3/7 |
+| Force | Ancrage source (mot pour mot) | Voie unique — face (A2 : faces seules) |
+|-------|-------------------------------|----------------------------------------|
+| **F-S1** « Le plan des jours durs » | ligne 134 | SM-P1 ≥ 3,50 |
+| **F-S2** « La frontière co-étiquetée » | lignes 133-134 | SM-N1 ≥ 3,50 |
+| **F-S3** « Les rituels de deux adultes » | ligne 134 | SM-P2 ≥ 3,50 |
+| **F-S4** « La revue mensuelle » | ligne 135 | SM-P3 ≥ 3,50 |
+| **F-S5** « Ma rive, ta rive » | ligne 133 | SM-N2 ≥ 3,50 |
+| **F-S6** « Le soin qui ne dévore pas » | ligne 113 (fusion) | SM-N3 ≥ 3,50 |
 
-**Règles de banque** (proposition, à arbitrer A1 pour les seuils) :
-- **D-DENSITÉ (±0)** : chaque force a EXACTEMENT 2 voies d'activation (face OU carnet) — comparables entre elles, leçon faute n°21.
+**Règles de banque (VERROUILLÉES 18/10/2026)** :
+- **A1 (tel quel)** : seuil d'activation = **3,50** sur la face (cohérence dominance Q2).
+- **A2 (faces seules)** : chaque force a EXACTEMENT **1 voie** d'activation (la face, ≥ 3,50) — D-DENSITÉ **±0** préservée (1/1 × 6), leçon faute n°21. Le carnet « rives » J/N/R/V N'EXISTE PAS en Q3.
 - **D-TABLE** : conditions identiques MOT POUR MOT dans la table (§4) et le code — étendue aux conditions de forces (leçon Q3 émotionnel).
-- **Max 2 forces par profil** : si > 2 activées, retenir les 2 à plus forte densité ; tie-break = ordre de banque F-S1 < F-S2 < … < F-S6.
-- **Convention de casse (S-EMO-6 reportée)** : carnet J/R/N/V en MAJUSCULES dans les documents, minuscules `j/r/n/v` dans le code — le moteur convertit à la lecture.
-- **Statut SILENCIEUSE (mot pour mot, proposition)** : « Votre lien est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça. » Condition : aucune des 6 forces activée.
+- **Max 2 forces par profil** : si > 2 activées, toutes ont la même densité (1 voie, A2) → tie-break = **ordre de banque** F-S1 < F-S2 < … < F-S6 (les 2 premières actives).
+- **A4 (mot pour mot)** — statut SILENCIEUSE : « Votre lien est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça. » Condition : aucune des 6 forces activée.
 
 ---
 
-## 5. Routage D-CRISE hérité (à arbitrer A3)
+## 5. Routage D-CRISE hérité (VERROUILLÉ — A3 : override)
 
-Q3 ne crée AUCUNE voie de crise. Le D-CRISE reste : **A2 ∨ SM-C1 ∨ H5** (verrouillage Q2-C3, héritage Q1-R3 / RIO-02). Proposition : un profil **déjà en crise (héritée Q1/Q2)** voit son affichage Q3 routé vers l'orientation « chemin le plus court » (palier 🔴) — les forces mesurées ne sont PAS célébrées sur une crise active (D-CRISE : jamais de pas de couple en crise ; pas de lumière fabriquée sur un incendie). Les stats de forces restent calculées (traçabilité), l'affichage est overridé.
+Q3 ne crée AUCUNE voie de crise. Le D-CRISE reste : **A2 ∨ SM-C1 ∨ H5** (verrouillage Q2-C3, héritage Q1-R3 / RIO-02). **Verrouillé** : un profil **déjà en crise (héritée Q1/Q2)** voit son affichage Q3 routé vers l'orientation « chemin le plus court » (palier 🔴) — les forces mesurées ne sont PAS célébrées sur une crise active (D-CRISE : jamais de pas de couple en crise ; pas de lumière fabriquée sur un incendie). Les stats de forces restent calculées (traçabilité), l'affichage est overridé.
 
 ---
 
@@ -76,7 +77,7 @@ Q3 ne crée AUCUNE voie de crise. Le D-CRISE reste : **A2 ∨ SM-C1 ∨ H5** (ve
 |---|---------|----------|------|
 | **C1** | D-VÉRITÉ : inventaire 6 faces × 4 items (24 items) + labels croisés moteur/simulateur + D-TABLE forces (conditions §4 = code) | 24/24 + croisé + table=code | ÉLIMINATOIRE |
 | **C2** | D-ÉCHELLE : moyenne 3,00 déterministe sur les 2 axes | déterministe | — |
-| **C3** | D-DENSITÉ : voies par force comparables ±0 (2/2) + max 2 forces/profil + tie-break déterministe | 2 voies × 6 forces, limite prouvée | ÉLIMINATOIRE |
+| **C3** | D-DENSITÉ : voies par force comparables ±0 (1/1, A2) + max 2 forces/profil + tie-break ordre de banque déterministe | 1 voie × 6 forces, limite prouvée | ÉLIMINATOIRE |
 | **C4** | SHA ×2 (D-EMPREINTE : SHA sur contenu, pas horodatage) | 2 valeurs brutes identiques | — |
 | **C5** | Affichage des figures 4/4 | 4 figures 1920×1080 150 DPI | — |
 | **C6** | 0 pas produit (Q3 = FORCES, prescription transférée à Q5) | 0 fonction de prescription | — |
@@ -117,14 +118,12 @@ Q3 ne crée AUCUNE voie de crise. Le D-CRISE reste : **A2 ∨ SM-C1 ∨ H5** (ve
 
 ---
 
-## 10. Ce que j'attends du fondateur (verrouillage)
+## 10. Verrouillage (fondateur, 18/10/2026)
 
-**Arbitrages demandés (numérotés)** :
-- **A1 — Seuil d'activation des faces** : proposé **3,50** (cohérence dominance Q2) — alternative 3,00 (D-ÉCHELLE pure).
-- **A2 — Carnet « rives » J/N/R/V** : proposé comme 2e voie de chaque force (≥ 4/7, sauf F-S5/F-S6 à 3/7) — alternative : conditions sur faces seules (banque à 1 voie/force, D-DENSITÉ ±0 préservée).
-- **A3 — Routage crise héritée** : proposé override affichage 🔴 sans célébration — alternative : forces affichées avec bandeau « en crise ».
-- **A4 — Texte SILENCIEUSE** : mot pour mot proposé en §4 — libre d'ajustement (il est unique, jamais recalculé).
+**Arbitrages prononcés en chat** : **A1 tel quel (3,50) · A2 faces seules (1 voie/force) · A3 override 🔴 · A4 mot pour mot.**
 
-**Verrouillage FIXÉ/LIBRE** :
-- **FIXÉ (si arbitrages acceptés)** : 6 faces SM-P/N × 4 items = 24 items · échelle 5 points · D-ÉCHELLE 3,00 · banque fermée 6 forces · 2 voies/force · max 2 forces/profil · tie-break ordre de banque · SILENCIEUSE honnête · D-CRISE hérité (0 voie nouvelle) · 4 pièges (§8) · C1-C7 libellés exacts · 0 pas produit.
-- **LIBRE** : corps des fonctions · noms internes des groupes · texte exact des templates de forces (hors SILENCIEUSE) · découpage en 3 fichiers.
+**FIXÉ** : 6 faces SM-P/N × 4 items = 24 items · échelle 5 points · D-ÉCHELLE 3,00 · banque fermée 6 forces (F-S1 à F-S6, ordre de banque) · 1 voie/force (face ≥ 3,50) · max 2 forces/profil · tie-break ordre de banque · SILENCIEUSE mot pour mot (A4) · override crise héritée 🔴 (A3) · D-CRISE hérité (0 voie nouvelle : A2 ∨ SM-C1 ∨ H5) · 4 pièges (§8) · C1-C7 libellés exacts · 0 pas produit.
+
+**LIBRE** : corps des fonctions · noms internes des groupes · texte exact des templates de forces (hors SILENCIEUSE, verrouillé A4) · découpage en 3 fichiers.
+
+**Prochaine étape** : production du package `validation-sm-q3/` (séquence D-CANAL-2 : production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature).
