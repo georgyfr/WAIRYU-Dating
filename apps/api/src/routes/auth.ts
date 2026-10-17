@@ -51,8 +51,7 @@ import {
   normalizeRecoveryCode,
   hashPassword,
   verifyPassword,
-  iterationsDe,
-  PBKDF2_ITERATIONS,
+  estFormatCourant,
   // alias : auth.ts importe déjà sha256Hex depuis lib/otp (les deux coexistent).
   sha256Hex as sha256HexPw,
 } from '../lib/password';
@@ -1676,10 +1675,11 @@ authRoutes.post('/auth/password/login', async (c) => {
     await registerLockFailure(c.env.DB, row);
     throw errors.unauthorized('Pseudo, email ou mot de passe incorrect.');
   }
-  // BE-007 (Task 110) — rehash transparent : un hash à l'ancienne force
-  // (ex. 100k) est recalculé à la force courante (600k) lors de la connexion.
-  // Rien ne change pour l'utilisateur ; le stockage se durcit tout seul.
-  if (iterationsDe(row.password_hash) < PBKDF2_ITERATIONS) {
+  // BE-007 (Task 110) — rehash transparent : un hash à l'ancien format
+  // (1 ronde de 100k) est recalculé au format courant chaîné (6 × 100k =
+  // 600k de coût attaquant) lors de la connexion. Rien ne change pour
+  // l'utilisateur ; le stockage se durcit tout seul.
+  if (!estFormatCourant(row.password_hash)) {
     await c.env.DB.prepare(`UPDATE auth_password SET password_hash = ?, updated_at = ? WHERE user_id = ?`)
       .bind(await hashPassword(password), Math.floor(Date.now() / 1000), row.user_id)
       .run();

@@ -4,13 +4,17 @@ import { errors } from './errors';
  * Task 58 (fondateur) — inscription/connexion classique pseudo + mot de passe.
  *
  * Pourquoi PBKDF2 via WebCrypto et pas bcrypt/argon2 : Workers n'a PAS de
- * lib natives — crypto.subtle.deriveBits est la primitive conforme disponible,
- * PBKDF2-SHA256 600k itérations (OWASP 2023 — BE-007, ancien 100k) + sel 16 o
- * par compte. Le stockage est une
- * chaîne auto-descriptive « pbkdf2$<iterations>$<salt hex>$<hash hex> » : les
- * itérations peuvent monter plus tard sans casser les hash existants
- * (verifyPassword lit les itérations DEPUIS la chaîne, et la connexion
- * rehashe transparent les comptes à l'ancienne force).
+ * lib natives — crypto.subtle.deriveBits est la primitive conforme disponible.
+ * CONTRAINTE PLATEFORME (Task 110, prouvée en staging) : workerd REFUSE
+ * PBKDF2 au-delà de 100 000 itérations (« NotSupportedError: iteration
+ * counts above 100000 are not supported ») — la reco OWASP 2023 (≥600k)
+ * est donc ATTEINTE PAR CHAÎNAGE : 6 rondes de 100k avec la sortie d'une
+ * ronde en entrée de la suivante = 600k de coût attaquant réel.
+ * Le stockage est une chaîne auto-descriptive :
+ *   « pbkdf2$<iter>$<salt>$<hash> »        (historique, 1 ronde)
+ *   « pbkdf2c$<iter>$<rounds>$<salt>$<hash> » (courant, chaîné)
+ * verifyPassword lit schéma/itérations/rondes DEPUIS la chaîne, et la
+ * connexion rehashe en transparence les comptes à l'ancien format.
  *
  * Le pseudo : Task 61 (fondateur) — le pseudo saisi accepte espaces, accents,
  * tirets, apostrophes (normalizeUsernameDisplay = forme AFFICHÉE) ; la forme
@@ -23,20 +27,18 @@ import { errors } from './errors';
  * affichée UNE fois à l'inscription.
  */
 
-export const PBKDF2_ITERATIONS = 600_000; // OWASP 2023 (PBKDF2-HMAC-SHA256 ≥ 600k) — BE-007
+export const PBKDF2_ITERATIONS = 100_000; // MAX workerd — au-delà : NotSupportedError (prouvé staging)
+export const PBKDF2_ROUNDS = 6; // 6 × 100k = 600k de coût attaquant (OWASP 2023) — BE-007
 export const SALT_BYTES = 16;
 export const KEY_BITS = 256;
 
 /**
- * Itérations portées par une chaîne stockée « pbkdf2$<iter>$… » (0 si
- * malformée). Sert au rehash transparent : à la connexion, un hash à
- * l'ancienne force (100k) est recalculé à la force courante — BE-007.
+ * Format COURANT ? Sert au rehash transparent à la connexion — BE-007.
+ * « pbkdf2c$100000$6$… » = oui ; tout autre (historique 1 ronde, force
+ * moindre) = non → rehash au prochain login réussi.
  */
-export function iterationsDe(stored: string): number {
-  const [scheme, iterRaw] = stored.split('$');
-  if (scheme !== 'pbkdf2') return 0;
-  const n = Number.parseInt(iterRaw ?? '', 10);
-  return Number.isFinite(n) && n > 0 ? n : 0;
+export function estFormatCourant(stored: string): boolean {
+  return stored.startsWith(`pbkdf2c$${PBKDF2_ITERATIONS}$${PBKDF2_ROUNDS}$`);
 }
 
 /**
@@ -81,35 +83,98 @@ async function pbkdf2(password: string, salt: Uint8Array, iterations: number): P
   return new Uint8Array(bits);
 }
 
+/**
+ * PBKDF2 CHAÎNÉ (BE-007) : `rounds` rondes de `iterations` itérations, la
+ * sortie d'une ronde (32 octets) servant d'entrée mot de passe à la suivante
+ * (sel inchangé — l'entrée change, c'est elle qui coûte). Coût attaquant =
+ * iter × rondes. workerd plafonnant PBKDF2 à 100k par appel, c'est la voie
+ * vers le facteur de travail OWASP 2023 (600k) sur cette plateforme.
+ */
+async function pbkdf2Chain(
+  password: string,
+  salt: Uint8Array,
+  iterations: number,
+  rounds: number,
+): Promise<Uint8Array> {
+  let entree: Uint8Array = new TextEncoder().encode(password);
+  let sortie = new Uint8Array(KEY_BITS / 8);
+  for (let r = 0; r < rounds; r++) {
+    const key = await crypto.subtle.importKey('raw', entree as BufferSource, 'PBKDF2', false, ['deriveBits']);
+    sortie = new Uint8Array(
+      await crypto.subtle.deriveBits(
+        { name: 'PBKDF2', hash: 'SHA-256', salt: salt as BufferSource, iterations },
+        key,
+        KEY_BITS,
+      ),
+    );
+    entree = sortie;
+  }
+  return sortie;
+}
+
 function toHex(bytes: Uint8Array): string {
   return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** Hash stockable « pbkdf2$iter$salt$hash » (sel aléatoire par compte). */
+/** Hash stockable « pbkdf2c$iter$rounds$salt$hash » (sel aléatoire par compte). */
 export async function hashPassword(password: string): Promise<string> {
   const salt = new Uint8Array(SALT_BYTES);
   crypto.getRandomValues(salt);
-  const hash = await pbkdf2(password, salt, PBKDF2_ITERATIONS);
-  return `pbkdf2$${PBKDF2_ITERATIONS}$${toHex(salt)}$${toHex(hash)}`;
+  const hash = await pbkdf2Chain(password, salt, PBKDF2_ITERATIONS, PBKDF2_ROUNDS);
+  return `pbkdf2c$${PBKDF2_ITERATIONS}$${PBKDF2_ROUNDS}$${toHex(salt)}$${toHex(hash)}`;
 }
 
-/** Vérifie contre la chaîne stockée (lit les itérations depuis celle-ci). */
+/**
+ * Vérifie contre la chaîne stockée (lit schéma + itérations + rondes depuis
+ * celle-ci). Supporte l'historique « pbkdf2$iter$salt$hash » (1 ronde) —
+ * la connexion rehashe ensuite vers le format chaîné courant.
+ */
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const parts = stored.split('$');
-  const [scheme, iterRaw, saltHex, expected] = parts;
-  if (!scheme || !iterRaw || !saltHex || !expected || scheme !== 'pbkdf2') return false;
-  const iterations = Number.parseInt(iterRaw, 10);
-  if (!Number.isFinite(iterations) || saltHex.length !== SALT_BYTES * 2 || expected.length !== 64) {
-    return false;
+  const [scheme, iterRaw] = parts;
+  if (scheme === 'pbkdf2c') {
+    const roundsRaw = parts[2];
+    const saltHex = parts[3];
+    const expected = parts[4];
+    if (!iterRaw || !roundsRaw || !saltHex || !expected) return false;
+    const iterations = Number.parseInt(iterRaw, 10);
+    const rounds = Number.parseInt(roundsRaw, 10);
+    if (
+      !Number.isFinite(iterations) || !Number.isFinite(rounds) || rounds < 1 || rounds > 64 ||
+      saltHex.length !== SALT_BYTES * 2 || expected.length !== 64
+    ) {
+      return false;
+    }
+    const salt = new Uint8Array((saltHex.match(/.{2}/g) ?? []).map((h) => Number.parseInt(h, 16)));
+    if (salt.length !== SALT_BYTES) return false;
+    const hash = await pbkdf2Chain(password, salt, iterations, rounds);
+    return diffConstant(hex_(hash), expected);
   }
-  const salt = new Uint8Array((saltHex.match(/.{2}/g) ?? []).map((h) => Number.parseInt(h, 16)));
-  if (salt.length !== SALT_BYTES) return false;
-  const hash = await pbkdf2(password, salt, iterations);
-  // Comparaison à temps constant (XOR accumulé) — pas de early-return sur le hex.
+  if (scheme === 'pbkdf2') {
+    const saltHex = parts[2];
+    const expected = parts[3];
+    if (!iterRaw || !saltHex || !expected) return false;
+    const iterations = Number.parseInt(iterRaw, 10);
+    if (!Number.isFinite(iterations) || saltHex.length !== SALT_BYTES * 2 || expected.length !== 64) {
+      return false;
+    }
+    const salt = new Uint8Array((saltHex.match(/.{2}/g) ?? []).map((h) => Number.parseInt(h, 16)));
+    if (salt.length !== SALT_BYTES) return false;
+    const hash = await pbkdf2(password, salt, iterations);
+    return diffConstant(hex_(hash), expected);
+  }
+  return false;
+}
+
+/** Comparaison à temps constant (XOR accumulé) — pas de early-return sur le hex. */
+function diffConstant(hex: string, expected: string): boolean {
   let diff = 0;
-  const hex = toHex(hash);
   for (let i = 0; i < 64; i++) diff |= hex.charCodeAt(i) ^ expected.charCodeAt(i);
   return diff === 0;
+}
+
+function hex_(bytes: Uint8Array): string {
+  return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ---------------------------------------------------------------------------
