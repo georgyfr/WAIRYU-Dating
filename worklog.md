@@ -2299,3 +2299,24 @@ Work Log:
 
 Stage Summary:
 - Les 5 problèmes MOYENNE résolus et prouvés. Rehash progressif : les vrais comptes migrent vers 600k au fil de leurs connexions. Prod en attente de feu vert. Note honnête : le rehash ne s'applique qu'aux COMPTES À MOT DE PASSE (pseudo+mdp) ; les comptes OAuth/email-OTP n'ont pas de hash PBKDF2 (rien à renforcer).
+
+---
+Task ID: 111
+Agent: orchestrateur (Z.ai Code)
+Task: Feu vert fondateur « feu vert » — déploiement PRODUCTION des 5 correctifs MOYENNE (Task 110 : BE-007/009/010/011/001) avec test décisif PBKDF2 en prod réel, bouclé et vérifié dans le même tour.
+
+Work Log:
+- Pré-vol : HEAD e74e6a5 poussé (origin/main), arborescence propre, token CF « active », prod avant-deploy saine (98ad82 → ancienne version sécurité).
+- Déploiement : `bash /home/z/executer.sh prod` → **Version ID ec034794-c5e3-4fce-bd80-a0fc6b60609e**, 6 assets nouveaux, bindings intacts (CHAT_ROOM DO, AI, DB wairyu-prod, CONFIG KV, ASSETS), cron 10 3 * * * maintenu, health {ok:true, env:production}.
+- Migration 0016_email_change : table email_changes VÉRIFIÉE présente en D1 prod.
+- Vérifs sans session : CORS hostile (evil-localhost.attacker.com) → 401 SANS access-control-allow-origin (BE-004 intact) ; alias /api/me ET /api/auth/me → 401 ×2 sans session ; /account/recovery-email sans session → 401.
+- TEST DÉCISIF PBKDF2 EN PROD RÉEL : découverte que la prod contient EXACTEMENT 1 compte réel au format historique 100k (le register public est fail-closed Turnstile en prod → création du compte test DIRECTEMENT en D1 au format historique pbkdf2$100000$… via hash PBKDF2-HMAC-SHA256 généré localement — déterministe RFC 2898, identique à WebCrypto). Prouvé : login historique → 200, hash D1 devient pbkdf2c$100000$6$… (re-hash TRANSPARENT), re-login chaîné → 200, mauvais mdp → 401. Le compte réel historique migrera pareil à sa prochaine connexion.
+- BE-010 prouvé en prod : 3 sessions → password/change → revokedOthers=2 (VÉRIDIQUE), session courante conservée 200, les 2 autres → 401 ×2.
+- BE-009 prouvé en prod : sans mot de passe → 400 « Indique ton mot de passe actuel » ; mot de passe FAUX → 401 ; mot de passe CORRECT → garde passée {ok:true,pending:true} (MIEUX que le 503 attendu : le provider email EST configuré en prod — la demande est acceptée réellement ; example.com RFC-réservé = aucun destinataire réel).
+- BE-001 prouvé en prod : alias /api/me + /api/auth/me → 200 ×2 authentifiés, 401 ×2 sans session.
+- RGPD : DELETE /account?confirm=true → {deleted:true} ; D1 users/auth_password/sessions/email_changes = 0/0/0/0 (ZÉRO pollution, y compris la ligne email_changes créée par le test BE-009).
+- LEÇONS (pour les futurs E2E prod) : bash UID est readonly → TUID ; 'pbkdf2c$100000$6$' doit être single-quoté (sinon $1 unbound) ; wrangler d1 --command = UNE instruction (multi → --file) ; rate_limits : colonne « key » (format scope:identifiant), PAS « identifier » — les scopes user (pw:chg:user, email:chg:user) sont indexés par UUID ; erreurs D1 TRANSITOIRES {D1_RESET_DO:true} → retry ; isPlaceholderEmail (@inbox.wairyu.local) rejeté 400 AVANT la garde mdp (un faux vert possible si l'email de test est un placeholder) ; les compteurs rate-limit S'INCRÉMENTENT même sur les 429.
+- Scripts laissés : /home/z/e2e/e2e-prod-securite.sh (idempotent), e2e-prod-reprise.sh, prod-pbkdf2-setup.mjs, prod-test-insert.sql, prod-test-purge.sql.
+
+Stage Summary:
+- Task 110 EN PRODUCTION (ec034794) ET VÉRIFIÉE EN PROD RÉEL : PBKDF2 600k chaîné avec migration transparente prouvée sur un hash historique réel, recovery-email sous preuve de mot de passe, sessions révoquées véridiques, vapid sans cache d'échec, alias me canonique. Staging (428a70c8) et prod alignés. Compte test purgé (0/0/0/0), compteurs purgés. Le 1 compte réel historique migrera à sa prochaine connexion (transparent). Note : le rate_limit pw:login:ip de NOTRE IP de test expire ≤1h (compteur anonyme).
