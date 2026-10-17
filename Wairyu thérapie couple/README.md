@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-13 « Ce que notre lien sait porter » contresigné — 13/13 RIO).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-13 contresigné — 13/13 RIO ; SM-Q4 « Nos deux rives » SPEC verrouillée par délégation).
 
 ---
 
@@ -30,7 +30,7 @@ Wairyu thérapie couple/
 │
 │  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés) ═══
 ├── validation-sm/
-│   ├── SM-Q2-SPEC.md · SM-Q3-SPEC.md (verrouillée 18/10)
+│   ├── SM-Q2-SPEC.md · SM-Q3-SPEC.md · SM-Q4-SPEC.md (verrouillées 18/10)
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
 │   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
 │   ├── validation-sm-q2/ (RIO-12 — contresigné)

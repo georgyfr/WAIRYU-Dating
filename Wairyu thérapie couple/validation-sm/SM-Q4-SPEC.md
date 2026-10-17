@@ -1,8 +1,9 @@
-# PROPOSITION SPEC — WTC-SM-Q4 « Nos deux rives » (RIO-14)
+# SPEC VERROUILLÉE — WTC-SM-Q4 « Nos deux rives » (RIO-14)
 
-> **Document de spécification narrative — proposition en attente de verrouillage fondateur.**
+> **Document de spécification VERROUILLÉ — verrouillage délégué au pont par le fondateur, 18/10/2026 (« pour A1-A5 tu as libre choix de ce que tu juges nécessaire »).**
 > D-CANAL : production locale après verrouillage. Zéro code tant que non verrouillé.
 > D-HIST : confrontation fondation effectuée (voir §7).
+> **Arbitrages (pont, par délégation) : A1 agrégats + bornes 2,50/3,50 · A2 option a (zéro item nouveau) · A3 percentiles seed 42 · A4 override 🔴 · A5 noms mot pour mot.**
 
 ---
 
@@ -21,14 +22,14 @@
 
 ## 2. Architecture : 9 configurations (3 × 3), zéro nouvel instrument
 
-**Option a proposée (à arbitrer A2)** : Q4 ne crée AUCUN item nouveau — il croise les sorties Q1 × Q2 (comme l'empreinte situationnelle L5, ligne 261 : « Empreinte situationnelle (croisement Q1×Q2) »). Les données sont celles de packages contresignés ; un croisement qui inventerait ses propres items re-mesurerait ce qui est déjà mesuré.
+**Option a (A2 : RETENUE)** : Q4 ne crée AUCUN item nouveau — il croise les sorties Q1 × Q2 (comme l'empreinte situationnelle L5, ligne 261 : « Empreinte situationnelle (croisement Q1×Q2) »). Les données sont celles de packages contresignés ; un croisement qui inventerait ses propres items re-mesurerait ce qui est déjà mesuré.
 
-**Les 2 agrégats d'entrée (à arbitrer A1)** :
+**Les 2 agrégats d'entrée (A1 : RETENUS)** :
 - **Niveau détresse** = moyenne des 3 faces D de Q1 (SM-D1/D2/D3)
 - **Niveau charge** = moyenne des 3 faces A de Q2 (SM-A1/A2/A3)
 - Bornes de niveau : **Faible < 2,50 ≤ Moyen < 3,50 ≤ Élevé** (cohérence dominance Q2/Q3)
 
-**Les 9 configurations (noms proposés, à verrouiller A5 — D-NOMENCLATURE, noms uniques)** :
+**Les 9 configurations (noms RETENUS mot pour mot — A5 · D-NOMENCLATURE, unicité garantie)** :
 
 | # | Nom proposé | Détresse | Charge | Lecture clinique |
 |---|-------------|----------|--------|------------------|
@@ -42,7 +43,7 @@
 | 8 | TEMPÊTE ET DIGUE | Élevé | Moyen | le duo tient, sous tension |
 | 9 | DÉBORDEMENT | Élevé | Élevé | les deux rives cèdent — vigilance maximale |
 
-**Percentiles (ligne 262, à arbitrer A3)** : correction du style de réponse — chaque score est converti en rang dans une **population de référence simulée (seed 42, reproductible)** avant le classement en niveau ; **boucle probable si écart de percentiles ≥ 30** (affiché comme avertissement, jamais comme verdict) ; avertissement si styles dissemblables.
+**Percentiles (ligne 262 — A3 : RETENUS)** : correction du style de réponse — chaque score est converti en rang dans une **population de référence simulée (seed 42, reproductible)** avant le classement en niveau ; **boucle probable si écart de percentiles ≥ 30** (affiché comme avertissement, jamais comme verdict) ; avertissement si styles dissemblables.
 
 ---
 
@@ -54,7 +55,7 @@
 
 ---
 
-## 4. D-CRISE hérité (à arbitrer A4 — pattern Q3-A3)
+## 4. D-CRISE hérité (VERROUILLÉ — A4 : override, pattern Q3-A3)
 
 Q4 ne crée AUCUNE voie de crise. Si l'un des deux profils porte un **flag crise hérité** (A2 ∨ SM-C1 ∨ H5, verrouillage Q2-C3), l'affichage Q4 est **routé en override** vers l'orientation « chemin le plus court » (palier 🔴) — la configuration est calculée et tracée, mais pas déployée comme verdict de couple sur une crise active. Cohérence directe avec l'arbitrage A3 déjà prononcé en Q3.
 
@@ -88,7 +89,7 @@ Q4 ne crée AUCUNE voie de crise. Si l'un des deux profils porte un **flag crise
 
 - **Patron croisement** : émo-Q4 (RIO-09) — 9 configurations, D-STD-2 par config, C3 anti-verdict éliminatoire, symétrie p1×p2. SM-Q4 diffère sur un point structurel : **pas de symétrie** (croisement asymétrique détresse×charge) → C2 devient D-CONFIRMATION (pureté + anti-inversion).
 - **Entrées héritées** : Q1-R3 (RIO-11, contresigné) et Q2 (RIO-12, contresigné) — Q4 ne lit QUE leurs sorties verrouillées.
-- **RIO-13** (Q3) : contresignature en attente côté fondateur au moment de la présente proposition — Q4 n'en dépend pas (entrées = Q1 × Q2 uniquement).
+- **RIO-13** (Q3) : contresigné (pont, 18/10/2026 — 13/13 RIO) — Q4 n'en dépend pas (entrées = Q1 × Q2 uniquement).
 
 ---
 
@@ -98,21 +99,24 @@ Q4 ne crée AUCUNE voie de crise. Si l'un des deux profils porte un **flag crise
 |-------|-----|------|
 | Q1 « Ma détresse et la leur » | RIO-11 | Mesure la détresse (faces D) + D-CRISE (SM-C1) — ✅ contresigné |
 | Q2 « Ce que je porte pour toi » | RIO-12 | Mesure l'aidant (faces A+B) + D-CRISE (A2) — ✅ contresigné |
-| Q3 « Ce que notre lien sait porter » | RIO-13 | Forces dérivées (banque F-S1 à F-S6) — 🔄 en audit |
+| Q3 « Ce que notre lien sait porter » | RIO-13 | Forces dérivées (banque F-S1 à F-S6) — ✅ contresigné |
 | **Q4 « Nos deux rives »** | **RIO-14** | **Croisement asymétrique : 9 configurations, qui porte quoi** |
 | Q5 « Mon premier pas vers l'autre rive » | RIO-15 | Pas + suivi 14j + anti-perfectionnisme + re-test 8 sem |
 
 ---
 
-## 9. Ce que j'attends du fondateur (verrouillage)
+## 9. Verrouillage (délégation fondateur → pont, 18/10/2026)
 
-**Arbitrages demandés (numérotés)** :
-- **A1 — Agrégats et bornes de niveau** : proposé moyenne des 3 faces D (détresse) et des 3 faces A (charge), bornes **2,50 / 3,50** — alternative : niveaux par percentiles de la population de référence.
-- **A2 — Option a (sans nouvel instrument)** : Q4 croise les sorties Q1×Q2 uniquement — alternative : mini-grille de confirmation (6-8 items) ajoutée à Q4.
-- **A3 — Percentiles** : population de référence simulée seed 42 (2 000 profils) pour les rangs ; boucle probable si écart ≥ 30 ; avertissement si styles dissemblables — alternative : écart de scores bruts (sans percentiles).
-- **A4 — Override crise héritée** : même pattern que Q3-A3 (override 🔴, config tracée mais non déployée) — alternative : bandeau « en crise » sur le verdict.
-- **A5 — Noms des 9 configurations** : liste §2 proposée (mot pour mot) — libre d'ajustement, noms à unicité garantie.
+**Délégation prononcée en chat** : « la marque contresignée, pour A1-A5 tu as libre choix de ce que tu juges nécessaire » — prononcée au moment de la contresignature RIO-13. Les 5 arbitrages sont tranchés par le pont, chacun ancré sur une règle permanente du hub ; aucun ne crée de règle nouvelle.
 
-**Verrouillage FIXÉ/LIBRE** :
-- **FIXÉ (si arbitrages acceptés)** : 9 configurations 3×3 · croisement asymétrique (anti-inversion) · D-STD-2 par config · percentiles + boucle ≥ 30 · override crise héritée · 4 pièges (§6) · C1-C7 libellés exacts · 0 pas produit · zéro item nouveau (option a).
-- **LIBRE** : corps des fonctions · noms internes des groupes · population norm exacte (taille ≥ 2 000) · découpage en 3 fichiers.
+- **A1 — Agrégats et bornes : RETENUS tel que proposé.** Niveau détresse = moyenne des 3 faces D de Q1 (SM-D1/D2/D3) ; niveau charge = moyenne des 3 faces A de Q2 (SM-A1/A2/A3) ; bornes **Faible < 2,50 ≤ Moyen < 3,50 ≤ Élevé**. Justification : les entrées sont des sorties de packages contresignés (traçabilité directe, D-EMPREINTE) ; le seuil 3,50 est le seuil de cohérence déjà prononcé en Q2 (faces) et Q3 (A1) ; la variante « niveaux par percentiles » créerait une double indirection — les percentiles sont déjà affectés au diagnostic de boucle (A3), une mesure garde un seul rôle.
+- **A2 — Option a : RETENUE (zéro item nouveau).** Q4 ne croise QUE les sorties Q1 × Q2. Justification : anti-fabrication (§5.5 du programme) — un croisement qui inventerait ses propres items re-mesurerait ce qui est déjà mesuré et contresigné ; une mini-grille de confirmation exigerait son propre cycle RIO complet (instrument, banque, validation) pour un gain d'information marginal, et romprait l'économie du programme (ligne 261 : l'empreinte situationnelle EST le croisement Q1×Q2).
+- **A3 — Percentiles : RETENUS tel que proposé.** Population de référence simulée seed 42 (2 000 profils) pour les rangs ; boucle probable si écart de percentiles ≥ 30 (avertissement, jamais verdict) ; avertissement si styles dissemblables. Justification : la ligne 262 du programme exige les percentiles — la variante « scores bruts » contredirait la source ; seed 42 garantit la reproductibilité (D-EMPREINTE) ; l'écart de rangs mesure la dissemblance des styles de réponse, pas un échec de mesure.
+- **A4 — Override crise héritée : RETENU tel que proposé (pattern Q3-A3).** Flag crise hérité (A2 ∨ SM-C1 ∨ H5) → affichage routé 🔴, configuration tracée mais non déployée comme verdict de couple. Justification : D-CRISE est transversale (« jamais de pas de couple en crise ; pas de lumière fabriquée sur un incendie ») ; la variante « bandeau sur le verdict » déploierait malgré tout un verdict sur crise active — rejetée ; cohérence directe avec l'arbitrage A3 prononcé par le fondateur en Q3.
+- **A5 — Noms des 9 configurations : RETENUS mot pour mot.** CALME DES DEUX RIVES · VEILLE · PORTE SEULE · COURANT FORT · DEUX COURANTS · RIVE QUI CÈDE · TEMPÊTE · TEMPÊTE ET DIGUE · DÉBORDEMENT. Justification : D-NOMENCLATURE (9 noms uniques, injection nom → cellule (détresse, charge) sans ambiguïté) ; la métaphore des rives est fidèle au programme (ligne 133) ; chaque nom porte sa lecture clinique sans jargon.
+
+**FIXÉ** : 9 configurations 3×3 · croisement asymétrique (anti-inversion des rives) · agrégats faces D / faces A avec bornes 2,50/3,50 (A1) · zéro item nouveau (A2) · percentiles seed 42 + boucle ≥ 30 + avertissement styles dissemblables (A3) · override crise héritée 🔴 (A4) · 9 noms mot pour mot (A5) · D-STD-2 par configuration · 4 pièges (§6) · C1-C7 libellés exacts · 0 pas produit.
+
+**LIBRE** : corps des fonctions · noms internes des groupes · taille exacte de la population norm (≥ 2 000) · découpage en 3 fichiers.
+
+**Prochaine étape** : production du package `validation-sm-q4/` (séquence D-CANAL-2 : production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature).
