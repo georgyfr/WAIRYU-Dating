@@ -8,6 +8,7 @@ import Portrait from './screens/Portrait';
 import Rencontres from './screens/Rencontres';
 import Masque from './screens/Masque';
 import MessagesEspace from './screens/MessagesEspace';
+import Moderation from './screens/Moderation';
 import Quete from './screens/Quete';
 import PrototypeResultats from './screens/PrototypeResultats';
 import Auth from './screens/Auth';
@@ -109,6 +110,7 @@ type Route =
   | { name: 'fb-complete' }
   | { name: 'oauth-complete'; via: 'google' | 'facebook' | null }
   | { name: 'prototype-resultats' } /** PROTOTYPE anti-Barnum (staging, validation fondateur) — hors navigation. */
+  | { name: 'admin' } /** Console de modération (Task 109) — hors navigation, jeton admin, indépendante de la session. */
   | { name: 'default' };
 
 /** Une quête engagée = non terminée avec au moins une réponse (bundle Mh). */
@@ -165,6 +167,7 @@ function readRoute(): Route {
   // navigation, accessible sans compte (validation fondateur). Retirable
   // sans impact : aucune route produit n'est touchée.
   if (hash.startsWith('#/prototype-resultats')) return { name: 'prototype-resultats' };
+  if (hash === '#/admin') return { name: 'admin' };
   if (hash === '#/quete' || hash.startsWith('#/quete/')) {
     const reste = hash.slice(8); // '' | '{id}' | '{id}/resultats'
     const [idBrut, suffixe] = reste.split('/');
@@ -547,6 +550,9 @@ export default function App() {
   }
   if (route.name === 'prototype-resultats') {
     return <PrototypeResultats />;
+  }
+  if (route.name === 'admin') {
+    return <Moderation />;
   }
   if (route.name === 'oauth-complete') {
     return (

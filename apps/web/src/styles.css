@@ -10814,3 +10814,267 @@ button.r-tl-chip:hover {
     font-size: .8rem;
     padding: 7px 12px
 }
+
+/* =====================================================================
+   MODÉRATION (Task 109) — console #/admin, outil interne du fondateur.
+   Palette de l'app : nuit + turquoise + corail, cartes claires.
+   ===================================================================== */
+
+.adm-racine {
+    min-height: 100dvh;
+    background: var(--c-cream);
+    padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px
+}
+
+.adm-porte {
+    margin: auto;
+    background: var(--c-white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 30px 24px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.adm-titre {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.adm-sous-titre {
+    font-size: .85rem;
+    color: var(--c-gray-blue)
+}
+
+.adm-attente {
+    font-size: .9rem;
+    color: var(--c-turquoise-deep)
+}
+
+.adm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.adm-champ {
+    border: 1.5px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font: inherit;
+    background: var(--c-white);
+    color: var(--c-night)
+}
+
+.adm-champ:focus {
+    outline: none;
+    border-color: var(--c-turquoise)
+}
+
+.adm-erreur {
+    background: #fa624914;
+    border: 1px solid #fa624940;
+    color: var(--c-coral-deep);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: .85rem
+}
+
+.adm-entete {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap
+}
+
+.adm-entete-actions {
+    display: flex;
+    gap: 8px
+}
+
+.adm-apercu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px
+}
+
+.adm-carte {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.adm-carte-valeur {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--c-night)
+}
+
+.adm-carte-libelle {
+    font-size: .75rem;
+    color: var(--c-gray-blue)
+}
+
+.adm-carte-alerte .adm-carte-valeur {
+    color: var(--c-coral-deep)
+}
+
+.adm-carte-alerte {
+    border: 1.5px solid #fa624940
+}
+
+.adm-vues {
+    display: flex;
+    gap: 8px
+}
+
+.adm-vue {
+    flex: 1;
+    border: 1.5px solid var(--c-line);
+    background: var(--c-white);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font: inherit;
+    font-weight: 700;
+    color: var(--c-gray-blue);
+    cursor: pointer;
+    min-height: 44px
+}
+
+.adm-vue-active {
+    background: var(--c-night);
+    border-color: var(--c-night);
+    color: var(--c-white)
+}
+
+.adm-filtres {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap
+}
+
+.adm-filtre {
+    border: 1.5px solid var(--c-line);
+    background: var(--c-white);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--c-gray-blue);
+    cursor: pointer;
+    min-height: 44px
+}
+
+.adm-filtre-active {
+    background: var(--c-turquoise);
+    border-color: var(--c-turquoise);
+    color: var(--c-white)
+}
+
+.adm-liste {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.adm-item {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.adm-item-tete {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+.adm-badge {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: .72rem;
+    font-weight: 800;
+    background: var(--c-turquoise-light);
+    color: var(--c-night)
+}
+
+.adm-badge-ouvert {
+    background: var(--c-coral);
+    color: var(--c-white)
+}
+
+.adm-statut {
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--c-gray-blue)
+}
+
+.adm-statut-ouvert {
+    color: var(--c-coral-deep)
+}
+
+.adm-statut-traite {
+    color: var(--c-turquoise-deep)
+}
+
+.adm-date {
+    margin-left: auto;
+    font-size: .72rem;
+    color: var(--c-gray-blue)
+}
+
+.adm-ligne {
+    font-size: .92rem;
+    color: var(--c-night)
+}
+
+.adm-detail {
+    font-size: .85rem;
+    font-style: italic;
+    color: var(--c-gray-blue);
+    background: var(--c-cream);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px
+}
+
+.adm-ctx {
+    font-size: .75rem;
+    color: var(--c-gray-blue)
+}
+
+.adm-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+.adm-vide {
+    text-align: center;
+    color: var(--c-gray-blue);
+    font-size: .9rem;
+    padding: 18px 0
+}
