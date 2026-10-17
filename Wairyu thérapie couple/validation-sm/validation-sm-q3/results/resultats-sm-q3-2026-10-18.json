@@ -1,0 +1,299 @@
+{
+  "C1": {
+    "croise": true,
+    "d_table_code_egaux_spec": true,
+    "faces_6": true,
+    "items_par_face_4": true,
+    "items_total_24": true,
+    "labels_moteur": [
+      "CRISE_HÉRITÉE",
+      "DEUX_LUMIÈRES",
+      "LUMIÈRE_UNIQUE",
+      "SILENCIEUSE"
+    ],
+    "labels_table": [
+      "CRISE_HÉRITÉE",
+      "DEUX_LUMIÈRES",
+      "LUMIÈRE_UNIQUE",
+      "SILENCIEUSE"
+    ],
+    "match_pct": 100.0
+  },
+  "C2": {
+    "det": true
+  },
+  "C3": {
+    "frontiere_3_50": true,
+    "max_2_par_profil": true,
+    "tie_break_ordre_banque": true,
+    "voies_1_par_force": true
+  },
+  "C4": {
+    "match": true,
+    "sha1": "0ae85f467501759467b8672ed7d9738c18a43d2c7d81478bef15dd25b8b44a4b",
+    "sha2": "0ae85f467501759467b8672ed7d9738c18a43d2c7d81478bef15dd25b8b44a4b"
+  },
+  "C5": {
+    "dimensions_ok": true,
+    "figures": 4
+  },
+  "C6": {
+    "fonctions": 11,
+    "pas_produit": 0
+  },
+  "C7": {
+    "crise_override": true,
+    "texte_mot_pour_mot": "Votre lien est encore discret sur ces questions — c'est un constat, pas un défaut : la suite du parcours servira aussi à ça.",
+    "zone_calme_silencieuse": true
+  },
+  "conformite_table": {
+    "correct": 520,
+    "total": 520
+  },
+  "n_classes": 9,
+  "n_total": 520,
+  "reconciliation": true,
+  "sha256_run": "0ae85f467501759467b8672ed7d9738c18a43d2c7d81478bef15dd25b8b44a4b",
+  "stats_groupes": {
+    "G1_zone_calme": {
+      "N": 70,
+      "correct": 70,
+      "dominante": "SILENCIEUSE",
+      "forces_attendues": [],
+      "labels_observes": {
+        "SILENCIEUSE": 70
+      }
+    },
+    "G2_p_haut": {
+      "N": 70,
+      "correct": 70,
+      "dominante": "DEUX_LUMIÈRES",
+      "forces_attendues": [
+        "F-S1",
+        "F-S3"
+      ],
+      "labels_observes": {
+        "DEUX_LUMIÈRES": 70
+      }
+    },
+    "G3_n_haut": {
+      "N": 70,
+      "correct": 70,
+      "dominante": "DEUX_LUMIÈRES",
+      "forces_attendues": [
+        "F-S2",
+        "F-S5"
+      ],
+      "labels_observes": {
+        "DEUX_LUMIÈRES": 70
+      }
+    },
+    "G4_tout_haut": {
+      "N": 70,
+      "correct": 70,
+      "dominante": "DEUX_LUMIÈRES",
+      "forces_attendues": [
+        "F-S1",
+        "F-S2"
+      ],
+      "labels_observes": {
+        "DEUX_LUMIÈRES": 70
+      }
+    },
+    "G5_p1_unique": {
+      "N": 70,
+      "correct": 70,
+      "dominante": "LUMIÈRE_UNIQUE",
+      "forces_attendues": [
+        "F-S1"
+      ],
+      "labels_observes": {
+        "LUMIÈRE_UNIQUE": 70
+      }
+    },
+    "G6_crise_heritee": {
+      "N": 50,
+      "correct": 50,
+      "dominante": "CRISE_HÉRITÉE",
+      "forces_attendues": [],
+      "labels_observes": {
+        "CRISE_HÉRITÉE": 50
+      }
+    },
+    "G7_deux_pratiques": {
+      "N": 50,
+      "correct": 50,
+      "dominante": "DEUX_LUMIÈRES",
+      "forces_attendues": [
+        "F-S1",
+        "F-S3"
+      ],
+      "labels_observes": {
+        "DEUX_LUMIÈRES": 50
+      }
+    },
+    "G8_frontiere": {
+      "N": 40,
+      "correct": 40,
+      "dominante": "LUMIÈRE_UNIQUE",
+      "forces_attendues": [
+        "F-S1"
+      ],
+      "labels_observes": {
+        "LUMIÈRE_UNIQUE": 40
+      }
+    },
+    "G9_n2_unique": {
+      "N": 30,
+      "correct": 30,
+      "dominante": "LUMIÈRE_UNIQUE",
+      "forces_attendues": [
+        "F-S5"
+      ],
+      "labels_observes": {
+        "LUMIÈRE_UNIQUE": 30
+      }
+    }
+  },
+  "tableau_centres": [
+    {
+      "N": 70,
+      "SM-N1": 2.0,
+      "SM-N2": 2.0,
+      "SM-N3": 2.0,
+      "SM-P1": 2.0,
+      "SM-P2": 2.0,
+      "SM-P3": 2.0,
+      "classe": "G1_zone_calme",
+      "crise_heritee": false,
+      "forces_attendues": [],
+      "label_attendu": "SILENCIEUSE"
+    },
+    {
+      "N": 70,
+      "SM-N1": 2.0,
+      "SM-N2": 2.0,
+      "SM-N3": 2.0,
+      "SM-P1": 4.6,
+      "SM-P2": 4.6,
+      "SM-P3": 4.6,
+      "classe": "G2_p_haut",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S1",
+        "F-S3"
+      ],
+      "label_attendu": "DEUX_LUMIÈRES"
+    },
+    {
+      "N": 70,
+      "SM-N1": 4.6,
+      "SM-N2": 4.6,
+      "SM-N3": 4.6,
+      "SM-P1": 2.0,
+      "SM-P2": 2.0,
+      "SM-P3": 2.0,
+      "classe": "G3_n_haut",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S2",
+        "F-S5"
+      ],
+      "label_attendu": "DEUX_LUMIÈRES"
+    },
+    {
+      "N": 70,
+      "SM-N1": 4.6,
+      "SM-N2": 4.6,
+      "SM-N3": 4.6,
+      "SM-P1": 4.6,
+      "SM-P2": 4.6,
+      "SM-P3": 4.6,
+      "classe": "G4_tout_haut",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S1",
+        "F-S2"
+      ],
+      "label_attendu": "DEUX_LUMIÈRES"
+    },
+    {
+      "N": 70,
+      "SM-N1": 2.0,
+      "SM-N2": 2.0,
+      "SM-N3": 2.0,
+      "SM-P1": 4.6,
+      "SM-P2": 2.0,
+      "SM-P3": 2.0,
+      "classe": "G5_p1_unique",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S1"
+      ],
+      "label_attendu": "LUMIÈRE_UNIQUE"
+    },
+    {
+      "N": 50,
+      "SM-N1": 4.6,
+      "SM-N2": 4.6,
+      "SM-N3": 4.6,
+      "SM-P1": 4.6,
+      "SM-P2": 4.6,
+      "SM-P3": 4.6,
+      "classe": "G6_crise_heritee",
+      "crise_heritee": true,
+      "forces_attendues": [],
+      "label_attendu": "CRISE_HÉRITÉE"
+    },
+    {
+      "N": 50,
+      "SM-N1": 2.0,
+      "SM-N2": 2.0,
+      "SM-N3": 2.0,
+      "SM-P1": 4.6,
+      "SM-P2": 4.6,
+      "SM-P3": 2.0,
+      "classe": "G7_deux_pratiques",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S1",
+        "F-S3"
+      ],
+      "label_attendu": "DEUX_LUMIÈRES"
+    },
+    {
+      "N": 40,
+      "SM-N1": 2.0,
+      "SM-N2": 2.0,
+      "SM-N3": 2.0,
+      "SM-P1": 4.6,
+      "SM-P2": 2.4,
+      "SM-P3": 2.0,
+      "classe": "G8_frontiere",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S1"
+      ],
+      "label_attendu": "LUMIÈRE_UNIQUE"
+    },
+    {
+      "N": 30,
+      "SM-N1": 2.0,
+      "SM-N2": 4.6,
+      "SM-N3": 2.0,
+      "SM-P1": 2.0,
+      "SM-P2": 2.0,
+      "SM-P3": 2.0,
+      "classe": "G9_n2_unique",
+      "crise_heritee": false,
+      "forces_attendues": [
+        "F-S5"
+      ],
+      "label_attendu": "LUMIÈRE_UNIQUE"
+    }
+  ],
+  "voies_heritees_g6": {
+    "H5": 20,
+    "SM-C1": 30
+  }
+}
