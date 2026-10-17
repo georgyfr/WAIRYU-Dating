@@ -2390,3 +2390,19 @@ Work Log:
 Stage Summary:
 - Task 112 EN PRODUCTION avec preuves réelles : CDN Google Fonts supprimé (doctrine auto-hébergé respectée), credentials explicites partout (14), touch targets 44px, PushToast i18n réactif, TWA manifest aligné 36.
 - Jetons GitHub + Cloudflare frais, vérifiés et mémorisés une fois pour toutes dans le secrets local. Prochaines étapes : session SPEC E3 (validation des 10 points), deblocage modération/recours, STATUS.md à rafraîchir.
+
+---
+Task ID: 114
+Agent: Z.ai Code (session principale)
+Task: (1) Présenter les 10 points [À VALIDER] de la SPEC E3 au fondateur pour validation. (2) Rédiger la spec du chemin d'appel/modération. Session SPEC uniquement, zéro code.
+
+Work Log:
+- RESET SANDBOX subi en début de tour : /home/z/WAIRYU-Dating + SECRETS + keys-wairyu-twa perdus. Restauration complète : re-clone GitHub (c655632), SECRETS-WAIRYU-LOCAL.txt recréé (PAT + CF token + account id, chmod 600), tokens re-vérifiés (CF active, PAT lecture OK).
+- PERTE RÉELLE : keystore TWA /home/z/keys-wairyu-twa/android.keystore NON VERSIONNÉ → perdu. Conséquence : prochain rebuild APK = nouveau keystore = nouvelle signature (désinstall/réinstall pour ~4 utilisateurs actifs, impact minimal). Le fondateur doit fournir une copie s'il en a une, sinon régénérer.
+- SPEC E3 relue intégralement (9 décisions D-E3-1..9 gravées, 10 points ouverts) → présentée au fondateur en format oui/non avec recommandation par point.
+- État modération vérifié : admin.ts = 1 seule action (POST /moderation/signalements/:id → statut traite/rejete) ; AUCUNE mesure de protection, AUCUN recours. Tables 0015 (signalements 6 motifs fermés, statut ouvert/traite/rejete), 0013 audit_admin.
+- Rédigé docs/SPEC-MODERATION-APPEL.v1.md : 7 décisions gravées (M-1..7 : l'utilisateur d'abord, traçabilité totale, modérateur unique, zéro automatique, toute sanction révocable, la sanction se voit / le signalant jamais, RGPD inchangé), 6 propositions (2 mesures N1 pause Rencontre / N2 pause complète, table moderation_sanctions 0018, application via requireAuth, appel in-app + section console, circuit complet, croisement E3-P9), 6 points [À VALIDER] numérotés.
+- Commit + push. Aucune route ni table touchée : prod inchangée (42b8d538).
+
+Stage Summary:
+- Deux livrables de SPEC prêts : (1) E3 — les 10 points présentés avec reco (attendre oui/non du fondateur) ; (2) SPEC-MODERATION-APPEL.v1.md complète. Alerte keystore TWA remontée. Doctrine anti-reset : le secrets est désormais reconstituable depuis le chat (tokens fournis par le fondateur), le code depuis GitHub.
