@@ -1,7 +1,8 @@
-# SPEC PROPOSÉE — WTC-EXT-Q2 « Notre conversation de l'horizon » (RIO-17)
+# SPEC VERROUILLÉE — WTC-EXT-Q2 « Notre conversation de l'horizon » (RIO-17)
 
-> **Document de spécification PROPOSÉ — NON verrouillée.** Arbitrages A1-A6 OUVERTS : options + recommandation du pont SANS tranchage ; le tranchage fondateur (direct ou délégation explicite) est requis avant verrouillage et avant toute production.
-> D-CANAL : production locale après verrouillage. Zéro code tant que non verrouillé.
+> **Document de spécification VERROUILLÉ — tranchage délégué au pont par le fondateur, 18/10/2026 (« trancher A1-A6. ordonner l'exécution de P1-P6. Ensuite : verrouillage Q2 → production → RIO-17 »).**
+> D-CANAL : production locale après verrouillage (levé par cette délégation — l'ordre couvre explicitement la production et RIO-17).
+> **Arbitrages (pont, par délégation) : A1 titre « Notre conversation de l'horizon » · A2 zéro item nouveau · A3 axe H, bornes propres 2,50/3,50 · A4 L6 verbatim structurelle + L5 empreinte (3 inférences Générationnelles verrouillées) · A5 les 9 noms §2 mot pour mot · A6 0 verdict croisé sur l'axe C.**
 > D-HIST : confrontation fondation effectuée (voir §7).
 > **Rappel de structure verrouillé par Q1 (A2)** : la dimension Générationnelle suit la séquence carte (Q1, RIO-16 contresigné) → croisement (Q2, le présent document) → pas (Q3, RIO-18).
 
@@ -19,7 +20,7 @@
 
 ---
 
-## 2. Architecture proposée (arbitrage A2 — option a recommandée)
+## 2. Architecture (A2 RETENU — zéro item nouveau)
 
 **Zéro item nouveau** : Q2 croise les sorties contresignées de RIO-16 des deux rives (ancrage L5, ligne 261 : « Empreinte situationnelle (croisement Q1×Q2) » ; leçon SM-Q4-A2). Entrées = pour chaque rive : moyennes d'axes H/L/C (6 items chacune, L2), niveaux L3, faces, statut RQS.
 
@@ -43,7 +44,7 @@ Noms décrivant des **vécus déclarés comparés** — jamais une position temp
 
 **Couches L5-L6 transposées (arbitrage A4 — reportées à Q2 par A4-Q1)** :
 - **L6 verbatim structurel** (ligne 262) : correction du style par **percentiles** (population de référence simulée seed 42, ≥ 2 000 profils) avant classement ; **boucle probable si écart de percentiles ≥ 30** (avertissement, jamais verdict) ; **avertissement si styles dissemblables**. Fil rouge : le groupe RIVES_DISSEMBLABLES de Q1 (verdict reporté) reçoit ici sa lecture corrigée.
-- **L5 empreinte du croisement** (ligne 261) : les 3 inférences nommées (« alarme intérieure, mains libres, le près coûte ») sont attachement-spécifiques — non transposées verbatim (rôle propre). Inférences Générationnelles PROPOSÉES (descriptif causal, sans injonction) : « **la taxe se paie à deux** » (une taxe de justification forte déclarée par une rive renchérit la conversation pour les deux) · « **deux horloges, un seul sujet** » (le sujet générationnel existe dès qu'une rive le porte ; la conversation à deux demande les deux permissions — L2) · « **le silence partagé est aussi une réponse** » (une conversation évitée des deux côtés est la configuration actuelle, pas un vide).
+- **L5 empreinte du croisement** (ligne 261) : les 3 inférences nommées (« alarme intérieure, mains libres, le près coûte ») sont attachement-spécifiques — non transposées verbatim (rôle propre). Inférences Générationnelles VERROUILLÉES (descriptif causal, sans injonction) : « **la taxe se paie à deux** » (une taxe de justification forte déclarée par une rive renchérit la conversation pour les deux) · « **deux horloges, un seul sujet** » (le sujet générationnel existe dès qu'une rive le porte ; la conversation à deux demande les deux permissions — L2) · « **le silence partagé est aussi une réponse** » (une conversation évitée des deux côtés est la configuration actuelle, pas un vide).
 - **Axes L et C hors matrice** : écarts inter-rives |L₁−L₂| et |C₁−C₂| lus en **asymétries nommées affichées en avertissement** (jamais verdict, jamais blâme) ; l'axe C ne reçoit PAS de verdict croisé en Q2 (arbitrage A6 — une mesure un rôle : C reste l'objet de la carte Q1 et du module ligne 112).
 
 ---
@@ -69,7 +70,7 @@ Palier = **max-niveau croisé** — max(niveau H rive 1, niveau H rive 2), une r
 
 ---
 
-## 5. Les 7 critères Q2-EXT (libellés EXACTS proposés)
+## 5. Les 7 critères Q2-EXT (libellés EXACTS verrouillés)
 
 | # | Critère | Exigence | Type |
 |---|---------|----------|------|
@@ -85,7 +86,7 @@ Palier = **max-niveau croisé** — max(niveau H rive 1, niveau H rive 2), une r
 
 ---
 
-## 6. Simulation (univers proposé — calibrage fin LIBRE)
+## 6. Simulation (univers verrouillé — calibrage fin LIBRE)
 
 - **~650 couples, 14 groupes** (seed 42 ×2) : 9 configurations × 50 · **SIGNAL_FILET** (crise héritée d'une rive — override 🔴, configuration tracée non déployée — 40) · **ÉCART_PERCENTILES** (boucle probable ≥ 30 — avertissement sans changement de verdict — 40) · **STYLES_DISSEMBLABLES** (correction percentiles + avertissement ; fil rouge RIVES_DISSEMBLABLES de Q1 — 40) · **FRONTIÈRES_BORNES** (scores pile sur 2,50/3,50 — tranchage déterministe vérifié — 40) · **ANTI_C6** (zone sereine sans urgence, affichée comme telle — transposition HORIZON_FINI_SEREIN de Q1 — 40).
 - Géométrie : centres H ≥ 0,5 pt des bornes 2,50/3,50 et ≥ 3σ_eff des deux côtés (D-GÉOMÉTRIE) ; bruit items σ 0,60 (D-PARAM) ; population de référence percentiles ≥ 2 000 profils seed 42 ; classification_vraie ancrée sur les paramètres vrais.
@@ -108,24 +109,37 @@ Palier = **max-niveau croisé** — max(niveau H rive 1, niveau H rive 2), une r
 | Quête | RIO | Rôle |
 |-------|-----|------|
 | Q1 « L'écart de nos horloges » | RIO-16 | La carte (mesure) — 3 axes H/L/C — ✅ contresigné |
-| **Q2 « Notre conversation de l'horizon »** | **RIO-17** | **Le croisement à deux (structure A2-a) — SPEC PROPOSÉE (ce document)** |
+| **Q2 « Notre conversation de l'horizon »** | **RIO-17** | **Le croisement à deux (structure A2-a) — SPEC VERROUILLÉE (ce document)** |
 | Q3 — titre à la SPEC Q3 | RIO-18 | Le pas + suivi 14 j (structure A2-a ; standard tracking verbatim : « 9/14 = célébré, jamais de sanction », lignes 297-298) — SPEC à venir |
 
 Extensions suivantes (après clôture de celle-ci) : Morale/éthique — « L'Épreuve » (ligne 114) · Politique/idéologique — « Les Deux Drapeaux » (ligne 115) · 4e extension à identifier par le fondateur (A1-Q1, divergence ligne 243 — toujours ouverte).
 
 ---
 
-## 9. Arbitrages OUVERTS (options + recommandation du pont SANS tranchage)
+## 9. Verrouillage (ordre fondateur → pont, 18/10/2026)
 
-- **A1 — Titre RIO-17 (D-NOMENCLATURE)** : (a) « Notre conversation de l'horizon » — **recommandée** : reprend le construit nommé ligne 112 en le possessivisant (écho de la série « L'écart de NOS horloges ») ; unicité garantie vs l'axe C de RIO-16 (« La conversation de l'horizon » — label différent) et vs le module professionnel « Les Deux Horloges » (ligne 107) · (b) « Quand nos horloges se parlent » — plus narratif, moins ancré · (c) « Le croisement de nos horloges » — descriptif de mécanique, redondant avec le rôle.
-- **A2 — Architecture** : (a) **zéro item nouveau** — croisement des sorties RIO-16 contresignées — **recommandée** : fidèle à L5 (ligne 261), à SM-Q4-A2 et à l'anti-fabrication (§5.5) ; une mini-grille de confirmation exigerait son propre cycle RIO complet pour un gain marginal · (b) mini-grille de confirmation à deux (coût : cycle RIO-17 instruments + validation propre).
-- **A3 — Grandeur croisée et bornes** : (a) **axe H en 3 niveaux à bornes propres 2,50/3,50** (L et C hors matrice, en asymétries averties) — **recommandée** : fidèle au patron « 9 configurations » (ligne 297-298) ; le construit-titre de la ligne 112 porte la matrice ; « une mesure un rôle » (les niveaux L3 de Q1 restent l'affichage de rive seule) · (b) matrice 16 cellules sur les 4 niveaux L3 (fidèle à L3, rompt le patron 9 configurations, cas de sortie explosifs) · (c) agrégat générationnel moyen H+L+C (perd le mapping 1:1 des trois construits nommés — A3-Q1).
-- **A4 — Transposition L5-L6** : (a) **L6 verbatim structurel (percentiles seed 42, boucle ≥ 30, styles dissemblables) + L5 empreinte avec 3 inférences Générationnelles proposées** — **recommandée** : A4-Q1 a REPORTÉ L5-L6 à Q2 — report ≠ abandon ; la ligne 261 définit l'empreinte comme croisement Q1×Q2, la reporter plus loin la viderait · (b) L6 seule en Q2 (l'empreinte attendrait Q3 — contredit la ligne 261).
-- **A5 — Noms des 9 configurations** : (a) table proposée au §2 mot pour mot — **tranchage fondateur attendu** (D-NOMENCLATURE : 9 labels uniques, collision vérifiée contre les registres existants — aucune collision avec les 9 noms SM-Q4, métaphore horloge/cadran distincte de la métaphore eau/rives) · (b) noms à composer par le fondateur.
-- **A6 — Statut de l'axe C (la conversation) en Q2** : (a) **0 verdict croisé sur C** — la configuration et les asymétries s'affichent, la conversation reste l'objet du module ligne 112 — **recommandée** : une mesure un rôle ; un « verdict d'ouverture à deux » réinventerait le module et risquerait l'injonction (C6) · (b) verdict croisé sur l'ouverture C (risque anti-fabrication et empiètement module).
+**Ordre fondateur prononcé en chat** : « trancher A1-A6. ordonner l'exécution de
+P1-P6. Ensuite : verrouillage Q2 → production → RIO-17 » — prononcé après la
+proposition e10f1f1. Le tranchage ET la production sont couverts ; P1-P6 ont été
+exécutées au commit précédent (fe13ffd). Les 6 arbitrages sont tranchés par le
+pont, chacun ancré sur une ligne du programme, un verrouillage antérieur ou une
+règle permanente du hub ; aucun ne crée de règle nouvelle.
+
+- **A1 — Titre RIO-17 : RETENU (a) « Notre conversation de l'horizon ».** Écho possessif de la série (« L'écart de NOS horloges ») ; unicité vérifiée (D-NOMENCLATURE) : distinct de l'axe C de RIO-16 (« La conversation de l'horizon » — label d'axe) et du module professionnel « Les Deux Horloges » (ligne 107) ; l'option (b) est moins ancrée, l'option (c) décrit la mécanique au lieu du construit.
+- **A2 — Architecture : RETENU (a) zéro item nouveau.** Le croisement consomme les sorties contresignées de RIO-16 des deux rives — fidèle à L5 (ligne 261 : « Empreinte situationnelle (croisement Q1×Q2) »), au patron SM-Q4-A2 et à l'anti-fabrication (§5.5) ; une mini-grille de confirmation (option b) exigerait son propre cycle RIO complet pour un gain marginal — disproportion.
+- **A3 — Grandeur croisée et bornes : RETENU (a).** Axe H (construit-titre ligne 112) en 3 niveaux **Faible < 2,50 ≤ Modéré < 3,50 ≤ Forte** — bornes de croisement propres ; L et C hors matrice en asymétries averties sans verdict ; les 4 niveaux L3 de Q1 restent l'affichage de la carte individuelle (une mesure un rôle). Fidèle au patron canonique (ligne 297-298 : « Q4 (croisement à 9 configurations, percentiles) »). La matrice 16 cellules (option b) rompt le patron et explose les cas de sortie ; l'agrégat H+L+C (option c) perd le mapping 1:1 des construits nommés (A3-Q1).
+- **A4 — Transposition L5-L6 : RETENU (a).** L6 verbatim structurelle (ligne 262 : correction du style par PERCENTILES, population de référence ≥ 2 000 profils seed 42 · boucle probable si écart de percentiles ≥ 30 · avertissement si styles dissemblables) + L5 empreinte du croisement avec les 3 inférences Générationnelles — **libellés VERROUILLÉS mot pour mot** : « la taxe se paie à deux » · « deux horloges, un seul sujet » · « le silence partagé est aussi une réponse ». A4-Q1 a REPORTÉ L5-L6 à Q2 — report ≠ abandon ; l'option (b) (L6 seule) contredit la ligne 261.
+- **A5 — Noms des 9 configurations : RETENU (a) table §2 mot pour mot.** LA MÊME HEURE · LE CADRAN QUI S'ÉVEILLE · L'HORLOGE SEULE · L'ÉCHO QUI ATTEND · DEUX CADRANS · L'HORLOGE QUI DEVANCE · L'HORLOGE SEULE, DE L'AUTRE CÔTÉ · L'AUTRE QUI DEVANCE · LES DEUX HORLOGES VIVES — 9 labels uniques (D-NOMENCLATURE), collision vérifiée contre les registres publiés (aucune collision avec les 9 noms SM-Q4 ; métaphore horloge/cadran distincte de la métaphore eau/rives) ; la vérification d'unicité est reconduite mécaniquement au C1 du package.
+- **A6 — Statut de l'axe C : RETENU (a) 0 verdict croisé sur C.** La configuration et les asymétries s'affichent ; la conversation de l'horizon reste l'objet du module (ligne 112) — une mesure un rôle ; un « verdict d'ouverture à deux » (option b) réinventerait le module et créerait un risque d'injonction (C6).
+
+**Note de verrouillage (lecture mécanique de la table §3)** : la ligne « les deux
+rives ≤ Modéré → 🟢 » est lue sous la règle max-niveau déclarée en tête de §3
+(« max(niveau H rive 1, niveau H rive 2), une règle, zéro exception » — leçon
+Q5-A3) : **🟢 ⟺ les deux rives FAIBLES** · **🟠 ⟺ au moins une MODÉRÉE (aucune
+FORTE)** · **🔴 ⟺ au moins une FORTE**. Une règle, zéro exception.
 
 **FIXÉ (par le canon + le verrouillage Q1 — non négociables)** : Q2 = le croisement à deux (A2-Q1, lignes 223-224) · RIO-17 · patron « croisement à 9 configurations, percentiles » (ligne 297-298) · L5-L6 transposées en Q2 (reportées par A4-Q1) · entrées = sorties RIO-16 contresignées des deux rives · D-CRISE override avant croisement (pattern SM-Q4-A4) · paliers §5.4 verbatim · D-STD-2 bornes DISTINCTES par configuration (ad01f21) · SHA ×2 (D-EMPREINTE) · bandeau D-SIM · rapport autoporteur Verdict fermé (leçon E-SM-12) · C6 temporelle transposée à deux (A5-Q1) · 0 blâme / 0 tiers évalué (ligne 363) · gabarit §5.1 (pas les 7 blocs L8 — la dimension n'a pas encore de sorties Q3) · 0 invention de contenu thérapeutique.
 
-**LIBRE (au tranchage puis à la production)** : titre RIO-17 (A1) · architecture fine (A2-A4, A6) · noms des 9 configurations (A5) · calibrage des bornes finales si A3-a · seuils D-STD-2 précis par configuration et groupe (calibrés binomial) · profils exacts des 14 groupes · géométrie des centres exacte · taille exacte de la population percentiles (≥ 2 000) · découpage en 3 fichiers (core · simulateur · validation) · figures 1920×1080.
+**LIBRE (à la production)** : titre RIO-17 (A1) · architecture fine (A2-A4, A6) · noms des 9 configurations (A5) · calibrage des bornes finales si A3-a · seuils D-STD-2 précis par configuration et groupe (calibrés binomial) · profils exacts des 14 groupes · géométrie des centres exacte · taille exacte de la population percentiles (≥ 2 000) · découpage en 3 fichiers (core · simulateur · validation) · figures 1920×1080.
 
-**Prochaine étape** : tranchage A1-A6 (fondateur direct ou délégation explicite) → verrouillage → production du package `validation-ext-q2/` (séquence D-CANAL-2 complète : production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature RIO-17).
+**Prochaine étape** : production du package `validation-ext-q2/` — **ordonnée par le fondateur** (« Ensuite : verrouillage Q2 → production → RIO-17 ») : séquence D-CANAL-2 complète (production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature RIO-17).

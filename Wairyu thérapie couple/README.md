@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » contresigné — 16/16 RIO ; WTC-LEGAL-01 : recommandations P1-P6 exécutées sur ordre fondateur ; EXT Générationnelle Q1/3 : SPEC Q2 « Notre conversation de l'horizon » (RIO-17) proposée — arbitrages A1-A6 ouverts).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » contresigné — 16/16 RIO ; WTC-LEGAL-01 : recommandations P1-P6 exécutées sur ordre fondateur ; EXT Générationnelle Q1/3 : SPEC Q2 « Notre conversation de l'horizon » (RIO-17) VERROUILLÉE — arbitrages A1-A6 tranchés par délégation — production ordonnée).
 
 ---
 
@@ -41,7 +41,7 @@ Wairyu thérapie couple/
 │  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 · RIO-16 contresigné) ═══
 ├── validation-ext/
 │   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
-│   ├── EXT-Q2-SPEC.md (proposée 18/10 — arbitrages A1-A6 ouverts)
+│   ├── EXT-Q2-SPEC.md (verrouillée 18/10 — A1-A6 tranchés par délégation)
 │   └── validation-ext-q1/ (RIO-16 — contresigné)
 │
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
