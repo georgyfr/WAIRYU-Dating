@@ -17,13 +17,13 @@
 | **C1** D-VÉRITÉ : tracking démontré + D-TABLE + croisé | 540/540 + croisé 100 % + table=code | démontrées=540/540 · croisé=True · D-TABLE=True | ✅ |
 | **C2** D-CONFIRMATION : pureté + anti-inversion temporelle | 100 % déterministe + 0 inversion | pure=True · anti-inversion=True · n_rci=150 | ✅ |
 | **C3** D-STD-2 par groupe + frontières | 12/12 à leur seuil + bornes déterministes | 12/12 à seuil · frontière OK · exactes 40/40 | ✅ |
-| **C4** SHA ×2 (D-EMPREINTE) | identiques | sha1=f90b45b903df4c60… sha2=f90b45b903df4c60… match=True | ✅ |
+| **C4** SHA ×2 (D-EMPREINTE) | identiques | sha1=6684a435d072c095… sha2=6684a435d072c095… match=True | ✅ |
 | **C5** Affichage (templates ×9 + banque + champ libre + D-SIM) | 4/4 | templates=True · banque=True · champ libre=True · figures 4/4 · dims=True | ✅ |
 | **C6** 0 sanction / 0 rémission (A5) | 0 libellé interdit | 0_interdit=True · nomenclature=True | ✅ |
 | **C7** Anti-fabrication + D-CRISE | 0 pas sur crise + zone calme honnête | override 50/50 · zone calme 45/50 (règle banque) · court-circuit=True | ✅ |
 
-SHA-256 exécution 1 : `f90b45b903df4c60e580a9b74a4b3b296d16d3a0c0f08f53e27b3b21ed7678e7`
-SHA-256 exécution 2 : `f90b45b903df4c60e580a9b74a4b3b296d16d3a0c0f08f53e27b3b21ed7678e7`
+SHA-256 exécution 1 : `6684a435d072c095d2ecddc41c4acbbb8832a5f869fea6e13330136f8d55d18a`
+SHA-256 exécution 2 : `6684a435d072c095d2ecddc41c4acbbb8832a5f869fea6e13330136f8d55d18a`
 
 > Littéraux d'affichage cités (autoporteur contresignature) — zone calme (anti-fabrication §5.5) : « Zone calme — rien à fabriquer ici. Un exercice maison, pas une réparation. » · override crise (D-CRISE) : « Le chemin le plus court, pas un échec — l'orientation professionnelle est le pas qui compte ici. » · EN CHEMIN (jamais de sanction, ligne 298) : « 8 jours sur 14 — le pas est en chemin. Rien n'est perdu, rien n'est noté : le suivi continue, sans sanction. » · pile seuil (G5) : « 9 jours sur 14 — c'est célébré pile sur le seuil. Pas besoin de viser plus : le programme compte 9/14 comme un pas tenu. » · BRUIT (anti-surinterprétation L4) : « Dans le bruit de la mesure — ça ne dit ni réussite ni échec, ça dit que la mesure ne tranche pas encore. »
 ---

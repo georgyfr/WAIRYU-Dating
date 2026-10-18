@@ -88,14 +88,14 @@
         "n": 40,
         "ok": true,
         "pct": 90.0,
-        "seuil": 76
+        "seuil": 77
       },
       "G6_TRES_FAIBLES": {
         "conformes": 47,
         "n": 50,
         "ok": true,
         "pct": 94.0,
-        "seuil": 75
+        "seuil": 72
       },
       "G7_ZONE_CALME": {
         "conformes": 45,
@@ -123,8 +123,8 @@
   "C4": {
     "match": true,
     "ok": true,
-    "sha1": "f90b45b903df4c60e580a9b74a4b3b296d16d3a0c0f08f53e27b3b21ed7678e7",
-    "sha2": "f90b45b903df4c60e580a9b74a4b3b296d16d3a0c0f08f53e27b3b21ed7678e7"
+    "sha1": "6684a435d072c095d2ecddc41c4acbbb8832a5f869fea6e13330136f8d55d18a",
+    "sha2": "6684a435d072c095d2ecddc41c4acbbb8832a5f869fea6e13330136f8d55d18a"
   },
   "C5": {
     "banque_servie": true,
@@ -735,7 +735,7 @@
     "traversees": 112
   },
   "reconciliation": true,
-  "sha256_run": "f90b45b903df4c60e580a9b74a4b3b296d16d3a0c0f08f53e27b3b21ed7678e7",
+  "sha256_run": "6684a435d072c095d2ecddc41c4acbbb8832a5f869fea6e13330136f8d55d18a",
   "stats_groupes": {
     "G10_RCI_SUGGESTION": {
       "conformes": 13,
