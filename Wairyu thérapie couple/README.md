@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » publié — en audit ; RIO-15 contresigné — 15/15 RIO ; SPEC EXT-Q1 verrouillée par délégation).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » contresigné — 16/16 RIO ; dimension Extensions — Générationnelle Q1/3).
 
 ---
 
@@ -38,10 +38,10 @@ Wairyu thérapie couple/
 │   ├── validation-sm-q4/ (RIO-14 — contresigné)
 │   └── validation-sm-q5/ (RIO-15 — contresigné)
 │
-│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 · RIO-16 en audit) ═══
+│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 · RIO-16 contresigné) ═══
 ├── validation-ext/
 │   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
-│   └── validation-ext-q1/ (RIO-16 — publié, en audit)
+│   └── validation-ext-q1/ (RIO-16 — contresigné)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -81,11 +81,11 @@ Wairyu thérapie couple/
 | WTC-SM-Q4 | RIO-14 « Nos deux rives » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA c0220b04…) |
 | WTC-SM-Q5 | RIO-15 « Mon premier pas vers l'autre rive » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 6684a435…) |
 
-### Dimension EXTENSIONS — GÉNÉRATIONNELLE (RIO-16)
+### Dimension EXTENSIONS — GÉNÉRATIONNELLE (RIO-16 contresigné)
 
 | Package | RIO | Verdict |
 |---|---|---|
-| WTC-EXT-Q1 | RIO-16 « L'écart de nos horloges » | 🔄 VALIDÉ 7/7 (simulation) — publié, en audit (SHA 3583fe56…) |
+| WTC-EXT-Q1 | RIO-16 « L'écart de nos horloges » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 3583fe56…) |
 
 ### Pilote réel
 
@@ -93,7 +93,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 15 instruments RIO contresignés (RIO-01 à RIO-15) + RIO-16 validé par simulation, en audit. 3 dimensions complètes ; extensions Q1/3 produits (RIO-16 en audit).**
+**Total : 16 instruments RIO contresignés (RIO-01 à RIO-16). 3 dimensions complètes + extensions Q1/3.**
 
 ---
 

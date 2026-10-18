@@ -8,7 +8,7 @@
 **Package** : validation-ext/validation-ext-q1/  
 **SPEC** : EXT-Q1-SPEC.md VERROUILLÉE (addf575 — arbitrages A1-A5 tranchés par délégation).  
 **Délégation fondateur** : « je te laisse le choix de trancher » (18/10/2026) ; production ordonnée : « production du package validation-ext/ → run ×2 → SHA ×2 → publication → RIO-16 (séquence D-CANAL-2 complète) ».  
-RIO-16 « L'écart de nos horloges » — publié, en audit (auto-audit pont sur origin après push, puis contresignature).
+RIO-16 « L'écart de nos horloges » — contresigné (pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 3583fe56… inchangée).
 
 ---
 
@@ -174,7 +174,7 @@ D-VÉRITÉ · D-CONFIRMATION · D-STD-2 · D-EMPREINTE · D-SIM · D-CRISE · D-
 
 ### RIO-16
 
-RIO-16 « L'écart de nos horloges » — publié, en audit (auto-audit pont sur origin après push, puis contresignature).
+RIO-16 « L'écart de nos horloges » — contresigné (pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 3583fe56… inchangée).
 
 ### Inventaire structurel
 

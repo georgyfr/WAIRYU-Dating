@@ -439,8 +439,8 @@ def generer_rapport(r1, couples, classes, sha1, sha2):
              "production ordonnée : « production du package validation-ext/ → "
              "run ×2 → SHA ×2 → publication → RIO-16 (séquence D-CANAL-2 "
              "complète) ».  ")
-    L.append("RIO-16 « L'écart de nos horloges » — publié, en audit (auto-audit "
-             "pont sur origin après push, puis contresignature).")
+    L.append("RIO-16 « L'écart de nos horloges » — contresigné (pont, 18/10/2026 ; "
+             "auto-audit origin : reproduction prouvée, empreinte 3583fe56… inchangée).")
     L.append("")
     L.append("---")
     L.append("")
@@ -674,8 +674,8 @@ def generer_rapport(r1, couples, classes, sha1, sha2):
     if v == "VALIDÉ":
         L.append("### RIO-16")
         L.append("")
-        L.append("RIO-16 « L'écart de nos horloges » — publié, en audit (auto-audit "
-                 "pont sur origin après push, puis contresignature).")
+        L.append("RIO-16 « L'écart de nos horloges » — contresigné (pont, 18/10/2026 ; "
+                 "auto-audit origin : reproduction prouvée, empreinte 3583fe56… inchangée).")
         L.append("")
         L.append("### Inventaire structurel")
         L.append("")
