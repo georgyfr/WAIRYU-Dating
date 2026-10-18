@@ -43,6 +43,10 @@ Wairyu thérapie couple/
 │   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
 │   └── validation-ext-q1/ (RIO-16 — contresigné)
 │
+│  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité par le pont 18/10) ═══
+├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable)
+│   └── D-audit-pi-audit-pont.md (audit pont — mission soutenue, 5 alertes)
+│
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
 ```
