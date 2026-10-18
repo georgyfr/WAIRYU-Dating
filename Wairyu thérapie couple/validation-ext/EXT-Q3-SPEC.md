@@ -1,6 +1,6 @@
 # SPEC VERROUILLÉE — WTC-EXT-Q3 « Le pas de l'horizon » (RIO-18)
 
-> **Document de spécification VERROUILLÉ — tranchage délégué au pont par le fondateur, 19/10/2026 (« fais le toi meme »).**
+> **Document de spécification VERROUILLÉ — tranchage délégué au pont par le fondateur, 18/10/2026 (« fais le toi meme »).**
 > D-CANAL : production locale après verrouillage (levé par cette délégation — pattern Q2/Q5 : verrouillage → production → RIO-18 → Générationnelle 3/3).
 > **Arbitrages (pont, par délégation) : A1 titre « Le pas de l'horizon » · A2 pas = f(palier croisé hérité de Q2) + pas zéro zone calme · A3 check-in binaire partagé (9/14 verbatim) · A4 re-test RIO-16 à 8 semaines — Δ par rive, RCI L7 verbatim · A5 en 🔴 ORIENTATION le pas EST la démarche · A6 récapitulatif descriptif de dimension.**
 > D-HIST : confrontation fondation effectuée (voir §7).
@@ -101,7 +101,7 @@ Après production de RIO-18 : **Générationnelle 3/3** — les 3 quêtes de la 
 
 ---
 
-## 9. Verrouillage (délégation fondateur → pont, 19/10/2026)
+## 9. Verrouillage (délégation fondateur → pont, 18/10/2026)
 
 **Délégation fondateur prononcée en chat** : « fais le toi meme » — prononcée
 après la proposition fcccaf1 (arbitrages A1-A6 ouverts). Le tranchage ET le
