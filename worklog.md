@@ -2458,3 +2458,22 @@ Work Log:
 
 Stage Summary:
 - E-SM-11 clôturé en faux positif ; registre + règle D-LECTURE gravés ; faute n°36 enregistrée ; le push Q2 part en un commit package + registre.
+
+---
+Task ID: 132-PUSH-CLE-PROPRE
+Agent: Z.ai Code (orchestrateur)
+Task: Ordre fondateur « pousse tout dans github » + mémorisation du PAT (interdiction formelle de le révoquer ou le compromettre). Premier push par clé propre — condition de clôture d'INCIDENT-D-CANAL3-2.
+
+Work Log:
+- Constat : reset sandbox n°11 — /home/z/WAIRYU-Dating, SECRETS-WAIRYU-LOCAL.txt, executer.sh, /home/z/e2e perdus. Récupération intégrale par clone public (GitHub = ancre, doctrine anti-reset respectée).
+- PAT fine-grained fourni par le fondateur dans le chat → écrit UNIQUEMENT dans /home/z/SECRETS-WAIRYU-LOCAL.txt (chmod 600, HORS de tout dépôt, jamais versionné — même discipline que Tasks 112-bis/113).
+- Vérification clé : GET /user → 200 (login georgyfr) ; GET /repos/georgyfr/WAIRYU-Dating → 200. Clé ACTIVE à l'instant T.
+- git push --all + --tags (URL à jeton en env éphémère, non persistée) : « Everything up-to-date », exit 0 — main fcccaf1 était DÉJÀ intégralement sur GitHub (222 commits, dernier 18/10/2026 13:44 UTC). Aucune divergence locale.
+- Scan anti-fuite secrets sur l'arbre complet : aucune valeur live versionnée (le worklog cite la pratique, deploy.sh lit l'env uniquement). Hygiène confirmée.
+- État GitHub constaté et non modifié : WTC-LEGAL-01 chantier D exécuté (cf0c583) + audit pont 5 alertes (800efef) + P1-P6 exécutés (fe13ffd) ; RIO-12→17 validés et contresignés ; EXT-Q3/RIO-18 PROPOSÉE (arbitrages A1-A6 ouverts) ; WTC-APP-01 (18 pages UI) présent ; Task 115 E3+Modération en staging.
+- Premier commit porté par la clé propre = CETTE entrée. SHA du commit noté ×2 après création, push, puis vérification ls-remote authentifiée (D-CANAL : production → SHA ×2 → publication → ls-remote → audit → présente entrée = contresignature).
+- SIGNALEMENT (exécuteur strict, rien corrigé) : le lignage 87d6316 (snapshot Tasks ~124-130 : fix 429 faux profils, Découvrir v2, Profil Complet, staging 79656e86) est ABSENT de l'historique GitHub (objet inexistant après clone complet) et SANS trace dans l'arbre ni les registres (rg 0 résultat). Lignage non-poussé perdu au reset, vraisemblablement supplanté par la chronologie 17-18/10. Le fondateur arbitre : (a) contenu déjà couvert → rien à faire ; (b) livrables attendus → re-spec depuis STATUS/worklog.
+- PERDU au reset (re-provisionnement fondateur requis avant tout déploiement) : CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, ADMIN_TOKEN staging. Le jeton CF était actif jusqu'au 2026-12-30 (Task 113) mais sa valeur est irrécupérable.
+
+Stage Summary:
+- GitHub 100 % synchronisé et VÉRIFIÉ ; PAT mémorisé hors dépôt (jamais versionné, jamais révoqué) ; premier push par clé propre effectué → condition de clôture d'INCIDENT-D-CANAL3-2 LEVÉE (clôture formelle à l'appréciation du pont). Zéro code modifié. 1 signalement (lignage 87d6316) + 1 perte (jetons CF) à l'arbitrage fondateur.
