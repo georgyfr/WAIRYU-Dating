@@ -1,0 +1,1380 @@
+{
+  "C1": {
+    "d_table": true,
+    "d_table_details": {
+      "anti_inversion_delta_positif": true,
+      "filet_voie_heritee": true,
+      "inverse_corrige": true,
+      "l3_frontiere_d_t_cons_discrete": true,
+      "l3_frontiere_t_v": true,
+      "l3_niveau_discrete": true,
+      "l3_niveau_forte": true,
+      "l3_seuil_exact_2_60": true,
+      "l4_hierarchie_1_0": true,
+      "l4_nuage_0_5": true,
+      "niveau_1_79_discrete": true,
+      "niveau_1_80_tranquille": true,
+      "niveau_2_59_tranquille": true,
+      "niveau_2_60_vive": true,
+      "niveau_3_19_vive": true,
+      "niveau_3_20_forte": true,
+      "palier_filet_court_circuit": true,
+      "palier_orange": true,
+      "palier_rouge": true,
+      "palier_vert": true,
+      "rci_0_4099_bruit": true,
+      "rci_0_41_suggestion": true,
+      "rci_0_5799_suggestion": true,
+      "rci_0_58_fiable": true,
+      "rci_signe_delta": true,
+      "rci_traversee_fausse": true,
+      "rci_traversee_vraie": true,
+      "rqs_contradiction": true,
+      "rqs_invalide": true,
+      "rqs_linearite_prudence": true,
+      "rqs_rythme_penalite": true,
+      "styles_ecart_0_9_faux": true,
+      "styles_ecart_1_0_vrai": true,
+      "vigilance_penalite": true
+    },
+    "demontrees": "520/520",
+    "eliminatoire": true,
+    "n_cas_table": 34,
+    "n_nomenclature": 18,
+    "nomenclature_respectee": true,
+    "ok": true
+  },
+  "C2": {
+    "anti_inversion": true,
+    "eliminatoire": true,
+    "grille_pure": true,
+    "n_rci": 40,
+    "ok": true
+  },
+  "C3": {
+    "bornes_distinctes": true,
+    "eliminatoire": true,
+    "forte_filet_court_circuit": "5/5",
+    "n_ok": 12,
+    "ok": true,
+    "override_filet": "40/40",
+    "par_groupe": {
+      "G01_HORLOGE_OUVERTE": {
+        "conformes": 46,
+        "n": 50,
+        "ok": true,
+        "pct": 92.0,
+        "seuil": 83.9
+      },
+      "G02_HORIZON_FINI_SEREIN": {
+        "conformes": 44,
+        "n": 50,
+        "ok": true,
+        "pct": 88.0,
+        "seuil": 64.7
+      },
+      "G03_TAXE_LOURDE": {
+        "conformes": 25,
+        "n": 50,
+        "ok": true,
+        "pct": 50.0,
+        "seuil": 43.4
+      },
+      "G04_ZONE_CALME_GENERATION": {
+        "conformes": 48,
+        "n": 50,
+        "ok": true,
+        "pct": 96.0,
+        "seuil": 89.6
+      },
+      "G05_FRONTIERE_H": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 85.0
+      },
+      "G06_FRONTIERE_L": {
+        "conformes": 36,
+        "n": 40,
+        "ok": true,
+        "pct": 90.0,
+        "seuil": 79.7
+      },
+      "G07_FRONTIERE_C": {
+        "conformes": 36,
+        "n": 40,
+        "ok": true,
+        "pct": 90.0,
+        "seuil": 73.2
+      },
+      "G08_NUAGE": {
+        "conformes": 29,
+        "n": 40,
+        "ok": true,
+        "pct": 72.5,
+        "seuil": 64.0
+      },
+      "G09_PIEGES_RQS": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 98.0
+      },
+      "G10_RIVES_DISSEMBLABLES": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 94.8
+      },
+      "G11_SIGNAL_FILET": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 100.0
+      },
+      "G12_RE_TEST": {
+        "conformes": 17,
+        "n": 40,
+        "ok": true,
+        "pct": 42.5,
+        "seuil": 20.9
+      }
+    },
+    "reconciliation": true,
+    "regle_conservatrice": "2820/2820",
+    "regle_ok": true
+  },
+  "C4": {
+    "match": true,
+    "ok": true,
+    "sha1": "3583fe56ffaa1aaf578c1b68b1ec5e1fd448edfadfbd9935481eef2a6ba8edcb",
+    "sha2": "3583fe56ffaa1aaf578c1b68b1ec5e1fd448edfadfbd9935481eef2a6ba8edcb"
+  },
+  "C5": {
+    "d_sim": true,
+    "dimensions_ok": true,
+    "figures": 4,
+    "litteral_exemple": "Palier 🔴 ORIENTATION : le chemin le plus court, pas un échec.",
+    "ok": true,
+    "templates_17": true
+  },
+  "C6": {
+    "0_verdict_temps_restant": true,
+    "eliminatoire": true,
+    "interdits_touches": [],
+    "niveaux": [
+      "DISCRÈTE",
+      "FORTE",
+      "TRANQUILLE",
+      "VIVE"
+    ],
+    "nomenclature_respectee": true,
+    "ok": true,
+    "paliers": [
+      "EXERCICE MAISON",
+      "MODULE DE COUPLE",
+      "ORIENTATION"
+    ],
+    "rci": [
+      "BRUIT",
+      "FIABLE",
+      "SUGGESTION"
+    ],
+    "zone_calme_honnete": true
+  },
+  "C7": {
+    "avert_ok": true,
+    "avertissement_sans_verdict": "40/40",
+    "court_circuit": "40/40",
+    "court_circuit_ok": true,
+    "eliminatoire": true,
+    "forte_mais_filet": "G11 idx 35-39 : items Forte → court-circuit quand même (avant l'arbre)",
+    "ok": true,
+    "zero_tiers": true
+  },
+  "calibration": {
+    "bornes_distinctes": true,
+    "centres": {
+      "G01_HORLOGE_OUVERTE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.5,
+          2.1,
+          2.5
+        ],
+        "mu_axes_B": [
+          2.5,
+          2.1,
+          2.5
+        ]
+      },
+      "G02_HORIZON_FINI_SEREIN": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.7,
+          2.15,
+          2.45
+        ],
+        "mu_axes_B": [
+          2.7,
+          2.15,
+          2.45
+        ]
+      },
+      "G03_TAXE_LOURDE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.1,
+          3.3,
+          2.3
+        ],
+        "mu_axes_B": [
+          2.1,
+          3.3,
+          2.3
+        ]
+      },
+      "G04_ZONE_CALME_GENERATION": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.61,
+        "mu_axes_A": [
+          2.4,
+          2.3,
+          2.45
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.3,
+          2.45
+        ]
+      },
+      "G05_FRONTIERE_H": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.0,
+        "mu_axes_A": [
+          2.55,
+          1.8,
+          2.0
+        ],
+        "mu_axes_B": [
+          2.55,
+          1.8,
+          2.0
+        ]
+      },
+      "G06_FRONTIERE_L": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.0,
+        "mu_axes_A": [
+          2.1,
+          2.6,
+          2.0
+        ],
+        "mu_axes_B": [
+          2.1,
+          2.6,
+          2.0
+        ]
+      },
+      "G07_FRONTIERE_C": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.2,
+        "mu_axes_A": [
+          2.0,
+          1.9,
+          2.65
+        ],
+        "mu_axes_B": [
+          2.0,
+          1.9,
+          2.65
+        ]
+      },
+      "G08_NUAGE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.7,
+          2.1,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.7,
+          2.1,
+          2.4
+        ]
+      },
+      "G09_PIEGES_RQS": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4
+        ]
+      },
+      "G10_RIVES_DISSEMBLABLES": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.0,
+          2.0,
+          2.0
+        ],
+        "mu_axes_B": [
+          3.8,
+          3.8,
+          3.8
+        ]
+      },
+      "G11_SIGNAL_FILET": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4
+        ]
+      },
+      "G12_RE_TEST": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4
+        ]
+      }
+    },
+    "detail": {
+      "G01_HORLOGE_OUVERTE": {
+        "n": 50,
+        "p_theo": 0.9292,
+        "seuil": 83.9,
+        "sigma": 0.0363
+      },
+      "G02_HORIZON_FINI_SEREIN": {
+        "n": 50,
+        "p_theo": 0.791,
+        "seuil": 64.7,
+        "sigma": 0.0575
+      },
+      "G03_TAXE_LOURDE": {
+        "n": 50,
+        "p_theo": 0.6065,
+        "seuil": 43.4,
+        "sigma": 0.0691
+      },
+      "G04_ZONE_CALME_GENERATION": {
+        "n": 50,
+        "p_theo": 0.963,
+        "seuil": 89.6,
+        "sigma": 0.0267
+      },
+      "G05_FRONTIERE_H": {
+        "n": 40,
+        "p_theo": 0.942,
+        "seuil": 85.0,
+        "sigma": 0.0369
+      },
+      "G06_FRONTIERE_L": {
+        "n": 40,
+        "p_theo": 0.91,
+        "seuil": 79.7,
+        "sigma": 0.0452
+      },
+      "G07_FRONTIERE_C": {
+        "n": 40,
+        "p_theo": 0.8663,
+        "seuil": 73.2,
+        "sigma": 0.0538
+      },
+      "G08_NUAGE": {
+        "n": 40,
+        "p_theo": 0.7985,
+        "seuil": 64.0,
+        "sigma": 0.0634
+      },
+      "G09_PIEGES_RQS": {
+        "n": 40,
+        "p_theo": 0.998,
+        "seuil": 98.0,
+        "sigma": 0.0071
+      },
+      "G10_RIVES_DISSEMBLABLES": {
+        "n": 40,
+        "p_theo": 0.9889,
+        "seuil": 94.8,
+        "sigma": 0.0165
+      },
+      "G11_SIGNAL_FILET": {
+        "n": 40,
+        "p_theo": 1.0,
+        "seuil": 100.0,
+        "sigma": 0.0
+      },
+      "G12_RE_TEST": {
+        "n": 40,
+        "p_theo": 0.4027,
+        "seuil": 20.9,
+        "sigma": 0.0775
+      }
+    },
+    "ok": true,
+    "seuils": {
+      "G01_HORLOGE_OUVERTE": 83.9,
+      "G02_HORIZON_FINI_SEREIN": 64.7,
+      "G03_TAXE_LOURDE": 43.4,
+      "G04_ZONE_CALME_GENERATION": 89.6,
+      "G05_FRONTIERE_H": 85.0,
+      "G06_FRONTIERE_L": 79.7,
+      "G07_FRONTIERE_C": 73.2,
+      "G08_NUAGE": 64.0,
+      "G09_PIEGES_RQS": 98.0,
+      "G10_RIVES_DISSEMBLABLES": 94.8,
+      "G11_SIGNAL_FILET": 100.0,
+      "G12_RE_TEST": 20.9
+    }
+  },
+  "conformite_table": {
+    "G01_HORLOGE_OUVERTE_000": true,
+    "G01_HORLOGE_OUVERTE_001": true,
+    "G01_HORLOGE_OUVERTE_002": true,
+    "G01_HORLOGE_OUVERTE_003": true,
+    "G01_HORLOGE_OUVERTE_004": true,
+    "G01_HORLOGE_OUVERTE_005": true,
+    "G01_HORLOGE_OUVERTE_006": true,
+    "G01_HORLOGE_OUVERTE_007": true,
+    "G01_HORLOGE_OUVERTE_008": true,
+    "G01_HORLOGE_OUVERTE_009": true,
+    "G01_HORLOGE_OUVERTE_010": true,
+    "G01_HORLOGE_OUVERTE_011": true,
+    "G01_HORLOGE_OUVERTE_012": true,
+    "G01_HORLOGE_OUVERTE_013": false,
+    "G01_HORLOGE_OUVERTE_014": true,
+    "G01_HORLOGE_OUVERTE_015": false,
+    "G01_HORLOGE_OUVERTE_016": false,
+    "G01_HORLOGE_OUVERTE_017": true,
+    "G01_HORLOGE_OUVERTE_018": true,
+    "G01_HORLOGE_OUVERTE_019": true,
+    "G01_HORLOGE_OUVERTE_020": true,
+    "G01_HORLOGE_OUVERTE_021": true,
+    "G01_HORLOGE_OUVERTE_022": true,
+    "G01_HORLOGE_OUVERTE_023": true,
+    "G01_HORLOGE_OUVERTE_024": true,
+    "G01_HORLOGE_OUVERTE_025": true,
+    "G01_HORLOGE_OUVERTE_026": true,
+    "G01_HORLOGE_OUVERTE_027": true,
+    "G01_HORLOGE_OUVERTE_028": true,
+    "G01_HORLOGE_OUVERTE_029": true,
+    "G01_HORLOGE_OUVERTE_030": true,
+    "G01_HORLOGE_OUVERTE_031": true,
+    "G01_HORLOGE_OUVERTE_032": true,
+    "G01_HORLOGE_OUVERTE_033": false,
+    "G01_HORLOGE_OUVERTE_034": true,
+    "G01_HORLOGE_OUVERTE_035": true,
+    "G01_HORLOGE_OUVERTE_036": true,
+    "G01_HORLOGE_OUVERTE_037": true,
+    "G01_HORLOGE_OUVERTE_038": true,
+    "G01_HORLOGE_OUVERTE_039": true,
+    "G01_HORLOGE_OUVERTE_040": true,
+    "G01_HORLOGE_OUVERTE_041": true,
+    "G01_HORLOGE_OUVERTE_042": true,
+    "G01_HORLOGE_OUVERTE_043": true,
+    "G01_HORLOGE_OUVERTE_044": true,
+    "G01_HORLOGE_OUVERTE_045": true,
+    "G01_HORLOGE_OUVERTE_046": true,
+    "G01_HORLOGE_OUVERTE_047": true,
+    "G01_HORLOGE_OUVERTE_048": true,
+    "G01_HORLOGE_OUVERTE_049": true,
+    "G02_HORIZON_FINI_SEREIN_000": true,
+    "G02_HORIZON_FINI_SEREIN_001": true,
+    "G02_HORIZON_FINI_SEREIN_002": true,
+    "G02_HORIZON_FINI_SEREIN_003": true,
+    "G02_HORIZON_FINI_SEREIN_004": true,
+    "G02_HORIZON_FINI_SEREIN_005": false,
+    "G02_HORIZON_FINI_SEREIN_006": true,
+    "G02_HORIZON_FINI_SEREIN_007": true,
+    "G02_HORIZON_FINI_SEREIN_008": true,
+    "G02_HORIZON_FINI_SEREIN_009": true,
+    "G02_HORIZON_FINI_SEREIN_010": true,
+    "G02_HORIZON_FINI_SEREIN_011": true,
+    "G02_HORIZON_FINI_SEREIN_012": true,
+    "G02_HORIZON_FINI_SEREIN_013": true,
+    "G02_HORIZON_FINI_SEREIN_014": true,
+    "G02_HORIZON_FINI_SEREIN_015": true,
+    "G02_HORIZON_FINI_SEREIN_016": true,
+    "G02_HORIZON_FINI_SEREIN_017": true,
+    "G02_HORIZON_FINI_SEREIN_018": true,
+    "G02_HORIZON_FINI_SEREIN_019": false,
+    "G02_HORIZON_FINI_SEREIN_020": true,
+    "G02_HORIZON_FINI_SEREIN_021": true,
+    "G02_HORIZON_FINI_SEREIN_022": true,
+    "G02_HORIZON_FINI_SEREIN_023": true,
+    "G02_HORIZON_FINI_SEREIN_024": true,
+    "G02_HORIZON_FINI_SEREIN_025": true,
+    "G02_HORIZON_FINI_SEREIN_026": true,
+    "G02_HORIZON_FINI_SEREIN_027": true,
+    "G02_HORIZON_FINI_SEREIN_028": true,
+    "G02_HORIZON_FINI_SEREIN_029": true,
+    "G02_HORIZON_FINI_SEREIN_030": true,
+    "G02_HORIZON_FINI_SEREIN_031": true,
+    "G02_HORIZON_FINI_SEREIN_032": true,
+    "G02_HORIZON_FINI_SEREIN_033": true,
+    "G02_HORIZON_FINI_SEREIN_034": true,
+    "G02_HORIZON_FINI_SEREIN_035": false,
+    "G02_HORIZON_FINI_SEREIN_036": true,
+    "G02_HORIZON_FINI_SEREIN_037": true,
+    "G02_HORIZON_FINI_SEREIN_038": false,
+    "G02_HORIZON_FINI_SEREIN_039": true,
+    "G02_HORIZON_FINI_SEREIN_040": true,
+    "G02_HORIZON_FINI_SEREIN_041": true,
+    "G02_HORIZON_FINI_SEREIN_042": true,
+    "G02_HORIZON_FINI_SEREIN_043": true,
+    "G02_HORIZON_FINI_SEREIN_044": false,
+    "G02_HORIZON_FINI_SEREIN_045": true,
+    "G02_HORIZON_FINI_SEREIN_046": true,
+    "G02_HORIZON_FINI_SEREIN_047": true,
+    "G02_HORIZON_FINI_SEREIN_048": true,
+    "G02_HORIZON_FINI_SEREIN_049": false,
+    "G03_TAXE_LOURDE_000": false,
+    "G03_TAXE_LOURDE_001": false,
+    "G03_TAXE_LOURDE_002": false,
+    "G03_TAXE_LOURDE_003": false,
+    "G03_TAXE_LOURDE_004": false,
+    "G03_TAXE_LOURDE_005": true,
+    "G03_TAXE_LOURDE_006": true,
+    "G03_TAXE_LOURDE_007": true,
+    "G03_TAXE_LOURDE_008": false,
+    "G03_TAXE_LOURDE_009": false,
+    "G03_TAXE_LOURDE_010": true,
+    "G03_TAXE_LOURDE_011": true,
+    "G03_TAXE_LOURDE_012": true,
+    "G03_TAXE_LOURDE_013": true,
+    "G03_TAXE_LOURDE_014": true,
+    "G03_TAXE_LOURDE_015": false,
+    "G03_TAXE_LOURDE_016": true,
+    "G03_TAXE_LOURDE_017": false,
+    "G03_TAXE_LOURDE_018": false,
+    "G03_TAXE_LOURDE_019": false,
+    "G03_TAXE_LOURDE_020": true,
+    "G03_TAXE_LOURDE_021": true,
+    "G03_TAXE_LOURDE_022": false,
+    "G03_TAXE_LOURDE_023": false,
+    "G03_TAXE_LOURDE_024": false,
+    "G03_TAXE_LOURDE_025": false,
+    "G03_TAXE_LOURDE_026": true,
+    "G03_TAXE_LOURDE_027": true,
+    "G03_TAXE_LOURDE_028": false,
+    "G03_TAXE_LOURDE_029": false,
+    "G03_TAXE_LOURDE_030": true,
+    "G03_TAXE_LOURDE_031": true,
+    "G03_TAXE_LOURDE_032": false,
+    "G03_TAXE_LOURDE_033": true,
+    "G03_TAXE_LOURDE_034": true,
+    "G03_TAXE_LOURDE_035": true,
+    "G03_TAXE_LOURDE_036": false,
+    "G03_TAXE_LOURDE_037": false,
+    "G03_TAXE_LOURDE_038": true,
+    "G03_TAXE_LOURDE_039": true,
+    "G03_TAXE_LOURDE_040": false,
+    "G03_TAXE_LOURDE_041": true,
+    "G03_TAXE_LOURDE_042": false,
+    "G03_TAXE_LOURDE_043": true,
+    "G03_TAXE_LOURDE_044": true,
+    "G03_TAXE_LOURDE_045": true,
+    "G03_TAXE_LOURDE_046": true,
+    "G03_TAXE_LOURDE_047": false,
+    "G03_TAXE_LOURDE_048": false,
+    "G03_TAXE_LOURDE_049": false,
+    "G04_ZONE_CALME_GENERATION_000": true,
+    "G04_ZONE_CALME_GENERATION_001": true,
+    "G04_ZONE_CALME_GENERATION_002": true,
+    "G04_ZONE_CALME_GENERATION_003": true,
+    "G04_ZONE_CALME_GENERATION_004": true,
+    "G04_ZONE_CALME_GENERATION_005": true,
+    "G04_ZONE_CALME_GENERATION_006": true,
+    "G04_ZONE_CALME_GENERATION_007": true,
+    "G04_ZONE_CALME_GENERATION_008": true,
+    "G04_ZONE_CALME_GENERATION_009": true,
+    "G04_ZONE_CALME_GENERATION_010": true,
+    "G04_ZONE_CALME_GENERATION_011": true,
+    "G04_ZONE_CALME_GENERATION_012": true,
+    "G04_ZONE_CALME_GENERATION_013": true,
+    "G04_ZONE_CALME_GENERATION_014": true,
+    "G04_ZONE_CALME_GENERATION_015": true,
+    "G04_ZONE_CALME_GENERATION_016": true,
+    "G04_ZONE_CALME_GENERATION_017": true,
+    "G04_ZONE_CALME_GENERATION_018": true,
+    "G04_ZONE_CALME_GENERATION_019": true,
+    "G04_ZONE_CALME_GENERATION_020": true,
+    "G04_ZONE_CALME_GENERATION_021": true,
+    "G04_ZONE_CALME_GENERATION_022": true,
+    "G04_ZONE_CALME_GENERATION_023": true,
+    "G04_ZONE_CALME_GENERATION_024": true,
+    "G04_ZONE_CALME_GENERATION_025": true,
+    "G04_ZONE_CALME_GENERATION_026": true,
+    "G04_ZONE_CALME_GENERATION_027": true,
+    "G04_ZONE_CALME_GENERATION_028": true,
+    "G04_ZONE_CALME_GENERATION_029": true,
+    "G04_ZONE_CALME_GENERATION_030": true,
+    "G04_ZONE_CALME_GENERATION_031": true,
+    "G04_ZONE_CALME_GENERATION_032": true,
+    "G04_ZONE_CALME_GENERATION_033": false,
+    "G04_ZONE_CALME_GENERATION_034": true,
+    "G04_ZONE_CALME_GENERATION_035": true,
+    "G04_ZONE_CALME_GENERATION_036": true,
+    "G04_ZONE_CALME_GENERATION_037": true,
+    "G04_ZONE_CALME_GENERATION_038": true,
+    "G04_ZONE_CALME_GENERATION_039": true,
+    "G04_ZONE_CALME_GENERATION_040": true,
+    "G04_ZONE_CALME_GENERATION_041": false,
+    "G04_ZONE_CALME_GENERATION_042": true,
+    "G04_ZONE_CALME_GENERATION_043": true,
+    "G04_ZONE_CALME_GENERATION_044": true,
+    "G04_ZONE_CALME_GENERATION_045": true,
+    "G04_ZONE_CALME_GENERATION_046": true,
+    "G04_ZONE_CALME_GENERATION_047": true,
+    "G04_ZONE_CALME_GENERATION_048": true,
+    "G04_ZONE_CALME_GENERATION_049": true,
+    "G05_FRONTIERE_H_000": true,
+    "G05_FRONTIERE_H_001": true,
+    "G05_FRONTIERE_H_002": true,
+    "G05_FRONTIERE_H_003": true,
+    "G05_FRONTIERE_H_004": true,
+    "G05_FRONTIERE_H_005": true,
+    "G05_FRONTIERE_H_006": true,
+    "G05_FRONTIERE_H_007": true,
+    "G05_FRONTIERE_H_008": true,
+    "G05_FRONTIERE_H_009": true,
+    "G05_FRONTIERE_H_010": true,
+    "G05_FRONTIERE_H_011": true,
+    "G05_FRONTIERE_H_012": true,
+    "G05_FRONTIERE_H_013": true,
+    "G05_FRONTIERE_H_014": true,
+    "G05_FRONTIERE_H_015": true,
+    "G05_FRONTIERE_H_016": true,
+    "G05_FRONTIERE_H_017": true,
+    "G05_FRONTIERE_H_018": true,
+    "G05_FRONTIERE_H_019": true,
+    "G05_FRONTIERE_H_020": true,
+    "G05_FRONTIERE_H_021": true,
+    "G05_FRONTIERE_H_022": true,
+    "G05_FRONTIERE_H_023": true,
+    "G05_FRONTIERE_H_024": true,
+    "G05_FRONTIERE_H_025": true,
+    "G05_FRONTIERE_H_026": true,
+    "G05_FRONTIERE_H_027": true,
+    "G05_FRONTIERE_H_028": true,
+    "G05_FRONTIERE_H_029": true,
+    "G05_FRONTIERE_H_030": true,
+    "G05_FRONTIERE_H_031": true,
+    "G05_FRONTIERE_H_032": true,
+    "G05_FRONTIERE_H_033": true,
+    "G05_FRONTIERE_H_034": true,
+    "G05_FRONTIERE_H_035": true,
+    "G05_FRONTIERE_H_036": true,
+    "G05_FRONTIERE_H_037": true,
+    "G05_FRONTIERE_H_038": true,
+    "G05_FRONTIERE_H_039": true,
+    "G06_FRONTIERE_L_000": true,
+    "G06_FRONTIERE_L_001": true,
+    "G06_FRONTIERE_L_002": true,
+    "G06_FRONTIERE_L_003": true,
+    "G06_FRONTIERE_L_004": true,
+    "G06_FRONTIERE_L_005": true,
+    "G06_FRONTIERE_L_006": true,
+    "G06_FRONTIERE_L_007": true,
+    "G06_FRONTIERE_L_008": true,
+    "G06_FRONTIERE_L_009": true,
+    "G06_FRONTIERE_L_010": false,
+    "G06_FRONTIERE_L_011": true,
+    "G06_FRONTIERE_L_012": false,
+    "G06_FRONTIERE_L_013": true,
+    "G06_FRONTIERE_L_014": true,
+    "G06_FRONTIERE_L_015": true,
+    "G06_FRONTIERE_L_016": true,
+    "G06_FRONTIERE_L_017": true,
+    "G06_FRONTIERE_L_018": true,
+    "G06_FRONTIERE_L_019": true,
+    "G06_FRONTIERE_L_020": true,
+    "G06_FRONTIERE_L_021": true,
+    "G06_FRONTIERE_L_022": false,
+    "G06_FRONTIERE_L_023": true,
+    "G06_FRONTIERE_L_024": true,
+    "G06_FRONTIERE_L_025": true,
+    "G06_FRONTIERE_L_026": true,
+    "G06_FRONTIERE_L_027": true,
+    "G06_FRONTIERE_L_028": true,
+    "G06_FRONTIERE_L_029": true,
+    "G06_FRONTIERE_L_030": true,
+    "G06_FRONTIERE_L_031": true,
+    "G06_FRONTIERE_L_032": true,
+    "G06_FRONTIERE_L_033": true,
+    "G06_FRONTIERE_L_034": true,
+    "G06_FRONTIERE_L_035": false,
+    "G06_FRONTIERE_L_036": true,
+    "G06_FRONTIERE_L_037": true,
+    "G06_FRONTIERE_L_038": true,
+    "G06_FRONTIERE_L_039": true,
+    "G07_FRONTIERE_C_000": true,
+    "G07_FRONTIERE_C_001": true,
+    "G07_FRONTIERE_C_002": true,
+    "G07_FRONTIERE_C_003": true,
+    "G07_FRONTIERE_C_004": true,
+    "G07_FRONTIERE_C_005": true,
+    "G07_FRONTIERE_C_006": false,
+    "G07_FRONTIERE_C_007": true,
+    "G07_FRONTIERE_C_008": true,
+    "G07_FRONTIERE_C_009": true,
+    "G07_FRONTIERE_C_010": false,
+    "G07_FRONTIERE_C_011": true,
+    "G07_FRONTIERE_C_012": true,
+    "G07_FRONTIERE_C_013": true,
+    "G07_FRONTIERE_C_014": true,
+    "G07_FRONTIERE_C_015": true,
+    "G07_FRONTIERE_C_016": true,
+    "G07_FRONTIERE_C_017": false,
+    "G07_FRONTIERE_C_018": true,
+    "G07_FRONTIERE_C_019": true,
+    "G07_FRONTIERE_C_020": true,
+    "G07_FRONTIERE_C_021": true,
+    "G07_FRONTIERE_C_022": false,
+    "G07_FRONTIERE_C_023": true,
+    "G07_FRONTIERE_C_024": true,
+    "G07_FRONTIERE_C_025": true,
+    "G07_FRONTIERE_C_026": true,
+    "G07_FRONTIERE_C_027": true,
+    "G07_FRONTIERE_C_028": true,
+    "G07_FRONTIERE_C_029": true,
+    "G07_FRONTIERE_C_030": true,
+    "G07_FRONTIERE_C_031": true,
+    "G07_FRONTIERE_C_032": true,
+    "G07_FRONTIERE_C_033": true,
+    "G07_FRONTIERE_C_034": true,
+    "G07_FRONTIERE_C_035": true,
+    "G07_FRONTIERE_C_036": true,
+    "G07_FRONTIERE_C_037": true,
+    "G07_FRONTIERE_C_038": true,
+    "G07_FRONTIERE_C_039": true,
+    "G08_NUAGE_000": false,
+    "G08_NUAGE_001": true,
+    "G08_NUAGE_002": true,
+    "G08_NUAGE_003": true,
+    "G08_NUAGE_004": true,
+    "G08_NUAGE_005": true,
+    "G08_NUAGE_006": false,
+    "G08_NUAGE_007": true,
+    "G08_NUAGE_008": true,
+    "G08_NUAGE_009": false,
+    "G08_NUAGE_010": true,
+    "G08_NUAGE_011": true,
+    "G08_NUAGE_012": true,
+    "G08_NUAGE_013": false,
+    "G08_NUAGE_014": false,
+    "G08_NUAGE_015": false,
+    "G08_NUAGE_016": true,
+    "G08_NUAGE_017": true,
+    "G08_NUAGE_018": false,
+    "G08_NUAGE_019": true,
+    "G08_NUAGE_020": true,
+    "G08_NUAGE_021": true,
+    "G08_NUAGE_022": false,
+    "G08_NUAGE_023": true,
+    "G08_NUAGE_024": true,
+    "G08_NUAGE_025": false,
+    "G08_NUAGE_026": true,
+    "G08_NUAGE_027": true,
+    "G08_NUAGE_028": true,
+    "G08_NUAGE_029": false,
+    "G08_NUAGE_030": true,
+    "G08_NUAGE_031": true,
+    "G08_NUAGE_032": true,
+    "G08_NUAGE_033": true,
+    "G08_NUAGE_034": true,
+    "G08_NUAGE_035": true,
+    "G08_NUAGE_036": false,
+    "G08_NUAGE_037": true,
+    "G08_NUAGE_038": true,
+    "G08_NUAGE_039": true,
+    "G09_PIEGES_RQS_000": true,
+    "G09_PIEGES_RQS_001": true,
+    "G09_PIEGES_RQS_002": true,
+    "G09_PIEGES_RQS_003": true,
+    "G09_PIEGES_RQS_004": true,
+    "G09_PIEGES_RQS_005": true,
+    "G09_PIEGES_RQS_006": true,
+    "G09_PIEGES_RQS_007": true,
+    "G09_PIEGES_RQS_008": true,
+    "G09_PIEGES_RQS_009": true,
+    "G09_PIEGES_RQS_010": true,
+    "G09_PIEGES_RQS_011": true,
+    "G09_PIEGES_RQS_012": true,
+    "G09_PIEGES_RQS_013": true,
+    "G09_PIEGES_RQS_014": true,
+    "G09_PIEGES_RQS_015": true,
+    "G09_PIEGES_RQS_016": true,
+    "G09_PIEGES_RQS_017": true,
+    "G09_PIEGES_RQS_018": true,
+    "G09_PIEGES_RQS_019": true,
+    "G09_PIEGES_RQS_020": true,
+    "G09_PIEGES_RQS_021": true,
+    "G09_PIEGES_RQS_022": true,
+    "G09_PIEGES_RQS_023": true,
+    "G09_PIEGES_RQS_024": true,
+    "G09_PIEGES_RQS_025": true,
+    "G09_PIEGES_RQS_026": true,
+    "G09_PIEGES_RQS_027": true,
+    "G09_PIEGES_RQS_028": true,
+    "G09_PIEGES_RQS_029": true,
+    "G09_PIEGES_RQS_030": true,
+    "G09_PIEGES_RQS_031": true,
+    "G09_PIEGES_RQS_032": true,
+    "G09_PIEGES_RQS_033": true,
+    "G09_PIEGES_RQS_034": true,
+    "G09_PIEGES_RQS_035": true,
+    "G09_PIEGES_RQS_036": true,
+    "G09_PIEGES_RQS_037": true,
+    "G09_PIEGES_RQS_038": true,
+    "G09_PIEGES_RQS_039": true,
+    "G10_RIVES_DISSEMBLABLES_000": true,
+    "G10_RIVES_DISSEMBLABLES_001": true,
+    "G10_RIVES_DISSEMBLABLES_002": true,
+    "G10_RIVES_DISSEMBLABLES_003": true,
+    "G10_RIVES_DISSEMBLABLES_004": true,
+    "G10_RIVES_DISSEMBLABLES_005": true,
+    "G10_RIVES_DISSEMBLABLES_006": true,
+    "G10_RIVES_DISSEMBLABLES_007": true,
+    "G10_RIVES_DISSEMBLABLES_008": true,
+    "G10_RIVES_DISSEMBLABLES_009": true,
+    "G10_RIVES_DISSEMBLABLES_010": true,
+    "G10_RIVES_DISSEMBLABLES_011": true,
+    "G10_RIVES_DISSEMBLABLES_012": true,
+    "G10_RIVES_DISSEMBLABLES_013": true,
+    "G10_RIVES_DISSEMBLABLES_014": true,
+    "G10_RIVES_DISSEMBLABLES_015": true,
+    "G10_RIVES_DISSEMBLABLES_016": true,
+    "G10_RIVES_DISSEMBLABLES_017": true,
+    "G10_RIVES_DISSEMBLABLES_018": true,
+    "G10_RIVES_DISSEMBLABLES_019": true,
+    "G10_RIVES_DISSEMBLABLES_020": true,
+    "G10_RIVES_DISSEMBLABLES_021": true,
+    "G10_RIVES_DISSEMBLABLES_022": true,
+    "G10_RIVES_DISSEMBLABLES_023": true,
+    "G10_RIVES_DISSEMBLABLES_024": true,
+    "G10_RIVES_DISSEMBLABLES_025": true,
+    "G10_RIVES_DISSEMBLABLES_026": true,
+    "G10_RIVES_DISSEMBLABLES_027": true,
+    "G10_RIVES_DISSEMBLABLES_028": true,
+    "G10_RIVES_DISSEMBLABLES_029": true,
+    "G10_RIVES_DISSEMBLABLES_030": true,
+    "G10_RIVES_DISSEMBLABLES_031": true,
+    "G10_RIVES_DISSEMBLABLES_032": true,
+    "G10_RIVES_DISSEMBLABLES_033": true,
+    "G10_RIVES_DISSEMBLABLES_034": true,
+    "G10_RIVES_DISSEMBLABLES_035": true,
+    "G10_RIVES_DISSEMBLABLES_036": true,
+    "G10_RIVES_DISSEMBLABLES_037": true,
+    "G10_RIVES_DISSEMBLABLES_038": true,
+    "G10_RIVES_DISSEMBLABLES_039": true,
+    "G11_SIGNAL_FILET_000": true,
+    "G11_SIGNAL_FILET_001": true,
+    "G11_SIGNAL_FILET_002": true,
+    "G11_SIGNAL_FILET_003": true,
+    "G11_SIGNAL_FILET_004": true,
+    "G11_SIGNAL_FILET_005": true,
+    "G11_SIGNAL_FILET_006": true,
+    "G11_SIGNAL_FILET_007": true,
+    "G11_SIGNAL_FILET_008": true,
+    "G11_SIGNAL_FILET_009": true,
+    "G11_SIGNAL_FILET_010": true,
+    "G11_SIGNAL_FILET_011": true,
+    "G11_SIGNAL_FILET_012": true,
+    "G11_SIGNAL_FILET_013": true,
+    "G11_SIGNAL_FILET_014": true,
+    "G11_SIGNAL_FILET_015": true,
+    "G11_SIGNAL_FILET_016": true,
+    "G11_SIGNAL_FILET_017": true,
+    "G11_SIGNAL_FILET_018": true,
+    "G11_SIGNAL_FILET_019": true,
+    "G11_SIGNAL_FILET_020": true,
+    "G11_SIGNAL_FILET_021": true,
+    "G11_SIGNAL_FILET_022": true,
+    "G11_SIGNAL_FILET_023": true,
+    "G11_SIGNAL_FILET_024": true,
+    "G11_SIGNAL_FILET_025": true,
+    "G11_SIGNAL_FILET_026": true,
+    "G11_SIGNAL_FILET_027": true,
+    "G11_SIGNAL_FILET_028": true,
+    "G11_SIGNAL_FILET_029": true,
+    "G11_SIGNAL_FILET_030": true,
+    "G11_SIGNAL_FILET_031": true,
+    "G11_SIGNAL_FILET_032": true,
+    "G11_SIGNAL_FILET_033": true,
+    "G11_SIGNAL_FILET_034": true,
+    "G11_SIGNAL_FILET_035": true,
+    "G11_SIGNAL_FILET_036": true,
+    "G11_SIGNAL_FILET_037": true,
+    "G11_SIGNAL_FILET_038": true,
+    "G11_SIGNAL_FILET_039": true,
+    "G12_RE_TEST_000": true,
+    "G12_RE_TEST_001": false,
+    "G12_RE_TEST_002": false,
+    "G12_RE_TEST_003": false,
+    "G12_RE_TEST_004": true,
+    "G12_RE_TEST_005": true,
+    "G12_RE_TEST_006": false,
+    "G12_RE_TEST_007": false,
+    "G12_RE_TEST_008": false,
+    "G12_RE_TEST_009": false,
+    "G12_RE_TEST_010": true,
+    "G12_RE_TEST_011": false,
+    "G12_RE_TEST_012": true,
+    "G12_RE_TEST_013": false,
+    "G12_RE_TEST_014": false,
+    "G12_RE_TEST_015": false,
+    "G12_RE_TEST_016": false,
+    "G12_RE_TEST_017": false,
+    "G12_RE_TEST_018": false,
+    "G12_RE_TEST_019": false,
+    "G12_RE_TEST_020": false,
+    "G12_RE_TEST_021": false,
+    "G12_RE_TEST_022": false,
+    "G12_RE_TEST_023": false,
+    "G12_RE_TEST_024": false,
+    "G12_RE_TEST_025": false,
+    "G12_RE_TEST_026": true,
+    "G12_RE_TEST_027": true,
+    "G12_RE_TEST_028": true,
+    "G12_RE_TEST_029": true,
+    "G12_RE_TEST_030": true,
+    "G12_RE_TEST_031": true,
+    "G12_RE_TEST_032": true,
+    "G12_RE_TEST_033": true,
+    "G12_RE_TEST_034": true,
+    "G12_RE_TEST_035": true,
+    "G12_RE_TEST_036": false,
+    "G12_RE_TEST_037": true,
+    "G12_RE_TEST_038": false,
+    "G12_RE_TEST_039": true
+  },
+  "n_groupes": 12,
+  "n_rives": 1040,
+  "n_total": 520,
+  "paliers_globaux": {
+    "EXERCICE MAISON": 797,
+    "MODULE DE COUPLE": 101,
+    "NON_AFFICHÉE": 100,
+    "ORIENTATION": 42
+  },
+  "population": {
+    "ci90_demi": 0.4128,
+    "n_couples": 520,
+    "n_rives": 1040,
+    "placeholder": "à remplacer par le pilote (L2, ligne 258)",
+    "se_face": 0.381,
+    "seed": 42,
+    "sem_placeholder": 0.2517,
+    "seuil_hierarchie": 0.8837,
+    "sigma_eff_axe": 0.2449,
+    "sigma_item": 0.6
+  },
+  "rci": {
+    "se_diff": 0.356,
+    "seuil_fiable": 0.58,
+    "seuil_suggestion": 0.41,
+    "traversees": 56,
+    "verdicts": {
+      "BRUIT": 37,
+      "FIABLE": 25,
+      "N/A": 960,
+      "SUGGESTION": 18
+    }
+  },
+  "reconciliation": true,
+  "sha256_run": "3583fe56ffaa1aaf578c1b68b1ec5e1fd448edfadfbd9935481eef2a6ba8edcb",
+  "stats_groupes": {
+    "G01_HORLOGE_OUVERTE": {
+      "conformes": 46,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 206,
+        "NUAGE": 94
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 299,
+        "NIVEAU": 1
+      },
+      "n": 50,
+      "paliers": {
+        "EXERCICE MAISON": 96,
+        "MODULE DE COUPLE": 4,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 100,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 100,
+        "PRUDENCE": 0
+      }
+    },
+    "G02_HORIZON_FINI_SEREIN": {
+      "conformes": 44,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 149,
+        "NUAGE": 151
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 299,
+        "NIVEAU": 1
+      },
+      "n": 50,
+      "paliers": {
+        "EXERCICE MAISON": 94,
+        "MODULE DE COUPLE": 6,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 100,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 99,
+        "PRUDENCE": 1
+      }
+    },
+    "G03_TAXE_LOURDE": {
+      "conformes": 25,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 117,
+        "NUAGE": 183
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 298,
+        "NIVEAU": 2
+      },
+      "n": 50,
+      "paliers": {
+        "EXERCICE MAISON": 30,
+        "MODULE DE COUPLE": 68,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 2
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 100,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 99,
+        "PRUDENCE": 1
+      }
+    },
+    "G04_ZONE_CALME_GENERATION": {
+      "conformes": 48,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 27,
+        "NUAGE": 273
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 300,
+        "NIVEAU": 0
+      },
+      "n": 50,
+      "paliers": {
+        "EXERCICE MAISON": 98,
+        "MODULE DE COUPLE": 2,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 100,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 98,
+        "PRUDENCE": 2
+      }
+    },
+    "G05_FRONTIERE_H": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 37,
+        "NUAGE": 203
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 236,
+        "NIVEAU": 4
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 80,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    },
+    "G06_FRONTIERE_L": {
+      "conformes": 36,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 31,
+        "NUAGE": 209
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 240,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 76,
+        "MODULE DE COUPLE": 4,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    },
+    "G07_FRONTIERE_C": {
+      "conformes": 36,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 30,
+        "NUAGE": 210
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 238,
+        "NIVEAU": 2
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 76,
+        "MODULE DE COUPLE": 4,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G08_NUAGE": {
+      "conformes": 29,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 30,
+        "NUAGE": 210
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 240,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 69,
+        "MODULE DE COUPLE": 11,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 78,
+        "PRUDENCE": 2
+      }
+    },
+    "G09_PIEGES_RQS": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 5,
+        "NUAGE": 175
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 180,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 60,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 20,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 20,
+        "OK": 0,
+        "PRUDENCE": 60
+      }
+    },
+    "G10_RIVES_DISSEMBLABLES": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 11,
+        "NUAGE": 229
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 150,
+        "NIVEAU": 90
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 40,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 40
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 60,
+        "PRUDENCE": 20
+      }
+    },
+    "G11_SIGNAL_FILET": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 0,
+        "NUAGE": 0
+      },
+      "filets": 80,
+      "lectures": {
+        "FRONTIÈRE": 0,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 0,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 80,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 75,
+        "PRUDENCE": 5
+      }
+    },
+    "G12_RE_TEST": {
+      "conformes": 17,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 35,
+        "NUAGE": 205
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 240,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 78,
+        "MODULE DE COUPLE": 2,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 37,
+        "FIABLE": 25,
+        "N/A": 0,
+        "SUGGESTION": 18
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    }
+  }
+}

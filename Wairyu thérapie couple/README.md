@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-15 « Mon premier pas vers l'autre rive » contresigné — 15/15 RIO ; dimension Santé mentale complète 5/5 ; SPEC Q1 de la 4e dimension « Extensions — Générationnelle » (RIO-16) VERROUILLÉE par délégation (A1-A5 tranchés) — production à venir).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » publié — en audit ; RIO-15 contresigné — 15/15 RIO ; SPEC EXT-Q1 verrouillée par délégation).
 
 ---
 
@@ -38,9 +38,10 @@ Wairyu thérapie couple/
 │   ├── validation-sm-q4/ (RIO-14 — contresigné)
 │   └── validation-sm-q5/ (RIO-15 — contresigné)
 │
-│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 — production à venir) ═══
+│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 · RIO-16 en audit) ═══
 ├── validation-ext/
-│   └── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
+│   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
+│   └── validation-ext-q1/ (RIO-16 — publié, en audit)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -80,13 +81,19 @@ Wairyu thérapie couple/
 | WTC-SM-Q4 | RIO-14 « Nos deux rives » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA c0220b04…) |
 | WTC-SM-Q5 | RIO-15 « Mon premier pas vers l'autre rive » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 6684a435…) |
 
+### Dimension EXTENSIONS — GÉNÉRATIONNELLE (RIO-16)
+
+| Package | RIO | Verdict |
+|---|---|---|
+| WTC-EXT-Q1 | RIO-16 « L'écart de nos horloges » | 🔄 VALIDÉ 7/7 (simulation) — publié, en audit (SHA 3583fe56…) |
+
 ### Pilote réel
 
 | Package | Statut |
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 15 instruments RIO contresignés (RIO-01 à RIO-15). 3 dimensions complètes (attachement · émotionnelle · santé mentale 5/5).**
+**Total : 15 instruments RIO contresignés (RIO-01 à RIO-15) + RIO-16 validé par simulation, en audit. 3 dimensions complètes ; extensions Q1/3 produits (RIO-16 en audit).**
 
 ---
 
