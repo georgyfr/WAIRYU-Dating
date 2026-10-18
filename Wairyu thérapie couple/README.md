@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-15 « Mon premier pas vers l'autre rive » contresigné — 15/15 RIO ; dimension Santé mentale complète 5/5 ; SPEC Q1 de la 4e dimension « Extensions — Générationnelle » (RIO-16) proposée — arbitrages A1-A5 ouverts).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-15 « Mon premier pas vers l'autre rive » contresigné — 15/15 RIO ; dimension Santé mentale complète 5/5 ; SPEC Q1 de la 4e dimension « Extensions — Générationnelle » (RIO-16) VERROUILLÉE par délégation (A1-A5 tranchés) — production à venir).
 
 ---
 
@@ -38,9 +38,9 @@ Wairyu thérapie couple/
 │   ├── validation-sm-q4/ (RIO-14 — contresigné)
 │   └── validation-sm-q5/ (RIO-15 — contresigné)
 │
-│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 proposée — non verrouillée) ═══
+│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 — production à venir) ═══
 ├── validation-ext/
-│   └── EXT-Q1-SPEC.md (proposée — A1-A5 ouverts · D-CANAL : zéro code)
+│   └── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
