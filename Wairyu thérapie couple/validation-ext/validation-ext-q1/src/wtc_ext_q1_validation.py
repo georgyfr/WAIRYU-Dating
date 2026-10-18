@@ -638,7 +638,7 @@ def generer_rapport(r1, couples, classes, sha1, sha2):
     L.append("")
     L.append("- Bornes D-STD-2 DISTINCTES par groupe (leçon SM-Q5, ad01f21)")
     L.append("- C1 croisé sur cas de table, pas sur données bruitées (leçon Q5)")
-    L.append("- Rapport autoporteur, Verdict fermé, balises ** équilibrées (leçon E-SM-12)")
+    L.append("- Rapport autoporteur, Verdict fermé, balises de gras équilibrées (leçon E-SM-12)")
     L.append("- Figures sans émojis (glyphes DejaVu) · 0 chiffre sans source (chaîne de traçabilité §6.4)")
     L.append("")
     L.append("### Périmètre")

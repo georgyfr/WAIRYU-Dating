@@ -146,7 +146,7 @@ RCI globaux : {'verdicts': {'FIABLE': 25, 'SUGGESTION': 18, 'BRUIT': 37, 'N/A': 
 
 - Bornes D-STD-2 DISTINCTES par groupe (leçon SM-Q5, ad01f21)
 - C1 croisé sur cas de table, pas sur données bruitées (leçon Q5)
-- Rapport autoporteur, Verdict fermé, balises ** équilibrées (leçon E-SM-12)
+- Rapport autoporteur, Verdict fermé, balises de gras équilibrées (leçon E-SM-12)
 - Figures sans émojis (glyphes DejaVu) · 0 chiffre sans source (chaîne de traçabilité §6.4)
 
 ### Périmètre
