@@ -228,7 +228,7 @@ D-VÉRITÉ · D-CONFIRMATION · D-STD-2 · D-EMPREINTE · D-SIM · D-CRISE · D-
 
 ### RIO-17
 
-RIO-17 « Notre conversation de l'horizon » — publié, en attente de contresignature du fondateur (16/16 RIO contresignés à date ; le registre passera à 17/17 sur « je valide »).
+RIO-17 « Notre conversation de l'horizon » — contresigné (pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 2aea8d99… inchangée).
 
 ### Inventaire structurel
 

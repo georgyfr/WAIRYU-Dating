@@ -720,9 +720,9 @@ def generer_rapport(r1, couples, sorties, croisements, sha1, sha2):
     if v == "VALIDÉ":
         L.append("### RIO-17")
         L.append("")
-        L.append("RIO-17 « Notre conversation de l'horizon » — publié, en attente "
-                 "de contresignature du fondateur (16/16 RIO contresignés à date ; "
-                 "le registre passera à 17/17 sur « je valide »).")
+        L.append("RIO-17 « Notre conversation de l'horizon » — contresigné "
+                 "(pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, "
+                 "empreinte 2aea8d99… inchangée).")
         L.append("")
         L.append("### Inventaire structurel")
         L.append("")
