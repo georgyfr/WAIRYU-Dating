@@ -1,3 +1,18 @@
+═══════════════════════════════════════════════════════════════════════
+BANNIÈRE DE STATUT — posée le 18/10/2026 (exécution P2 de l'audit pont
+WTC-LEGAL-01, cf. legal/D-audit-pi-audit-pont.md §6).
+
+CE DOCUMENT EST UNE COMPILATION DE VEILLE ASPIRÉE — PAS UNE SPÉCIFICATION
+PRODUIT. Il mélange des fragments de pages web, des dialogues et des notes
+de recherche ; rien de ce qu'il contient ne vaut décision d'implémentation.
+
+En particulier, la déclaration d'intégration de l'Échelle d'Ajustement
+Dyadique (EAD/DAS) qu'il contient est un FRAGMENT DE VEILLE : le DAS n'est
+PAS utilisé comme instrument dans le programme WTC (audit PI §6, verdict
+CONFORME — aucun item DAS reproduit, vérifié). Seuls les packages RIO
+validés et contresignés et le hub du dépôt font foi.
+═══════════════════════════════════════════════════════════════════════
+
 ﻿Considère-toi comme un expert en thérapie de couple. Propose-moi tous les outils et tests nécessaires pour une thérapie de couple de A à Z. Donne-moi les garanties de succès de ces outils si elles sont utilisées de façon professionnelle et de façon procédurale.
 L'utilisateur demande une réponse exhaustive en français sur les outils et tests pour la thérapie de couple, de A à Z, avec des garanties de succès. Je dois structurer ma réponse comme un expert. Je vais rechercher des informations sur les outils d'évaluation, les tests, les méthodes thérapeutiques, et les taux de réussite. Je vais effectuer plusieurs recherches en parallèle pour couvrir tous les aspects.
 Found 45 web pages

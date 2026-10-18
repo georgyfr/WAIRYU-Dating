@@ -116,3 +116,72 @@ Les instruments WTC-SM sont des échelles comportementales originales en langage
 ---
 
 *Reproductibilité : la table de similarité complète (section 5) est recalculable à partir des items de `fondation/01-items-q1.md` et du corpus de paraphrases documenté en section 3, par la méthode de la section 4. Aucun item d'instrument protégé n'est reproduit dans ce document.*
+
+
+---
+
+## ERRATUM (P3) — Harmonisation du périmètre (18/10/2026)
+
+> Append du 18/10/2026, exécution P3 de l'audit pont WTC-LEGAL-01 (recommandation
+> P3 : « À la prochaine révision du document PI (erratum), harmoniser le
+> périmètre » — alerte A3). Le présent append n'altère aucune section publiée
+> ci-dessus (D-EMPREINTE) ; il corrige le record en surface.
+
+Les énoncés de périmètre de ce document (§1 « RIO-01 à RIO-15 », §9 « les 15
+instruments », §2 incluant déjà RIO-16 au niveau des construits) sont harmonisés
+ainsi, conformément à l'audit pont (alerte A3 · D-NOMENCLATURE) :
+
+> **Périmètre réel : RIO-01 à RIO-16, dont un seul audité item-par-item (RIO-06).**
+
+Publié le jour même de la contresignature de RIO-16 (commit e4b7018), le document
+couvrait en réalité 16 instruments au niveau des construits — le verdict CONFORME
+(§9) n'est pas affecté : il porte sur les 32 items audité lexicalement et sur les
+comparaisons de construits, dont la lecture est inchangée à périmètre corrigé.
+
+---
+
+## 10. Actualisation R2 (P5) — statut du protocole lexical par instrument (18/10/2026)
+
+> Append du 18/10/2026, exécution P5 de l'audit pont WTC-LEGAL-01 (R2 :
+> « Conserver ce document et l'actualiser à chaque nouvel instrument RIO
+> (RIO-16 en tête) avec le même protocole lexical » — alerte A5). Le protocole
+> est désormais **entièrement recalculable** : corpus de paraphrases déposé
+> (`corpus-paraphrases.md`, 41 paraphrases · 7 instruments de référence) et
+> script de calcul déposé (`protocole_jaccard.py` — normalisation §4, max
+> (Jaccard mots, Jaccard bigrammes), seuils 0,40 / 0,70).
+
+### 10.1 Rejeu sur le corpus audité RIO-06 (32 items) — corpus déposé v1
+
+| Mesure | Valeur |
+|---|---|
+| Marqueurs parsés | 35 (32 items + doublons d'appel — cohérent audit pont F4) |
+| Score maximal | **0,333** (OPT-A4 ↔ ERQ-SU-04) |
+| Zone de vigilance (≥ 0,40) | **0 / 35** |
+| Zone d'alerte (≥ 0,70) | **0 / 35** |
+| Résultat brut | `legal/rejeu-protocole-rio06.json` (déposé, autoporteur) |
+
+**Portée exacte du rejeu** : il valide l'EXÉCUTION du protocole (normalisation,
+Jaccard mots + bigrammes, seuils) et rend la recalculabilité promise (note de
+reproductibilité) réelle. Il **ne remplace pas** la table §5 : le corpus analyste
+original de cette table n'est pas déposé, les scores des deux corpus ne sont pas
+comparables item-par-item. Les deux lectures concordent sur l'essentiel :
+aucun item en zone d'alerte, aucun en zone de vigilance avec le corpus déposé.
+
+### 10.2 Statut par instrument
+
+| Instruments | Niveau de couverture | Statut lexical |
+|---|---|---|
+| RIO-06 (32 items) | Item-par-item | **Rejeu exécuté** (§10.1) — corpus déposé v1 |
+| RIO-16 (18 items, Générationnelle) | Construits | **Libellés d'items non déposés** (le core `wtc_ext_q1_core.py` porte les codes seuls) — aucun des 7 instruments de référence ne mesure les construits Générationnels (sélectivité socio-émotionnelle, taxe de légitimité, conversation de l'horizon : aucun voisinage attendu). L'audit item-par-item s'exécutera dès le dépôt des libellés (fichier fondation de la dimension) — signalé sans invention (D-CANAL-2) |
+| RIO-17 (SPEC Q2) | — | **Zéro item nouveau** (arbitrage A2 tranché le 18/10/2026 par le pont, matérialisé au verrouillage de la SPEC Q2) : le croisement consomme les sorties RIO-16 — rien à auditer lexicalement ; couverture héritée des sorties |
+| RIO-18 (à venir) | — | Protocole à exécuter à sa publication (même règle) |
+| RIO-01 à RIO-05, RIO-07 à RIO-15 | Construits | Libellés d'items non déposés (hors RIO-06) — même action ouverte que RIO-16 : déposer les fondations d'items pour rendre l'audit item-par-item exécutable |
+
+### 10.3 Règle permanente (R2, reconduite)
+
+À chaque nouvel instrument RIO : (1) déposer ses libellés d'items dans une
+fondation de dimension ; (2) exécuter `protocole_jaccard.py` contre
+`corpus-paraphrases.md` ; (3) publier la table dans une actualisation du
+présent document ; (4) consigner toute nouvelle citation dans
+`registre-citations.md`. Exit du protocole : 0 alerte requis ; toute vigilance
+est analysée et classée ; toute alerte implique une réécriture avant publication.

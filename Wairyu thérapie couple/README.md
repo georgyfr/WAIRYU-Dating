@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » contresigné — 16/16 RIO ; EXT Générationnelle Q1/3 : SPEC Q2 « Notre conversation de l'horizon » (RIO-17) proposée — arbitrages A1-A6 ouverts).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-16 « L'écart de nos horloges » contresigné — 16/16 RIO ; WTC-LEGAL-01 : recommandations P1-P6 exécutées sur ordre fondateur ; EXT Générationnelle Q1/3 : SPEC Q2 « Notre conversation de l'horizon » (RIO-17) proposée — arbitrages A1-A6 ouverts).
 
 ---
 
@@ -44,9 +44,12 @@ Wairyu thérapie couple/
 │   ├── EXT-Q2-SPEC.md (proposée 18/10 — arbitrages A1-A6 ouverts)
 │   └── validation-ext-q1/ (RIO-16 — contresigné)
 │
-│  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité par le pont 18/10) ═══
-├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable)
-│   └── D-audit-pi-audit-pont.md (audit pont — mission soutenue, 5 alertes)
+│  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
+├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
+│   ├── D-audit-pi-audit-pont.md (audit pont — mission soutenue, 5 alertes, recommandations P1-P6)
+│   ├── registre-citations.md (P1 — Chapman 1992 entré [R1])
+│   ├── corpus-paraphrases.md · protocole_jaccard.py · rejeu-protocole-rio06.json (P4 — recalculabilité réelle)
+│   └── licences-validite-convergente.md (P6 — rappel R3 bloquant avant VALID-01)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/

@@ -1,0 +1,225 @@
+{
+  "parametres": {
+    "seuil_vigilance": 0.4,
+    "seuil_alerte": 0.7,
+    "n_stopwords": 112,
+    "methode": "max(jaccard_mots, jaccard_bigrammes), normalisation §4"
+  },
+  "n_items": 35,
+  "n_paraphrases": 41,
+  "score_max": 0.333,
+  "n_vigilance": 0,
+  "n_alerte": 0,
+  "table": [
+    {
+      "item": "OPT-A4",
+      "meilleure_ref": "ERQ-SU-04",
+      "score": 0.333,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R1-1",
+      "meilleure_ref": "ERQ-SU-02",
+      "score": 0.231,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B2-2",
+      "meilleure_ref": "CHAP-TEMPS",
+      "score": 0.231,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R2-3",
+      "meilleure_ref": "ECR-E-05",
+      "score": 0.222,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R3-3",
+      "meilleure_ref": "ECR-A-06",
+      "score": 0.214,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R3-1",
+      "meilleure_ref": "RUM-01",
+      "score": 0.2,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L3-1",
+      "meilleure_ref": "ECR-A-03",
+      "score": 0.2,
+      "zone": "OK"
+    },
+    {
+      "item": "OPT-A1",
+      "meilleure_ref": "ERQ-RE-01",
+      "score": 0.2,
+      "zone": "OK"
+    },
+    {
+      "item": "OPT-A3",
+      "meilleure_ref": "ERQ-RE-04",
+      "score": 0.2,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R3-2",
+      "meilleure_ref": "RUM-04",
+      "score": 0.167,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B3-2",
+      "meilleure_ref": "CSI-02",
+      "score": 0.167,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L2-2",
+      "meilleure_ref": "CHAP-MOTS",
+      "score": 0.154,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R2-1",
+      "meilleure_ref": "ERQ-SU-01",
+      "score": 0.143,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B3-1",
+      "meilleure_ref": "ERQ-SU-02",
+      "score": 0.143,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R2-2",
+      "meilleure_ref": "ECR-E-04",
+      "score": 0.125,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B3-3",
+      "meilleure_ref": "CHAP-TOUCH",
+      "score": 0.125,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B2-1",
+      "meilleure_ref": "CSI-02",
+      "score": 0.111,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B2-3",
+      "meilleure_ref": "ECR-A-03",
+      "score": 0.111,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L1-1",
+      "meilleure_ref": "ECR-E-05",
+      "score": 0.111,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L2-3",
+      "meilleure_ref": "ERQ-SU-04",
+      "score": 0.111,
+      "zone": "OK"
+    },
+    {
+      "item": "C-C",
+      "meilleure_ref": "ECR-A-04",
+      "score": 0.111,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B1-1",
+      "meilleure_ref": "ECR-A-04",
+      "score": 0.1,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R1-2",
+      "meilleure_ref": "ERQ-SU-04",
+      "score": 0.091,
+      "zone": "OK"
+    },
+    {
+      "item": "E-R1-3",
+      "meilleure_ref": "RUM-05",
+      "score": 0.091,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B1-3",
+      "meilleure_ref": "CSI-02",
+      "score": 0.091,
+      "zone": "OK"
+    },
+    {
+      "item": "C-A",
+      "meilleure_ref": "ECR-A-04",
+      "score": 0.091,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L2-1",
+      "meilleure_ref": "GABLE-PC",
+      "score": 0.083,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L3-2",
+      "meilleure_ref": "ECR-A-04",
+      "score": 0.077,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L3-3",
+      "meilleure_ref": "ECR-E-06",
+      "score": 0.077,
+      "zone": "OK"
+    },
+    {
+      "item": "D-EXP",
+      "meilleure_ref": "ECR-A-04",
+      "score": 0.077,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L1-3",
+      "meilleure_ref": "ECR-E-05",
+      "score": 0.071,
+      "zone": "OK"
+    },
+    {
+      "item": "E-B1-2",
+      "meilleure_ref": "ECR-A-01",
+      "score": 0.0,
+      "zone": "OK"
+    },
+    {
+      "item": "E-L1-2",
+      "meilleure_ref": "ECR-A-01",
+      "score": 0.0,
+      "zone": "OK"
+    },
+    {
+      "item": "C-B",
+      "meilleure_ref": "ECR-A-01",
+      "score": 0.0,
+      "zone": "OK"
+    },
+    {
+      "item": "OPT-A2",
+      "meilleure_ref": "ECR-A-01",
+      "score": 0.0,
+      "zone": "OK"
+    }
+  ]
+}
