@@ -612,9 +612,9 @@ def generer_rapport(r1, couples, classes, sha1, sha2):
     L.append("")
     L.append("### RIO-15")
     L.append("")
-    L.append("RIO-15 « Mon premier pas vers l'autre rive » — publié, en audit "
-             "(auto-audit pont sur origin après push, puis contresignature — "
-             "délégation « santé mentale 5/5 »).")
+    L.append("RIO-15 « Mon premier pas vers l'autre rive » — contresigné "
+             "(pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, "
+             "empreinte 6684a435… inchangée).")
     L.append("")
     L.append("### Inventaire structurel")
     L.append("")

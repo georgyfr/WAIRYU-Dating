@@ -209,7 +209,7 @@ D-CRISE (transversale) · D-CONFIRMATION (anti-inversion temporelle) · D-STD-2 
 
 ### RIO-15
 
-RIO-15 « Mon premier pas vers l'autre rive » — publié, en audit (auto-audit pont sur origin après push, puis contresignature — délégation « santé mentale 5/5 »).
+RIO-15 « Mon premier pas vers l'autre rive » — contresigné (pont, 18/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 6684a435… inchangée).
 
 ### Inventaire structurel
 
