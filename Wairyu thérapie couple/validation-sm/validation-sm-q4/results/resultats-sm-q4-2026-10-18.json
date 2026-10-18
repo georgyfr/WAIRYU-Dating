@@ -1,0 +1,260 @@
+{
+  "C1": {
+    "croise": true,
+    "d_table": true,
+    "demontrees": "9/9",
+    "labels_uniques": true,
+    "ok": true,
+    "peuples": true
+  },
+  "C2": {
+    "anti_inversion": "6 flips / 3 stables",
+    "deterministe_pipeline": true,
+    "grille_9_9": true,
+    "ok": true,
+    "purete": true
+  },
+  "C3": {
+    "frontiere": {
+      "2.49": "FAIBLE",
+      "2.50": "MOYEN",
+      "3.49": "MOYEN",
+      "3.50": "ÉLEVÉ"
+    },
+    "frontiere_ok": true,
+    "g13_exact": "40/40",
+    "n_ok": 9,
+    "ok": true,
+    "par_config": {
+      "CALME DES DEUX RIVES": {
+        "conformes": 48,
+        "n": 50,
+        "ok": true,
+        "pct": 96.0,
+        "seuil": 82
+      },
+      "COURANT FORT": {
+        "conformes": 40,
+        "n": 50,
+        "ok": true,
+        "pct": 80.0,
+        "seuil": 74
+      },
+      "DEUX COURANTS": {
+        "conformes": 40,
+        "n": 50,
+        "ok": true,
+        "pct": 80.0,
+        "seuil": 75
+      },
+      "DÉBORDEMENT": {
+        "conformes": 50,
+        "n": 50,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 98
+      },
+      "PORTE SEULE": {
+        "conformes": 48,
+        "n": 50,
+        "ok": true,
+        "pct": 96.0,
+        "seuil": 84
+      },
+      "RIVE QUI CÈDE": {
+        "conformes": 41,
+        "n": 50,
+        "ok": true,
+        "pct": 82.0,
+        "seuil": 76
+      },
+      "TEMPÊTE": {
+        "conformes": 50,
+        "n": 50,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 96
+      },
+      "TEMPÊTE ET DIGUE": {
+        "conformes": 48,
+        "n": 50,
+        "ok": true,
+        "pct": 96.0,
+        "seuil": 94
+      },
+      "VEILLE": {
+        "conformes": 45,
+        "n": 50,
+        "ok": true,
+        "pct": 90.0,
+        "seuil": 83
+      }
+    }
+  },
+  "C4": {
+    "match": true,
+    "sha1": "c0220b041358839911146e7d551c590111c62a53b6ce23edbbebd97695cec9fd",
+    "sha2": "c0220b041358839911146e7d551c590111c62a53b6ce23edbbebd97695cec9fd"
+  },
+  "C5": {
+    "boucle_conforme": true,
+    "d_sim": true,
+    "dimensions_ok": true,
+    "figures": 4,
+    "ok": true,
+    "styles_conforme": true,
+    "templates_9": true
+  },
+  "C6": {
+    "fonctions": 20,
+    "ok": true,
+    "pas_produit": 0
+  },
+  "C7": {
+    "configs_tracees_g10": {
+      "DEUX COURANTS": 43,
+      "TEMPÊTE ET DIGUE": 3,
+      "VEILLE": 4
+    },
+    "ok": true,
+    "override": "50/50",
+    "override_ok": true,
+    "voies_g10": {
+      "A2": 20,
+      "H5": 10,
+      "SM-C1": 20
+    },
+    "zero_fabrication": true,
+    "zone_calme_ok": true
+  },
+  "boucle_globale_pct": 49.0,
+  "conformite_table": {
+    "correct": 506,
+    "total": 550
+  },
+  "d_sim": "AVERTISSEMENT D-SIM : résultats issus de simulations (seed 42) — la mécanique est validée, pas la prévalence clinique.",
+  "n_groupes": 13,
+  "n_total": 600,
+  "population_norme": {
+    "mu_rive": 3.0,
+    "n": 2000,
+    "placeholder": "à remplacer par le pilote (L2)",
+    "seed": 42,
+    "sigma_item": 0.6,
+    "sigma_mu": 0.8
+  },
+  "reconciliation": true,
+  "sha256_run": "c0220b041358839911146e7d551c590111c62a53b6ce23edbbebd97695cec9fd",
+  "stats_groupes": {
+    "G10_crise_heritee": {
+      "N": 50,
+      "boucle_pct": 10.0,
+      "config_attendue": "DEUX COURANTS",
+      "conformes": 43,
+      "crise": 50,
+      "styles_pct": 6.0
+    },
+    "G11_ecart_percentiles": {
+      "N": 30,
+      "boucle_pct": 100.0,
+      "config_attendue": "PORTE SEULE",
+      "conformes": 26,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G12_styles_dissemblables": {
+      "N": 30,
+      "boucle_pct": 0.0,
+      "config_attendue": "DEUX COURANTS",
+      "conformes": 30,
+      "crise": 0,
+      "styles_pct": 76.7
+    },
+    "G13_frontieres": {
+      "N": 40,
+      "boucle_pct": 0.0,
+      "config_attendue": "RIVE QUI CÈDE",
+      "conformes": 40,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G1_calme": {
+      "N": 50,
+      "boucle_pct": 4.0,
+      "config_attendue": "CALME DES DEUX RIVES",
+      "conformes": 48,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G2_veille": {
+      "N": 50,
+      "boucle_pct": 56.0,
+      "config_attendue": "VEILLE",
+      "conformes": 45,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G3_porte_seule": {
+      "N": 50,
+      "boucle_pct": 100.0,
+      "config_attendue": "PORTE SEULE",
+      "conformes": 48,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G4_courant_fort": {
+      "N": 50,
+      "boucle_pct": 76.0,
+      "config_attendue": "COURANT FORT",
+      "conformes": 40,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G5_deux_courants": {
+      "N": 50,
+      "boucle_pct": 8.0,
+      "config_attendue": "DEUX COURANTS",
+      "conformes": 40,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G6_rive_qui_cede": {
+      "N": 50,
+      "boucle_pct": 90.0,
+      "config_attendue": "RIVE QUI CÈDE",
+      "conformes": 41,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G7_tempete": {
+      "N": 50,
+      "boucle_pct": 100.0,
+      "config_attendue": "TEMPÊTE",
+      "conformes": 50,
+      "crise": 0,
+      "styles_pct": 0.0
+    },
+    "G8_tempete_digue": {
+      "N": 50,
+      "boucle_pct": 84.0,
+      "config_attendue": "TEMPÊTE ET DIGUE",
+      "conformes": 48,
+      "crise": 0,
+      "styles_pct": 2.0
+    },
+    "G9_debordement": {
+      "N": 50,
+      "boucle_pct": 0.0,
+      "config_attendue": "DÉBORDEMENT",
+      "conformes": 50,
+      "crise": 0,
+      "styles_pct": 0.0
+    }
+  },
+  "styles_globale_pct": 4.5,
+  "voies_heritees_g10": {
+    "A2": 20,
+    "H5": 10,
+    "SM-C1": 20
+  }
+}

@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-13 contresigné — 13/13 RIO ; SM-Q4 « Nos deux rives » SPEC verrouillée par délégation).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-14 « Nos deux rives » publié — en audit ; RIO-13 contresigné — 13/13 RIO ; SPEC Q4 verrouillée par délégation).
 
 ---
 
@@ -28,13 +28,14 @@ Wairyu thérapie couple/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés) ═══
+│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés · RIO-14 en audit) ═══
 ├── validation-sm/
 │   ├── SM-Q2-SPEC.md · SM-Q3-SPEC.md · SM-Q4-SPEC.md (verrouillées 18/10)
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
 │   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
 │   ├── validation-sm-q2/ (RIO-12 — contresigné)
-│   └── validation-sm-q3/ (RIO-13 — contresigné)
+│   ├── validation-sm-q3/ (RIO-13 — contresigné)
+│   └── validation-sm-q4/ (RIO-14 — publié, en audit)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
@@ -64,13 +65,14 @@ Wairyu thérapie couple/
 | WTC-EMO-Q4 / Q4-R3 | RIO-09 « Nos deux langues » | ✅ VALIDÉ |
 | WTC-EMO-Q5 | RIO-10 « Mon premier geste du cœur » | ✅ VALIDÉ 6/6 |
 
-### Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés)
+### Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 contresignés · RIO-14 en audit)
 
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-SM-Q1 / R1 / R2 / R3 | RIO-11 « Ma détresse et la leur » | ✅ Contresigné (R3 VALIDÉ 6/6, SHA bb2551dd…) |
 | WTC-SM-Q2 | RIO-12 « Ce que je porte pour toi » | ✅ Contresigné (VALIDÉ 6/6 simulation, SHA f57fc089…) |
 | WTC-SM-Q3 | RIO-13 « Ce que notre lien sait porter » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 0ae85f46…) |
+| WTC-SM-Q4 | RIO-14 « Nos deux rives » | 🔄 VALIDÉ 7/7 (simulation) — publié, en audit (SHA c0220b04…) |
 
 ### Pilote réel
 
@@ -78,7 +80,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 13 instruments RIO contresignés (RIO-01 à RIO-13). 2 dimensions complètes ; santé mentale 3/5.**
+**Total : 13 instruments RIO contresignés (RIO-01 à RIO-13) + RIO-14 validé par simulation, en audit. 2 dimensions complètes ; santé mentale 4/5.**
 
 ---
 
