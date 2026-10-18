@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-17 « Notre conversation de l'horizon » contresigné — 17/17 RIO ; WTC-LEGAL-01 : recommandations P1-P6 exécutées sur ordre fondateur ; EXT Générationnelle Q2/3 : RIO-16 · RIO-17 contresignés (SPEC Q2 verrouillée — A1-A6 tranchés par délégation ; P1-P6 exécutées sur ordre fondateur).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-17 « Notre conversation de l'horizon » contresigné — 17/17 RIO ; WTC-LEGAL-01 : recommandations P1-P6 exécutées sur ordre fondateur ; EXT Générationnelle Q3/3 : SPEC Q3 « Le pas » (RIO-18) proposée — arbitrages A1-A6 ouverts (SPEC Q2 verrouillée — A1-A6 tranchés par délégation ; RIO-17 contresigné — registre 17/17).
 
 ---
 
@@ -38,10 +38,11 @@ Wairyu thérapie couple/
 │   ├── validation-sm-q4/ (RIO-14 — contresigné)
 │   └── validation-sm-q5/ (RIO-15 — contresigné)
 │
-│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1 verrouillée 18/10 · RIO-16 contresigné) ═══
+│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1-Q2 verrouillées 18/10 · RIO-16 · RIO-17 contresignés) ═══
 ├── validation-ext/
 │   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
 │   ├── EXT-Q2-SPEC.md (verrouillée 18/10 — A1-A6 tranchés par délégation)
+│   ├── EXT-Q3-SPEC.md (proposée 18/10 — arbitrages A1-A6 ouverts)
 │   ├── validation-ext-q1/ (RIO-16 — contresigné)
 │   └── validation-ext-q2/ (RIO-17 — contresigné)
 │
