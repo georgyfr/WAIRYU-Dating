@@ -2477,3 +2477,20 @@ Work Log:
 
 Stage Summary:
 - GitHub 100 % synchronisé et VÉRIFIÉ ; PAT mémorisé hors dépôt (jamais versionné, jamais révoqué) ; premier push par clé propre effectué → condition de clôture d'INCIDENT-D-CANAL3-2 LEVÉE (clôture formelle à l'appréciation du pont). Zéro code modifié. 1 signalement (lignage 87d6316) + 1 perte (jetons CF) à l'arbitrage fondateur.
+
+---
+Task ID: 133-PUSH-SYNC-REPRISE
+Agent: Z.ai Code (orchestrateur)
+Task: Ordre fondateur « pousse tout dans github » (renouvellement Task 132) + PAT réfourné après reset — interdiction formelle de révoquer ou compromettre la clé. Synchronisation et vérification intégrale, zéro contenu nouveau.
+
+Work Log:
+- Constat : reprise après reset sandbox n°12 — clone local repo2 resté à 8422dec (SPEC Q5 proposée) alors que GitHub main = 240704f (21 commits d'avance) ; le résumé de continuité du chat était incomplet (nomenclature Q1-Q3 « Générationnelle » sans commits cités). D-LECTURE appliquée : ls-remote authentifié AVANT toute écriture.
+- PAT fine-grained réfourné par le fondateur (même discipline Task 132) : écrit UNIQUEMENT dans /home/z/my-project/scripts/.gh_pat (chmod 600, HORS de tout dépôt, jamais versionné, jamais affiché, non révoqué). Clé vérifiée ACTIVE : ls-remote → 5 refs (main, archive/v1-2026-10-05, v2-reconstitution-task28, HEAD).
+- Fetch + avance rapide 8422dec → 240704f (merge --ff-only, 51 fichiers, +14 776 lignes) : packages validation-sm-q5, validation-ext-q1/q2/q3 (VALIDÉS 7/7), contresignatures RIO-15/16/17, LEGAL-01 (audit PI + P1-P6), APP-01 (18 pages UI), SPEC EXT-Q3 verrouillée. Status propre après FF.
+- Divergence locale : AUCUNE (0 commit local hors origin ; merge-base --is-ancestor TRUE) ; branches secondaires déjà présentes sur GitHub. Rien à pousser côté contenu — le présent commit docs(worklog) EST le portage de la clé propre sur la session.
+- État GitHub constaté et non modifié : RIO-18 « Le pas de l'horizon » VALIDÉ 7/7 publié (240704f, SHA run 2e31e14d…) — EN AUDIT, en attente de contresignature fondateur (aucune marque posée : porte fondateur, non délégable sans ordre).
+- Vérifications post-push : push main par URL à jeton éphémère, ls-remote authentifié = HEAD local, clone frais origin-check-t133, arbres bit-identiques (HEAD^{tree}) — résultats notés au worklog sandbox à l'instant T.
+- Rappels d'arbitrage ouverts (Task 132, non tranchés) : signalement lignage 87d6316 (absent de l'historique GitHub) ; pertes CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / ADMIN_TOKEN staging (re-provisionnement fondateur requis avant tout déploiement).
+
+Stage Summary:
+- Local = origin/main PROUVÉ (240704f + présent commit) ; PAT mémorisé hors dépôt (jamais versionné, jamais révoqué) ; zéro contenu nouveau ; RIO-18 en attente de contresignature (« je valide ») — Générationnelle 3/3 à la clé. Chaîne : … → 1fc88a5 (RIO-17 contresigné) → fcccaf1 → f027823 → c68c78d → 240704f (RIO-18 publié) → présent commit.
