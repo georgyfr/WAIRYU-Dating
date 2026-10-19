@@ -2509,3 +2509,19 @@ Work Log:
 
 Stage Summary:
 - Credentials Cloudflare re-provisionnés et VÉRIFIÉS (token actif jusqu'au 2026-12-30, liaison compte unique prouvée) — l'arbitrage « pertes de jetons » est levé côté CF ; les déploiements redeviennent techniquement possibles sur ordre fondateur explicite. ADMIN_TOKEN staging reste à fournir. Registre : 18/18 RIO contresignés, preuve indépendante RIO-18 notée depuis clone frais. Chaîne : … → 240704f → 5f5e13b → c2ac981 → présent commit.
+
+---
+Task ID: 135-DOCS-GITBOOK
+Agent: Z.ai Code (orchestrateur)
+Task: Ordre fondateur — périmètre redéfini : documentation GitBook sur GitHub (calculs réels, algorithmes réels, « véritables réponses »), zéro Cloudflare. « comme nous l'avons commencé au début ».
+
+Work Log:
+- D-LECTURE préalable : aucune trace GitBook dans le dépôt ni les worklogs (le début visé a été perdu aux resets — même statut que le lignage 87d6316). Structure reconstruite proprement : docs/gitbook/ avec SUMMARY.md (TOC GitBook).
+- Extraction des algorithmes RÉELS par 3 agents Explore (Task 135-a SM, 135-b attachement+émo, 135-c générationnelle+legal+app) : constantes, formules, ordres d'évaluation, chiffres des rapports contresignés, références fichier:ligne ; « ABSENT DES SOURCES » documenté (items non déposés, formule z étendue absente, etc.) — rien d'inventé.
+- 24 pages écrites (2 574 lignes) : Partie I chaîne de confiance (table des 18 RIO avec SHA complets, doctrine D, critères C1-C7) · Parties II-V les 4 dimensions instrument par instrument (algorithmes exacts : seuils 2,61/2,50/3,50/4,00, bande [3,10;4,90], grains 1/3 vs 1/12, RQS, RCI 0,58/0,41, 9/14, mid-rank, boucle 30 pts, paliers max-niveau, SILENCIEUSE) avec chiffres réels (réconciliations 500/500…650/650, VP/FN/VN/FP, verdicts bruts y compris À CORRIGER 5/6 etc.) · Partie VI moteur de calcul (SEM 0,195/0,2517, D-STD-2, 3 implémentations RCI, empreinte/seed 42/vérité croisée) · Partie VII honnêteté (D-SIM, placeholders L2, licences R3 bloquant VALID-01, divergences documentées).
+- Verdicts bruts conservés tels quels (À CORRIGER 5/6, 5/7, 4/5, 6/7, 4/5) avec les corrections R1/R2/R3 — l'honnêteté fait partie de la documentation.
+- Commit 09e8f0e (24 fichiers), push paramiko, ls-remote authentifié = 09e8f0e en tête de main. Preuve de lecture publique : raw.githubusercontent.com → SUMMARY.md 200, README.md 200, 04-sante-mentale/06-q5.md 200.
+- Liaison GitBook : espace GitBook du fondateur à connecter au répertoire docs/gitbook/ du repo (intégration GitHub) — pas de .gitbook.yaml posé à la racine pour ne pas perturber une intégration existante invisible depuis ici.
+
+Stage Summary:
+- GitBook technique publié sur GitHub (09e8f0e) : la mécanique complète des 18 instruments documentée avec ses vrais chiffres. Prochaines étapes docs : la connexion de l'espace GitBook (fondateur), puis enrichissements possibles (partie app produit vs packages, glossaire D). Arbitrages toujours ouverts : lignage 87d6316, DRIFT LEDGER, 4ᵉ extension du canon, ADMIN_TOKEN staging.
