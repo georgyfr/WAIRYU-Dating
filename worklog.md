@@ -2539,3 +2539,18 @@ Work Log:
 
 Stage Summary:
 - SPEC-12 PROPOSÉE sur GitHub : la 5e dimension (personnalité) a sa spécification narrative — zéro code, 6 arbitrages en attente de tranchage fondateur. Verrouillage → production validation-pers/ (D-CANAL-2) → RIO-19. Bloc Psychologique : 3/4 fait, personnalité = la dernière.
+
+---
+Task ID: 137
+Agent: GLM-chat (pont)
+Task: Délégation fondateur 20/10/2026 (« je te laisse le choix de trancher ») — verrouillage SPEC-12 PERS-Q1 + production complète du package validation-pers-q1 (RIO-19), séquence D-CANAL-2 (production → run ×2 → SHA ×2 → publication → pointeurs → audit origin) ; contresignature réservée au fondateur.
+
+Work Log:
+- VERROUILLAGE (commit f4fa593) : A1-A6 tranchés par délégation — A1 titre « Manuel d'utilisation de moi » (ligne 98) · A2 4 axes mapping 1:1 (AO asymétrie acteur-observateur / N névrosisme-réactivité / R narcissisme-absence de réparation / J jalousie graduée) · A3 24 items (4×2×3, 2 inversés PERS-N2-3/J2-3, 1 vigilance) · A4 L1-L4+L7, L5-L6 à Q3 · A5 C6 triple verrou 0 diagnostic/0 étiquette/0 mot canon clinique · A6 5 quêtes majeures RIO-19→23. Fixé : signal sécurité contrôle = voie héritée OU voie détectée (borne basse J2 ≥ 3,20 — règle L3 réutilisée, zéro constante nouvelle). Erratum annoncé : 14 groupes / 560 couples.
+- PRODUCTION : 3 fichiers — core (660 l. : RQS, L1-L4, L7, filet 2 voies, palier max 4 axes, calibration D-STD-2 EXACTE par énumération d'items tronqués — raffinement documenté du modèle normal EXT-Q1, 38 cas D-TABLE) · simulateur (560 couples, seed 42 ×2, pièges RQS déterministes, G06 35 hérités + 5 détectés à items fixés) · validation (C1-C7, 4 figures 1920×1080, rapport A-G).
+- CORRECTIONS pré-attrapées pendant la production (exécuteur strict) : (1) crash latent dans conformite_couple (rci None sur filet → None['verdict']) — gardé None-safe, jamais un crash ; (2) sous-vérification C6 reparation_sans_blame vacue → template « reparation » ajouté (§5.5 verbatim « terrain de travail, pas un verdict »), C5 19 templates ; (3) faux positifs voie détectée analysés : 19/1120 rives (13 G01 à μ_J2 3,2 · 5 G05 · 1 G14) — le moteur lit les DÉCLARATIONS observées, jamais le paramètre latent ; biais sécurité D-CRISE (P-FILTRE, jamais une carte à tort) ; comptés en non-conformité C3.
+- RÉSULTAT : VALIDÉ 7/7 — C1 (38 cas D-TABLE + 560/560 + nomenclature) · C2 (déterminisme + anti-inversion, 40 RCI) · C3 (14/14 bornes DISTINCTES, règle conservatrice 3956/3956, override 40/40 dont 5/5 détectés) · C4 SHA ×2 · C5 (19 templates + 4 figures) · C6 (0 interdit) · C7 (40/40 + 0 tiers). SHA-256 : 3b1a74909e9d86e178ad60bd1caa94f61f675532e6ffeaeff0539d24d5271e2c (×2 identiques, 3 exécutions).
+- Hub README : arbre + registre RIO-19 (en attente de contresignature) + total. SPEC §6 harmonisée (14 × 40 = 560, annoncé).
+
+Stage Summary:
+- RIO-19 « Manuel d'utilisation de moi » VALIDÉ 7/7, publié — en attente de contresignature fondateur. 4e dimension ouverte : personnalité 1/5 (bloc Psychologique 3/4). Découverte documentée : un axe conservateur FORTE est structurellement en NUAGE L4 (propriété des constantes 0,8937 / 3,20). Prochaine : contresignature RIO-19 → SPEC Q2 (ombre).

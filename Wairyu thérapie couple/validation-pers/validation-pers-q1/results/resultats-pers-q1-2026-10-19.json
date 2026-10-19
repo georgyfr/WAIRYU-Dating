@@ -1,0 +1,1580 @@
+{
+  "C1": {
+    "d_table": true,
+    "d_table_details": {
+      "anti_inversion_delta_positif": true,
+      "filet_seuil_somme_11": true,
+      "filet_voie_detectee_j2_4": true,
+      "filet_voie_heritee": true,
+      "inverse_corrige": true,
+      "l3_frontiere_d_t_cons_discrete": true,
+      "l3_frontiere_t_v": true,
+      "l3_niveau_discrete": true,
+      "l3_niveau_forte": true,
+      "l3_seuil_exact_2_60": true,
+      "l4_hierarchie_1_0": true,
+      "l4_nuage_0_5": true,
+      "niveau_1_79_discrete": true,
+      "niveau_1_80_tranquille": true,
+      "niveau_2_59_tranquille": true,
+      "niveau_2_60_vive": true,
+      "niveau_3_19_vive": true,
+      "niveau_3_20_forte": true,
+      "palier_filet_court_circuit": true,
+      "palier_max_4e_axe": true,
+      "palier_orange": true,
+      "palier_rouge": true,
+      "palier_vert": true,
+      "pas_de_filet_j2_2_9": true,
+      "rci_0_4099_bruit": true,
+      "rci_0_41_suggestion": true,
+      "rci_0_5799_suggestion": true,
+      "rci_0_58_fiable": true,
+      "rci_signe_delta": true,
+      "rci_traversee_fausse": true,
+      "rci_traversee_vraie": true,
+      "rqs_contradiction": true,
+      "rqs_invalide": true,
+      "rqs_linearite_prudence": true,
+      "rqs_rythme_penalite": true,
+      "styles_ecart_0_9_faux": true,
+      "styles_ecart_1_0_vrai": true,
+      "vigilance_penalite": true
+    },
+    "demontrees": "560/560",
+    "eliminatoire": true,
+    "n_cas_table": 38,
+    "n_nomenclature": 18,
+    "nomenclature_respectee": true,
+    "ok": true
+  },
+  "C2": {
+    "anti_inversion": true,
+    "eliminatoire": true,
+    "grille_pure": true,
+    "n_rci": 40,
+    "ok": true
+  },
+  "C3": {
+    "bornes_distinctes": true,
+    "eliminatoire": true,
+    "filet_detecte": "5/5",
+    "n_ok": 14,
+    "ok": true,
+    "override_filet": "40/40",
+    "par_groupe": {
+      "G01_QUATRE_AXES_VIFS": {
+        "conformes": 23,
+        "n": 40,
+        "ok": true,
+        "pct": 57.5,
+        "seuil": 24.4
+      },
+      "G02_ASYMETRIE_MARQUEE": {
+        "conformes": 35,
+        "n": 40,
+        "ok": true,
+        "pct": 87.5,
+        "seuil": 61.6
+      },
+      "G03_REPARATION_ABSENTE": {
+        "conformes": 27,
+        "n": 40,
+        "ok": true,
+        "pct": 67.5,
+        "seuil": 44.8
+      },
+      "G04_ZONE_CALME_PERSONNALITE": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 93.0
+      },
+      "G05_JALOUSIE_CONTROLEE": {
+        "conformes": 18,
+        "n": 40,
+        "ok": true,
+        "pct": 45.0,
+        "seuil": 22.8
+      },
+      "G06_SIGNAL_CONTROLE": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 100.0
+      },
+      "G07_FRONTIERE_AO": {
+        "conformes": 38,
+        "n": 40,
+        "ok": true,
+        "pct": 95.0,
+        "seuil": 87.4
+      },
+      "G08_FRONTIERE_N": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 83.3
+      },
+      "G09_FRONTIERE_R": {
+        "conformes": 35,
+        "n": 40,
+        "ok": true,
+        "pct": 87.5,
+        "seuil": 78.2
+      },
+      "G10_FRONTIERE_J": {
+        "conformes": 37,
+        "n": 40,
+        "ok": true,
+        "pct": 92.5,
+        "seuil": 70.3
+      },
+      "G11_NUAGE": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 99.2
+      },
+      "G12_PIEGES_RQS": {
+        "conformes": 40,
+        "n": 40,
+        "ok": true,
+        "pct": 100.0,
+        "seuil": 98.0
+      },
+      "G13_RIVES_DISSEMBLABLES": {
+        "conformes": 39,
+        "n": 40,
+        "ok": true,
+        "pct": 97.5,
+        "seuil": 94.9
+      },
+      "G14_RE_TEST": {
+        "conformes": 16,
+        "n": 40,
+        "ok": true,
+        "pct": 40.0,
+        "seuil": 25.5
+      }
+    },
+    "reconciliation": true,
+    "regle_conservatrice": "3956/3956",
+    "regle_ok": true
+  },
+  "C4": {
+    "match": true,
+    "ok": true,
+    "sha1": "3b1a74909e9d86e178ad60bd1caa94f61f675532e6ffeaeff0539d24d5271e2c",
+    "sha2": "3b1a74909e9d86e178ad60bd1caa94f61f675532e6ffeaeff0539d24d5271e2c"
+  },
+  "C5": {
+    "d_sim": true,
+    "dimensions_ok": true,
+    "figures": 4,
+    "litteral_exemple": "Le contrôle déclaré atteint le seuil de sécurité — ce n'est plus une carte, c'est un signal : P-FILTRE — {filet_num}. Aucune étiquette, aucun verdict.",
+    "ok": true,
+    "templates_19": true
+  },
+  "C6": {
+    "0_etiquette_0_diagnostic": true,
+    "eliminatoire": true,
+    "interdits_touches": [],
+    "niveaux": [
+      "DISCRÈTE",
+      "FORTE",
+      "TRANQUILLE",
+      "VIVE"
+    ],
+    "nomenclature_respectee": true,
+    "ok": true,
+    "paliers": [
+      "EXERCICE MAISON",
+      "MODULE DE COUPLE",
+      "ORIENTATION"
+    ],
+    "rci": [
+      "BRUIT",
+      "FIABLE",
+      "SUGGESTION"
+    ],
+    "reparation_sans_blame": true,
+    "zone_calme_honnete": true
+  },
+  "C7": {
+    "avert_ok": true,
+    "avertissement_sans_verdict": "40/40",
+    "court_circuit": "40/40",
+    "court_circuit_ok": true,
+    "eliminatoire": true,
+    "ok": true,
+    "voie_detectee": "5/5 — items tous Forte → court-circuit quand même (avant l'arbre)",
+    "zero_tiers": true
+  },
+  "calibration": {
+    "bornes_distinctes": true,
+    "centres": {
+      "G01_QUATRE_AXES_VIFS": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.0,
+        "mu_axes_A": [
+          3.15,
+          3.2,
+          3.1,
+          3.15
+        ],
+        "mu_axes_B": [
+          3.15,
+          3.2,
+          3.1,
+          3.15
+        ]
+      },
+      "G02_ASYMETRIE_MARQUEE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          4.0,
+          2.2,
+          2.3,
+          1.9
+        ],
+        "mu_axes_B": [
+          4.0,
+          2.2,
+          2.3,
+          1.9
+        ]
+      },
+      "G03_REPARATION_ABSENTE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.2,
+          2.4,
+          3.9,
+          2.2
+        ],
+        "mu_axes_B": [
+          2.2,
+          2.4,
+          3.9,
+          2.2
+        ]
+      },
+      "G04_ZONE_CALME_PERSONNALITE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.2,
+          2.3,
+          2.2,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.2,
+          2.3,
+          2.2,
+          2.4
+        ]
+      },
+      "G05_JALOUSIE_CONTROLEE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.1,
+          2.2,
+          2.2,
+          3.3
+        ],
+        "mu_axes_B": [
+          2.1,
+          2.2,
+          2.2,
+          3.3
+        ]
+      },
+      "G06_SIGNAL_CONTROLE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ]
+      },
+      "G07_FRONTIERE_AO": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.2,
+        "mu_axes_A": [
+          2.55,
+          2.1,
+          2.0,
+          2.0
+        ],
+        "mu_axes_B": [
+          2.55,
+          2.1,
+          2.0,
+          2.0
+        ]
+      },
+      "G08_FRONTIERE_N": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.0,
+        "mu_axes_A": [
+          2.0,
+          2.6,
+          2.1,
+          2.0
+        ],
+        "mu_axes_B": [
+          2.0,
+          2.6,
+          2.1,
+          2.0
+        ]
+      },
+      "G09_FRONTIERE_R": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.2,
+        "mu_axes_A": [
+          2.0,
+          2.1,
+          2.65,
+          2.1
+        ],
+        "mu_axes_B": [
+          2.0,
+          2.1,
+          2.65,
+          2.1
+        ]
+      },
+      "G10_FRONTIERE_J": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.41,
+        "mu_axes_A": [
+          2.0,
+          2.2,
+          2.0,
+          2.7
+        ],
+        "mu_axes_B": [
+          2.0,
+          2.2,
+          2.0,
+          2.7
+        ]
+      },
+      "G11_NUAGE": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.0,
+          2.1,
+          2.0,
+          2.0
+        ],
+        "mu_axes_B": [
+          2.0,
+          2.1,
+          2.0,
+          2.0
+        ]
+      },
+      "G12_PIEGES_RQS": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ]
+      },
+      "G13_RIVES_DISSEMBLABLES": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.0,
+        "mu_axes_A": [
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "mu_axes_B": [
+          3.9,
+          3.9,
+          3.9,
+          3.2
+        ]
+      },
+      "G14_RE_TEST": {
+        "dans_bande_3sigma": true,
+        "distance_min_seuil_sigma": 0.82,
+        "mu_axes_A": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ],
+        "mu_axes_B": [
+          2.4,
+          2.4,
+          2.4,
+          2.4
+        ]
+      }
+    },
+    "detail": {
+      "G01_QUATRE_AXES_VIFS": {
+        "n": 40,
+        "p_theo": 0.4399,
+        "seuil": 24.4,
+        "sigma": 0.0785
+      },
+      "G02_ASYMETRIE_MARQUEE": {
+        "n": 40,
+        "p_theo": 0.78,
+        "seuil": 61.6,
+        "sigma": 0.0655
+      },
+      "G03_REPARATION_ABSENTE": {
+        "n": 40,
+        "p_theo": 0.6376,
+        "seuil": 44.8,
+        "sigma": 0.076
+      },
+      "G04_ZONE_CALME_PERSONNALITE": {
+        "n": 40,
+        "p_theo": 0.982,
+        "seuil": 93.0,
+        "sigma": 0.021
+      },
+      "G05_JALOUSIE_CONTROLEE": {
+        "n": 40,
+        "p_theo": 0.4229,
+        "seuil": 22.8,
+        "sigma": 0.0781
+      },
+      "G06_SIGNAL_CONTROLE": {
+        "n": 40,
+        "p_theo": 1.0,
+        "seuil": 100.0,
+        "sigma": 0.0
+      },
+      "G07_FRONTIERE_AO": {
+        "n": 40,
+        "p_theo": 0.9557,
+        "seuil": 87.4,
+        "sigma": 0.0325
+      },
+      "G08_FRONTIERE_N": {
+        "n": 40,
+        "p_theo": 0.9324,
+        "seuil": 83.3,
+        "sigma": 0.0397
+      },
+      "G09_FRONTIERE_R": {
+        "n": 40,
+        "p_theo": 0.9005,
+        "seuil": 78.2,
+        "sigma": 0.0473
+      },
+      "G10_FRONTIERE_J": {
+        "n": 40,
+        "p_theo": 0.8455,
+        "seuil": 70.3,
+        "sigma": 0.0572
+      },
+      "G11_NUAGE": {
+        "n": 40,
+        "p_theo": 0.9996,
+        "seuil": 99.2,
+        "sigma": 0.0032
+      },
+      "G12_PIEGES_RQS": {
+        "n": 40,
+        "p_theo": 0.998,
+        "seuil": 98.0,
+        "sigma": 0.0071
+      },
+      "G13_RIVES_DISSEMBLABLES": {
+        "n": 40,
+        "p_theo": 0.9893,
+        "seuil": 94.9,
+        "sigma": 0.0163
+      },
+      "G14_RE_TEST": {
+        "n": 40,
+        "p_theo": 0.4519,
+        "seuil": 25.5,
+        "sigma": 0.0787
+      }
+    },
+    "ok": true,
+    "seuils": {
+      "G01_QUATRE_AXES_VIFS": 24.4,
+      "G02_ASYMETRIE_MARQUEE": 61.6,
+      "G03_REPARATION_ABSENTE": 44.8,
+      "G04_ZONE_CALME_PERSONNALITE": 93.0,
+      "G05_JALOUSIE_CONTROLEE": 22.8,
+      "G06_SIGNAL_CONTROLE": 100.0,
+      "G07_FRONTIERE_AO": 87.4,
+      "G08_FRONTIERE_N": 83.3,
+      "G09_FRONTIERE_R": 78.2,
+      "G10_FRONTIERE_J": 70.3,
+      "G11_NUAGE": 99.2,
+      "G12_PIEGES_RQS": 98.0,
+      "G13_RIVES_DISSEMBLABLES": 94.9,
+      "G14_RE_TEST": 25.5
+    }
+  },
+  "conformite_table": {
+    "G01_QUATRE_AXES_VIFS_000": true,
+    "G01_QUATRE_AXES_VIFS_001": true,
+    "G01_QUATRE_AXES_VIFS_002": true,
+    "G01_QUATRE_AXES_VIFS_003": false,
+    "G01_QUATRE_AXES_VIFS_004": true,
+    "G01_QUATRE_AXES_VIFS_005": true,
+    "G01_QUATRE_AXES_VIFS_006": true,
+    "G01_QUATRE_AXES_VIFS_007": false,
+    "G01_QUATRE_AXES_VIFS_008": true,
+    "G01_QUATRE_AXES_VIFS_009": true,
+    "G01_QUATRE_AXES_VIFS_010": true,
+    "G01_QUATRE_AXES_VIFS_011": true,
+    "G01_QUATRE_AXES_VIFS_012": false,
+    "G01_QUATRE_AXES_VIFS_013": true,
+    "G01_QUATRE_AXES_VIFS_014": true,
+    "G01_QUATRE_AXES_VIFS_015": true,
+    "G01_QUATRE_AXES_VIFS_016": false,
+    "G01_QUATRE_AXES_VIFS_017": false,
+    "G01_QUATRE_AXES_VIFS_018": false,
+    "G01_QUATRE_AXES_VIFS_019": true,
+    "G01_QUATRE_AXES_VIFS_020": true,
+    "G01_QUATRE_AXES_VIFS_021": true,
+    "G01_QUATRE_AXES_VIFS_022": false,
+    "G01_QUATRE_AXES_VIFS_023": false,
+    "G01_QUATRE_AXES_VIFS_024": false,
+    "G01_QUATRE_AXES_VIFS_025": false,
+    "G01_QUATRE_AXES_VIFS_026": true,
+    "G01_QUATRE_AXES_VIFS_027": false,
+    "G01_QUATRE_AXES_VIFS_028": true,
+    "G01_QUATRE_AXES_VIFS_029": true,
+    "G01_QUATRE_AXES_VIFS_030": true,
+    "G01_QUATRE_AXES_VIFS_031": false,
+    "G01_QUATRE_AXES_VIFS_032": true,
+    "G01_QUATRE_AXES_VIFS_033": false,
+    "G01_QUATRE_AXES_VIFS_034": false,
+    "G01_QUATRE_AXES_VIFS_035": true,
+    "G01_QUATRE_AXES_VIFS_036": false,
+    "G01_QUATRE_AXES_VIFS_037": false,
+    "G01_QUATRE_AXES_VIFS_038": false,
+    "G01_QUATRE_AXES_VIFS_039": true,
+    "G02_ASYMETRIE_MARQUEE_000": true,
+    "G02_ASYMETRIE_MARQUEE_001": true,
+    "G02_ASYMETRIE_MARQUEE_002": true,
+    "G02_ASYMETRIE_MARQUEE_003": false,
+    "G02_ASYMETRIE_MARQUEE_004": true,
+    "G02_ASYMETRIE_MARQUEE_005": true,
+    "G02_ASYMETRIE_MARQUEE_006": true,
+    "G02_ASYMETRIE_MARQUEE_007": true,
+    "G02_ASYMETRIE_MARQUEE_008": true,
+    "G02_ASYMETRIE_MARQUEE_009": true,
+    "G02_ASYMETRIE_MARQUEE_010": true,
+    "G02_ASYMETRIE_MARQUEE_011": true,
+    "G02_ASYMETRIE_MARQUEE_012": false,
+    "G02_ASYMETRIE_MARQUEE_013": true,
+    "G02_ASYMETRIE_MARQUEE_014": true,
+    "G02_ASYMETRIE_MARQUEE_015": false,
+    "G02_ASYMETRIE_MARQUEE_016": true,
+    "G02_ASYMETRIE_MARQUEE_017": true,
+    "G02_ASYMETRIE_MARQUEE_018": true,
+    "G02_ASYMETRIE_MARQUEE_019": true,
+    "G02_ASYMETRIE_MARQUEE_020": true,
+    "G02_ASYMETRIE_MARQUEE_021": true,
+    "G02_ASYMETRIE_MARQUEE_022": true,
+    "G02_ASYMETRIE_MARQUEE_023": true,
+    "G02_ASYMETRIE_MARQUEE_024": true,
+    "G02_ASYMETRIE_MARQUEE_025": true,
+    "G02_ASYMETRIE_MARQUEE_026": true,
+    "G02_ASYMETRIE_MARQUEE_027": true,
+    "G02_ASYMETRIE_MARQUEE_028": true,
+    "G02_ASYMETRIE_MARQUEE_029": true,
+    "G02_ASYMETRIE_MARQUEE_030": true,
+    "G02_ASYMETRIE_MARQUEE_031": true,
+    "G02_ASYMETRIE_MARQUEE_032": true,
+    "G02_ASYMETRIE_MARQUEE_033": true,
+    "G02_ASYMETRIE_MARQUEE_034": false,
+    "G02_ASYMETRIE_MARQUEE_035": true,
+    "G02_ASYMETRIE_MARQUEE_036": false,
+    "G02_ASYMETRIE_MARQUEE_037": true,
+    "G02_ASYMETRIE_MARQUEE_038": true,
+    "G02_ASYMETRIE_MARQUEE_039": true,
+    "G03_REPARATION_ABSENTE_000": true,
+    "G03_REPARATION_ABSENTE_001": true,
+    "G03_REPARATION_ABSENTE_002": false,
+    "G03_REPARATION_ABSENTE_003": true,
+    "G03_REPARATION_ABSENTE_004": false,
+    "G03_REPARATION_ABSENTE_005": true,
+    "G03_REPARATION_ABSENTE_006": true,
+    "G03_REPARATION_ABSENTE_007": true,
+    "G03_REPARATION_ABSENTE_008": true,
+    "G03_REPARATION_ABSENTE_009": true,
+    "G03_REPARATION_ABSENTE_010": true,
+    "G03_REPARATION_ABSENTE_011": false,
+    "G03_REPARATION_ABSENTE_012": false,
+    "G03_REPARATION_ABSENTE_013": false,
+    "G03_REPARATION_ABSENTE_014": true,
+    "G03_REPARATION_ABSENTE_015": false,
+    "G03_REPARATION_ABSENTE_016": true,
+    "G03_REPARATION_ABSENTE_017": false,
+    "G03_REPARATION_ABSENTE_018": true,
+    "G03_REPARATION_ABSENTE_019": true,
+    "G03_REPARATION_ABSENTE_020": false,
+    "G03_REPARATION_ABSENTE_021": true,
+    "G03_REPARATION_ABSENTE_022": true,
+    "G03_REPARATION_ABSENTE_023": true,
+    "G03_REPARATION_ABSENTE_024": true,
+    "G03_REPARATION_ABSENTE_025": true,
+    "G03_REPARATION_ABSENTE_026": true,
+    "G03_REPARATION_ABSENTE_027": true,
+    "G03_REPARATION_ABSENTE_028": false,
+    "G03_REPARATION_ABSENTE_029": true,
+    "G03_REPARATION_ABSENTE_030": false,
+    "G03_REPARATION_ABSENTE_031": false,
+    "G03_REPARATION_ABSENTE_032": true,
+    "G03_REPARATION_ABSENTE_033": false,
+    "G03_REPARATION_ABSENTE_034": false,
+    "G03_REPARATION_ABSENTE_035": true,
+    "G03_REPARATION_ABSENTE_036": true,
+    "G03_REPARATION_ABSENTE_037": true,
+    "G03_REPARATION_ABSENTE_038": true,
+    "G03_REPARATION_ABSENTE_039": true,
+    "G04_ZONE_CALME_PERSONNALITE_000": true,
+    "G04_ZONE_CALME_PERSONNALITE_001": true,
+    "G04_ZONE_CALME_PERSONNALITE_002": true,
+    "G04_ZONE_CALME_PERSONNALITE_003": true,
+    "G04_ZONE_CALME_PERSONNALITE_004": true,
+    "G04_ZONE_CALME_PERSONNALITE_005": true,
+    "G04_ZONE_CALME_PERSONNALITE_006": true,
+    "G04_ZONE_CALME_PERSONNALITE_007": true,
+    "G04_ZONE_CALME_PERSONNALITE_008": true,
+    "G04_ZONE_CALME_PERSONNALITE_009": true,
+    "G04_ZONE_CALME_PERSONNALITE_010": true,
+    "G04_ZONE_CALME_PERSONNALITE_011": true,
+    "G04_ZONE_CALME_PERSONNALITE_012": true,
+    "G04_ZONE_CALME_PERSONNALITE_013": true,
+    "G04_ZONE_CALME_PERSONNALITE_014": true,
+    "G04_ZONE_CALME_PERSONNALITE_015": true,
+    "G04_ZONE_CALME_PERSONNALITE_016": true,
+    "G04_ZONE_CALME_PERSONNALITE_017": true,
+    "G04_ZONE_CALME_PERSONNALITE_018": true,
+    "G04_ZONE_CALME_PERSONNALITE_019": true,
+    "G04_ZONE_CALME_PERSONNALITE_020": true,
+    "G04_ZONE_CALME_PERSONNALITE_021": true,
+    "G04_ZONE_CALME_PERSONNALITE_022": true,
+    "G04_ZONE_CALME_PERSONNALITE_023": true,
+    "G04_ZONE_CALME_PERSONNALITE_024": true,
+    "G04_ZONE_CALME_PERSONNALITE_025": true,
+    "G04_ZONE_CALME_PERSONNALITE_026": true,
+    "G04_ZONE_CALME_PERSONNALITE_027": true,
+    "G04_ZONE_CALME_PERSONNALITE_028": true,
+    "G04_ZONE_CALME_PERSONNALITE_029": true,
+    "G04_ZONE_CALME_PERSONNALITE_030": true,
+    "G04_ZONE_CALME_PERSONNALITE_031": true,
+    "G04_ZONE_CALME_PERSONNALITE_032": true,
+    "G04_ZONE_CALME_PERSONNALITE_033": true,
+    "G04_ZONE_CALME_PERSONNALITE_034": true,
+    "G04_ZONE_CALME_PERSONNALITE_035": true,
+    "G04_ZONE_CALME_PERSONNALITE_036": true,
+    "G04_ZONE_CALME_PERSONNALITE_037": true,
+    "G04_ZONE_CALME_PERSONNALITE_038": true,
+    "G04_ZONE_CALME_PERSONNALITE_039": true,
+    "G05_JALOUSIE_CONTROLEE_000": false,
+    "G05_JALOUSIE_CONTROLEE_001": false,
+    "G05_JALOUSIE_CONTROLEE_002": false,
+    "G05_JALOUSIE_CONTROLEE_003": true,
+    "G05_JALOUSIE_CONTROLEE_004": false,
+    "G05_JALOUSIE_CONTROLEE_005": true,
+    "G05_JALOUSIE_CONTROLEE_006": false,
+    "G05_JALOUSIE_CONTROLEE_007": true,
+    "G05_JALOUSIE_CONTROLEE_008": false,
+    "G05_JALOUSIE_CONTROLEE_009": false,
+    "G05_JALOUSIE_CONTROLEE_010": false,
+    "G05_JALOUSIE_CONTROLEE_011": false,
+    "G05_JALOUSIE_CONTROLEE_012": true,
+    "G05_JALOUSIE_CONTROLEE_013": true,
+    "G05_JALOUSIE_CONTROLEE_014": true,
+    "G05_JALOUSIE_CONTROLEE_015": false,
+    "G05_JALOUSIE_CONTROLEE_016": true,
+    "G05_JALOUSIE_CONTROLEE_017": true,
+    "G05_JALOUSIE_CONTROLEE_018": false,
+    "G05_JALOUSIE_CONTROLEE_019": true,
+    "G05_JALOUSIE_CONTROLEE_020": true,
+    "G05_JALOUSIE_CONTROLEE_021": false,
+    "G05_JALOUSIE_CONTROLEE_022": false,
+    "G05_JALOUSIE_CONTROLEE_023": false,
+    "G05_JALOUSIE_CONTROLEE_024": true,
+    "G05_JALOUSIE_CONTROLEE_025": true,
+    "G05_JALOUSIE_CONTROLEE_026": false,
+    "G05_JALOUSIE_CONTROLEE_027": false,
+    "G05_JALOUSIE_CONTROLEE_028": true,
+    "G05_JALOUSIE_CONTROLEE_029": true,
+    "G05_JALOUSIE_CONTROLEE_030": false,
+    "G05_JALOUSIE_CONTROLEE_031": false,
+    "G05_JALOUSIE_CONTROLEE_032": true,
+    "G05_JALOUSIE_CONTROLEE_033": true,
+    "G05_JALOUSIE_CONTROLEE_034": true,
+    "G05_JALOUSIE_CONTROLEE_035": false,
+    "G05_JALOUSIE_CONTROLEE_036": false,
+    "G05_JALOUSIE_CONTROLEE_037": false,
+    "G05_JALOUSIE_CONTROLEE_038": true,
+    "G05_JALOUSIE_CONTROLEE_039": false,
+    "G06_SIGNAL_CONTROLE_000": true,
+    "G06_SIGNAL_CONTROLE_001": true,
+    "G06_SIGNAL_CONTROLE_002": true,
+    "G06_SIGNAL_CONTROLE_003": true,
+    "G06_SIGNAL_CONTROLE_004": true,
+    "G06_SIGNAL_CONTROLE_005": true,
+    "G06_SIGNAL_CONTROLE_006": true,
+    "G06_SIGNAL_CONTROLE_007": true,
+    "G06_SIGNAL_CONTROLE_008": true,
+    "G06_SIGNAL_CONTROLE_009": true,
+    "G06_SIGNAL_CONTROLE_010": true,
+    "G06_SIGNAL_CONTROLE_011": true,
+    "G06_SIGNAL_CONTROLE_012": true,
+    "G06_SIGNAL_CONTROLE_013": true,
+    "G06_SIGNAL_CONTROLE_014": true,
+    "G06_SIGNAL_CONTROLE_015": true,
+    "G06_SIGNAL_CONTROLE_016": true,
+    "G06_SIGNAL_CONTROLE_017": true,
+    "G06_SIGNAL_CONTROLE_018": true,
+    "G06_SIGNAL_CONTROLE_019": true,
+    "G06_SIGNAL_CONTROLE_020": true,
+    "G06_SIGNAL_CONTROLE_021": true,
+    "G06_SIGNAL_CONTROLE_022": true,
+    "G06_SIGNAL_CONTROLE_023": true,
+    "G06_SIGNAL_CONTROLE_024": true,
+    "G06_SIGNAL_CONTROLE_025": true,
+    "G06_SIGNAL_CONTROLE_026": true,
+    "G06_SIGNAL_CONTROLE_027": true,
+    "G06_SIGNAL_CONTROLE_028": true,
+    "G06_SIGNAL_CONTROLE_029": true,
+    "G06_SIGNAL_CONTROLE_030": true,
+    "G06_SIGNAL_CONTROLE_031": true,
+    "G06_SIGNAL_CONTROLE_032": true,
+    "G06_SIGNAL_CONTROLE_033": true,
+    "G06_SIGNAL_CONTROLE_034": true,
+    "G06_SIGNAL_CONTROLE_035": true,
+    "G06_SIGNAL_CONTROLE_036": true,
+    "G06_SIGNAL_CONTROLE_037": true,
+    "G06_SIGNAL_CONTROLE_038": true,
+    "G06_SIGNAL_CONTROLE_039": true,
+    "G07_FRONTIERE_AO_000": true,
+    "G07_FRONTIERE_AO_001": true,
+    "G07_FRONTIERE_AO_002": false,
+    "G07_FRONTIERE_AO_003": true,
+    "G07_FRONTIERE_AO_004": true,
+    "G07_FRONTIERE_AO_005": true,
+    "G07_FRONTIERE_AO_006": true,
+    "G07_FRONTIERE_AO_007": true,
+    "G07_FRONTIERE_AO_008": true,
+    "G07_FRONTIERE_AO_009": true,
+    "G07_FRONTIERE_AO_010": true,
+    "G07_FRONTIERE_AO_011": false,
+    "G07_FRONTIERE_AO_012": true,
+    "G07_FRONTIERE_AO_013": true,
+    "G07_FRONTIERE_AO_014": true,
+    "G07_FRONTIERE_AO_015": true,
+    "G07_FRONTIERE_AO_016": true,
+    "G07_FRONTIERE_AO_017": true,
+    "G07_FRONTIERE_AO_018": true,
+    "G07_FRONTIERE_AO_019": true,
+    "G07_FRONTIERE_AO_020": true,
+    "G07_FRONTIERE_AO_021": true,
+    "G07_FRONTIERE_AO_022": true,
+    "G07_FRONTIERE_AO_023": true,
+    "G07_FRONTIERE_AO_024": true,
+    "G07_FRONTIERE_AO_025": true,
+    "G07_FRONTIERE_AO_026": true,
+    "G07_FRONTIERE_AO_027": true,
+    "G07_FRONTIERE_AO_028": true,
+    "G07_FRONTIERE_AO_029": true,
+    "G07_FRONTIERE_AO_030": true,
+    "G07_FRONTIERE_AO_031": true,
+    "G07_FRONTIERE_AO_032": true,
+    "G07_FRONTIERE_AO_033": true,
+    "G07_FRONTIERE_AO_034": true,
+    "G07_FRONTIERE_AO_035": true,
+    "G07_FRONTIERE_AO_036": true,
+    "G07_FRONTIERE_AO_037": true,
+    "G07_FRONTIERE_AO_038": true,
+    "G07_FRONTIERE_AO_039": true,
+    "G08_FRONTIERE_N_000": true,
+    "G08_FRONTIERE_N_001": true,
+    "G08_FRONTIERE_N_002": true,
+    "G08_FRONTIERE_N_003": true,
+    "G08_FRONTIERE_N_004": true,
+    "G08_FRONTIERE_N_005": true,
+    "G08_FRONTIERE_N_006": true,
+    "G08_FRONTIERE_N_007": true,
+    "G08_FRONTIERE_N_008": true,
+    "G08_FRONTIERE_N_009": true,
+    "G08_FRONTIERE_N_010": true,
+    "G08_FRONTIERE_N_011": true,
+    "G08_FRONTIERE_N_012": true,
+    "G08_FRONTIERE_N_013": true,
+    "G08_FRONTIERE_N_014": true,
+    "G08_FRONTIERE_N_015": true,
+    "G08_FRONTIERE_N_016": true,
+    "G08_FRONTIERE_N_017": true,
+    "G08_FRONTIERE_N_018": true,
+    "G08_FRONTIERE_N_019": true,
+    "G08_FRONTIERE_N_020": true,
+    "G08_FRONTIERE_N_021": true,
+    "G08_FRONTIERE_N_022": true,
+    "G08_FRONTIERE_N_023": true,
+    "G08_FRONTIERE_N_024": true,
+    "G08_FRONTIERE_N_025": true,
+    "G08_FRONTIERE_N_026": true,
+    "G08_FRONTIERE_N_027": true,
+    "G08_FRONTIERE_N_028": true,
+    "G08_FRONTIERE_N_029": true,
+    "G08_FRONTIERE_N_030": true,
+    "G08_FRONTIERE_N_031": true,
+    "G08_FRONTIERE_N_032": true,
+    "G08_FRONTIERE_N_033": true,
+    "G08_FRONTIERE_N_034": true,
+    "G08_FRONTIERE_N_035": true,
+    "G08_FRONTIERE_N_036": true,
+    "G08_FRONTIERE_N_037": true,
+    "G08_FRONTIERE_N_038": true,
+    "G08_FRONTIERE_N_039": true,
+    "G09_FRONTIERE_R_000": false,
+    "G09_FRONTIERE_R_001": true,
+    "G09_FRONTIERE_R_002": true,
+    "G09_FRONTIERE_R_003": true,
+    "G09_FRONTIERE_R_004": true,
+    "G09_FRONTIERE_R_005": true,
+    "G09_FRONTIERE_R_006": true,
+    "G09_FRONTIERE_R_007": true,
+    "G09_FRONTIERE_R_008": true,
+    "G09_FRONTIERE_R_009": true,
+    "G09_FRONTIERE_R_010": true,
+    "G09_FRONTIERE_R_011": true,
+    "G09_FRONTIERE_R_012": true,
+    "G09_FRONTIERE_R_013": true,
+    "G09_FRONTIERE_R_014": true,
+    "G09_FRONTIERE_R_015": false,
+    "G09_FRONTIERE_R_016": true,
+    "G09_FRONTIERE_R_017": true,
+    "G09_FRONTIERE_R_018": true,
+    "G09_FRONTIERE_R_019": true,
+    "G09_FRONTIERE_R_020": true,
+    "G09_FRONTIERE_R_021": true,
+    "G09_FRONTIERE_R_022": true,
+    "G09_FRONTIERE_R_023": true,
+    "G09_FRONTIERE_R_024": true,
+    "G09_FRONTIERE_R_025": true,
+    "G09_FRONTIERE_R_026": true,
+    "G09_FRONTIERE_R_027": true,
+    "G09_FRONTIERE_R_028": false,
+    "G09_FRONTIERE_R_029": true,
+    "G09_FRONTIERE_R_030": true,
+    "G09_FRONTIERE_R_031": false,
+    "G09_FRONTIERE_R_032": true,
+    "G09_FRONTIERE_R_033": true,
+    "G09_FRONTIERE_R_034": true,
+    "G09_FRONTIERE_R_035": true,
+    "G09_FRONTIERE_R_036": true,
+    "G09_FRONTIERE_R_037": true,
+    "G09_FRONTIERE_R_038": true,
+    "G09_FRONTIERE_R_039": false,
+    "G10_FRONTIERE_J_000": true,
+    "G10_FRONTIERE_J_001": true,
+    "G10_FRONTIERE_J_002": true,
+    "G10_FRONTIERE_J_003": true,
+    "G10_FRONTIERE_J_004": true,
+    "G10_FRONTIERE_J_005": true,
+    "G10_FRONTIERE_J_006": false,
+    "G10_FRONTIERE_J_007": false,
+    "G10_FRONTIERE_J_008": true,
+    "G10_FRONTIERE_J_009": true,
+    "G10_FRONTIERE_J_010": true,
+    "G10_FRONTIERE_J_011": true,
+    "G10_FRONTIERE_J_012": true,
+    "G10_FRONTIERE_J_013": true,
+    "G10_FRONTIERE_J_014": true,
+    "G10_FRONTIERE_J_015": true,
+    "G10_FRONTIERE_J_016": true,
+    "G10_FRONTIERE_J_017": true,
+    "G10_FRONTIERE_J_018": true,
+    "G10_FRONTIERE_J_019": true,
+    "G10_FRONTIERE_J_020": true,
+    "G10_FRONTIERE_J_021": true,
+    "G10_FRONTIERE_J_022": true,
+    "G10_FRONTIERE_J_023": true,
+    "G10_FRONTIERE_J_024": true,
+    "G10_FRONTIERE_J_025": true,
+    "G10_FRONTIERE_J_026": true,
+    "G10_FRONTIERE_J_027": false,
+    "G10_FRONTIERE_J_028": true,
+    "G10_FRONTIERE_J_029": true,
+    "G10_FRONTIERE_J_030": true,
+    "G10_FRONTIERE_J_031": true,
+    "G10_FRONTIERE_J_032": true,
+    "G10_FRONTIERE_J_033": true,
+    "G10_FRONTIERE_J_034": true,
+    "G10_FRONTIERE_J_035": true,
+    "G10_FRONTIERE_J_036": true,
+    "G10_FRONTIERE_J_037": true,
+    "G10_FRONTIERE_J_038": true,
+    "G10_FRONTIERE_J_039": true,
+    "G11_NUAGE_000": true,
+    "G11_NUAGE_001": true,
+    "G11_NUAGE_002": true,
+    "G11_NUAGE_003": true,
+    "G11_NUAGE_004": true,
+    "G11_NUAGE_005": true,
+    "G11_NUAGE_006": true,
+    "G11_NUAGE_007": true,
+    "G11_NUAGE_008": true,
+    "G11_NUAGE_009": true,
+    "G11_NUAGE_010": true,
+    "G11_NUAGE_011": true,
+    "G11_NUAGE_012": true,
+    "G11_NUAGE_013": true,
+    "G11_NUAGE_014": true,
+    "G11_NUAGE_015": true,
+    "G11_NUAGE_016": true,
+    "G11_NUAGE_017": true,
+    "G11_NUAGE_018": true,
+    "G11_NUAGE_019": true,
+    "G11_NUAGE_020": true,
+    "G11_NUAGE_021": true,
+    "G11_NUAGE_022": true,
+    "G11_NUAGE_023": true,
+    "G11_NUAGE_024": true,
+    "G11_NUAGE_025": true,
+    "G11_NUAGE_026": true,
+    "G11_NUAGE_027": true,
+    "G11_NUAGE_028": true,
+    "G11_NUAGE_029": true,
+    "G11_NUAGE_030": true,
+    "G11_NUAGE_031": true,
+    "G11_NUAGE_032": true,
+    "G11_NUAGE_033": true,
+    "G11_NUAGE_034": true,
+    "G11_NUAGE_035": true,
+    "G11_NUAGE_036": true,
+    "G11_NUAGE_037": true,
+    "G11_NUAGE_038": true,
+    "G11_NUAGE_039": true,
+    "G12_PIEGES_RQS_000": true,
+    "G12_PIEGES_RQS_001": true,
+    "G12_PIEGES_RQS_002": true,
+    "G12_PIEGES_RQS_003": true,
+    "G12_PIEGES_RQS_004": true,
+    "G12_PIEGES_RQS_005": true,
+    "G12_PIEGES_RQS_006": true,
+    "G12_PIEGES_RQS_007": true,
+    "G12_PIEGES_RQS_008": true,
+    "G12_PIEGES_RQS_009": true,
+    "G12_PIEGES_RQS_010": true,
+    "G12_PIEGES_RQS_011": true,
+    "G12_PIEGES_RQS_012": true,
+    "G12_PIEGES_RQS_013": true,
+    "G12_PIEGES_RQS_014": true,
+    "G12_PIEGES_RQS_015": true,
+    "G12_PIEGES_RQS_016": true,
+    "G12_PIEGES_RQS_017": true,
+    "G12_PIEGES_RQS_018": true,
+    "G12_PIEGES_RQS_019": true,
+    "G12_PIEGES_RQS_020": true,
+    "G12_PIEGES_RQS_021": true,
+    "G12_PIEGES_RQS_022": true,
+    "G12_PIEGES_RQS_023": true,
+    "G12_PIEGES_RQS_024": true,
+    "G12_PIEGES_RQS_025": true,
+    "G12_PIEGES_RQS_026": true,
+    "G12_PIEGES_RQS_027": true,
+    "G12_PIEGES_RQS_028": true,
+    "G12_PIEGES_RQS_029": true,
+    "G12_PIEGES_RQS_030": true,
+    "G12_PIEGES_RQS_031": true,
+    "G12_PIEGES_RQS_032": true,
+    "G12_PIEGES_RQS_033": true,
+    "G12_PIEGES_RQS_034": true,
+    "G12_PIEGES_RQS_035": true,
+    "G12_PIEGES_RQS_036": true,
+    "G12_PIEGES_RQS_037": true,
+    "G12_PIEGES_RQS_038": true,
+    "G12_PIEGES_RQS_039": true,
+    "G13_RIVES_DISSEMBLABLES_000": true,
+    "G13_RIVES_DISSEMBLABLES_001": true,
+    "G13_RIVES_DISSEMBLABLES_002": true,
+    "G13_RIVES_DISSEMBLABLES_003": true,
+    "G13_RIVES_DISSEMBLABLES_004": true,
+    "G13_RIVES_DISSEMBLABLES_005": true,
+    "G13_RIVES_DISSEMBLABLES_006": true,
+    "G13_RIVES_DISSEMBLABLES_007": true,
+    "G13_RIVES_DISSEMBLABLES_008": true,
+    "G13_RIVES_DISSEMBLABLES_009": true,
+    "G13_RIVES_DISSEMBLABLES_010": true,
+    "G13_RIVES_DISSEMBLABLES_011": true,
+    "G13_RIVES_DISSEMBLABLES_012": true,
+    "G13_RIVES_DISSEMBLABLES_013": true,
+    "G13_RIVES_DISSEMBLABLES_014": true,
+    "G13_RIVES_DISSEMBLABLES_015": true,
+    "G13_RIVES_DISSEMBLABLES_016": true,
+    "G13_RIVES_DISSEMBLABLES_017": true,
+    "G13_RIVES_DISSEMBLABLES_018": true,
+    "G13_RIVES_DISSEMBLABLES_019": true,
+    "G13_RIVES_DISSEMBLABLES_020": true,
+    "G13_RIVES_DISSEMBLABLES_021": true,
+    "G13_RIVES_DISSEMBLABLES_022": true,
+    "G13_RIVES_DISSEMBLABLES_023": true,
+    "G13_RIVES_DISSEMBLABLES_024": true,
+    "G13_RIVES_DISSEMBLABLES_025": true,
+    "G13_RIVES_DISSEMBLABLES_026": true,
+    "G13_RIVES_DISSEMBLABLES_027": false,
+    "G13_RIVES_DISSEMBLABLES_028": true,
+    "G13_RIVES_DISSEMBLABLES_029": true,
+    "G13_RIVES_DISSEMBLABLES_030": true,
+    "G13_RIVES_DISSEMBLABLES_031": true,
+    "G13_RIVES_DISSEMBLABLES_032": true,
+    "G13_RIVES_DISSEMBLABLES_033": true,
+    "G13_RIVES_DISSEMBLABLES_034": true,
+    "G13_RIVES_DISSEMBLABLES_035": true,
+    "G13_RIVES_DISSEMBLABLES_036": true,
+    "G13_RIVES_DISSEMBLABLES_037": true,
+    "G13_RIVES_DISSEMBLABLES_038": true,
+    "G13_RIVES_DISSEMBLABLES_039": true,
+    "G14_RE_TEST_000": false,
+    "G14_RE_TEST_001": false,
+    "G14_RE_TEST_002": true,
+    "G14_RE_TEST_003": false,
+    "G14_RE_TEST_004": true,
+    "G14_RE_TEST_005": false,
+    "G14_RE_TEST_006": true,
+    "G14_RE_TEST_007": false,
+    "G14_RE_TEST_008": true,
+    "G14_RE_TEST_009": false,
+    "G14_RE_TEST_010": true,
+    "G14_RE_TEST_011": true,
+    "G14_RE_TEST_012": false,
+    "G14_RE_TEST_013": false,
+    "G14_RE_TEST_014": false,
+    "G14_RE_TEST_015": true,
+    "G14_RE_TEST_016": false,
+    "G14_RE_TEST_017": false,
+    "G14_RE_TEST_018": false,
+    "G14_RE_TEST_019": false,
+    "G14_RE_TEST_020": false,
+    "G14_RE_TEST_021": false,
+    "G14_RE_TEST_022": false,
+    "G14_RE_TEST_023": false,
+    "G14_RE_TEST_024": false,
+    "G14_RE_TEST_025": true,
+    "G14_RE_TEST_026": false,
+    "G14_RE_TEST_027": true,
+    "G14_RE_TEST_028": true,
+    "G14_RE_TEST_029": false,
+    "G14_RE_TEST_030": false,
+    "G14_RE_TEST_031": true,
+    "G14_RE_TEST_032": true,
+    "G14_RE_TEST_033": true,
+    "G14_RE_TEST_034": true,
+    "G14_RE_TEST_035": true,
+    "G14_RE_TEST_036": false,
+    "G14_RE_TEST_037": true,
+    "G14_RE_TEST_038": false,
+    "G14_RE_TEST_039": false
+  },
+  "faux_positifs_filet_detecte": 19,
+  "faux_positifs_par_groupe": {
+    "G01_QUATRE_AXES_VIFS": 13,
+    "G05_JALOUSIE_CONTROLEE": 5,
+    "G14_RE_TEST": 1
+  },
+  "n_groupes": 14,
+  "n_rives": 1120,
+  "n_total": 560,
+  "paliers_globaux": {
+    "EXERCICE MAISON": 657,
+    "MODULE DE COUPLE": 149,
+    "NON_AFFICHÉE": 131,
+    "ORIENTATION": 183
+  },
+  "population": {
+    "ci90_demi": 0.4128,
+    "inverses": [
+      "PERS-J2-3",
+      "PERS-N2-3"
+    ],
+    "n_couples": 560,
+    "n_items": 24,
+    "n_rives": 1120,
+    "placeholder": "à remplacer par le pilote (L2, ligne 258)",
+    "se_face": 0.381,
+    "seed": 42,
+    "sem_placeholder": 0.2517,
+    "seuil_hierarchie": 0.8837,
+    "sigma_eff_axe": 0.2449,
+    "sigma_item": 0.6
+  },
+  "rci": {
+    "se_diff": 0.356,
+    "seuil_fiable": 0.58,
+    "seuil_suggestion": 0.41,
+    "traversees": 61,
+    "verdicts": {
+      "BRUIT": 31,
+      "FIABLE": 30,
+      "N/A": 1041,
+      "SUGGESTION": 18
+    }
+  },
+  "reconciliation": true,
+  "sha256_run": "3b1a74909e9d86e178ad60bd1caa94f61f675532e6ffeaeff0539d24d5271e2c",
+  "stats_groupes": {
+    "G01_QUATRE_AXES_VIFS": {
+      "conformes": 23,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 20,
+        "NUAGE": 248
+      },
+      "filets": 13,
+      "lectures": {
+        "FRONTIÈRE": 265,
+        "NIVEAU": 3
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 4,
+        "MODULE DE COUPLE": 60,
+        "NON_AFFICHÉE": 13,
+        "ORIENTATION": 3
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 78,
+        "PRUDENCE": 2
+      }
+    },
+    "G02_ASYMETRIE_MARQUEE": {
+      "conformes": 35,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 21,
+        "NUAGE": 299
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 244,
+        "NIVEAU": 76
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 0,
+        "MODULE DE COUPLE": 5,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 75
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 78,
+        "PRUDENCE": 2
+      }
+    },
+    "G03_REPARATION_ABSENTE": {
+      "conformes": 27,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 28,
+        "NUAGE": 292
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 257,
+        "NIVEAU": 63
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 0,
+        "MODULE DE COUPLE": 17,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 63
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G04_ZONE_CALME_PERSONNALITE": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 40,
+        "NUAGE": 280
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 320,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 80,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    },
+    "G05_JALOUSIE_CONTROLEE": {
+      "conformes": 18,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 48,
+        "NUAGE": 252
+      },
+      "filets": 5,
+      "lectures": {
+        "FRONTIÈRE": 297,
+        "NIVEAU": 3
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 16,
+        "MODULE DE COUPLE": 56,
+        "NON_AFFICHÉE": 5,
+        "ORIENTATION": 3
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G06_SIGNAL_CONTROLE": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 0,
+        "NUAGE": 0
+      },
+      "filets": 80,
+      "lectures": {
+        "FRONTIÈRE": 0,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 0,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 80,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 68,
+        "PRUDENCE": 12
+      }
+    },
+    "G07_FRONTIERE_AO": {
+      "conformes": 38,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 34,
+        "NUAGE": 286
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 319,
+        "NIVEAU": 1
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 78,
+        "MODULE DE COUPLE": 2,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G08_FRONTIERE_N": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 44,
+        "NUAGE": 276
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 319,
+        "NIVEAU": 1
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 80,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G09_FRONTIERE_R": {
+      "conformes": 35,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 49,
+        "NUAGE": 271
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 319,
+        "NIVEAU": 1
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 75,
+        "MODULE DE COUPLE": 5,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G10_FRONTIERE_J": {
+      "conformes": 37,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 38,
+        "NUAGE": 282
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 318,
+        "NIVEAU": 2
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 77,
+        "MODULE DE COUPLE": 3,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    },
+    "G11_NUAGE": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 50,
+        "NUAGE": 270
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 315,
+        "NIVEAU": 5
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 80,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    },
+    "G12_PIEGES_RQS": {
+      "conformes": 40,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 4,
+        "NUAGE": 188
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 192,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 48,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 32,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 32,
+        "OK": 0,
+        "PRUDENCE": 48
+      }
+    },
+    "G13_RIVES_DISSEMBLABLES": {
+      "conformes": 39,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 49,
+        "NUAGE": 271
+      },
+      "filets": 0,
+      "lectures": {
+        "FRONTIÈRE": 215,
+        "NIVEAU": 105
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 40,
+        "MODULE DE COUPLE": 1,
+        "NON_AFFICHÉE": 0,
+        "ORIENTATION": 39
+      },
+      "rci": {
+        "BRUIT": 0,
+        "FIABLE": 0,
+        "N/A": 80,
+        "SUGGESTION": 0
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 79,
+        "PRUDENCE": 1
+      }
+    },
+    "G14_RE_TEST": {
+      "conformes": 16,
+      "faces": {
+        "HIÉRARCHIE DÉCLARABLE": 45,
+        "NUAGE": 271
+      },
+      "filets": 1,
+      "lectures": {
+        "FRONTIÈRE": 316,
+        "NIVEAU": 0
+      },
+      "n": 40,
+      "paliers": {
+        "EXERCICE MAISON": 79,
+        "MODULE DE COUPLE": 0,
+        "NON_AFFICHÉE": 1,
+        "ORIENTATION": 0
+      },
+      "rci": {
+        "BRUIT": 31,
+        "FIABLE": 30,
+        "N/A": 1,
+        "SUGGESTION": 18
+      },
+      "statuts_rqs": {
+        "INVALIDE": 0,
+        "OK": 80,
+        "PRUDENCE": 0
+      }
+    }
+  }
+}
