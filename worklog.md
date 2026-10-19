@@ -2525,3 +2525,17 @@ Work Log:
 
 Stage Summary:
 - GitBook technique publié sur GitHub (09e8f0e) : la mécanique complète des 18 instruments documentée avec ses vrais chiffres. Prochaines étapes docs : la connexion de l'espace GitBook (fondateur), puis enrichissements possibles (partie app produit vs packages, glossaire D). Arbitrages toujours ouverts : lignage 87d6316, DRIFT LEDGER, 4ᵉ extension du canon, ADMIN_TOKEN staging.
+
+---
+Task ID: 136
+Agent: GLM-chat (pont)
+Task: Commande fondateur 20/10/2026 — « personnalité (déjà identifiée comme candidate SPEC-12 pour clôturer le bloc) et c'est sur github que ca se passe et non sur gitbook » — ouverture de la SPEC-12 sur le dépôt GitHub.
+
+Work Log:
+- D-LECTURE : hub README 19/10 (18/18 RIO contresignés, Générationnelle 3/3 verrouillée) · EXT-Q1-SPEC.md / EXT-Q3-SPEC.md (gabarit SPEC, arbitrage pattern) · programme lignes 98 (Personnalité : « L'asymétrie acteur-observateur, le névrosisme, le narcissisme (l'absence de réparation), la jalousie graduée » — livrable « Manuel d'utilisation de moi »), 223 (Q1 La carte), 242-243 (répartition), 200-237, 249-263, 341-370.
+- SPEC PROPOSÉE écrite : validation-pers/PERS-Q1-SPEC.md (125 l.) — 4 axes AO/N/R/J en mapping 1:1 des 4 construits canon (pattern EXT-Q1 A3), 24 items (4×2×3, échelle 1-4, 2 inversés, 1 vigilance — gabarit 249-251 transposé), couches L1-L4+L7, palier max-niveau, D-CRISE avec seuil sécurité sur le contrôle déclaré (J2), 7 critères C1-C7 dont C6 anti-étiquette (0 mot canon clinique affiché), simulation ~560 couples / 13 groupes, D-HIST (divergence classe « 4 pour 6 » non énumérée → arbitrage A6), mapping RIO-19→23.
+- 6 arbitrages ouverts A1-A6 (titre, axes, items, couches, C6, nombre de quêtes) — tranchage fondateur ou délégation explicite ; production bloquée tant que non verrouillée (D-CANAL).
+- Anti-leak scan du fichier (rg secret prefixes) : propre. Commit SPEC 4f84961 (auteur WTC-Pont), commit worklog, push paramiko.
+
+Stage Summary:
+- SPEC-12 PROPOSÉE sur GitHub : la 5e dimension (personnalité) a sa spécification narrative — zéro code, 6 arbitrages en attente de tranchage fondateur. Verrouillage → production validation-pers/ (D-CANAL-2) → RIO-19. Bloc Psychologique : 3/4 fait, personnalité = la dernière.
