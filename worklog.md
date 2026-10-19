@@ -2494,3 +2494,18 @@ Work Log:
 
 Stage Summary:
 - Local = origin/main PROUVÉ (240704f + présent commit) ; PAT mémorisé hors dépôt (jamais versionné, jamais révoqué) ; zéro contenu nouveau ; RIO-18 en attente de contresignature (« je valide ») — Générationnelle 3/3 à la clé. Chaîne : … → 1fc88a5 (RIO-17 contresigné) → fcccaf1 → f027823 → c68c78d → 240704f (RIO-18 publié) → présent commit.
+
+---
+Task ID: 134-CF-REPROVISION
+Agent: Z.ai Code (orchestrateur)
+Task: Re-provisionnement fondateur des credentials Cloudflare (réponse directe au signalement Task 132/133) + preuve indépendante de la contresignature RIO-18 depuis clone frais. Reprise post-reset — contexte repris par D-LECTURE sur origin, jamais par le résumé.
+
+Work Log:
+- D-LECTURE d'état sur clone frais origin (main = c2ac981) : contresignature RIO-18 « Le pas de l'horizon » DÉJÀ posée par le pont (c2ac981, 19/10/2026 05:36 UTC, feu vert fondateur « je valide ») — hub 18/18, rapport ligne statut « contresigné (pont, 19/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 2e31e14d… inchangée) », JSON publié sha1=sha2=2e31e14d6e1d… (C4 PASS). Cycle RIO-18 clos, rien à graver de plus ; Générationnelle 3/3 confirmée sur ce qui est publié.
+- Re-provisionnement fondateur reçu : jeton Cloudflare (préfixe cfut_) + id fourni étiqueté « id ». Vérifs API à l'instant T : /user/tokens/verify → success:true, status active, not_before 2026-09-22, expires_on 2026-12-30T23:59:59Z (même fenêtre que le jeton Task 113 ; id du jeton b2d17e4c…, référence non secrète) ; /accounts → compte UNIQUE a6ad9b4a2f8b42a6cf7f38e4e519ec22 « Wairyu26@gmail.com's Account » → l'id fourni = CLOUDFLARE_ACCOUNT_ID, liaison jeton↔compte PROUVÉE.
+- Stockage protocolaire : /home/z/SECRETS-WAIRYU-LOCAL.txt reconstitué (CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID, chmod 600, HORS de tout dépôt — git confirme « outside repository » —, jamais versionné, jamais affiché ; même discipline Tasks 112-bis/113/132). La valeur du jeton ne figure ni dans le présent worklog ni dans aucun fichier versionné.
+- Hygiène constatée : le workspace /home/z/my-project est lui-même un dépôt git local (sans remote) — secrets volontairement tenus hors de cet arbre ; deploy key ed25519 (secrets-wairyu/) utilisée pour le présent push.
+- Arbitrages restants (Task 132/133, inchangés) : ADMIN_TOKEN staging non re-provisionné (aucun déploiement ordonné à ce stade) ; lignage 87d6316 sans trace dans l'historique GitHub (arbitrage fondateur en attente).
+
+Stage Summary:
+- Credentials Cloudflare re-provisionnés et VÉRIFIÉS (token actif jusqu'au 2026-12-30, liaison compte unique prouvée) — l'arbitrage « pertes de jetons » est levé côté CF ; les déploiements redeviennent techniquement possibles sur ordre fondateur explicite. ADMIN_TOKEN staging reste à fournir. Registre : 18/18 RIO contresignés, preuve indépendante RIO-18 notée depuis clone frais. Chaîne : … → 240704f → 5f5e13b → c2ac981 → présent commit.
