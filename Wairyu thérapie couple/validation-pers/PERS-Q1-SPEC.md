@@ -6,6 +6,7 @@
 > Erratum ANNONCÉ (verrouillage) : §6 précisé — l'univers simulé compte **14 groupes, 560 couples** (le décompte proposé « 13 groupes » omettait RE_TEST dans son énumération ; les quatre premiers groupes harmonisés à 40 — 14 × 40 = 560).
 > Seuil sécurité contrôle (A5/§4 fixé au verrouillage) : voie héritée (signal sécurité déclaré — déterministe) OU voie détectée (lecture conservatrice de la face « Le contrôle » = FORTE, règle L3 réutilisée — zéro constante nouvelle).
 > D-HIST : confrontation fondation effectuée (voir §7).
+> **Contresignature RIO-19 : « je valide » — fondateur, 20/10/2026.** Registre **19/19** (RIO-01 → RIO-19) ; package `validation-pers-q1/` produit (VALIDÉ 7/7, SHA ×2 3b1a7490…), pointeurs à jour.
 
 ---
 
@@ -105,7 +106,7 @@ Le filet global s'applique : « Filet de sécurité : 9 signaux spécialisés pa
 
 | Quête | RIO | Rôle |
 |-------|-----|------|
-| **Q1 « Manuel d'utilisation de moi »** (titre A1) | **RIO-19** | **La carte (mesure) — 4 axes AO/N/R/J — SPEC PROPOSÉE (ce document)** |
+| **Q1 « Manuel d'utilisation de moi »** (titre A1) | **RIO-19** | **La carte (mesure) — 4 axes AO/N/R/J — PRODUIT & CONTRESIGNÉ (validation-pers-q1/, VALIDÉ 7/7, SHA ×2 3b1a7490…, « je valide » fondateur 20/10) — ce document = SPEC verrouillée** |
 | Q2 — titre à la SPEC Q2 | RIO-20 | L'ombre (mécanisme profond — ligne 223) — SPEC à venir |
 | Q3 — titre à la SPEC Q3 | RIO-21 | La lumière (forces dérivées — banque L5) — SPEC à venir |
 | Q4 — titre à la SPEC Q4 | RIO-22 | Le croisement (à deux, confirmé) — SPEC à venir |
