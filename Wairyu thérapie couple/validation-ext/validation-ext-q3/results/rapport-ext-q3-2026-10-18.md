@@ -288,7 +288,7 @@ D-VÉRITÉ · D-CONFIRMATION · D-STD-2 · D-EMPREINTE · D-SIM · D-CRISE · D-
 
 ### RIO-18
 
-RIO-18 « Le pas de l'horizon » — publié, en audit (contresignature à la validation fondateur).
+RIO-18 « Le pas de l'horizon » — contresigné (pont, 19/10/2026 ; auto-audit origin : reproduction prouvée, empreinte 2e31e14d… inchangée).
 
 ### Inventaire structurel
 

@@ -952,8 +952,8 @@ def _section_g(L, r1, sha1, sha2):
     if v == "VALIDÉ":
         L.append("### RIO-18")
         L.append("")
-        L.append("RIO-18 « Le pas de l'horizon » — publié, en audit "
-                 "(contresignature à la validation fondateur).")
+        L.append("RIO-18 « Le pas de l'horizon » — contresigné (pont, 19/10/2026 ; "
+                 "auto-audit origin : reproduction prouvée, empreinte 2e31e14d… inchangée).")
         L.append("")
         L.append("### Inventaire structurel")
         L.append("")

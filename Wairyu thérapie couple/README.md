@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **18/10/2026** (RIO-18 « Le pas de l'horizon » VALIDÉ 7/7 et publié — **en audit** ; SPEC Q3 verrouillée par délégation fondateur (« fais le toi meme ») ; Générationnelle 3/3 à la contresignature).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **19/10/2026** (RIO-18 « Le pas de l'horizon » contresigné — 18/18 RIO ; Générationnelle 3/3 verrouillée).
 
 ---
 
@@ -38,14 +38,14 @@ Wairyu thérapie couple/
 │   ├── validation-sm-q4/ (RIO-14 — contresigné)
 │   └── validation-sm-q5/ (RIO-15 — contresigné)
 │
-│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1-Q3 verrouillées 18/10 · RIO-16 · RIO-17 contresignés · RIO-18 en audit) ═══
+│  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1-Q3 verrouillées 18/10 · RIO-16 · RIO-17 · RIO-18 contresignés) ═══
 ├── validation-ext/
 │   ├── EXT-Q1-SPEC.md (verrouillée 18/10 — A1-A5 tranchés par délégation)
 │   ├── EXT-Q2-SPEC.md (verrouillée 18/10 — A1-A6 tranchés par délégation)
 │   ├── EXT-Q3-SPEC.md (verrouillée 18/10 — A1-A6 tranchés par délégation)
 │   ├── validation-ext-q1/ (RIO-16 — contresigné)
 │   ├── validation-ext-q2/ (RIO-17 — contresigné)
-│   └── validation-ext-q3/ (RIO-18 — en audit)
+│   └── validation-ext-q3/ (RIO-18 — contresigné)
 │
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
 ├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
@@ -92,13 +92,13 @@ Wairyu thérapie couple/
 | WTC-SM-Q4 | RIO-14 « Nos deux rives » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA c0220b04…) |
 | WTC-SM-Q5 | RIO-15 « Mon premier pas vers l'autre rive » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 6684a435…) |
 
-### Dimension EXTENSIONS — GÉNÉRATIONNELLE (RIO-16 · RIO-17 contresignés · RIO-18 en audit)
+### Dimension EXTENSIONS — GÉNÉRATIONNELLE (RIO-16 · RIO-17 · RIO-18 contresignés)
 
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-EXT-Q1 | RIO-16 « L'écart de nos horloges » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 3583fe56…) |
 | WTC-EXT-Q2 | RIO-17 « Notre conversation de l'horizon » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 2aea8d99…) |
-| WTC-EXT-Q3 | RIO-18 « Le pas de l'horizon » | 🔄 En audit (VALIDÉ 7/7 simulation, SHA 2e31e14d…) |
+| WTC-EXT-Q3 | RIO-18 « Le pas de l'horizon » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 2e31e14d…) |
 
 ### Pilote réel
 
@@ -106,7 +106,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 17 instruments RIO contresignés (RIO-01 à RIO-17) + RIO-18 en audit. 3 dimensions complètes + extensions Q3/3.**
+**Total : 18 instruments RIO contresignés (RIO-01 à RIO-18). 3 dimensions complètes + extensions 3/3.**
 
 ---
 
