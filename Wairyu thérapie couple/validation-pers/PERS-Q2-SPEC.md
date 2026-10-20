@@ -1,10 +1,11 @@
-# SPEC PROPOSÉE — WTC-PERS-Q2 « [titre — arbitrage A1] » (RIO-20)
+# SPEC VERROUILLÉE — WTC-PERS-Q2 « La mécanique sous ma carte » (RIO-20)
 
-> **Document de spécification PROPOSÉ — zéro code tant que non verrouillée (D-CANAL).**
+> **Document de spécification VERROUILLÉ — tranchage délégué au pont par le fondateur, 20/10/2026 (« je te laisse le choix de trancher », après publication de la proposition — main f2f8c28).**
 > Rôle canon (ligne 223) : « Q2 L'ombre (mécanisme profond) ». Quête 2/5 de la dimension Personnalité (A6 Q1 verrouillé : RIO-19 → RIO-23).
 > Q1 « Manuel d'utilisation de moi » (RIO-19) : PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…, « je valide » fondateur 20/10) — registre 19/19.
-> **Arbitrages ouverts : A1-A6 (§9) — tranchage fondateur ou délégation explicite.** Tant que non verrouillée : aucune production dans `validation-pers-q2/`.
-> Chaîne locale : 251b244 → … → 09e8f0e (GitBook) → 00926ef (Task 135) → 4f84961 (SPEC Q1) → 322514c (Task 136) → f4fa593 (SPEC Q1 verrouillée) → 4ee278b (RIO-19 produit) → a5507d5 (RIO-19 contresigné — registre 19/19).
+> **Arbitrages (pont, par délégation) : A1 titre « La mécanique sous ma carte » · A2 entrées hétérogènes 4 blocs (24 entrées + héritage Q1) · A3 nommage 7 configurations maison · A4 convergence Q1×Q2 = contrôle interne index (prudence ≤ 0,50, suppression à 0,00) — la couche L5 reste réservée à Q3 · A5 filet double voie (héritée + détectée) · A6 L1 adapté + L3 verbatim transposée + L4 nuage + L7 embarquée.**
+> D-CANAL levé par cette délégation : production `validation-pers-q2/` autorisée (séquence D-CANAL-2 complète → RIO-20), pattern Q1 (verrouillage → production → contresignature fondateur).
+> Chaîne locale : 251b244 → … → 09e8f0e (GitBook) → 00926ef (Task 135) → 4f84961 (SPEC Q1) → 322514c (Task 136) → f4fa593 (SPEC Q1 verrouillée) → 4ee278b (RIO-19 produit) → a5507d5 (RIO-19 contresigné — registre 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139).
 
 ---
 
@@ -107,21 +108,27 @@ Le filet global s'applique : « Filet de sécurité : 9 signaux spécialisés pa
 | Quête | RIO | Rôle | État |
 |-------|-----|------|------|
 | Q1 « Manuel d'utilisation de moi » | **RIO-19** | La carte (mesure) — 4 axes AO/N/R/J | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…) |
-| **Q2 — titre à l'arbitrage A1** | **RIO-20** | **L'ombre (mécanisme profond — ligne 223)** — cette SPEC | ⏳ PROPOSÉE (A1-A6 ouverts) |
+| **Q2 « La mécanique sous ma carte »** (titre A1) | **RIO-20** | **L'ombre (mécanisme profond — ligne 223)** | **Cette SPEC — VERROUILLÉE 20/10 par délégation** |
 | Q3 — titre à la SPEC Q3 | RIO-21 | La lumière (forces dérivées — banque L5) — SPEC à venir | à venir |
 | Q4 — titre à la SPEC Q4 | RIO-22 | Le croisement (à deux, confirmé) — SPEC à venir | à venir |
 | Q5 — titre à la SPEC Q5 | RIO-23 | Le pas (1 changement + suivi 14 j, 9/14 — lignes 224, 297-298) — SPEC à venir | à venir |
 
 ---
 
-## 9. Arbitrages ouverts (tranchage fondateur — ou délégation explicite)
+## 9. Verrouillage (délégation fondateur → pont, 20/10/2026)
 
-- **A1 — Titre de RIO-20** : (a) **« La mécanique sous ma carte »** — recommandé (continuité explicite carte Q1 → ombre Q2, rôle mécanisme profond dans le titre, pattern D-NOMENCLATURE) · (b) « Ce qui se joue dessous » (plus discret, moins descriptif) · (c) « L'ombre de ma carte » (reprend le mot canon mais reste métaphorique).
-- **A2 — Format d'entrées** : (a) **hétérogène 4 blocs (24 entrées : scénarios cochés + fréquences) + héritage Q1** — recommandé (pattern RIO-02, le mécanisme se mesure en situation) · (b) Likert uniforme 24 items (pattern Q1 transposé — plus uniforme, moins ancré).
-- **A3 — Nommage de l'ombre** : (a) **7 configurations maison** (pattern RIO-12 : double pente · penchant propre · orage lent · mur de défense · lentille · ombre éparpillée · zone calme — nommage par priorité) · (b) 4 lectures séparées (une par mécanisme, pas de label global) · (c) un label global unique.
-- **A4 — Convergence Q1×Q2** : (a) **module interne index (pattern RIO-02 étape 4 : prudence ≤ 0,50, suppression à 0,00)** — recommandé ; la couche L5 reste réservée à Q3 (A4 Q1 verrouillé) · (b) pas de convergence (ombre indépendante de la carte — contredit l'anti-fabrication §5.5).
-- **A5 — Filet de sécurité** : (a) **double voie transposée de Q1 (héritée + détectée)** — recommandé (zéro constante nouvelle) · (b) voie héritée seule (plus simple, laisse passer une lentille pleine si l'héritage est doux).
-- **A6 — Couches du moteur** : (a) **L1 adapté (RQS sur les entrées fréquentielles — rythme, cohérence ; les cochés hors anti-linéarité) + L3 verbatim transposée + L4 nuage + L7 embarquée (base du re-test 8 semaines posée dès l'ombre, pattern A4 Q1)** — recommandé · (b) lecture directe des blocs sans couches (contredit l'uniformité L1-L4 du standard, lignes 257-260).
+**Délégation prononcée en chat** : « je te laisse le choix de trancher » — prononcée après la publication de la proposition (main f2f8c28). Les 6 arbitrages sont tranchés par le pont, chacun ancré sur une ligne du programme, un instrument contresigné ou une règle permanente du hub ; aucun ne crée de règle nouvelle.
 
-**Tant que A1-A6 ne sont pas tranchés : D-CANAL maintenu — zéro code, zéro production dans `validation-pers-q2/`.** Après verrouillage : production (D-CANAL-2 complète : production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature RIO-20).
+- **A1 — Titre de RIO-20 : RETENU (a) « La mécanique sous ma carte »** — continuité explicite carte Q1 → ombre Q2, rôle mécanisme profond dans le titre (pattern D-NOMENCLATURE) ; le module d'app reste distinct de l'instrument.
+- **A2 — Format d'entrées : RETENU (a) hétérogène 4 blocs** — 24 entrées (A 6 cochés · N 4 fréquences + 1 sécurité · R 4 défenses + 2 gestes · J 6 cochés) + 1 item vigilance + héritage Q1 (pattern RIO-02 : le mécanisme se mesure en situation, pas en Likert abstrait) ; N4 inversé (retour au calme) dans le score N.
+- **A3 — Nommage de l'ombre : RETENU (a) 7 configurations maison** — ZONE_CALME · PENCHANT_PROPRE · ORAGE_LENT · MUR_DE_DÉFENSE · LENTILLE · DOUBLE_PENTE · OMBRE_PRUDENTE (index ≤ 0,50) ; plus DEUX états hors classification : P-FILTRE (signal sécurité) et OMBRE_SUPPRIMÉE (index 0,00) — pattern RIO-12 (classification + états).
+- **A4 — Convergence Q1×Q2 : RETENU (a) module interne index** (pattern RIO-02 étape 4 : prudence ≤ 0,50, suppression à 0,00) — ce contrôle de cohérence NE transpose PAS la couche L5 (empreinte situationnelle + 3 inférences, ligne 261), réservée à Q3 (A4 Q1 verrouillé).
+- **A5 — Filet de sécurité : RETENU (a) double voie transposée de Q1** — voie héritée (signal sécurité porté par l'héritage Q1) + voie détectée (ΣJ = 6/6 ET héritage J ≥ Vive) + item sécurité N5 ; zéro constante nouvelle, P-FILTRE avant l'arbre.
+- **A6 — Couches du moteur : RETENU (a)** — L1 adapté (RQS sur les 10 entrées fréquentielles : anti-linéarité, rythme, vigilance, cohérence N interne ; les 12 cochés hors anti-linéarité) · L3 verbatim (1,80 / 2,60 / 3,20 — échelle transposée 1,00-4,00) · L4 nuage (faces par bloc : A-ext/A-part · N-orage/N-retour · R-mur/R-geste · J-chaîne/J-vérif) · L7 RCI embarquée (base du re-test 8 semaines posée dès l'ombre, pattern A4 Q1).
+
+**FIXÉ** : Q2 = L'ombre (ligne 223) · titre RIO-20 « La mécanique sous ma carte » (A1) · entrées hétérogènes 24 + 1 vigilance + héritage Q1 (A2) · 7 configurations + 2 états (A3) · convergence index interne, L5 à Q3 (A4) · filet 2 voies + N5 (A5) · couches L1 adapté / L3 / L4 / L7 (A6) · palier = max(niveau A, N, R, J), signal → 🔴 court-circuit AVANT l'arbre (leçon Q5-A3) · C1-C7 libellés §5 (C6 : l'ombre = penchant, jamais un trait figé) · simulation 560 couples, 14 groupes (§6) · D-STD-2 bornes DISTINCTES par groupe (ad01f21) · SHA ×2 (D-EMPREINTE) · bandeau D-SIM · rapport autoporteur (Verdict fermé — leçon E-SM-12) · 0 invention de contenu thérapeutique.
+
+**LIBRE** : seuils D-STD-2 précis par groupe (calibrés binomial) · géométrie des centres exacte (D-GÉOMÉTRIE) · corps des 24 entrées et de l'item vigilance (rédaction ex nihilo, déposés à la couche app) · définitions de marquage de la convergence (ΣA ≥ 2 etc.) · seuil N5 · répartition interne des groupes de filet · noms internes · découpage en 3 fichiers · figures 1920×1080.
+
+**Prochaine étape** : production du package `validation-pers/validation-pers-q2/` (séquence D-CANAL-2 complète : production → run ×2 → SHA ×2 → publication → pointeurs → audit origin → contresignature RIO-20) — couverte par la délégation (« je te laisse le choix de trancher »), pattern Q1 annoncé avant le tranchage.
 
