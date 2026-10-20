@@ -2641,3 +2641,20 @@ Work Log:
 
 Stage Summary:
 - RIO-21 « La lumière sous ma carte » PRODUIT (VALIDÉ 7/7, SHA ×2 7644a957…) — EN ATTENTE de contresignature fondateur (« je valide ») → registre 21/21, personnalité 3/5 contresignée. Personnalité : Q1 carte + Q2 ombre contresignées, Q3 lumière validée. Prochaine : « SPEC Q4 » — Le croisement (à deux, L6 — ligne 223).
+
+---
+
+Task ID: 144
+Agent: WTC-Pont (superviseur)
+Task: Délégation fondateur « je te laisse le choix de trancher » (2e du jour, après clôture Q3) + demande « pousse tout progressivement sur github » — ouverture SPEC Q4 « Le croisement (à deux, confirmé) » (RIO-22), PROPOSÉE.
+
+Work Log:
+- D-LECTURE : origin/main = 0c202e4 (pipeline Q3 complet en ligne : SPEC verrouillée 7e05861 → RIO-21 produit 0716e85 → pointeurs) ; clone local retombé à a5507d5 (reset d'environnement) → restauré fetch + fast-forward pur, zéro perte, preuve ls-remote ; paramiko réinstallé.
+- Interprétation de la délégation consignée : aucun arbitrage ouvert sur Q3 (A1-A6 tranchés au commit 7e05861, RIO-21 produit) → la délégation s'applique à l'étape suivante ouverte = SPEC Q4 (pattern Q1/Q2/Q3 : « je te laisse le choix de trancher » = déclencheur d'exécution) ; la contresignature RIO-21 reste l'acte exclusif du fondateur (« je valide »).
+- Canon relu et ancré (lecture directe programme wairyu couple.txt) : lignes 223-224 (« Q4 Le croisement (à deux, confirmé) ») · 297-298 (« croisement à 9 configurations, percentiles ») · 262 (L6 verbatim : percentiles, boucle ≥ 30, styles dissemblables) · 27 (ombre ET lumière structurelles — honorée à deux : chaque configuration affiche l'ombre croisée ET les forces des deux rives) · 266-270 (12 configurations individuelles — registre distinct) · 264 (L8 : bloc « couple ») · 271-273 (objectifs) · 363 (non-évaluation) · 355-356 (vocabulaire écran).
+- Sorties contresignées vérifiées comme entrées : structures héritage Q1 (axes/faces/RQS/signal), Q2 (mécanismes/gestes/cv/palier/états), Q3 (forces/états/drapeaux) — patron EXT-Q2 (RIO-17, croisement symétrique 9 configs percentiles) et SM-Q4 (RIO-14, asymétrique) relus.
+- Rédaction validation-pers/PERS-Q4-SPEC.md : zéro item nouveau, grandeur croisée = ombre globale (moyenne des 4 mécanismes — rôle canon Q2), bornes de croisement propres Faible < 2,50 ≤ Modérée < 3,50 ≤ Forte, 9 configurations nommées (miroirs 2/4, 3/7, 6/8 — D-NOMENCLATURE, unicité vérifiée), L6 verbatim + L5 transposée (3 inférences croisées : l'orage à deux vitesses · le mur face au mur · le geste qui ouvre), filet 4 états (override à deux, HÉRITAGE_INVALIDE, OMBRE_SUPPRIMÉE → carte-seule croisé, régulier), C1-C7, simulation 650 couples / 14 groupes, D-HIST.
+- 6 arbitrages A1-A6 ouverts (A1 titre « Le croisement sous nos cartes » recommandé — miroir de la série). Scan anti-fuite propre. Commit SPEC eb78438, push paramiko #1.
+
+Stage Summary:
+- RIO-22 SPEC PROPOSÉE en ligne (eb78438) — tranchage A1-A6 par délégation déjà reçue, puis verrouillage → production validation-pers-q4/ (D-CANAL-2 → RIO-22), pushes progressifs à chaque étape. Registre 20/20 + RIO-21 ⏳ en attente de « je valide » fondateur.
