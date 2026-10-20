@@ -2623,3 +2623,21 @@ Work Log:
 
 Stage Summary:
 - RIO-21 SPEC PROPOSÉE en ligne — en attente du tranchage A1-A6 (fondateur ou délégation « je te laisse le choix de trancher »), puis production validation-pers-q3/ (D-CANAL-2 → RIO-21). Registre 20/20 ; Q3 ouvre la 3e quête de personnalité (L5 entre en jeu).
+
+---
+
+Task ID: 143
+Agent: WTC-Pont (superviseur)
+Task: "SPEC Q3" + délégation « je te laisse le choix de trancher mais j'espere qutu pousse tout progressivement sur github » — tranchage A1-A6, verrouillage SPEC, production complète RIO-21, pushes progressifs
+
+Work Log:
+- D-LECTURE : origin/main = 35cb049 (SPEC Q3 PROPOSÉE déjà en ligne — cbfd193 + Task 142, exécutée avant la coupure) ; canon revérifié lignes 27/29/98/223-224/233-237/257/259-262/264/270/272-273/355-356/363/369 → 2 errata de numérotation (266→270, 271-272→272-273), contenu verbatim inchangé
+- Tranchage A1-A6 par délégation → (a)×6 (pattern Q1/Q2) : A1 « La lumière sous ma carte » · A2 dérivation pure · A3 banque 8 forces · A4 L5 en Q3 / L6 → Q4 · A5 filet hérité · A6 couches adaptées ; SPEC VERROUILLÉE, commit 7e05861, push
+- Production validation-pers-q3/ : core (dérivation pure, banque 8 forces, matrice EMP 4 règles, 3 inférences canon, RQS min+drapeaux, L3/L4/L7 verbatim, carte-seule 0 invention) · simulateur (560 couples/14 groupes, héritages doubles Q1+Q2 patrons D-TABLE, seed 42 ×2, vérité = moteur sur espérances CLIP-AWARE — zéro dérive) · validation C1-C7 + 4 figures 1920×1080 + rapport autoporteur + JSON
+- Corrections pré-attrapées : granularité discrète des héritages → saturation des sources cibles (μ 5,0 / p 1,0 / μ_N4 −1) ; découplage faces carte d'empreinte (N1/AO2/R2/J1) des sources de forces ET du signal Q1 (J2 — une vérification saturée = signal, pas une empreinte) ; G13 repensé (PRUDENCE via min héritages 75 / INVALIDE via Q2 60) ; calibration MC déterministe (graine 4200, 20 000 couples/groupe, bornes DISTINCTES 7 stochastiques + 7 déterministes 100,0)
+- Verdict VALIDÉ 7/7 : C1 (47 cas D-TABLE 100 % + croisement 920/920 + anti-fabrication double sens) · C2 déterministe (80 re-tests) · C3 14/14 au seuil · C4 SHA ×2 7644a957… IDENTIQUES · C5 gabarit 920/920 + « ça te ressemble ? » · C6 0 interdit · C7 80 P-FILTRE avant arbre + 80 verrouillées + 40 AUCUN_RÉSULTAT + 80 carte-seule 0 invention + 0 tiers
+- Publication 0716e85 (push #2) → pointeurs hub README (header, arbre, registre RIO-21 ⏳, total) + SPEC §8 PRODUIT + chaîne → commit + push #3 (présent commit)
+- Audit origin : ls-remote + raw HTTP 200 (hub, SPEC, core) + scan anti-fuite sur les nouveaux commits
+
+Stage Summary:
+- RIO-21 « La lumière sous ma carte » PRODUIT (VALIDÉ 7/7, SHA ×2 7644a957…) — EN ATTENTE de contresignature fondateur (« je valide ») → registre 21/21, personnalité 3/5 contresignée. Personnalité : Q1 carte + Q2 ombre contresignées, Q3 lumière validée. Prochaine : « SPEC Q4 » — Le croisement (à deux, L6 — ligne 223).
