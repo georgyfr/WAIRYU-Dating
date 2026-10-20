@@ -4,6 +4,7 @@
 > Rôle canon (ligne 223) : « Q2 L'ombre (mécanisme profond) ». Quête 2/5 de la dimension Personnalité (A6 Q1 verrouillé : RIO-19 → RIO-23).
 > Q1 « Manuel d'utilisation de moi » (RIO-19) : PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…, « je valide » fondateur 20/10) — registre 19/19.
 > **Arbitrages (pont, par délégation) : A1 titre « La mécanique sous ma carte » · A2 entrées hétérogènes 4 blocs (24 entrées + héritage Q1) · A3 nommage 7 configurations maison · A4 convergence Q1×Q2 = contrôle interne index (prudence ≤ 0,50, suppression à 0,00) — la couche L5 reste réservée à Q3 · A5 filet double voie (héritée + détectée) · A6 L1 adapté + L3 verbatim transposée + L4 nuage + L7 embarquée.**
+> Erratum ANNONCÉ (publication) : l'énumération exacte des blocs fait **6 + 5 + 6 + 6 = 23 entrées** (dont 1 item sécurité N5) + 1 vigilance = **24 items au total** — le décompte proposé « 24 entrées + 1 vigilance » comptait double l'item N5 ; effectifs, mécanique et seuils inchangés.
 > D-CANAL levé par cette délégation : production `validation-pers-q2/` autorisée (séquence D-CANAL-2 complète → RIO-20), pattern Q1 (verrouillage → production → contresignature fondateur).
 > Chaîne locale : 251b244 → … → 09e8f0e (GitBook) → 00926ef (Task 135) → 4f84961 (SPEC Q1) → 322514c (Task 136) → f4fa593 (SPEC Q1 verrouillée) → 4ee278b (RIO-19 produit) → a5507d5 (RIO-19 contresigné — registre 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139).
 

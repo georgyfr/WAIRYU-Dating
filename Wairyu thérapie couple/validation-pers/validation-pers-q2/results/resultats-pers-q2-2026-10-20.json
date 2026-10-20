@@ -1,0 +1,331 @@
+{
+ "c1": {
+  "croise": [
+   932,
+   932
+  ],
+  "croise_ok": true,
+  "d_table": true,
+  "n_cas_d_table": 62,
+  "nomenclature": true,
+  "ok": true
+ },
+ "c2": {
+  "anti_inversion_temporelle": true,
+  "deterministe": true,
+  "n_rci": 40,
+  "ok": true
+ },
+ "c3": {
+  "bornes_distinctes": true,
+  "detail": {
+   "G01_CONVERGENCE_PLEINE": {
+    "conformes": 33,
+    "n": 40,
+    "ok": true,
+    "pct": 82.5,
+    "seuil": 15.6
+   },
+   "G02_PENCHANT_PROPRE": {
+    "conformes": 29,
+    "n": 40,
+    "ok": true,
+    "pct": 72.5,
+    "seuil": 64.4
+   },
+   "G03_ORAGE_LENT": {
+    "conformes": 33,
+    "n": 40,
+    "ok": true,
+    "pct": 82.5,
+    "seuil": 48.3
+   },
+   "G04_MUR_DEFENSE": {
+    "conformes": 37,
+    "n": 40,
+    "ok": true,
+    "pct": 92.5,
+    "seuil": 77.9
+   },
+   "G05_LENTILLE_JALOUSE": {
+    "conformes": 28,
+    "n": 40,
+    "ok": true,
+    "pct": 70.0,
+    "seuil": 46.0
+   },
+   "G06_DIVERGENCE_CARTE_OMBRE": {
+    "conformes": 38,
+    "n": 40,
+    "ok": true,
+    "pct": 95.0,
+    "seuil": 76.0
+   },
+   "G07_ZONE_CALME_OMBRE": {
+    "conformes": 38,
+    "n": 40,
+    "ok": true,
+    "pct": 95.0,
+    "seuil": 81.9
+   },
+   "G08_SIGNAL_FILET": {
+    "conformes": 38,
+    "n": 40,
+    "ok": true,
+    "pct": 95.0,
+    "seuil": 94.2
+   },
+   "G09_DOUBLE_PENTE": {
+    "conformes": 39,
+    "n": 40,
+    "ok": true,
+    "pct": 97.5,
+    "seuil": 20.5
+   },
+   "G10_FRONTIERE_OMBRE": {
+    "conformes": 11,
+    "n": 40,
+    "ok": true,
+    "pct": 27.5,
+    "seuil": 3.2
+   },
+   "G11_NUAGE_MECANISMES": {
+    "conformes": 23,
+    "n": 40,
+    "ok": true,
+    "pct": 57.5,
+    "seuil": 56.5
+   },
+   "G12_PIEGES_RQS": {
+    "conformes": 40,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 98.0
+   },
+   "G13_HERITAGE_INVALIDE": {
+    "conformes": 40,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G14_RE_TEST_OMBRE": {
+    "conformes": 31,
+    "n": 40,
+    "ok": true,
+    "pct": 77.5,
+    "seuil": 52.0
+   }
+  },
+  "n_conformes": 458,
+  "n_total": 560,
+  "ok": true,
+  "tous_au_seuil": true
+ },
+ "c4": {
+  "identiques": true,
+  "sha1": "6d9b3c59419c7ea990b064d806c919e719da5e78c681bda439c47cda50cc1b0d",
+  "sha2": "6d9b3c59419c7ea990b064d806c919e719da5e78c681bda439c47cda50cc1b0d"
+ },
+ "c5": {
+  "frontiere_conservatrice": true,
+  "gabarit": [
+   932,
+   932
+  ],
+  "gabarit_ok": true,
+  "nuage_coherent": true,
+  "ok": true
+ },
+ "c6": {
+  "0_mot_interdit": true,
+  "hits": [],
+  "ok": true,
+  "ombre_modifiable_pas_trait": true,
+  "verbatim_reparation": true,
+  "verbatim_rien_a_fabriquer": true
+ },
+ "c7": {
+  "extras_voie_detectee": 8,
+  "filet_avant_arbre": true,
+  "n_p_filtre": 88,
+  "n_p_filtre_g08": 80,
+  "n_verrouillee": 80,
+  "ok": true,
+  "p_filtre_complet": true,
+  "verrouillee_complet": true,
+  "zero_tiers": true
+ },
+ "calib": {
+  "bornes_distinctes": true,
+  "centres": {
+   "G01_CONVERGENCE_PLEINE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     3.0,
+     3.2,
+     3.9,
+     2.5
+    ]
+   },
+   "G02_PENCHANT_PROPRE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     4.0,
+     2.6,
+     2.5,
+     1.5
+    ]
+   },
+   "G03_ORAGE_LENT": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.33,
+    "mu_scores_A": [
+     1.5,
+     3.6,
+     2.5,
+     1.5
+    ]
+   },
+   "G04_MUR_DEFENSE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     1.5,
+     2.6,
+     5.0,
+     1.5
+    ]
+   },
+   "G05_LENTILLE_JALOUSE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     1.5,
+     2.6,
+     2.5,
+     3.5
+    ]
+   },
+   "G06_DIVERGENCE_CARTE_OMBRE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.67,
+    "mu_scores_A": [
+     1.0,
+     2.4,
+     2.4,
+     1.0
+    ]
+   },
+   "G07_ZONE_CALME_OMBRE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.33,
+    "mu_scores_A": [
+     1.5,
+     2.5,
+     2.4,
+     1.5
+    ]
+   },
+   "G08_SIGNAL_FILET": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.33,
+    "mu_scores_A": [
+     1.5,
+     2.5,
+     2.4,
+     1.5
+    ]
+   },
+   "G09_DOUBLE_PENTE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.5,
+    "mu_scores_A": [
+     1.5,
+     3.35,
+     4.0,
+     1.5
+    ]
+   },
+   "G10_FRONTIERE_OMBRE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.67,
+    "mu_scores_A": [
+     1.5,
+     3.0,
+     3.0,
+     1.5
+    ]
+   },
+   "G11_NUAGE_MECANISMES": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     2.0,
+     2.6,
+     2.6,
+     2.0
+    ]
+   },
+   "G12_PIEGES_RQS": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.33,
+    "mu_scores_A": [
+     2.5,
+     3.0,
+     3.0,
+     2.5
+    ]
+   },
+   "G13_HERITAGE_INVALIDE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.33,
+    "mu_scores_A": [
+     2.5,
+     3.0,
+     3.0,
+     2.5
+    ]
+   },
+   "G14_RE_TEST_OMBRE": {
+    "dans_bande_3sigma": true,
+    "distance_min_seuil_sigma": 0.0,
+    "mu_scores_A": [
+     1.5,
+     1.8,
+     2.4,
+     1.5
+    ]
+   }
+  },
+  "seuils": {
+   "G01_CONVERGENCE_PLEINE": 15.6,
+   "G02_PENCHANT_PROPRE": 64.4,
+   "G03_ORAGE_LENT": 48.3,
+   "G04_MUR_DEFENSE": 77.9,
+   "G05_LENTILLE_JALOUSE": 46.0,
+   "G06_DIVERGENCE_CARTE_OMBRE": 76.0,
+   "G07_ZONE_CALME_OMBRE": 81.9,
+   "G08_SIGNAL_FILET": 94.2,
+   "G09_DOUBLE_PENTE": 20.5,
+   "G10_FRONTIERE_OMBRE": 3.2,
+   "G11_NUAGE_MECANISMES": 56.5,
+   "G12_PIEGES_RQS": 98.0,
+   "G13_HERITAGE_INVALIDE": 100.0,
+   "G14_RE_TEST_OMBRE": 52.0
+  }
+ },
+ "meta": {
+  "date": "2026-10-20",
+  "heritage": "RIO-19 contresigné (SHA 3b1a7490…)",
+  "n_couples": 560,
+  "n_groupes": 14,
+  "run": 1,
+  "seed": 42,
+  "spec": "PERS-Q2-SPEC.md (verrouillée a8bb7b5)"
+ },
+ "verdict": "VALIDÉ 7/7"
+}

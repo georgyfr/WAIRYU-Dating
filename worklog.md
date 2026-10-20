@@ -2582,3 +2582,19 @@ Work Log:
 
 Stage Summary:
 - SPEC Q2 « l'ombre (mécanisme profond) » PROPOSÉE sur GitHub (RIO-20) — personnalité quête 2/5 spécifiée, 6 arbitrages en attente de tranchage fondateur (ou délégation). Verrouillage → production validation-pers-q2/ (D-CANAL-2) → RIO-20.
+
+---
+Task ID: 140
+Agent: GLM-chat (pont)
+Task: Délégation fondateur 20/10/2026 (« je te laisse le choix de trancher », SPEC Q2) — verrouillage SPEC + production complète validation-pers-q2 (RIO-20 « La mécanique sous ma carte »), séquence D-CANAL-2 (production → run ×2 → SHA ×2 → publication → pointeurs → audit origin) ; contresignature réservée au fondateur.
+
+Work Log:
+- VERROUILLAGE (commit a8bb7b5) : A1 titre « La mécanique sous ma carte » · A2 entrées hétérogènes 4 blocs (A penchant 6 cochés · N orage 4 fréq + N5 · R mur 4+2 · J lentille 6 cochés + héritage Q1) · A3 7 configurations + 2 états · A4 convergence interne index (L5 réservée Q3) · A5 filet double voie + N5 · A6 L1 adapté + L3 verbatim + L4 nuage + L7 sur le mécanisme N.
+- PRODUCTION : core (~1 000 l. : transposition cochés/fréq → 1,00-4,00, L3 verbatim 1,80/2,60/3,20, L4 nuage par faces, convergence CV1-CV4, filet 3 voies, nommage prioritaire, palier max, RCI) · simulateur (560 couples, 14 groupes, seed 42, entrées fixées G05/G06/G08/G12, héritage Q1 généré par modèle D-TABLE, graines sha256) · validation (C1-C7, 4 figures 1920×1080, rapport A-G).
+- CORRECTIONS pré-attrapées pendant la production : (1) vérité CLIP-AWARE — la vérité μ-ancrée passe par E[item] énuméré (un μ 3,4 sur 0-3 sature au plafond) ; (2) calibration au niveau COUPLE (deux rives — pattern Q1) ; (3) N4 inversé dans l'espérance ; (4) conformité sur les décisions affichées (état/label/palier/voie/RCI/RQS — pas les conservateurs exacts) ; (5) graines sha256 (le path seed-42 string clusterisait) ; (6) « seed 42 ×2 » = deux exécutions du MÊME univers (le run ne change pas la graine) ; (7) 3 cas D-TABLE mal construits (nuage R tie réel, index 1,0 avec CV2 satisfaite, index 0,25 à 4 CV) ; (8) C7 : le filet détecté s'active aussi hors G08 (ΣJ = 6/6 ET héritage J ≥ VIVE) — biais sécurité par conception, compté (8 extras) et tracé, jamais masqué.
+- RÉSULTAT : VALIDÉ 7/7 — C1 (62 cas D-TABLE + croisement 932/932 + nomenclature) · C2 (déterminisme + anti-inversion, 80 re-tests) · C3 (14/14 groupes au seuil, bornes DISTINCTES, 463/560 couples conformes — la conformité mesure la coïncidence carte/ombre sur décisions, les bornes calibrées absorbent la granularité cochés) · C4 SHA ×2 (3 exécutions) · C5 (gabarit §5.1 4/4, FRONTIÈRE conservatrice, nuage cohérent, bandeau D-SIM) · C6 (0 mot interdit sur 1 120 affichages + verbatims) · C7 (88 P-FILTRE dont 80 G08 + 8 extras tracés, 80 quêtes verrouillées, 0 tiers). SHA-256 : 6d9b3c59419c7ea9… (×2 identiques).
+- Erratum ANNONCÉ (SPEC) : 6 + 5 + 6 + 6 = 23 entrées (dont N5) + 1 vigilance = 24 items — le décompte « 24 + 1 » comptait double N5.
+- Hub README : pointeur + arbre (PERS-Q2-SPEC + validation-pers-q2/) + registre RIO-20 (VALIDÉ 7/7, en attente) + total (19 contresignés + RIO-20 validé ; personnalité 2/5).
+
+Stage Summary:
+- RIO-20 « La mécanique sous ma carte » VALIDÉ 7/7, publié — en attente de contresignature fondateur. Personnalité 2/5. Découvertes documentées : vérité clip-aware, granularité cochés vs filet détecté, bande SUGGESTION étroite en L7-4-items. Prochaine : contresignature RIO-20 → SPEC Q3 « La lumière » (forces dérivées — banque L5).

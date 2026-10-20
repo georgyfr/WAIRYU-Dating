@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-19 « Manuel d'utilisation de moi » contresigné 20/10 — registre **19/19** ; SPEC-12 personnalité verrouillée, dimension personnalité 1/5 ; bloc Psychologique 3 complètes + personnalité en cours).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-20 « La mécanique sous ma carte » VALIDÉ 7/7, en attente de contresignature — personnalité 2/5 ; RIO-19 contresigné, registre 19/19).
 
 ---
 
@@ -47,10 +47,12 @@ Wairyu thérapie couple/
 │   ├── validation-ext-q2/ (RIO-17 — contresigné)
 │   └── validation-ext-q3/ (RIO-18 — contresigné)
 │
-│  ═══ Dimension PERSONNALITÉ (SPEC-12 verrouillée 20/10 · RIO-19 contresigné 20/10) ═══
+│  ═══ Dimension PERSONNALITÉ (SPEC Q1-Q2 verrouillées · RIO-19 contresigné · RIO-20 en attente) ═══
 ├── validation-pers/
 │   ├── PERS-Q1-SPEC.md (verrouillée 20/10 — A1-A6 tranchés par délégation)
-│   └── validation-pers-q1/ (RIO-19 — contresigné)
+│   ├── PERS-Q2-SPEC.md (verrouillée 20/10 — « La mécanique sous ma carte »)
+│   ├── validation-pers-q1/ (RIO-19 — contresigné)
+│   └── validation-pers-q2/ (RIO-20 — VALIDÉ 7/7, en attente de contresignature)
 │
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
 ├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
@@ -105,11 +107,12 @@ Wairyu thérapie couple/
 | WTC-EXT-Q2 | RIO-17 « Notre conversation de l'horizon » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 2aea8d99…) |
 | WTC-EXT-Q3 | RIO-18 « Le pas de l'horizon » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 2e31e14d…) |
 
-### Dimension PERSONNALITÉ (RIO-19 contresigné)
+### Dimension PERSONNALITÉ (RIO-19 contresigné · RIO-20 en attente)
 
 | Package | RIO | Verdict |
 |---|---|---|
 | WTC-PERS-Q1 | RIO-19 « Manuel d'utilisation de moi » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 3b1a7490… ; « je valide », fondateur, 20/10) |
+| WTC-PERS-Q2 | RIO-20 « La mécanique sous ma carte » | ⏳ VALIDÉ 7/7 simulation (SHA 6d9b3c59…), en attente de contresignature fondateur |
 
 ### Pilote réel
 
@@ -117,7 +120,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 19 instruments RIO contresignés (RIO-01 à RIO-19). 3 dimensions complètes + extensions 3/3 + personnalité 1/5 (RIO-19).**
+**Total : 19 instruments RIO contresignés (RIO-01 à RIO-19) + RIO-20 validé en attente. 3 dimensions complètes + extensions 3/3 + personnalité 2/5 (RIO-19 contresigné, RIO-20 validé).**
 
 ---
 
