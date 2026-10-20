@@ -1,0 +1,341 @@
+{
+ "c1": {
+  "croise_moteur_table": {
+   "conformes": 570,
+   "n": 570,
+   "pct": 100.0
+  },
+  "demos_9_sur_9": true,
+  "forces_sans_trace": 0,
+  "forces_tracees": 1680,
+  "inferences_hors_regle": 0,
+  "labels_uniques": true,
+  "ok": true,
+  "slots_lumiere_absents": 0
+ },
+ "c2": {
+  "anti_inversion": {
+   "cellules_miroir_testees": 570,
+   "inversions": 0,
+   "miroirs_conformes": 570
+  },
+  "determinisme_rejoue": {
+   "conformes": 650,
+   "n": 650
+  },
+  "ok": true
+ },
+ "c3": {
+  "bornes_distinctes": true,
+  "detail": {
+   "G01_REPOS_FAIBLE_FAIBLE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G02_OMBRE_D_UN_COTE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G03_OMBRE_SOLO": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G04_ECHO_DE_L_AUTRE_COTE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G05_EVEIL_MODERE_MODERE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G06_ECART_DECLARE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G07_SOLO_AUTRE_COTE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G08_ECART_DECLARE_INVERSE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G09_VIVES_FORTE_FORTE": {
+    "conformes": 50,
+    "deterministe": true,
+    "n": 50,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G10_SIGNAL_FILET": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G11_ECART_PERCENTILES": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G12_STYLES_DISSEMBLABLES": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G13_FRONTIERES_BORNES": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G14_OMBRE_SUPPRIMEE_RIVE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   }
+  },
+  "n_deterministes": 14,
+  "n_stochastiques": 0,
+  "ok": true,
+  "tous_au_seuil": true
+ },
+ "c4": {
+  "identiques": true,
+  "ok": true,
+  "sha1": "530c0065ed4f67d88230aac81d531df6d1db1f48aa3069de43ca3c3e21853e2a",
+  "sha2": "530c0065ed4f67d88230aac81d531df6d1db1f48aa3069de43ca3c3e21853e2a"
+ },
+ "c5": {
+  "boucle_avertie": {
+   "n": 570,
+   "ok": 570
+  },
+  "dissemblance_avertie": {
+   "n": 570,
+   "ok": 570
+  },
+  "forces_max_2": {
+   "n": 650,
+   "ok": 650
+  },
+  "gabarit": {
+   "n": 650,
+   "ok": 650
+  },
+  "nuage_l4": {
+   "n": 570,
+   "ok": 570
+  },
+  "ok": true,
+  "palier_max_niveau": {
+   "n": 570,
+   "ok": 570
+  }
+ },
+ "c6": {
+  "exemples": {},
+  "injonctions": 0,
+  "mots_interdits": {},
+  "ok": true
+ },
+ "c7": {
+  "carte_seule_croise": 40,
+  "conforme_patrons": true,
+  "fuites_matrice_sur_crise": 0,
+  "heritage_invalide_verrouille": 10,
+  "ok": true,
+  "override_q2_q3_p_filtre": 10,
+  "override_signal_q1": 20
+ },
+ "calib": {
+  "bornes_distinctes": true,
+  "centres": {
+   "G01_REPOS_FAIBLE_FAIBLE": {
+    "dans_bande_3sigma": false,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": null,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G02_OMBRE_D_UN_COTE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.55,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G03_OMBRE_SOLO": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.36,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G04_ECHO_DE_L_AUTRE_COTE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.55,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G05_EVEIL_MODERE_MODERE": {
+    "dans_bande_3sigma": false,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": null,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G06_ECART_DECLARE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 1.0,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G07_SOLO_AUTRE_COTE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.36,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G08_ECART_DECLARE_INVERSE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 1.0,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G09_VIVES_FORTE_FORTE": {
+    "dans_bande_3sigma": false,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": null,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G10_SIGNAL_FILET": {
+    "dans_bande_3sigma": null,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": null,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G11_ECART_PERCENTILES": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.4,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G12_STYLES_DISSEMBLABLES": {
+    "dans_bande_3sigma": false,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 30.0,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G13_FRONTIERES_BORNES": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": 0.0,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G14_OMBRE_SUPPRIMEE_RIVE": {
+    "dans_bande_3sigma": null,
+    "deterministe": true,
+    "distance_min_borne_sigma_eff": null,
+    "n_mc": 20000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   }
+  },
+  "n_deterministes": 14,
+  "n_stochastiques": 0,
+  "seuils": {
+   "G01_REPOS_FAIBLE_FAIBLE": 100.0,
+   "G02_OMBRE_D_UN_COTE": 100.0,
+   "G03_OMBRE_SOLO": 100.0,
+   "G04_ECHO_DE_L_AUTRE_COTE": 100.0,
+   "G05_EVEIL_MODERE_MODERE": 100.0,
+   "G06_ECART_DECLARE": 100.0,
+   "G07_SOLO_AUTRE_COTE": 100.0,
+   "G08_ECART_DECLARE_INVERSE": 100.0,
+   "G09_VIVES_FORTE_FORTE": 100.0,
+   "G10_SIGNAL_FILET": 100.0,
+   "G11_ECART_PERCENTILES": 100.0,
+   "G12_STYLES_DISSEMBLABLES": 100.0,
+   "G13_FRONTIERES_BORNES": 100.0,
+   "G14_OMBRE_SUPPRIMEE_RIVE": 100.0
+  }
+ },
+ "meta": {
+  "date": "2026-10-20",
+  "heritage": "RIO-19 (3b1a7490…) + RIO-20 (6d9b3c59…) + RIO-21 (7644a957…) contresignés ×2 rives",
+  "n_couples": 650,
+  "n_groupes": 14,
+  "seed": 42,
+  "spec": "PERS-Q4-SPEC.md (verrouillée 1458b9c)"
+ },
+ "verdict": "VALIDÉ 7/7"
+}
