@@ -2658,3 +2658,21 @@ Work Log:
 
 Stage Summary:
 - RIO-22 SPEC PROPOSÉE en ligne (eb78438) — tranchage A1-A6 par délégation déjà reçue, puis verrouillage → production validation-pers-q4/ (D-CANAL-2 → RIO-22), pushes progressifs à chaque étape. Registre 20/20 + RIO-21 ⏳ en attente de « je valide » fondateur.
+
+---
+
+Task ID: 145
+Agent: WTC-Pont (superviseur)
+Task: SPEC Q4 verrouillée (délégation) → production complète RIO-22 « Le croisement sous nos cartes » → pointeurs — pushes progressifs #3/#4/#5.
+
+Work Log:
+- Tranchage A1-A6 par délégation fondateur (« je te laisse le choix de trancher », reçue après la clôture Q3 — pattern Q1/Q2/Q3) → (a)×6 : A1 titre « Le croisement sous nos cartes » · A2 zéro item nouveau · A3 ombre globale 3 niveaux 2,50/3,50 · A4 L6 verbatim + 3 inférences croisées · A5 table §2 mot pour mot · A6 couches adaptées. SPEC VERROUILLÉE, commit 1458b9c, push #3.
+- Production validation-pers-q4/ : core (9 configurations, L6 percentiles population 20 000 seed 42, boucle ≥ 30, dissemblance L4 transposée aux dispersions, 3 inférences croisées, filet 4 états — override à deux / HÉRITAGE_INVALIDE / CARTE_SEULE_CROISÉ / régulier, RQS = min Q3, RCI ombre globale SE_diff propagé) · simulateur (650 couples / 14 groupes : 9 cellules ×50 + SIGNAL_FILET 40 [signal ×20, P-FILTRE ×10, RQS60 ×10] + ÉCART_PERCENTILES 40 + STYLES_DISSEMBLABLES 40 + FRONTIÈRES_BORNES 40 [dont 20 re-tests L7 : FIABLE ×10 / SUGGESTION ×5 / BRUIT ×5] + OMBRE_SUPPRIMÉE_RIVE 40) · validation C1-C7.
+- Leçon de géométrie consignée : les runs pilotes (profils intermédiaires μ 2,5-4,5) montraient des flips de décisions Q3 aux seuils de soutien (forces A/R ~ 2,0-2,5 vs seuil 2,42-2,44 — 5-25 % de non-conformité) et des queues 6σ résiduelles (μ 6, p̂ 0,9998) → profils SATURÉS μ = ±8 où espérance CLIP-AWARE et réalisation coïncident exactement après arrondi 4 décimales → 650/650 conformes, p̂ = 1,0 partout, 14/14 déterministes au seuil 100,0 (0 stochastique — bornes DISTINCTES trivialement satisfaites, signalé comme tel).
+- Héritage Q3 produit par le MOTEUR RIO-21 CONTRESIGNÉ lui-même (import wtc_pers_q3_core.deriver_rive — zéro ré-implémentation) ; héritages Q1/Q2 générés par les mêmes fonctions D-TABLE que le simulateur RIO-21 (patrons contresignés RIO-19/RIO-20).
+- Verdict VALIDÉ 7/7 : C1 (9/9 démo, croisé moteur/table 570/570, 1 680 forces tracées, 0 hors règle, 0 slot lumière muet) · C2 (déterminisme 650/650 + anti-inversion 570/570 miroirs conformes) · C3 14/14 au seuil · C4 SHA ×2 530c0065ed4f67d8… IDENTIQUES · C5 affichage 6/6 · C6 0 interdit / 0 injonction · C7 override 20+10, verrouillés 10, carte-seule 40, 0 fuite de matrice sur crise.
+- Publication f64be92 (push #4 : core + simulateur + validation + 4 figures 1920×1080 + JSON + rapport autoporteur) → pointeurs hub README (header, arbre, registre RIO-22 ⏳, total) + SPEC §8 PRODUIT + chaîne + §2 lecture alignée au core (« en lecture descriptive » — le mot « blâme » n'apparaît dans aucun affichage, C6) → commit + push #5 (présent commit).
+- Contresignature RIO-21 et RIO-22 : actes exclusifs du fondateur (« je valide ») — la délégation couvre l'arbitrage et la production, jamais la signature.
+
+Stage Summary:
+- RIO-22 « Le croisement sous nos cartes » PRODUIT (VALIDÉ 7/7, SHA ×2 530c0065ed4f67d8…) — EN ATTENTE de contresignature fondateur → registre 21/22 (avec RIO-21), personnalité 4/5 produite (Q1 carte + Q2 ombre contresignées ; Q3 lumière + Q4 croisement validées). Reste : Q5 « Le pas » (lignes 224, 297-298 — 1 changement + suivi 14 j, 9/14) pour clore la dimension 5/5.
