@@ -2610,3 +2610,16 @@ Work Log:
 
 Stage Summary:
 - RIO-20 « La mécanique sous ma carte » CONTRESIGNÉ — registre 20/20, personnalité 2/5 contresignée (Q1 carte + Q2 ombre). Prochaine : SPEC Q3 « La lumière » (forces dérivées — banque L5, ligne 223), puis Q4 croisement, Q5 le pas → clôture bloc Psychologique 5/5.
+---
+Task ID: 142
+Agent: GLM-chat (pont)
+Task: Ordre fondateur « SPEC Q3 » — SPEC Q3 « la lumière (forces dérivées) » (RIO-21) PROPOSÉE, D-CANAL maintenu.
+
+Work Log:
+- D-LECTURE avec incident maîtrisé : reset d'environnement entre Task 141 et la présente — clone local remis en arrière (HEAD a5507d5, validation-pers-q2/ absent du disque, worklog local retombé à Task 138) ; origin/main = abf5c83 intact (preuve ls-remote) → fetch + reset --hard origin/main, clone restauré (zéro perte, fast-forward pur), worklog local resynchronisé, paramiko réinstallé.
+- Canon relu aux lignes d'ancrage : 27 (« Ombre ET lumière structurelles » — erratum de numérotation : SPEC Q2 citait 29 ; la 29 est le vocabulaire écran), 98 (dimension + livrable), 200-240 (gabarit, quêtes, paliers, anti-fabrication), 257-264 (L1-L8), 261 (L5 = empreinte situationnelle + 3 inférences NOMMÉES : alarme intérieure, mains libres, le près coûte), 262 (L6 = couple par PERCENTILES → objet couple, structurellement Q4), 271-274 (RQS ≥ 85 ≥ 80 %, reconnaissance ≥ 70 % « ça te ressemble ? », routage 100 %, re-test 8 semaines).
+- Rédaction validation-pers/PERS-Q3-SPEC.md (141 l.) : dérivation pure zéro item nouveau (A2 recommandé), première quête à DEUX ancêtres (héritage Q1+Q2), 4 lumières dérivées (La part reconnue / Le retour qui tient / Le geste qui répare / La main ouverte — PLEINES vs CALMES §5.5), banque 8 forces max 2 affichées (pattern RIO-13), L5 = matrice de règles déterministes + 3 inférences non normatives (« ça te ressemble ? », objectif ≥ 70 %), L6 reportée Q4 (divergence avec l'annotation A4 Q1 documentée D-HIST), filet hérité 3 états (P-FILTRE / HÉRITAGE_INVALIDE / OMBRE_SUPPRIMÉE → carte-seule), RQS = min(héritages), anti-fabrication DOUBLE SENS (C1/C6), simulation 560/14 (LUMIÈRE_PLEINE … RE_TEST_LUMIÈRE).
+- 6 arbitrages A1-A6 ouverts (A1 titre « La lumière sous ma carte » recommandé — miroir de Q2). Scan anti-fuite propre. Commit SPEC cbfd193 + worklog Task 142, push paramiko, audit origin (ls-remote + raw 200).
+
+Stage Summary:
+- RIO-21 SPEC PROPOSÉE en ligne — en attente du tranchage A1-A6 (fondateur ou délégation « je te laisse le choix de trancher »), puis production validation-pers-q3/ (D-CANAL-2 → RIO-21). Registre 20/20 ; Q3 ouvre la 3e quête de personnalité (L5 entre en jeu).
