@@ -2568,3 +2568,17 @@ Work Log:
 
 Stage Summary:
 - RIO-19 « Manuel d'utilisation de moi » CONTRESIGNÉ — registre 19/19 (RIO-01 → RIO-19). La 4e dimension (personnalité) est ouverte : 1/5. Bloc Psychologique : 3 dimensions complètes + personnalité en cours. Prochaine étape : SPEC Q2 « l'ombre » (mécanisme profond, canon ligne 223) — ouverture sur ordre fondateur.
+
+---
+Task ID: 139
+Agent: GLM-chat (pont)
+Task: Ordre fondateur 20/10/2026 (« SPEC Q2 ») — ouverture de la SPEC de la quête 2 de personnalité (RIO-20, « l'ombre — mécanisme profond », canon ligne 223).
+
+Work Log:
+- D-LECTURE préalable : main = a5507d5 (RIO-19 contresigné, registre 19/19) ; canon lignes 222-225 (structure 5 quêtes), 200-212 (gabarit §5.1 — ligne 208 « ta zone d'ombre [descriptif causal, sans étiquette] »), 216-219 (4 filtres), 227-237 (paliers en langage d'ombre + anti-fabrication), 261 (L5 = croisement Q1×Q2), ligne 29 (ombre ET lumière structurelles), doctrine 341-357, garde-fous 361-370 ; GitBook des 3 Q2 validées (RIO-02 entrées hétérogènes + convergence index, RIO-07 boucle + garde anti-culpabilisation, RIO-12 classification 7 labels).
+- SPEC PROPOSÉE écrite : validation-pers/PERS-Q2-SPEC.md (127 l.) — Q2 lit l'héritage Q1 (première quête à entrées de la dimension, pattern RIO-02 sA/sB) ; A2-a recommandé : 4 blocs mécanisme (A penchant 6 cochés · N orage 4 fréquences + 1 sécurité · R mur 4 défenses + 2 gestes · J lentille 6 cochés = 24 entrées + 1 vigilance) ; scores mécanisme transposés 1,00-4,00, lecture L3 verbatim réutilisée (1,80/2,60/3,20 — zéro constante nouvelle) ; convergence Q1×Q2 = contrôle de cohérence interne (index pattern RIO-02 étape 4, prudence ≤ 0,50, suppression à 0,00) — la couche L5 reste réservée à Q3 (A4 Q1 verrouillé), distinction documentée D-HIST ; filet 2 voies transposé de Q1 (héritée + détectée 6/6 ET héritage J ≥ Vive) + item sécurité N5 ; C1-C7 transposés (C6 + « l'ombre = penchant, jamais un trait figé ») ; simulation 560 couples / 14 groupes (dont DIVERGENCE_CARTE_OMBRE, SIGNAL_FILET, HÉRITAGE_INVALIDE — quête verrouillée sans carte valide, RE_TEST_OMBRE L7).
+- 6 arbitrages ouverts A1-A6 (titre « La mécanique sous ma carte » recommandé, format entrées, nommage 7 configurations, convergence, filet, couches) — D-CANAL maintenu jusqu'à verrouillage, zéro code.
+- Scan anti-fuite propre (le reset d'environnement a de nouveau effacé paramiko — réinstallé ; core.fileMode false re-posé, seuls les contenus committés). Commit 51337a1, push paramiko, audit origin : ls-remote = 51337a1, raw PERS-Q2-SPEC.md HTTP 200.
+
+Stage Summary:
+- SPEC Q2 « l'ombre (mécanisme profond) » PROPOSÉE sur GitHub (RIO-20) — personnalité quête 2/5 spécifiée, 6 arbitrages en attente de tranchage fondateur (ou délégation). Verrouillage → production validation-pers-q2/ (D-CANAL-2) → RIO-20.
