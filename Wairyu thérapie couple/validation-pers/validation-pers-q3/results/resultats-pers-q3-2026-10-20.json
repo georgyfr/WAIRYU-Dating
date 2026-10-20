@@ -1,0 +1,324 @@
+{
+ "c1": {
+  "anti_fabrication_double_sens": true,
+  "croise": [
+   920,
+   920
+  ],
+  "croise_ok": true,
+  "d_table": true,
+  "n_cas_d_table": 47,
+  "nomenclature": true,
+  "ok": true
+ },
+ "c2": {
+  "anti_inversion_temporelle": true,
+  "deterministe": true,
+  "n_rci": 0,
+  "ok": true
+ },
+ "c3": {
+  "bornes_distinctes": true,
+  "detail": {
+   "G01_LUMIÈRE_PLEINE": {
+    "conformes": 39,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 97.5,
+    "seuil": 93.8
+   },
+   "G02_FORCE_SANS_OMBRE": {
+    "conformes": 39,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 97.5,
+    "seuil": 91.2
+   },
+   "G03_OMBRE_SANS_FORCE": {
+    "conformes": 37,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 92.5,
+    "seuil": 90.2
+   },
+   "G04_DOUBLE_FORCE": {
+    "conformes": 40,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 95.9
+   },
+   "G05_EMPREINTE_CROISÉE": {
+    "conformes": 35,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 87.5,
+    "seuil": 79.0
+   },
+   "G06_INFÉRENCES_TROIS": {
+    "conformes": 34,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 85.0,
+    "seuil": 75.6
+   },
+   "G07_ZONE_CALME_LUMIÈRE": {
+    "conformes": 35,
+    "deterministe": false,
+    "n": 40,
+    "ok": true,
+    "pct": 87.5,
+    "seuil": 83.7
+   },
+   "G08_SIGNAL_FILET": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G09_HÉRITAGE_INVALIDE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G10_OMBRE_SUPPRIMÉE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G11_FRONTIÈRE_LUMIÈRE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G12_NUAGE_FORCE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G13_PIÉGÉS_RQS": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   },
+   "G14_RE_TEST_LUMIÈRE": {
+    "conformes": 40,
+    "deterministe": true,
+    "n": 40,
+    "ok": true,
+    "pct": 100.0,
+    "seuil": 100.0
+   }
+  },
+  "n_conformes": 539,
+  "n_deterministes": 7,
+  "n_stochastiques": 7,
+  "n_total": 560,
+  "ok": true,
+  "tous_au_seuil": true
+ },
+ "c4": {
+  "identiques": true,
+  "sha1": "7644a95794b8ec96a304847b6330a47233acdc92ab420ad183104fab40e1b663",
+  "sha2": "7644a95794b8ec96a304847b6330a47233acdc92ab420ad183104fab40e1b663"
+ },
+ "c5": {
+  "frontiere_conservatrice": true,
+  "gabarit": [
+   920,
+   920
+  ],
+  "gabarit_ok": true,
+  "nuage_coherent": true,
+  "ok": true,
+  "reconnaissance_ca_te_ressemble": true
+ },
+ "c6": {
+  "0_mot_interdit": true,
+  "hits": [],
+  "lumiere_penchant_pas_trait": true,
+  "ok": true,
+  "proposition_contestable": true,
+  "verbatim_reparation": true,
+  "verbatim_rien_a_fabriquer": true
+ },
+ "c7": {
+  "carte_seule_0_invention": true,
+  "filet_avant_arbre": true,
+  "n_aucun_resultat": 40,
+  "n_carte_seule": 80,
+  "n_p_filtre": 80,
+  "n_verrouillee": 80,
+  "ok": true,
+  "palier_filtre_orientation": true,
+  "zero_tiers": true
+ },
+ "calib": {
+  "bornes_distinctes": true,
+  "centres": {
+   "G01_LUMIÈRE_PLEINE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.94,
+    "n_mc": 40000,
+    "p_hat": 0.98552,
+    "seuil": 93.8
+   },
+   "G02_FORCE_SANS_OMBRE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 0.55,
+    "n_mc": 40000,
+    "p_hat": 0.97428,
+    "seuil": 91.2
+   },
+   "G03_OMBRE_SANS_FORCE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.94,
+    "n_mc": 40000,
+    "p_hat": 0.9697,
+    "seuil": 90.2
+   },
+   "G04_DOUBLE_FORCE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.94,
+    "n_mc": 40000,
+    "p_hat": 0.99267,
+    "seuil": 95.9
+   },
+   "G05_EMPREINTE_CROISÉE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.94,
+    "n_mc": 40000,
+    "p_hat": 0.9053,
+    "seuil": 79.0
+   },
+   "G06_INFÉRENCES_TROIS": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.7,
+    "n_mc": 40000,
+    "p_hat": 0.883,
+    "seuil": 75.6
+   },
+   "G07_ZONE_CALME_LUMIÈRE": {
+    "dans_bande_3sigma": true,
+    "deterministe": false,
+    "distance_min_seuil_sigma": 1.94,
+    "n_mc": 40000,
+    "p_hat": 0.93442,
+    "seuil": 83.7
+   },
+   "G08_SIGNAL_FILET": {
+    "dans_bande_3sigma": null,
+    "deterministe": true,
+    "distance_min_seuil_sigma": null,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G09_HÉRITAGE_INVALIDE": {
+    "dans_bande_3sigma": null,
+    "deterministe": true,
+    "distance_min_seuil_sigma": null,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G10_OMBRE_SUPPRIMÉE": {
+    "dans_bande_3sigma": false,
+    "deterministe": true,
+    "distance_min_seuil_sigma": 3.27,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G11_FRONTIÈRE_LUMIÈRE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_seuil_sigma": 0.26,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G12_NUAGE_FORCE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_seuil_sigma": 0.93,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G13_PIÉGÉS_RQS": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_seuil_sigma": 0.47,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   },
+   "G14_RE_TEST_LUMIÈRE": {
+    "dans_bande_3sigma": true,
+    "deterministe": true,
+    "distance_min_seuil_sigma": 2.96,
+    "n_mc": 40000,
+    "p_hat": 1.0,
+    "seuil": 100.0
+   }
+  },
+  "n_deterministes": 7,
+  "n_stochastiques": 7,
+  "seuils": {
+   "G01_LUMIÈRE_PLEINE": 93.8,
+   "G02_FORCE_SANS_OMBRE": 91.2,
+   "G03_OMBRE_SANS_FORCE": 90.2,
+   "G04_DOUBLE_FORCE": 95.9,
+   "G05_EMPREINTE_CROISÉE": 79.0,
+   "G06_INFÉRENCES_TROIS": 75.6,
+   "G07_ZONE_CALME_LUMIÈRE": 83.7,
+   "G08_SIGNAL_FILET": 100.0,
+   "G09_HÉRITAGE_INVALIDE": 100.0,
+   "G10_OMBRE_SUPPRIMÉE": 100.0,
+   "G11_FRONTIÈRE_LUMIÈRE": 100.0,
+   "G12_NUAGE_FORCE": 100.0,
+   "G13_PIÉGÉS_RQS": 100.0,
+   "G14_RE_TEST_LUMIÈRE": 100.0
+  }
+ },
+ "meta": {
+  "date": "2026-10-20",
+  "heritage": "RIO-19 (SHA 3b1a7490…) + RIO-20 (SHA 6d9b3c59…) contresignés",
+  "n_couples": 560,
+  "n_groupes": 14,
+  "run": 1,
+  "seed": 42,
+  "spec": "PERS-Q3-SPEC.md (verrouillée 7e05861)"
+ },
+ "verdict": "VALIDÉ 7/7"
+}
