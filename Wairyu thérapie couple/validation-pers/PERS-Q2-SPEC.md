@@ -6,7 +6,8 @@
 > **Arbitrages (pont, par délégation) : A1 titre « La mécanique sous ma carte » · A2 entrées hétérogènes 4 blocs (24 entrées + héritage Q1) · A3 nommage 7 configurations maison · A4 convergence Q1×Q2 = contrôle interne index (prudence ≤ 0,50, suppression à 0,00) — la couche L5 reste réservée à Q3 · A5 filet double voie (héritée + détectée) · A6 L1 adapté + L3 verbatim transposée + L4 nuage + L7 embarquée.**
 > Erratum ANNONCÉ (publication) : l'énumération exacte des blocs fait **6 + 5 + 6 + 6 = 23 entrées** (dont 1 item sécurité N5) + 1 vigilance = **24 items au total** — le décompte proposé « 24 entrées + 1 vigilance » comptait double l'item N5 ; effectifs, mécanique et seuils inchangés.
 > D-CANAL levé par cette délégation : production `validation-pers-q2/` autorisée (séquence D-CANAL-2 complète → RIO-20), pattern Q1 (verrouillage → production → contresignature fondateur).
-> Chaîne locale : 251b244 → … → 09e8f0e (GitBook) → 00926ef (Task 135) → 4f84961 (SPEC Q1) → 322514c (Task 136) → f4fa593 (SPEC Q1 verrouillée) → 4ee278b (RIO-19 produit) → a5507d5 (RIO-19 contresigné — registre 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139).
+> Chaîne locale : 251b244 → … → 09e8f0e (GitBook) → 00926ef (Task 135) → 4f84961 (SPEC Q1) → 322514c (Task 136) → f4fa593 (SPEC Q1 verrouillée) → 4ee278b (RIO-19 produit) → a5507d5 (RIO-19 contresigné — registre 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139) → a8bb7b5 (SPEC Q2 verrouillée — délégation) → b72b6da (RIO-20 produit — VALIDÉ 7/7).
+> **Contresignature RIO-20 : « je valide » — fondateur, 20/10/2026.** Registre **20/20** (RIO-01 → RIO-20) ; package `validation-pers-q2/` produit (VALIDÉ 7/7, SHA ×2 6d9b3c59…), pointeurs à jour.
 
 ---
 
@@ -109,7 +110,7 @@ Le filet global s'applique : « Filet de sécurité : 9 signaux spécialisés pa
 | Quête | RIO | Rôle | État |
 |-------|-----|------|------|
 | Q1 « Manuel d'utilisation de moi » | **RIO-19** | La carte (mesure) — 4 axes AO/N/R/J | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…) |
-| **Q2 « La mécanique sous ma carte »** (titre A1) | **RIO-20** | **L'ombre (mécanisme profond — ligne 223)** | **Cette SPEC — VERROUILLÉE 20/10 par délégation** |
+| **Q2 « La mécanique sous ma carte »** (titre A1) | **RIO-20** | **L'ombre (mécanisme profond — ligne 223)** | **PRODUIT & CONTRESIGNÉ (validation-pers-q2/, VALIDÉ 7/7, SHA ×2 6d9b3c59…, « je valide » fondateur 20/10) — ce document = SPEC verrouillée** |
 | Q3 — titre à la SPEC Q3 | RIO-21 | La lumière (forces dérivées — banque L5) — SPEC à venir | à venir |
 | Q4 — titre à la SPEC Q4 | RIO-22 | Le croisement (à deux, confirmé) — SPEC à venir | à venir |
 | Q5 — titre à la SPEC Q5 | RIO-23 | Le pas (1 changement + suivi 14 j, 9/14 — lignes 224, 297-298) — SPEC à venir | à venir |

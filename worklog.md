@@ -2598,3 +2598,15 @@ Work Log:
 
 Stage Summary:
 - RIO-20 « La mécanique sous ma carte » VALIDÉ 7/7, publié — en attente de contresignature fondateur. Personnalité 2/5. Découvertes documentées : vérité clip-aware, granularité cochés vs filet détecté, bande SUGGESTION étroite en L7-4-items. Prochaine : contresignature RIO-20 → SPEC Q3 « La lumière » (forces dérivées — banque L5).
+---
+Task ID: 141
+Agent: GLM-chat (pont)
+Task: Contresignature fondateur RIO-20 (« je valide », 20/10/2026) — registre 20/20, pointeurs à jour.
+
+Work Log:
+- D-LECTURE : origin/main = b72b6da (délégation déjà exécutée avant coupure — SPEC verrouillée a8bb7b5, production VALIDÉ 7/7 SHA ×2 6d9b3c59…) ; « je valide » reçu au point exact de la séquence D-CANAL-2 = contresignature RIO-20.
+- Tampons : PERS-Q2-SPEC.md (chaîne locale étendue a8bb7b5 → b72b6da + en-tête « Contresignature RIO-20 … Registre 20/20 » + §8 RIO-20 → PRODUIT & CONTRESIGNÉ) ; hub README (header registre 20/20, bannière + arbre dimension, registre RIO-20 ✅, total 20 instruments, personnalité 2/5 contresignée) ; worklog dépôt + local (Task 141).
+- Scan anti-fuite → commit sign(pers-q2) auteur WTC-Pont → push paramiko → audit origin (ls-remote + raw HTTP 200).
+
+Stage Summary:
+- RIO-20 « La mécanique sous ma carte » CONTRESIGNÉ — registre 20/20, personnalité 2/5 contresignée (Q1 carte + Q2 ombre). Prochaine : SPEC Q3 « La lumière » (forces dérivées — banque L5, ligne 223), puis Q4 croisement, Q5 le pas → clôture bloc Psychologique 5/5.
