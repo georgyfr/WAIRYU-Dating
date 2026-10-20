@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-22 « Le croisement sous nos cartes » VALIDÉ 7/7, en attente de contresignature — personnalité 4/5 produite ; RIO-19, RIO-20 contresignés, registre 20/20 ; RIO-21 validé en attente).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-21 « La lumière sous ma carte » + RIO-22 « Le croisement sous nos cartes » **CONTRESIGNÉS** — « je valide » fondateur, tampon unique sur les deux artefacts publiés ; registre **22/22** ; personnalité **4/5 contresignée** ; reste Q5 « Le pas »).
 
 ---
 
@@ -47,7 +47,7 @@ Wairyu thérapie couple/
 │   ├── validation-ext-q2/ (RIO-17 — contresigné)
 │   └── validation-ext-q3/ (RIO-18 — contresigné)
 │
-│  ═══ Dimension PERSONNALITÉ (SPEC Q1-Q4 verrouillées · RIO-19, RIO-20 contresignés · RIO-21, RIO-22 validés en attente) ═══
+│  ═══ Dimension PERSONNALITÉ (SPEC Q1-Q4 verrouillées · RIO-19 → RIO-22 contresignés — registre 22/22 ; reste Q5) ═══
 ├── validation-pers/
 │   ├── PERS-Q1-SPEC.md (verrouillée 20/10 — A1-A6 tranchés par délégation)
 │   ├── PERS-Q2-SPEC.md (verrouillée 20/10 — « La mécanique sous ma carte »)
@@ -55,8 +55,8 @@ Wairyu thérapie couple/
 │   ├── PERS-Q4-SPEC.md (verrouillée 20/10 — « Le croisement sous nos cartes », A1-A6 par délégation)
 │   ├── validation-pers-q1/ (RIO-19 — contresigné)
 │   ├── validation-pers-q2/ (RIO-20 — contresigné)
-│   ├── validation-pers-q3/ (RIO-21 — VALIDÉ 7/7, en attente de contresignature)
-│   └── validation-pers-q4/ (RIO-22 — VALIDÉ 7/7, en attente de contresignature)
+│   ├── validation-pers-q3/ (RIO-21 — contresigné)
+│   └── validation-pers-q4/ (RIO-22 — contresigné)
 │
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
 ├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
@@ -117,8 +117,8 @@ Wairyu thérapie couple/
 |---|---|---|
 | WTC-PERS-Q1 | RIO-19 « Manuel d'utilisation de moi » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 3b1a7490… ; « je valide », fondateur, 20/10) |
 | WTC-PERS-Q2 | RIO-20 « La mécanique sous ma carte » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 6d9b3c59… ; « je valide », fondateur, 20/10) |
-| WTC-PERS-Q3 | RIO-21 « La lumière sous ma carte » | ⏳ VALIDÉ 7/7 simulation (SHA 7644a957…), en attente de contresignature fondateur |
-| WTC-PERS-Q4 | RIO-22 « Le croisement sous nos cartes » | ⏳ VALIDÉ 7/7 simulation (SHA 530c0065…), en attente de contresignature fondateur |
+| WTC-PERS-Q3 | RIO-21 « La lumière sous ma carte » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 7644a957… ; « je valide », fondateur, 20/10) |
+| WTC-PERS-Q4 | RIO-22 « Le croisement sous nos cartes » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 530c0065… ; « je valide », fondateur, 20/10) |
 
 ### Pilote réel
 
@@ -126,7 +126,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 20 instruments RIO contresignés (RIO-01 à RIO-20) + RIO-21, RIO-22 validés en attente. 3 dimensions complètes + extensions 3/3 + personnalité 4/5 produites (RIO-19 carte, RIO-20 ombre contresignés ; RIO-21 lumière, RIO-22 croisement validés) ; Q5 à venir.**
+**Total : 22 instruments RIO contresignés (RIO-01 à RIO-22). 3 dimensions complètes + extensions 3/3 + personnalité 4/5 contresignées (RIO-19 carte, RIO-20 ombre, RIO-21 lumière, RIO-22 croisement) ; Q5 « Le pas » à venir.**
 
 ---
 

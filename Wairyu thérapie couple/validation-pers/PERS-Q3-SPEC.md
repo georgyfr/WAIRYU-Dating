@@ -5,9 +5,10 @@
 > Rôle canon (§5.3, ligne 223) : « Q3 La lumière (forces dérivées) ». Quête 3/5 de la dimension Personnalité (A6 Q1 verrouillé : RIO-19 → RIO-23).
 > Q1 « Manuel d'utilisation de moi » (RIO-19) : ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…, « je valide » fondateur 20/10).
 > Q2 « La mécanique sous ma carte » (RIO-20) : ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 6d9b3c59…, « je valide » fondateur 20/10) — **registre 20/20**.
+> **Contresignature RIO-21 : « je valide » — fondateur, 20/10/2026 (trace 1a15948dd87d302d).** Registre **22/22** (RIO-01 → RIO-22 ; tampon unique sur les deux artefacts publiés — RIO-22 contresigné le même jour). Package `validation-pers-q3/` produit (VALIDÉ 7/7, SHA ×2 7644a957…), pointeurs à jour.
 > **Première quête du pipeline à deux ancêtres** : Q3 lit l'héritage Q1 (carte) ET Q2 (ombre) et dérive la lumière de l'autre face des MÊMES réponses — canon ligne 27 : « Ombre ET lumière structurelles : chaque résultat contient les deux — tirés des vraies réponses, jamais fabriqués ». (Erratum de numérotation signalé : la SPEC Q2 citait cette phrase « ligne 29 » ; elle figure à la ligne 27 — la ligne 29 est le vocabulaire écran. Contenu verbatim inchangé, SPEC Q2 contresignée non retouchée.)
 > **Couche réservée (A4 Q1 verrouillé)** : Q3 est la quête de la couche **L5** (ligne 261) — « Empreinte situationnelle (croisement Q1×Q2) + 3 inférences non-évidentes (alarme intérieure, mains libres, le près coûte) ».
-> Chaîne locale : … → a5507d5 (RIO-19 contresigné — 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139) → a8bb7b5 (SPEC Q2 verrouillée — délégation) → b72b6da (RIO-20 produit — VALIDÉ 7/7) → abf5c83 (RIO-20 contresigné — registre 20/20) → cbfd193 (SPEC Q3 PROPOSÉE) → 35cb049 (Task 142) → 7e05861 (présente SPEC — VERROUILLÉE, délégation fondateur A1-A6 → (a)×6) → **0716e85 (RIO-21 produit — VALIDÉ 7/7, SHA ×2 7644a957…, en attente de contresignature)**. (Note D-LECTURE : reset d'environnement entre Task 141 et la proposition — clone local restauré depuis origin/main, zéro perte, preuve ls-remote/raw ; second reset avant le tranchage — même preuve, origin/main = 35cb049.)
+> Chaîne locale : … → a5507d5 (RIO-19 contresigné — 19/19) → 51337a1 (SPEC Q2) → f2f8c28 (Task 139) → a8bb7b5 (SPEC Q2 verrouillée — délégation) → b72b6da (RIO-20 produit — VALIDÉ 7/7) → abf5c83 (RIO-20 contresigné — registre 20/20) → cbfd193 (SPEC Q3 PROPOSÉE) → 35cb049 (Task 142) → 7e05861 (présente SPEC — VERROUILLÉE, délégation fondateur A1-A6 → (a)×6) → **0716e85 (RIO-21 produit — VALIDÉ 7/7, SHA ×2 7644a957…)** — contresigné par le tampon ci-dessus. (Note D-LECTURE : reset d'environnement entre Task 141 et la proposition — clone local restauré depuis origin/main, zéro perte, preuve ls-remote/raw ; second reset avant le tranchage — même preuve, origin/main = 35cb049.)
 > **PRODUCTION (D-CANAL-2, 20/10)** : package `validation-pers-q3/` — core (dérivation pure, banque 8, matrice EMP, 3 inférences, carte-seule, L7) · simulateur (560/14, héritages doubles patrons D-TABLE, vérité = moteur sur espérances CLIP-AWARE) · validation C1-C7. **Verdict VALIDÉ 7/7** — C1 (47 cas D-TABLE + croisement 920/920 + anti-fabrication double sens) · C2 déterministe (80 re-tests) · C3 14/14 au seuil (7 bornes DISTINCTES + 7 déterministes 100,0) · C4 SHA ×2 7644a957… · C5 gabarit 920/920 · C6 0 interdit · C7 filet avant arbre + 0 invention + 0 tiers. Précisions de verrouillage déposées au core : support ⟺ conservateur ≥ TRANQUILLE · règle J (affichée ⟺ DISCRÈTE) · faces carte d'empreinte N1/AO2/R2/J1 (découplées des sources de forces et du signal Q1 J2) · calibration MC déterministe (graine 4200, 20 000 couples/groupe).
 
 ---
@@ -117,13 +118,13 @@ L'item N5 hérité (retour impossible/détresse) reste court-circuit P-FILTRE (d
 
 ## 8. Mapping RIO (position dans la dimension)
 
-> **État RIO-21 : PRODUIT (0716e85)** — package `validation-pers-q3/` publié, en attente de la contresignature fondateur (« je valide ») → registre 21/21, personnalité 3/5 contresignée.
+> **État RIO-21 : PRODUIT & CONTRESIGNÉ (0716e85 ; « je valide » fondateur 20/10/2026 — trace 1a15948dd87d302d, même tampon que RIO-22)** — registre **22/22**, personnalité **4/5 contresignée**.
 
 | Quête | RIO | Rôle | État |
 |-------|-----|------|------|
 | Q1 « Manuel d'utilisation de moi » | **RIO-19** | La carte (mesure) — 4 axes AO/N/R/J | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 3b1a7490…) |
 | Q2 « La mécanique sous ma carte » | **RIO-20** | L'ombre (mécanisme profond — ligne 223) | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 6d9b3c59…, « je valide » fondateur 20/10) |
-| **Q3 « La lumière sous ma carte » (A1-a)** | **RIO-21** | **La lumière (forces dérivées — ligne 223) · L5 (ligne 261)** | **PRODUIT (VALIDÉ 7/7, SHA ×2 7644a957…, « en attente de contresignature »)** |
+| **Q3 « La lumière sous ma carte » (A1-a)** | **RIO-21** | **La lumière (forces dérivées — ligne 223) · L5 (ligne 261)** | **✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 7644a957…, « je valide » fondateur 20/10)** |
 | Q4 — titre à la SPEC Q4 | RIO-22 | Le croisement (à deux, confirmé) · L6 (ligne 262) — SPEC à venir | à venir |
 | Q5 — titre à la SPEC Q5 | RIO-23 | Le pas (1 changement + suivi 14 j, 9/14 — lignes 224, 297-298) — SPEC à venir | à venir |
 
