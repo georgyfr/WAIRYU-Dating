@@ -183,3 +183,17 @@ Suite de l'ADDENDUM-2, même ordre fondateur (fichiers SUPPLÉMENTAIRES, zéro m
 5. **Rappel de la limite universelle** : le 100 % de RIO-02 est un 100 % en simulation (D-SIM) — le constat n°1 (zéro réel, VALID-01) reste vrai pour toutes les quêtes.
 
 Prochaine quête du même rattrapage : RIO-03 (même gabarit), puis RIO-06→RIO-10.
+
+---
+
+## ADDENDUM-4 (22/10/2026, trace 1a15fdebd4c235a1) — Action n°1 poursuivie : fichier de correction RIO-03, re-score 53 % → 100 %
+
+Suite des ADDENDUM-2/3, même ordre fondateur (fichiers SUPPLÉMENTAIRES, zéro modification de l'existant, exactitude des calculs). Exécuté (Task 168) :
+
+1. **Package créé** : `validation-q3/correction-philosophique/` — couche qui importe les VRAIS moteurs (q3-r1 + templates réels D-Q3-R1-H · q2-r1 pour le palier · q4 · q5 — intégrité vérifiée à l'import, zéro réimplémentation) et produit les trois couches manquantes de RIO-03 : F2 « QUAND DEMANDER DE L'AIDE » (seuils S1/S2 sur le PLANCHER HÉRITÉ — le VRAI `palier` Q2 appelé avec i_alarm=0 et H5=0, monotonicité palier ≥ plancher PROUVÉE sur 211 200 états, clés lues ⊆ {somme} prouvées par dictionnaire espion — D-CRISE non applicable, consigné) + ombre héritée causale sans étiquette + journal jamais sanctionné ; F3 contenu des 3 paliers (6 exercices 🟢 de capitalisation, 3 modules 🟠 mécaniques par miroir, orientation 🔴 phrase canon) + branchement quête « pas » sur le vrai `selectionner_pas` + re-test 8 semaines (vrais `long_termique` et `programmer_re_test_q1`) ; F4 fragment de bilan L8 à 7 blocs avec trace A/B/C réelle.
+2. **Preuve** : énumération EXHAUSTIVE de l'espace des états distincts de la couche — 4 c1 × 2 bandes c2 × 32 états c3 × 4 bandes sA × 3 bandes sB × 2 états h≥r × 54 états journal × 6 libellés = **1 990 656 configurations** (compactations PROUVÉES exhaustivement : c3 512→32 sur 147 456 vérifications · journal 4 096→26 motifs × 2 N + 2 · h≥r 160→2 + égalité pile · libellés sans effet sur les forces) — 8 critères COR1-COR8 tous PASS, dont : double chemin (tables cahier) ≡ vrai cœur 0 écart ; miroir exhaustif 262 144/262 144 ; 0 mot interdit sur 10 356 textes distincts ; anti-fabrication sans exception (exclues de la limite des 2 : 1 969 248 cas tracés, jamais affichés) ; re-score BIT-EXACT des 475 profils archivés R1 régénérés par le VRAI simulateur (6 175 comparaisons, 0 écart — SILENCIEUSES réelles 61/475 conformes) ; pas 18/18 ; identité face Q5 ⇔ type Q4 12/12 ; suivi 15/15 sans sanction ; pipeline ×2 SHA-256 identiques `6bb890e272dd11f8…`. Rapport : `validation-q3/correction-philosophique/results/rapport-correction-RIO-03.md`.
+3. **Re-score RIO-03** : F1 25 (inchangé — package R1 VALIDÉ 7/7) · F2 12→**25** · F3 6→**25** · F4 10→**25** = **100 %** (au barème de cet audit, preuve P1 simulation). Le plancher hérité est une borne BASSE (la vraie sévérité Q2 peut être plus haute, jamais plus basse — consigné à l'écran et au bilan) ; le récapitulatif de DIMENSION reste l'action n°2.
+4. **Moyennes recalculées (exactes)** : attachement (100+100+100+61+67)/5 = **85,6 %** · global 23 quêtes 1 755/23 = **76,3 %**. Les scores des 20 autres quêtes de ce document restent inchangés.
+5. **Rappel de la limite universelle** : le 100 % de RIO-03 est un 100 % en simulation (D-SIM) — le constat n°1 (zéro réel, VALID-01) reste vrai pour toutes les quêtes.
+
+Prochaines quêtes du même rattrapage : RIO-06→RIO-10 (dimension émotionnelle, même gabarit).

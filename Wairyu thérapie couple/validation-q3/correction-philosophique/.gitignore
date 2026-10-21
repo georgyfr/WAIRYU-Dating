@@ -1,0 +1,5 @@
+_r*_canon.json
+_r*_s1_*.json
+_r*_rest*.json
+__pycache__/
+*.pyc

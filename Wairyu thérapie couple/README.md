@@ -23,6 +23,7 @@ Wairyu thérapie couple/
 ├── validation-q2/ · validation-q2-r1/
 │   └── correction-philosophique/ (RIO-02 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 6,72 M états, COR1-COR8 PASS)
 ├── validation-q3/ · validation-q3-r1/
+│   └── correction-philosophique/ (RIO-03 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 1,99 M états + plancher monotone prouvé, COR1-COR8 PASS)
 ├── validation-q4/ · validation-q5/
 │
 │  ═══ Dimension ÉMOTIONNELLE (5/5 VALIDÉE) ═══
