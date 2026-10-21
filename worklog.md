@@ -2855,3 +2855,19 @@ Work Log:
 
 Stage Summary:
 - **Outillage staging REMIS EN PLACE** : wrangler 4.147.0 + dépendances réinstallées, typecheck 0 erreur, build front OK (correction PostCSS versionnée), script smoke D-ENV prêt et exécuté 7/7 CONFORME sur le staging vivant. Reste pour la remise en DÉPLOIEMENT : CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (2 valeurs fondateur, pattern établi Task 37) → alors deploy.sh staging + régénération ADMIN_TOKEN + smoke post-déploiement + tests D-ENV complets (E2E authentifiés) + test d'incendie des filets (A4) devenus exécutables.
+
+---
+Task ID: 157
+Agent: WTC-Pont (exécuteur calculs)
+Task: Redéfinition du mode de travail par le fondateur (trace 1a15de424e80a5a1 — « tu n'interfères pas sur Cloudflare, tu fais les travaux et tu les pousses sur Github ; travaille désormais PAR QUÊTE ; quand une quête de calculs est terminée, tu présentes les résultats par document poussé sur Github et tu signales la quête suivante ») — première quête traitée : M1-1.1 « Ta personnalité » (Monde 1 « Le Miroir »).
+
+Work Log:
+- CAP RECEVÉ : zéro Cloudflare, zéro secrets (les 2 valeurs en attente ne sont plus demandées — placeur SECRETS-WAIRYU-LOCAL.txt laissé en placeholders sans effet) ; unité de travail = la quête ; livrable = document de résultats poussé ; signal de la quête suivante dans la réponse.
+- D-LECTURE : structure des quêtes du front cartographiée (M1: 11 quêtes 1.1→1.11, M2: 8, M3: 7, M4: 3, M5: 7 — moteurs apps/web/src/lib/quete-*.ts) ; quête 1.1 lue (50 items Big Five, Likert 1-5, 24 inversés, scorer 0-1 par dim, cascade 7 cartes FM-019, passation gelée graine 211427).
+- SCRIPT DE VÉRIFICATION (exécute le VRAI moteur, zéro réimplémentation) : V1 items (50, 10/dim, 24 inversés O=3 C=5 E=5 A=5 S=6, codes uniques, textes) ; V2 scorer (profils extrêmes/médian calculés à la main — égalité à 1e-12 ; contributions item par item ; hors bornes ignorés ; aucun NaN en passation partielle) ; V3 couverture exhaustive 161 051 profils (pas 0,1) — 7/7 cartes atteignables, répartition V5 25,5 % / V7 31,6 % / V2 16,5 % / V1 7,8 % / V4 7,4 % / V6 6,2 % / V3 5,0 %, cascade vérifiée par cas ; V4 anti-flatterie (7/7 cartes ombre+lumière+tension, 0 terme pathologisant, 0 formule de flatterie) ; V5 passation gelée (50 items, trames sécurité sans contenu sautées).
+- HONNÊTETÉ INÉGRALE : 3 assertions du VÉRIFICATEUR étaient fausses au 1er passage (hypothèse 10 inversés vs 24 réels ; symétrie mal formulée ; cas V5 contradictoire) — corrigées contre les vraies données, 40/40 au 2e passage ; le moteur n'a requis AUCUNE correction. Consigné dans le document.
+- LIVRABLE POUSSÉ : Wairyu thérapie couple/calculs-quêtes/M1-quete-1-1-resultats.md (résultats exacts, tableaux attendu vs obtenu, constat de suivi V7+V5 = 57 % de l'espace théorique à mesurer sur vraies données au pilote) + scripts/check-quete-1-1.ts (reproductible : bun scripts/check-quete-1-1.ts depuis le dossier — re-testé depuis le dépôt : 40/40).
+- Worklog Task 157 (présent commit) + miroir ; commit + push + audit origin.
+
+Stage Summary:
+- **Quête M1-1.1 VÉRIFIÉE COMPLÈTE (40/40)** — le calcul donne réellement les résultats attendus, sans flatterie, sur tout l'espace des profils ; document de résultats poussé dans calculs-quêtes/. PROCHAINE QUÊTE SIGNALÉE : M1-1.2 (moteur quete-1-2.ts + -plus) — même méthode.
