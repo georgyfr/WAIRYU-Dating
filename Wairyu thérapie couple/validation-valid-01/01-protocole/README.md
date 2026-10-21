@@ -21,7 +21,7 @@ L'ordre de lecture recommandé :
 - [x] Contresignature superviseur sortant — niveau 2, fond intégral (rapport 07 — 21/10/2026 ; arbitrages fondateur B1 → option (b) et B2 → seuil ≥ 3 rendus, trace 1a15d6b474a4969d ; 14 consistances S1-S14 corrigées)
 - [ ] Validation conseil clinique (6 membres — à constituer)
 - [ ] Déclaration CNIL / Comité éthique (si applicable) + AIPD formelle
-- [ ] Pré-enregistrement OSF.io (Amendement A3 — avant tout pré-enregistrement, les critères intègrent la bascule B1)
+- [ ] Pré-enregistrement OSF.io (Amendement A3 — **package prêt à déposer : `../03-preenregistrement-osf/README.md`** — critères intégrant la bascule B1 ; dépôt = acte fondateur après validation conseil, avant le premier répondant)
 - [ ] Assurance RC professionnelle (Amendement A6)
 - [ ] Tests d'infrastructure de collecte (D-ENV) + test d'incendie des filets (Amendement A4)
 - [ ] Premier répondant recruté

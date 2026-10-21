@@ -2,14 +2,14 @@
 
 > **STATUT : CONTRESIGNÉ NIVEAU 1 (ARCHITECTURE) + NIVEAU 2 (FOND INTÉGRAL, 21/10/2026) + 6 AMENDEMENTS INTÉGRÉS**
 >
-> **Contresignature niveau 2 (fond intégral)** : POSÉE le 21/10/2026 — relecture du fond intégral exécutée (rapport `01-protocole/07-rapport-relecture-niveau2.md`, sections A-G), arbitrages fondateur rendus (trace 1a15d6b474a4969d) : **B1 → option (b)** (validité convergente basculée sur le RQ + CSI, ECR-R non administré) et **B2 → seuil unique ≥ 3** (faux négatifs) ; 14 consistances S1-S14 corrigées — exécution consignée en section H du rapport 07.
+> **Contresignature niveau 2 (fond intégral)** : POSÉE le 21/10/2026 — relecture du fond intégral exécutée (rapport `01-protocole/07-rapport-relecture-niveau2.md`, sections A-G), arbitrages fondateur rendus (trace 1a15d6b474a4969d) : **B1 → option (b)** (validité convergente basculée sur le RQ + CSI, ECR-R non administré) et **B2 → seuil unique ≥ 3** (faux négatifs) ; 14 consistances S1-S14 corrigées — exécution consignée en section H du rapport 07. **Suite (même jour)** : package de pré-enregistrement OSF.io **PRÊT À DÉPOSER** (`03-preenregistrement-osf/` — contenu scellé H1-H7, plan d'analyse, critères d'arrêt, conflit d'intérêt ; dépôt effectif = acte fondateur après validation conseil).
 >
 > Ce package est un document de conception, pas un package de validation
 > mécanique. Il doit être :
 > 1. ✅ **contresigné** par le superviseur sortant (niveau 1 fait ; niveau 2 — fond intégral — fait le 21/10/2026 : arbitrages B1 (b) / B2 (≥ 3) rendus, S1-S14 corrigées) ;
 > 2. ⏳ **validé** par le conseil clinique (6 membres dont méthodologue — à constituer) ;
 > 3. ⏳ **AIPD formelle** (Arbitrage superviseur sortant — pas de CPP) + consultation juridique ;
-> 4. ⏳ **tests d'infrastructure** (D-ENV) + **test d'incendie des filets** (Amendement A4) + **pré-enregistrement OSF.io** (Amendement A3) + **assurance RC** (Amendement A6) ;
+> 4. ⏳ **tests d'infrastructure** (D-ENV) + **test d'incendie des filets** (Amendement A4) + **pré-enregistrement OSF.io** (Amendement A3 — package produit, dépôt avant premier répondant) + **assurance RC** (Amendement A6) ;
 > 5. puis **recrutement** des premiers répondants.
 >
 > Aucune donnée ne sera collectée avant ces étapes.
@@ -32,7 +32,7 @@
 | Contresignature superviseur sortant (niveau 2 — fond intégral) | ✅ **Fait** (21/10/2026 — rapport 07, arbitrages B1 (b) / B2 (≥ 3) rendus, S1-S14 corrigées) |
 | Validation conseil clinique (6 membres) | ⏳ En attente constitution |
 | AIPD formelle + consultation juridique | ⏳ En attente |
-| Pré-enregistrement OSF.io (Amendement A3) | ⏳ En attente |
+| Pré-enregistrement OSF.io (Amendement A3) | 🟡 **Package prêt à déposer** (`03-preenregistrement-osf/` — 21/10/2026) — dépôt = acte fondateur après validation conseil |
 | Test d'incendie des filets (Amendement A4) | ⏳ En attente |
 | Assurance RC professionnelle (Amendement A6) | ⏳ En attente vérification |
 | Recrutement des premiers répondants | ⏳ Bloqué jusqu'aux étapes ci-dessus |
@@ -97,15 +97,17 @@ simulés** par des données mesurées sur 150-200 répondants analysables
 ```
 validation-valid-01/
 ├── README.md                                  (ce fichier — statut PROTOCOLE)
-└── 01-protocole/
-    ├── README.md                              (sommaire du protocole)
-    ├── 01-protocole-etude.md                  (document principal — 17 sections)
-    ├── 02-consentement-eclaire.md             (modèles de consentement RGPD art. 9)
-    ├── 03-criteres-psychometriques.md         (α, ω, AFE/AFC, ICC, item-total, SEM, validité convergente)
-    ├── 04-filets-securite-incident.md         (déclencheurs H5, 3919/3114, escalade, journal)
-    ├── 05-timeline-calendrier.md              (6 phases, 9 mois)
-    ├── 06-criteres-arret.md                   (sécurité, futilité, non-conformité)
-    └── 07-rapport-relecture-niveau2.md        (relecture fond intégral 21/10 — signalements B1/B2 + S1-S14, verdict 8,5/10)
+├── 01-protocole/
+│   ├── README.md                              (sommaire du protocole)
+│   ├── 01-protocole-etude.md                  (document principal — 17 sections)
+│   ├── 02-consentement-eclaire.md             (modèles de consentement RGPD art. 9)
+│   ├── 03-criteres-psychometriques.md         (α, ω, AFE/AFC, ICC, item-total, SEM, validité convergente)
+│   ├── 04-filets-securite-incident.md         (déclencheurs H5, 3919/3114, escalade, journal)
+│   ├── 05-timeline-calendrier.md              (6 phases, 9 mois)
+│   ├── 06-criteres-arret.md                   (sécurité, futilité, non-conformité)
+│   └── 07-rapport-relecture-niveau2.md        (relecture fond intégral 21/10 — signalements B1/B2 + S1-S14, verdict 8,5/10)
+├── 02-dossier-conseil-clinique/README.md      (dossier de présentation du programme — constitution du conseil, langage clair)
+└── 03-preenregistrement-osf/README.md         (package de pré-enregistrement OSF.io — prêt à déposer, contenu scellé H1-H7 + plan d'analyse + critères d'arrêt)
 ```
 
 ## Principes non négociables (rappel — applicables au pilote réel)

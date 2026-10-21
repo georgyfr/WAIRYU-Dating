@@ -2806,3 +2806,19 @@ Work Log:
 
 Stage Summary:
 - **Protocole v1.1 CONTRESIGNÉ NIVEAU 2** — arbitrages B1 (b) et B2 (≥ 3) rendus et intégrés, 14 consistances corrigées, package prêt pour la validation du conseil clinique (constitution reportée par le fondateur) et pour le pré-enregistrement OSF.io (critères intégrant la bascule B1). Verrous restants VALID-01 : conseil clinique (acte fondateur), AIPD + juridique, tests infra + incendie filets (jeton staging — arbitrage en attente), OSF.io, assurance RC.
+
+---
+Task ID: 154
+Agent: WTC-Pont (superviseur sortant)
+Task: Ordre fondateur « etape suivante » (trace 1a15da094d4772a5, 21/10/2026) — production du package de pré-enregistrement OSF.io (Amendement A3), prochain verrou pont-exécutable de VALID-01 après la contresignature niveau 2 (B1 tranché, le chemin était débloqué).
+
+Work Log:
+- D-LECTURE : HEAD = origin = 941484e (synchronisés — l'ordre « b et 3. corrige les 14 points » de la trace 1a15d6b474a4969d était déjà exécuté en Task 153 : B1 option (b), B2 ≥ 3, S1-S14, tampon niveau 2) ; verrous restants lus au hub : conseil (reporté), AIPD (externe), OSF (pont-exécutable), incendie filets (bloqué jeton staging — arbitrage en attente), RC (externe).
+- Sources relues avant production : doc 01 (§1, §4, §6.4, §7, §8, §9, §10, §11, §12, §13.1-13.5, §15.3) ; doc 03 (§6.1-6.4 — seuils RQ ≥ 0,40, puissance n=47 Fisher) ; doc 05 (Phase 0, cases à cocher) ; doc 06 (Types 1-2-3 — déclencheurs et délais verbatim) ; sommaire + hub (arborescence).
+- PRODUIT : validation-valid-01/03-preenregistrement-osf/README.md — package autoporteur de pré-enregistrement (15 sections) : identité du study, résumé en langage clair, conflit d'intérêt A5 (3 niveaux), hypothèses H1-H7 + nulles VERBATIM v1.1 (B1 intégré dans H5), variables mesurées (T0/T2/T8 + RQ/CSI), population (A1 250-300/150-200, attrition, A2 paires ≥ 30, anonymisation), plan d'analyse principal (§13.2 verbatim + traduction en langage clair), analyses secondaires D-STD-2, données manquantes + logiciel, règle anti post-hoc D-STD, critères d'arrêt Types 1-2-3 (B2 ≥ 3 intégré), filets sécurité (synthèse), 5 points restant à ratifier conseil avant dépôt, checklist de dépôt OSF.io en 8 gestes (acte fondateur, ~1 h, DOI à noter dans le dépôt), traçabilité.
+- D-CHECK : aucun chiffre inventé (toutes les valeurs recopiées des sources relues) ; traductions « en langage clair » ajoutées à côté des formulations techniques sans les remplacer ; doc 01 (contresigné niveau 2) NON TOUCHÉ — pointeurs uniquement dans les fichiers de navigation ; scan anti-fuite standard sur le nouveau document (exit 1 = PROPRE).
+- Pointeurs : hub VALID-01 (tableau verrous OSF → 🟡 package prêt à déposer ; arborescence complétée 02-dossier-conseil-clinique + 03-preenregistrement-osf ; en-tête : mention « Suite (même jour) » après le tampon niveau 2 ; étape 4 précisée) ; sommaire package (case OSF pointe le package).
+- Worklog Task 154 (présent commit) + miroir /home/z/my-project/worklog.md ; commit + push + audit origin (ls-remote + raw + scan standard sans citation de motif).
+
+Stage Summary:
+- **Package de pré-enregistrement OSF.io PRODUIT et PRÊT À DÉPOSER** (03-preenregistrement-osf/README.md — 15 sections, contenu scellé conforme §13.1.bis) : le dépôt effectif est un acte fondateur (~1 h, checklist en 8 gestes dans le package) à réaliser après validation du conseil clinique, avant le premier répondant ; le DOI rendra ensuite le lien entre les données collectées et la promesse publique. VALID-01 après cette Task : R3 levé, niveau 2 posé, dossier conseil prêt, package OSF prêt — restent : constitution conseil (fondateur, reportée), AIPD + juridique (externes), tests infra + incendie filets (jeton staging — arbitrage en attente), dépôt OSF (fondateur, après conseil), assurance RC (externe).
