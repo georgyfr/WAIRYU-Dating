@@ -2837,3 +2837,21 @@ Work Log:
 
 Stage Summary:
 - **Arbitrage jeton d'administration staging RENDU par délégation fondateur — option (a) exécutée** : valeur rédactionnelle morte retirée du worklog public (pattern 67cedbb, 1 ligne, historique Git intact), aucune occurrence résiduelle. Les tests D-ENV restent conditionnés au re-provisionnement d'un jeton actif (outillage staging à remettre en place — wrangler absent). Aucun arbitrage fondateur restant en attente — les verrous suivants sont des actes externes : constitution du conseil (reportée), AIPD + juridique, dépôt OSF (après conseil), assurance RC, re-provisionnement staging.
+
+---
+Task ID: 156
+Agent: WTC-Pont (superviseur sortant)
+Task: Mission fondateur « te confier la remise en place de l'outillage staging pour débloquer les tests » (trace 1a15dd4acf3c1d91, 21/10/2026) — remise en place complète de l'outillage de déploiement et des tests D-ENV de base ; déploiement du bundle à jour restant conditionné aux 2 secrets fondateur (pattern établi : re-fournis à chaque reset, jamais commis).
+
+Work Log:
+- D-LECTURE : architecture reconstituée — monorepo (apps/api Worker Cloudflare Hono, apps/web Vite, apps/ios/twa), deploy.sh (typecheck → vite build → migrations D1 → wrangler deploy ; staging = wairyu-staging.wairyu.workers.dev) ; wrangler.toml complet (IDs D1/KV réels, [env.staging] présent) ; historique Tasks 37/54/56-58 relu : CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID sont des secrets FONDATEUR perdus à chaque reset et re-fournis dans le chat (discipline 17-b — jamais écrits dans un dépôt).
+- OUTILLAGE RÉINSTALLÉ : bun install --frozen-lockfile (258 packages, 1,98 s) ; wrangler 4.147.0 opérationnel ; typecheck API npx tsc --noEmit = 0 erreur ; build front Vite OK (10,86 s).
+- CORRECTION D'INFRA (versionnée) : apps/web/postcss.config.mjs créé (plugins: []) — sans lui, vite remontait au postcss.config.mjs du projet hôte /home/z/my-project (plugin Next.js invalide hors contexte) et le build échouait (remontée impossible à éviter quand le worktree vit sous /home/z/my-project/) ; le front est en CSS vanilla, aucun plugin requis.
+- SCRIPT D-ENV PRÊT : /home/z/my-project/scripts/smoke-staging.sh (hors dépôt — outil d'exploitation local) — 7 vérifications : health 200 {ok:true, env:staging}, front 200, VAPID 200 non vide, endpoint protégé /api/push/notify-recolte → 401 sans session (1re exécution : chemin erroné /api/notify-recolte → 404 corrigé vers la route exacte du code source).
+- SMOKE EXÉCUTÉ SUR LE STAGING EXISTANT : **7/7 CONFORME** — le service Cloudflare tourne toujours (bundle Task 54 ba60801c) ; l'infrastructure de base est vivante, seul l'accès de déploiement manque.
+- SECRETS PRÉPARÉS : /home/z/SECRETS-WAIRYU-LOCAL.txt squelette recréé (chmod 600, hors dépôt, 2 placeholders EN_ATTENTE_FONDATEUR — CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID) ; ADMIN_TOKEN staging sera régénéré par le pont au déploiement (openssl rand -hex 24 → wrangler secret put --env staging, valeur /tmp chmod 600, jamais citée — méthode Tasks 56-58).
+- VERDICT HONNÊTE : le staging de base est D-ENV conforme en l'état ; pour les tests complets (bundle à jour + OTP backdoor admin + E2E authentifiés), le déploiement du bundle courant est requis → 2 valeurs fondateur en attente.
+- Worklog Task 156 (présent commit : postcss.config.mjs + worklog) + miroir ; commit + push + audit origin (ls-remote + raw + scan standard sans citation de motif).
+
+Stage Summary:
+- **Outillage staging REMIS EN PLACE** : wrangler 4.147.0 + dépendances réinstallées, typecheck 0 erreur, build front OK (correction PostCSS versionnée), script smoke D-ENV prêt et exécuté 7/7 CONFORME sur le staging vivant. Reste pour la remise en DÉPLOIEMENT : CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (2 valeurs fondateur, pattern établi Task 37) → alors deploy.sh staging + régénération ADMIN_TOKEN + smoke post-déploiement + tests D-ENV complets (E2E authentifiés) + test d'incendie des filets (A4) devenus exécutables.
