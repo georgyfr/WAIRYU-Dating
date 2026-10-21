@@ -1,0 +1,108 @@
+{
+ "c1": {
+  "ok": true,
+  "n_candidats": 2710,
+  "violations": [],
+  "choix_hors_banque_refuse": true,
+  "calme_jamais_candidate": true
+ },
+ "c2": {
+  "ok": true,
+  "flips": 0,
+  "frontieres_serie": true,
+  "esperance": true
+ },
+ "c3": {
+  "ok": true,
+  "non_conformites": [],
+  "n_groupes": 14,
+  "calib": {
+   "seuils": {
+    "celebre": 9,
+    "n_jours": 14,
+    "fiable": 0.58,
+    "suggestion": 0.41
+   },
+   "bornes_distinctes": true,
+   "deltas_enumeres": [
+    -0.75,
+    -0.5,
+    -0.25,
+    0.25,
+    0.5,
+    0.75
+   ],
+   "verdicts_par_delta": {
+    "-0.75": "FIABLE",
+    "-0.5": "SUGGESTION",
+    "-0.25": "BRUIT",
+    "0.25": "BRUIT",
+    "0.5": "SUGGESTION",
+    "0.75": "FIABLE"
+   },
+   "zones_couvertes": 3,
+   "n_stochastiques": 0,
+   "n_deterministes": 14
+  }
+ },
+ "c4": {
+  "sha1": "d99fb980c965c8cf",
+  "sha2": "d99fb980c965c8cf",
+  "identiques": true,
+  "ok": true
+ },
+ "c5": {
+  "ok": true,
+  "violations": [],
+  "eclairage_display_only": true
+ },
+ "c6": {
+  "ok": true,
+  "mots_interdits": {},
+  "pieges": {
+   "perfect_ok": 20,
+   "zero_ok": 20,
+   "pile_ok": 14
+  }
+ },
+ "c7": {
+  "ok": true,
+  "voies_filet": {
+   "PAS_NON_DÉPLOYÉ": 25,
+   "QUÊTE_VERROUILLÉE": 8,
+   "AUCUN_RÉSULTAT": 7
+  },
+  "violations": [],
+  "rive_seule": true,
+  "textes_hors_gabarit": 0
+ },
+ "verdict": "VALIDÉ 7/7",
+ "meta": {
+  "date": "2026-10-20",
+  "n_rives": 650,
+  "n_groupes": 14,
+  "seed": 42,
+  "spec": "PERS-Q5-SPEC.md (verrouillée d77e95a)",
+  "heritage": "RIO-19 (3b1a7490…) + RIO-20 (6d9b3c59…) + RIO-21 (7644a957…) contresignés — moteur RIO-21 consommé tel quel"
+ },
+ "calib": {
+  "seuils": {
+   "celebre": 9,
+   "n_jours": 14,
+   "fiable": 0.58,
+   "suggestion": 0.41
+  },
+  "bornes_distinctes": true,
+  "deltas_enumeres": [
+   -0.75,
+   -0.5,
+   -0.25,
+   0.25,
+   0.5,
+   0.75
+  ],
+  "zones_couvertes": 3,
+  "n_stochastiques": 0,
+  "n_deterministes": 14
+ }
+}
