@@ -2971,3 +2971,17 @@ Work Log:
 
 Stage Summary:
 - RÉ-AUDIT DE PHILOSOPHIE livré : 70,1 % global (attachement 57,4 · émotionnelle 57,8 · SM 74,4 · générationnelle 85,7 · personnalité 81,8) — la graduation (F1) est validée partout P1 ; la gravité affichée (F2) et les solutions (F3) sont pleinement validées seulement en génération 3 ; le bilan d'ensemble (F4) plafonne partout (livrable P3 non construit). ARBITRAGES OUVERTS pour le fondateur : vocabulaire écran vs nommage des pathologies · priorité du package « bilan de dimension » · rattrapage des 10 quêtes gen 1 · libellés réels des questions. PROCHAINE QUÊTE SIGNALÉE : M1-1.5 « L'épreuve du temps » (voyage, moteur quete-1-5.ts) — en attente de l'arbitrage cadre/philosophie du fondateur.
+
+---
+Task ID: 164
+Agent: WTC-Pont (superviseur)
+Task: Fondateur (trace 1a15eca977dc8259) — arbitrage « déceler sans nommer les pathologies » : consignation de la décision de doctrine.
+
+Work Log:
+- Addendum en append au document d'audit (rapports/audit-philosophie-therapeutique-23-RIO-2026-10-21.md) : doctrine du vocabulaire écran CONFIRMÉE (canon Partie 9, 355-356 ; triple verrou C6).
+- Vérification de portée : les 23 instruments contresignés sont déjà conformes (C6 des gens 2-3, gen 1 sans étiquette) — zéro moteur à modifier ; scores de l'audit inchangés ; action n°4 de comblement CLOSE (reste 4 : rattrapage gen 1 · bilan de dimension L8 · libellés réels · VALID-01).
+- Frontière rappelée : vocabulaire clinique autorisé dans la documentation de validation, jamais dans les écrans ; les mots canon ne s'impriment jamais à l'interface.
+- Commit 39ddc9d + push + scan anti-fuite PROPRE ; miroir worklog à jour.
+
+Stage Summary:
+- Arbitrage de doctrine CLÔT : déceler gradué, exprimer la gravité par les paliers et le langage clair, ne jamais étiqueter à l'écran. Aucune retouche moteur requise. Prochaine étape signalée au fondateur : choix parmi les 4 actions de comblement restantes (recommandation pont : package « bilan de dimension » — chaînon n°1 de sa demande philosophique).
