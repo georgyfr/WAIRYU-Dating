@@ -2707,3 +2707,20 @@ Work Log:
 
 Stage Summary:
 - RIO-23 SPEC PROPOSÉE en ligne (1012dad) — arbitrages A1-A6 ouverts, recommandation (a) partout (pattern Q1-Q4). Prochaine étape : tranchage fondateur ou délégation (« je te laisse le choix de trancher ») → verrouillage → production validation-pers-q5/ (D-CANAL-2 complet, pushes progressifs) → contresignature RIO-23 → dimension Personnalité 5/5.
+
+---
+Task ID: 148
+Agent: WTC-Pont (superviseur)
+Task: Délégation fondateur « je te laisse le choix de trancher » (4e du cycle, trace 1a15cefe32e51dc5) — tranchage A1-A6, verrouillage SPEC Q5, production complète RIO-23 « Le pas sous ma carte », pushes progressifs.
+
+Work Log:
+- Tranchage A1-A6 par délégation → (a)×6 (pattern Q1/Q2/Q3/Q4) : A1 « Le pas sous ma carte » · A2 pas individuel (canon : « à deux » sur Q4, absent de Q5) · A3 banque dérivée gestes Q2 + forces Q3, pas zéro · A4 case binaire individuelle 9/14 · A5 filet ligne 369 avant l'arbre · A6 L7 Δ sur la cible du pas. SPEC VERROUILLÉE, commit d77e95a, push #1.
+- Production validation-pers-q5/ : core (filet avant arbre → héritage invalide → aucun résultat → carte-seule → zone calme/banque → choix → check-in 9/14 → RCI 8 semaines) · simulateur (650 rives / 14 groupes, héritages FIXES déterministes patrons Q3/Q4, contrôle espérance CLIP-AWARE sur patrons μ, calibration D-STD-2 par énumération exhaustive des Δ) · validation C1-C7 + 4 figures 1920×1080 + rapport autoporteur + JSON.
+- Leçons de construction consignées : (1) les faces lumière N_retour/R_geste sont l'INVERSE des mécanismes (ombre calme → forces de retour/geste soutenues) → la banque n'est JAMAIS vide en mode complet par construction contresignée → la zone calme canon = label ZONE_CALME hérité de Q2 (état contresigné), pas zéro PRINCIPAL + exercices en options — branche défensive banque-vide conservée, jamais atteinte, documentée ; (2) la granularité des blocs Q2 donne des Δ RCI mesurables ±0,25/±0,50/±0,75 → les trois zones couvertes, frontière pile 0,58/0,41 vérifiée par énumération exhaustive (pattern Q4 : bornes DISTINCTES trivialement satisfaites et signalées) ; (3) bug rci_pas (pas lu dans l'entrée au lieu du pas choisi) attrapé au smoke test avant run.
+- Corrections pré-attrapées : chemin sys.path (dirname ×2), coquille accent, PAS_CALME retiré (absence décrite = jamais un candidat, §5.5), zone calme branchée sur le label contresigné Q2.
+- Verdict VALIDÉ 7/7 : C1 (654 candidats 100 % traçables, 0 libellé hors core, choix hors banque refusé, calme jamais candidate) · C2 (0 flip ×2, frontières 8/9/10 exactes, espérance=réalisation) · C3 (bornes DISTINCTES, 3 zones RCI, 0 non-conformité) · C4 SHA ×2 d99fb980c965c8cf IDENTIQUES · C5 (bandeaux + éclairage Q4 affichage seul) · C6 (0 mot interdit, PERFECT 14/14 célébré, ZERO 0/14 jamais sanctionné, pile 9/14 « pas besoin de viser plus ») · C7 (filet : 15 signal + 10 P-FILTRE + 8 verrouillée + 7 aucun résultat — arbre jamais atteint ; rive non synchronisée ; 0 invention).
+- Publication 7af48ba (push #2) → pointeurs hub (header, arbre + PERS-Q5-SPEC + validation-pers-q5, registre RIO-23 ⏳, total) + SPEC §8 PRODUIT + chaîne → commit ff79531 (push #3, présent commit).
+- Contresignature RIO-23 : acte exclusif du fondateur (« je valide ») → registre 23/23, personnalité 5/5, dimension CLOSE.
+
+Stage Summary:
+- RIO-23 « Le pas sous ma carte » PRODUIT (VALIDÉ 7/7, SHA ×2 d99fb980c965c8cf…) — EN ATTENTE de contresignature fondateur. Dimension Personnalité : Q1 carte + Q2 ombre + Q3 lumière + Q4 croisement contresignés, Q5 pas validé — le « je valide » clôt la dimension 5/5 et le registre 23/23.
