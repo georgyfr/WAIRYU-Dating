@@ -2691,3 +2691,19 @@ Work Log:
 
 Stage Summary:
 - Registre **22/22** (RIO-01 → RIO-22 tous contresignés) — personnalité **4/5 contresignée** (Q1 carte, Q2 ombre, Q3 lumière, Q4 croisement). Il ne reste que **Q5 « Le pas »** (RIO-23 — 1 changement + suivi 14 j, 9/14 — lignes 224, 297-298) pour clore la dimension 5/5 : SPEC à la demande (« SPEC Q5 »).
+
+---
+Task ID: 147
+Agent: WTC-Pont (superviseur)
+Task: Commande fondateur « SPEC Q5 mais avant explique moi ce que c'est car je ne comprend rien » (trace 1a15cd670ba449a9) — explication langage clair FOURNIE avant rédaction, puis SPEC Q5 « Le pas » (RIO-23) PROPOSÉE, pushes progressifs.
+
+Work Log:
+- Explication pédagogique en langage clair délivrée au fondateur AVANT toute rédaction (les 5 quêtes de la dimension, ce que fait le pas, les mots du pipeline traduits : canon/SPEC/arbitrages/production/VALIDÉ 7/7/contresignature/registre) — demande explicite « avant explique moi » honorée à la lettre.
+- D-LECTURE canon (lecture directe programme wairyu couple.txt) : lignes 222-224 (séquence « Q5 Le pas (1 changement + suivi 14 jours) ») · 296-298 (« tracking 14 jours, seuils anti-perfectionnisme : 9/14 = célébré, jamais de sanction ») · 274 (re-test 8 semaines) · 270/27/355-356/363/369/370 (ombre ET force, vocabulaire écran, jamais le partenaire, filet, rive non synchronisée). Ancre « tracking d'engagement » (citée ligne 429 par EXT-Q3) NON retrouvée verbatim dans le txt actuel — NON citée dans la proposition (seules les lignes vérifiées directement sont ancrées).
+- Patrons relus dans le dépôt : SM-Q5 (RIO-15, pas individuel) et EXT-Q3 (RIO-18, pas à deux — case partagée, 9/14 verbatim, RCI 0,58/0,41) ; famille « pas » du registre vérifiée (RIO-05/RIO-15/RIO-18) ; unicité du titre proposé « Le pas sous ma carte » vérifiée (0 collision).
+- Rédaction validation-pers/PERS-Q5-SPEC.md PROPOSÉE (arbitrages A1-A6 OUVERTS avec recommandations — A1 titre famille PERS · A2 pas individuel [canon : marqueur « à deux » sur Q4, absent de Q5] · A3 banque dérivée gestes Q2 + forces Q3, pas zéro · A4 case binaire individuelle 9/14 · A5 filet ligne 369 avant l'arbre · A6 L7 Δ sur scores liés au pas, bornes verbatim) ; FIXÉ/LIBRE séparés ; C1-C7 libellés proposés ; ~600 profils/14 groupes seed 42 ×2 ; D-HIST ; mapping RIO Q1-Q4 tous ✅.
+- Zéro code avant verrouillage (D-CANAL). Incident maîtrisé : paramiko effacé par reset d'environnement en pleine session (push en échec ×2 — diagnostic clé+wrapper intacts avant réinstallation, pas de retry aveugle) ; commit 1012dad + push #1 (67cedbb..1012dad) après réinstallation.
+- Worklog Task 147 (présent commit) + push #2 ; audit origin post-push.
+
+Stage Summary:
+- RIO-23 SPEC PROPOSÉE en ligne (1012dad) — arbitrages A1-A6 ouverts, recommandation (a) partout (pattern Q1-Q4). Prochaine étape : tranchage fondateur ou délégation (« je te laisse le choix de trancher ») → verrouillage → production validation-pers-q5/ (D-CANAL-2 complet, pushes progressifs) → contresignature RIO-23 → dimension Personnalité 5/5.
