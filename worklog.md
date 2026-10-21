@@ -2707,3 +2707,21 @@ Work Log:
 
 Stage Summary:
 - RIO-23 SPEC PROPOSÉE en ligne (1012dad) — arbitrages A1-A6 ouverts, recommandation (a) partout (pattern Q1-Q4). Prochaine étape : tranchage fondateur ou délégation (« je te laisse le choix de trancher ») → verrouillage → production validation-pers-q5/ (D-CANAL-2 complet, pushes progressifs) → contresignature RIO-23 → dimension Personnalité 5/5.
+
+---
+Task ID: 145-RECONSTRUCTION
+Agent: orchestrateur (Z.ai Code — chat staging)
+Task: 4 ordres fondateurs (PAT ancre + valider les 20 affirmations + 3 décisions économie + i18n) — RESET SANDBOX n°11 subi en ouverture (wairyu-real + 6 commits du portage perdus du disque, prod intacte), puis RECONSTRUCTION INTÉGRALE et exécution des 4 missions.
+
+Work Log:
+- RESET n°11 : /home/z/wairyu-real (6 commits cdf036b→82de825) + les 2 ancres zip + secrets disparus. my-project, GitHub (35cb049 puis d77e95a) et PRODUCTION (index-Rd18mBkG.js) intacts. L'autre chat a poussé pers-q3→q5 (aucun apps/ touché) — reconstruction sur HEAD d77e95a sans conflit.
+- RECONSTRUCTION (sources : sandbox my-project intact + worklog détaillé + guide 143 + preuves prod) : lib/lucioles.ts (ledger dérivé des événements réels — API calculerEconomie), Recolte.tsx (puce or, 6e onglet, carte or Gains, registre GROUPÉ par monde avec lignes cliquables 0 perdues, jalons hors voyage, bande crédits, vitrine satisfaction D17), styles.css (+560 l., amber-deep AA d'origine), formule prouvée ✨64 = 18×2+3+3×5+2×5.
+- MISSION « 3 décisions » : PORTES_ZERO (voyage → #/mondes réel ; parrainage → paliers 3 filleuls→Monde 8 / 5 filleuls→Monde 10) ; MONDES_PAYANTS_NOTE avec paliers ; InfoRecolte paywall §5 TRANCHÉ (forfait de mondes ≠ Fanal D20, deux portes D6, prix Fanal conservé, ancienne chaîne « abonnement mensuel » retirée du code — ne reste qu'en clé EN orpheline).
+- MISSION i18n EN : ~60 clés ajoutées à i18n/tr/screens-a.ts (doublon 'Écran de passage franchi' existant détecté par tsc → retiré) — vérifiées EN LIGNE (Fireflies, See how it works, Calculated live from your journey…).
+- MISSION « 20 affirmations VALIDÉES » : apps/web/lib/quete-valeurs-20.ts (verbatim intégral, 20 items/4 familles, types locaux) + docs/PROPOSITION-137 (validation gravée + CONFRONTATION : la vraie app a DÉJÀ la quête 2.1 « Tes valeurs » Schwartz contresignée RIO — la grille validée est COMPLÉMENTAIRE ; branchement différé au choix du fondateur : quête bonus hors progression OU refonte « 4 barres » de 2.1).
+- Infra : PAT ne peut pas créer de dépôt (fine-grained, 403) — dépôt dédié à créer par le fondateur ; vite preview tué par le superviseur sandbox → E2E fait SUR STAGING (Version 5c2490ba).
+- E2E STAGING RÉEL (compte test-recolte-144) : connexion → puce ✨7 → traversée RÉELLE 1.2 (carte « Balance in Motion ») + 1.3 (carte « The Apprentice » — le verbatim cahier §3.1) → M1 CLÔTURÉ → puce ✨21 EXACT (7+2+2+5+5) → note héros EN « 1 world completed, 3 cards, 0 passage screen » → registre groupé « World 1 · The Mirror — 3 gains — +11 » (ligne World completed +5, 5 lignes, 0 perdue) → hors voyage 2 jalons → portes D6 + paliers M8/M10 en EN → carte or « 21 Fireflies » AA → captures apps/web/e2e/t145-staging-*.png → 0 erreur.
+- Commit ed36da4 sur main local (base d77e95a — coexiste avec l'autre chat).
+
+Stage Summary:
+- Le portage 144 est RECONSTRUIT ET ENRICHI en un seul commit reproductible, en ligne sur staging (5c2490ba), prouvé par un parcours réel. Les 3 décisions économie sont GRAVÉES (paliers, forfait≠Fanal, paywall D6), l'i18n EN est servi, les 20 affirmations validées sont gravées avec leur plan de branchement. RESTE : le fondateur crée le dépôt dédié (30 s, PAT ne peut pas) → push ancre immédiat ; feu vert prod.
