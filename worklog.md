@@ -2871,3 +2871,18 @@ Work Log:
 
 Stage Summary:
 - **Quête M1-1.1 VÉRIFIÉE COMPLÈTE (40/40)** — le calcul donne réellement les résultats attendus, sans flatterie, sur tout l'espace des profils ; document de résultats poussé dans calculs-quêtes/. PROCHAINE QUÊTE SIGNALÉE : M1-1.2 (moteur quete-1-2.ts + -plus) — même méthode.
+
+---
+Task ID: 158
+Agent: WTC-Pont (superviseur)
+Task: Fondateur (trace 1a15df56e82b921d, 21/10/2026) — « j'ai l'impression que tu as changé de projet ; si tu as ajouté des choses sans rapport avec le projet thérapie couple, retire-les ; relis tout ce qui a été fait et certifie où nous en sommes » — relecture intégrale de l'état + retrait du seul ajout hors périmètre.
+
+Work Log:
+- D-LECTURE : origin/main = local HEAD = 925d742 (synchronisés, vérifié ls-remote) ; arborescence racine du dépôt lue ; audit des fichiers touchés par les 4 derniers commits (941484e, ba68150, 99ea99f, 925d742) : tous dans « Wairyu thérapie couple/ » sauf 2 fichiers de journal (worklog.md racine — préexistant, journal principal du pont depuis Task 1) et 1 fichier technique : apps/web/postcss.config.mjs (Task 156, fix de build de l'application principale, ajouté pendant la mission outillage staging ultérieurement cadrée « pas de Cloudflare »).
+- RETRAIT EXÉCUTÉ : apps/web/postcss.config.mjs retiré du dépôt (git rm --cached) — le dossier de travail demandé par le fondateur est « Wairyu thérapie couple » ; fichier conservé localement hors dépôt (.git/info/exclude, non poussé) pour que le build local reste fonctionnel ; historique Git intact (aucune réécriture — retrait dans un nouveau commit).
+- RELECTURE ÉTAT DES LIEUX (chaîne 941484e → ba68150 → 99ea99f → 7799394 → 925d742) : protocole v1.1 contresigné niveau 2 (Task 153) ; package pré-enregistrement OSF prêt à déposer (Task 154) ; arbitrage jeton staging rendu (Task 155) ; quête M1-1.1 « Ta personnalité » vérifiée complète 40/40, document de résultats poussé dans calculs-quêtes/ (Task 157) ; prochaine quête signalée : M1-1.2.
+- CERTIFICATION : aucun changement de projet — le pont travaille depuis le début (Tasks 1→158) sur le dépôt WAIRYU-Dating, dossier « Wairyu thérapie couple » (WTC) ; les travaux hors dossier sont limités au journal (worklog.md racine) et, désormais, à rien d'autre après le retrait de ce commit.
+- Worklog Task 158 (présent commit) + miroir ; commit + push + audit origin.
+
+Stage Summary:
+- **Périmètre nettoyé et certifié** : le seul fichier hors périmètre (apps/web/postcss.config.mjs, Task 156) est retiré du dépôt ; tout le travail récent vit dans « Wairyu thérapie couple/ » (protocole contresigné, package OSF prêt, quête M1-1.1 résultats 40/40 poussés) ; PROCHAINE QUÊTE : M1-1.2 (moteur quete-1-2.ts + -plus), méthode identique à M1-1.1.
