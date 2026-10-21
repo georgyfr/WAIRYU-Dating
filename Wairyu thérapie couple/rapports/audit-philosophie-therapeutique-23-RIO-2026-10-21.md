@@ -169,3 +169,17 @@ Le fondateur a ordonné le rattrapage par **fichiers supplémentaires** (sans mo
 5. **Rappel de la limite universelle** : le 100 % de RIO-01 est un 100 % en simulation (D-SIM) — le constat n°1 (zéro réel, VALID-01) reste vrai pour toutes les quêtes.
 
 Prochaines quêtes du même rattrapage : RIO-02, RIO-03 (même gabarit), puis RIO-06→RIO-10.
+
+---
+
+## ADDENDUM-3 (22/10/2026, trace 1a15f65fbf20bf69) — Action n°1 poursuivie : fichier de correction RIO-02, re-score 53 % → 100 %
+
+Suite de l'ADDENDUM-2, même ordre fondateur (fichiers SUPPLÉMENTAIRES, zéro modification de l'existant, exactitude des calculs). Exécuté (Task 167) :
+
+1. **Package créé** : `validation-q2/correction-philosophique/` — couche qui importe les VRAIS moteurs (q2-r1, q4, q5 — intégrité vérifiée à l'import, 35/35 templates, zéro modification, zéro réimplémentation) et produit les trois couches manquantes de RIO-02 : F2 « QUAND DEMANDER DE L'AIDE » (seuils S1 = signal H5 ∨ p_filtre ∨ palier 🔴 — la voie de sécurité est RÉELLE dans cette quête, D-CRISE applicable — et S2 = palier 🟠 ou ALARME SANS MAIN) + zone d'ombre causale sans étiquette ; F3 contenu des 3 paliers (7 exercices 🟢 · 4 modules 🟠 · 3 orientations 🔴) + branchement quête « pas » sur le vrai `selectionner_pas` ; F4 fragment de bilan L8 à 7 blocs.
+2. **Preuve** : énumération EXHAUSTIVE de l'espace des états moteur distincts du cœur Q2 — 7 cd × 5 cp × 100 états H × 16 états R × 5 bandes i_alarm × 12 bandes sA/sB × 2 sorties zone_force = **6 720 000 configurations** (platitude des bandes prouvée par batterie de frontière ±ε, 9/9 sondes) — 8 critères COR1-COR8 tous PASS, dont : palier double chemin convergent 6 720 000/6 720 000 ; re-score BIT-EXACT des 437 sorties archivées R1 (0 écart, 8 740 comparaisons, y compris `palier_recalcule`) ; suppression 35/35 (l'ombre jamais nommée sur index 0,00) ; pièges P-INCS 6/6 · P-INCD 4/4 · P-SEC 8/8 · P-FILT 5/5 ; arêtes E1-E8 8/8 ; 0 mot interdit sur 626 textes distincts ; anti-fabrication sans exception ; pas 18/18 ; pipeline ×2 SHA-256 identiques `f195ee3d0b2961fa…`. Rapport : `validation-q2/correction-philosophique/results/rapport-correction-RIO-02.md`.
+3. **Re-score RIO-02** : F1 25 (inchangé — C1a 81,0 % FAIL et C2 1 FP conservés, consignés) · F2 12→**25** · F3 6→**25** · F4 10→**25** = **100 %** (au barème de cet audit, preuve P1 simulation). `longitudinal()` reste NON TESTÉ (D-Q2-F, consigné) ; le récapitulatif de DIMENSION reste l'action n°2.
+4. **Moyennes recalculées (exactes)** : attachement (100+100+53+61+67)/5 = **76,2 %** · global 23 quêtes 1 708/23 = **74,3 %**. Les scores des 21 autres quêtes de ce document restent inchangés.
+5. **Rappel de la limite universelle** : le 100 % de RIO-02 est un 100 % en simulation (D-SIM) — le constat n°1 (zéro réel, VALID-01) reste vrai pour toutes les quêtes.
+
+Prochaine quête du même rattrapage : RIO-03 (même gabarit), puis RIO-06→RIO-10.

@@ -1,0 +1,473 @@
+{
+ "package": "validation-q2/correction-philosophique",
+ "cible": "RIO-02 « Ce qui m'effraie vraiment »",
+ "moteurs_reels": [
+  "validation-q2-r1/src/wtc_q2_core.py (R1, 35 templates)",
+  "validation-q4/src/wtc_q4_core.py",
+  "validation-q5/src/wtc_q5_core.py"
+ ],
+ "espace": {
+  "etats_structurels": "7 cd × 5 cp × 100 H × 16 R × 5 i_alarm × 12 bandes sA/sB",
+  "plissement_origine": "8 origines → sorties zone_force distinctes (×2)",
+  "configs_assemblees": 6720000
+ },
+ "cor8_sha256_run1": "f195ee3d0b2961fac15ea74a672856ac0b2a946131953a35b08904026f1afccc",
+ "cor8_sha256_run2": "f195ee3d0b2961fac15ea74a672856ac0b2a946131953a35b08904026f1afccc",
+ "criteres": {
+  "COR1_fragment_complet": {
+   "definition": "espace exhaustif compacté (6 720 000 configurations = états moteur distincts × zone_force réalisable) → fragment L8 7 blocs, 0 champ vide + 437/437 archivées",
+   "observe": "6720000/6720000 · archivées 437/437",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "chemin indépendant (entiers bruts, sans le moteur) ≡ vrai cœur (signal + p_filtre + palier) sur tout l'espace ; 437/437 archivées = palier ET palier_recalcule",
+   "observe": "6720000/6720000 convergents · écarts archivés 0",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = signal ∨ p_filtre ∨ palier 🔴 ; S2 = palier 🟠 ou ALARME SANS MAIN, sans S1 ; 0 borne pile sur la grille Q1 ; batterie de frontière ±ε stable des deux côtés",
+   "observe": "S1 4312000/6720000 · S2 1351318/6720000 · pile 0 · dist min {'2.61': 0.04999999999999982, '3.21': 0.010000000000000231, '3.7': 0.03000000000000025} · sondes stables 9/9",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9) sur tous les textes générés + clauses standing + libellés du cœur",
+   "observe": "max mots interdits par texte = 0/0 ; standing = 0 ; labels cœur = 0 ; textes distincts = 626 ; D-SIM manquants 0/0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "« rien à fabriquer » ssi ZONE CALME ; force affichée ≡ vrai zone_force (0 marqueur de force inventé sur SILENCIEUSE, 0 marqueur manquant sinon)",
+   "observe": "zc abus 0 · zc manquant 0 · force abus 0",
+   "pass": true
+  },
+  "COR6_gate_convergence": {
+   "definition": "R4 : convergence 0,00 → ombre masquée + note (jamais d'OMBRE) ; 0,50 → OMBRE_PRUDENCE + mention ; re-score bit-exact des 437 sorties R1 (0 écart) ; pièges (INC_SIMPLE 6/6 supprimés · INC_DOUBLE 4/4 prudence · SEC_H5 8/8 signal · PFILTRE 5/5 p_filtre) ; arêtes E1-E8 conformes",
+   "observe": "437 lignes : supprimé 35 (note 35) · prudence 14 (note 14) · convergent 388 ; écarts bit-exact 0 ; pièges {'P-FILT': {'n': 5, 'p_filtre': 5}, 'P-INCD': {'n': 4, 'prudence': 4}, 'P-INCS': {'n': 6, 'supprime': 6}, 'P-SEC': {'n': 8, 'signal': 8}} ; arêtes {'E1_lesdeux_priorite': 'OK', 'E2_perdre_pur': 'OK', 'E3_suppression': 'OK', 'E4_lesdeux_counts': 'OK', 'E5_alarme_sans_main': 'OK', 'E6_zone_calme': 'OK', 'E7_lesdeux_q1': 'OK', 'E8_palier_rouge': 'OK'}",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "18/18 (3 faces Q1 × 6 étiquettes Q2) → pas du VRAI selectionner_pas (Q5) ; empreintes réelles documentées ; identité face Q5 ⇔ type Q4 sur les 12 bandes ; suivi 14 jours sans sanction",
+   "observe": "pas résolus 18/18 · identité 12/12 · suivi 15/15 ['AJUSTEMENT', 'CELEBRE', 'REPRISE']",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "f195ee3d0b2961fa… == f195ee3d0b2961fa… → True",
+   "pass": true
+  }
+ },
+ "stage1": {
+  "S1": 4312000,
+  "S2": 1351318,
+  "configs": 6720000,
+  "conv_index": {
+   "0.0": 1257020,
+   "0.5": 1110660,
+   "1.0": 4352320
+  },
+  "cor2_ecarts": 0,
+  "dsim_manquants": 0,
+  "force_fabrication_abus": 0,
+  "forces": {
+   "CALME_RICHE": 58,
+   "LUCIDITE": 2286090,
+   "MAINSLIBRES": 20520,
+   "SECURISANT": 3360000,
+   "SILENCIEUSE": 1053332
+  },
+  "fragment_complet": 6720000,
+  "junction_incoherente": 0,
+  "labels": {
+   "ALARME SANS MAIN": 1328576,
+   "LES DEUX": 4572180,
+   "PEUR D'ÊTRE ÉTOUFFÉE": 259620,
+   "PEUR DE PERDRE": 227480,
+   "SIGNAL LÉGER NON NOMMÉ": 332028,
+   "ZONE CALME": 116
+  },
+  "md5_texts_count": 626,
+  "mots_interdits_max": 0,
+  "paliers": {
+   "🔴": 4312000,
+   "🟠": 1153320,
+   "🟢": 1254680
+  },
+  "pas_non_resolus": 0,
+  "suppression_incoherente": 0,
+  "types": {
+   "CALME": 116,
+   "NON_NOMMÉ": 1660604,
+   "OMBRE": 3948620,
+   "OMBRE_PRUDENCE": 1110660
+  },
+  "zc_abus": 0,
+  "zc_manquant": 0,
+  "zf_cles": 2080,
+  "zf_evaluations": 16640
+ },
+ "stage1bis": {
+  "cas_par_sonde": 96,
+  "ecarts": 0,
+  "sondes": [
+   {
+    "bandes": [
+     "A1",
+     "A2"
+    ],
+    "cas_différents_de_part_et_dautre": 60,
+    "sonde": "sA=2,61",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "A2",
+     "A3"
+    ],
+    "cas_différents_de_part_et_dautre": 48,
+    "sonde": "sA=3,21",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "A3",
+     "A4"
+    ],
+    "cas_différents_de_part_et_dautre": 72,
+    "sonde": "sA=3,70",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "B1",
+     "B2"
+    ],
+    "cas_différents_de_part_et_dautre": 72,
+    "sonde": "sB=2,61",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "B2",
+     "B3"
+    ],
+    "cas_différents_de_part_et_dautre": 0,
+    "sonde": "sB=3,21",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "I1",
+     "I2"
+    ],
+    "cas_différents_de_part_et_dautre": 96,
+    "sonde": "ial=4|5",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "I2",
+     "I3"
+    ],
+    "cas_différents_de_part_et_dautre": 56,
+    "sonde": "ial=5|6",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "I3",
+     "I4"
+    ],
+    "cas_différents_de_part_et_dautre": 48,
+    "sonde": "ial=6|7",
+    "violations_stabilite": 0
+   },
+   {
+    "bandes": [
+     "I4",
+     "I5"
+    ],
+    "cas_différents_de_part_et_dautre": 48,
+    "sonde": "ial=7|8",
+    "violations_stabilite": 0
+   }
+  ]
+ },
+ "stage2": {
+  "S1": 141,
+  "S2": 143,
+  "aretes": {
+   "E1_lesdeux_priorite": "OK",
+   "E2_perdre_pur": "OK",
+   "E3_suppression": "OK",
+   "E4_lesdeux_counts": "OK",
+   "E5_alarme_sans_main": "OK",
+   "E6_zone_calme": "OK",
+   "E7_lesdeux_q1": "OK",
+   "E8_palier_rouge": "OK"
+  },
+  "convergent": 388,
+  "dsim_manquants": 0,
+  "fragments_complets": 437,
+  "honetes_S1": 126,
+  "honetes_S2": 134,
+  "honetes_paliers": {
+   "🔴": 126,
+   "🟠": 125,
+   "🟢": 149
+  },
+  "lignes": 437,
+  "mots_interdits_max": 0,
+  "note_prudence": 14,
+  "note_suppression": 35,
+  "paliers": {
+   "🔴": 141,
+   "🟠": 132,
+   "🟢": 164
+  },
+  "pieges": {
+   "P-FILT": {
+    "n": 5,
+    "p_filtre": 5
+   },
+   "P-INCD": {
+    "n": 4,
+    "prudence": 4
+   },
+   "P-INCS": {
+    "n": 6,
+    "supprime": 6
+   },
+   "P-SEC": {
+    "n": 8,
+    "signal": 8
+   }
+  },
+  "prudence": 14,
+  "supprime": 35
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "empreintes_reelles": {
+   "ALARME SANS MAIN": "ZONE_CALME",
+   "LES DEUX": "ZONE_CALME",
+   "PEUR D'ÊTRE ÉTOUFFÉE": "PEUR_D_ETRE_ETOUFFEE",
+   "PEUR DE PERDRE": "PEUR_DE_PERDRE",
+   "SIGNAL LÉGER NON NOMMÉ": "ZONE_CALME",
+   "ZONE CALME": "ZONE_CALME"
+  },
+  "grille_q1": {
+   "dist_min_seuils": {
+    "2.61": 0.04999999999999982,
+    "3.21": 0.010000000000000231,
+    "3.7": 0.03000000000000025
+   },
+   "equivalence_261": true,
+   "pile": [],
+   "scores": [
+    1.0,
+    1.11,
+    1.22,
+    1.33,
+    1.44,
+    1.56,
+    1.67,
+    1.78,
+    1.89,
+    2.0,
+    2.11,
+    2.22,
+    2.33,
+    2.44,
+    2.56,
+    2.67,
+    2.78,
+    2.89,
+    3.0,
+    3.11,
+    3.22,
+    3.33,
+    3.44,
+    3.56,
+    3.67,
+    3.78,
+    3.89,
+    4.0
+   ]
+  },
+  "identite_face_type": [
+   {
+    "coherent": true,
+    "face": "RASSUREE",
+    "sA": 2.0,
+    "sB": 2.0,
+    "type": "SEREIN"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 2.0,
+    "sB": 2.8,
+    "type": "DETACHE"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 2.0,
+    "sB": 3.3,
+    "type": "DETACHE"
+   },
+   {
+    "coherent": true,
+    "face": "EN_QUETE",
+    "sA": 2.8,
+    "sB": 2.0,
+    "type": "PREOCCUPE"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 2.8,
+    "sB": 2.8,
+    "type": "EN_ALERTFEU"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 2.8,
+    "sB": 3.3,
+    "type": "EN_ALERTFEU"
+   },
+   {
+    "coherent": true,
+    "face": "EN_QUETE",
+    "sA": 3.3,
+    "sB": 2.0,
+    "type": "PREOCCUPE"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 3.3,
+    "sB": 2.8,
+    "type": "EN_ALERTFEU"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 3.3,
+    "sB": 3.3,
+    "type": "EN_ALERTFEU"
+   },
+   {
+    "coherent": true,
+    "face": "EN_QUETE",
+    "sA": 3.8,
+    "sB": 2.0,
+    "type": "PREOCCUPE"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 3.8,
+    "sB": 2.8,
+    "type": "EN_ALERTFEU"
+   },
+   {
+    "coherent": true,
+    "face": "SUR_LA_RA",
+    "sA": 3.8,
+    "sB": 3.3,
+    "type": "EN_ALERTFEU"
+   }
+  ],
+  "identite_ok": true,
+  "pas_18": {
+   "EN_QUETE|ALARME SANS MAIN": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P2"
+   },
+   "EN_QUETE|LES DEUX": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P2"
+   },
+   "EN_QUETE|PEUR D'ÊTRE ÉTOUFFÉE": {
+    "empreinte": "PEUR_D_ETRE_ETOUFFEE",
+    "pas": "P5"
+   },
+   "EN_QUETE|PEUR DE PERDRE": {
+    "empreinte": "PEUR_DE_PERDRE",
+    "pas": "P4"
+   },
+   "EN_QUETE|SIGNAL LÉGER NON NOMMÉ": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P2"
+   },
+   "EN_QUETE|ZONE CALME": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P2"
+   },
+   "RASSUREE|ALARME SANS MAIN": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P1"
+   },
+   "RASSUREE|LES DEUX": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P1"
+   },
+   "RASSUREE|PEUR D'ÊTRE ÉTOUFFÉE": {
+    "empreinte": "PEUR_D_ETRE_ETOUFFEE",
+    "pas": "P3"
+   },
+   "RASSUREE|PEUR DE PERDRE": {
+    "empreinte": "PEUR_DE_PERDRE",
+    "pas": "P2"
+   },
+   "RASSUREE|SIGNAL LÉGER NON NOMMÉ": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P1"
+   },
+   "RASSUREE|ZONE CALME": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P1"
+   },
+   "SUR_LA_RA|ALARME SANS MAIN": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P3"
+   },
+   "SUR_LA_RA|LES DEUX": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P3"
+   },
+   "SUR_LA_RA|PEUR D'ÊTRE ÉTOUFFÉE": {
+    "empreinte": "PEUR_D_ETRE_ETOUFFEE",
+    "pas": "P6"
+   },
+   "SUR_LA_RA|PEUR DE PERDRE": {
+    "empreinte": "PEUR_DE_PERDRE",
+    "pas": "P5"
+   },
+   "SUR_LA_RA|SIGNAL LÉGER NON NOMMÉ": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P3"
+   },
+   "SUR_LA_RA|ZONE CALME": {
+    "empreinte": "ZONE_CALME",
+    "pas": "P3"
+   }
+  },
+  "pas_resolus": 18,
+  "suivi_15": {
+   "categories": [
+    "AJUSTEMENT",
+    "CELEBRE",
+    "REPRISE"
+   ],
+   "ok": true,
+   "sans_sanction": 15
+  }
+ },
+ "standings": {
+  "labels_coeur_propres": 0,
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
