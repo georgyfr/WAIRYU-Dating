@@ -140,3 +140,18 @@ Le chemin vers ~100 % est identifié et court :
 - Documents lus intégralement ou par sections citées : canon v1 (§5.1-5.5, Partie 9), hub README (21/10), SPEC PERS-Q1/Q2/Q4/Q5, SPEC SM-Q2/Q5 + rapport SM-Q5, SPEC EXT-Q1/Q3, rapports RIO-01 (q1), RIO-04 (q4), RIO-05 (q5), émo-q1 (+ moteur TEMPLATES), émo-q5, moteurs attachement q1/q4/q5, moteur émo-q1/q5.
 - Vérifications négatives consignées (grep sur les moteurs et l'app) : absence de « palier/orientation/QUAND DEMANDER » dans les moteurs attachement-émotionnelle (exit 1) ; absence des instruments WTC dans `apps/web/src` ; absence d'énoncés de questions dans les packages (seule l'échelle est littérale).
 - Aucun moteur n'a été réimplémenté ni modifié. Aucune invention de contenu : les pourcentages dérivent des critères des rapports contresignés, avec la règle P1/P2/P3 du §1.
+
+---
+
+## ADDENDUM (21/10/2026, trace 1a15eca977dc8259) — Arbitrage fondateur rendu : « déceler sans nommer les pathologies »
+
+Le fondateur a tranché l'arbitrage ouvert au §4.3 du présent audit. **Décision : la doctrine du vocabulaire écran est CONFIRMÉE** — l'application décel les problématiques de façon graduée, mais n'imprime jamais « pathologie / diagnostic / dépistage » ni d'étiquette clinique (canon Partie 9, lignes 355-356 ; triple verrou C6 des générations 2-3).
+
+**Ce que cette décision change et ne change pas :**
+
+1. **Aucun moteur à modifier.** Vérifié dans cet audit : les packages validés des générations 2-3 imposent déjà 0 diagnostic / 0 étiquette / 0 mot canon clinique (C6), et la génération 1 n'affiche rien d'étiqueté. Les 23 instruments contresignés sont déjà conformes à la décision — zéro retouche.
+2. **Le canal d'expression de la gravité reste le palier et le langage clair** : zone d'ombre « descriptif causal, sans étiquette », niveaux Tranquille/Vive/Forte, paliers 🟢 exercice maison / 🟠 module de couple / 🔴 orientation professionnelle (« le chemin le plus court, pas un échec »), court-circuit sécurité AVANT l'arbre (D-CRISE → P-FILTRE → filet 3919/3114), avec bandeau D-SIM tant que la validation est simulée.
+3. **Les scores de l'audit (§3) restent inchangés** : ils mesuraient déjà la conformité au gabarit du canon, qui est la doctrine confirmée. L'action n°4 de la liste de comblement (§5, « trancher l'arbitrage vocabulaire ») est CLOSE — reste : rattrapage des 10 quêtes gen 1-1,5 au gabarit complet · package « bilan de dimension » (assemblage L8) · libellés réels des 23 instruments · passage au réel (VALID-01).
+4. **Frontière documentaire rappelée** : la détection reste documentée côté moteur (fiches RIO, rapports, banques de profils — vocabulaire clinique autorisé DANS la documentation de validation), jamais dans les écrans. Les mots canon (« névrosisme », « narcissisme », « jalousie ») ne s'impriment jamais à l'interface ; seuls des noms maison descriptifs sont affichés (leçon PERS-Q1 A5).
+
+Arbitrage clôturé au worklog Task 164.
