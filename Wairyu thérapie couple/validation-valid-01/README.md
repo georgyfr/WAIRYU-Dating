@@ -9,7 +9,7 @@
 > 1. ✅ **contresigné** par le superviseur sortant (niveau 1 fait ; niveau 2 — fond intégral — fait le 21/10/2026 : arbitrages B1 (b) / B2 (≥ 3) rendus, S1-S14 corrigées) ;
 > 2. ⏳ **validé** par le conseil clinique (6 membres dont méthodologue — à constituer) ;
 > 3. ⏳ **AIPD formelle** (Arbitrage superviseur sortant — pas de CPP) + consultation juridique ;
-> 4. ⏳ **tests d'infrastructure** (D-ENV) + **test d'incendie des filets** (Amendement A4) + **pré-enregistrement OSF.io** (Amendement A3 — package produit, dépôt avant premier répondant) + **assurance RC** (Amendement A6) ;
+> 4. ⏳ **tests d'infrastructure** (D-ENV — hygiène du jeton d'administration staging faite le 21/10/2026 : arbitrage rendu par délégation fondateur, option (a), valeur rédactionnelle morte retirée du worklog public pattern 67cedbb ; le re-provisionnement d'un jeton actif reste le préalable technique des tests — outillage staging à remettre en place) + **test d'incendie des filets** (Amendement A4) + **pré-enregistrement OSF.io** (Amendement A3 — package produit, dépôt avant premier répondant) + **assurance RC** (Amendement A6) ;
 > 5. puis **recrutement** des premiers répondants.
 >
 > Aucune donnée ne sera collectée avant ces étapes.

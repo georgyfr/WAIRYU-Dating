@@ -297,7 +297,7 @@ Work Log:
 - voyage.ts : PROGRESS supprimé (interface Progression conservée) ; commentaire WorldModal mis à jour.
 - i18n : clés EN des nouveaux libellés (screens-a.ts).
 - Test mécanique bun (bun test, mock react) : 8/8 — dérivation 0→1→3 mondes, écrans sans carte exclus de la récolte, reset décompte, bus réactif (19 notifications).
-- Déployé staging (version ba60801c, bundle index-DnT2CLMu.js) ; ADMIN_TOKEN staging reposé (wairyu-admin-staging-2026, SECRETS-WAIRYU-LOCAL.txt nettoyé — 3 lignes obsolètes supprimées).
+- Déployé staging (version ba60801c, bundle index-DnT2CLMu.js) ; jeton d'administration staging reposé (valeur conservée hors dépôt — SECRETS-WAIRYU-LOCAL.txt nettoyé, 3 lignes obsolètes supprimées ; mention littérale de la valeur retirée le 21/10/2026, correction cosmétique pattern 67cedbb — arbitrage rendu par délégation fondateur, valeur morte depuis les régénérations documentées Tasks 56-58).
 - E2E agent-browser (staging) : session OTP backdoor (birthDate exigé à l'inscription) → état vide correct (🪞, 0/11 · 0/51) → injection localStorage (M1 complet + 1.4) → reload : « 1/11 worlds crossed · 4/51 steps », Le Miroir listé « Completed », 4 résultats avec cartes EN + dates. Puis quête 1.5 COMPLÉTÉE DANS L'UI (6 binômes) → carte « The Hand that Plucks » + pied « Your journey progress: 10% complete » (5/51) EN DIRECT → #/parcourus : 5/51 étapes · 5 résultats. #/voyage : tuiles 1/11 · 4/51 · récolte 4 · 1 segment allumé. #/mondes + #/portrait : M1 « Terminé », meta « 1 world traveled of 11 ».
 - Mobile 390 : rendu propre, zéro erreur console.
 
@@ -2822,3 +2822,18 @@ Work Log:
 
 Stage Summary:
 - **Package de pré-enregistrement OSF.io PRODUIT et PRÊT À DÉPOSER** (03-preenregistrement-osf/README.md — 15 sections, contenu scellé conforme §13.1.bis) : le dépôt effectif est un acte fondateur (~1 h, checklist en 8 gestes dans le package) à réaliser après validation du conseil clinique, avant le premier répondant ; le DOI rendra ensuite le lien entre les données collectées et la promesse publique. VALID-01 après cette Task : R3 levé, niveau 2 posé, dossier conseil prêt, package OSF prêt — restent : constitution conseil (fondateur, reportée), AIPD + juridique (externes), tests infra + incendie filets (jeton staging — arbitrage en attente), dépôt OSF (fondateur, après conseil), assurance RC (externe).
+
+---
+Task ID: 155
+Agent: WTC-Pont (superviseur sortant)
+Task: Délégation fondateur « je te laisse le chois de decider » (trace 1a15dc89911dacc9, 21/10/2026) — rendu de l'arbitrage jeton d'administration staging (options (a)/(b) soumises en Task 150) : option (a) retenue et exécutée — correction cosmétique de la ligne historique Task 54 du worklog public.
+
+Work Log:
+- D-LECTURE : arbitrage en attente identifié (unique) — jeton d'administration staging, signalement Task 150 ; pattern de référence relu (67cedbb — Task 146 : reformulation d'une mention dans un NOUVEAU commit, jamais de réécriture d'historique Git) ; ligne concernée localisée (worklog.md ligne 300, Work Log Task 54) ; occurrences de la valeur morte comptées : 1 fichier (worklog.md), 1 ligne.
+- DÉCISION (délégation fondateur, trace 1a15dc89911dacc9) : **option (a)** — la recommandée. Justification consignée : la valeur citée littéralement est MORTE (jeton régénéré au moins 3 fois, Tasks 56-58 documentées, openssl rand -hex 24 ; aucune valeur active exposée) mais l'hygiène impose qu'aucune valeur de jeton, même morte, ne reste citée dans un worklog public — le pré-enregistrement OSF et l'ouverture du dépôt au conseil clinique rendent l'hygiène d'autant plus nécessaire ; l'option (b) (historique intact) laissait une valeur en place sans avantage.
+- EXÉCUTION (pattern 67cedbb, portée minimale) : ligne 300 reformulée sans la valeur ni le nom de variable (descriptions neutres + provenance de la correction : date, délégation, mort de la valeur depuis Tasks 56-58) ; VÉRIFICATION : plus aucune occurrence de la valeur morte dans le fichier (exit 1) ; historique Git INTACT (aucun rebase/force-push — l'ancienne ligne reste dans l'historique, la valeur y est morte et l'hygiène porte sur le fichier vivant) ; miroir local non affecté.
+- Statut re-provisionnement : wrangler ABSENT de l'environnement actuel — le re-provisionnement d'un jeton staging ACTIF (préalable technique des tests D-ENV) nécessite la remise en place de l'outillage staging ; consigné au hub VALID-01 (étape 4). Aucune valeur générée en l'absence de canal de dépôt sûr.
+- Pointeurs : hub VALID-01 (étape 4 : hygiène faite 21/10/2026, re-provisionnement préalable restant) ; worklog Task 155 (présent commit) + miroir ; commit + push + audit origin (ls-remote + raw + scan standard sans citation de motif).
+
+Stage Summary:
+- **Arbitrage jeton d'administration staging RENDU par délégation fondateur — option (a) exécutée** : valeur rédactionnelle morte retirée du worklog public (pattern 67cedbb, 1 ligne, historique Git intact), aucune occurrence résiduelle. Les tests D-ENV restent conditionnés au re-provisionnement d'un jeton actif (outillage staging à remettre en place — wrangler absent). Aucun arbitrage fondateur restant en attente — les verrous suivants sont des actes externes : constitution du conseil (reportée), AIPD + juridique, dépôt OSF (après conseil), assurance RC, re-provisionnement staging.
