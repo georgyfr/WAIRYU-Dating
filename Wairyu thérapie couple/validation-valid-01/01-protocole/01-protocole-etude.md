@@ -1,11 +1,11 @@
 # Protocole d'étude WTC-VALID-01 — Validation réelle de la dimension attachement
 
-> **STATUT : PROTOCOLE — À CONTRESIGNER AVANT TOUTE COLLECTION DE DONNÉES**
+> **STATUT : PROTOCOLE CONTRESIGNÉ NIVEAU 2 (21/10/2026) — VALIDATION DU CONSEIL CLINIQUE REQUISE AVANT TOUTE COLLECTION DE DONNÉES**
 >
-> Version : 1.0 (brouillon superviseur actif)
-> Date : 2026-10-15
+> Version : 1.1 (package révisé — contresignature niveau 1 intégrée)
+> Date : 2026-10-15 — révision du 21/10/2026 (arbitrages B1/B2 rendus, consistances S1-S14 corrigées)
 > Superviseur : GLM (actif)
-> Superviseur sortant : à contresigner
+> Superviseur sortant : CONTRESIGNÉ niveau 2 le 21/10/2026 — fond intégral relu (rapport 07) ; arbitrages fondateur B1 → option (b) et B2 → seuil ≥ 3 rendus (trace 1a15d6b474a4969d) ; S1-S14 corrigées
 > Conseil clinique : à valider
 
 ---
@@ -38,9 +38,9 @@
 
 **Acronyme** : WTC-VALID-01
 
-**Version du protocole** : 1.0
+**Version du protocole** : 1.1 (révision du 21/10/2026 — arbitrages B1/B2 intégrés, consistances S1-S14 corrigées)
 
-**Date** : 2026-10-15
+**Date** : 2026-10-15 — révisé le 2026-10-21
 
 **Investigateur-coordinateur** : Superviseur GLM (à confirmer par le conseil clinique)
 
@@ -101,7 +101,7 @@ La dimension attachement est complète 5/5 en simulation. Trois raisons motivent
 - **OS3** : Mesurer la stabilité test-retest à 2 semaines (T0 → T2) et à 8 semaines (T0 → T8) pour RIO-01.
 - **OS4** : Calculer la corrélation item-total corrigée pour chaque item (≥ 0,30 attendu).
 - **OS5** : Mesurer le SEM réel de RIO-01 (remplace 0,195).
-- **OS6** : Évaluer la validité convergente de RIO-01 avec l'ECR-R (Experiences in Close Relationships-Revised) et le RQ (Relationship Questionnaire de Bartholomew & Horowitz) — construits publics.
+- **OS6** : Évaluer la validité convergente de RIO-01 avec le RQ (Relationship Questionnaire de Bartholomew & Horowitz, public) et, en second instrument, le CSI (Couples Satisfaction Index — Funk & Rogge, distribué par le co-auteur) — construits publics. *(Arbitrage B1 du 21/10/2026 : l'ECR-R n'est pas administré — restriction d'usage commerciale consignée dans `legal/licences-validite-convergente.md`.)*
 - **OS7** : Recalibrer les percentiles de RIO-04 (percentiles simulés 25/70/20/85 → normes mesurées).
 - **OS8** : Mesurer le taux réel de SILENCIEUSES dans RIO-03 (16 % simulé) et recalibrer la borne G1 (D-Q3-J).
 - **OS9** : Mesurer le chevauchement réel des configurations dans RIO-04 (77,62 % simulé) — la borne d'alerte 70 % est active.
@@ -120,8 +120,8 @@ La dimension attachement est complète 5/5 en simulation. Trois raisons motivent
 ### 4.2 Hypothèses secondaires
 
 - **H4** : Corrélation item-total corrigée ≥ 0,30 pour tous les items de RIO-01.
-- **H5** : Validité convergente — corrélation attendue entre RIO-01 (anxiété) et ECR-R (anxiété) ≥ 0,50 ; corrélation entre RIO-01 (évitement) et ECR-R (évitement) ≥ 0,50.
-- **H6** : Le filet de sécurité H5 se déclenche sur ≥ 90 % des réponses simulées à risque (validation écologique sur vraies réponses signalées).
+- **H5** : Validité convergente — corrélation attendue entre RIO-01 (anxiété) et RQ (anxiété) ≥ 0,40 ; corrélation entre RIO-01 (évitement) et RQ (évitement) ≥ 0,40. *(Formulation issue de l'arbitrage B1 du 21/10/2026 — l'ECR-R initialement prévu, avec ses seuils ≥ 0,50, n'est pas administré : restriction d'usage commerciale consignée dans `legal/` ; les seuils RQ ≥ 0,40 étaient déjà écrits au document 03 §6.2.)*
+- **H6** : Le filet de sécurité H5 se déclenche sur ≥ 90 % des réponses **réelles** à risque signalées au pilote (critère de validation écologique portant sur les vraies réponses signalées — la simulation tient lieu de répétition générale, cf. test d'incendie A4 ; S11 — 21/10/2026).
 - **H7** : Aucun message de RIO-03, RIO-04, RIO-05 ne contredit la règle anti-culpabilisation (test D-TEST sur sous-groupe pilote n=10).
 
 ### 4.3 Hypothèses nulles (à rejeter pour valider)
@@ -288,10 +288,12 @@ Pas d'incitation financière. Le participant reçoit :
 ### 8.4 Validité convergente — sous-groupe n=50 [À VALIDER]
 
 Un sous-groupe de 50 participants (tiré au sort parmi les T0) complète en plus :
-- **ECR-R** (Experiences in Close Relationships-Revised) — 36 items, public, référence internationale
-- **RQ** (Relationship Questionnaire de Bartholomew & Horowitz) — 4 paragraphes + échelle, public
+- **RQ** (Relationship Questionnaire de Bartholomew & Horowitz) — 4 paragraphes + échelles, public — instrument principal de validité convergente
+- **CSI** (Couples Satisfaction Index — Funk & Rogge, 2007) — distribué sans lettre par le co-auteur (couples-research.com) ; usage exact (second instrument / covariable) à ratifier par le conseil clinique
 
 **Objectif** : mesurer la corrélation entre RIO-01 et les instruments publics de référence.
+
+> **Arbitrage B1 (fondateur, 21/10/2026 — trace 1a15d6b474a4969d)** : l'ECR-R (36 items), initialement prévu ici, **n'est pas administré** — restriction d'usage commerciale explicite consignée dans `legal/licences-validite-convergente.md` (FAQ de l'auteur, vérifiée le 21/10/2026). La validité convergente repose sur le RQ (seuils ≥ 0,40, déjà prévus au document 03 §6.2).
 
 ## 9. Critères psychométriques
 
@@ -302,7 +304,7 @@ Critères principaux :
 - Structure factorielle 2 axes confirmée (H2)
 - ICC test-retest 2 semaines ≥ 0,80 (H3)
 - Item-total corrigé ≥ 0,30 (H4)
-- Corrélation RIO-01 ↔ ECR-R ≥ 0,50 (H5)
+- Corrélation RIO-01 ↔ RQ ≥ 0,40 (H5 — arbitrage B1 du 21/10/2026)
 
 ## 10. Filets de sécurité
 
@@ -352,7 +354,7 @@ L'étude est **pré-enregistrée** avant la collecte sur **OSF.io** (Open Scienc
 
 **Contenu du pré-enregistrement** :
 - Hypothèses H1-H7 (formulation exacte)
-- Critères de succès (seuils α, ICC, RMSEA, item-total, corrélations ECR-R/RQ)
+- Critères de succès (seuils α, ICC, RMSEA, item-total, corrélations RQ — arbitrage B1 ; CSI en option si retenu par le conseil clinique)
 - Plan d'analyse principal et secondaire
 - Taille d'échantillon (recruté 250-300, analysable 150-200)
 - Sous-groupes d'analyse (D-STD-2)
@@ -372,7 +374,7 @@ L'étude est **pré-enregistrée** avant la collecte sur **OSF.io** (Open Scienc
 | Stabilité test-retest | ICC (consistance absolue) + r de Pearson | ICC ≥ 0,80 |
 | Item-total corrigé | Corrélation de Pearson item/score total sans l'item | ≥ 0,30 pour tous |
 | SEM | √(σ² × (1-α)) | À mesurer (remplace 0,195) |
-| Validité convergente | r de Pearson RIO-01 ↔ ECR-R / RQ | r ≥ 0,50 |
+| Validité convergente | r de Pearson RIO-01 ↔ RQ (CSI en option) | r ≥ 0,40 (arbitrage B1) |
 
 ### 13.3 Analyses secondaires (D-STD-2 — par configuration)
 
@@ -425,7 +427,7 @@ Anonymisation **à la source** (voir Section 7.3). Aucune donnée identifiante s
 5. 1 représentant(e) des usagers (association de soutien aux couples)
 6. 1 représentant(e) WAIRYU (non-votant, secrétariat)
 
-**Justification de l'ajout du méthodologue** : les 62 points [À VALIDER] incluent des décisions purement méthodologiques (α 0,80 vs 0,85, RMSEA, effectifs) qui ne relèvent ni du clinique seul ni de l'éditeur. Le conflit d'intérêt (A5) exige un contre-pouvoir technique indépendant.
+**Justification de l'ajout du méthodologue** : les points [À VALIDER] (comptage daté du 21/10/2026 : 68 listés, dont 14 tranchés niveau 1 — 54 restants ; 14 marqueurs inline) incluent des décisions purement méthodologiques (α 0,80 vs 0,85, RMSEA, effectifs) qui ne relèvent ni du clinique seul ni de l'éditeur. Le conflit d'intérêt (A5) exige un contre-pouvoir technique indépendant.
 
 Le conseil clinique :
 - Valide ce protocole avant collecte
@@ -531,9 +533,9 @@ Les points suivants nécessitent l'arbitrage du conseil clinique avant validatio
 2. **Critères d'exclusion** : la formulation "violence active" est-elle suffisamment précise ? Qui évalue l'obligation de répondre sous contrainte ?
 3. **Seuil psychométrique** : α ≥ 0,80 est-il le bon seuil, ou faut-il ≥ 0,85 (standard plus exigeant) ?
 4. **Test-retest 2 semaines** : durée optimale ? 1 semaine (mémoire) ou 4 semaines (variation d'état) ?
-5. **Validité convergente** : ECR-R et RQ sont-ils les bons instruments de référence, ou faut-il en ajouter (MAAS pour la pleine conscience, DASS-21 pour la détresse) ?
-6. **Composition du conseil clinique** : 5 membres proposés — assez ? Trop ? Quels profils prioritaires ?
-7. **Sous-groupe validité convergente** : n=50 suffisant pour mesurer une corrélation ≥ 0,50 (puissance statistique) ?
+5. **Validité convergente** : l'ECR-R a été écarté (arbitrage B1 — restriction d'usage commerciale, `legal/`). Le RQ, avec le CSI en second instrument (usage exact à préciser), sont-ils les bons instruments de référence, ou faut-il en ajouter (MAAS pour la pleine conscience, DASS-21 pour la détresse) ?
+6. **Composition du conseil clinique** : 6 membres fixés (§14.4 — méthodologue ajouté, arbitrage niveau 1) — assez ? Trop ? Quels profils prioritaires ?
+7. **Sous-groupe validité convergente** : n=50 suffisant pour mesurer une corrélation ≥ 0,40 (puissance statistique — après arbitrage B1, n = 47 minimum à ce seuil) ?
 8. **Hébergement des données** : quel prestataire UE ? Quel niveau de chiffrement ?
 9. **Déclaration CNIL** : nécessaire ou non ? Délai ?
 10. **Indemnisation** : pas d'indemnisation financière — équitable ? Faut-il prévoir un remboursement de frais (transport si entretien) ?

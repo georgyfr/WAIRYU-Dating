@@ -2789,3 +2789,20 @@ Work Log:
 
 Stage Summary:
 - Relecture fond intégral EXÉCUTÉE et documentée (rapport 07, verdict 8,5/10) — le protocole v1.1 est architecturalement solide, 2 arbitrages fondateur bloquent le tampon niveau 2 : **B1 usage ECR-R** (option (b) recommandée : bascule validité convergente sur RQ/CSI, H5 reformulée) et **B2 seuil faux négatifs** (≥ 3 recommandé) ; 14 consistances corrigeables sur ordre. Après arbitrages + corrections : tampon niveau 2 → package prêt pour conseil clinique (reporté par le fondateur) et pré-enregistrement OSF.io.
+
+---
+Task ID: 153
+Agent: WTC-Pont (superviseur sortant)
+Task: Arbitrages fondateur B1 (b) et B2 (≥ 3) rendus (trace 1a15d6b474a4969d, ordre « b et 3. corrige les 14 points ») — bascule ECR-R → RQ/CSI appliquée, seuil faux négatifs aligné, 14 consistances S1-S14 corrigées, tampon contresignature niveau 2 posé.
+
+Work Log:
+- D-LECTURE : rapport 07 relu (sections C/D/G — options et corrections proposées) ; 7 documents du package relus aux emplacements visés ; legal/ relu (faits CSI : 4 versions 32/16/8/4 items, distribué sans lettre par le co-auteur) ; aucun comptage 0,75 antérieur trouvé pour RIO-02 (S4 → justification consignée honnêtement).
+- Arbitrage B1 → option (b) appliqué : l'ECR-R n'est plus administré (restriction commerciale consignée R3) — doc 01 (OS6, H5 reformulée à RQ ≥ 0,40, §8.4 RQ + CSI + bloc arbitrage daté, §9, §13.1.bis critères OSF, §13.2 tableau, §17-5, §17-7 puissance n = 47 à 0,40) ; doc 03 (§6.1 tableau RQ + CSI, §6.2 seuils ECR-R retirés, §6.4 puissance Fisher) ; consentement FR (ligne 117) et EN (ligne 216) ; décision datée appendée dans legal/licences-validite-convergente.md.
+- Arbitrage B2 → seuil unique ≥ 3 appliqué : doc 04 §4.2 (« le 3ᵉ déclenche l'arrêt », aligné doc 06 §1.2), §8.2, point §9.8 ; doc 06 §1.2 (« ≥ 3 incidents Type C — arbitrage B2 »).
+- S1-S14 corrigées (mécaniques, un seul commit) : S1 version 1.1 doc 01 (en-tête + §1) · S2 §17-6 à 6 membres fixés · S3 comptage daté 68/54 (doc 01 §14.4 + doc 05 Phase 0) · S4 note de traçabilité α 0,75 RIO-02 (Spearman-Brown, à ratifier conseil) · S5 régime AFC si n < 200 · S6 « Arrêtons les violences » (3919, numéro prime) · S7 Phase 0 attributaire superviseur sortant · S8 total 10 mois calendaires + convention notée (Phase 4 2 mois, dates font foi) · S9 suivi T8 déplacé en tranché (item 7 ✅, liste renumérotée) · S10 doc 06 §2.5 → §2.4 · S11 H6 portant sur réponses réelles (simulation = répétition générale, doc 01 + doc 03) · S12 futilité 3 mois (Phase 1) · S13/S14 sommaire : checkpoints niveaux 1+2 cochés, granularité alignée README parent (OSF + RC ajoutés).
+- Tampon contresignature niveau 2 posé (§G.4 du rapport 07) : doc 01 (STATUT + en-tête superviseur sortant), sommaire package (statut + 2 cases ✅), README parent (STATUT + verdict tableau ✅ + nouvelle section « Les 2 arbitrages fondateur de la relecture niveau 2 ») ; rapport 07 section H (arbitrages rendus + exécution) ; hub (header, bannière arbre, ligne statut verrous).
+- Vérifications post-édition : plus aucun « > 3 faux négatifs » ; ECR-R restants uniquement dans les notes d'arbitrage (provenance) ; « 62 points » restant uniquement dans le rapport 07 (historique) ; aucune référence résiduelle à §2.5 du doc 06 ; appellation 3919 vérifiée.
+- Worklog Task 153 (présent commit) + miroir ; commit + push + audit origin (ls-remote + raw + scan standard sans citation de motif).
+
+Stage Summary:
+- **Protocole v1.1 CONTRESIGNÉ NIVEAU 2** — arbitrages B1 (b) et B2 (≥ 3) rendus et intégrés, 14 consistances corrigées, package prêt pour la validation du conseil clinique (constitution reportée par le fondateur) et pour le pré-enregistrement OSF.io (critères intégrant la bascule B1). Verrous restants VALID-01 : conseil clinique (acte fondateur), AIPD + juridique, tests infra + incendie filets (jeton staging — arbitrage en attente), OSF.io, assurance RC.

@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **21/10/2026** (RIO-23 « Le pas sous ma carte » contresigné — « je valide » fondateur 21/10, trace 1a15d13e78e98ced ; personnalité **5/5 contresignée** ; registre **23/23** — les 3 dimensions principales du programme sont complètes). **Chantier consolidation VALID-01** (Task 150-151, ordre fondateur « on consolide et on prépare VALID-01 ») : rappel R3 **LEVÉ** 21/10 · dossier de présentation du programme pour le conseil clinique **PRODUIT** (02-dossier-conseil-clinique/).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **21/10/2026** (RIO-23 « Le pas sous ma carte » contresigné — « je valide » fondateur 21/10, trace 1a15d13e78e98ced ; personnalité **5/5 contresignée** ; registre **23/23** — les 3 dimensions principales du programme sont complètes). **Chantier consolidation VALID-01** (Task 150-152, ordre fondateur « on consolide et on prépare VALID-01 ») : rappel R3 **LEVÉ** 21/10 · dossier de présentation du programme pour le conseil clinique **PRODUIT** (02-dossier-conseil-clinique/) · protocole v1.1 relu intégralement (rapport 07) puis **CONTRESIGNÉ NIVEAU 2** le 21/10 — arbitrages fondateur **B1 → (b)** (ECR-R non administré, bascule RQ + CSI) et **B2 → seuil ≥ 3** rendus (trace 1a15d6b474a4969d), 14 consistances S1-S14 corrigées.
 
 ---
 
@@ -67,9 +67,9 @@ Wairyu thérapie couple/
 │   ├── corpus-paraphrases.md · protocole_jaccard.py · rejeu-protocole-rio06.json (P4 — recalculabilité réelle)
 │   └── licences-validite-convergente.md (P6 — rappel R3 LEVÉ 21/10/2026 : re-vérification datée des 3 statuts commerciaux consignée)
 │
-│  ═══ PILOTE RÉEL — VALID-01 (protocole v1.1 contresigné niveau 1 + 6 amendements · rappel R3 LEVÉ 21/10) ═══
+│  ═══ PILOTE RÉEL — VALID-01 (protocole v1.1 contresigné niveaux 1 + 2 — fond intégral 21/10 · arbitrages B1 (b) / B2 (≥ 3) rendus · S1-S14 corrigées · rappel R3 LEVÉ 21/10) ═══
 └── validation-valid-01/
-    ├── README.md (statut protocole : 5 verrous restants — contresignature niveau 2, conseil clinique, AIPD + juridique, tests infra + incendie filets + OSF.io + RC, recrutement)
+    ├── README.md (statut protocole : contresignature niveaux 1 + 2 FAITES — verrous restants : conseil clinique, AIPD + juridique, tests infra + incendie filets + OSF.io + RC, recrutement)
     ├── 01-protocole/ (6 documents : étude · consentements · critères psychométriques · filets · timeline · critères d'arrêt)
     └── 02-dossier-conseil-clinique/ (dossier de présentation du programme pour la constitution du conseil — 23 instruments en langage clair, PRODUIT 21/10)
 ```

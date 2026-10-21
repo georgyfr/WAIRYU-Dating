@@ -210,6 +210,33 @@ corrigibles mécaniquement sur ordre — aucun n'a été corrigé.
    doc 01, et le package devient prêt pour la validation du conseil
    clinique et le pré-enregistrement OSF.io.
 
+---
+
+## H. Arbitrages rendus et exécution (mise à jour du 21/10/2026)
+
+> Arbitrages rendus par le fondateur le 21/10/2026 (trace 1a15d6b474a4969d,
+> ordre « b et 3. corrige les 14 points ») — exécutés le même jour par le
+> superviseur sortant, dans le respect de la séquence décrite en section G.
+
+1. **Arbitrage B1 → option (b)** : la validité convergente est basculée sur
+   le **RQ** (seuils ≥ 0,40, déjà écrits au doc 03 §6.2) avec le **CSI** en
+   second instrument (usage exact à ratifier par le conseil clinique) ;
+   **l'ECR-R n'est pas administré** (restriction d'usage commerciale
+   consignée dans `legal/licences-validite-convergente.md` — décision B1
+   datée ajoutée à ce fichier). Exécution : doc 01 (OS6, H5, §8.4, §9,
+   §13.1.bis, §13.2, §17-5, §17-7) ; doc 03 (§6.1, §6.2, §6.4) ;
+   consentement FR/EN ; sommaire du package.
+2. **Arbitrage B2 → seuil unique ≥ 3** : le 3ᵉ faux négatif déclenche
+   l'arrêt — doc 04 §4.2 aligné sur doc 06 §1.2 (le plus protecteur,
+   conforme au principe « tout faux négatif est un échec du système »).
+3. **S1-S14** : les 14 corrections de consistance (section D) ont été
+   appliquées — un seul commit documenté, consigné au worklog (Task 153).
+4. **Tampon contresignature niveau 2 posé** (§G.4) sur le README du
+   package, le sommaire et le doc 01 — le package est **prêt pour la
+   validation du conseil clinique** ; tout pré-enregistrement OSF.io
+   intègre la bascule B1 dans ses critères de succès.
+
 *Le présent rapport est autoporteur : il peut être remis tel quel au
 conseil clinique en annexe du dossier de présentation, comme preuve que la
-relecture niveau 2 a été exécutée et documentée.*
+relecture niveau 2 a été exécutée et documentée — sections A-G comme
+signalements, section H comme exécution.*

@@ -66,3 +66,29 @@ vérifiera.
 > si le conseil clinique ou un partenariat commercial direct le réclamait, la
 > confirmation écrite des auteurs resterait la voie propre. L'ECR-R porte une
 > restriction commerciale explicite, documentée ci-dessus.
+
+---
+
+## Décision arbitrage B1 — 21/10/2026 (relecture niveau 2 VALID-01)
+
+> Arbitrage rendu par le fondateur (trace 1a15d6b474a4969d, ordre « b et 3 »)
+> à la suite du signalement B1 du rapport de relecture fond intégral du
+> protocole v1.1 (validation-valid-01/01-protocole/07-rapport-relecture-niveau2.md,
+> section C).
+
+**Décision : option (b) — l'ECR-R n'est pas administré dans VALID-01.**
+
+La validité convergente de RIO-01 repose sur le **RQ** (Bartholomew &
+Horowitz, public — seuils ≥ 0,40 déjà écrits au document 03 §6.2), avec le
+**CSI** (Funk & Rogge, 2007 — distribué sans lettre par le co-auteur,
+couples-research.com) en second instrument, usage exact à ratifier par le
+conseil clinique. Cette décision suit directement la restriction commerciale
+explicite de l'ECR-R consignée plus haut (FAQ de l'auteur, vérifiée le
+21/10/2026) : administrer l'ECR-R dans une étude dont le promoteur est
+l'éditeur commercial du produit validé changerait la classe d'usage consignée.
+
+La pratique WTC reste inchangée pour tous les instruments, y compris l'ECR-R :
+**aucun item intégré, paraphrases de construits seulement** — conforme au
+tableau du 18/10/2026 et à la vérification datée du 21/10/2026. Le protocole
+VALID-01 (doc 01, doc 03, consentements FR/EN) a été mis en cohérence le
+même jour (relecture niveau 2 — S1-S14 corrigées, tampon posé).

@@ -34,7 +34,7 @@
 
 **Réponse automatique** :
 - Affichage immédiat d'un message d'alerte
-- Numéro **3919** (Violences Femmes Info, FR) ou équivalent local
+- Numéro **3919** (Arrêtons les violences — appellation officielle depuis 2024, ex-Violences Femmes Info, FR) ou équivalent local
 - Message : "Ce que tu décris peut être une situation de violence. Tu n'es pas seul(e). Le 3919 est un numéro gratuit, anonyme, disponible 24h/24. Tu peux aussi appeler le 17 en cas d'urgence."
 - Possibilité de contacter un humain (si ligne d'urgence établie)
 - Proposer de pause / d'arrêter le questionnaire (sans obligation)
@@ -143,7 +143,7 @@
 - Si bug : correction et re-test (D-ENV)
 - Si limite du NLP : ajout de patterns, re-déploiement
 - Revue par le conseil clinique sous 7 jours
-- Si > 3 faux négatifs sur le pilote : **arrêt de l'étude** (critère d'arrêt — voir `06-criteres-arret.md`)
+- Si **≥ 3** faux négatifs sur le pilote (le 3ᵉ déclenche l'arrêt — aligné sur `06-criteres-arret.md` §1.2, arbitrage B2 du 21/10/2026) : **arrêt de l'étude**
 
 #### Type D — Faux positif
 - Journalisation automatique
@@ -277,7 +277,7 @@ Avant le premier répondant :
 
 ### 8.2 Test d'incendie des filets (Amendement A4 — obligatoire avant T0)
 
-**Principe** : un filet testé en simulation ne protège personne. Le critère d'arrêt « 3 faux négatifs » arriverait trop tard s'il n'a jamais été testé en conditions réelles.
+**Principe** : un filet testé en simulation ne protège personne. Le critère d'arrêt « ≥ 3 faux négatifs » (arbitrage B2) arriverait trop tard s'il n'a jamais été testé en conditions réelles.
 
 **Protocole de test d'incendie** : des répondants-test (membres de l'équipe, volontaires formés) déclenchent **sciemment les 5 types de signaux** et l'on vérifie :
 
@@ -334,7 +334,7 @@ Les points suivants restent **à valider par le conseil clinique** :
 5. **NLP patterns** : la liste des patterns est-elle exhaustive ? Faut-il un modèle plus sophistiqué (transformer léger) ?
 6. **Délai de réponse aux incidents Type B** : 24h est-il réaliste ?
 7. **Délai de réponse aux incidents Type E** : 2h est-il réaliste ?
-8. **Seuil d'arrêt (3 faux négatifs)** : seuil approprié ?
+8. **Seuil d'arrêt (≥ 3 faux négatifs — arbitrage B2 du 21/10/2026)** : seuil approprié ?
 9. **Ressources par pays** : la liste est-elle exhaustive ? Maintenance ?
 10. **Message H5** : formulation exacte — à tester sur 5-10 testeurs avant pilote.
 11. **Contact humain** : si le participant demande un contact (Option A activée), qui répond ? Formation requise ?

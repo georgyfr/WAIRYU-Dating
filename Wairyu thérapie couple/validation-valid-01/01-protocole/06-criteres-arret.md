@@ -30,7 +30,7 @@
 | Critère | Délai d'arrêt | Décision |
 |---------|---------------|----------|
 | **Incident grave Type E** (menace de suicide active, violence en cours) | Immédiat (sous 24h) | Conseil clinique |
-| **3 incidents Type C (faux négatifs)** sur l'ensemble du pilote | Sous 48h | Conseil clinique |
+| **≥ 3 incidents Type C (faux négatifs)** sur l'ensemble du pilote (arbitrage B2 — 21/10/2026, aligné avec le document 04 §4.2 ; le 3ᵉ déclenche) | Sous 48h | Conseil clinique |
 | **Bug technique exposant des données identifiantes** | Immédiat | Superviseur + conseil (notification sous 2h) |
 | **Ligne d'urgence indisponible** > 7 jours consécutifs | Sous 24h | Superviseur |
 | **Décès d'un participant** (même non lié à l'étude) | Immédiat | Superviseur + conseil |
@@ -66,7 +66,7 @@ Message type :
 
 | Critère | Délai d'arrêt | Décision |
 |---------|---------------|----------|
-| **< 100 répondants à T0** après 4 mois de recrutement | Sous 1 semaine | Conseil clinique |
+| **< 100 répondants à T0** après 3 mois de recrutement (fenêtre Phase 1 — `05-timeline-calendrier.md` ; S12 — 21/10/2026) | Sous 1 semaine | Conseil clinique |
 | **Attrition T8 > 60 %** (estimation à mi-parcours) | Sous 1 semaine | Conseil clinique |
 | **Taux de réponse T2 < 40 %** | Sous 1 semaine | Conseil clinique |
 | **Données inanalysables** (> 30 % de données manquantes par module) | Sous 1 semaine | Conseil clinique + superviseur |
@@ -82,7 +82,7 @@ Message type :
    - Analyse des données partielles
    - Rapport d'arrêt sous 1 mois
 
-### 2.5 Information des participants
+### 2.4 Information des participants
 
 Message type :
 > "L'étude WTC-VALID-01 s'achève prématurément car le nombre de participants nécessaire n'a pas pu être atteint. Vos données déjà collectées seront utilisées pour une analyse partielle. Vous pouvez continuer à utiliser l'application WAIRYU normalement. Merci pour votre participation."

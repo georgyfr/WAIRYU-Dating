@@ -35,6 +35,8 @@
 | RIO-02 | I_alarm (intensité alarme) | 10 | ≥ 0,75 |
 | RIO-03 | Banque forces (par force) | — | (par force, n=par force) |
 
+> **Note de traçabilité (S4 — 21/10/2026)** : le seuil α ≥ 0,75 de RIO-02 (I_alarm, 10 items) est posé au présent document sans arbitrage antérieur tracé. Justification consignée : α croît avec la longueur de l'échelle (prédiction de Spearman-Brown) — viser ≥ 0,80 sur 10 items exigerait des inter-corrélations d'items très élevées ; 0,75 est le standard usuel pour les échelles courtes. Ce seuil est hors périmètre des 5 recommandations (qui portent RIO-01) — **à ratifier par le conseil clinique**.
+
 ### 1.2 ω de McDonald
 
 **Mesure** : cohérence interne robuste aux items non-tau-équivalents.
@@ -70,7 +72,7 @@ Pour chaque sous-groupe (genre, âge, configuration relationnelle) :
 
 ### 2.2 Analyse Factorielle Confirmatoire (AFC)
 
-**Objectif** : confirmer la structure 2 axes sur un échantillon indépendant (si n suffisant ≥ 200).
+**Objectif** : confirmer la structure 2 axes sur un échantillon indépendant (si n suffisant ≥ 200). **Régime si n < 200** (cas attendu — cible 150-200 analysables, Amendement A1) : l'AFE reste l'analyse principale de validation (§2.1) ; l'AFC est conduite sur 150-200 avec réserves explicites (RMSEA 0,08 — arbitrage ci-dessous) ou reportée à un échantillon étendu — convention à ratifier par le conseil clinique (S5 — 21/10/2026).
 
 **Méthode** :
 - Estimation : maximum de vraisemblance (ML)
@@ -167,16 +169,18 @@ Pour chaque item : calculer α si l'item est supprimé.
 
 | Instrument | Référence | Items | Mesure |
 |------------|-----------|-------|--------|
-| **ECR-R** (Experiences in Close Relationships-Revised) | Fraley, Waller & Brennan (2000) | 36 | Anxiété (18) + Évitement (18) |
-| **RQ** (Relationship Questionnaire) | Bartholomew & Horowitz (1991) | 4 paragraphes + 4 échelles | 4 styles d'attachement |
+| **RQ** (Relationship Questionnaire) | Bartholomew & Horowitz (1991) | 4 paragraphes + 4 échelles | 4 styles d'attachement — instrument principal |
+| **CSI** (Couples Satisfaction Index) | Funk & Rogge (2007) | 4 versions (32/16/8/4 items) | Satisfaction relationnelle — second instrument (usage exact à ratifier par le conseil clinique) |
+
+> **Arbitrage B1 (fondateur, 21/10/2026 — trace 1a15d6b474a4969d)** : l'ECR-R (Fraley, Waller & Brennan, 2000 — 36 items), initialement listé ici, **n'est pas administré** dans VALID-01 — restriction d'usage commerciale explicite (FAQ de l'auteur, vérification datée consignée dans `legal/licences-validite-convergente.md`). Le CSI est distribué publiquement sans lettre par le co-auteur (couples-research.com) ; un usage commercial direct passerait par le canal des auteurs.
 
 ### 6.2 Hypothèses de corrélation
 
-**H5** :
-- r(RIO-01 axe A, ECR-R anxiété) ≥ 0,50
-- r(RIO-01 axe B, ECR-R évitement) ≥ 0,50
+**H5** (formulation issue de l'arbitrage B1 — 21/10/2026) :
 - r(RIO-01 axe A, RQ-anxiété) ≥ 0,40
 - r(RIO-01 axe B, RQ-évitement) ≥ 0,40
+
+> Les seuils ECR-R (r ≥ 0,50), initialement écrits, sont retirés avec l'instrument (arbitrage B1 — ECR-R non administré, restriction d'usage commerciale consignée dans `legal/`). Les seuils RQ ≥ 0,40, déjà présents à la contresignature niveau 1, deviennent les critères de succès H5.
 
 ### 6.3 Validité divergente
 
@@ -188,11 +192,13 @@ La validité convergente est mesurée sur un sous-groupe de 50 participants.
 
 **Puissance statistique** : pour mesurer une corrélation r ≥ 0,50 avec puissance 0,80 et α 0,05 (bilatéral), n = 29 minimum. n=50 donne une marge confortable.
 
+Après arbitrage B1 (seuil H5 porté sur le RQ à ≥ 0,40) : n = 47 minimum par la même méthode (Fisher) — n=50 couvre le seuil, avec une marge étroite ; le point est porté au conseil clinique (§17-7 du document principal).
+
 ## 7. Filets de sécurité — validation écologique
 
 ### 7.1 Déclenchement de H5
 
-**Objectif (H6)** : vérifier que le filet H5 (comportement de sécurité) se déclenche sur ≥ 90 % des réponses simulées à risque.
+**Objectif (H6)** : vérifier que le filet H5 (comportement de sécurité) se déclenche sur ≥ 90 % des réponses **réelles** à risque signalées au pilote — la simulation (test d'incendie A4) tient lieu de répétition générale, pas de critère (S11 — 21/10/2026).
 
 **Méthode** :
 - Sur les réponses réelles au pilote, identifier les profils "à risque" (H5 activé)

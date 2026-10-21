@@ -1,12 +1,12 @@
 # WTC-VALID-01/01 — Protocole d'étude du pilote réel
 
-> **STATUT : CONTRESIGNÉ NIVEAU 1 (ARCHITECTURE) + 6 AMENDEMENTS INTÉGRÉS**
+> **STATUT : CONTRESIGNÉ NIVEAU 1 (ARCHITECTURE) + NIVEAU 2 (FOND INTÉGRAL, 21/10/2026) + 6 AMENDEMENTS INTÉGRÉS**
 >
-> **Contresignature niveau 2 (fond intégral)** : relecture du fond intégral EXÉCUTÉE le 21/10/2026 (rapport `01-protocole/07-rapport-relecture-niveau2.md`) — 2 arbitrages fondateur en attente avant tampon (B1 usage ECR-R vs restriction commerciale consignée · B2 seuil unique de faux négatifs) + 14 points de consistance à corriger sur ordre.
+> **Contresignature niveau 2 (fond intégral)** : POSÉE le 21/10/2026 — relecture du fond intégral exécutée (rapport `01-protocole/07-rapport-relecture-niveau2.md`, sections A-G), arbitrages fondateur rendus (trace 1a15d6b474a4969d) : **B1 → option (b)** (validité convergente basculée sur le RQ + CSI, ECR-R non administré) et **B2 → seuil unique ≥ 3** (faux négatifs) ; 14 consistances S1-S14 corrigées — exécution consignée en section H du rapport 07.
 >
 > Ce package est un document de conception, pas un package de validation
 > mécanique. Il doit être :
-> 1. ✅ **contresigné** par le superviseur sortant (niveau 1 fait — 6 amendements + 3 arbitrages + 5 recommandations) ;
+> 1. ✅ **contresigné** par le superviseur sortant (niveau 1 fait ; niveau 2 — fond intégral — fait le 21/10/2026 : arbitrages B1 (b) / B2 (≥ 3) rendus, S1-S14 corrigées) ;
 > 2. ⏳ **validé** par le conseil clinique (6 membres dont méthodologue — à constituer) ;
 > 3. ⏳ **AIPD formelle** (Arbitrage superviseur sortant — pas de CPP) + consultation juridique ;
 > 4. ⏳ **tests d'infrastructure** (D-ENV) + **test d'incendie des filets** (Amendement A4) + **pré-enregistrement OSF.io** (Amendement A3) + **assurance RC** (Amendement A6) ;
@@ -22,14 +22,14 @@
 > et, à la fin du pilote, d'**inverser la règle D-SIM** : les écrans
 > passeront de « suggestion » à « normes mesurées ».
 
-## Verdict : **CONTRESIGNÉ NIVEAU 1 — AMENDEMENTS INTÉGRÉS**
+## Verdict : **CONTRESIGNÉ NIVEAU 1 + NIVEAU 2 — AMENDEMENTS INTÉGRÉS**
 
 | Étape | Statut |
 |------|--------|
 | Production du protocole | ✅ Terminé (package révisé v1.1) |
 | Contresignature superviseur sortant (niveau 1) | ✅ **Fait** (6 amendements + 3 arbitrages + 5 recommandations) |
 | Intégration des amendements | ✅ **Fait** (ce package révisé) |
-| Contresignature superviseur sortant (niveau 2 — fond intégral) | ⏳ Relecture exécutée (rapport 07) — 2 arbitrages en attente (B1, B2) |
+| Contresignature superviseur sortant (niveau 2 — fond intégral) | ✅ **Fait** (21/10/2026 — rapport 07, arbitrages B1 (b) / B2 (≥ 3) rendus, S1-S14 corrigées) |
 | Validation conseil clinique (6 membres) | ⏳ En attente constitution |
 | AIPD formelle + consultation juridique | ⏳ En attente |
 | Pré-enregistrement OSF.io (Amendement A3) | ⏳ En attente |
@@ -55,6 +55,15 @@
 | **Ligne d'urgence** | Option B au lancement (orientation 3919/3114), migration A+B si Type C/D > 5 % à mi-collecte | ✅ Section 5 document filets + Phase 1 timeline |
 | **CNIL / éthique** | AIPD formelle obligatoire + consultation juridique, **pas de CPP** (étude observationnelle) | ✅ Section 14.5 protocole |
 | **Conseil clinique** | 6 membres (méthodologue ajouté comme contre-pouvoir technique) | ✅ Section 14.4 protocole |
+
+## Les 2 arbitrages fondateur de la relecture niveau 2 (rendus le 21/10/2026 — trace 1a15d6b474a4969d)
+
+| # | Sujet | Arbitrage rendu | Intégration |
+|---|-------|-----------------|-------------|
+| **B1** | Usage ECR-R (restriction commerciale consignée R3) | **Option (b)** — validité convergente basculée sur le **RQ** (seuils ≥ 0,40), **CSI** en second instrument (usage exact à ratifier par le conseil) ; **ECR-R non administré** | ✅ Doc 01 (OS6, H5, §8.4, §9, §13.1.bis, §13.2, §17-5/§17-7) · doc 03 §6.1-6.4 · consentement FR/EN · note datée dans `legal/licences-validite-convergente.md` |
+| **B2** | Seuil d'arrêt faux négatifs (> 3 vs 3) | **Seuil unique ≥ 3** (le 3ᵉ déclenche — le plus protecteur) | ✅ Doc 04 §4.2 + doc 06 §1.2 alignés |
+
+Les 14 consistances S1-S14 (rapport 07, section D) ont été **corrigées mécaniquement** dans le même commit documenté — détail en section H du rapport 07.
 
 ## Les 5 recommandations sur points [À VALIDER] (toutes intégrées)
 

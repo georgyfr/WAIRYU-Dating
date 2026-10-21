@@ -114,7 +114,7 @@ Je soussigné(e), **[Nom d'utilisateur ou identifiant]**, déclare avoir :
 
 **Je consens séparément à :** *(cases optionnelles — le refus n'empêche pas la participation)*
 
-- [ ] la participation à la sous-étude de validité convergente (questionnaires ECR-R et RQ supplémentaires à T0) — sous-groupe n=50
+- [ ] la participation à la sous-étude de validité convergente (questionnaires supplémentaires à T0 : RQ ; CSI en option si retenu par le conseil clinique) — sous-groupe n=50
 - [ ] la prise de contact pour un entretien qualitatif optionnel (durée 30 min, à T8)
 
 **Date** : `[DATE AUTOMATIQUE]`
@@ -213,7 +213,7 @@ I, the undersigned, **[Username or identifier]**, declare that I have:
 
 **I separately consent to:** *(optional boxes — refusal does not prevent participation)*
 
-- [ ] participation in the convergent validity sub-study (additional ECR-R and RQ questionnaires at T0) — subgroup n=50
+- [ ] participation in the convergent validity sub-study (additional questionnaires at T0: RQ; optional CSI if retained by the clinical board) — subgroup n=50
 - [ ] contact for an optional qualitative interview (30 min, at T8)
 
 **Date**: `[AUTOMATIC DATE]`

@@ -3,7 +3,7 @@
 > **STATUT : À VALIDER PAR LE CONSEIL CLINIQUE**
 >
 > Ce document présente le calendrier prévisionnel du pilote WTC-VALID-01.
-> 6 phases sur 9 mois (estimation). Les dates sont indicatives — le
+> 6 phases sur 9 mois canoniques (estimation — le tableau récapitulatif donne ~10 mois calendaires indicatifs, convention notée S8 au tableau). Les dates sont indicatives — le
 > démarrage réel dépend de la contresignature, de la validation conseil
 > clinique, et de la déclaration CNIL (si applicable).
 
@@ -34,7 +34,7 @@ Mettre en place toutes les conditions préalables au recrutement du premier rép
 | Tâche | Responsable | Durée | Statut |
 |------|-------------|-------|--------|
 | Contresignature du protocole par le superviseur sortant | Superviseur sortant | 1 semaine | ✅ Niveau 1 fait (6 amendements + 3 arbitrages + 5 recommandations) |
-| Intégration des amendements + relecture intégrale (niveau 2) | Superviseur actif | 1 semaine | ✅ Fait (ce package révisé) |
+| Intégration des amendements + relecture intégrale (niveau 2) | Superviseur sortant | 1 semaine | ✅ Fait (package révisé + rapport 07 — 21/10/2026) |
 | Constitution du conseil clinique (**6 membres — méthodologue ajouté**) | Superviseur (humain) | 3-4 semaines | ⏳ Chemin critique |
 | Validation du protocole par le conseil clinique | Conseil clinique | 2 semaines | ⏳ |
 | **AIPD formelle (Arbitrage superviseur sortant — pas de CPP)** | Superviseur + juridique | 4-6 semaines | ⏳ |
@@ -57,7 +57,7 @@ Tous les éléments ci-dessus doivent être en place. **Aucune collecte ne déma
 
 Les 4 cases à cocher avant collecte :
 1. [x] Contresignature superviseur sortant (niveau 1 + amendements intégrés)
-2. [ ] Validation conseil clinique (les 62 points [À VALIDER] restants)
+2. [ ] Validation conseil clinique (les points [À VALIDER] restants — comptage daté 21/10/2026 : 54 listés après les 14 arbitrages niveau 1)
 3. [ ] AIPD formelle (Arbitrage superviseur sortant — pas de CPP)
 4. [ ] Tests d'infrastructure (D-ENV) + test d'incendie des filets (Amendement A4)
 
@@ -208,11 +208,13 @@ En supposant un feu vert au **1er novembre 2026** (à adapter) :
 | Phase 1 — Collecte T0 | 01/01/2027 | 31/03/2027 | 3 mois |
 | Phase 2 — Suivi T2 | (intégré) | 31/03/2027 | (intégré) |
 | Phase 3 — Suivi T8 | 01/02/2027 | 31/05/2027 | 3 mois |
-| Phase 4 — Analyse | 01/06/2027 | 31/07/2027 | 1 mois |
+| Phase 4 — Analyse | 01/06/2027 | 31/07/2027 | 2 mois (dates du tableau) |
 | Phase 5 — Rapport | 01/08/2027 | 31/08/2027 | 1 mois |
-| **Total** | **01/11/2026** | **31/08/2027** | **9 mois** |
+| **Total** | **01/11/2026** | **31/08/2027** | **10 mois calendaires** |
 
 **Fin prévisionnelle du pilote** : 31 août 2027 (sous réserve du feu vert et de l'absence d'arrêt).
+
+> **Note de convention (S8 — 21/10/2026)** : le tableau donne **10 mois calendaires** (01/11/2026 → 31/08/2027) ; les « 9 mois » canoniques du protocole (§Durée totale, estimation initiale) coexistent avec des chevauchements entre phases (Phase 2 intégrée à la Phase 1, Phase 3 chevauchant la Phase 1) et une Phase 4 datée sur 2 mois. Convention retenue : **les dates du tableau font foi** ; les « 9 mois » restent l'estimation canonique de la durée propre de l'étude — à confirmer par le conseil clinique avec le feu vert.
 
 ---
 
@@ -234,16 +236,16 @@ En supposant un feu vert au **1er novembre 2026** (à adapter) :
 Les points suivants ont été **tranchés par le superviseur sortant** (contresignature niveau 1) :
 
 1. ✅ **Composition du conseil clinique** : 6 membres (méthodologue ajouté comme contre-pouvoir technique)
-2. ✅ **Durée totale** : 9 mois confirmée
+2. ✅ **Durée totale** : 9 mois canoniques confirmée (le tableau récapitulatif donne ~10 mois calendaires indicatifs — convention notée au tableau, S8)
 3. ✅ **Phase 0** : 2 mois confirmés, avec tâches amendées (AIPD, OSF, test d'incendie, assurance)
 4. ✅ **Phase 1** : 3 mois pour **250-300 répondants** (Amendement A1) + ≥ 30 paires (Amendement A2)
 5. ✅ **Ligne d'urgence** : Option B au lancement, migration A+B si Type C/D > 5 %
 6. ✅ **Open data** : Oui pour agrégats/instruments, Non pour réponses libres
+7. ✅ **Suivi T8 à 8 semaines (vs 12)** : tranché (document 03 §3.2, recommandation 3 du README parent — 12 semaines = variable de confusion) — à ratifier par le conseil clinique avec le reste du protocole
 
 Les points suivants restent **à valider par le conseil clinique** :
 
-7. **Phase 3** : le suivi T8 à 8 semaines (vs 12) — confirmé par superviseur sortant
-8. **Phase 4** : 1 mois pour l'analyse — suffisant pour une analyse rigoureuse ?
-9. **Phase 5** : communication aux participants — sous quelle forme (email, page dédiée) ?
-10. **Article scientifique** : faut-il prévoir une soumission à une revue (ex : Journal of Marital and Family Therapy) ? Délai additionnel ?
-11. **Date de démarrage** : le 1er novembre 2026 est-il réaliste ?
+7. **Phase 4** : 1 mois pour l'analyse — suffisant pour une analyse rigoureuse ? *(N.B. : les dates du tableau récapitulatif s'étalent sur 2 mois calendaires — S8 ; la durée propre de l'analyse reste posée à 1 mois)*
+8. **Phase 5** : communication aux participants — sous quelle forme (email, page dédiée) ?
+9. **Article scientifique** : faut-il prévoir une soumission à une revue (ex : Journal of Marital and Family Therapy) ? Délai additionnel ?
+10. **Date de démarrage** : le 1er novembre 2026 est-il réaliste ?
