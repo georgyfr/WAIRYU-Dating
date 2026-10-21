@@ -32,3 +32,37 @@
    produits, ni dans les supports de communication.
 4. Consigner le résultat de la checklist dans ce fichier (section datée) AVANT
    l'ouverture du pilote — l'audit de la mission suivante vérifiera la trace.
+
+---
+
+## Vérification datée du rappel R3 — 21/10/2026
+
+> Re-vérification demandée au point 1 de la checklist, exécutée par lecture
+> directe des sources officielles (web), consignée à la date du jour.
+> Contexte : ordre fondateur « on consolide et on prépare VALID-01 »
+> (trace 1a15d35f00d01389). Usage WTC inchangé : aucun item intégré —
+> comparaison / paraphrase de construits seulement (colonne « Décision WTC »
+> du tableau du 18/10/2026).
+
+| Instrument | Source vérifiée (accédée le 21/10/2026) | Constat | Statut commercial vérifié |
+|---|---|---|---|
+| **ECR-R** (Fraley et al., 2000) | Page FAQ officielle de l'auteur — R. C. Fraley, University of Illinois (labs.psychology.illinois.edu/~rcfraley/measures/ecrr.htm) | FAQ, section « permission » : « No. … You do not need to contact any of the authors for permission to use these scales in non-commercial research. **You may not use the scales for commercial purposes without permission.** » | **Restriction commerciale explicite.** WTC n'intègre aucun item ECR-R (paraphrases de construits seulement) → conforme ; tout changement d'usage vers le commercial exigerait une permission écrite de l'auteur. |
+| **ERQ** (Gross & John, 2003) | Page Resources officielle du laboratoire de l'auteur — Stanford Psychophysiology Laboratory (J. Gross) : spl.stanford.edu/resources | L'ERQ y est distribué publiquement par le labo de l'auteur en 40+ langues (PDF téléchargeables, dont **français**), sans déclaration de permission ni de régime de licence sur la page ; versions ERQ-SF et ERQ-30 également publiées par le même labo. | **Aucune restriction déclarée** sur la source officielle ; aucun canal de licence commerciale connu. WTC : comparaison de construits seulement (aucun item intégré) → conforme. |
+| **CSI** (Funk & Rogge, 2007) | Site officiel des auteurs — couples-research.com/measures (laboratoire R. Rogge, co-auteur) | Les quatre versions du CSI (32/16/8/4 items) y sont distribuées publiquement par le co-auteur (téléchargement direct), sans mention de permission requise. Un canal de licensing institutionnel distinct existe par ailleurs (ePROVIDE, CSI-32) pour les acteurs qui souhaitent un cadre formel. | **Distribué par l'auteur sans lettre** — confirme le statut « recherche + clinique sans lettre » du tableau du 18/10. WTC : candidat validité convergente, comparaison de construits, aucun item intégré → conforme ; un usage commercial direct passerait par le canal des auteurs. |
+
+**Conclusion (pont, 21/10/2026)** : les trois statuts sont re-vérifiés et datés ;
+**aucun changement depuis le tableau du 18/10/2026** ; la pratique WTC
+(zéro item intégré, construits cités) reste hors des périmètres restreints.
+**DAS/RDAS** : inchangé (non utilisé, jamais intégrer — point 2 : aucun usage
+envisagé, vérification non requise, aucun changement sans ordre fondateur).
+**Point 3** : inchangé (aucun item d'instrument édité — verdict audit PI
+CONFORME, P6). **Le rappel R3 est levé à la date du jour** ; la trace est
+consignée ici comme l'exige le point 4 — l'audit de la mission suivante
+vérifiera.
+
+> Limites honnêtes : les constats portent sur les pages officielles à la date
+> d'accès ; pour l'ERQ et le CSI, l'absence de déclaration de restriction sur
+> la source officielle n'équivaut pas à une autorisation commerciale écrite —
+> si le conseil clinique ou un partenariat commercial direct le réclamait, la
+> confirmation écrite des auteurs resterait la voie propre. L'ECR-R porte une
+> restriction commerciale explicite, documentée ci-dessus.

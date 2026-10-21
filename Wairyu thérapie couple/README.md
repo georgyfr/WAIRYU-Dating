@@ -65,7 +65,7 @@ Wairyu thérapie couple/
 │   ├── D-audit-pi-audit-pont.md (audit pont — mission soutenue, 5 alertes, recommandations P1-P6)
 │   ├── registre-citations.md (P1 — Chapman 1992 entré [R1])
 │   ├── corpus-paraphrases.md · protocole_jaccard.py · rejeu-protocole-rio06.json (P4 — recalculabilité réelle)
-│   └── licences-validite-convergente.md (P6 — rappel R3 bloquant avant VALID-01)
+│   └── licences-validite-convergente.md (P6 — rappel R3 LEVÉ 21/10/2026 : re-vérification datée des 3 statuts commerciaux consignée)
 │
 │  ═══ PILOTE RÉEL ═══
 └── validation-valid-01/
