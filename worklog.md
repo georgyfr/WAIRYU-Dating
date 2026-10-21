@@ -2985,3 +2985,22 @@ Work Log:
 
 Stage Summary:
 - Arbitrage de doctrine CLÔT : déceler gradué, exprimer la gravité par les paliers et le langage clair, ne jamais étiqueter à l'écran. Aucune retouche moteur requise. Prochaine étape signalée au fondateur : choix parmi les 4 actions de comblement restantes (recommandation pont : package « bilan de dimension » — chaînon n°1 de sa demande philosophique).
+
+---
+Task ID: 165
+Agent: WTC-Pont (superviseur)
+Task: Fondateur (trace 1a15ed7ad00bc0fd) — fichier de correction RIO-01 : remonter 53 % → 100 % par fichiers SUPPLÉMENTAIRES (zéro modification de l'existant), accent sur l'exactitude des calculs, déceler sans nommer les pathologies.
+
+Work Log:
+- Relecture avant travaux : audit Task 163 (RIO-01 = 53 : F1 25 · F2 12 · F3 6 · F4 10), vrai cœur R1 (18 items, échelle 1-4, items 5/15 inversés, SEM 0,195, niveaux 1,80/2,60/3,20, CI90 ± 0,3198, décision conservatrice, RQS), moteurs réels q4 (type_attachement 2,61 · CONFIGS_9) et q5 (selectionner_pas · EMPREINTES · suivi 14 j), canon §5.1-§5.4 (gabarit universel, 3 paliers) + §5.5 + Partie 9.
+- PACKAGE CRÉÉ (fichiers supplémentaires uniquement) : Wairyu thérapie couple/validation-q1/correction-philosophique/ — src/wtc_q1_correction.py (couche : importe les 3 VRAIS moteurs, intégrité vérifiée à l'import ; règles R1-R9 PRÉ-ENREGISTRÉES : palier max-niveau, seuils d'aide S1 conservateur Forte / S2 CI touche Forte, R4 qualité avant sens, anti-fabrication §5.5, 16 mots interdits, D-SIM, couplage pas réel) · src/wtc_q1_correction_validation.py (pipeline de preuve) · results/ (JSON + rapport).
+- PREUVE PAR ÉNUMÉRATION EXHAUSTIVE : les 6 sommes de faces (3 items, ∈ [3;12]) décrivent TOUT l'espace atteignable = 10^6 configurations, exécutées via les fonctions réelles du cœur (niveau_ponctuel, bornes_ci90, lecture_L3, lecture_L4) et de q4/q5 (type_attachement, face_dominante, _PAS_TABLE).
+- 8 CRITÈRES COR1-COR8 TOUS PASS : COR1 fragment L8 7 blocs complet 1 000 000/1 000 000 · COR2 palier (chemin indépendant entier k/9 exact ≡ chemin cœur) 1 000 000/1 000 000 · COR3 seuils S1 68 775 / S2 434 496, 0 borne pile (distances min exactes 0,02/0,04) · COR4 vocabulaire écran 0 mot interdit sur 175 textes distincts, D-SIM 10^6/10^6 · COR5 anti-fabrication 951 600/951 600, 0 abus · COR6 re-score BIT-EXACT des 520 réponses archivées R1 (0 écart sur 23 colonnes/ligne = 11 960 comparaisons ; gate OK 476 · PRUDENCE 44 → mention 44/44 · pièges ≠ OK 20/20 · suspension prouvée 4/4 sur cas synthétiques D-SIM via le VRAI calcule_rqs) · COR7 pas 9/9 (vraie table q5) + junction Q1↔Q4/Q5 cohérente 28/28 (seuil 2,61 dans le trou de grille 2,56<2,60≤2,61<2,67 ; identités exactes RASSURÉE=Serein 330 625, En quête=Préoccupé 244 375, Sur la réserve=Détaché 244 375+Alerte-feu 180 625=425 000) · COR8 pipeline ×2 SHA-256 identiques (06b2bfe60bc5d609…).
+- RE-SCORE RIO-01 : F1 25 (inchangé, C1c(ii) 99,8 % FAIL conservé) · F2 12→25 · F3 6→25 · F4 10→25 = 100 % (barème P1 simulation). D-CRISE non applicable consigné (aucun construit d'auto-danger) ; récapitulatif de DIMENSION = action n°2 inchangée ; libellés réels = action n°3 inchangée.
+- MOYENNES RECALCULÉES (exactes) : attachement 334/5 = 66,8 % · global 1 661/23 = 72,2 % (22 autres quêtes inchangées).
+- Documents : ADDENDUM-2 en append à l'audit (re-score officiel) · ligne au hub README · rapport correction + JSON (SHA-256 des 2 exécutions).
+- AUCUN fichier existant modifié hors audit (append), hub README (1 ligne), worklog (append). Moteurs intacts.
+- Commit + push + scan anti-fuite PROPRE ; miroir worklog à jour.
+
+Stage Summary:
+- ACTION N°1 DE COMBLEMENT ENGAGÉE : RIO-01 passe de 53 % à 100 % AU BARÈME DE L'AUDIT (preuve P1 simulation, D-SIM) — gabarit universel §5.1-§5.4 complet par fichiers supplémentaires, moteurs intacts. Moyenne attachement 57,4 → 66,8 % ; global 70,1 → 72,2 %. Limites vérité : simulation (VALID-01 externe), bilan de DIMENSION (action n°2) toujours à fédérer, libellés réels (action n°3) toujours à déposer. PROCHAINE QUÊTE SIGNALÉE : même gabarit de correction sur RIO-02 « Ce qui m'effraie vraiment » (ombre) puis RIO-03 (lumière).

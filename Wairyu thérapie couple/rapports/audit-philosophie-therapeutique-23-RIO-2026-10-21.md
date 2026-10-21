@@ -155,3 +155,17 @@ Le fondateur a tranché l'arbitrage ouvert au §4.3 du présent audit. **Décisi
 4. **Frontière documentaire rappelée** : la détection reste documentée côté moteur (fiches RIO, rapports, banques de profils — vocabulaire clinique autorisé DANS la documentation de validation), jamais dans les écrans. Les mots canon (« névrosisme », « narcissisme », « jalousie ») ne s'impriment jamais à l'interface ; seuls des noms maison descriptifs sont affichés (leçon PERS-Q1 A5).
 
 Arbitrage clôturé au worklog Task 164.
+
+---
+
+## ADDENDUM-2 (21/10/2026, trace 1a15ed7ad00bc0fd) — Action n°1 ENGAGÉE : fichier de correction RIO-01, re-score 53 % → 100 %
+
+Le fondateur a ordonné le rattrapage par **fichiers supplémentaires** (sans modifier l'existant), en insistant sur l'exactitude des calculs, en commençant par RIO-01. Exécuté (Task 165) :
+
+1. **Package créé** : `validation-q1/correction-philosophique/` — couche qui importe les VRAIS moteurs (q1-r1, q4, q5 — intégrité vérifiée à l'import, zéro modification, zéro réimplémentation) et produit les trois couches manquantes de RIO-01 : F2 palier 🟢🟠🔴 + « QUAND DEMANDER DE L'AIDE » (seuils S1/S2), F3 contenu des 3 paliers + branchement quête « pas » sur la vraie table Q5, F4 fragment de bilan L8 à 7 blocs.
+2. **Preuve** : énumération EXHAUSTIVE des 1 000 000 configurations de faces atteignables (l'espace complet de l'instrument) — 8 critères COR1-COR8 tous PASS, dont : 2 chemins de calcul du palier convergents 10⁶/10⁶ ; re-score BIT-EXACT des 520 réponses archivées R1 (0 écart, 11 960 comparaisons) ; 0 mot interdit sur 175 textes d'écran distincts ; anti-fabrication sans exception ; 9/9 pas réels ; pipeline ×2 SHA-256 identiques. Rapport : `validation-q1/correction-philosophique/results/rapport-correction-RIO-01.md`.
+3. **Re-score RIO-01** : F1 25 (inchangé) · F2 12→**25** · F3 6→**25** · F4 10→**25** = **100 %** (au barème de cet audit, preuve P1 simulation). Conserves : C1c(ii) 99,8 % FAIL (2 cas frontière, traités à l'écran par décision conservatrice + re-test) ; D-CRISE non applicable à cet instrument (consigné) ; le récapitulatif de DIMENSION reste l'action n°2.
+4. **Moyennes recalculées (exactes)** : attachement (100+53+53+61+67)/5 = **66,8 %** · global 23 quêtes 1 661/23 = **72,2 %**. Les scores des 22 autres quêtes de ce document restent inchangés.
+5. **Rappel de la limite universelle** : le 100 % de RIO-01 est un 100 % en simulation (D-SIM) — le constat n°1 (zéro réel, VALID-01) reste vrai pour toutes les quêtes.
+
+Prochaines quêtes du même rattrapage : RIO-02, RIO-03 (même gabarit), puis RIO-06→RIO-10.

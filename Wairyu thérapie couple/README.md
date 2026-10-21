@@ -19,6 +19,7 @@ Wairyu thérapie couple/
 │
 │  ═══ Dimension ATTACHEMENT (5/5 VALIDÉE) ═══
 ├── validation-q1/ · validation-q1-r1/
+│   └── correction-philosophique/ (RIO-01 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 10⁶ configs, COR1-COR8 PASS)
 ├── validation-q2/ · validation-q2-r1/
 ├── validation-q3/ · validation-q3-r1/
 ├── validation-q4/ · validation-q5/

@@ -1,0 +1,342 @@
+{
+ "package": "validation-q1/correction-philosophique",
+ "cible": "RIO-01 « Comment je me raccroche »",
+ "moteurs_reels": [
+  "validation-q1-r1/src/wtc_q1_core.py (SEM 0,195)",
+  "validation-q4/src/wtc_q4_core.py",
+  "validation-q5/src/wtc_q5_core.py"
+ ],
+ "cor8_sha256_run1": "06b2bfe60bc5d60991a8dcd094d8181b9541f2514c4c429324b2896ad239a177",
+ "cor8_sha256_run2": "06b2bfe60bc5d60991a8dcd094d8181b9541f2514c4c429324b2896ad239a177",
+ "criteres": {
+  "COR1_fragment_complet": {
+   "definition": "10^6/10^6 configurations → fragment L8 7 blocs, 0 champ vide",
+   "observe": "1000000/1000000",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "chemin indépendant (entiers, avant arrondi) ≡ chemin cœur (palier + S1 + S2)",
+   "observe": "1000000/1000000 convergents",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 ssi conservateur Forte ; S2 ssi ci_haut ≥ 3,20 sans conservateur Forte ; 0 borne pile",
+   "observe": "S1 68775/1000000 · S2 434496/1000000 · pile score 0 · pile CI 0",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9) sur tous les textes générés + clauses standing",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 175",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "« rien à fabriquer » ssi ≥ 1 axe Discrète/Tranquille ; JAMAIS sur 2 axes actifs",
+   "observe": "calme 951600/951600 configs à axe bas ; abus sur axe actif = 0",
+   "pass": true
+  },
+  "COR6_gate_qualite": {
+   "definition": "R4 : OK → lecture · PRUDENCE → lecture + mention · INVALIDE → suspension ; re-score bit-exact des 520 réponses R1 ; pièges statut ≠ OK 20/20 ; voie de suspension prouvée sur 4 cas synthétiques INVALIDE (D-SIM) via le vrai calcule_rqs",
+   "observe": "520 lignes : OK 476 · PRUDENCE 44 (mention 44/44) · INVALIDE 0 ; piégés ≠ OK 20/20 {'PRUDENCE': 20} ; suspension 4/4 ; écarts bit-exact 0",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "9/9 (face Q5 × empreinte) → pas du VRAI moteur Q5 ; junction Q1↔Q4/Q5 cohérente",
+   "observe": "pas résolus 9/9 · junctions incohérentes 0",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "06b2bfe60bc5d609… == 06b2bfe60bc5d609… → True",
+   "pass": true
+  }
+ },
+ "stage1": {
+  "configs": 1000000,
+  "fragment_complet": 1000000,
+  "cor2_ecarts": 0,
+  "paliers": {
+   "🟢": 608400,
+   "🟠": 322825,
+   "🔴": 68775
+  },
+  "rang_quete": {
+   "0": 80089,
+   "1": 528311,
+   "2": 322825,
+   "3": 68775
+  },
+  "S1": 68775,
+  "S2": 434496,
+  "frontiere_A": 861000,
+  "frontiere_B": 861000,
+  "face_q5": {
+   "RASSUREE": 330625,
+   "EN_QUETE": 244375,
+   "SUR_LA_RA": 425000
+  },
+  "type_q4": {
+   "SEREIN": 330625,
+   "PREOCCUPE": 244375,
+   "DETACHE": 244375,
+   "EN_ALERTFEU": 180625
+  },
+  "zone_calme_texte": 951600,
+  "configs_avec_axe_bas": 951600,
+  "zone_calme_sur_axe_actif": 0,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "pile_score": 0,
+  "pile_ci": 0,
+  "junction_incoherente": 0,
+  "md5_texts_count": 175
+ },
+ "stage2": {
+  "lignes": 520,
+  "gate_OK": 476,
+  "gate_PRUDENCE": 44,
+  "gate_INVALIDE": 0,
+  "mention_prudence": 44,
+  "honnêtes_OK": 476,
+  "honnêtes_PRUDENCE": 24,
+  "pieges_non_OK": 20,
+  "pieges_statuts": {
+   "PRUDENCE": 20
+  },
+  "paliers_honnetes": {
+   "🟢": 274,
+   "🟠": 178,
+   "🔴": 48
+  },
+  "S1_honnetes": 48,
+  "S2_honnetes": 218,
+  "fragments_complets_honnetes": 500,
+  "synthetiques_invalide": 4,
+  "synthetiques_suspendus": 4
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "pas_9": {
+   "RASSUREE|ZONE_CALME": "P1",
+   "RASSUREE|PEUR_DE_PERDRE": "P2",
+   "RASSUREE|PEUR_D_ETRE_ETOUFFEE": "P3",
+   "EN_QUETE|ZONE_CALME": "P2",
+   "EN_QUETE|PEUR_DE_PERDRE": "P4",
+   "EN_QUETE|PEUR_D_ETRE_ETOUFFEE": "P5",
+   "SUR_LA_RA|ZONE_CALME": "P3",
+   "SUR_LA_RA|PEUR_DE_PERDRE": "P5",
+   "SUR_LA_RA|PEUR_D_ETRE_ETOUFFEE": "P6"
+  },
+  "pas_resolus": 9,
+  "scores_atteignables": [
+   1.0,
+   1.11,
+   1.22,
+   1.33,
+   1.44,
+   1.56,
+   1.67,
+   1.78,
+   1.89,
+   2.0,
+   2.11,
+   2.22,
+   2.33,
+   2.44,
+   2.56,
+   2.67,
+   2.78,
+   2.89,
+   3.0,
+   3.11,
+   3.22,
+   3.33,
+   3.44,
+   3.56,
+   3.67,
+   3.78,
+   3.89,
+   4.0
+  ],
+  "equivalence_261": [
+   {
+    "score": 1.0,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.11,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.22,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.33,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.44,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.56,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.67,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.78,
+    "ge_261": false,
+    "niveau": "Discrète",
+    "coherent": true
+   },
+   {
+    "score": 1.89,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.0,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.11,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.22,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.33,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.44,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.56,
+    "ge_261": false,
+    "niveau": "Tranquille",
+    "coherent": true
+   },
+   {
+    "score": 2.67,
+    "ge_261": true,
+    "niveau": "Vive",
+    "coherent": true
+   },
+   {
+    "score": 2.78,
+    "ge_261": true,
+    "niveau": "Vive",
+    "coherent": true
+   },
+   {
+    "score": 2.89,
+    "ge_261": true,
+    "niveau": "Vive",
+    "coherent": true
+   },
+   {
+    "score": 3.0,
+    "ge_261": true,
+    "niveau": "Vive",
+    "coherent": true
+   },
+   {
+    "score": 3.11,
+    "ge_261": true,
+    "niveau": "Vive",
+    "coherent": true
+   },
+   {
+    "score": 3.22,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.33,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.44,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.56,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.67,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.78,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 3.89,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   },
+   {
+    "score": 4.0,
+    "ge_261": true,
+    "niveau": "Forte",
+    "coherent": true
+   }
+  ],
+  "equivalence_ok": true,
+  "pile_scores_seuils": [],
+  "dist_min_seuils": {
+   "1.8": 0.020000000000000018,
+   "2.6": 0.040000000000000036,
+   "3.2": 0.020000000000000018
+  }
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
