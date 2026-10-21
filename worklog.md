@@ -2934,3 +2934,21 @@ Work Log:
 
 Stage Summary:
 - **Quête M1-1.4 VÉRIFIÉE COMPLÈTE (89/89)** — espace entièrement bit-exact (33/33 scores + 390 625/390 625 réponses, écart strictement 0), neutralité normative et anti-flatterie structurelles, passation gelée reproductible, trame fiabilité jamais affichée ni scorée ; constat éditorial V4 consigné (1 formule partagée, retouche à décider). PROCHAINE QUÊTE SIGNALÉE : M1-1.5 « L'épreuve du temps » (Monde 2 « Le Volant », 2/7 — moteur quete-1-5.ts, structure à 6 binômes de choix verbatim Q1.5-C1→C6, non des items Likert).
+
+---
+Task ID: 162
+Agent: WTC-Pont (superviseur)
+Task: Fondateur (trace 1a15e690e0c53661) — « je veux que tu lises ces documents (OUTILS DE TERAPIE DU COUPLE.txt · README.md · programme wairyu couple v2.txt · programme wairyu couple.pdf · programme wairyu couple.txt · README.md) et que tu me dises si c'est toujours le même travail en termes de dimensions » — lecture intégrale, comparaison certifiée, document poussé.
+
+Work Log:
+- D-ENV : clone local retombé à 67cedbb (Task 146, reset d'environnement) — fetch + fast-forward pur vers origin/main réel 43077db (paramiko réinstallé dans le venv 3.12), zéro perte ; état réel découvert : Tasks 147-161 déjà poussées (RIO-23 contresigné, VALID-01 consolidé, calculs M1-1.1 → M1-1.4 : 40/40, 56/56, 70/70, 89/89).
+- LECTURE INTÉGRALE des 6 documents : programme v1 (445 l., canon 12 parties — 26 dimensions en 6 blocs, ~110 quêtes, structure 5 quêtes carte/ombre/lumière/croisement/pas) ; v2.txt (202 l., Partie 13 + résumé 1-12) ; PDF (extrait pdftotext, vérifié = mise en forme du v2.0 du 15/10, MD5 bbf108c1… identique à la copie rapports/) ; OUTILS (1 725 l. — bannière 18/10 : compilation de veille PAS une spécification, DAS non utilisé audit PI §6 CONFORME) ; hub README (196 l., état 21/10 : 23 RIO contresignés) ; README racine (32 l., app v2, zéro dimension).
+- CARTOGRAPHIE du cadre app : voyage.ts (11 mondes · 50 quêtes, Constitution v2.1 archive/v1 — M1 3 · M2 7 · M3 8 · M4 7 · M5 4 · M6 4 · M7 3 · M8 2 · M9 3 · M10 3 · M11 6 = 50, 51ᵉ pas = Rencontre) ; 35 moteurs quete-*.ts (30 cartes, 5 écrans de passage, 1.8 PHQ-9 sans moteur, 4.4 invisible) ; séries 1.x traversent les mondes (quete-1-4 = livrable M2-1.4).
+- COMPARAISON : cadre A canon WTC (26 dimensions / ~110 quêtes) → 5 dimensions complètes, 23 RIO, correspondance directe canon↔RIO (« Comment je me raccroche » = Quête 1 du canon 6.1, « Manuel d'utilisation de moi » = RIO-19…) ; cadre B voyage (11 mondes/50 quêtes) → le chantier calculs-quêtes porte sur CE cadre (instruments distincts des RIO, homonymies partielles bloc Psychologique) ; OUTILS + README racine ne portent aucune dimension.
+- VERDICT CERTIFIÉ : OUI même travail pour le programme WTC (aucune dérive : mêmes 26 dimensions, même structure 5 quêtes, même doctrine RIO, mêmes garde-fous — 5/26 complètes, 21 restantes) ; le second cadre (voyage) distingué explicitement pour éviter toute confusion.
+- 7 écarts consignés exactement (E1 v2 en retard sur le hub ; E2 ligne de total hub omet Santé mentale — blame e46b6a4 ; E3 canon 116 quêtes annoncées « ≈ 110 » ; E4 nommage M1-1.4 vs livrable M2-1.4 ; E5 TOTAL_STEPS 51 vs 50 ; E6 deux cadres sans page de réconciliation unique ; E7 OUTILS à ne pas citer comme spécification) — tous non bloquants, retouches à la décision du fondateur.
+- LIVRABLE POUSSÉ : Wairyu thérapie couple/lecture-documents-fondateurs-dimensions.md (7 sections : inventaire des 6 documents · cadre A canon + état 5/26 · cadre B voyage · verdict · invariantes · 7 écarts · prochaine quête).
+- Worklog Task 162 (présent commit) + miroir ; commit + push + audit origin + scan anti-fuite.
+
+Stage Summary:
+- Certification LECTURE-DOCUMENTS produite et poussée : le programme WTC reste EXACTEMENT le travail des documents fondateurs (26 dimensions/6 blocs, structure 5 quêtes, RIO, 5/26 complètes, 21 restantes) ; le chantier calculs-quêtes vérifie le second cadre (voyage 11 mondes/50 quêtes) — distinction consignée, 7 écarts mineurs documentés. PROCHAINE QUÊTE SIGNALÉE : M1-1.5 « L'épreuve du temps » (Monde 2 « Le Volant », moteur quete-1-5.ts, 6 choix binaires Q1.5-C1→C6, non-Likert).
