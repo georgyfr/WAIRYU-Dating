@@ -2886,3 +2886,19 @@ Work Log:
 
 Stage Summary:
 - **Périmètre nettoyé et certifié** : le seul fichier hors périmètre (apps/web/postcss.config.mjs, Task 156) est retiré du dépôt ; tout le travail récent vit dans « Wairyu thérapie couple/ » (protocole contresigné, package OSF prêt, quête M1-1.1 résultats 40/40 poussés) ; PROCHAINE QUÊTE : M1-1.2 (moteur quete-1-2.ts + -plus), méthode identique à M1-1.1.
+
+---
+Task ID: 159
+Agent: WTC-Pont (exécuteur calculs)
+Task: Quête M1-1.2 « Ta façon de t'attacher » (Monde 1 « Le Miroir », dimension attachement) — cycle annoncé au Task 157, exécuté dans la foulée de la certification de périmètre (Task 158) : calculs complets du moteur, document de résultats poussé, quête suivante signalée.
+
+Work Log:
+- D-LECTURE : les 3 moteurs lus intégralement (quete-1-2.ts : 12 items Likert 1-5, dims A réassurance / E espace, 4 inversés, PASSATION gelée graine 212427 sur 20 positions avec 8 trames sécurité Q1.2-T09→T16, cascade 5 sélecteurs ordre 1→5, cartes verbatim ; quete-1-2-plus.ts : preuves/besoins/ressenti/apportes/apprendre/question/langage/leviers ; quete-1-2-arche.ts : moule « Toi, … » Task 76) ; moule de vérification repris du script 1.1 (Task 157).
+- SCRIPT DE VÉRIFICATION (exécute les VRAIS moteurs, zéro réimplémentation) : V1 items (12, A=6/E=6, 4 inversés conformes, codes uniques) ; V2 scorer (tout-à-1 A=1/6 · E=3/6 ; tout-à-5 miroir exact ; neutre 0,50 ; contributions item par item dans moyenne complète ; hors bornes ignorés ; dimension vide → 0 sans NaN) ; V3 couverture — espace EXACT 25×25 = 625 profils balayés (scores réels = multiples de 1/24) : V1=100 (16,0 %) V2=120 (19,2 %) V3=120 (19,2 %) V4=121 (19,4 %) V5=164 (26,2 %), toutes cartes atteignables, aucune monopole, frontières déterministes (0,50 exact en binaire ; 0,40/0,55/0,60 jamais pile, écart min 0,0083) + grille pas 0,1 conforme au calcul à la main {16,25,25,25,30} + cascade 6 cas ; V4 anti-flatterie + sensibilité attachement sur les 3 couches combinées (0 pathologisant, 0 flatterie, 0 étiquette clinique, moule arche 5/5) ; V5 passation (20 positions, trames jamais affichées, ordre du deck = ordre gelé) ; V6 couche plus complète + anti-duplication ≥ 60 car.
+- HONNÊTETÉ INTÉGRALE : 5 assertions du VÉRIFICATEUR fausses au 1er passage, corrigées contre les vraies données (2× convention moyenne des réponses valides — le test 1.1 avait une assertion tolérée « || true » sur ce même point ; format trame T09 vs T9 ; 0,50 atteignable pile mais exact en binaire ; anti-duplication) — 56/56 au 2e passage ; le moteur n'a requis AUCUNE correction.
+- CONSTAT ÉDITORIAL CONSIGNÉ (sans flatterie) : la règle d'en-tête de quete-1-2-arche.ts « aucun segment ≥ 60 car recopié entre modules » est violée en UN point — la formule « …reprendre de l'air. Ce n'est ni de la légèreté ni de la bizarrerie : c'est… » (~74 car) partagée entre la carte verbatim V4 (lumière) et l'intro de son archétype ; V1/V2/V3/V5 propres ; retouche à la décision du fondateur, hors calculs, non bloquante.
+- LIVRABLE POUSSÉ : Wairyu thérapie couple/calculs-quêtes/M1-quete-1-2-resultats.md (résultats exacts, tableaux attendu vs obtenu, constat V4, erreurs du vérificateur consignées, frontière simulation/pilote) + scripts/check-quete-1-2.ts (reproductible : bun depuis la racine — 56/56).
+- Worklog Task 159 (présent commit) + miroir ; commit + push + audit origin.
+
+Stage Summary:
+- **Quête M1-1.2 VÉRIFIÉE COMPLÈTE (56/56)** — couverture exacte 625/625 profils, anti-flatterie et sensibilité attachement structurelles, passation gelée reproductible ; constat éditorial V4 consigné (1 formule partagée, retouche à décider). PROCHAINE QUÊTE SIGNALÉE : M1-1.3 « Tes émotions » (20 items, 6 variantes, graine 213427) — même méthode.
