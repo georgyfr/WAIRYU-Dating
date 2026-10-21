@@ -11,6 +11,7 @@ L'ordre de lecture recommandé :
 | 04 | `04-filets-securite-incident.md` | Filets de sécurité : déclencheurs (H5, allusions), protocole d'incident, orientation 3919/3114, escalade, journal d'incident |
 | 05 | `05-timeline-calendrier.md` | Calendrier de l'étude — 6 phases sur 9 mois |
 | 06 | `06-criteres-arret.md` | Critères d'arrêt prédéfinis — sécurité, futilité, non-conformité |
+| 07 | `07-rapport-relecture-niveau2.md` | Rapport de relecture fond intégral (21/10) — préparation contresignature niveau 2 : signalements B1/B2 + S1-S14, verdict 8,5/10 |
 
 ## Statut
 

@@ -2,7 +2,7 @@
 
 > **STATUT : CONTRESIGNÉ NIVEAU 1 (ARCHITECTURE) + 6 AMENDEMENTS INTÉGRÉS**
 >
-> **Contresignature niveau 2 (fond intégral)** : en attente de relecture par le superviseur sortant sur le package révisé.
+> **Contresignature niveau 2 (fond intégral)** : relecture du fond intégral EXÉCUTÉE le 21/10/2026 (rapport `01-protocole/07-rapport-relecture-niveau2.md`) — 2 arbitrages fondateur en attente avant tampon (B1 usage ECR-R vs restriction commerciale consignée · B2 seuil unique de faux négatifs) + 14 points de consistance à corriger sur ordre.
 >
 > Ce package est un document de conception, pas un package de validation
 > mécanique. Il doit être :
@@ -29,7 +29,7 @@
 | Production du protocole | ✅ Terminé (package révisé v1.1) |
 | Contresignature superviseur sortant (niveau 1) | ✅ **Fait** (6 amendements + 3 arbitrages + 5 recommandations) |
 | Intégration des amendements | ✅ **Fait** (ce package révisé) |
-| Contresignature superviseur sortant (niveau 2 — fond intégral) | ⏳ En attente relecture package révisé |
+| Contresignature superviseur sortant (niveau 2 — fond intégral) | ⏳ Relecture exécutée (rapport 07) — 2 arbitrages en attente (B1, B2) |
 | Validation conseil clinique (6 membres) | ⏳ En attente constitution |
 | AIPD formelle + consultation juridique | ⏳ En attente |
 | Pré-enregistrement OSF.io (Amendement A3) | ⏳ En attente |
@@ -95,7 +95,8 @@ validation-valid-01/
     ├── 03-criteres-psychometriques.md         (α, ω, AFE/AFC, ICC, item-total, SEM, validité convergente)
     ├── 04-filets-securite-incident.md         (déclencheurs H5, 3919/3114, escalade, journal)
     ├── 05-timeline-calendrier.md              (6 phases, 9 mois)
-    └── 06-criteres-arret.md                   (sécurité, futilité, non-conformité)
+    ├── 06-criteres-arret.md                   (sécurité, futilité, non-conformité)
+    └── 07-rapport-relecture-niveau2.md        (relecture fond intégral 21/10 — signalements B1/B2 + S1-S14, verdict 8,5/10)
 ```
 
 ## Principes non négociables (rappel — applicables au pilote réel)
