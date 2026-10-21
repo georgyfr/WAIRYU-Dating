@@ -1,0 +1,6 @@
+{
+  "name": "recolte-preview",
+  "version": "0.1.0",
+  "description": "Sert le build Vite de apps/web (E2E local) — port 4173, persistant (mini-service).",
+  "scripts": { "dev": "bun --hot index.ts" }
+}

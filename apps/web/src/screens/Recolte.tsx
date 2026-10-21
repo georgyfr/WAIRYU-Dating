@@ -46,6 +46,19 @@ import type { ItemRecolte } from '../components/InfoRecolte';
 import VoyageIcon from '../components/VoyageIcons';
 import type { VoyageIconName } from '../components/VoyageIcons';
 import { useI18n } from '../i18n/I18nProvider';
+import {
+  calculerEconomie,
+  GAGNES,
+  DEPENSES,
+  PORTES_ZERO,
+  PHARES_FANAL,
+  NOTE_DEPENSES,
+  DOCTRINE_LUCIOLES,
+  MONDES_PAYANTS_NOTE,
+  NOTE_CALIBRAGE,
+  NOTE_DECISION,
+} from '../lib/lucioles';
+import { lireAvis, CHOIX_AVIS } from '../lib/satisfaction';
 
 /** Une carte-découverte RÉELLE obtenue (quête terminée avec carte posée). */
 interface Decouverte {
@@ -81,8 +94,9 @@ interface MondeRecolte {
   ecrans: EcranPassage[];
 }
 
-/** Les onglets de la refonte — les 4 de la maquette + « Gains acquis » (fondateur). */
-type Onglet = 'apercu' | 'cartes' | 'sceaux' | 'gains' | 'histoire';
+/** Les onglets de la refonte — les 4 de la maquette + « Gains acquis » et
+ *  « Lucioles » (l'économie des crédits — portage Task 144, guide 143). */
+type Onglet = 'apercu' | 'cartes' | 'sceaux' | 'gains' | 'histoire' | 'lucioles';
 
 /** Une ligne du REGISTRE des gains acquis — un seul élément réellement obtenu. */
 interface GainAcquis {
@@ -264,6 +278,12 @@ export default function Recolte() {
 
   // L'ONGLET ACTIF de la maquette (pur état d'interface — aucune donnée).
   const [onglet, setOnglet] = useState<Onglet>('apercu');
+  // LE REGISTRE GROUPÉ (portage 144) : null = le réglage par défaut (seul le
+  // monde le plus récent est ouvert) ; sinon la liste explicite des groupes
+  // ouverts (Tout déplier / Tout replier).
+  const [groupesOuverts, setGroupesOuverts] = useState<string[] | null>(null);
+  // LA VITRINE — la bascule « Pas vraiment » (D17 : jamais de silence).
+  const [vitrinePas, setVitrinePas] = useState(false);
 
   // LES PUCES DES ONGLETS INTERNES (Task 68) : la visite d'un onglet éteint SA
   // puce — au montage aussi (l'aperçu s'ouvre par défaut). Le COMPTEUR lui-même
@@ -445,6 +465,35 @@ export default function Recolte() {
   // Du plus récent au tout premier — les non datés ferment la liste.
   gains.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 
+  // L'ÉCONOMIE DES LUCIOLES (portage Task 144) — le solde RÉEL, dérivé des
+  // événements du voyage (cartes posées, écrans, mondes clôturés, jalons).
+  // Aucune donnée démo : la même source que les autres onglets.
+  const eco = calculerEconomie(
+    recolteMondes.map((m) => ({
+      code: m.monde.code,
+      num: m.monde.num,
+      nom: m.monde.name,
+      clos: m.termine,
+      dateCloture: m.termine ? (parMonde[m.monde.code]?.derniereA ?? null) : null,
+      nbCartes: m.cartes.length,
+      nbEcrans: m.ecrans.length,
+    })),
+  );
+  // Les groupes du registre — du monde le plus récent au tout premier
+  // (l'ordre du registre chronologique par première ligne rencontrée).
+  const codesGroupes: string[] = [];
+  for (const l of eco.lignesParMonde) {
+    if (l.mondeCode && !codesGroupes.includes(l.mondeCode)) codesGroupes.push(l.mondeCode);
+  }
+  // Quel monde produit quel chip « +X » (montant Lucioles du monde).
+  const chipParMonde = new Map<string, number>();
+  const nbParMonde = new Map<string, number>();
+  for (const l of eco.lignesParMonde) {
+    if (!l.mondeCode) continue;
+    chipParMonde.set(l.mondeCode, (chipParMonde.get(l.mondeCode) ?? 0) + l.montant);
+    if (l.genre !== 'monde') nbParMonde.set(l.mondeCode, (nbParMonde.get(l.mondeCode) ?? 0) + 1);
+  }
+
   // RÉCOLTE VIDE (exigence fondateur 2026-10-15 : « la page récolte reste
   // vide, uniquement les gains acquis ») : aucun gain acquis = une page vide
   // et honnête — PAS de catalogue, PAS de progression décorative, PAS de
@@ -489,6 +538,7 @@ export default function Recolte() {
     sceaux: nbInedits('sceaux', ['sceau']),
     gains: nbInedits('gains', ['carte', 'ecran', 'sceau', 'fragment']),
     histoire: nbInedits('histoire', ['sceau', 'fragment']),
+    lucioles: 0,
   };
 
   // L'INVENTAIRE — les compteurs réels du coffre (mêmes chiffres que les
@@ -501,7 +551,9 @@ export default function Recolte() {
   // aujourd'hui aucun gain de ce type n'existe : les tuiles pass/crédits de
   // l'inventaire tombent d'elles-mêmes (filtre n > 0).
   const soldePass = 0;
-  const soldeCredits = 0;
+  // LE SOLDE RÉEL des crédits — les Lucioles (portage 144) : la tuile de
+  // l'inventaire devient vivante (tap → onglet Lucioles).
+  const soldeCredits = eco.solde;
   type InventaireTuile = {
     type: 'carte' | 'ecran' | 'fragment' | 'sceau' | 'pass' | 'credit';
     label: string;
@@ -538,11 +590,30 @@ export default function Recolte() {
 
   return (
     <main className="screen rec2">
-      {/* EN-TÊTE — la maquette : titre Fraunces + sous-titre doux. La cloche de
-          la maquette est la cloche GLOBALE de l'en-tête de l'app (non dupliquée). */}
+      {/* EN-TÊTE — la maquette : titre Fraunces + sous-titre doux, et LA PUCE
+          OR (portage 144) : le solde Lucioles RÉEL à côté du titre — le
+          test-repère du guide 143 : si le fondateur voit la puce, le portage
+          est arrivé. Tap → onglet Lucioles. */}
       <header className="rec2-head">
-        <h1 className="rec2-title">{tx('Ma récolte')}</h1>
-        <p className="rec2-sub">{tx('Ton voyage, étape après étape')}</p>
+        <div className="rec2-head-row">
+          <div>
+            <h1 className="rec2-title">{tx('Ma récolte')}</h1>
+            <p className="rec2-sub">{tx('Ton voyage, étape après étape')}</p>
+          </div>
+          {eco.solde > 0 && (
+            <button
+              type="button"
+              className="rec2-luc-puce"
+              onClick={() => setOnglet('lucioles')}
+              aria-label={tx('Tes Lucioles : {{n}} — ouvrir l\'onglet', { n: eco.solde })}
+            >
+              <span className="rec2-luc-puce-spark" aria-hidden="true">
+                ✨
+              </span>
+              {eco.solde}
+            </button>
+          )}
+        </div>
       </header>
 
       {/* RÉVÉLATION — une nouvelle pièce du portrait (lumière douce, une fois). */}
@@ -647,7 +718,8 @@ export default function Recolte() {
         </a>
       </section>
 
-      {/* LES 5 ONGLETS — les 4 de la maquette + « Gains acquis » (fondateur). */}
+      {/* LES 6 ONGLETS — les 4 de la maquette + « Gains acquis » et
+          « Lucioles » (l'économie — portage Task 144). */}
       <div className="rec2-tabs" role="tablist" aria-label={tx('Sections de ta récolte')}>
         {(
           [
@@ -656,6 +728,7 @@ export default function Recolte() {
             ['sceaux', tx('Sceaux')],
             ['gains', tx('Gains acquis')],
             ['histoire', tx('Histoire')],
+            ['lucioles', tx('Lucioles')],
           ] as const
         ).map(([id, label]) => {
           const n = badgesOnglets[id];
@@ -828,37 +901,27 @@ export default function Recolte() {
           </section>
         )}
 
-        {/* MES PASS / MES CRÉDITS — ACQUIS-SEUL (fondateur) : le duo ne
-            s'affiche que si un solde RÉEL existe (§16 : rien n'est inventé,
-            jamais de « 0 » décoratif). Les soldes vivent dans notifs/état —
-            aujourd'hui 0 partout : le duo reste donc invisible. */}
-        {(soldePass > 0 || soldeCredits > 0) && (
-          <div className="rec2-duo">
-            {soldePass > 0 && (
-              <button
-                type="button"
-                className="rec2-duo-card"
-                onClick={() => ouvrirInfo({ type: 'pass' })}
-                aria-label={tx('À quoi sert un pass ?')}
-              >
-                <small>{tx('Mes pass')}</small>
-                <strong>{soldePass}</strong>
-                <span>{tx('À quoi ça sert ?')}</span>
-              </button>
-            )}
-            {soldeCredits > 0 && (
-              <button
-                type="button"
-                className="rec2-duo-card"
-                onClick={() => ouvrirInfo({ type: 'credit' })}
-                aria-label={tx('À quoi servent les crédits ?')}
-              >
-                <small>{tx('Mes crédits')}</small>
-                <strong>{soldeCredits}</strong>
-                <span>{tx('Comment en obtenir ?')}</span>
-              </button>
-            )}
-          </div>
+        {/* MES LUCIOLES — LA BANDE CRÉDITS (portage 144) : le solde réel en
+            vedette, tap → onglet Lucioles. Le duo pass/crédits historique est
+            absorbé : le pass à 0 reste invisible (acquis-seul, §16). */}
+        {eco.solde > 0 && (
+          <button
+            type="button"
+            className="rec2-credits-row"
+            onClick={() => setOnglet('lucioles')}
+            aria-label={tx('Tes Lucioles : {{n}} — ouvrir l\'onglet', { n: eco.solde })}
+          >
+            <span className="rec2-credits-spark" aria-hidden="true">
+              ✨
+            </span>
+            <span className="rec2-credits-body">
+              <strong>
+                {eco.solde} {tx('Lucioles')}
+              </strong>
+              <small>{tx('Tes crédits — gagnés en voyageant, dépensés à la rencontre.')}</small>
+            </span>
+            <Fleche />
+          </button>
         )}
 
         {/* TES ESPACES — les 3 portes (conservées : rien n'est supprimé). */}
@@ -1065,6 +1128,120 @@ export default function Recolte() {
             </a>
           </p>
         </section>
+
+        {/* LA VITRINE ORDONNÉE (portage 144, chantier E) — les cartes ordonnées
+            par la ressemblance (Task 78 : « Ce profil te ressemble-t-il ? »).
+            Trois groupes : Oui, tout à fait / En partie / Pas vraiment — le
+            dernier masqué avec bascule (D17 : jamais de silence). Repliée,
+            absente tant qu'aucun avis n'existe. */}
+        {(() => {
+          const avisParCarte: { c: Decouverte; m: MondeRecolte; note: number }[] = [];
+          for (const m of recolteMondes) {
+            for (const c of m.cartes) {
+              const a = lireAvis(c.id);
+              if (a) avisParCarte.push({ c, m, note: a.note });
+            }
+          }
+          if (avisParCarte.length === 0) return null;
+          const groupesVitrine = CHOIX_AVIS.map(({ valeur, cle }) => ({
+            valeur,
+            cle,
+            items: avisParCarte.filter((x) => x.note === valeur),
+          })).filter((g) => g.items.length > 0);
+          const pasVraiment = groupesVitrine.find((g) => g.valeur === 1);
+          return (
+            <details className="r-vitrine">
+              <summary>
+                {tx('Ta vitrine, bien ordonnée')}
+                <span className="r-vitrine-count">{avisParCarte.length}</span>
+              </summary>
+              <p className="rec2-caption">
+                {tx(
+                  'Ordonnée par ta réponse à « Ce profil te ressemble-t-il ? » — du plus proche au plus distant. Tu choisis toujours ce que tu montres.',
+                )}
+              </p>
+              {groupesVitrine
+                .filter((g) => g.valeur !== 1)
+                .map((g) => (
+                  <div key={g.valeur} className="r-vit-group">
+                    <h3>{tx(g.cle)}</h3>
+                    <ul role="list">
+                      {g.items.map(({ c, m }) => (
+                        <li key={c.id}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              ouvrirInfo({
+                                type: 'carte',
+                                nom: c.nom,
+                                titre: c.titre,
+                                carte: c.carte,
+                                date: c.date,
+                                mondeNum: m.monde.num,
+                                mondeCode: m.monde.code,
+                                queteId: c.id,
+                              })
+                            }
+                            aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
+                          >
+                            <strong>{c.nom}</strong>
+                            <small>{c.titre}</small>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              {pasVraiment && (
+                <>
+                  <button
+                    type="button"
+                    className="r-vit-bascule"
+                    aria-expanded={vitrinePas}
+                    onClick={() => setVitrinePas(!vitrinePas)}
+                  >
+                    {vitrinePas
+                      ? tx('Replier')
+                      : tx('Voir aussi : {{n}} carte{{s}} « Pas vraiment »', {
+                          n: pasVraiment.items.length,
+                          s: pasVraiment.items.length > 1 ? 's' : '',
+                        })}
+                  </button>
+                  {vitrinePas && (
+                    <div className="r-vit-group r-vit-group-pas">
+                      <h3>{tx(pasVraiment.cle)}</h3>
+                      <ul role="list">
+                        {pasVraiment.items.map(({ c, m }) => (
+                          <li key={c.id}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                ouvrirInfo({
+                                  type: 'carte',
+                                  nom: c.nom,
+                                  titre: c.titre,
+                                  carte: c.carte,
+                                  date: c.date,
+                                  mondeNum: m.monde.num,
+                                  mondeCode: m.monde.code,
+                                  queteId: c.id,
+                                })
+                              }
+                              aria-label={tx('À quoi sert {{nom}} ?', { nom: c.nom })}
+                            >
+                              <strong>{c.nom}</strong>
+                              <small>{c.titre}</small>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
+            </details>
+          );
+        })()}
       </div>
 
       {/* ============ SCEAUX ============ */}
@@ -1150,6 +1327,31 @@ export default function Recolte() {
         className="rec2-panel"
         hidden={onglet !== 'gains'}
       >
+        {/* LE SOLDE EN VEDETTE (portage Task 144 — v2 ergonomique, guide 143
+            chantier C) : on ne cherche plus ses crédits, ils accueillent la
+            page. La note « Pass et crédits… dès leur ouverture » est remplacée
+            par le solde RÉEL — exactement le point demandé depuis Task 138. */}
+        {eco.solde > 0 && (
+          <section className="rec2-luc-hero" aria-label={tx('Tes Lucioles — tes crédits')}>
+            <div className="rec2-luc-hero-row">
+              <span className="rec2-luc-hero-spark" aria-hidden="true">
+                ✨
+              </span>
+              <div className="rec2-luc-hero-body">
+                <small>{tx('Tes Lucioles — tes crédits')}</small>
+                <p className="rec2-luc-hero-solde">
+                  <strong>{eco.solde}</strong> {tx('Lucioles')}
+                </p>
+                <p className="rec2-luc-hero-doc">
+                  {tx('Gagnées en voyageant, dépensées à la rencontre — jamais vendues (D6).')}
+                </p>
+              </div>
+            </div>
+            <button type="button" className="rec2-luc-hero-cta" onClick={() => setOnglet('lucioles')}>
+              {tx('Voir comment ça marche')}
+            </button>
+          </section>
+        )}
         <section aria-labelledby="r-gains-title">
           <h2 id="r-gains-title" className="rec2-h2">
             {tx('Mes gains acquis')}
@@ -1176,8 +1378,14 @@ export default function Recolte() {
                   type="button"
                   role="listitem"
                   className="r-inv-card"
-                  onClick={() => ouvrirInfo({ type: it.type })}
-                  aria-label={tx('{{label}} : {{n}} — à quoi ça sert ?', { label: it.label, n: it.n })}
+                  onClick={() =>
+                    it.type === 'credit' ? setOnglet('lucioles') : ouvrirInfo({ type: it.type })
+                  }
+                  aria-label={
+                    it.type === 'credit'
+                      ? tx('Tes Lucioles : {{n}} — ouvrir l\'onglet', { n: it.n })
+                      : tx('{{label}} : {{n}} — à quoi ça sert ?', { label: it.label, n: it.n })
+                  }
                 >
                   <span className="r-inv-top">
                     <span className="r-inv-ico" style={{ background: st.bg, color: st.fg }} aria-hidden="true">
@@ -1192,38 +1400,153 @@ export default function Recolte() {
           </div>
         </section>
 
-        {/* LE REGISTRE — chaque gain réellement obtenu, du plus récent au
-            tout premier ; clic → son explication (même pop-up que partout). */}
+        {/* LE REGISTRE — GROUPÉ PAR MONDE (portage 144) : chaque monde est un
+            groupe repliable (seul le plus récent est ouvert), la ligne
+            « Monde clôturé » en tête quand il est clos, les lignes réelles
+            en dessous — AUCUNE ligne perdue (toutes les lignes d'avant sont
+            présentes, mêmes clics vers le même pop-up). */}
         {gains.length > 0 ? (
           <section aria-labelledby="r-reg-title">
             <h2 id="r-reg-title" className="rec2-h2">
               {tx('Gain après gain')}
             </h2>
-            <p className="rec2-caption">{tx('Du plus récent au tout premier.')}</p>
-            <div className="r-gains" role="list" aria-label={tx('La chronologie de tes gains')}>
-              {gains.map((g) => {
-                const st = GAIN_STYLE[g.type];
-                return (
+            <p className="rec2-caption">{tx('Du plus récent au tout premier, monde par monde.')}</p>
+            <div className="r-gg-actions">
+              <button
+                type="button"
+                className="rec2-link"
+                onClick={() => setGroupesOuverts(codesGroupes)}
+              >
+                {tx('Tout déplier')}
+              </button>
+              <button
+                type="button"
+                className="rec2-link"
+                onClick={() => setGroupesOuverts([])}
+              >
+                {tx('Tout replier')}
+              </button>
+            </div>
+            {codesGroupes.map((code) => {
+              const mondeGroupe = recolteMondes.find((m) => m.monde.code === code);
+              if (!mondeGroupe) return null;
+              const lignesMonde = gains.filter((g) => g.item.mondeCode === code);
+              const ouvert = groupesOuverts
+                ? groupesOuverts.includes(code)
+                : code === codesGroupes[0];
+              const nb = nbParMonde.get(code) ?? 0;
+              return (
+                <div key={code} className="r-ggroup">
                   <button
-                    key={g.key}
                     type="button"
-                    role="listitem"
-                    className="r-gain"
-                    onClick={() => ouvrirInfo(g.item)}
-                    aria-label={tx('À quoi sert {{nom}} ?', { nom: g.nom })}
+                    className="r-gg-head"
+                    aria-expanded={ouvert}
+                    aria-label={
+                      ouvert
+                        ? tx('Replier le groupe {{nom}}', { nom: mondeGroupe.monde.name })
+                        : tx('Déplier le groupe {{nom}}', { nom: mondeGroupe.monde.name })
+                    }
+                    onClick={() => {
+                      const actuel = groupesOuverts ?? codesGroupes.slice(0, 1);
+                      setGroupesOuverts(
+                        actuel.includes(code)
+                          ? actuel.filter((c) => c !== code)
+                          : [...actuel, code],
+                      );
+                    }}
                   >
-                    <span className="r-gain-ico" style={{ background: st.bg, color: st.fg }} aria-hidden="true">
-                      <VoyageIcon name={st.ico} size={16} />
+                    <span className="r-gg-titre">
+                      <small>{tx('Monde {{n}}', { n: mondeGroupe.monde.num })}</small>
+                      <strong>{mondeGroupe.monde.name}</strong>
+                    </span>
+                    <span className="r-gg-meta">
+                      <small>
+                        {tx('{{n}} gain{{s}}', { n: nb, s: nb > 1 ? 's' : '' })}
+                      </small>
+                      <span className="r-luc-chip">+{chipParMonde.get(code) ?? 0}</span>
+                      <svg
+                        className="r-gg-chevron"
+                        viewBox="0 0 24 24"
+                        width={16}
+                        height={16}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.4}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </span>
+                  </button>
+                  {ouvert && (
+                    <div className="r-gg-body" role="list" aria-label={tx('La chronologie de tes gains')}>
+                      {mondeGroupe.termine && (
+                        <div className="r-gg-cloture" role="listitem">
+                          <span className="r-gain-ico r-gain-ico-or" aria-hidden="true">
+                            ✨
+                          </span>
+                          <span className="r-gain-body">
+                            <small>
+                              {tx('Monde {{n}} · {{nom}}', {
+                                n: mondeGroupe.monde.num,
+                                nom: mondeGroupe.monde.name,
+                              })}
+                            </small>
+                            <strong>{tx('Monde clôturé')}</strong>
+                          </span>
+                          <span className="r-luc-chip">+5</span>
+                        </div>
+                      )}
+                      {lignesMonde.map((g) => {
+                        const st = GAIN_STYLE[g.type];
+                        return (
+                          <button
+                            key={g.key}
+                            type="button"
+                            role="listitem"
+                            className="r-gain"
+                            onClick={() => ouvrirInfo(g.item)}
+                            aria-label={tx('À quoi sert {{nom}} ?', { nom: g.nom })}
+                          >
+                            <span
+                              className="r-gain-ico"
+                              style={{ background: st.bg, color: st.fg }}
+                              aria-hidden="true"
+                            >
+                              <VoyageIcon name={st.ico} size={16} />
+                            </span>
+                            <span className="r-gain-body">
+                              <small>{g.sous}</small>
+                              <strong>{g.nom}</strong>
+                            </span>
+                            {g.date && <span className="r-gain-date">{dateCourte(g.date, lang)}</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            {eco.jalons.length > 0 && (
+              <div className="r-gg-hors" role="list" aria-label={tx('Les jalons — hors voyage')}>
+                <p className="r-gg-hors-t">{tx('Hors voyage — les jalons')}</p>
+                {eco.jalons.map((j) => (
+                  <div key={j.id} className="r-gg-cloture" role="listitem">
+                    <span className="r-gain-ico r-gain-ico-or" aria-hidden="true">
+                      ✨
                     </span>
                     <span className="r-gain-body">
-                      <small>{g.sous}</small>
-                      <strong>{g.nom}</strong>
+                      <small>{tx(j.detail ?? '')}</small>
+                      <strong>{tx(j.libelle)}</strong>
                     </span>
-                    {g.date && <span className="r-gain-date">{dateCourte(g.date, lang)}</span>}
-                  </button>
-                );
-              })}
-            </div>
+                    <span className="r-luc-chip">+{j.montant}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         ) : (
           <section aria-labelledby="r-vide-title" className="r-vide">
@@ -1238,14 +1561,9 @@ export default function Recolte() {
           </section>
         )}
 
-        {/* PASS & CRÉDITS — le raccord honnête : leur solde et leurs usages
-            s'afficheront ici dès leur ouverture (promesse déjà écrite dans le
-            pop-up Crédits — « Ton solde, tes gains et tes usages s'afficheront
-            dans ta récolte »), gagnés en voyageant, jamais contre une
-            meilleure compatibilité (§16). */}
-        <p className="rec2-note">
-          {tx('Pass et crédits : ton solde et tes usages s\'afficheront ici dès leur ouverture — gagnés en voyageant.')}
-        </p>
+        {/* LA DOCTRINE (portage 144) : la note « Pass et crédits… dès leur
+            ouverture » est remplacée par la vérité gravée — D6/D11. */}
+        <p className="rec2-note">{tx(DOCTRINE_LUCIOLES)}</p>
       </div>
 
       {/* ============ HISTOIRE ============ */}
@@ -1483,6 +1801,159 @@ export default function Recolte() {
           </ol>
         </section>
         )}
+      </div>
+
+      {/* ============ LUCIOLES (l'économie — portage Task 144, guide 143) ============
+          L'onglet demandé depuis Task 135 : le solde RÉEL, les règles du jeu,
+          les goûters premium du volet rencontre, les deux portes à solde
+          épuisé. Doctrine v2 gravée : les Lucioles ne se vendent jamais
+          (D6/D11) — le voyage ne fait que les nourrir, la rencontre seule les
+          dépense. Tout est calculé depuis l'état réel des quêtes. */}
+      <div
+        role="tabpanel"
+        id="rec2-panel-lucioles"
+        aria-labelledby="rec2-tab-lucioles"
+        className="rec2-panel"
+        hidden={onglet !== 'lucioles'}
+      >
+        {/* HÉROS — le solde réel, calculé en direct depuis ton voyage. */}
+        <section className="rec2-luc-hero" aria-label={tx('Ton solde de Lucioles')}>
+          <div className="rec2-luc-hero-row">
+            <span className="rec2-luc-hero-spark" aria-hidden="true">
+              ✨
+            </span>
+            <div className="rec2-luc-hero-body">
+              <small>{tx('Ton solde')}</small>
+              <p className="rec2-luc-hero-solde">
+                <strong>{eco.solde}</strong> {tx('Lucioles')}
+              </p>
+              <p className="rec2-luc-hero-doc">
+                {tx('Gagnées en voyageant, dépensées à la rencontre — jamais vendues (D6).')}
+              </p>
+            </div>
+          </div>
+          <p className="rec2-luc-hero-note">
+            {tx(
+              'Calculé en direct depuis ton voyage — {{mondes}} monde{{s}} clôturé{{s2}}, {{cartes}} carte{{s3}}, {{ecrans}} écran{{s4}} de passage.',
+              {
+                mondes: eco.mondesClos,
+                s: eco.mondesClos > 1 ? 's' : '',
+                s2: eco.mondesClos > 1 ? 's' : '',
+                cartes: eco.cartes,
+                s3: eco.cartes > 1 ? 's' : '',
+                ecrans: eco.ecrans,
+                s4: eco.ecrans > 1 ? 's' : '',
+              },
+            )}
+          </p>
+          <a className="rec2-luc-hero-cta" href="#/mondes">
+            {tx('Continuer le voyage')}
+          </a>
+        </section>
+
+        {/* LE RÉGISTRE RÉEL — un raccourci vers le détail monde par monde. */}
+        <section aria-labelledby="r-luc-reg-title">
+          <h2 id="r-luc-reg-title" className="rec2-h2">
+            {tx('Gain après gain')}
+          </h2>
+          <p className="rec2-caption">
+            {tx(
+              'Chaque Luciole vient d’un événement réel de ton voyage — le registre détaillé vit dans « Gains acquis ».',
+            )}
+          </p>
+          <button type="button" className="rec2-link" onClick={() => setOnglet('gains')}>
+            {tx('Ouvrir le registre, monde par monde')}
+            <Fleche />
+          </button>
+        </section>
+
+        {/* COMMENT TU EN GAGNES — la table SPEC v1.5, règles actives et à venir. */}
+        <section aria-labelledby="r-luc-gains-title">
+          <h2 id="r-luc-gains-title" className="rec2-h2">
+            {tx('Comment tu en gagnes')}
+          </h2>
+          <p className="rec2-caption">{tx('Le voyage paie toujours — chaque étape compte.')}</p>
+          <ul className="r-luc-list" role="list" aria-label={tx('Les gains du voyage')}>
+            {GAGNES.map((g) => (
+              <li
+                key={g.id}
+                className={g.vedette || g.decision ? 'r-luc-row r-luc-row-hl' : 'r-luc-row'}
+              >
+                <span className="r-luc-row-body">
+                  <strong>
+                    {tx(g.libelle)}
+                    {!g.actif && <em className="r-luc-attente">{tx('à son ouverture')}</em>}
+                    {g.decision && <em className="r-luc-decision">{tx('décision du fondateur')}</em>}
+                  </strong>
+                  {g.detail && <small>{tx(g.detail)}</small>}
+                </span>
+                <span className="r-luc-chip">+{g.montant}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="rec2-caption r-luc-after">
+            {tx(
+              'Le parrainage crédite quand le filleul termine le monde 1 — activation réelle, pas une simple inscription.',
+            )}
+          </p>
+        </section>
+
+        {/* CE QUE TU PEUX GOÛTER — les dépenses du volet rencontre (D22). */}
+        <section aria-labelledby="r-luc-dep-title">
+          <h2 id="r-luc-dep-title" className="rec2-h2">
+            {tx('Ce que tu peux goûter')}
+          </h2>
+          <p className="rec2-caption">
+            {tx(
+              'Des accès premium à la rencontre, payés en Lucioles — jamais des fonctions cachées du voyage.',
+            )}
+          </p>
+          <ul
+            className="r-luc-list"
+            role="list"
+            aria-label={tx('Les goûters premium à la rencontre')}
+          >
+            {DEPENSES.map((d) => (
+              <li key={d.id} className="r-luc-row">
+                <span className="r-luc-row-body">
+                  <strong>{tx(d.nom)}</strong>
+                  <small>{tx(d.description)}</small>
+                  {d.note && <small className="r-luc-note">{tx(d.note)}</small>}
+                </span>
+                <span className="r-luc-chip r-luc-chip-cout">{d.cout}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="rec2-luc-info">
+            <p>{tx(NOTE_DEPENSES)}</p>
+            <p>{tx(PHARES_FANAL)}</p>
+          </div>
+        </section>
+
+        {/* À SOLDE ÉPUISÉ — les deux portes (doctrine v2, repliées). */}
+        <details className="r-portes">
+          <summary>{tx('Quand ton solde tombe à zéro — les deux portes')}</summary>
+          <p className="rec2-caption">{tx('Deux portes — aucune vente, aucune pression. Jamais (D6).')}</p>
+          {PORTES_ZERO.map((p) => (
+            <div key={p.id} className="r-porte">
+              <strong>{tx(p.titre)}</strong>
+              <p>{tx(p.description)}</p>
+              {p.href ? (
+                <a className="r-porte-cta" href={p.href}>
+                  {tx(p.cta)}
+                </a>
+              ) : (
+                <span className="r-porte-cta r-porte-cta-attente">{tx(p.cta)}</span>
+              )}
+              {p.badge && <em className="r-luc-decision">{tx(p.badge)}</em>}
+            </div>
+          ))}
+          <p className="rec2-luc-note">{tx(MONDES_PAYANTS_NOTE)}</p>
+        </details>
+
+        {/* LES NOTES HONNÊTES (point de calibrage, décision gravée). */}
+        <p className="rec2-luc-note r-luc-notes">{tx(NOTE_CALIBRAGE)}</p>
+        <p className="rec2-luc-note">{tx(NOTE_DECISION)}</p>
       </div>
 
       {/* LE POP-UP EXPLICATIF — « à quoi ça sert dans les rencontres ». */}

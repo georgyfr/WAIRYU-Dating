@@ -471,10 +471,19 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
                 <VoyageIcon name="gem" size={11} strokeWidth={2.2} />
                 <em>Premium</em>
               </span>
+              {/* TENSION PAYWALL TRANCHÉE (cahier §5, décision fondateur
+                  2026-10-21) : l'ancienne chaîne « Ce mois s'ouvrira avec
+                  l'abonnement mensuel » confondait le FORFAIT de mondes avec
+                  l'abonnement Fanal (D20) et omettait le parrainage — la
+                  doctrine v2 (D6/D11) nomme DEUX portes, jamais la Luciole. */}
               <p>
-                {tx('Ce mois s\x27ouvrira avec l\x27abonnement mensuel — {{prix}}/mois.', {
-                  prix: formaterPrixFacturation('mensuel', devise, lang),
-                })}
+                {tx('Ce mois s\x27ouvrira avec le forfait ou le parrainage — jamais à la Luciole (D6).')}
+              </p>
+              <p className="ri-premium-note">
+                {tx(
+                  'Deux choses distinctes : le forfait ouvre des mondes, le Fanal (l\x27abonnement — {{prix}}/mois) allume des fonctions. Parrainage — décision du fondateur : 3 filleuls actifs ouvrent le Monde 8, 5 filleuls actifs ouvrent le Monde 10.',
+                  { prix: formaterPrixFacturation('mensuel', devise, lang) },
+                )}
               </p>
               <p className="ri-premium-note">
                 {tx('L\x27ouverture des paiements arrive bientôt : quand tu ouvriras un mois, sa récolte sera annoncée ici, par notification.')}

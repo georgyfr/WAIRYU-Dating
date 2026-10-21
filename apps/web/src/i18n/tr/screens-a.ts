@@ -616,4 +616,112 @@ export const SCREENS_A: Record<string, string> = {
   'Réessayer': 'Try again',
   'Ce ne sont pas des notes — jamais de score, jamais de classement. La rencontre n\u2019est jamais payante.':
     'These are not scores — no ratings, no rankings. Meeting people is never paid.',
+
+  /* ---- PORTAGE TASK 144 — les Lucioles, la puce or, Gains v2, la vitrine
+     (les clés = les chaînes FR exactes du code ; l'apostrophe typographique
+     U+2019 des verbatims est conservée à l'identique). ---- */
+  'Tes Lucioles : {{n}} — ouvrir l\u0027onglet': 'Your Fireflies: {{n}} — open the tab',
+  'Lucioles': 'Fireflies',
+  'Tes crédits — gagnés en voyageant, dépensés à la rencontre.':
+    'Your credits — earned by traveling, spent when meeting.',
+  'Tes Lucioles — tes crédits': 'Your Fireflies — your credits',
+  'Gagnées en voyageant, dépensées à la rencontre — jamais vendues (D6).':
+    'Earned by traveling, spent when meeting — never sold (D6).',
+  'Voir comment ça marche': 'See how it works',
+  'Du plus récent au tout premier, monde par monde.':
+    'From the most recent to the very first, world by world.',
+  'Tout déplier': 'Expand all',
+  'Tout replier': 'Collapse all',
+  'Monde {{n}}': 'World {{n}}',
+  '{{n}} gain{{s}}': '{{n}} gain{{s}}',
+  'Replier le groupe {{nom}}': 'Collapse the {{nom}} group',
+  'Déplier le groupe {{nom}}': 'Expand the {{nom}} group',
+  'Monde clôturé': 'World completed',
+  'Les jalons — hors voyage': 'Milestones — outside the journey',
+  'Hors voyage — les jalons': 'Outside the journey — milestones',
+  'Jalon 1 · La Carte': 'Milestone 1 · The Card',
+  'Ton voyage a produit ta première carte.': 'Your journey produced your first card.',
+  'Jalon 2 · Le Miroir': 'Milestone 2 · The Mirror',
+  'Ta vitrine de 3 cartes est prête, tes filtres forts sont actifs.':
+    'Your 3-card showcase is ready, your strong filters are active.',
+  'Ta vitrine, bien ordonnée': 'Your showcase, well ordered',
+  'Ordonnée par ta réponse à « Ce profil te ressemble-t-il ? » — du plus proche au plus distant. Tu choisis toujours ce que tu montres.':
+    'Ordered by your answer to “Does this profile resemble you?” — from closest to most distant. You always choose what you show.',
+  'Replier': 'Collapse',
+  'Voir aussi : {{n}} carte{{s}} « Pas vraiment »': 'Also see: {{n}} card{{s}} “Not really”',
+  'Ton solde de Lucioles': 'Your Firefly balance',
+  'Ton solde': 'Your balance',
+  'Calculé en direct depuis ton voyage — {{mondes}} monde{{s}} clôturé{{s2}}, {{cartes}} carte{{s3}}, {{ecrans}} écran{{s4}} de passage.':
+    'Calculated live from your journey — {{mondes}} world{{s}} completed{{s2}}, {{cartes}} card{{s3}}, {{ecrans}} passage screen{{s4}}.',
+  'Chaque Luciole vient d\u2019un événement réel de ton voyage — le registre détaillé vit dans « Gains acquis ».':
+    'Every Firefly comes from a real event of your journey — the detailed ledger lives in “Rewards”.',
+  'Ouvrir le registre, monde par monde': 'Open the ledger, world by world',
+  'Comment tu en gagnes': 'How you earn them',
+  'Le voyage paie toujours — chaque étape compte.':
+    'The journey always pays — every step counts.',
+  'Les gains du voyage': 'The gains of the journey',
+  'Quête avec carte terminée': 'Quest with a card completed',
+  'Jalon atteint': 'Milestone reached',
+  'de +5 (La Carte) à +25 (Portrait Intégral, La Rencontre)':
+    'from +5 (The Card) to +25 (Full Portrait, The Encounter)',
+  'Récolte du mois complétée': 'Month\u2019s harvest completed',
+  'Retour hebdomadaire': 'Weekly return',
+  'doux, sans compte à rebours (D5)': 'gentle, with no countdown (D5)',
+  'Duo créé après un match': 'Duo created after a match',
+  'Participation à un événement': 'Event participation',
+  'Parrainage — ton lien, une inscription réelle': 'Referral — your link, a real signup',
+  'Le crédit tombe quand le filleul termine le monde 1 (activation réelle, pas une simple inscription) — lui-même reçoit un bonus de bienvenue.':
+    'The credit lands when your godchild completes world 1 (real activation, not a mere signup) — they receive a welcome bonus too.',
+  'à son ouverture': 'at its opening',
+  'décision du fondateur': 'founder\u2019s decision',
+  'Le parrainage crédite quand le filleul termine le monde 1 — activation réelle, pas une simple inscription.':
+    'The referral credits when your godchild completes world 1 — real activation, not a mere signup.',
+  'Ce que tu peux goûter': 'What you can taste',
+  'Des accès premium à la rencontre, payés en Lucioles — jamais des fonctions cachées du voyage.':
+    'Premium accesses when meeting, paid in Fireflies — never hidden functions of the journey.',
+  'Les goûters premium à la rencontre': 'The premium treats when meeting',
+  'L\u2019Éclat': 'The Spark',
+  'Réagir à une carte précise avec la phrase qu\u2019elle inspire — le « super-like » WAIRYU.':
+    'React to a specific card with the sentence it inspires — the WAIRYU “super-like”.',
+  '1 offert chaque jour, sans compte à rebours': '1 offered every day, with no countdown',
+  'Le Coffret': 'The Gift Box',
+  'Offrir une carte en chat.': 'Offer a card in chat.',
+  '1/semaine gratuit': '1/week free',
+  'La Clairière': 'The Clearing',
+  'Boost de visibilité de 30 minutes.': 'A 30-minute visibility boost.',
+  'la visibilité ne garantit jamais un match': 'visibility never guarantees a match',
+  'L\u2019Écho': 'The Echo',
+  'Voir quelle carte de soi a fait réagir l\u2019autre.':
+    'See which of your cards made them react.',
+  'Lot Découverte du jour supplémentaire': 'Extra Discovery set of the day',
+  'Au-delà du lot gratuit (2-3 suggestions avec leur raison).':
+    'Beyond the free set (2-3 suggestions with their reason).',
+  'Activité guidée à deux': 'Guided activity for two',
+  'Pendant la rencontre — récompenses « récoltes à deux » consenties.':
+    'During the encounter — consented “harvest for two” rewards.',
+  'montant [À VALIDER]': 'amount [TO VALIDATE]',
+  'Ces dépenses vivent dans le volet rencontre — des accès premium sur des laps de temps définis. Le voyage ne dépense jamais de Lucioles : il ne fait que les nourrir.':
+    'These spendings live in the meeting area — premium accesses on defined laps of time. The journey never spends Fireflies: it only feeds them.',
+  'Les fonctions phares — voir qui t\u2019a aimé, les filtres avancés, l\u2019analyse approfondie — restent au Fanal, l\u2019abonnement : jamais goûtables à la Luciole (D19).':
+    'The flagship functions — see who liked you, advanced filters, deep analysis — stay in Fanal, the subscription: never tasted with a Firefly (D19).',
+  'Quand ton solde tombe à zéro — les deux portes': 'When your balance hits zero — the two doors',
+  'Deux portes — aucune vente, aucune pression. Jamais (D6).':
+    'Two doors — no selling, no pressure. Ever (D6).',
+  'Tu continues le voyage': 'You keep traveling',
+  'Les gains reviennent naturellement : quêtes, écrans de passage, mondes clôturés, jalons. Le voyage paie toujours.':
+    'Gains come back naturally: quests, passage screens, completed worlds, milestones. The journey always pays.',
+  'Tu invites — le parrainage': 'You invite — the referral',
+  'Ton lien amène une personne à s\u2019inscrire : quand elle termine le monde 1, tu reçois des Lucioles (+8) — et elle démarre avec un bonus. Paliers (décision du fondateur) : 3 filleuls actifs ouvrent le Monde 8, 5 filleuls actifs ouvrent le Monde 10.':
+    'Your link brings someone to sign up: when they complete world 1, you receive Fireflies (+8) — and they start with a bonus. Tiers (founder\u2019s decision): 3 active godchildren open World 8, 5 active godchildren open World 10.',
+  'Obtenir mon lien': 'Get my link',
+  'Les mondes payants s\u2019ouvrent au forfait ou au parrainage — jamais à la Luciole. Paliers de parrainage (décision du fondateur) : 3 filleuls actifs ouvrent le Monde 8, 5 filleuls actifs ouvrent le Monde 10 — le site grandit par les personnes qu\u2019il rassemble.':
+    'Paid worlds open with the pass or the referral — never with a Firefly. Referral tiers (founder\u2019s decision): 3 active godchildren open World 8, 5 active godchildren open World 10 — the site grows through the people it gathers.',
+  'Montants = point de départ à calibrer avec des données réelles (D14). Plafond de sécurité : 120/mois. Pas d\u2019expiration.':
+    'Amounts = a starting point to calibrate with real data (D14). Safety cap: 120/month. No expiration.',
+  'L\u2019achat de crédits a été retiré sur ta décision : la doctrine « les Lucioles ne se vendent jamais » (D6/D11) est rétablie et gravée. Le parrainage, lui, est adopté — avec son double effet : Lucioles + déblocage des mondes du forfait.':
+    'Buying credits was removed on your decision: the doctrine “Fireflies are never sold” (D6/D11) is restored and engraved. Referral, on the other hand, is adopted — with its double effect: Fireflies + unlocking the pass worlds.',
+  'Ce mois s\u0027ouvrira avec le forfait ou le parrainage — jamais à la Luciole (D6).':
+    'This month will open with the pass or the referral — never with a Firefly (D6).',
+  'Deux choses distinctes : le forfait ouvre des mondes, le Fanal (l\u0027abonnement — {{prix}}/mois) allume des fonctions. Parrainage — décision du fondateur : 3 filleuls actifs ouvrent le Monde 8, 5 filleuls actifs ouvrent le Monde 10.':
+    'Two distinct things: the pass opens worlds, Fanal (the subscription — {{prix}}/month) lights up functions. Referral — founder\u2019s decision: 3 active godchildren open World 8, 5 active godchildren open World 10.',
 };

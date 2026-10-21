@@ -7273,6 +7273,10 @@ button.r-tl-chip:hover {
     --r2-teal-bd: #BFE3E5;
     --r2-amber: #F2B84B;
     --r2-amber-ink: #8A5B00;
+    /* Encre or FONCÉE pour les textes posés SUR l'or brut (#F2B84B) :
+       contraste 5,5:1 (AA ✓) là où amber-ink (#8A5B00, 3,3:1) échoue
+       en petit corps — signalement fondateur (héros « Ton solde »). */
+    --r2-amber-deep: #5C3D00;
     --r2-bg: #F6F3EC;
     --r2-tile: #ECE7DA;
     --r2-tile2: #F0ECE0;
@@ -11837,4 +11841,642 @@ button.r-tl-chip:hover {
 .adm-media audio {
     width: 100%;
     min-height: 44px
+}
+
+/* ==========================================================================
+   PORTAGE TASK 144 — les Lucioles, la puce or, Gains v2, la vitrine
+   (guide PROPOSITION-143, chants A/B/C/E/F — palette --r2-* existante).
+   Reconstruction après reset n°11 : même design que le déploiement prod
+   9f1496da + les 3 décisions économie validées (paliers parrainage,
+   forfait ≠ Fanal, paywall D6). Le héros or est AA-conforme d'origine :
+   texte posé sur l'or brut = --r2-amber-deep (#5C3D00, 5,5:1 — AA ✓).
+   ========================================================================== */
+
+/* ---- L'en-tête : le titre et LA PUCE OR sur une même rangée ---- */
+.rec2-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+
+/* LA PUCE OR — le test-repère du guide 143 : le solde Lucioles réel,
+   visible sur tous les onglets, tap → onglet Lucioles. */
+.rec2-luc-puce {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--r2-amber);
+    color: var(--r2-ink);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(242, 184, 75, .35);
+    transition: filter .15s ease
+}
+
+.rec2-luc-puce:active {
+    filter: brightness(.97)
+}
+
+.rec2-luc-puce-spark {
+    font-size: 14px
+}
+
+/* ---- LE HÉROS OR — « Ton solde » / « Tes Lucioles — tes crédits » ---- */
+.rec2-luc-hero {
+    margin: 4px 0 18px;
+    padding: 18px;
+    border-radius: 20px;
+    background: var(--r2-amber);
+    color: var(--r2-ink);
+    box-shadow: 0 10px 26px rgba(242, 184, 75, .28)
+}
+
+.rec2-luc-hero-row {
+    display: flex;
+    align-items: center;
+    gap: 14px
+}
+
+.rec2-luc-hero-spark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .55);
+    font-size: 24px
+}
+
+.rec2-luc-hero-body {
+    min-width: 0
+}
+
+/* Sur l'or brut, l'encre foncée passe AA — amber-ink (#8A5B00, 3,3:1)
+   échoue en petit corps (signalement fondateur). */
+.rec2-luc-hero-body small {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--r2-amber-deep)
+}
+
+.rec2-luc-hero-solde {
+    margin: 2px 0 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 34px;
+    line-height: 1.08;
+    font-weight: 700
+}
+
+.rec2-luc-hero-doc {
+    margin: 5px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 600;
+    color: var(--r2-amber-deep)
+}
+
+.rec2-luc-hero-note {
+    margin: 12px 0 0;
+    padding: 11px 13px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .62);
+    font-size: 13.5px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: var(--r2-ink)
+}
+
+.rec2-luc-hero-cta {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 46px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--r2-teal);
+    color: #fff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: filter .15s ease
+}
+
+.rec2-luc-hero-cta:hover,
+.rec2-luc-hero-cta:focus-visible {
+    filter: brightness(1.12)
+}
+
+/* ---- LA BANDE CRÉDITS de l'Aperçu (remplace le duo pass/crédits) ---- */
+.rec2-credits-row {
+    margin: 10px 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid var(--r2-amber);
+    border-radius: 16px;
+    background: rgba(242, 184, 75, .14);
+    color: var(--r2-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s ease
+}
+
+.rec2-credits-row:hover,
+.rec2-credits-row:focus-visible {
+    background: rgba(242, 184, 75, .24)
+}
+
+.rec2-credits-spark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--r2-amber);
+    font-size: 18px
+}
+
+.rec2-credits-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1
+}
+
+.rec2-credits-body strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px
+}
+
+.rec2-credits-body small {
+    font-size: 12.5px;
+    color: var(--r2-amber-deep);
+    font-weight: 600
+}
+
+/* ---- LES RANGÉES À FILETS — règles de gains, goûters, vitrine ---- */
+.r-luc-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--r2-bd);
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden
+}
+
+.r-luc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    border-top: 1px solid var(--r2-bd)
+}
+
+.r-luc-row:first-child {
+    border-top: 0
+}
+
+.r-luc-row-hl {
+    background: rgba(242, 184, 75, .1)
+}
+
+.r-luc-row-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0
+}
+
+.r-luc-row-body strong {
+    font-size: 14px
+}
+
+.r-luc-row-body small {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--r2-mut)
+}
+
+.r-luc-note,
+.r-luc-attente,
+.r-luc-decision {
+    font-size: 11.5px;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--r2-teal2)
+}
+
+.r-luc-decision {
+    color: var(--r2-amber-ink)
+}
+
+.r-luc-decision::before {
+    content: '— '
+}
+
+.r-luc-chip {
+    flex-shrink: 0;
+    min-width: 34px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--r2-amber);
+    color: #3A2A00;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center
+}
+
+.r-luc-chip-cout {
+    background: var(--r2-teal-bg);
+    color: var(--r2-teal2)
+}
+
+.r-luc-after {
+    margin-top: 10px
+}
+
+/* Le bloc d'info doux (doctrine, notes) — le même tint que le bandeau. */
+.rec2-luc-info {
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: var(--r2-teal-bg)
+}
+
+.rec2-luc-info p {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--r2-ink)
+}
+
+.rec2-luc-info p + p {
+    margin-top: 8px
+}
+
+/* ---- LES GROUPES DU REGISTRE — par monde, repliables ---- */
+.r-gg-actions {
+    display: flex;
+    gap: 14px;
+    margin: 8px 0 10px
+}
+
+.r-ggroup {
+    margin: 0 0 10px;
+    border: 1px solid var(--r2-bd);
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden
+}
+
+.r-gg-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 15px;
+    border: 0;
+    background: var(--r2-tile2);
+    color: var(--r2-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer
+}
+
+.r-gg-head:hover,
+.r-gg-head:focus-visible {
+    filter: brightness(.985)
+}
+
+.r-gg-titre {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0
+}
+
+.r-gg-titre small {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--r2-mut);
+    font-weight: 700
+}
+
+.r-gg-titre strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px
+}
+
+.r-gg-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0
+}
+
+.r-gg-meta small {
+    font-size: 12px;
+    color: var(--r2-mut);
+    font-weight: 600
+}
+
+.r-gg-chevron {
+    color: var(--r2-teal2);
+    transition: transform .15s ease
+}
+
+.r-gg-head[aria-expanded='true'] .r-gg-chevron {
+    transform: rotate(180deg)
+}
+
+.r-gg-body {
+    border-top: 1px solid var(--r2-bd)
+}
+
+.r-gg-cloture {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 15px;
+    background: rgba(242, 184, 75, .1)
+}
+
+.r-gg-cloture + .r-gain {
+    border-top: 1px solid var(--r2-bd)
+}
+
+.r-gain-ico-or {
+    background: rgba(242, 184, 75, .35) !important;
+    color: var(--r2-amber-deep) !important;
+    font-size: 13px
+}
+
+.r-gg-hors {
+    margin: 2px 0 10px;
+    padding: 12px 15px;
+    border: 1px dashed var(--r2-bd);
+    border-radius: 16px
+}
+
+.r-gg-hors-t {
+    margin: 0 0 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--r2-mut)
+}
+
+.r-gg-hors .r-gg-cloture {
+    padding: 8px 0
+}
+
+/* ---- LA VITRINE ORDONNÉE (chantier E — fin de l'onglet Cartes) ---- */
+.r-vitrine {
+    margin: 14px 0 0;
+    border: 1px solid var(--r2-bd);
+    border-radius: 16px;
+    background: #fff;
+    padding: 0
+}
+
+.r-vitrine summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 15px;
+    cursor: pointer;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--r2-ink);
+    list-style: none
+}
+
+.r-vitrine summary::-webkit-details-marker {
+    display: none
+}
+
+.r-vitrine summary::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--r2-teal2);
+    border-bottom: 2px solid var(--r2-teal2);
+    transform: rotate(45deg);
+    transition: transform .15s ease
+}
+
+.r-vitrine[open] summary::after {
+    transform: rotate(225deg)
+}
+
+.r-vitrine-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--r2-teal-bg);
+    color: var(--r2-teal2);
+    font-family: 'Figtree', 'Nunito', system-ui, sans-serif;
+    font-size: 12.5px;
+    font-weight: 800
+}
+
+.r-vitrine .rec2-caption {
+    padding: 0 15px
+}
+
+.r-vit-group {
+    padding: 6px 15px 10px
+}
+
+.r-vit-group h3 {
+    margin: 6px 0 8px;
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--r2-mut)
+}
+
+.r-vit-group ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px
+}
+
+.r-vit-group button {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--r2-bd);
+    border-radius: 12px;
+    background: var(--r2-tile2);
+    color: var(--r2-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer
+}
+
+.r-vit-group button:hover,
+.r-vit-group button:focus-visible {
+    background: var(--r2-priv)
+}
+
+.r-vit-group strong {
+    font-size: 14px
+}
+
+.r-vit-group small {
+    font-size: 12px;
+    color: var(--r2-mut)
+}
+
+.r-vit-group-pas button {
+    opacity: .75
+}
+
+.r-vit-bascule {
+    margin: 2px 15px 12px;
+    padding: 10px 12px;
+    min-height: 44px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--r2-priv);
+    color: var(--r2-teal2);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer
+}
+
+/* ---- LES DEUX PORTES à solde épuisé (repliées, doctrine D6) ---- */
+.r-portes {
+    margin: 16px 0 0;
+    border: 1px solid var(--r2-bd);
+    border-radius: 16px;
+    background: #fff;
+    padding: 0 15px
+}
+
+.r-portes summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 0;
+    cursor: pointer;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--r2-ink);
+    list-style: none
+}
+
+.r-portes summary::-webkit-details-marker {
+    display: none
+}
+
+.r-portes summary::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--r2-teal2);
+    border-bottom: 2px solid var(--r2-teal2);
+    transform: rotate(45deg);
+    transition: transform .15s ease
+}
+
+.r-portes[open] summary::after {
+    transform: rotate(225deg)
+}
+
+.r-porte {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    margin: 0 0 10px;
+    border: 1px solid var(--r2-bd);
+    border-radius: 14px;
+    background: var(--r2-tile2)
+}
+
+.r-porte strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 15.5px
+}
+
+.r-porte p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--r2-mut)
+}
+
+.r-porte-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--r2-teal);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none
+}
+
+.r-porte-cta-attente {
+    background: var(--r2-priv);
+    color: var(--r2-teal2)
+}
+
+/* La note honnête en pied (pointillé — même motif que le cahier). */
+.rec2-luc-note {
+    margin: 12px 0 0;
+    padding: 10px 13px;
+    border: 1px dashed var(--r2-bd);
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--r2-mut)
+}
+
+.r-luc-notes {
+    margin-top: 16px
 }
