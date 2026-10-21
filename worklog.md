@@ -2902,3 +2902,19 @@ Work Log:
 
 Stage Summary:
 - **Quête M1-1.2 VÉRIFIÉE COMPLÈTE (56/56)** — couverture exacte 625/625 profils, anti-flatterie et sensibilité attachement structurelles, passation gelée reproductible ; constat éditorial V4 consigné (1 formule partagée, retouche à décider). PROCHAINE QUÊTE SIGNALÉE : M1-1.3 « Tes émotions » (20 items, 6 variantes, graine 213427) — même méthode.
+
+---
+Task ID: 160
+Agent: WTC-Pont (exécuteur calculs)
+Task: Fondateur (trace 1a15e10dbe7f1e51) — « attaquons la quête M1-1.3 « Tes émotions », mais avant, rappelle-moi toutes les quêtes et les dimensions déjà faites » — rappel d'historique produit (cartographie 7 mondes / 35 quêtes extraites des en-têtes des moteurs) + quête M1-1.3 exécutée dans le même tour.
+
+Work Log:
+- RAPPEL PRODUIT : cartographie complète extraite des en-têtes des moteurs (quete-*.ts) — Monde 1 « Le Miroir » (1.1 personnalité, 1.2 attachement, 1.3 émotions) · Monde 2 « Le Volant » (1.4 contrôle → 1.11 rencontre, 1.8 PHQ-9 en attente de construction) · Monde 3 « La Boussole » (2.1→2.8) · Monde 4 « Ton Terrain » (3.1→3.7) · Monde 5 « Ton Héritage » (4.1→4.3) · Monde 6 « Mon Cœur » (5.1/5.2/5.3/5.7) · Monde 7 « Face aux Tempêtes » (5.4/5.5/5.6) — 35 quêtes construites et en ligne, 1.8 au plan sans moteur ; + calculs de quêtes du nouveau mode : M1-1.1 (40/40) et M1-1.2 (56/56) déjà vérifiées.
+- D-LECTURE : les 3 moteurs de 1.3 lus (quete-1-3.ts : 20 items Likert 1-5, dims P perception 6 / R régulation 7 / X expression 7, 8 inversés, PASSATION gelée graine 213427 sur 26 positions avec 6 trames sécurité Q1.3-T21→T26, cascade 6 sélecteurs ordre 1→6 ; -plus : structure complète + leviers P/R/X ; -arche : MOULE 1.3 DIFFÉRENT documenté — règle anti-Barnum Task 65 « n'affirmer que ce que le sélecteur garantit », ombre assumée, intro « Ton archétype révèle … »).
+- SCRIPT DE VÉRIFICATION (VRAIS moteurs, zéro réimplémentation) : V1 items (20, P=6/R=7/X=7, 8 inversés) ; V2 scorer (tout-à-1 P=2/6, R=X=3/7 ; tout-à-5 miroir ; neutre 0,50 ; contributions P 6 items et R 7 items ; hors bornes ; dims vides → 0 sans NaN) ; V3 couverture — espace EXACT 25×29×29 = 21 025 profils : V1=2 610 (12,4 %) V2=3 480 (16,6 %) V3=3 480 (16,6 %) V4=5 150 (24,5 %) V5=1 417 (6,7 %) V6=4 888 (23,2 %), aucune monopole, AUCUN score pile sur seuil (écart min 0,0071) + grille pas 0,1 conforme au calcul à la main {176, 220, 176, 340, 95, 324} + cascade 7 cas ; V4 anti-flatterie (visant la personne) + anti-Barnum (0 neutralisation d'ombre, moule 6/6) + sensibilité émotions (0 pathologisant) ; V5 passation (26 positions, trames jamais affichées) ; V6 couche plus complète + anti-duplication.
+- HONNÊTETÉ INTÉGRALE : 1er passage 68/70 — « parfait » instruit (occurrence unique : « la réparation vaut plus que la prévention parfaite », besoins V2 = anti-perfectionnisme, pas une flatterie de la personne → assertion reformulée) ; chevauchement V3 réel consigné (l'image « Ceux qui te connaissent bien savent lire tes/les petits signes … valent des déclarations » dans les 3 couches de V3 : 2× à l'identique ≥ 60 car arche↔plus, 1 variante verbatim) → 70/70 ; le moteur n'a requis AUCUNE correction.
+- LIVRABLE POUSSÉ : Wairyu thérapie couple/calculs-quêtes/M1-quete-1-3-resultats.md + scripts/check-quete-1-3.ts (reproductible : bun depuis la racine — 70/70).
+- Worklog Task 160 (présent commit) + miroir ; commit + push + audit origin.
+
+Stage Summary:
+- **Quête M1-1.3 VÉRIFIÉE COMPLÈTE (70/70)** — couverture exacte 21 025/21 025, anti-Barnum structurel, passation gelée ; constat éditorial V3 consigné (retouche à décider). Rappel d'historique produit (7 mondes / 35 quêtes construites / 1.8 en attente). PROCHAINE QUÊTE SIGNALÉE : M1-1.4 « Ton contrôle sur toi-même » (Monde 2 « Le Volant »).
