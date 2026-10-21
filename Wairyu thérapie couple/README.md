@@ -1,6 +1,6 @@
 # Wairyu Thérapie Couple — Programme & Validation (hub de navigation)
 
-> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-21 « La lumière sous ma carte » + RIO-22 « Le croisement sous nos cartes » **CONTRESIGNÉS** — « je valide » fondateur, tampon unique sur les deux artefacts publiés ; registre **22/22** ; personnalité **4/5 contresignée** ; reste Q5 « Le pas »).
+> Point d'entrée de tout le programme WTC dans ce dépôt. Mis à jour le **20/10/2026** (RIO-23 « Le pas sous ma carte » VALIDÉ 7/7, en attente de contresignature — personnalité **5/5 produite** ; registre **22/22** contresignés ; RIO-23 = dernier instrument de la dimension).
 
 ---
 
@@ -47,16 +47,18 @@ Wairyu thérapie couple/
 │   ├── validation-ext-q2/ (RIO-17 — contresigné)
 │   └── validation-ext-q3/ (RIO-18 — contresigné)
 │
-│  ═══ Dimension PERSONNALITÉ (SPEC Q1-Q4 verrouillées · RIO-19 → RIO-22 contresignés — registre 22/22 ; reste Q5) ═══
+│  ═══ Dimension PERSONNALITÉ (SPEC Q1-Q5 verrouillées · RIO-19 → RIO-22 contresignés — registre 22/22 · RIO-23 validé en attente) ═══
 ├── validation-pers/
 │   ├── PERS-Q1-SPEC.md (verrouillée 20/10 — A1-A6 tranchés par délégation)
 │   ├── PERS-Q2-SPEC.md (verrouillée 20/10 — « La mécanique sous ma carte »)
 │   ├── PERS-Q3-SPEC.md (verrouillée 20/10 — « La lumière sous ma carte », A1-A6 par délégation)
 │   ├── PERS-Q4-SPEC.md (verrouillée 20/10 — « Le croisement sous nos cartes », A1-A6 par délégation)
+│   ├── PERS-Q5-SPEC.md (verrouillée 20/10 — « Le pas sous ma carte », A1-A6 par délégation)
 │   ├── validation-pers-q1/ (RIO-19 — contresigné)
 │   ├── validation-pers-q2/ (RIO-20 — contresigné)
 │   ├── validation-pers-q3/ (RIO-21 — contresigné)
-│   └── validation-pers-q4/ (RIO-22 — contresigné)
+│   ├── validation-pers-q4/ (RIO-22 — contresigné)
+│   └── validation-pers-q5/ (RIO-23 — VALIDÉ 7/7, en attente de contresignature)
 │
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
 ├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
@@ -119,6 +121,7 @@ Wairyu thérapie couple/
 | WTC-PERS-Q2 | RIO-20 « La mécanique sous ma carte » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 6d9b3c59… ; « je valide », fondateur, 20/10) |
 | WTC-PERS-Q3 | RIO-21 « La lumière sous ma carte » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 7644a957… ; « je valide », fondateur, 20/10) |
 | WTC-PERS-Q4 | RIO-22 « Le croisement sous nos cartes » | ✅ Contresigné (VALIDÉ 7/7 simulation, SHA 530c0065… ; « je valide », fondateur, 20/10) |
+| WTC-PERS-Q5 | RIO-23 « Le pas sous ma carte » | ⏳ VALIDÉ 7/7 simulation (SHA d99fb980…), en attente de contresignature fondateur |
 
 ### Pilote réel
 
@@ -126,7 +129,7 @@ Wairyu thérapie couple/
 |---|---|
 | WTC-VALID-01/01 | ⏳ En attente conseil clinique |
 
-**Total : 22 instruments RIO contresignés (RIO-01 à RIO-22). 3 dimensions complètes + extensions 3/3 + personnalité 4/5 contresignées (RIO-19 carte, RIO-20 ombre, RIO-21 lumière, RIO-22 croisement) ; Q5 « Le pas » à venir.**
+**Total : 22 instruments RIO contresignés (RIO-01 à RIO-22) + RIO-23 validé en attente. 3 dimensions complètes + extensions 3/3 + personnalité 5/5 produite (RIO-19 carte, RIO-20 ombre, RIO-21 lumière, RIO-22 croisement contresignés ; RIO-23 pas validé) — dimension complète dès le tampon.**
 
 ---
 
