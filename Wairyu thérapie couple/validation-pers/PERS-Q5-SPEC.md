@@ -7,8 +7,9 @@
 > Q2 « La mécanique sous ma carte » (RIO-20) : ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 6d9b3c59…, « je valide » fondateur 20/10).
 > Q3 « La lumière sous ma carte » (RIO-21) : ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 7644a957…, « je valide » fondateur 20/10).
 > Q4 « Le croisement sous nos cartes » (RIO-22) : ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 530c0065…, « je valide » fondateur 20/10 — tampon unique RIO-21+RIO-22, trace 1a15948dd87d302d) — **registre 22/22**.
+> **Contresignature RIO-23 : « je valide » — fondateur, 21/10/2026 (trace 1a15d13e78e98ced).** Registre **23/23** (RIO-01 → RIO-23). Package `validation-pers-q5/` produit (VALIDÉ 7/7, SHA ×2 d99fb980…), rejeu de vérification à froid le 21/10 (mode `--dry`, zéro écriture : verdict 7/7, SHA ×2 d99fb980… identiques au publié — conformité bit à bit), pointeurs à jour. **Dimension Personnalité 5/5 contresignée — CLOSE.**
 > **Patrons de pas déjà publiés et contresignés** : SM-Q5 (RIO-15 « Mon premier pas vers l'autre rive » — pas INDIVIDUEL, check-in binaire 14 j, D-CRISE avant le choix du pas) · EXT-Q3 (RIO-18 « Le pas de l'horizon » — pas À DEUX, case binaire partagée, seuil 9/14 verbatim, RCI par rive, bornes L7 0,58/0,41). Q5-PERS = le troisième pas du programme : il transforme la lecture de soi (carte + ombre + lumière) en **UNE action choisie, suivie 14 jours**.
-> Chaîne locale : … → abf5c83 (RIO-20 contresigné — registre 20/20) → cbfd193 (SPEC Q3 PROPOSÉE) → 35cb049 (Task 142) → 7e05861 (SPEC Q3 VERROUILLÉE) → 0716e85 (RIO-21 produit) → 0c202e4 (pointeurs RIO-21) → eb78438 (SPEC Q4 PROPOSÉE) → 28496dd (Task 144) → 1458b9c (SPEC Q4 VERROUILLÉE) → f64be92 (RIO-22 produit) → 23367d9 (pointeurs RIO-22) → cbb2016 (RIO-21 + RIO-22 CONTRESIGNÉS — registre 22/22) → fa29081 (Task 146) → 67cedbb (correction cosmétique worklog) → 1012dad (présente SPEC PROPOSÉE — Task 147) → fd585b0 (worklog Task 147) → d77e95a (SPEC VERROUILLÉE — délégation (a)×6) → **7af48ba (RIO-23 produit — VALIDÉ 7/7, SHA ×2 d99fb980c965c8cf, en attente de contresignature)**.
+> Chaîne locale : … → abf5c83 (RIO-20 contresigné — registre 20/20) → cbfd193 (SPEC Q3 PROPOSÉE) → 35cb049 (Task 142) → 7e05861 (SPEC Q3 VERROUILLÉE) → 0716e85 (RIO-21 produit) → 0c202e4 (pointeurs RIO-21) → eb78438 (SPEC Q4 PROPOSÉE) → 28496dd (Task 144) → 1458b9c (SPEC Q4 VERROUILLÉE) → f64be92 (RIO-22 produit) → 23367d9 (pointeurs RIO-22) → cbb2016 (RIO-21 + RIO-22 CONTRESIGNÉS — registre 22/22) → fa29081 (Task 146) → 67cedbb (correction cosmétique worklog) → 1012dad (présente SPEC PROPOSÉE — Task 147) → fd585b0 (worklog Task 147) → d77e95a (SPEC VERROUILLÉE — délégation (a)×6) → **7af48ba (RIO-23 produit — VALIDÉ 7/7, SHA ×2 d99fb980c965c8cf)** — contresigné par le tampon ci-dessus.
 
 ---
 
@@ -62,7 +63,7 @@ Le filet s'applique **avant l'arbre de pas** (ligne 369 — « on ne contractual
 
 ## 8. Mapping RIO (position dans la dimension)
 
-> **État RIO-23 : PRODUIT (7af48ba)** — package `validation-pers-q5/` publié (core · simulateur · validation, run ×2 SHA ×2 d99fb980c965c8cf, verdict VALIDÉ 7/7), en attente de la contresignature fondateur (« je valide ») → registre 23/23, personnalité **5/5 contresignée**.
+> **État RIO-23 : PRODUIT & CONTRESIGNÉ (7af48ba ; « je valide » fondateur 21/10/2026 — trace 1a15d13e78e98ced)** — package `validation-pers-q5/` publié (core · simulateur · validation, run ×2 SHA ×2 d99fb980c965c8cf, verdict VALIDÉ 7/7 ; rejeu `--dry` 21/10 conforme) — registre **23/23**, personnalité **5/5 contresignée — dimension CLOSE**.
 
 | Quête | RIO | Rôle | État |
 |-------|-----|------|------|
@@ -70,7 +71,7 @@ Le filet s'applique **avant l'arbre de pas** (ligne 369 — « on ne contractual
 | Q2 « La mécanique sous ma carte » | **RIO-20** | L'ombre (mécanisme profond — ligne 223) | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 6d9b3c59…, « je valide » fondateur 20/10) |
 | Q3 « La lumière sous ma carte » | **RIO-21** | La lumière (forces dérivées — ligne 223) · L5 (ligne 261) | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 7644a957…, « je valide » fondateur 20/10) |
 | Q4 « Le croisement sous nos cartes » | **RIO-22** | Le croisement (à deux, confirmé — lignes 223-224) · L6 (ligne 262) | ✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 530c0065…, « je valide » fondateur 20/10) |
-| **Q5 « Le pas sous ma carte » (A1-a)** | **RIO-23** | **Le pas (1 changement + suivi 14 jours — lignes 224-225, 297-298)** | **PRODUIT (validation-pers-q5/, VALIDÉ 7/7, SHA ×2 d99fb980…, « en attente de contresignature ») — ce document = SPEC verrouillée** |
+| **Q5 « Le pas sous ma carte » (A1-a)** | **RIO-23** | **Le pas (1 changement + suivi 14 jours — lignes 224-225, 297-298)** | **✅ PRODUIT & CONTRESIGNÉ (VALIDÉ 7/7, SHA ×2 d99fb980…, « je valide » fondateur 21/10) — ce document = SPEC verrouillée** |
 
 ## 9. Arbitrages (A1-A6 — TRANCHÉS 20/10/2026 par délégation fondateur : (a)×6)
 
@@ -85,4 +86,4 @@ Le filet s'applique **avant l'arbre de pas** (ligne 369 — « on ne contractual
 
 **LIBRE (au verrouillage)** : libellés exacts de la banque de pas (rédaction ex nihilo, déposés au core) · règles précises de dérivation (entrée → candidat) · N exact de la banque · composition exacte des 14 groupes · géométrie des centres · noms internes · découpage en 3 fichiers (core · simulateur · validation).
 
-**Prochaine étape** : contresignature RIO-23 (acte exclusif du fondateur — « je valide ») → registre 23/23, personnalité 5/5, dimension Personnalité CLOSE. Production exécutée sur délégation, pushes progressifs à chaque étape (demande fondateur explicite).
+**État final** : contresignature RIO-23 posée (« je valide » fondateur 21/10/2026 — trace 1a15d13e78e98ced) → registre **23/23**, personnalité **5/5**, dimension Personnalité **CLOSE**. Production exécutée sur délégation, pushes progressifs à chaque étape (demande fondateur explicite) — les trois dimensions principales du programme (Attachement · Émotionnelle · Personnalité) sont complètes et contresignées ; la suite suit le rythme du fondateur.
