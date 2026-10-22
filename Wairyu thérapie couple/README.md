@@ -32,6 +32,7 @@ Wairyu thérapie couple/
 │   │   ├── validation-emo-q1/correction-philosophique/ (RIO-06 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 5,69 M états + DP 5²⁷ exacte, COR0-COR8 PASS)
 │   │   └── validation-emo-q2-r1/correction-philosophique/ (RIO-07 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 4,39 M états + DP 5⁹ exacte, héritages Q2 mesurés, COR0-COR8 PASS)
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
+│   │   └── validation-emo-q3-r1/correction-philosophique/ (RIO-08 re-scored 55 % → 100 %, gabarit §5.1-§5.4 complet, 560 k états + plancher hérité prouvé, COR0-COR8 PASS)
 │
 │  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 · RIO-14 · RIO-15 contresignés) ═══
 ├── validation-sm/

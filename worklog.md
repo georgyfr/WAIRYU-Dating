@@ -3082,3 +3082,19 @@ Work Log:
 
 Stage Summary:
 - ACTION N°1 DE COMBLEMENT POURSUIVIE : RIO-07 passe de 53 % à 100 % AU BARÈME DE L'AUDIT (preuve P1 simulation, D-SIM) — moteurs intacts. La boucle des héritages Q2 est FERMÉE : RIO-07 mesure inv_d_zone/rc_label et le vrai arbre du pas les consomme. Moyenne émotionnelle 67,2 → 76,6 % ; global 78,3 → 80,4 %. Limites vérité : simulation (VALID-01), S-EMO-Q2-R1-1 conservé consigné (3 options au fondateur), D-CRISE non applicable. PROCHAINE QUÊTE SIGNALÉE : RIO-08 « Ce que mon cœur sait faire » (lumière, moteur émo-q3-r1 VALIDÉ 8/8), puis RIO-09 (émo-q4-r3) et RIO-10 (émo-q5).
+
+---
+Task ID: 172
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — « continue RIO-07 → RIO-10 » (suite) : fichier de correction RIO-08 « Ce que mon cœur sait faire » (lumière émotionnelle), même gabarit R1-R9, fichiers SUPPLÉMENTAIRES, zéro modification de l'existant.
+
+Work Log:
+- Specs RIO-08 : moteur émo-q3-r1 M1 (D-DENSITÉ uniformisée — S-EMO-Q3-2 CLOS, C2 100 %, 8/8 critères VALIDÉS) ; simulateur seed 42 (475 profils : H1 120 · H2 100 · H3 100 · H4 80 · SANS_PREUVE 40 · SURCHARGE 20 · CAP_NON_AC 15) ; chiffres archivés (C1a 40/40 · C1b 20/20 · C1c 87,5 % · C2 475/475 · C3a 15/15 · cap_global · indice 0,577 · H1 15,83 % sous borne D-Q3-J).
+- Package validation-emo-q3-r1/correction-philosophique/ créé (couche R1-R9 + pipeline COR0-COR8 + JSON + rapport + README).
+- Preuve : 560 000 configurations exhaustives (rangs hérités = compactation prouvée des 13 valeurs réelles × 2 faces) ; 9 critères COR0-COR8 tous PASS ; SHA ×2 cee44b560898cbd5….
+- OBSERVATION D-Q3-G consignée : F-E3 activable par la voie JOURNAL (m ≥ 4) avec CAP ≠ AC (3 312 cas énumération, 0 archivés) — docstring de la garde > code, zéro retouche, prévalence VALID-01. Junction couple à trois sens consignée (paire explosive préempte FEU CROISÉ).
+- Re-score RIO-08 : 55 % → 100 % (F2 12→25, F3 8→25, F4 10→25, F1 25 inchangé — C5 affichage des forces PRÉSERVÉ). Émotionnelle 428/5 = 85,6 % · global 1 894/23 = 82,3 %.
+- Commits locaux bfa2456 (package + ADDENDUM-7) ; push toujours en attente du jeton GitHub.
+
+Stage Summary:
+- RIO-08 COMPLET ET PROUVÉ (9/9 PASS). Trois des cinq quêtes émotionnelles au 100 % (RIO-06/07/08). File : RIO-09 (émo-q4-r3 — 3 révisions à étudier) → RIO-10 (émo-q5). Push GitHub global en attente du jeton (RIO-06/07/08 empilés).

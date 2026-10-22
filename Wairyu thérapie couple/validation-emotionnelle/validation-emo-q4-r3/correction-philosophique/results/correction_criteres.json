@@ -1,0 +1,212 @@
+{
+ "package": "validation-emotionnelle/validation-emo-q4-r3/correction-philosophique",
+ "cible": "RIO-09 « Nos deux langues »",
+ "moteurs_reels": [
+  "validation-emo-q4-r3/src/wtc_emo_q4_core.py (R3 — D-EMO-5, asymétrie interne)",
+  "validation-emo-q4-r3/src/wtc_emo_q4_simulator.py (seed 42, 450 couples)",
+  "validation-emo-q2-r1/src/wtc_emo_q2_core.py (valeurs Q2 réelles)",
+  "validation-emo-q5/src/wtc_emo_q5_core.py"
+ ],
+ "espace_enumeré": {
+  "dimension": "états donne A (18) × bandes reçoit A (4) × états donne B (18) × bandes reçoit B (4) × classes er (4) × classes d'écart (4) × paires de zones Q2 (9)",
+  "configurations": 746496
+ },
+ "cor8_sha256_run1": "22a082602589022d0cbf32ab924ea72004fa68acbf7d1d0a022326a292322411",
+ "cor8_sha256_run2": "22a082602589022d0cbf32ab924ea72004fa68acbf7d1d0a022326a292322411",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement : donne → état (125 bruts × 2 côtés — même état ⇒ même sortie du VRAI configuration_devises ; 3 états inateignables prouvés : recherche exhaustive des 125 triplets → 18 états réels) · moyennes → bandes (13 valeurs, bornes consignées : 2,5 NON pile dist 1/6 · 3,00 PILE · 4,00 PILE) · bids → écarts (625 bruts → 25 états |Δ| — espion exhaustif) · er1 → classes (espion pile inclusif 3,00) · score_A/label_ombre jamais lus",
+   "observe": "donne 250 → écart 0 · états inateignables 6 · moyennes 13 → écart 0 · piles 3,00=1 4,00=1 · pile 2,5 = 0 (dist 0.17) · bids 625 → écart 0 · espion er 7 → écart 0 · espion sa/ombre 1 → écart 0",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "746496/746496 configurations → fragment L8 7 blocs, 0 champ vide (aucun gate sur cet instrument — pas de suspension inventée, R4) + 450/450 couples archivés",
+   "observe": "746496/746496 états distincts · incomplets 0 · archivés 450/450 · incomplets 0",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entier pur (paires explosives ⇔ classes er1 ; boucle ⇔ |Δ| ≥ 2) ≡ dérivation depuis les VRAIES sorties (co_regulation + boucle_bids) — palier + S1 + S2 ; junctions S1 ⇔ 🔴, S2 ⇔ 🟠 exactement",
+   "observe": "746496 configs · écart double chemin 0 · écart junction 0",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = paire explosive du VRAI co_regulation (les deux er1 ≥ 3,0 — couvre FEU CROISÉ) ; S2 = boucle asymétrique du VRAI boucle_bids ou configuration à convertir, sans 🔴 ; la couche n'ajoute aucun seuil numérique ; bornes du VRAI moteur consignées : 2,5 NON pile (dist 1/6) · 3,00 PILE (moyenne ≥ 3 et co-régulation — inclusif) · 4,00 PILE (moyenne ≥ 4, vmax ≥ 4) · asymétrie ≥ 2 entière (exacte)",
+   "observe": "S1 186624/746496 · S2 461943/746496 · pile 2,5 = 0 (dist 0.17) · piles 3,00 = 1 · 4,00 = 1 (consignés) · co-régulation pile True",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9 + les 9 formulations C3a du package) sur tous les textes générés + templates réels (9 configs + 6 devises) + exercices/modules de la couche + pas/suivi réels, D-SIM 100 %",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 746496 ; D-SIM manquants 0 ; archivés D-SIM 450/450 · max archivés 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "configuration affichée ≡ VRAI configuration_devises (9 noms D-NOMENCLATURE, jamais d'autre) · templates réels cités mot pour mot · JAMAIS de pourcentage de compatibilité ni de blâme (C3a/C3b/C3c du package vérifiés sur l'énumération + les templates) · doctrine crise active appliquée (apaisement avant tout dialogue)",
+   "observe": "templates cités : écart 0 · mots interdits max 0 · C3a archivé 0 · C3b 0 · C3c 0 · archivés templates 0",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "450 couples archivés émo-q4-r3 régénérés par le VRAI simulateur seed 42 : C1 8/9 par configuration (LANGUE COMMUNE 39/50 · DONNEUR A 45 · DONNEUR B 43 · DORMANTE 50/50 · CROISÉE 24/50 = 48 % — chevauchement géométrique S-EMO-Q4-R3-1 CONSERVÉ consigné, option d'arbitrage ouverte · MIXTE POURSUITE 48 · MIXTE RETRAIT 47 · FEU CROISÉ 41 · ÉQUILIBRÉE 35) · C2 symétrie 450/450, 0 désaccord config_vraie (D-VÉRITÉ 9/9) · C3 0/0/0 · distributions complètes 9/9 (81 cellules) · boucles/paires explosives par groupe conformes",
+   "observe": "450 couples · 2790 comparaisons · écarts 0 · C1 conforme 9/9 · distributions 9/9 (81 cellules) · C2 symétriques 450/450 · violations 0 · désaccords sim 0 · C3a 0 · C3b 0 · C3c 0 · boucles 9/9 · explosives 9/9 · paliers {'🟢': 120, '🟠': 279, '🔴': 51} · S1 51 · S2 279",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "8/8 pas réels (arbre Q5) résolus par le VRAI selectionner_pas POUR CHACUN des deux partenaires (zones Q2 mesurées par RIO-07 et portées par ce croisement — 32 352 combinaisons) ; invariants INV/RC/CAP/fallback ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines ; co-régulation (vrai seuil 3,0, PILE consigné)",
+   "observe": "pas 8/8 · invariants 4/4 · pas/zone {'ABSENT': 7, 'FRÉQUENT': 1, 'OCCASIONNEL': 1} · suivi 15/15 · re-test True · co-régulation pile True · labels hors banque 0",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "22a082602589022d… == 22a082602589022d… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "donne_bruts": 250,
+  "donne_ecarts": 0,
+  "etats_inateignables": 6,
+  "moyennes_valeurs": 13,
+  "moyennes_ecarts": 0,
+  "bids_bruts": 625,
+  "bids_ecarts": 0,
+  "espion_er": 7,
+  "espion_er_ecarts": 0,
+  "espion_sa_ombre": 1,
+  "espion_sa_ombre_ecarts": 0,
+  "bandes_piles": {
+   "3.00": 1,
+   "4.00": 1
+  },
+  "pile_25": 0,
+  "dist_25": 0.16999999999999993
+ },
+ "stage1": {
+  "configs": 746496,
+  "fragments_distincts": 746496,
+  "fragment_incomplets": 0,
+  "cor2_ecarts": 0,
+  "junction_s1s2_ecarts": 0,
+  "miroir_ecarts": 0,
+  "paliers": {
+   "🟢": 97929,
+   "🟠": 461943,
+   "🔴": 186624
+  },
+  "S1": 186624,
+  "S2": 461943,
+  "config_distribution": {
+   "LANGUE COMMUNE": 43659,
+   "DONNEUR NON CONVERTI (A)": 11880,
+   "DONNEUR NON CONVERTI (B)": 11583,
+   "LANGUE DORMANTE": 2970,
+   "CROISÉE (À CONVERTIR)": 130680,
+   "MIXTE POURSUITE": 46656,
+   "MIXTE RETRAIT": 46656,
+   "FEU CROISÉ": 139968,
+   "ÉQUILIBRÉE MIXTE": 312444
+  },
+  "md5_texts_count": 746496,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "templates_cites_ecarts": 0,
+  "pas_labels_hors_banque": 0,
+  "configs_attendues": 746496
+ },
+ "stage2": {
+  "couples": 450,
+  "comparaisons": 2790,
+  "c1_par_groupe": {
+   "LANGUE COMMUNE": [
+    39,
+    50
+   ],
+   "DONNEUR NON CONVERTI (A)": [
+    45,
+    50
+   ],
+   "DONNEUR NON CONVERTI (B)": [
+    43,
+    50
+   ],
+   "LANGUE DORMANTE": [
+    50,
+    50
+   ],
+   "CROISÉE (À CONVERTIR)": [
+    24,
+    50
+   ],
+   "MIXTE POURSUITE": [
+    48,
+    50
+   ],
+   "MIXTE RETRAIT": [
+    47,
+    50
+   ],
+   "FEU CROISÉ": [
+    41,
+    50
+   ],
+   "ÉQUILIBRÉE MIXTE": [
+    35,
+    50
+   ]
+  },
+  "c1_configs_conformes": 9,
+  "distributions_conformes": 9,
+  "boucles_conformes": 9,
+  "explosives_conformes": 9,
+  "c2_symetriques": 450,
+  "c2_violations": 0,
+  "c2_desaccords_sim": 0,
+  "c3a": 0,
+  "c3b": 0,
+  "c3c": 0,
+  "paliers": {
+   "🟢": 120,
+   "🟠": 279,
+   "🔴": 51
+  },
+  "S1": 51,
+  "S2": 279,
+  "fragments_archives": 450,
+  "fragments_incomplets": 0,
+  "dsim_archives": 450,
+  "mots_interdits_max": 0,
+  "templates_cites_ecarts": 0
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "pas_resolus": 8,
+  "pas_attendus": 8,
+  "invariants_mesures": 4,
+  "invariants_attendus": 4,
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "coregulation_inclusive_pile": true,
+  "pas_par_zone": {
+   "ABSENT": 7,
+   "FRÉQUENT": 1,
+   "OCCASIONNEL": 1
+  }
+ },
+ "stage4_pas_table": {
+  "CAP": "cap (Q1/Q3 émotionnel)",
+  "FE1": "fe1_active (Q3 émotionnel)",
+  "FE6": "fe6_active (Q3 émotionnel)",
+  "FE3": "fe3_active (Q3 émotionnel)",
+  "ER2": "er2_moyenne (Q1 émotionnel)",
+  "ER1": "er1_moyenne (Q1 émotionnel)",
+  "RC": "rc_label (Q2 émotionnel)",
+  "INV": "inv_d_zone (Q2 émotionnel)"
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
