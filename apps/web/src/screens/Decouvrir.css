@@ -1,0 +1,1501 @@
+/**
+ * L'espace Rencontre — onglet Découvrir (design de référence fondateur).
+ *
+ * Palette du prompt (§11/§6) : fond marine #0F2A38, surfaces #17394A et
+ * #1F4A5E, texte #F2F6F5, secondaire #A9BDC6, or #F2B544, teal #2BA9A9,
+ * corail #F26B5B. Corps de carte CLAIR (réf. 4) : blanc cassé + texte
+ * marine profond. Serif de la plateforme (Fraunces, auto-hébergée) pour
+ * prénoms et titres de cartes ; sans-serif pour le reste.
+ *
+ * Coins arrondis 24-26 px sur la carte principale, ombres douces, texte
+ * ≥ 14 px, cibles tactiles ≥ 44 px, zones de sécurité iOS, mobile d'abord
+ * (360-430 px), prefers-reduced-motion respecté.
+ */
+
+.dc-zone {
+  --ren-fond: #0f2a38;
+  --ren-surface: #17394a;
+  --ren-surface-2: #1f4a5e;
+  --ren-texte: #f2f6f5;
+  --ren-second: #a9bdc6;
+  --ren-or: #f2b544;
+  --ren-or-fonce: #c98f1f;
+  --ren-teal: #2ba9a9;
+  --ren-teal-fonce: #1f8282;
+  --ren-corail: #f26b5b;
+  --ren-marine: #12303f;
+  --ren-clair: #f7f4ec;
+  --ren-bord: rgba(169, 189, 198, 0.22);
+
+  background: var(--ren-fond);
+  color: var(--ren-texte);
+  min-height: calc(100vh - var(--tabbar-h, 60px));
+  padding-bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  font-family: inherit;
+}
+
+/* ---- 2a. Ligne d'en-tête de l'espace : Voyage · Rencontres · Filtres ---- */
+.dc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 14px 6px;
+}
+.dc-voyage-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ren-teal);
+  color: #08303a;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  min-height: 44px;
+  font-weight: 800;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.dc-voyage-btn:active {
+  transform: scale(0.96);
+  background: var(--ren-teal-fonce);
+}
+.dc-titre-espace {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+  color: var(--ren-texte);
+}
+.dc-filtres-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--ren-surface);
+  color: var(--ren-texte);
+  border: 1px solid var(--ren-bord);
+  border-radius: 999px;
+  padding: 8px 14px;
+  min-height: 44px;
+  min-width: 44px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.dc-filtres-btn:active {
+  background: var(--ren-surface-2);
+}
+.dc-filtres-n {
+  color: var(--ren-or);
+  font-weight: 800;
+}
+
+/* ---- 2b. Pastilles de mode ---- */
+.dc-modes {
+  display: flex;
+  gap: 8px;
+  padding: 8px 14px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.dc-modes::-webkit-scrollbar {
+  display: none;
+}
+.dc-mode {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  border: 1px solid var(--ren-bord);
+  background: transparent;
+  color: var(--ren-second);
+  padding: 9px 16px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.dc-mode-actif {
+  background: var(--ren-teal);
+  border-color: var(--ren-teal);
+  color: #08303a;
+}
+.dc-mode:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+.dc-bientot {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  color: var(--ren-or);
+  border: 1px solid rgba(242, 181, 68, 0.55);
+  border-radius: 6px;
+  padding: 2px 5px;
+}
+
+/* ---- 2c. Onglets de l'espace (même style, sans soulignement isolé) ---- */
+.dc-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px 4px;
+}
+.dc-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--ren-second);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  min-height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.dc-tab[aria-selected='true'] {
+  color: var(--ren-texte);
+  background: rgba(169, 189, 198, 0.12);
+  font-weight: 800;
+}
+
+/* ---- 2d. Bannière d'action (le Voyage au-dessus du deck) ---- */
+.dc-banner {
+  margin: 8px 14px 0;
+  background: var(--ren-surface);
+  border: 1px solid var(--ren-bord);
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.dc-banner strong {
+  color: var(--ren-or);
+  font-weight: 800;
+}
+.dc-banner-lien {
+  background: none;
+  border: none;
+  color: var(--ren-or);
+  font-weight: 800;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---- 3. La carte de profil (réf. 4 : photo + corps clair) ---- */
+.dc-scene {
+  position: relative;
+  padding: 10px 14px 0;
+  touch-action: pan-y;
+}
+.dc-card {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--ren-clair);
+  color: var(--ren-marine);
+  box-shadow: 0 18px 44px rgba(4, 16, 24, 0.5);
+  animation: dc-entre 0.28s ease;
+}
+@keyframes dc-entre {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.dc-card-sortie-d {
+  animation: dc-sortie-d 0.22s ease forwards;
+}
+.dc-card-sortie-g {
+  animation: dc-sortie-g 0.22s ease forwards;
+}
+@keyframes dc-sortie-d {
+  to {
+    opacity: 0;
+    transform: translateX(120%) rotate(7deg);
+  }
+}
+@keyframes dc-sortie-g {
+  to {
+    opacity: 0;
+    transform: translateX(-120%) rotate(-7deg);
+  }
+}
+
+/* La photo — le visage cadré, jamais coupé (object-position top). */
+.dc-photo {
+  position: relative;
+  height: min(52vh, 430px);
+  background: linear-gradient(160deg, #6b4a3a 0%, #59392d 55%, #402620 100%);
+  overflow: hidden;
+}
+.dc-photo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+/* L'avatar neutre (réf. 4 : la silhouette) — membre sans photo. */
+.dc-silhouette {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.dc-silhouette::before {
+  content: '';
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(242, 246, 245, 0.34);
+  transform: translateY(-58%);
+}
+.dc-silhouette::after {
+  content: '';
+  position: absolute;
+  bottom: -6%;
+  width: 74%;
+  height: 46%;
+  border-radius: 50% 50% 0 0;
+  background: rgba(242, 246, 245, 0.34);
+}
+/* L'initiale neutre — membre réel sans photo (jamais d'identifiant). */
+.dc-initiale {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: rgba(242, 246, 245, 0.9);
+}
+
+/* Les pastilles SUR la photo. */
+.dc-photo-pills {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.dc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 11.5px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.dc-pill-demo {
+  background: var(--ren-marine);
+  color: var(--ren-texte);
+}
+.dc-pill-echo {
+  background: var(--ren-or);
+  color: #3a2a05;
+}
+.dc-pill-perle {
+  background: linear-gradient(135deg, #f6c65b, #e9a12b);
+  color: #3a2a05;
+  box-shadow: 0 0 0 2px rgba(242, 181, 68, 0.35), 0 4px 14px rgba(242, 181, 68, 0.4);
+}
+
+/* Le corps clair de la carte. */
+.dc-corps {
+  padding: 14px 16px 18px;
+}
+.dc-nom-ligne {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dc-nom {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--ren-marine);
+}
+.dc-age {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ren-marine);
+  opacity: 0.85;
+}
+.dc-meta {
+  color: #5c6670;
+  font-size: 14.5px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.dc-verifie {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #1f8282;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.dc-intention {
+  display: inline-flex;
+  margin-top: 10px;
+  background: var(--ren-or);
+  color: #3a2a05;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 800;
+}
+.dc-raison {
+  margin-top: 12px;
+  background: rgba(43, 169, 169, 0.1);
+  border-left: 3px solid var(--ren-teal);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ren-marine);
+}
+.dc-raison-titre {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #1f8282;
+  margin-bottom: 3px;
+}
+
+/* Les 3 cartes présentées — bande colorée par monde, titre serif. */
+.dc-cartes {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+.dc-carte {
+  position: relative;
+  background: #fffdf7;
+  border: 1px solid rgba(18, 48, 63, 0.1);
+  border-radius: 16px;
+  padding: 12px 14px 12px 18px;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+.dc-carte::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--bande, #2ba9a9);
+}
+.dc-carte:active {
+  transform: scale(0.99);
+}
+.dc-carte-monde {
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #1f8282;
+}
+.dc-carte-titre {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ren-marine);
+  margin: 2px 0 4px;
+}
+.dc-carte-resume {
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: #22384a;
+}
+/* La phrase touchable — surlignée à l'ouverture de la feuille. */
+.dc-phrase {
+  display: inline;
+  border-radius: 5px;
+  padding: 1px 2px;
+  margin: 0 -1px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.dc-phrase-sur {
+  background: rgba(43, 169, 169, 0.3);
+  box-shadow: 0 0 0 2px rgba(43, 169, 169, 0.3);
+}
+.dc-carte-cta {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.dc-demander-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ren-teal);
+  color: #08303a;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  min-height: 44px;
+  font-size: 14.5px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  animation: dc-pousse 0.25s ease;
+}
+@keyframes dc-pousse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* La ligne verrouillée sous les cartes. */
+.dc-verrou {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5c6670;
+  font-size: 13.5px;
+}
+.dc-verrou-ico {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(18, 48, 63, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+/* La devise du bas de pile — gravée, jamais payante. */
+.dc-devise {
+  margin: 14px 22px 0;
+  text-align: center;
+  color: var(--ren-second);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.dc-compteur {
+  text-align: center;
+  color: var(--ren-second);
+  font-size: 13.5px;
+  margin-top: 10px;
+}
+.dc-compteur strong {
+  color: var(--ren-or);
+}
+
+/* ---- 3f. La barre d'actions FIXE — UNE seule paire (réf. 2) ---- */
+.dc-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tabbar-h, 60px) + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  background: linear-gradient(to top, var(--ren-fond) 62%, transparent);
+  padding: 14px 18px 12px;
+}
+.dc-actions-rangee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.dc-btn-rond {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.12s ease;
+}
+.dc-btn-rond:active {
+  transform: scale(0.9);
+}
+.dc-passer {
+  background: var(--ren-surface);
+  border: 1.5px solid var(--ren-bord);
+  color: var(--ren-texte);
+}
+.dc-aimer {
+  background: var(--ren-corail);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(242, 107, 91, 0.4);
+}
+.dc-aimer.bat {
+  animation: dc-bat 0.3s ease;
+}
+@keyframes dc-bat {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.dc-demander {
+  background: var(--ren-teal);
+  color: #08303a;
+  border: none;
+  border-radius: 999px;
+  height: 56px;
+  padding: 0 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(43, 169, 169, 0.35);
+}
+.dc-demander:active {
+  transform: scale(0.96);
+}
+
+/* Les pastilles de refus éphémères (après Passer). */
+.dc-refus {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.dc-refus button {
+  background: var(--ren-surface);
+  color: var(--ren-texte);
+  border: 1px solid var(--ren-bord);
+  border-radius: 999px;
+  padding: 8px 13px;
+  min-height: 40px;
+  font-size: 13.5px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---- 4. Le profil complet (réf. 3) ---- */
+.dc-plein {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--ren-fond);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: dc-glisse 0.25s ease;
+  max-width: 480px;
+  margin: 0 auto;
+}
+@keyframes dc-glisse {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.dc-plein-head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  background: linear-gradient(to bottom, var(--ren-fond) 70%, rgba(15, 42, 56, 0));
+}
+.dc-plein-titre {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--ren-texte);
+  text-align: center;
+  flex: 1;
+}
+.dc-rond-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--ren-surface);
+  border: 1px solid var(--ren-bord);
+  color: var(--ren-texte);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.dc-galerie {
+  position: relative;
+  height: min(48vh, 400px);
+  margin: 0 14px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #6b4a3a, #402620);
+}
+.dc-galerie img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+.dc-galerie-pts {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+}
+.dc-pt {
+  flex: 1;
+  height: 3.5px;
+  border-radius: 2px;
+  background: rgba(242, 246, 245, 0.35);
+}
+.dc-pt-on {
+  background: var(--ren-texte);
+}
+.dc-portrait {
+  margin: 14px 18px 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--ren-texte);
+}
+.dc-portrait small {
+  display: block;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ren-second);
+  margin-bottom: 4px;
+}
+.dc-section-label {
+  margin: 20px 18px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ren-second);
+}
+/* La carte en GRAND (réf. 3 : surface marine + bande qui enveloppe). */
+.dc-carte-grande {
+  margin: 0 14px;
+  background: var(--ren-surface);
+  border-radius: 20px;
+  padding: 14px 16px 14px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.dc-carte-grande::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--bande, #2ba9a9);
+}
+.dc-carte-grande .dc-carte-monde {
+  color: var(--ren-teal);
+}
+.dc-carte-grande .dc-carte-titre {
+  color: var(--ren-texte);
+  font-size: 22px;
+}
+.dc-carte-soustitre {
+  color: var(--ren-second);
+  font-size: 14px;
+  margin: -2px 0 8px;
+}
+.dc-carte-grande .dc-carte-resume {
+  color: var(--ren-texte);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.dc-plein .dc-phrase-sur {
+  background: rgba(43, 169, 169, 0.35);
+}
+.dc-carte-avec {
+  margin-top: 10px;
+  color: var(--ren-or);
+  font-size: 14px;
+  font-weight: 700;
+}
+.dc-carte-chips {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dc-chip {
+  border-radius: 999px;
+  padding: 9px 14px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--ren-bord);
+  background: transparent;
+  color: var(--ren-texte);
+}
+.dc-chip-or {
+  background: var(--ren-teal);
+  border-color: var(--ren-teal);
+  color: #08303a;
+}
+/* Les cartes cachées — verrouillées avec leur sceau. */
+.dc-cachee {
+  margin: 0 14px;
+  border: 1.5px dashed rgba(169, 189, 198, 0.4);
+  border-radius: 20px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ren-second);
+}
+.dc-cachee-lock {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(169, 189, 198, 0.14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dc-cachee-titre {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 16px;
+  color: var(--ren-texte);
+}
+.dc-cachee-sceau {
+  font-size: 12.5px;
+  color: var(--ren-or);
+}
+.dc-bio-bloc {
+  margin: 0 18px;
+  color: var(--ren-texte);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.dc-infos-liste {
+  margin: 4px 18px 0;
+  display: grid;
+  gap: 8px;
+}
+.dc-info-ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--ren-texte);
+  border-bottom: 1px solid rgba(169, 189, 198, 0.14);
+  padding-bottom: 8px;
+}
+.dc-info-ligne span:first-child {
+  color: var(--ren-second);
+}
+/* La barre d'actions du profil complet (réf. 2 : secondaires + principale). */
+.dc-actions-sec {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  margin-bottom: 12px;
+}
+.dc-sec-item {
+  background: none;
+  border: none;
+  color: var(--ren-second);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 52px;
+}
+.dc-sec-rond {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--ren-surface);
+  border: 1px solid var(--ren-bord);
+  color: var(--ren-texte);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.dc-sec-rond-or {
+  color: var(--ren-or);
+  border-color: rgba(242, 181, 68, 0.5);
+}
+.dc-plein .dc-actions {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--ren-fond) 72%, transparent);
+}
+
+/* ---- 5. La feuille « Demander à [prénom] » ---- */
+.dc-feuille {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--ren-surface);
+  border-radius: 22px 22px 0 0;
+  border-top: 1px solid var(--ren-bord);
+  padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: dc-monte 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@keyframes dc-monte {
+  from {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.dc-feuille-prise {
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(169, 189, 198, 0.4);
+  margin: 0 auto 12px;
+}
+.dc-feuille-titre {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ren-texte);
+  margin: 0 0 10px;
+  text-align: center;
+}
+.dc-citation {
+  background: rgba(15, 42, 56, 0.55);
+  border-left: 3px solid var(--ren-teal);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ren-texte);
+  font-style: italic;
+}
+.dc-citation small {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--ren-second);
+  margin-top: 6px;
+}
+.dc-feuille-sous {
+  margin: 14px 0 6px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ren-second);
+}
+.dc-ton {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ren-or);
+  margin: 10px 0 6px;
+}
+.dc-q-sug {
+  width: 100%;
+  text-align: left;
+  background: rgba(15, 42, 56, 0.45);
+  border: 1px solid var(--ren-bord);
+  border-radius: 12px;
+  color: var(--ren-texte);
+  padding: 11px 12px;
+  min-height: 44px;
+  font-size: 14.5px;
+  line-height: 1.4;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.dc-q-sug[aria-pressed='true'] {
+  border-color: var(--ren-teal);
+  background: rgba(43, 169, 169, 0.18);
+}
+.dc-champ {
+  width: 100%;
+  background: rgba(15, 42, 56, 0.45);
+  border: 1px solid var(--ren-bord);
+  border-radius: 12px;
+  color: var(--ren-texte);
+  padding: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  font-family: inherit;
+  min-height: 84px;
+  resize: vertical;
+}
+.dc-champ:focus {
+  outline: 2px solid var(--ren-teal);
+  outline-offset: 1px;
+}
+.dc-compte {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--ren-second);
+  margin-top: 4px;
+}
+.dc-apercu {
+  margin-top: 10px;
+  background: rgba(242, 181, 68, 0.1);
+  border: 1px dashed rgba(242, 181, 68, 0.45);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ren-texte);
+}
+.dc-apercu small {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--ren-or);
+  margin-bottom: 4px;
+}
+.dc-feuille-envoi {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dc-feuille-note {
+  font-size: 12.5px;
+  color: var(--ren-second);
+  line-height: 1.4;
+}
+.dc-envoyer {
+  background: var(--ren-teal);
+  color: #08303a;
+  border: none;
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 0 20px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.dc-envoyer:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.dc-confirmation {
+  text-align: center;
+  padding: 18px 6px 6px;
+  color: var(--ren-texte);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.dc-confirmation strong {
+  color: var(--ren-or);
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+/* ---- 6. Les filtres (résultats en direct) ---- */
+.dc-filtres-_bloc {
+  margin-top: 4px;
+}
+.dc-filtre-ligne {
+  margin-bottom: 16px;
+}
+.dc-filtre-ligne label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ren-texte);
+  margin-bottom: 8px;
+}
+.dc-filtre-ligne label output {
+  color: var(--ren-or);
+  font-variant-numeric: tabular-nums;
+}
+.dc-range {
+  width: 100%;
+  accent-color: var(--ren-teal);
+  height: 44px;
+}
+.dc-filtre-select {
+  width: 100%;
+  background: rgba(15, 42, 56, 0.5);
+  border: 1px solid var(--ren-bord);
+  border-radius: 12px;
+  color: var(--ren-texte);
+  padding: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  min-height: 48px;
+}
+.dc-filtre-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dc-resultats {
+  margin: 14px 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--ren-texte);
+  background: rgba(43, 169, 169, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+}
+.dc-resultats strong {
+  color: var(--ren-or);
+  font-size: 17px;
+}
+.dc-filtres-pied {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.dc-btn-fantome {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--ren-bord);
+  border-radius: 999px;
+  color: var(--ren-texte);
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.dc-btn-plein {
+  flex: 1.4;
+  background: var(--ren-teal);
+  border: none;
+  border-radius: 999px;
+  color: #08303a;
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---- 7. Les états vides et squelettes ---- */
+.dc-vide {
+  margin: 18px 14px;
+  background: var(--ren-surface);
+  border: 1px solid var(--ren-bord);
+  border-radius: 22px;
+  padding: 28px 20px;
+  text-align: center;
+}
+.dc-vide-emoji {
+  font-size: 34px;
+  display: block;
+  margin-bottom: 8px;
+}
+.dc-vide h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
+  color: var(--ren-texte);
+  margin: 0 0 6px;
+}
+.dc-vide p {
+  color: var(--ren-second);
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.dc-vide-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.dc-vide-actions .dc-btn-plein,
+.dc-vide-actions .dc-btn-fantome {
+  width: 100%;
+  max-width: 280px;
+}
+.dc-skel {
+  margin: 10px 14px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--ren-surface);
+}
+.dc-skel-photo {
+  height: min(46vh, 380px);
+  background: linear-gradient(100deg, var(--ren-surface) 40%, var(--ren-surface-2) 50%, var(--ren-surface) 60%);
+  background-size: 300% 100%;
+  animation: dc-brille 1.4s infinite;
+}
+.dc-skel-corps {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+.dc-skel-ligne {
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(100deg, var(--ren-surface) 40%, var(--ren-surface-2) 50%, var(--ren-surface) 60%);
+  background-size: 300% 100%;
+  animation: dc-brille 1.4s infinite;
+}
+.dc-skel-ligne-c {
+  width: 55%;
+}
+@keyframes dc-brille {
+  to {
+    background-position: -200% 0;
+  }
+}
+.dc-erreur {
+  margin: 18px 14px;
+  background: rgba(242, 107, 91, 0.12);
+  border: 1px solid rgba(242, 107, 91, 0.4);
+  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+  color: var(--ren-texte);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.dc-erreur button {
+  margin-top: 10px;
+}
+
+/* ---- 8. L'écran de match ---- */
+.dc-match {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(8, 24, 33, 0.92);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: dc-fondu 0.25s ease;
+}
+@keyframes dc-fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.dc-match-boite {
+  width: 100%;
+  max-width: 380px;
+  background: var(--ren-surface);
+  border: 1px solid rgba(242, 181, 68, 0.35);
+  border-radius: 26px;
+  padding: 26px 20px;
+  text-align: center;
+  animation: dc-monte 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.dc-match-duo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 12px;
+}
+.dc-match-rond {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 3px solid var(--ren-or);
+  overflow: hidden;
+  background: var(--ren-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 34px;
+  color: var(--ren-texte);
+}
+.dc-match-rond img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dc-match-coeur {
+  font-size: 30px;
+  margin: 0 -8px;
+  z-index: 1;
+  animation: dc-bat 0.5s ease 0.2s 2;
+}
+.dc-match-titre {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  color: var(--ren-or);
+  margin: 0 0 8px;
+}
+.dc-match-raison {
+  color: var(--ren-texte);
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.dc-match-phrases {
+  text-align: left;
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.dc-match-phrases button {
+  text-align: left;
+  background: rgba(15, 42, 56, 0.5);
+  border: 1px solid var(--ren-bord);
+  border-radius: 12px;
+  color: var(--ren-texte);
+  padding: 10px 12px;
+  min-height: 44px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: inherit;
+  cursor: pointer;
+}
+.dc-match-pied {
+  color: var(--ren-second);
+  font-size: 12.5px;
+  margin-bottom: 12px;
+}
+.dc-match-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dc-match-badge-demo {
+  display: inline-block;
+  margin: 0 auto 10px;
+  background: rgba(169, 189, 198, 0.16);
+  border: 1px solid var(--ren-bord);
+  border-radius: 999px;
+  color: var(--ren-second);
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+
+/* ---- Les tampons de geste (LIKE / NON) pendant le drag ---- */
+.dc-tampon {
+  position: absolute;
+  top: 22px;
+  z-index: 6;
+  border: 3px solid;
+  border-radius: 10px;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 2px;
+  pointer-events: none;
+  opacity: 0;
+}
+.dc-tampon-non {
+  left: 18px;
+  color: var(--ren-corail);
+  border-color: var(--ren-corail);
+  transform: rotate(-12deg);
+}
+.dc-tampon-oui {
+  right: 18px;
+  color: var(--ren-teal);
+  border-color: var(--ren-teal);
+  transform: rotate(12deg);
+}
+
+/* Le menu ⋮ (garder, masquer, signaler). */
+.dc-menu {
+  position: absolute;
+  right: 14px;
+  top: 46px;
+  z-index: 10;
+  background: var(--ren-surface);
+  border: 1px solid var(--ren-bord);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(4, 16, 24, 0.55);
+  min-width: 210px;
+}
+.dc-menu button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--ren-texte);
+  padding: 13px 14px;
+  min-height: 44px;
+  font-size: 14.5px;
+  font-family: inherit;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(169, 189, 198, 0.12);
+}
+.dc-menu button:last-child {
+  border-bottom: none;
+}
+.dc-menu button:active {
+  background: rgba(169, 189, 198, 0.1);
+}
+.dc-menu .danger {
+  color: var(--ren-corail);
+}
+.dc-points {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 7;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(15, 42, 56, 0.55);
+  border: none;
+  color: var(--ren-texte);
+  font-size: 19px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Les onglets in-espaces vus du wrapper (Matchs/Messages/Profil). */
+.dc-pane {
+  padding-bottom: 8px;
+}
+
+/* ---- Accessibilité & mobile ---- */
+@media (max-width: 440px) {
+  .dc-actions-rangee {
+    gap: 11px;
+  }
+  .dc-demander {
+    padding: 0 20px;
+    font-size: 15px;
+  }
+  .dc-btn-rond {
+    width: 52px;
+    height: 52px;
+  }
+  .dc-nom {
+    font-size: 27px;
+  }
+}
+@media (min-width: 700px) {
+  .dc-scene {
+    max-width: 470px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .dc-zone {
+    min-height: 100vh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dc-card,
+  .dc-feuille,
+  .dc-plein,
+  .dc-match,
+  .dc-match-boite,
+  .dc-demander-mini {
+    animation: none !important;
+  }
+  .dc-aimer.bat,
+  .dc-match-coeur {
+    animation: none !important;
+  }
+  .dc-skel-photo,
+  .dc-skel-ligne {
+    animation: none !important;
+  }
+}

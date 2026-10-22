@@ -1076,7 +1076,7 @@ export default function App() {
               onLogout={handleLogout}
             />
           ) : (
-            <Rencontres />
+            <Rencontres initiale={initial} />
           ))}
         {view === 'masked' && <Masque />}
         {view === 'messages' && <MessagesEspace onNonLus={setNonLusChat} monId={me?.userId ?? null} />}
