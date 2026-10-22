@@ -29,6 +29,7 @@ Wairyu thérapie couple/
 │  ═══ Dimension ÉMOTIONNELLE (5/5 VALIDÉE) ═══
 ├── validation-emotionnelle/
 │   ├── fondation/ · validation-emo-q1/ · validation-emo-q2-r1/
+│   │   └── validation-emo-q1/correction-philosophique/ (RIO-06 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 5,69 M états + DP 5²⁷ exacte, COR0-COR8 PASS)
 │   ├── validation-emo-q3-r1/ · validation-emo-q4-r3/ · validation-emo-q5/
 │
 │  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 · RIO-14 · RIO-15 contresignés) ═══

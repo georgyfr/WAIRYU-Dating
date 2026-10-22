@@ -1,0 +1,202 @@
+{
+ "package": "validation-emotionnelle/validation-emo-q1/correction-philosophique",
+ "cible": "RIO-06 « Ma météo intérieure »",
+ "moteurs_reels": [
+  "validation-emo-q1/src/wtc_emo_q1_core.py (fondation v1.1)",
+  "validation-emo-q1/src/wtc_emo_q1_simulator.py (seed 42)",
+  "validation-emo-q2/src/wtc_emo_q2_core.py",
+  "validation-emo-q4/src/wtc_emo_q4_core.py",
+  "validation-emo-q5/src/wtc_emo_q5_core.py"
+ ],
+ "espace_enumeré": {
+  "dimension": "sommes E-R (13³) × motifs blocs (72) × motifs journal (18) × bande linéarité (2)",
+  "configurations": 5694624,
+  "decomposition": {
+   "sommes_er": 2197,
+   "motifs_blocs": 72,
+   "motifs_journal": 18,
+   "bandes_lineaire": 2
+  }
+ },
+ "cor8_sha256_run1": "62b360bcd9c996cf81d3e285993a05bb4c3861f1ecd626d0535798f4947639ab",
+ "cor8_sha256_run2": "62b360bcd9c996cf81d3e285993a05bb4c3861f1ecd626d0535798f4947639ab",
+ "criteres": {
+  "COR1_fragment_complet": {
+   "definition": "5694624/5694624 configurations → fragment L8 7 blocs, 0 champ vide (lectures non suspendues)",
+   "observe": "421200/421200",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entier pur (seuils 11/8/5) ≡ scores du VRAI cœur (seuils 3,5/2,5/1,5) — palier + S1 + S2 ; junction classification ↔ palier",
+   "observe": "2 197/2 197 · écart palier 0 · écart junction 0",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 ssi une face E-R ≥ 3,5 (Forte, vrai SEUIL_DOMINANCE) ; S2 ssi max = Vive sans Forte ; 0 borne pile sur 1,5/2,5/3,5 et 0,55/3,5 ; bornes entières inclusives consignées",
+   "observe": "S1 4367520/5694624 · S2 1003104/5694624 · pile niveau 0 · pile RQS 0 · dist min niveau 0.1667 · lin 0.011538 · contra 0.0556",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9) sur tous les textes générés + templates réels du cœur (7) + pas/suivi réels Q5 + labels Q2 + standings",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 417 ; D-SIM manquants 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "« rien à fabriquer » exactement sur les faces Discrète/Tranquille (jamais ailleurs) ; SILENCIEUSE ≡ 0 force du vrai cœur ; force affichée ⊆ forces retenues",
+   "observe": "occurrences ≠ faces calmées (lectures) : 0/421200 ; abus sur tout-actif : 0/0 ; calme sur suspension : 0/5273424 ; templates ≠ retenues : 0",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "475 profils archivés émo-q1 régénérés par le VRAI simulateur seed 42 : classification (cœur ≡ sommes ≡ simulateur), forces, RQS, distributions du rapport §E, 4 exemples tracés §D bit-exact, C1b/C1c/C3 conformes, R4 suspension ≡ RQS KO",
+   "observe": "475 profils · 3911 comparaisons · écarts 0 · classif ≡ simu 475/475 · forces ≡ simu 475/475 · SILENCIEUSES réelles 44 (conformes 475/475) · C1b 40/40 · C1c 20/20 · ASYM suspendus 15/15 · exemples §D 4/4 · distribution §E 35/35",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "8/8 pas réels (arbre Q5) résolus par le VRAI selectionner_pas sur l'espace complet des héritages (32448 combinaisons) ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines ; co-régulation (vrai seuil 3,0) cohérente sur 13 sommes ; 0 label hors banque",
+   "observe": "pas 8/8 · combinaisons 32448 · suivi 15/15 · re-test True · co-régulation True · paire explosive incohérente 0 · labels hors banque 0",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "62b360bcd9c996cf… == 62b360bcd9c996cf… → True",
+   "pass": true
+  },
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement avant énumération : items→sommes (375) · blocs 1 250→72 (10 000 appels) · journal 512→18 (4 096 appels) · n/t jamais lus (espion) · E-B/E-L jamais lus (espion) · DP exacte 5²⁷ (sommes 2 197/2 197, 2 bandes de linéarité co-atteignables 2 197/2 197) · convergence entiers ≡ cœur (169 produits + 27 paires)",
+   "observe": "375 → écart 0+0 · blocs 10000 → écart 0 · journal 4096 → écart 0 · espion n/t 18 → écart 0 · espion E-B/E-L 30 · DP total 7450580596923828125/7450580596923828125 · sommes 2197/2197 · bandes 2197+2197 · produits 169 → écart 0 · paires 27 → écart 0",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "faces_somme_valeurs": 375,
+  "faces_somme_ecarts": 0,
+  "faces_somme_repr": 375,
+  "faces_somme_repr_ecarts": 0,
+  "blocs_bruts": 10000,
+  "blocs_ecarts": 0,
+  "journal_bruts": 4096,
+  "journal_ecarts": 0,
+  "espion_nt": 18,
+  "espion_ecarts": 0,
+  "lecture_eb_el": 30,
+  "dp_total": 7450580596923828125,
+  "dp_attendu": 7450580596923828125,
+  "dp_sommes_atteintes": 2197,
+  "dp_sommes_attendues": 2197,
+  "dp_bande_bas_atteinte": 2197,
+  "dp_bande_haut_atteinte": 2197,
+  "dp_min_p_max": 0,
+  "dp_max_p_min": 0,
+  "produits_contra": 169,
+  "produits_ecarts": 0,
+  "paires_lin": 27,
+  "paires_ecarts": 0
+ },
+ "stage1": {
+  "configs": 5694624,
+  "fragment_complet": 421200,
+  "cor2_ecarts": 0,
+  "junction_classif_ecarts": 0,
+  "paliers": {
+   "🟢": 324000,
+   "🟠": 1003104,
+   "🔴": 4367520
+  },
+  "rang_quete": {
+   "0": 20736,
+   "1": 303264,
+   "2": 1003104,
+   "3": 4367520
+  },
+  "S1": 4367520,
+  "S2": 1003104,
+  "classifications": {
+   "RÉGULÉ": 324000,
+   "EXPLOSIF": 829440,
+   "SUPPRESSIF": 829440,
+   "RUMINANT": 829440,
+   "MIXTE": 2882304
+  },
+  "suspensions": 5273424,
+  "lectures": 421200,
+  "silencieuses": 12116,
+  "calme_occurrences_vs_faces": 0,
+  "configs_avec_face_calmee": 421200,
+  "configs_tout_actif": 0,
+  "calme_sur_tout_actif": 0,
+  "calme_sur_suspension": 0,
+  "force_hors_retenues": 0,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "pas_labels_hors_banque": 0,
+  "paire_explosive_incoherente": 0,
+  "pile_seuil_niveau": 0,
+  "pile_seuil_rqs": 0,
+  "dist_min_niveaux": 0.16666666666666652,
+  "dist_min_lin": 0.011538,
+  "dist_min_contra": 0.05555555555555536,
+  "md5_texts_count": 417,
+  "configs_attendues": 5694624
+ },
+ "stage2": {
+  "profils": 475,
+  "comparaisons": 3911,
+  "classif_coeur_vs_sommes": 475,
+  "classif_coeur_vs_simu": 475,
+  "forces_coeur_vs_simu": 475,
+  "gate_OK": 68,
+  "gate_SUSPENDU": 407,
+  "mention_suspension": 407,
+  "silencieuses_reelles": 44,
+  "silencieuses_conformes": 475,
+  "c1b_sans_force_silencieuse": 40,
+  "c1c_surcharge_2_forces": 20,
+  "c3_asym_suspendus": 15,
+  "asym_total": 15,
+  "paliers_honnetes": {
+   "🟢": 50,
+   "🟠": 18,
+   "🔴": 0
+  },
+  "S1_honnetes": 0,
+  "S2_honnetes": 18,
+  "fragments_complets": 68,
+  "exemples_bit_exact": 4,
+  "exemples_ecarts": 0,
+  "distribution_conforme": 35,
+  "distribution_ecarts": 0,
+  "dsim_100": 475,
+  "mots_interdits_max": 0
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "combinaisons": 32448,
+  "pas_resolus": 8,
+  "pas_attendus": 8,
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "coregulation_13_sommes": true,
+  "coregulation_seuil_pile": [
+   9
+  ]
+ },
+ "stage4_pas_table": {
+  "FE1": "fe1_active (Q3 émotionnel)",
+  "RC": "rc_label (Q2 émotionnel)",
+  "INV": "inv_d_zone (Q2 émotionnel)",
+  "FE6": "fe6_active (Q3 émotionnel)",
+  "FE3": "fe3_active (Q3 émotionnel)",
+  "ER2": "er2_moyenne (Q1 émotionnel)",
+  "ER1": "er1_moyenne (Q1 émotionnel)",
+  "CAP": "cap (Q1/Q3 émotionnel)"
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
