@@ -1,0 +1,174 @@
+{
+ "package": "validation-emotionnelle/validation-emo-q5/correction-philosophique",
+ "cible": "RIO-10 « Mon premier geste du cœur »",
+ "moteurs_reels": [
+  "validation-emo-q5/src/wtc_emo_q5_core.py (arbre 8 pas + suivi + re-test)",
+  "validation-emo-q5/src/wtc_emo_q5_simulator.py (seed 42, 520 profils)",
+  "validation-emo-q1/src/wtc_emo_q1_core.py (VRAIS seuils du plancher)",
+  "validation-emo-q2-r1/src/wtc_emo_q2_core.py (valeurs Q2 réelles)",
+  "validation-emo-q4-r3/src/wtc_emo_q4_core.py (co-régulation)"
+ ],
+ "espace_enumeré": {
+  "dimension": "jours tenus (15) × zone Q2 (3) × label (4) × cap (2) × forces fe1/fe3/fe6 (8) × er1 (13) × er2 (13)",
+  "configurations": 486720
+ },
+ "cor8_sha256_run1": "c3b286c31e1ac253ce57d9a316d965843498b6f9ff909223fda34edbfc478edd",
+ "cor8_sha256_run2": "c3b286c31e1ac253ce57d9a316d965843498b6f9ff909223fda34edbfc478edd",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement : faces héritées → rangs (13 valeurs réelles × 2 faces, sorties du VRAI arbre identiques à rang égal) · convergence float ≡ entiers (26) · suivi 15 valeurs (frontières 5/6 et 9/10, 0 sanction) · espions : clés parasites ignorées, caps PC/AD/PD équivalents pour l'arbre, jours/date jamais lus par selectionner_pas · classe er1 exacte (PILE 3,00 inclusif consigné) · l'espace mesuré (jours 0-14) énuméré DIRECTEMENT",
+   "observe": "rang 26 → écart 0 · convergence 26 → écart 0 · suivi 15 → écart 0 · sanctions 0 · espion clés 1 → écart 0 · espion caps 3 → écart 0 · espion jours 3 → écart 0 · classe er1 13 → écart 0 · pile seuils cœur 0 (dist min 0.1667)",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "486720/486720 configurations → fragment L8 7 blocs, 0 champ vide (aucun gate sur cet instrument — pas de suspension inventée, R4) + 520/520 profils archivés",
+   "observe": "486720/486720 états distincts · incomplets 0 · archivés 520/520 · incomplets 0",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entier pur (bandes 4/7/10) ≡ VRAIS seuils du cœur (3,5/2,5/1,5 — imports réels émo-q1) — palier plancher + S1 + S2 ; junctions S1 ⇔ 🔴, S2 ⇔ 🟠 exactement ; PLANCHER PARTIEL consigné (E-R3 absente des héritages — borne basse) ; note : les er des profils sont continus (D-PARAM σ 0,60) — le chemin float est celui appliqué",
+   "observe": "486720 configs · écart double chemin 0 · écart junction 0",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = plancher 🔴 (une face héritée ≥ 3,5, VRAI SEUIL_DOMINANCE) ; S2 = plancher 🟠 ; la couche n'ajoute aucun seuil numérique ; 0 borne pile (1,5/2,5/3,5 hors grille s/3) ; seuils du SUIVI entiers (≥ 10 CELEBRE · 6-9 AJUSTEMENT · ≤ 5 REPRISE — exacts par construction, célébré jamais sanctionné) ; co-régulation 3,0 PILE inclusif consigné",
+   "observe": "S1 302400/486720 · S2 112320/486720 · pile seuils cœur 0 · suivi seuils exacts (entiers) · co-régulation pile True",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9) sur tous les textes générés + templates réels du moteur (8 pas + 3 suivi + 3 rappels) + templates réels Q2, D-SIM 100 %",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 486720 ; D-SIM manquants 0 ; archivés D-SIM 520/520 · max archivés 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "le pas affiché ≡ VRAI selectionner_pas (trace de source réelle, arbre 8 pas) ; 6 templates réels cités par écran (pas + suivi + 3 rappels + re-test) ; fallback ER2 tracé honnêtement ; JAMAIS de sanction (structurel) ; pas ⊆ banque fermée",
+   "observe": "templates cités : écart 0 · pas hors banque 0 · sanctions non nulles 0 (énum) + 0 (archivés) · archivés templates 0",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "520 profils archivés émo-q5 régénérés par le VRAI simulateur seed 42 (6 groupes × 80 + PERFECT 20 + ZERO 20) : C1 520/520 pas ≡ pas_vrai (D-VÉRITÉ, éliminatoire) + pas attendu par groupe 8/8 · C2 520/520 catégories ≡ bandes entières · C3 PERFECT→CELEBRE 20/20, ZERO→REPRISE 20/20, 0 sanction, anti-perfectionnisme ok · C6 re-test 8 semaines 520/520",
+   "observe": "520 profils · 3649 comparaisons · écarts 0 · C1 520/520 · pas/groupe 320/8 · C2 520/520 · C3 PERFECT 20/20 · ZERO 20/20 · sanctions 0 · anti True · C6 520/520 · paliers {'🟢': 127, '🟠': 309, '🔴': 84} · S1 84 · S2 309",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "les 8 pas réels résolus par le VRAI selectionner_pas sur l'espace complet des héritages (énumération exhaustive — tous les héritages sont mesurés par les quêtes amont RIO-06/07/08) ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines jamais forcé ; rappels doux J1/J7/J14 réels ; co-régulation (vrai seuil 3,0, PILE consigné)",
+   "observe": "pas résolus 8/8 · distribution {\"CAP\": 40560, \"ER1\": 5460, \"ER2\": 3600, \"FE1\": 20280, \"FE3\": 1080, \"FE6\": 10140, \"INV\": 324480, \"RC\": 81120} · suivi 15/15 · re-test True · rappels True · co-régulation pile True",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "c3b286c31e1ac253… == c3b286c31e1ac253… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "rang_valeurs": 26,
+  "rang_ecarts": 0,
+  "frontiere_arbre": 26,
+  "frontiere_ecarts": 0,
+  "convergence_niveaux": 26,
+  "convergence_ecarts": 0,
+  "suivi_jours": 15,
+  "suivi_ecarts": 0,
+  "suivi_sanctions": 0,
+  "espion_cles": 1,
+  "espion_cles_ecarts": 0,
+  "espion_caps": 3,
+  "espion_caps_ecarts": 0,
+  "espion_jours": 3,
+  "espion_jours_ecarts": 0,
+  "classe_er1_valeurs": 13,
+  "classe_er1_ecarts": 0,
+  "pile_seuils": 0,
+  "dist_min_seuils": 0.16666666666666652
+ },
+ "stage1": {
+  "configs": 486720,
+  "fragments_distincts": 486720,
+  "fragment_incomplets": 0,
+  "cor2_ecarts": 0,
+  "junction_s1s2_ecarts": 0,
+  "paliers": {
+   "🟢": 72000,
+   "🟠": 112320,
+   "🔴": 302400
+  },
+  "S1": 302400,
+  "S2": 112320,
+  "pas_distribution": {
+   "INV": 324480,
+   "RC": 81120,
+   "CAP": 40560,
+   "FE1": 20280,
+   "FE6": 10140,
+   "ER1": 5460,
+   "ER2": 3600,
+   "FE3": 1080
+  },
+  "categories": {
+   "CELEBRE": 162240,
+   "AJUSTEMENT": 129792,
+   "REPRISE": 194688
+  },
+  "sanctions_non_nulles": 0,
+  "md5_texts_count": 486720,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "templates_cites_ecarts": 0,
+  "pas_hors_banque": 0,
+  "configs_attendues": 486720
+ },
+ "stage2": {
+  "profils": 520,
+  "comparaisons": 3649,
+  "c1_match": 520,
+  "c2_match": 520,
+  "c3_perfect_celebre": 20,
+  "c3_perfect_total": 20,
+  "c3_zero_reprise": 20,
+  "c3_zero_total": 20,
+  "c3_sanctions": 0,
+  "anti_ok": true,
+  "c6_programmed": 520,
+  "pas_par_groupe_conformes": 320,
+  "paliers": {
+   "🟢": 127,
+   "🟠": 309,
+   "🔴": 84
+  },
+  "S1": 84,
+  "S2": 309,
+  "fragments_archives": 520,
+  "fragments_incomplets": 0,
+  "dsim_archives": 520,
+  "mots_interdits_max": 0,
+  "templates_cites_ecarts": 0,
+  "resume": {
+   "G1_inv": 80,
+   "G2_rc": 80,
+   "G3_cap": 80,
+   "G4_fe1": 80,
+   "G5_er1": 80,
+   "G6_fallback": 80,
+   "PERFECT": 20,
+   "ZERO": 20
+  }
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "rappels_doux_3": true,
+  "coregulation_inclusive_pile": true,
+  "pas_par_zone_table": "n/a"
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
