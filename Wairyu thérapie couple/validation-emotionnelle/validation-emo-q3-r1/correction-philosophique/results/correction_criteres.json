@@ -1,0 +1,199 @@
+{
+ "package": "validation-emotionnelle/validation-emo-q3-r1/correction-philosophique",
+ "cible": "RIO-08 « Ce que mon cœur sait faire »",
+ "moteurs_reels": [
+  "validation-emo-q3-r1/src/wtc_emo_q3_core.py (M1 — D-DENSITÉ uniformisée, C2 100 %)",
+  "validation-emo-q3-r1/src/wtc_emo_q3_simulator.py (seed 42, 475 profils)",
+  "validation-emo-q1/src/wtc_emo_q1_core.py (VRAIS seuils du plancher)",
+  "validation-emo-q2-r1/src/wtc_emo_q2_core.py (valeurs Q2 réelles)",
+  "validation-emo-q4/src/wtc_emo_q4_core.py",
+  "validation-emo-q5/src/wtc_emo_q5_core.py"
+ ],
+ "espace_enumeré": {
+  "dimension": "échelle C (5³) × cap (4) × demande explicite (5) × rang E-R1 (4) × rang E-R3 (4) × états journal (14)",
+  "configurations": 560000,
+  "decomposition": {
+   "echelle_c": 125,
+   "cap": 4,
+   "demande_explicite": 5,
+   "rangs_er1": 4,
+   "rangs_er3": 4,
+   "etats_journal": 14
+  }
+ },
+ "cor8_sha256_run1": "cee44b560898cbd504d5c9a734888493e555e685aa493ee53c99487cf176d5fb",
+ "cor8_sha256_run2": "cee44b560898cbd504d5c9a734888493e555e685aa493ee53c99487cf176d5fb",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement avant énumération : faces héritées → rangs (13 valeurs réelles × 2 faces — mêmes sorties du VRAI forces_emo et même palier à rang égal) · convergence float ≡ entiers (26) · frontières des voies (journal 6 + échelle C/d_exp 4) · espions journal (complete/None compacts) et n jamais lu (8) · 4 statuts du VRAI statut_journal résolus par appels directs (SILENCIEUX N ≥ 5 — prévalence = VALID-01, consigné) · garde F-E3/CAP sur les 4 caps · classe er1 exacte sur les 13 sommes · l'espace mesuré (5³ × 4 × 5 = 2 500) énuméré DIRECTEMENT (réponses brutes)",
+   "observe": "rang 26 → écart 0 · convergence 26 → écart 0 · frontières 10 → écart 0 · espion journal 2 → écart 0 · espion n 8 → écart 0 · statuts 6 → écart 0 · garde 4 → violations 0 · classe er1 13 → écart 0",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "560000/560000 configurations → fragment L8 7 blocs, 0 champ vide (aucun gate sur cet instrument — pas de suspension inventée, R4) + 475/475 profils archivés",
+   "observe": "560000/560000 états distincts · incomplets 0 · archivés 475/475 · incomplets 0",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entier pur (bandes 4/7/10) ≡ VRAIS seuils du cœur (3,5/2,5/1,5 — imports réels émo-q1) — palier plancher + S1 + S2 ; junctions S1 ⇔ 🔴, S2 ⇔ 🟠 exactement ; note : les er des profils sont continus (D-PARAM σ 0,60) — le chemin float (VRAIS seuils) est celui appliqué aux profils, le chemin entier est prouvé sur la grille",
+   "observe": "560000 configs · écart double chemin 0 · écart junction 0 · 475 profils : junction conformes (0 écart archivé)",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = plancher 🔴 (une face héritée ≥ 3,5, VRAI SEUIL_DOMINANCE) ; S2 = plancher 🟠 ou cœur SILENCIEUSE (re-test 8 semaines) ; PLANCHER PARTIEL consigné (E-R2 absente du moteur — borne basse, monotonie du max) ; 0 borne pile (1,5/2,5/3,5 hors grille s/3, dist min 1/6) ; co-régulation 3,0 PILE atteignable (somme 9 — inclusive, consignée)",
+   "observe": "S1 245000/560000 · S2 175000/560000 · plancher partiel consigné · pile seuils 0 · dist min 0.1667 · co-régulation pile True",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9) sur tous les textes générés + templates réels du moteur (7) + moteurs de la chaîne (q2/q4/q5) + exercices et standings de la couche, D-SIM 100 %",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 560000 ; D-SIM manquants 0 ; archivés D-SIM 475/475 · max archivés 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "le positif n'est JAMAIS généré : forces affichées ≡ forces retenues du VRAI forces_emo (SILENCIEUSE ≡ 0 force — statut du vrai moteur) ; templates cités ≡ retenues (exclues de densité jamais affichées, toujours tracées) ; F-E3 jamais retenue avec CAP ≠ AC sauf par la voie JOURNAL du vrai moteur (célébrations consignées = preuves réelles — observation D-Q3-G consignée : la docstring de la garde dépasse son code, zéro retouche, prévalence = VALID-01) ; forces ⊆ banque fermée",
+   "observe": "templates ≠ retenues : 0 · exclues non tracées 0 · forces hors banque 0 · garde inexpliquée 0 (énum) + 0 (archivés) · F-E3 voie journal documentée 3312 + 0 · C3b inventions 0 · archivés templates 0",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "475 profils archivés émo-q3-r1 régénérés par le VRAI simulateur seed 42 : C1a 40/40 SILENCIEUSE (SANS_PREUVE) · C1b 20/20 deux retenues (SURCHARGE) · C1c 70/80 = 87,5 % ACTIF (H4) · C2 475/475 moteur ≡ simulateur, 0 désaccord (S-EMO-Q3-2 CLOS par l'arbitrage R1 D-DENSITÉ) · C3a 15/15 (CAP_NON_AC) · C3b 0 · cap_global {AC 161, PC 226, AD 37, PD 51} · indice 0,577 · observation géométrique H1 15,83 % (borne D-Q3-J 25-45 % — SOUS de 9,17 pts, consignée VALID-01)",
+   "observe": "475 profils · 2857 comparaisons · écarts 0 · C2 475/475 (désaccords 0) · C1a 40/40 · C1b 20/20 · C1c 70/80 · C3a 15/15 (violations 0) · C3b 0 · cap_global {\"AC\": 161, \"AD\": 37, \"PC\": 226, \"PD\": 51} · indice 0.577 · H1 silencieux 15.83 % (19/120) · SILENCIEUSES réelles 59 · S1 17 · S2 177",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "8/8 pas réels (arbre Q5) résolus par le VRAI selectionner_pas avec le cap et les forces retenues MESURÉS par cette quête (32 448 combinaisons, héritages Q2 RIO-07 / cœur RIO-06 balayés) ; invariants CAP (cap PC mesuré) et fallback (AC sans preuves) ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines ; co-régulation (vrai seuil 3,0, pile consigné) ; couple : table 9 entrées (classe er1 × zone Q2) sans hors-nomenclature, MIXTE POURSUITE ⇔ zone ≠ ABSENT, FEU CROISÉ présent",
+   "observe": "pas 8/8 · invariants 2/2 · cap PC → CAP True · fallback True · suivi 15/15 · re-test True · co-régulation pile True · hors nomenclature 0 · poursuite incohérente 0 · feu croisé incohérent 0 · labels hors banque 0",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "cee44b560898cbd5… == cee44b560898cbd5… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "rang_valeurs": 26,
+  "rang_ecarts": 0,
+  "convergence_niveaux": 26,
+  "convergence_ecarts": 0,
+  "journal_frontieres": 10,
+  "journal_ecarts": 0,
+  "espion_journal": 2,
+  "espion_journal_ecarts": 0,
+  "espion_n": 8,
+  "espion_n_ecarts": 0,
+  "statuts_resolus": 6,
+  "statuts_ecarts": 0,
+  "garde_caps": 4,
+  "garde_violations": 0,
+  "garde_voie_journal": 3,
+  "classe_er1_valeurs": 13,
+  "classe_er1_ecarts": 0
+ },
+ "stage1": {
+  "configs": 560000,
+  "fragments_distincts": 560000,
+  "fragment_incomplets": 0,
+  "cor2_ecarts": 0,
+  "junction_s1s2_ecarts": 0,
+  "garde_violations": 0,
+  "paliers": {
+   "🟢": 140000,
+   "🟠": 175000,
+   "🔴": 245000
+  },
+  "S1": 245000,
+  "S2": 175000,
+  "silencieuses": 480,
+  "visibles": 559520,
+  "deux_forces": 556552,
+  "exclues_non_traces": 0,
+  "forces_hors_banque": 0,
+  "fe3_voie_journal": 3312,
+  "md5_texts_count": 560000,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "templates_cites_ecarts": 0,
+  "pas_labels_hors_banque": 0,
+  "pile_seuil_niveaux": 0,
+  "dist_min_niveaux": 0.16666666666666674,
+  "configs_attendues": 560000
+ },
+ "stage2": {
+  "profils": 475,
+  "comparaisons": 2857,
+  "c2_match": 475,
+  "c2_desaccords": 0,
+  "c1a_sans_preuve_silencieuse": 40,
+  "c1b_surcharge_2_retenues": 20,
+  "c1c_h4_actif": 70,
+  "c1c_h4_total": 80,
+  "c3a_cap_non_ac_ok": 15,
+  "c3a_violations": 0,
+  "c3b_inventions": 0,
+  "cap_global": {
+   "AC": 161,
+   "PC": 226,
+   "AD": 37,
+   "PD": 51
+  },
+  "indice_capitalisation": 0.577,
+  "h1_silencieuses": 19,
+  "h1_total": 120,
+  "silencieuses_reelles": 59,
+  "S1_archives": 17,
+  "S2_archives": 177,
+  "fragments_archives": 475,
+  "fragments_incomplets": 0,
+  "dsim_archives": 475,
+  "mots_interdits_max": 0,
+  "templates_cites_ecarts": 0,
+  "garde_violations": 0,
+  "garde_voie_journal": 0,
+  "h1_silencieux_pct": 15.83
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "pas_resolus": 8,
+  "pas_attendus": 8,
+  "invariants_mesures": 2,
+  "invariants_attendus": 2,
+  "cap_pc_donne_CAP": true,
+  "cap_ac_sans_rien_donne_fallback": true,
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "coregulation_inclusive_pile": true,
+  "couple_hors_nomenclature": 0,
+  "couple_poursuite_incoherent": 0,
+  "couple_feu_croise_incoherent": 0,
+  "couple_configs_par_entree": {
+   "bas/ABSENT": 7,
+   "bas/FRÉQUENT": 7,
+   "bas/OCCASIONNEL": 7,
+   "pile/ABSENT": 7,
+   "pile/FRÉQUENT": 7,
+   "pile/OCCASIONNEL": 7,
+   "haut/ABSENT": 7,
+   "haut/FRÉQUENT": 7,
+   "haut/OCCASIONNEL": 7
+  }
+ },
+ "stage4_pas_table": {
+  "CAP": "cap (Q1/Q3 émotionnel)",
+  "RC": "rc_label (Q2 émotionnel)",
+  "INV": "inv_d_zone (Q2 émotionnel)",
+  "FE1": "fe1_active (Q3 émotionnel)",
+  "FE6": "fe6_active (Q3 émotionnel)",
+  "FE3": "fe3_active (Q3 émotionnel)",
+  "ER2": "er2_moyenne (Q1 émotionnel)",
+  "ER1": "er1_moyenne (Q1 émotionnel)"
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
