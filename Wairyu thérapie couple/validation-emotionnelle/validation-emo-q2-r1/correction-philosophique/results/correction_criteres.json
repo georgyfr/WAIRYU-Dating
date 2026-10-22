@@ -1,0 +1,307 @@
+{
+ "package": "validation-emotionnelle/validation-emo-q2-r1/correction-philosophique",
+ "cible": "RIO-07 « Ce que je n'arrive pas à dire »",
+ "moteurs_reels": [
+  "validation-emo-q2-r1/src/wtc_emo_q2_core.py (M3, logique inchangée — S-EMO-Q2-3 clos)",
+  "validation-emo-q2-r1/src/wtc_emo_q2_simulator.py (seed 42, M1+M2)",
+  "validation-emo-q4/src/wtc_emo_q4_core.py",
+  "validation-emo-q5/src/wtc_emo_q5_core.py"
+ ],
+ "espace_enumeré": {
+  "dimension": "moyennes (13³) × formulation (5) × (RE-1 × RE-2) (25) × terrains hérités (8) × classes d'ombre héritées (2)",
+  "configurations": 4394000,
+  "decomposition": {
+   "moyennes": 2197,
+   "formulation": 5,
+   "reponses_brutes": 25,
+   "terrains_herites": 8,
+   "classes_ombre": 2
+  }
+ },
+ "cor8_sha256_run1": "522541092066c7da1ead60ab88b61914f4ff23efab011bac71fa6871c04f6b86",
+ "cor8_sha256_run2": "522541092066c7da1ead60ab88b61914f4ff23efab011bac71fa6871c04f6b86",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement avant énumération : items→moyennes (750 vérifs + permutations) · boucle (RE-1, RE-2) 50 vérifs · terrain hérité 8→2 (disjonction du moteur) · espion CI (96 sondes, sortie ne dépend que de vif × dominante) · DP exacte 5⁹ (total bit-exact, 2 197/2 197 triplets de sommes, 8/8 bandes D-ÉCHELLE co-atteignables) · espion clés parasites · convergence entiers ≡ VRAI moteur (70 304 profils frontière)",
+   "observe": "moyennes 375 → écart 0+0 · boucle 50 → écart 0 · terrain 8 → écart 0 · espion CI 144 → écart 0 · DP total 1953125/1953125 · sommes 2197/2197 · bandes 8/8 · espion clés 3 → écart 0 · convergence 549250 → écart 0",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "4394000/4394000 configurations → fragment L8 7 blocs, 0 champ vide (aucun gate sur cet instrument — pas de suspension inventée, R4) + 460/460 profils archivés",
+   "observe": "549250/549250 états distincts · incomplets 0 · archivés 460/460 · incomplets 0",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entier pur (seuils 6/8/9/12, boucle entière) ≡ VRAI moteur (zones_invalidation + reproche_code D-ÉCHELLE + boucle_reassurance + palier) — palier + zones + label + boucle ; junctions S1 ⇔ 🔴, S2 ⇔ 🟠 exactement ; CI applicable ⇔ (score_A ≥ 2,61 ∧ ombre dominante)",
+   "observe": "4394000 configs · écart double chemin 0 · écart junction S1/S2 0 · écart tables CI 0 sur 12 tables",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = palier 🔴 du VRAI moteur (FRÉQUENT ∧ ≥ 4,0 ∧ boucle active) ; S2 = palier 🟠 sans 🔴 ; la couche n'ajoute AUCUN seuil numérique ; bornes du VRAI moteur consignées : signal 2,60 non pile (dist min 0,07) · grave 4,00 PILE atteignable (borne inclusive du palier réel) · D-ÉCHELLE 3,00 PILE atteignable (milieu, inclusif) · zone 2,00 pile (ABSENT inclusif) · CI 2,61 hors grille (héritage continu)",
+   "observe": "S1 425880/4394000 · S2 3241472/4394000 · pile grave 4,00 = 338000 · pile D-ÉCHELLE 3,00 = 338000 (consignés) · dist min 2,60 = 0.07 · 3,50 = 0.17 · 2,00 = 0.0 · co-régulation pile 3,0 inclusive : True",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9 + les 8 condamnantes C3a du moteur) sur tous les textes générés + templates réels des 3 moteurs + standings, D-SIM 100 %",
+   "observe": "max mots interdits par texte = 0 ; standing = 0 ; textes distincts = 549250 ; D-SIM manquants 0 ; archivés D-SIM 460/460 · max archivés 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "« rien à fabriquer » ⇔ palier 🟢 du VRAI moteur exactement (jamais sur 🟠/🔴) ; 5 templates réels cités mot pour mot par lecture (zones d/r + label + boucle + palier) ; l'invalidé jamais minimisé (C3b/C3c vérifiés sur TOUTE l'énumération) ; zone reçue ne met jamais le répondant en 🟠/🔴",
+   "observe": "rien à fabriquer ⇔ 🟢 : écart 0 (calme sur non-vert 0 · sans calme sur vert 0) · templates cités : écart 0 · C3b écart 0 · C3c écart 0 · C3 archivé 0/0/0 · écart archivé 0+0",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "460 profils archivés émo-q2-r1 régénérés par le VRAI simulateur seed 42 (M1 E5 corrigé + M2 E6 ajouté) : C1a 666/760 = 87,63 % · C1b 180/220 = 81,82 % (E5 20/20, E6 20/20 — arbitrage S-EMO-Q2-3 confirmé ; E3 57/80 = chevauchement géométrique S-EMO-Q2-R1-1 CONSERVÉ consigné, type D-Q4-2) · C1c 406/420 = 96,67 % · C2 180 applicables 180 ≥ 0,50 · C3 0/0/0 · D-VÉRITÉ 4/4 · paliers 8/8 groupes · moyennes Section C 8/8 · pièges SANS_SIGNAL 🟢 30/30, GRAVE 🔴 10/10",
+   "observe": "460 profils · 4153 comparaisons · écarts 0 · C1a 666/760 = 87.63 % · C1b 180/220 = 81.82 % (E5 20/20 · E6 20/20) · C1c 406/420 = 96.67 % · C2 180/180/crash 0 · C3 0/0/0 · D-VÉRITÉ 4 orphelins 0 · paliers 8/8 · moyennes 8/8 · SANS_SIGNAL 🟢 30/30 · GRAVE 🔴 10/10 · S1 52 · S2 239",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "8/8 pas réels (arbre Q5) résolus par le VRAI selectionner_pas avec les héritages Q2 MESURÉS par cette quête (INV/RC décidés par les vraies zones/labels — invariants 10/10) + balayage cœur RIO-06 (32 448 combinaisons) ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines ; co-régulation (vrai seuil 3,0 inclusif) ; le VRAI configuration_devises alimenté par la VRAIE zone mesurée (MIXTE POURSUITE ⇔ zone ≠ ABSENT) ; 0 config hors nomenclature",
+   "observe": "pas 8/8 · invariants mesurés 10/10 · suivi 15/15 · re-test True · co-régulation pile True · configs/zone {'ABSENT': 8, 'OCCASIONNEL': 8, 'FRÉQUENT': 8} · hors nomenclature 0 · poursuite incohérente 0 · feu croisé manquant 0 · labels hors banque 0",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "522541092066c7da… == 522541092066c7da… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "moyennes_valeurs": 375,
+  "moyennes_ecarts": 0,
+  "moyennes_repr": 375,
+  "moyennes_repr_ecarts": 0,
+  "boucle_paires": 50,
+  "boucle_ecarts": 0,
+  "terrain_reps": 8,
+  "terrain_ecarts": 0,
+  "espion_ci": 144,
+  "espion_ci_ecarts": 0,
+  "espion_cles": 3,
+  "espion_cles_ecarts": 0,
+  "dp_total": 1953125,
+  "dp_attendu": 1953125,
+  "dp_sommes_atteintes": 2197,
+  "dp_sommes_attendues": 2197,
+  "dp_bandes_atteintes": 8,
+  "dp_bandes_attendues": 8,
+  "convergence_profil": 549250,
+  "convergence_ecarts": 0
+ },
+ "stage1": {
+  "configs": 4394000,
+  "fragments_distincts": 549250,
+  "fragment_incomplets": 0,
+  "cor2_ecarts": 0,
+  "junction_s1s2_ecarts": 0,
+  "paliers": {
+   "🟢": 726648,
+   "🟠": 3241472,
+   "🔴": 425880
+  },
+  "S1": 425880,
+  "S2": 3241472,
+  "labels": {
+   "REPROCHE-CODE ACTIF": 946400,
+   "BESOIN VIVANT, FORMULATION MIXTE": 1419600,
+   "BESOIN DISCRET": 811200,
+   "FORMULATION ACQUISE": 1216800
+  },
+  "zones_d": {
+   "ABSENT": 1352000,
+   "OCCASIONNEL": 1352000,
+   "FRÉQUENT": 1690000
+  },
+  "boucle_actives": 1384110,
+  "rien_a_fabriquer_ecarts": 0,
+  "calme_sur_non_vert": 0,
+  "sans_calme_sur_vert": 0,
+  "templates_cites_ecarts": 0,
+  "c3b_ecarts": 0,
+  "c3c_ecarts": 0,
+  "md5_texts_count": 549250,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "pas_labels_hors_banque": 0,
+  "pile_grave_400": 338000,
+  "pile_d_echelle_300": 338000,
+  "dist_min_signal_260": 0.06666666666666643,
+  "dist_min_zone_350": 0.16666666666666652,
+  "dist_min_zone_200": 0.0,
+  "configs_attendues": 4394000
+ },
+ "stage2": {
+  "profils": 460,
+  "comparaisons": 4153,
+  "c1a_total": 760,
+  "c1a_correct": 666,
+  "c1a_par_groupe": {
+   "E1_invalidant_pur": [
+    172,
+    200
+   ],
+   "E2_invalide_code": [
+    172,
+    200
+   ],
+   "E3_boucle_complete": [
+    132,
+    160
+   ],
+   "E4_sain": [
+    190,
+    200
+   ]
+  },
+  "c1b_total": 220,
+  "c1b_correct": 180,
+  "c1b_par_groupe": {
+   "E2_invalide_code": [
+    83,
+    100
+   ],
+   "E3_boucle_complete": [
+    57,
+    80
+   ],
+   "E5_code_sain": [
+    20,
+    20
+   ],
+   "E6_formulation_acquise": [
+    20,
+    20
+   ]
+  },
+  "c1c_total": 420,
+  "c1c_correct": 406,
+  "c1c_par_groupe": {
+   "E1_invalidant_pur": [
+    100,
+    100
+   ],
+   "E2_invalide_code": [
+    87,
+    100
+   ],
+   "E3_boucle_complete": [
+    79,
+    80
+   ],
+   "E4_sain": [
+    100,
+    100
+   ],
+   "E5_code_sain": [
+    20,
+    20
+   ],
+   "E6_formulation_acquise": [
+    20,
+    20
+   ]
+  },
+  "c2_applicables": 180,
+  "c2_index_ge_050": 180,
+  "c2_crash": 0,
+  "c3a": 0,
+  "c3b": 0,
+  "c3c": 0,
+  "d_verite_orphelins": 0,
+  "d_verite_labels": 4,
+  "paliers_par_groupe": {
+   "E1_invalidant_pur": {
+    "🟢": 0,
+    "🟠": 100,
+    "🔴": 0
+   },
+   "E2_invalide_code": {
+    "🟢": 4,
+    "🟠": 96,
+    "🔴": 0
+   },
+   "E3_boucle_complete": {
+    "🟢": 0,
+    "🟠": 38,
+    "🔴": 42
+   },
+   "E4_sain": {
+    "🟢": 96,
+    "🟠": 4,
+    "🔴": 0
+   },
+   "E5_code_sain": {
+    "🟢": 20,
+    "🟠": 0,
+    "🔴": 0
+   },
+   "E6_formulation_acquise": {
+    "🟢": 19,
+    "🟠": 1,
+    "🔴": 0
+   },
+   "SANS_SIGNAL": {
+    "🟢": 30,
+    "🟠": 0,
+    "🔴": 0
+   },
+   "GRAVE": {
+    "🟢": 0,
+    "🟠": 0,
+    "🔴": 10
+   }
+  },
+  "paliers_conformes": 8,
+  "moyennes_conformes": 8,
+  "sans_signal_vert": 30,
+  "grave_rouge": 10,
+  "S1_archives": 52,
+  "S2_archives": 239,
+  "fragments_archives": 460,
+  "fragments_incomplets": 0,
+  "dsim_archives": 460,
+  "mots_interdits_max": 0,
+  "rien_a_fabriquer_ecarts": 0,
+  "templates_cites_ecarts": 0
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "pas_resolus": 8,
+  "pas_attendus": 8,
+  "invariants_mesures": 10,
+  "invariants_attendus": 10,
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "coregulation_inclusive_pile": true,
+  "couple_hors_nomenclature": 0,
+  "couple_poursuite_incoherent": 0,
+  "couple_feu_croise_manquant": 0,
+  "couple_configs_par_zone": {
+   "ABSENT": 8,
+   "OCCASIONNEL": 8,
+   "FRÉQUENT": 8
+  },
+  "ci_ecarts": 0,
+  "ci_tables": 12
+ },
+ "stage4_pas_table": {
+  "RC": "rc_label (Q2 émotionnel)",
+  "CAP": "cap (Q1/Q3 émotionnel)",
+  "FE1": "fe1_active (Q3 émotionnel)",
+  "FE6": "fe6_active (Q3 émotionnel)",
+  "FE3": "fe3_active (Q3 émotionnel)",
+  "ER2": "fallback (aucun héritage actif)",
+  "ER1": "er1_moyenne (Q1 émotionnel)",
+  "INV": "inv_d_zone (Q2 émotionnel)"
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}
