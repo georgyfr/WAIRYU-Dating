@@ -464,3 +464,39 @@ les cartes (écrans sans carte exclus).
 **E2E staging vérifié** : état vide honnête → M1+1.4 injectés → « 1/11 · 4/51 »,
 Le Miroir « Completed », 4 résultats → quête 1.5 terminée DANS L'UI → « 10%
 complete » en direct → journal 5/51 · 5 résultats. Mobile OK, 0 erreur console.
+
+## Task 178 (2026-10-23) — P2 de l'audit + vérification bit-exact étendue + R2 gratuit assumé
+
+**Décision fondateur (2026-10-23)** : R2 reste DÉSACTIVÉ — la version gratuite
+est assumée ; les médias E3 répondent 503 propre tant que non activé. Le reste
+du backlog continue sans R2.
+
+**Correctifs P2 posés (staging-first)**
+1. WS neutre sous blocage (D-E2-7) — le DO ne répond plus `code:'blocage'`
+   (silence total, miroir du REST `{ok:true,silencieux:true}`) — commit d8f2491,
+   prouvé EN VRAI sur staging (socket ouverte avant blocage, aucun retour).
+2. Whitelist signalements en N1 (M-1 : la mesure ne retire jamais le droit de
+   signaler) — middleware/sanction.ts.
+3. Parenthésage `UPDATE rencontre_pas` de l'unmatch corrigé (le OR non
+   parenthésé liait `statut='match'` au seul second bras).
+4. `chatVoiceUser` retiré (règle de rate jamais branchée — retour prévu avec R2).
+5. Migration `0019_hygiene.sql` : deux index dupliqués de 0015 supprimés
+   (`idx_rblk_par`, `idx_rsig_de` — même colonne que leurs jumeaux).
+6. `migrations/README.md` : réconciliation 0014 (numéro jamais utilisé dans la
+   ligne canonique ; prod = 17/17 fichiers, rien à rattraper).
+7. Annonce quête 1.1 corrigée : « 58 affirmations » → **50** (PASSATION 58
+   positions = 50 items + 8 trames sautées — l'écran n'a JAMAIS montré 58).
+8. STATUS.md rafraîchi (ce bloc).
+
+**Vérification bit-exact étendue à 1.5→5.7 (audit P2)** — 4 agents en parallèle,
+31 quêtes restantes, 441 vérifications exécutées au vrai (bun, graines gelées,
+cartes/sélecteurs reproduits) : **0 écart**. Nuances documentées sans impact
+moteur (commentaire obsolète 2.8-def, ancrage limité 1.1-1.3 par Task 65,
+ordre QUETE_IDS 5.x vs chaîne — P3 connu).
+
+**Environnements** : staging `0418f4dd` → +1 version (ce lot) · prod `e60bc976`
+(P1 + WS neutre, vérifié 30/30 en staging avant pose). Migration 0019 :
+staging appliquée, prod en attente du prochain feu vert.
+
+**Restes** : TOTAL_STEPS 51/50 (décision fondateur) · pool paginé, moteur
+serveur des quêtes, hooks M8-M11 (P3) · économie Lucioles à l'ouverture PSP.
