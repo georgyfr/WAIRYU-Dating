@@ -26,7 +26,7 @@ import VoyageIcon from './VoyageIcons';
 import type { VoyageIconName } from './VoyageIcons';
 import { WORLDS } from '../lib/voyage';
 import { useI18n } from '../i18n/I18nProvider';
-import { formaterPrixFacturation } from '../i18n/currency';
+
 
 /** Les types de récolte expliquables — alignés sur lib/notifs.ts. */
 export type TypeRecolte =
@@ -252,7 +252,7 @@ export function itemDeNotif(n: { type: string; mois: number; nom?: string; date:
 }
 
 export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte; onClose: () => void }) {
-  const { tx, lang, devise } = useI18n();
+  const { tx, lang } = useI18n();
   const refModal = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -355,8 +355,6 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
             tx(r.points[2]),
           ]
         : r.points.map((p) => tx(p));
-
-  const premium = item.type === 'mois' && item.mondeCode ? !item.traverse : false;
 
   return (
     <div className="w-overlay" onClick={onClose} role="presentation">
@@ -463,23 +461,6 @@ export default function InfoRecolteModal({ item, onClose }: { item: ItemRecolte;
                 ))}
               </ul>
             </>
-          )}
-
-          {item.type === 'mois' && premium && (
-            <div className="ri-premium">
-              <span className="v-prem" aria-label="Premium">
-                <VoyageIcon name="gem" size={11} strokeWidth={2.2} />
-                <em>Premium</em>
-              </span>
-              <p>
-                {tx('Ce mois s\x27ouvrira avec l\x27abonnement mensuel — {{prix}}/mois.', {
-                  prix: formaterPrixFacturation('mensuel', devise, lang),
-                })}
-              </p>
-              <p className="ri-premium-note">
-                {tx('L\x27ouverture des paiements arrive bientôt : quand tu ouvriras un mois, sa récolte sera annoncée ici, par notification.')}
-              </p>
-            </div>
           )}
 
           <p className="ri-garde">{tx(r.garde)}</p>
