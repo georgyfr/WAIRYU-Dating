@@ -1,0 +1,269 @@
+{
+ "package": "validation-q4/correction-philosophique",
+ "cible": "RIO-04 « Notre danse » (croisement de couple)",
+ "moteurs_reels": [
+  "validation-q4/src/wtc_q4_core.py (9 configurations, 9 templates, boucle ≥ 30)",
+  "validation-q4/src/wtc_q4_simulator.py (seed 42, 800 paires — re-exécuté frais, D-REPRO)",
+  "validation-q5/src/wtc_q5_core.py (pas + suivi + re-test)"
+ ],
+ "espace_enumeré": "4 types p1 × 4 types p2 × 2 classes de styles L6 × 3 empreintes p1 × 3 empreintes p2 × 22 jeux de forces p1 × 22 jeux de forces p2 = 139 392 configurations",
+ "cor8_sha256_run1": "fb18c5c986a666a3acbb1f29dc568189d4af43be7cc470774dbc375f47ea4c9c",
+ "cor8_sha256_run2": "fb18c5c986a666a3acbb1f29dc568189d4af43be7cc470774dbc375f47ea4c9c",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "écart/boucle déterministes par paire de types (16/16, 7 valeurs d'écart, dist min au seuil 30 consignée) · frontière 2,61 jamais PILE sur l'ensemble atteignable (dist min consignée) · face ≡ type → pas ≡ (type, empreinte) sur la grille atteignable · espions clés parasites · empreinte 6 variantes → 3 classes · table indépendante ≡ VRAI _CONFIG_TABLE · complétude L6 3×3",
+   "observe": "écart 16/16 · valeurs [0, 5, 15, 45, 50, 60, 65] · pile 30 : 0 (dist min 15) · pile 2,61 : 0 (dist min 0.001111) · face écarts 0/4 · pas écarts 0/12 · espion 0 écart/16 · empreinte 6→3 · table 16/16 · L6 0 écart/144 cellules (avert 0)",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "139 392/139 392 configurations → fragment L8 7 blocs niveau couple, 0 champ vide + 800/800 paires archivées",
+   "observe": "139392/139392 énumérés · 800/800 archivés",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "chemin indépendant (table + règle ré-encodées, sans appeler le moteur) ≡ chemin couche (VRAI moteur) : config + boucle + palier + S1 + S2",
+   "observe": "139392/139392 convergents",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 ⇔ palier 🔴 (FEU_CROISE) exactement ; S2 ⇔ palier 🟠 exactement (boucle VRAI ≥ 30 ∨ feu simple ∨ silence) ; 0 seuil numérique ajouté par la couche (2,61 · 30 · 9 · 7 — tous du VRAI moteur ; bornes PILE consignées)",
+   "observe": "S1 17424/139392 · S2 95832/139392 · causes boucle 69696 · feu 52272 · silence 8712 · junctions incohérentes 0 · S1 archivés 97/800 · S2 archivés 527/800",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9 + liste anti-blâme du VRAI moteur) sur tous les textes générés ; D-SIM 100 % ; direction de la boucle jamais affichée ; jamais de « tu »/« ton » dans la phrase de boucle",
+   "observe": "max mots interdits par texte = 0 ; textes distincts = 78408 ; D-SIM manquants 0 ; direction affichée 0 ; « tu » dans boucle 0 ; standings 0/0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "« rien à fabriquer » ssi BASE_SEREINE exactement (le calme nommé seulement là où le VRAI moteur le nomme) ; jamais de pourcentage de compatibilité (pct None partout) ; avertissement de style présent ssi styles dissimulables (VRAI R4) ; 9 templates réels du moteur reproduits mot pour mot",
+   "observe": "calme abus 0 · calme manqués 0 (configs avec calme légitime 8712) · pct non null 0 · avert présents 69696/attendus 69696 · C5 violations archivées 0",
+   "pass": true
+  },
+  "COR6_re_score_bit_exact": {
+   "definition": "D-REPRO : le VRAI simulateur P1 seed 42 re-exécuté FRAIS à chaque passage — 800 paires — agrégats bit-exact vs JSON archivé du 15/10 (resume_configs · config_obtenues_count · C1 par config · C2 0 désaccord · boucles 370 · avertissements 28 · C3 9/9 · C5 0) ; FAIL strict C1 7/9 CONSERVÉ consigné (géométrie du style L6, zéro retouche) ; couche appliquée sur les 800 (junctions, textes, fragments, pas)",
+   "observe": "800 paires · 12008 comparaisons · écarts 0 · agrégats {'resume_configs': True, 'config_obtenues': True, 'c1_par_config': True, 'boucles': True, 'avertissements': True, 'c2_desaccords': True, 'c3_templates': True, 'c5_violations': True} · C1 correct 621/800 · boucles 370 · avert 28 · paliers archivés {'🟢': 176, '🟠': 527, '🔴': 97} · pas repr ≡ réel 800/800",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "12/12 (type × empreinte) par partenaire → pas du VRAI moteur Q5 (face × empreinte mesurées, jamais devinées) ; suivi 14 j 15/15 frontières exactes, 0 sanction ; re-test 8 semaines par le VRAI programmer_re_test_q1 (jamais forcé)",
+   "observe": "pas résolus 12/12 · suivi frontières True · sanctions 0 · re-test force False · date 2026-02-26 · pas repr ≡ réel (800 paires) 800/800",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques",
+   "observe": "fb18c5c986a666a3… == fb18c5c986a666a3… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "ecart_valeurs": [
+   0,
+   5,
+   15,
+   45,
+   50,
+   60,
+   65
+  ],
+  "ecart_coherent": 16,
+  "ecart_total": 16,
+  "pile_30": 0,
+  "dist_min_30": 15,
+  "scores_atteignables": 65,
+  "pile_261": 0,
+  "dist_min_261": 0.001111,
+  "face_valeurs_par_type": {
+   "SEREIN": [
+    "RASSUREE"
+   ],
+   "PREOCCUPE": [
+    "EN_QUETE"
+   ],
+   "DETACHE": [
+    "SUR_LA_RA"
+   ],
+   "EN_ALERTFEU": [
+    "SUR_LA_RA"
+   ]
+  },
+  "face_ecarts": 0,
+  "pas_combinaisons": 12,
+  "pas_ecarts": 0,
+  "espion_cles": 16,
+  "espion_ecarts": 0,
+  "empreinte_variantes": 6,
+  "empreinte_classes": [
+   "PEUR_DE_PERDRE",
+   "PEUR_D_ETRE_ETOUFFEE",
+   "ZONE_CALME"
+  ],
+  "table_16": 16,
+  "l6_cellules": 144,
+  "l6_ecarts": 0,
+  "l6_avert_ecarts": 0
+ },
+ "stage1": {
+  "configs": 139392,
+  "fragment_complet": 139392,
+  "cor2_ecarts": 0,
+  "paliers": {
+   "🟢": 26136,
+   "🟠": 95832,
+   "🔴": 17424
+  },
+  "S1": 17424,
+  "S2": 95832,
+  "causes": {
+   "boucle": 69696,
+   "feu": 52272,
+   "silence": 8712
+  },
+  "configs_par_palier": {
+   "🟢": [
+    "BASE_SEREINE",
+    "MIXTE_SEREINE_RETRAIT"
+   ],
+   "🟠": [
+    "DANSE_QUI_TOURNE",
+    "DISTANCE_POLIE",
+    "MIXTE_POURSUITE_FEU",
+    "MIXTE_RETRAIT_FEU",
+    "MIXTE_SEREINE_FEU",
+    "MIXTE_SEREINE_POURSUITE"
+   ],
+   "🔴": [
+    "FEU_CROISE"
+   ]
+  },
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "calme_abus": 0,
+  "calme_manques": 0,
+  "direction_affichee": 0,
+  "pct_non_null": 0,
+  "phrase_boucle_tu": 0,
+  "avert_presents": 69696,
+  "avert_attendus": 69696,
+  "pas_hors_banque": 0,
+  "junction_incoherente": 0,
+  "configs_avec_calme": 8712,
+  "md5_texts_count": 78408
+ },
+ "stage2": {
+  "paires": 800,
+  "comparaisons": 12008,
+  "config_obtenues": {
+   "BASE_SEREINE": 85,
+   "DANSE_QUI_TOURNE": 79,
+   "FEU_CROISE": 97,
+   "DISTANCE_POLIE": 75,
+   "MIXTE_SEREINE_POURSUITE": 87,
+   "MIXTE_SEREINE_RETRAIT": 91,
+   "MIXTE_SEREINE_FEU": 115,
+   "MIXTE_POURSUITE_FEU": 82,
+   "MIXTE_RETRAIT_FEU": 89
+  },
+  "c1_correct_par_config": {
+   "BASE_SEREINE": 73,
+   "DANSE_QUI_TOURNE": 67,
+   "FEU_CROISE": 72,
+   "DISTANCE_POLIE": 69,
+   "MIXTE_SEREINE_POURSUITE": 63,
+   "MIXTE_SEREINE_RETRAIT": 69,
+   "MIXTE_SEREINE_FEU": 74,
+   "MIXTE_POURSUITE_FEU": 66,
+   "MIXTE_RETRAIT_FEU": 68
+  },
+  "c2_desaccords": 0,
+  "boucles": 370,
+  "avertissements": 28,
+  "c5_violations": 0,
+  "c3_mot_pour_mot": 800,
+  "c3_configs": [
+   "BASE_SEREINE",
+   "DANSE_QUI_TOURNE",
+   "DISTANCE_POLIE",
+   "FEU_CROISE",
+   "MIXTE_POURSUITE_FEU",
+   "MIXTE_RETRAIT_FEU",
+   "MIXTE_SEREINE_FEU",
+   "MIXTE_SEREINE_POURSUITE",
+   "MIXTE_SEREINE_RETRAIT"
+  ],
+  "paliers_archives": {
+   "🟢": 176,
+   "🟠": 527,
+   "🔴": 97
+  },
+  "S1_archives": 97,
+  "S2_archives": 527,
+  "fragments_complets": 800,
+  "pas_resolus": 800,
+  "pas_repr_vs_reel": 800,
+  "mots_interdits_max": 0,
+  "direction_affichee": 0,
+  "resume_configs_attendu": {
+   "BASE_SEREINE": 89,
+   "DANSE_QUI_TOURNE": 89,
+   "FEU_CROISE": 89,
+   "DISTANCE_POLIE": 89,
+   "MIXTE_SEREINE_POURSUITE": 89,
+   "MIXTE_SEREINE_RETRAIT": 89,
+   "MIXTE_SEREINE_FEU": 89,
+   "MIXTE_POURSUITE_FEU": 89,
+   "MIXTE_RETRAIT_FEU": 88
+  },
+  "agregats_vs_archive": {
+   "resume_configs": true,
+   "config_obtenues": true,
+   "c1_par_config": true,
+   "boucles": true,
+   "avertissements": true,
+   "c2_desaccords": true,
+   "c3_templates": true,
+   "c5_violations": true
+  }
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "pas_12": {
+   "SEREIN|ZONE_CALME": "P1",
+   "SEREIN|PEUR_DE_PERDRE": "P2",
+   "SEREIN|PEUR_D_ETRE_ETOUFFEE": "P3",
+   "PREOCCUPE|ZONE_CALME": "P2",
+   "PREOCCUPE|PEUR_DE_PERDRE": "P4",
+   "PREOCCUPE|PEUR_D_ETRE_ETOUFFEE": "P5",
+   "DETACHE|ZONE_CALME": "P3",
+   "DETACHE|PEUR_DE_PERDRE": "P5",
+   "DETACHE|PEUR_D_ETRE_ETOUFFEE": "P6",
+   "EN_ALERTFEU|ZONE_CALME": "P3",
+   "EN_ALERTFEU|PEUR_DE_PERDRE": "P5",
+   "EN_ALERTFEU|PEUR_D_ETRE_ETOUFFEE": "P6"
+  },
+  "pas_resolus": 12,
+  "pas_labels_dans_banque": [
+   "Demander sans exiger",
+   "Desserrer la garde un peu",
+   "Garder l'espace sans rupture",
+   "Nommer la peur quand elle vient",
+   "Poser une présence simple",
+   "Tenir le lien à distance"
+  ],
+  "suivi_frontieres_ok": true,
+  "suivi_sanctions": 0,
+  "re_test_force": false,
+  "re_test_date": "2026-02-26T00:00:00",
+  "re_test_ok": true,
+  "templates_suivi": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ]
+ },
+ "standings": {
+  "mots_interdits_standings": 0,
+  "mots_blame_standings": 0,
+  "orientation_canon_dans_phrase": true
+ }
+}

@@ -3098,3 +3098,19 @@ Work Log:
 
 Stage Summary:
 - RIO-08 COMPLET ET PROUVÉ (9/9 PASS). Trois des cinq quêtes émotionnelles au 100 % (RIO-06/07/08). File : RIO-09 (émo-q4-r3 — 3 révisions à étudier) → RIO-10 (émo-q5). Push GitHub global en attente du jeton (RIO-06/07/08 empilés).
+
+---
+Task ID: 176
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — « RIO-04 » (trace 1a167755f324af9d) : fichier de correction RIO-04 « Notre danse » (croisement de couple, moteur q4), même gabarit R1-R9, fichiers SUPPLÉMENTAIRES, zéro modification de l'existant.
+
+Work Log:
+- Specs RIO-04 : moteur q4 (9 configurations nommées — D-Q4-1 corrigé —, 9 templates mot pour mot non-blâmants, boucle poursuite-retrait écart ≥ 30, percentiles simulés 25/70/20/85) ; simulateur P1 seed 42 (800 paires, C1 7/9 FAIL strict — D-STD, C2 800/800, C3 9/9, C5 800/800, boucles 370, avertissements 28) ; audit Task 163 : F1 25 · F2 15 · F3 6 · F4 15 = 61 %.
+- Package validation-q4/correction-philosophique/ créé (couche R1-R9 + pipeline COR0-COR8 + JSON + rapport + README + .gitignore).
+- Palier de COUPLE dérivé mécaniquement, 0 seuil ajouté : 🔴 ssi FEU_CROISE · 🟠 ssi boucle VRAI ≥ 30 ∨ feu simple ∨ DISTANCE_POLIE · 🟢 sinon (BASE_SEREINE, MIXTE_SEREINE_RETRAIT). S1 ⇔ 🔴 · S2 ⇔ 🟠 (re-test 8 semaines, VRAI programmer_re_test_q1, jamais forcé).
+- Preuve : 139 392 configurations exhaustives ; compactations PROUVÉES (écart/boucle déterministes 16/16 — seuil 30 jamais PILE dist 15 · frontière 2,61 jamais PILE dist 0,0011 · pas ≡ (type, empreinte) sur 21 168 appels réels · espions 16/16 · complétude L6 144 cellules) ; 9 critères COR0-COR8 tous PASS ; re-score BIT-EXACT 800 paires D-REPRO (simulateur frais ×2 — 12 008 comparaisons, 0 écart, 8/8 agrégats bit-exact vs archive du 15/10 ; FAIL strict C1 621/800 CONSERVÉ consigné ; pas repr ≡ réel 800/800) ; SHA ×2 fb18c5c986a666a3….
+- Re-score RIO-04 : 61 % → 100 % (F1 25 inchangé · F2 15→25 · F3 6→25 · F4 15→25). Attachement 428/5 = 85,6 → 467/5 = 93,4 % · global 2 000/23 = 87,0 %.
+- Documents : ADDENDUM-10 en append à l'audit · ligne au hub README · rapport + JSON (SHA des 2 exécutions). Push GitHub opérationnel (PAT fondateur, Task 175) — commit poussé dans la foulée.
+
+Stage Summary:
+- RIO-04 COMPLET ET PROUVÉ (9/9 PASS) — 4 des 5 quêtes d'attachement au 100 % (RIO-01/02/03/04). Reste RIO-05 (pas, F1 plafonné 20 → max 95 %). Doctrine couple respectée : boucle nommée ENSEMBLE, direction jamais affichée, 0 % compatibilité, chacun sur soi pour le pas. PROCHAINE QUÊTE SIGNALÉE : RIO-05 ou santé mentale (RIO-11→15) au signal fondateur.
