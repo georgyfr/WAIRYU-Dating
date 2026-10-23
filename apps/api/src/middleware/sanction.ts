@@ -33,8 +33,12 @@ const BLC_N2 = [
   '/api/account',
 ];
 
-/** Les écritures Rencontre qui restent ouvertes en N1 (M-1 : se protéger). */
-const ECRITURES_N1_OUVERTES = ['/blocage', '/unmatch', '/lu'];
+/** Les écritures Rencontre qui restent ouvertes en N1 (M-1 : se protéger).
+ *  Correctif audit : le SIGNALEMENT rejoint la liste — M-1 fait du signalement
+ *  E2 la protection de base (« toute mesure centrale est un complément ») :
+ *  une mesure N1 ne retire jamais le droit de signaler. N2 reste hors
+ *  périmètre : son chemin prévu est l'appel gravé (G-MA-3). */
+const ECRITURES_N1_OUVERTES = ['/blocage', '/unmatch', '/lu', 'signalements'];
 
 export async function sanctionMiddleware(c: Context<AppEnv>, next: Next) {
   const niveau = c.get('sanction');

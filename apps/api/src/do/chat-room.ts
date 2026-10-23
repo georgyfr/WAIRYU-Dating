@@ -132,7 +132,10 @@ export class ChatRoom implements DurableObject {
         .bind(match.a, match.b)
         .first<{ ok: number }>();
       if (bloq) {
-        ws.send(JSON.stringify({ type: 'erreur', code: 'blocage' }));
+        // D-E2-7 — WS NEUTRE (correctif audit) : comme le fallback REST
+        // ({ok:true, silencieux:true}), le DO répond RIEN — ni erreur ni
+        // écho. Un code « blocage » explicite permettrait au bloqué de
+        // déduire le blocage d'une erreur, ce que la spécification interdit.
         return;
       }
 

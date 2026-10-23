@@ -547,8 +547,11 @@ messagesRoutes.post('/rencontres/:matchId/unmatch', async (c) => {
       c.env.DB.prepare(`DELETE FROM rencontre_medias WHERE match_id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(`DELETE FROM rencontre_matchs WHERE id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(
+        // Parenthésage corrigé (audit : le OR non parenthésé liait
+        // `statut = 'match'` au seul second bras) — les DEUX directions
+        // sont bornées au statut 'match', le reste reste intact.
         `UPDATE rencontre_pas SET statut = 'retire'
-         WHERE (de = ?1 AND vers = ?2) OR (de = ?2 AND vers = ?1) AND statut = 'match'`,
+         WHERE ((de = ?1 AND vers = ?2) OR (de = ?2 AND vers = ?1)) AND statut = 'match'`,
       ).bind(session.userId, ctx.autreId),
     ]);
     // Le blocage N'EST PAS touché : il survit à l'unmatch (D-E2-7).

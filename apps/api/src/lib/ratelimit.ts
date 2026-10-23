@@ -73,8 +73,9 @@ export const RATE_RULES = {
   // --- Étape 6 : chat & révélation ---
   /** Envoi de messages en FALLBACK HTTP (le WS a son anti-spam DO). 240 / h. */
   chatSendUser: { scope: 'chat:send:user', windowSeconds: 3600, max: 240 },
-  /** Uploads de voice notes : 30 / heure. */
-  chatVoiceUser: { scope: 'chat:voice:user', windowSeconds: 3600, max: 30 },
+  // chatVoiceUser (« chat:voice:user » 30/h, Étape 6) RETIRÉ — jamais branché
+  // (audit) ; les uploads médias passent par a2MediaPutUser. Une règle dédiée
+  // reviendra le jour où R2 est activé (médias E3 en vrai).
   /** Demandes de révélation : 10 / heure (le seuil ≥15 msg / 7 j borne déjà). */
   chatRevealUser: { scope: 'chat:rev:user', windowSeconds: 3600, max: 10 },
   /** Réponses (révélation) + feedbacks + passerelles de chat : 60 / heure. */
