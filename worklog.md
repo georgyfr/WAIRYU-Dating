@@ -3202,3 +3202,19 @@ Stage Summary:
 - PROD à jour du lot P2 complet : Worker version 0d1b9259-cae7-49d3-a2ee-2dd40a36eb30 (100 %, succède à e60bc976 de la Task 177) + migration 0019_hygiene posée et vérifiée (index dupliqués purgés, aucune donnée touchée).
 - Audit P1 + P2 : intégralement en production. WS neutre, purge unmatch, cartes Duo, rate limit, whitelist signalements N1, parenthésage UPDATE, annonce « 50 », hygiène D1 — tout est posé et fumé.
 - Restes : TOTAL_STEPS 51/50 (décision fondateur, non touché) · P3 (pool paginé, moteur serveur des quêtes, hooks M8-M11, ordre QUETE_IDS 5.x) · R2 à activer par le fondateur quand le budget suivra (503 media_indisponible = comportement nominal d'ici là) · révocation des tokens fondateur en fin de projet (rappel standing).
+
+---
+Task ID: 180
+Agent: Z.ai Code (orchestrateur — session fondateur « pousse tout ce qui a été fait sur GitHub »)
+Task: Re-provisionnement du PAT GitHub (nouveau jeton fourni par le fondateur) + vérification que TOUT le travail est bien sur GitHub. Périmètre hors WTC.
+
+Work Log:
+- État vérifié d'abord : le lot P2 (Tasks 178/179, commits 9011eba → d3ab69f) était DÉJÀ poussé sur GitHub ; le local n'avait zéro commit d'avance.
+- Nouveau PAT installé dans la config git LOCALE du remote origin (jamais écrit dans un fichier du dépôt — discipline secrets reconfirmée : rg du dépôt = 0 occurrence).
+- Authentification réelle du nouveau PAT prouvée : git ls-remote répond (refs/heads/main). NB : l'empreinte SHA256:QJDq8… fournie par le fondateur ne correspond au hash standard du PAT dans aucune variante testée (base64url, base64, hex) — l'usage réel a fait foi.
+- Découverte : GitHub main était EN AVANCE sur le local — une session parallèle a mergé le travail « interface-therapeutique » (commits 13fbcb1 maquettes P01/P05/P12/P14, af75887 dossier interface/ + README, e22dbbd merge) dans main. `git pull --ff-only` exécuté : local aligné sur e22dbbd. Périmètre respecté : ces fichiers — dont le dossier « Wairyu thérapie couple » — ne sont ni ouverts ni lus, présence constatée par métadonnées git uniquement.
+- Push de contrôle avec le NOUVEAU PAT (ce commit) — cycle complet fetch/pull/commit/push vérifié.
+
+Stage Summary:
+- GitHub = local = e22dbbd : TOUT le travail est sur GitHub — lot P1 (Task 7), lot P2 + bit-exact 1.5→5.7 (Task 178), déploiement prod (Task 179), et le travail des sessions parallèles (interface thérapeutique).
+- Nouveau PAT opérationnel et installé ; l'ancien peut être révoqué par le fondateur quand il le souhaite (rappel standing : TOUS les tokens seront révoqués en fin de projet).
