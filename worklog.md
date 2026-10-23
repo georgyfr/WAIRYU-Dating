@@ -3114,3 +3114,24 @@ Work Log:
 
 Stage Summary:
 - RIO-04 COMPLET ET PROUVÉ (9/9 PASS) — 4 des 5 quêtes d'attachement au 100 % (RIO-01/02/03/04). Reste RIO-05 (pas, F1 plafonné 20 → max 95 %). Doctrine couple respectée : boucle nommée ENSEMBLE, direction jamais affichée, 0 % compatibilité, chacun sur soi pour le pas. PROCHAINE QUÊTE SIGNALÉE : RIO-05 ou santé mentale (RIO-11→15) au signal fondateur.
+
+---
+Task ID: 169
+Agent: Z.ai Code (orchestrateur — session fondateur « attaque les correctifs P1 »)
+Task: Correctifs P1 issus de l'audit de conformité app vs specs produit (périmètre strictement hors WTC — dossier « Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts). NB : bloc posé en fin de fichier après les Tasks 170-176 (sessions parallèles) — le numéro 169 était réservé à cette session app, travaillée en vol pendant le rattrapage WTC.
+
+Work Log:
+- (1) D-E3-7 (le 🔴 de l'audit) — unmatch (routes/messages.ts) : les objets médias R2 partent D'ABORD (SELECT r2_key → MEDIA.delete — même ordre que hardDeleteAccount), puis le batch purge rencontre_voiles, rencontre_duo, rencontre_a2_reponses (sous-requête AVANT rencontre_a2), rencontre_a2, rencontre_medias, en plus des tables E2 existantes. MEDIA absent (binding désactivé) : les lignes D1 partent quand même (aucun octet n'existe).
+- (2) Cartes Duo (D-E3-5) — carteDe() n'extrait plus les métadonnées (terminee/carteId/termineeA/majA/lectures/schema_version ne sortent JAMAIS) : les textes libres deviennent les lignes ; les réponses chiffrées partent dans A2Carte.valeurs (champ optionnel — packages/shared/types.ts) ; l'app les rend item par item (MessagesEspace : lignesLikert = énoncé du registre + position ●●●●○, plafond 8 lignes, format likert seul — les autres formats attendent leur rendu dédié Phase C, D-E3-8). Rendu verrouillé anti-trames : seuls les codes présents dans valeurs sont lus.
+- (3) a2/etat gelé sous blocage (D-E3-7) — symétrique des autres surfaces E3 (404 not_found). RDV préparé localisé FR/EN (deriverRdv reçoit lang ; A2_PILOTE i.en/pourquoiEn ; question EN, apostrophes ASCII). Commentaire de porte photo corrigé : G-E3-P9 → D-E3-5 (D-R2) — G-E3-P4 étant « limites médias », le libellé exact de la décision est D-E3-5.
+- (4) /api/reponses borné (l'audit relevait l'absence de tout garde-fou) — 3 règles D1 : rep:put 1800/h · rep:get 240/h · rep:del 60/h ; dépassement → 429 {ok:false,error:'rate_limited'} + Retry-After. PUT calibré au-dessus du burst d'une passation rapide (~700/h mesuré par le debounce 1,6 s) pour ne JAMAIS couper la sauvegarde d'une vraie passation.
+- (5) Pont de sync versionné — chaque état poussé porte schema_version:1 (sync-reponses.ts) ; etatValide le tolère (entier 1-99 si présent) et le restitue tel quel. Toute évolution future de EtatQuete incrémentera le marqueur au lieu de casser le pont en silence.
+- (6) Retrait de la chaîne paywall inatteignable (InfoRecolte) — « Ce mois s'ouvrira avec l'abonnement mensuel » + note paiements + const premium + import formaterPrixFacturation (devenu orphelin). Tranchement (a) « retirer le verrou » exécuté sur consigne fondateur (« attaque les correctifs P1 ») : chaîne inatteignable depuis la Récolte D21 (Task 91), zéro impact utilisateur, réversible par git. TOTAL_STEPS 51/50 NON touché (consigne fondateur explicite, répétée deux fois — les deux options de réconciliation restent à trancher).
+- VÉRIFICATIONS : typecheck ✅ apps/api + apps/web + packages/shared (tsc --noEmit, 0 erreur) ; smoke test local wrangler (D1 locale, migrations 0001→0018 appliquées) : boot fail-closed sans SESSION_HMAC_KEY ✅ (comportement documenté) · PUT valide avec schema_version → ok:true ✅ · GET restitue l'état + schema_version ✅ · schema_version invalide → 400 ✅ · sans session → 401 ✅ · rafale 1850 PUT → 429 rate_limited après le 1800ᵉ ✅. La purge D-E3-7 est revue contre le pattern RGPD éprouvé (hardDeleteAccount) ; le test unmatch réel (match + médias) reste à faire sur staging.
+- Aucun déploiement (staging-first, feu vert fondateur requis). Prochaine étape naturelle : build + deploy staging, vérification E3 réelle, puis feu vert prod.
+- Périmètre : dossier « Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts ; aucun contenu RIO cité dans ces correctifs.
+
+Stage Summary:
+- Les 4 groupes P1 de l'audit sont posés : ① purge E3 à l'unmatch (D-E3-7 — le seul 🔴), ② cartes Duo honnêtes (D-E3-5) + gel a2/etat + RDV localisé, ③ garde-fou /api/reponses + pont de sync versionné, ④ paywall mort retiré (option conservatrice, réversible).
+- Reste P1 à décision fondateur : TOTAL_STEPS 51 vs 50 (deux options : 51 assumé avec la Rencontre comptée, ou 50 + mention séparée).
+- Restes P2/P3 de l'audit (non traités ici) : WS neutre code:'blocage', whitelist signalements N1, parenthésage UPDATE unmatch, index dupliqués, réconciliation migrations 0014, vérification bit-exact 1.5→5.7, trames FM-018, moteur serveur des quêtes, pool paginé, STATUS.md.
