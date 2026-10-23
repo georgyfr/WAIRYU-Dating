@@ -469,7 +469,7 @@ export const WORLD_DETAILS: Record<string, WorldDetail> = avecEN(
     quetes: [
       {
         title: "Ta personnalité",
-        hint: "58 affirmations — ouverture, organisation, énergie sociale, bienveillance, stabilité émotionnelle",
+        hint: "50 affirmations — ouverture, organisation, énergie sociale, bienveillance, stabilité émotionnelle",
       },
       {
         title: "Ta façon de t'attacher",
