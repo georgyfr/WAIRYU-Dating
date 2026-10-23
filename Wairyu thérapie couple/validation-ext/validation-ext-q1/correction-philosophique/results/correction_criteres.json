@@ -1,0 +1,192 @@
+{
+  "RIO": "RIO-16 « L'écart de nos horloges » (carte) — ext-q1",
+  "moteurs": {
+    "q1": "validation-ext-q1/src/wtc_ext_q1_core.py (VALIDÉ 7/7, CONTRESIGNÉ)",
+    "q2": "validation-ext-q2/src/wtc_ext_q2_core.py (junction croisement)",
+    "q3": "validation-ext-q3/src/wtc_ext_q3_core.py (junction pas)"
+  },
+  "COR0_compactations": {
+    "faces_triplets_64": 64,
+    "faces_ecarts": 0,
+    "faces_scores": "10/10",
+    "axes_sextuplets": 12288,
+    "axes_ecarts": 0,
+    "axes_scores": "19/19",
+    "inverses": 10,
+    "inverses_ecarts": 0,
+    "espions": 7,
+    "espion_ecarts": 0,
+    "distances_seuils_axe": {
+      "1.8": 0.0333,
+      "2.6": 0.0667,
+      "3.2": 0.0333
+    },
+    "bornes_ci90": 34,
+    "bornes_pile": 0,
+    "ecarts_faces": 15,
+    "distance_ecart_seuil_h": 0.1163,
+    "rqs_realisables": {
+      "aucune": true,
+      "vigilance": true,
+      "rythme": true,
+      "lineaire": true,
+      "lineaire+rythme": true,
+      "lineaire+vigilance": true,
+      "lineaire+rythme+vigilance": true,
+      "contradiction": true,
+      "contradiction+rythme": true,
+      "contradiction+vigilance": true,
+      "contradiction+rythme+vigilance": true
+    },
+    "lin_contra_realisable": false,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 6859,
+    "attendu": 6859,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts_niveaux": 0,
+    "ecarts_faces": 0,
+    "paires_faces": 300,
+    "nuages": 132,
+    "hierarchies": 168,
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 12,
+    "S2": 4662,
+    "S2_ecarts": 0,
+    "borne_pile": 0,
+    "bornes_consignees": "1,80/3,20 : dist min 1/30 ≈ 0,0333 · 2,60 : 1/15 ≈ 0,0667 (grain 1/6) · 0,8837 : dist min 0,1163 (grain 1/3 des faces, 15 écarts distincts) · 34 bornes CI90, 0 PILE sur un seuil",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 232,
+    "fragments_distincts": 6859,
+    "dsim_manquant": 0,
+    "exception_sourcee": "filet 3919/3114 = literal du VRAI moteur (P-FILTRE validé P1) — cité, jamais réécrit",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "calme_hors_vert": 0,
+    "vert_sans_calme": 0,
+    "filet_hors_carte": 0,
+    "vert_dominant_invar": 0,
+    "0_verdict_temporel": "R5/R6 — aucun mot de la liste C6 (trop tard, bonne saison, compte à rebours…) dans les textes (COR4 vérifie la liste entière)",
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_couples": 520,
+    "n_rives": 1040,
+    "stats_groupes_match": true,
+    "paliers_globaux_match": true,
+    "rci_match": true,
+    "conformite_match": true,
+    "comparaisons": 1560,
+    "ecarts": 0,
+    "couche_paliers": {
+      "EXERCICE MAISON": 797,
+      "MODULE DE COUPLE": 101,
+      "ORIENTATION": 42,
+      "NON_AFFICHÉE": 100
+    },
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "g09_statuts": {
+      "OK": 0,
+      "PRUDENCE": 60,
+      "INVALIDE": 20
+    },
+    "g11_forte_court_circuit": "5/5",
+    "archive": "resultats-ext-q1-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "scores_h_couverts": 19,
+    "niveaux_croisement_ecarts": 0,
+    "configs_resolues": 57,
+    "configs_ecarts": 0,
+    "banque_longueurs_ok": 57,
+    "banque_ecarts": 0,
+    "pas_verbatim_ecarts": 0,
+    "pas_zero_configs": [
+      1.0,
+      1.1667,
+      1.3333,
+      1.5,
+      1.6667,
+      1.8333,
+      2.0,
+      2.1667,
+      2.3333
+    ],
+    "pas_zero_ecarts": 0,
+    "paliers_croises_couverts": [
+      "EXERCICE MAISON",
+      "MODULE DE COUPLE",
+      "ORIENTATION"
+    ],
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "retest_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "40fb737db80d60edbbe289391309ca1a41b26b7103fec653d95f43362dd6b067",
+    "sha2": "40fb737db80d60edbbe289391309ca1a41b26b7103fec653d95f43362dd6b067",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "paliers_6859": {
+      "EXERCICE MAISON": 2197,
+      "MODULE DE COUPLE": 1899,
+      "ORIENTATION": 2763
+    },
+    "conservateurs_3x6859": {
+      "DISCRÈTE": 8664,
+      "TRANQUILLE": 5415,
+      "VIVE": 3249,
+      "FORTE": 3249
+    },
+    "statuts_rqs": {
+      "PRUDENCE": 129,
+      "OK": 6730
+    },
+    "frontieres_vs_posees": {
+      "FRONTIÈRE": 14079,
+      "NIVEAU": 6498
+    },
+    "junction_configs": {
+      "1|2|3": 3249,
+      "4|5|6": 2166,
+      "7|8|9": 1444
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — lecture graduée D-VÉRITÉ/D-STD-2 validée au package (rien à masquer, rien à ajouter)",
+    "F2": 25,
+    "F2_note": "inchangé — palier max-niveau + QUAND DEMANDER déjà validés C5 ; S2 élargie à tout palier non-VERT (un axe FORTE est AUSSI un moment « demander de l'aide »)",
+    "F3": [
+      15,
+      25
+    ],
+    "F3_note": "contenu CONCRET des 3 paliers produits (exercice zone calme §5.5 · module à deux s'appuyant sur les VRAIS pas de la banque Q3 · orientation avec le VRAI pas rouge) — l'invariant VERT ⇔ zone calme est prouvé, pas supposé",
+    "F4": [
+      10,
+      25
+    ],
+    "F4_note": "fragment de bilan L8 à 7 blocs (position · forme · empreinte · couple · force · limites · palier/pas + flux Q2-Q5), COMPLET y compris hors-carte (filet, RQS INVALIDE) — aucun bloc vide",
+    "avant": 75,
+    "apres": 100
+  }
+}
