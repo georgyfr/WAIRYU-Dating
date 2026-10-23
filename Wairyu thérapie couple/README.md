@@ -37,15 +37,15 @@ Wairyu thérapie couple/
 │   │   ├── validation-emo-q4-r3/correction-philosophique/ (RIO-09 re-scored 61 % → 100 %, gabarit §5.1-§5.4 complet, 746 k états + palier de couple prouvé, COR0-COR8 PASS)
 │   │   └── validation-emo-q5/correction-philosophique/ (RIO-10 re-scored 67 % → 95 % — plafond F1=20 des quêtes pas — 487 k états, COR0-COR8 PASS)
 │
-│  ═══ Dimension SANTÉ MENTALE (RIO-11 · RIO-12 · RIO-13 · RIO-14 · RIO-15 contresignés) ═══
+│  ═══ Dimension SANTÉ MENTALE (5/5 VALIDÉE — RIO-11 → RIO-15 CLOSE, gabarit §5.1-§5.4 complet) ═══
 ├── validation-sm/
 │   ├── SM-Q2-SPEC.md · SM-Q3-SPEC.md · SM-Q4-SPEC.md (verrouillées 18/10) · SM-Q5-SPEC.md (verrouillée 18/10)
 │   ├── validation-sm-q1/ (R0) · validation-sm-q1-r1/ · validation-sm-q1-r2/
-│   ├── validation-sm-q1-r3/ (R3 VALIDÉ, contresigné)
-│   ├── validation-sm-q2/ (RIO-12 — contresigné)
-│   ├── validation-sm-q3/ (RIO-13 — contresigné)
-│   ├── validation-sm-q4/ (RIO-14 — contresigné)
-│   └── validation-sm-q5/ (RIO-15 — contresigné)
+│   │   └── validation-sm-q1-r3/correction-philosophique/ (RIO-11 re-scored 69 % → 100 %, gabarit §5.1-§5.4 complet, 4 250 états + bande D-GÉOMÉTRIE affichée, COR0-COR8 PASS)
+│   ├── validation-sm-q2/correction-philosophique/ (RIO-12 re-scored 69 % → 100 %, gabarit complet, 167 042 états + faces B non classifiantes prouvées, COR0-COR8 PASS)
+│   ├── validation-sm-q3/correction-philosophique/ (RIO-13 re-scored 71 % → 100 %, gabarit complet, 5 832 états + junction 3,50 PILE unique, COR0-COR8 PASS)
+│   ├── validation-sm-q4/correction-philosophique/ (RIO-14 re-scored 77 % → 100 %, gabarit complet, 2 304 états + palier de couple ≡ VRAI palier_de Q5, COR0-COR8 PASS)
+│   └── validation-sm-q5/correction-philosophique/ (RIO-15 re-scored 86 % → 95 % — plafond F1=20 des quêtes pas — 288 états + doctrine du pas, COR0-COR8 PASS)
 │
 │  ═══ Dimension EXTENSIONS — GÉNÉRATIONNELLE (SPEC Q1-Q3 verrouillées 18/10 · RIO-16 · RIO-17 · RIO-18 contresignés) ═══
 ├── validation-ext/

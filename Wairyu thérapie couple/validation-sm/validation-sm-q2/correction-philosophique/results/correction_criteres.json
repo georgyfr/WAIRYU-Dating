@@ -1,0 +1,153 @@
+{
+  "RIO": "RIO-12 « Ce que je porte pour toi » (ombre) — sm-q2",
+  "moteurs": {
+    "q2": "validation-sm-q2/src/wtc_sm_q2_core.py (verrouillé)",
+    "q1": "validation-sm-q1-r3/src/wtc_sm_q1_core.py (junction)",
+    "q3": "validation-sm-q3/src/wtc_sm_q3_core.py (junction forces)",
+    "q4": "validation-sm-q4/src/wtc_sm_q4_core.py (junction configs)",
+    "q5": "validation-sm-q5/src/wtc_sm_q5_core.py (junction pas)"
+  },
+  "COR0_compactations": {
+    "items_256x5": 3125,
+    "items_ecarts": 0,
+    "sommes": "17/17",
+    "espions_b": 4,
+    "espion_ecarts": 0,
+    "frontiere_entiere": 196,
+    "frontiere_ecarts": 0,
+    "borne_pile_310_490": 0,
+    "borne_pile_400_consignee": 1,
+    "compactation_b": 17,
+    "compactation_b_ecarts": 0,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 167042,
+    "attendu": 167042,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "sous_verif_b": 81,
+    "sous_verif_b_ecarts": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 125426,
+    "S2": 29616,
+    "voies_reelles": {
+      "H5": 41616,
+      "SM-C1": 34680,
+      "A2": 49130
+    },
+    "crise_entiere_ecarts": 0,
+    "borne_pile_250_350": 78608,
+    "bornes_consignees": "3,10/4,90 inatteignables PILE sur grain 0,25 (dist min 0,10) · 2,50/3,50 PILE atteignables (bornes inclusives du cœur, consignées) · 4,00 PILE = seuil de crise",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 48,
+    "fragments_distincts": 125137,
+    "dsim_manquant": 0,
+    "bande_haut_hors_crise": 0,
+    "exception_sourcee": "filet 3919/3114 = literal du VRAI moteur (P-FILTRE validé P1) · « trouble » = nom de case du canon (ligne 133, banque de pas réelle Q5) — neutralisés avant décompte, jamais une étiquette du répondant",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "calme_hors_stable": 0,
+    "stable_sans_calme": 0,
+    "court_circuit_hors_crise": 0,
+    "crise_sans_court_circuit": 0,
+    "ombre_en_crise": 0,
+    "b_classifiante": 0,
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_profils": 520,
+    "stats_groupes_match": true,
+    "c3_match_voies_frontiere": true,
+    "comparaisons": 1434,
+    "ecarts": 0,
+    "couche_paliers": {
+      "🟢": 189,
+      "🟠": 207,
+      "🔴": 124
+    },
+    "couche_S1": 124,
+    "couche_S2": 207,
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_en_bande": 126,
+    "couche_en_crise": 124,
+    "archive": "resultats-sm-q2-2026-10-17.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "paliers_resolus": 4,
+    "pas_rouge_none": 2,
+    "pas_rouge_ecarts": 0,
+    "pas_vert_conformes": 1,
+    "pas_orange_conformes": 1,
+    "pas_ecarts": 0,
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "junction_palier_q2_q5": 6,
+    "junction_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "63fa002c38d01fecc4369c30c6c4e8f94ac5dc30500730137045132d2df55c6c",
+    "sha2": "63fa002c38d01fecc4369c30c6c4e8f94ac5dc30500730137045132d2df55c6c",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "labels": {
+      "STABLE": 12000,
+      "CRISE": 125426,
+      "HOSTILE": 8400,
+      "SURIMPLIQUÉ": 2400,
+      "MIXTE": 10416,
+      "ÉPUISÉ": 8400
+    },
+    "paliers": {
+      "🟢": 12000,
+      "🔴": 125426,
+      "🟠": 29616
+    },
+    "niv_chg": {
+      "FAIBLE": 38658,
+      "MOYEN": 83572,
+      "ÉLEVÉ": 44812
+    },
+    "configs_atteignables": {
+      "CALME DES DEUX RIVES|COURANT FORT|TEMPÊTE": 38658,
+      "DEUX COURANTS|TEMPÊTE ET DIGUE|VEILLE": 83572,
+      "DÉBORDEMENT|PORTE SEULE|RIVE QUI CÈDE": 44812
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — D-VÉRITÉ 24 items, D-CRISE 3 voies peuplées, D-GÉOMÉTRIE (package validé, rien à masquer)",
+    "F2": [
+      22,
+      25
+    ],
+    "F3": [
+      12,
+      25
+    ],
+    "F4": [
+      10,
+      25
+    ],
+    "avant": 69,
+    "apres": 100
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "RIO": "RIO-14 « Nos deux rives » (croisement) — sm-q4",
+  "moteurs": {
+    "q4": "validation-sm-q4/src/wtc_sm_q4_core.py (SPEC verrouillée)",
+    "q5": "validation-sm-q5/src/wtc_sm_q5_core.py (junction pas)",
+    "q2": "validation-sm-q2/src/wtc_sm_q2_core.py (filet amont)"
+  },
+  "COR0_compactations": {
+    "grille_9_9": 9,
+    "grille_ecarts": 0,
+    "anti_inversion": "6 flips / 3 stables",
+    "anti_inversion_ok": true,
+    "det_bornes_pile": 0,
+    "chg_bornes_pile": 2,
+    "frontiere_exacte": {
+      "2.49": "FAIBLE",
+      "2.50": "MOYEN",
+      "3.49": "MOYEN",
+      "3.50": "ÉLEVÉ"
+    },
+    "frontiere_ecarts": 0,
+    "seuils_reels": "boucle ≥ 30 PILE inclusif · styles ≥ 1,00 inclusif — avertissements, jamais des verdicts",
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 2304,
+    "attendu": 2304,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "junction_ecarts": 0,
+    "junction": "palier de la couche ≡ VRAI palier_de Q5 sur les 9 configurations + override — LA table du croisement EST celle du pas (assert à chaque appel, 0 table propre)",
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 2288,
+    "S2": 12,
+    "voies_reelles": {
+      "H5": 108,
+      "SM-C1": 108,
+      "H5+SM-C1": 324,
+      "A2": 108,
+      "A2+H5": 324,
+      "A2+SM-C1": 324,
+      "A2+H5+SM-C1": 972,
+      "héritée": 20
+    },
+    "bornes_consignees": "détresse grain 1/3 : 2,50/3,50 PILE inatteignables (Section F archivée) · charge grain 1/12 : bornes PILE atteignables (piège FRONTIÈRES 40/40) · boucle ≥ 30 PILE (G11 à l'écart exact)",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 25,
+    "fragments_distincts": 1152,
+    "dsim_manquant": 0,
+    "exceptions_sourcees": "filet amont (literal moteur P1) · case « trouble » du canon si la banque de pas est citée (ligne 133)",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "calme_hors_zone": 0,
+    "verdict_en_crise": 0,
+    "direction_affichee": 0,
+    "compatibilite": 0,
+    "doctrine": "boucle nommée ENSEMBLE, direction jamais affichée · 0 % compatibilité · « rien à fabriquer » ssi CALME DES DEUX RIVES (template réel)",
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_couples": 600,
+    "stats_match": true,
+    "boucle_globale_match": true,
+    "styles_globale_match": true,
+    "voies_g10_match": true,
+    "conformite_match": true,
+    "frontiere_match": true,
+    "par_config_match": true,
+    "comparaisons": 1800,
+    "ecarts": 0,
+    "couche_paliers": {
+      "EXERCICE MAISON": 49,
+      "MODULE DE COUPLE": 185,
+      "ORIENTATION": 366
+    },
+    "couche_S1": 366,
+    "couche_S2": 185,
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_crise": 50,
+    "archive": "resultats-sm-q4-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "paliers_resolus": 18,
+    "pas_rouge_none": 14,
+    "pas_rouge_ecarts": 0,
+    "pas_vert_conformes": 1,
+    "pas_orange_conformes": 3,
+    "pas_ecarts": 0,
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "58b8d869078cda85ff7ddcd68dea1e39e44cafa2782e12bd4944076389e250a3",
+    "sha2": "58b8d869078cda85ff7ddcd68dea1e39e44cafa2782e12bd4944076389e250a3",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "configs": {
+      "CALME DES DEUX RIVES": 256,
+      "VEILLE": 256,
+      "PORTE SEULE": 256,
+      "COURANT FORT": 256,
+      "DEUX COURANTS": 256,
+      "RIVE QUI CÈDE": 256,
+      "TEMPÊTE": 256,
+      "TEMPÊTE ET DIGUE": 256,
+      "DÉBORDEMENT": 256
+    },
+    "paliers": {
+      "EXERCICE MAISON": 4,
+      "ORIENTATION": 2288,
+      "MODULE DE COUPLE": 12
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — 9 configurations D-TABLE, anti-inversion, D-STD-2 par config (package validé, rien à masquer)",
+    "F2": [
+      22,
+      25
+    ],
+    "F3": [
+      12,
+      25
+    ],
+    "F4": [
+      18,
+      25
+    ],
+    "avant": 77,
+    "apres": 100
+  }
+}

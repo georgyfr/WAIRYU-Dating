@@ -1,0 +1,132 @@
+{
+  "RIO": "RIO-15 « Mon premier pas vers l'autre rive » (pas) — sm-q5",
+  "moteurs": {
+    "q5": "validation-sm-q5/src/wtc_sm_q5_core.py (SPEC verrouillée)",
+    "q3": "validation-sm-q3/src/wtc_sm_q3_core.py (junction forces)",
+    "q4": "validation-sm-q4/src/wtc_sm_q4_core.py (config tracée)",
+    "q2": "validation-sm-q2/src/wtc_sm_q2_core.py (filet amont)"
+  },
+  "COR0_frontieres": {
+    "engagement_totaux": 15,
+    "engagement_ecarts": 0,
+    "rci_frontieres": 8,
+    "rci_ecarts": 0,
+    "asymetrie": 8,
+    "asymetrie_ecarts": 0,
+    "agregation_max": 9,
+    "agregation_ecarts": 0,
+    "palier_table": 9,
+    "palier_ecarts": 0,
+    "banque_injective": 6,
+    "banque_ecarts": 0,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 288,
+    "attendu": 288,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "junction": "max-rang entiers ≡ VRAI palier_de Q5 (assert à chaque appel) — override crise en premier",
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 224,
+    "S2": 48,
+    "bornes_consignees": "CÉLÉBRÉ ≥ 9/14 PILE inclusive · RCI |Δ| ≥ 0,58 FIABLE · [0,41 ; 0,58[ SUGGESTION · < 0,41 BRUIT — L7 verbatim (bornes du VRAI moteur, 0 ajouté)",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 288,
+    "fragments_distincts": 288,
+    "dsim_manquant": 0,
+    "exceptions_sourcees": "filet amont (literal moteur P1) · case « trouble » de la vraie banque de pas (ligne 133)",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "pas_hors_banque": 0,
+    "sanction": 0,
+    "calme_hors_zone": 0,
+    "zone_sans_calme": 0,
+    "pas_en_crise": 0,
+    "rci_sweeps": 45,
+    "rci_sweep_ecarts": 0,
+    "doctrine": "pas choisi jamais prescrit (champ libre réel) · célébré jamais sanctionné · compteur privé · 0 verdict de rémission (BRUIT = « la mesure ne tranche pas encore »)",
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_couples": 540,
+    "stats_match": true,
+    "conformite_match": true,
+    "engagement_match": true,
+    "comparaisons": 1080,
+    "ecarts": 0,
+    "couche_paliers": {
+      "MODULE DE COUPLE": 404,
+      "ORIENTATION": 90,
+      "EXERCICE MAISON": 46
+    },
+    "couche_S1": 90,
+    "couche_S2": 404,
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_crise": 50,
+    "couche_celebre": 415,
+    "couche_en_chemin": 75,
+    "archive": "resultats-sm-q5-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_banque_suivi": {
+    "banque_servie": 4,
+    "pas_rouge_none": 14,
+    "pas_ecarts": 0,
+    "champ_libre": 1,
+    "suivi_totaux": 15,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "junction_forces": 1,
+    "junction_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "7b4b690d90f9e205d69a4a303bde36565ffcc83df7deafece453a1520ce74a9b",
+    "sha2": "7b4b690d90f9e205d69a4a303bde36565ffcc83df7deafece453a1520ce74a9b",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "paliers": {
+      "EXERCICE MAISON": 16,
+      "ORIENTATION": 224,
+      "MODULE DE COUPLE": 48
+    },
+    "statuts": {
+      "EN CHEMIN": 162,
+      "CÉLÉBRÉ": 108,
+      "NON_DÉPLOYÉ": 18
+    }
+  },
+  "re_score": {
+    "F1": 20,
+    "F1_note": "PLAFOND STRUCTUREL du barème pour les quêtes pas (RIO-05/10/15/18/23 notées F1 20 — prétendre 100 % serait une fabrication) — inchangé",
+    "F2": [
+      23,
+      25
+    ],
+    "F3": [
+      25,
+      25
+    ],
+    "F3_note": "PRÉSERVÉ tel quel — banque + check-in + re-test validés P1",
+    "F4": [
+      18,
+      25
+    ],
+    "avant": 86,
+    "apres": 95
+  }
+}

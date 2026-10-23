@@ -1,0 +1,136 @@
+{
+  "RIO": "RIO-13 « Ce que notre lien sait porter » (lumière) — sm-q3",
+  "moteurs": {
+    "q3": "validation-sm-q3/src/wtc_sm_q3_core.py (SPEC verrouillée)",
+    "q4": "validation-sm-q4/src/wtc_sm_q4_core.py (junction configs)",
+    "q5": "validation-sm-q5/src/wtc_sm_q5_core.py (junction pas)"
+  },
+  "COR0_compactations": {
+    "items_256x6": 3750,
+    "items_ecarts": 0,
+    "sommes_face": 102,
+    "sommes_face_ecarts": 0,
+    "frontiere_350": 102,
+    "frontiere_ecarts": 0,
+    "pile_350_inclusive": 6,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 5832,
+    "attendu": 5832,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "junction_ecarts": 0,
+    "junctions": "SILENCIEUSE ⇔ aucun ÉLEVÉ · LUMIÈRE/DEUX ⇔ ÉLEVÉ présent · CRISE_HÉRITÉE ⇔ voies non vides (override préempte) — frontière 3,50 PILE unique (activation = ÉLEVÉ)",
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 5103,
+    "S2": 63,
+    "voies_reelles": {
+      "H5": 729,
+      "SM-C1": 729,
+      "SM-C1+H5": 729,
+      "A2": 729,
+      "A2+H5": 729,
+      "A2+SM-C1": 729,
+      "A2+SM-C1+H5": 729
+    },
+    "borne_consignee": "3,50 PILE — le VRAI seuil d'activation et la borne ÉLEVÉ sont LA MÊME frontière inclusive (0 distance) · 2,50 PILE atteignable (somme 10)",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 736,
+    "fragments_distincts": 1458,
+    "dsim_manquant": 0,
+    "exception_sourcee": "case « trouble » du canon (ligne 133, D-TABLE F-S2) — vocabulaire de l'outil, neutralisé avant décompte",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "affichees_ecarts": 0,
+    "force_active_en_crise": 0,
+    "calme_hors_zone": 0,
+    "zone_sans_calme": 0,
+    "exclue_affichee": 0,
+    "densite_exclues_total": 2560,
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_profils": 520,
+    "stats_match": true,
+    "conformite_match": true,
+    "voies_g6_match": true,
+    "comparaisons": 1560,
+    "ecarts": 0,
+    "couche_paliers": {
+      "🟢": 439,
+      "🟠": 31,
+      "🔴": 50
+    },
+    "couche_S1": 50,
+    "couche_S2": 31,
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_exclues": 620,
+    "archive": "resultats-sm-q3-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "paliers_resolus": 3,
+    "pas_rouge_none": 1,
+    "pas_rouge_ecarts": 0,
+    "pas_vert_conformes": 1,
+    "pas_orange_conformes": 3,
+    "pas_ecarts": 0,
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "junction_palier_q3_q5": 9,
+    "junction_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "23c0ad330b71276efb29d3237df53d284067b2c353620cb7524028872db98405",
+    "sha2": "23c0ad330b71276efb29d3237df53d284067b2c353620cb7524028872db98405",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "statuts": {
+      "SILENCIEUSE": 64,
+      "CRISE_HÉRITÉE": 5103,
+      "LUMIÈRE_UNIQUE": 192,
+      "DEUX_LUMIÈRES": 473
+    },
+    "paliers": {
+      "🟢": 666,
+      "🔴": 5103,
+      "🟠": 63
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — D-TABLE table=code, D-DENSITÉ ±0, frontière 3,50 prouvée (package validé, rien à masquer)",
+    "F2": [
+      22,
+      25
+    ],
+    "F3": [
+      14,
+      25
+    ],
+    "F4": [
+      10,
+      25
+    ],
+    "avant": 71,
+    "apres": 100
+  }
+}

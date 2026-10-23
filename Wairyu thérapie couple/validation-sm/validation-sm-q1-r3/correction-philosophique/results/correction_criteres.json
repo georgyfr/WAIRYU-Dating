@@ -1,0 +1,142 @@
+{
+  "RIO": "RIO-11 « Ma détresse et la leur » (carte) — sm-q1-r3",
+  "moteurs": {
+    "q1": "validation-sm-q1-r3/src/wtc_sm_q1_core.py (R3, VALIDÉ 6/6)",
+    "q3": "validation-sm-q3/src/wtc_sm_q3_core.py (junction forces)",
+    "q4": "validation-sm-q4/src/wtc_sm_q4_core.py (junction configs)",
+    "q5": "validation-sm-q5/src/wtc_sm_q5_core.py (junction pas)"
+  },
+  "COR0_compactations": {
+    "c1_items_256": 625,
+    "c1_ecarts": 0,
+    "c1_sommes": "17/17",
+    "espions_A_C": 25,
+    "espion_ecarts": 0,
+    "ancres": 5,
+    "ancres_ecarts": 0,
+    "triplets_d": 125,
+    "frontieres_d_ecarts": 0,
+    "borne_pile_d": 0,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "configurations": 4250,
+    "attendu": 4250,
+    "fragments_incomplets": 0,
+    "blocs_vides": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 2750,
+    "S2": 1404,
+    "crise_entiere_ecarts": 0,
+    "borne_pile": 0,
+    "bornes_consignees": "2,50/3,50 inatteignables PILE sur faces D grain entier (dist min 0,5) · 4,00 PILE atteignable sur SM-C1 (somme 16) — seuil inclusif du cœur, consigné",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "textes_distincts": 56,
+    "fragments_distincts": 3625,
+    "dsim_manquant": 0,
+    "bande_haut_hors_crise": 0,
+    "exception_sourcee": "filet 3919/3114 = literal du VRAI moteur (P-FILTRE validé P1) — cité, jamais réécrit",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "calme_hors_stable": 0,
+    "stable_sans_calme": 0,
+    "filet_hors_crise": 0,
+    "crise_sans_filet": 0,
+    "ombre_en_crise": 0,
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_profils": 500,
+    "stats_groupes_match": true,
+    "c3_match": true,
+    "comparaisons": 1448,
+    "ecarts": 0,
+    "couche_paliers": {
+      "🟢": 140,
+      "🟠": 270,
+      "🔴": 90
+    },
+    "couche_S1": 90,
+    "couche_S2": 270,
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_en_bande": 52,
+    "couche_en_crise": 90,
+    "archive": "resultats-sm-q1-r3-2026-10-17.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "paliers_resolus": 6,
+    "pas_rouge_none": 3,
+    "pas_rouge_ecarts": 0,
+    "pas_vert_conformes": 1,
+    "pas_orange_conformes": 3,
+    "pas_ecarts": 0,
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "retest_8_semaines": "2026-02-26",
+    "junction_palier_q1_q5": 9,
+    "junction_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "ecd0e23ccaeada34d2a5df3daa68533b8cc7514770ad6c07e151a0425534b0df",
+    "sha2": "ecd0e23ccaeada34d2a5df3daa68533b8cc7514770ad6c07e151a0425534b0df",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "labels": {
+      "STABLE": 96,
+      "CRISE": 2750,
+      "MIXTE": 684,
+      "MASQUE": 360,
+      "CHARGE": 360
+    },
+    "paliers": {
+      "🟢": 96,
+      "🔴": 2750,
+      "🟠": 1404
+    },
+    "niv_det": {
+      "FAIBLE": 1190,
+      "MOYEN": 1870,
+      "ÉLEVÉ": 1190
+    },
+    "configs_atteignables": {
+      "CALME DES DEUX RIVES|PORTE SEULE|VEILLE": 1190,
+      "COURANT FORT|DEUX COURANTS|RIVE QUI CÈDE": 1870,
+      "DÉBORDEMENT|TEMPÊTE|TEMPÊTE ET DIGUE": 1190
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — D-VÉRITÉ 100 %, D-CRISE 100 %, D-GÉOMÉTRIE bande exclue (package R3 validé, rien à masquer)",
+    "F2": [
+      22,
+      25
+    ],
+    "F3": [
+      12,
+      25
+    ],
+    "F4": [
+      10,
+      25
+    ],
+    "avant": 69,
+    "apres": 100
+  }
+}
