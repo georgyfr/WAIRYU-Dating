@@ -17,7 +17,8 @@
  *  - D-E2-7  blocage SILENCIEUX deux sens : le bloqué n'est jamais prévenu
  *            (pool caché, pas neutre, envoi neutre), messages conservés,
  *            survit à l'unmatch ;
- *  - D-E2-8  unmatch : casse le match, purge messages/lus/reveals, remet
+ *  - D-E2-8  unmatch : casse le match, purge messages/lus/reveals (+ les
+ *            états à deux et objets médias R2 — D-E3-7), remet
  *            les pas à « retire » (re-pas possible), blocage conservé ;
  *  - D-E2-9  signalements à motifs fermés, confidentiels (l'autre n'est
  *            jamais informé) ;
@@ -516,10 +517,34 @@ messagesRoutes.post('/rencontres/:matchId/unmatch', async (c) => {
   const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
   if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
   try {
+    // D-E3-7 — les OBJETS médias partent D'ABORD (R2), puis les tables E3
+    // dans le batch : même ordre que la purge RGPD (routes/auth.ts,
+    // hardDeleteAccount — « objets R2 d'abord »). MEDIA absent (binding
+    // désactivé) : aucun octet n'existe, les lignes D1 partent quand même.
+    if (c.env.MEDIA) {
+      const cles = await c.env.DB.prepare(
+        `SELECT r2_key FROM rencontre_medias WHERE match_id = ?1`,
+      )
+        .bind(ctx.matchId)
+        .all<{ r2_key: string }>();
+      for (const k of cles.results ?? []) {
+        if (k.r2_key) await c.env.MEDIA.delete(k.r2_key);
+      }
+    }
     await c.env.DB.batch([
       c.env.DB.prepare(`DELETE FROM rencontre_messages WHERE match_id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(`DELETE FROM rencontre_lus WHERE match_id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(`DELETE FROM rencontre_reveals WHERE match_id = ?1`).bind(ctx.matchId),
+      // D-E3-7 — les états à deux (voiles, duo, activités croisées, médias)
+      // sont purgés avec le reste : unmatch = tout s'efface, des deux côtés.
+      // a2_reponses AVANT a2 : la sous-requête lit encore rencontre_a2.
+      c.env.DB.prepare(`DELETE FROM rencontre_voiles WHERE match_id = ?1`).bind(ctx.matchId),
+      c.env.DB.prepare(`DELETE FROM rencontre_duo WHERE match_id = ?1`).bind(ctx.matchId),
+      c.env.DB.prepare(
+        `DELETE FROM rencontre_a2_reponses WHERE activite_id IN (SELECT id FROM rencontre_a2 WHERE match_id = ?1)`,
+      ).bind(ctx.matchId),
+      c.env.DB.prepare(`DELETE FROM rencontre_a2 WHERE match_id = ?1`).bind(ctx.matchId),
+      c.env.DB.prepare(`DELETE FROM rencontre_medias WHERE match_id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(`DELETE FROM rencontre_matchs WHERE id = ?1`).bind(ctx.matchId),
       c.env.DB.prepare(
         `UPDATE rencontre_pas SET statut = 'retire'
@@ -596,26 +621,47 @@ messagesRoutes.post('/rencontres/signalements', async (c) => {
 import { A2_MEDIAS, A2_PILOTE } from '@wairyu/shared';
 import type { A2Carte } from '@wairyu/shared';
 
-/** Format une carte de quête : les VALEURS de l'état (ordre stable), jamais
- *  les clés internes (D-E3-5 : réponses FORMATÉES, pas l'état brut). Max 8
- *  lignes, 300 caractères chacune — c'est une carte, pas une archive. */
+/** Format une carte de quête (D-E3-5 : les réponses FORMATÉES, jamais l'état
+ *  brut). Les TEXTES libres du membre deviennent les lignes de la carte (les
+ *  mots réels, ordre stable par code) ; les réponses chiffrées partent dans
+ *  `valeurs` — le client les met en regard item par item (rendu Likert
+ *  local, aucune interprétation ici : ni échelle ni orientation ne sont
+ *  connues du Worker). Les clés internes de l'état (terminee, carteId,
+ *  termineeA, majA, lectures, schema_version) ne sortent JAMAIS. Max 8
+ *  lignes de 300 caractères — c'est une carte, pas une archive. */
 function carteDe(etatBrut: string | null): A2Carte | null {
   if (!etatBrut) return null;
   try {
     const etat = JSON.parse(etatBrut) as unknown;
-    if (!etat || typeof etat !== 'object') return null;
-    const valeurs = Object.values(etat as Record<string, unknown>);
+    if (!etat || typeof etat !== 'object' || Array.isArray(etat)) return null;
+    const o = etat as Record<string, unknown>;
     const lignes: string[] = [];
-    for (const v of valeurs) {
-      if (v === null || v === undefined) continue;
-      if (typeof v === 'string' && v.trim().length > 0) lignes.push(v.trim().slice(0, 300));
-      else if (typeof v === 'number' || typeof v === 'boolean') lignes.push(String(v));
-      else if (Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === 'string')) {
-        lignes.push(v.join(', ').slice(0, 300));
+    if (o.textes && typeof o.textes === 'object' && !Array.isArray(o.textes)) {
+      const entrees = Object.entries(o.textes as Record<string, unknown>)
+        .filter(
+          ([k, v]) =>
+            typeof k === 'string' && k.length > 0 && k.length <= 32 && typeof v === 'string',
+        )
+        .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+      for (const [, v] of entrees) {
+        const t = (v as string).trim();
+        if (t.length > 0) lignes.push(t.slice(0, 300));
+        if (lignes.length >= 8) break;
       }
-      if (lignes.length >= 8) break;
     }
-    return lignes.length > 0 ? { quete: '', lignes } : null;
+    const valeurs: Record<string, number> = {};
+    if (o.reponses && typeof o.reponses === 'object' && !Array.isArray(o.reponses)) {
+      for (const [k, v] of Object.entries(o.reponses as Record<string, unknown>)) {
+        if (
+          typeof k === 'string' && k.length > 0 && k.length <= 32 &&
+          typeof v === 'number' && Number.isFinite(v)
+        ) {
+          valeurs[k] = v;
+        }
+      }
+    }
+    if (lignes.length === 0 && Object.keys(valeurs).length === 0) return null;
+    return { quete: '', lignes, valeurs };
   } catch {
     return null;
   }
@@ -683,7 +729,7 @@ async function etatVoiles(
   const pretes = await etatPretes(db, userId, autreId);
   const v4 = construire(4);
   v4.ouvert = v4.moi && v4.autre;
-  // G-E3-P9/D-E3-5 : la photo exige le Statut Prêt·e DES DEUX — jamais d'argent.
+  // D-E3-5 (D-R2) : la photo exige le Statut Prêt·e DES DEUX — jamais d'argent.
   v4.porte = v3.ouvert && pretes.moi && pretes.autre;
   return { voiles: { cartes: v2, voix: v3, photo: v4 }, pretes };
 }
@@ -711,7 +757,7 @@ async function carteMembre(db: D1Database, userId: string, quete: string): Promi
     .bind(userId, quete)
     .first<{ etat: string }>();
   const carte = carteDe(row?.etat ?? null);
-  return carte ? { quete, lignes: carte.lignes } : null;
+  return carte ? { quete, lignes: carte.lignes, valeurs: carte.valeurs } : null;
 }
 
 /** La question de dialogue du Duo pour une quête (pilote, tournée stable). */
@@ -765,9 +811,11 @@ async function etatActivite(
 }
 
 /** Le Rendez-vous préparé (G-E3-P6 : règles locales TRANSPARENTES, pas d'IA).
- *  Dérivé des réponses croisées q3 (le temps libre imaginé par chacun). */
+ *  Dérivé des réponses croisées q3 (le temps libre imaginé par chacun).
+ *  Localisé FR/EN — le pilote porte ses deux langues (A2_PILOTE). */
 function deriverRdv(
   activite: NonNullable<Awaited<ReturnType<typeof etatActivite>>> | null,
+  lang: 'fr' | 'en',
 ): { idees: { titre: string; pourquoi: string }[]; question: string } | null {
   if (!activite || activite.statut !== 'devoilee') return null;
   const q3Moi = activite.questions.find((q) => q.id === 'q3')?.maReponse ?? null;
@@ -775,10 +823,17 @@ function deriverRdv(
   const extrait = (s: string | null) => (s && s.length > 0 ? `« ${s.slice(0, 80)} »` : '…');
   return {
     idees: A2_PILOTE.ideesRdv.map((i) => ({
-      titre: i.fr,
-      pourquoi: `${i.pourquoiFr} — ton idée : ${extrait(q3Moi)} · la sienne : ${extrait(q3Autre)}`,
+      titre: lang === 'en' ? i.en : i.fr,
+      pourquoi:
+        (lang === 'en' ? i.pourquoiEn : i.pourquoiFr) +
+        (lang === 'en'
+          ? ` — your idea: ${extrait(q3Moi)} · their idea: ${extrait(q3Autre)}`
+          : ` — ton idée : ${extrait(q3Moi)} · la sienne : ${extrait(q3Autre)}`),
     })),
-    question: 'Qui choisit le lieu ? L’autre choisit l’heure.',
+    question:
+      lang === 'en'
+        ? 'One picks the place, the other picks the time.'
+        : 'Qui choisit le lieu ? L’autre choisit l’heure.',
   };
 }
 
@@ -800,6 +855,7 @@ messagesRoutes.get('/rencontres/:matchId/a2/etat', async (c) => {
 
   const ctx = await contexteMatch(c.env.DB, c.req.param('matchId'), session.userId);
   if (!ctx) return c.json({ ok: false, error: 'not_found' }, 404);
+  if (ctx.bloque) return c.json({ ok: false, error: 'not_found' }, 404); // D-E3-7 : le blocage gèle tout E3
 
   const lang = c.req.query('lang') === 'en' ? 'en' : ('fr' as 'fr' | 'en');
   try {
@@ -843,7 +899,7 @@ messagesRoutes.get('/rencontres/:matchId/a2/etat', async (c) => {
 
     // ---- Les récoltes à deux (volet C) ----
     const activite = await etatActivite(c.env.DB, ctx.matchId, session.userId, ctx.autreId, lang);
-    const rdv = deriverRdv(activite);
+    const rdv = deriverRdv(activite, lang);
     const duoOuverts = duo.filter((d) => d.ouvert).length;
     const fragments = duoOuverts + (activite?.statut === 'devoilee' ? 1 : 0);
 

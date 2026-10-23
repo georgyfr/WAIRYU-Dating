@@ -340,10 +340,16 @@ export interface A2VoileEtat {
   seuils?: { messages: number; messagesRequis: number; jours: number; joursRequis: number };
 }
 
-/** Une carte de quête (D-E3-5 : réponses FORMATÉES, jamais l'état brut). */
+/** Une carte de quête (D-E3-5 : réponses FORMATÉES, jamais l'état brut).
+ *  lignes = les mots du membre (textes libres) ; valeurs = les réponses
+ *  chiffrées (codes → valeur), rendues item par item côté app (Likert).
+ *  Les clés internes de l'état (terminee, carteId, termineeA, majA…)
+ *  ne voyagent jamais. */
 export interface A2Carte {
   quete: string;
   lignes: string[];
+  /** Réponses chiffrées (codes → valeur) — absent si la quête n'en a pas. */
+  valeurs?: Record<string, number>;
 }
 
 export interface A2DuoItem {

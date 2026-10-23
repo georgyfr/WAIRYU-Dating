@@ -46,6 +46,7 @@ import {
   repondreActivite,
   supprimerMedia,
   urlMedia,
+  type A2Carte,
   type A2EtatResponse,
   type A2MediaInfo,
 } from '../lib/a2-client';
@@ -59,6 +60,46 @@ const MOTIFS = ['escroquerie_ou_argent', 'harcelement', 'faux_profil', 'contenu_
 /** Le titre lisible d'une quête croisée (le registre existe déjà côté app). */
 function titreQuete(quete: string): string {
   return QUETES[quete as IdQuete]?.titre ?? quete;
+}
+
+/** Les lignes Likert d'une carte (Task 169, D-E3-5) : l'énoncé de l'item —
+ *  le registre de l'app le connaît — suivi de la position sur 5 (●●●●○).
+ *  Jamais un score, jamais une interprétation : la position brute, lisible.
+ *  Seuls les items Likert se rendent ici ; les autres formats (choix,
+ *  question, images) attendent leur rendu dédié (D-E3-8, Phase C). Plafond
+ *  8 lignes, ordre stable par code — une carte, pas une archive. Les codes
+ *  de trames de sécurité (jamais dans reponses) ne peuvent pas surgir : le
+ *  rendu ne lit QUE les codes présents dans valeurs. */
+function lignesLikert(quete: string, valeurs: Record<string, number> | undefined): string[] {
+  if (!valeurs) return [];
+  const def = QUETES[quete as IdQuete];
+  if (!def) return [];
+  const parCode = new Map(def.deck().map((it) => [it.code, it]));
+  const lignes: string[] = [];
+  for (const code of Object.keys(valeurs).sort()) {
+    const it = parCode.get(code);
+    const v = valeurs[code];
+    if (!it || it.format !== 'likert' || typeof v !== 'number' || !Number.isFinite(v)) continue;
+    const pos = Math.min(5, Math.max(1, Math.round(v)));
+    lignes.push(`${it.text} · ${'●'.repeat(pos)}${'○'.repeat(5 - pos)}`);
+    if (lignes.length >= 8) break;
+  }
+  return lignes;
+}
+
+/** Une colonne de carte Duo : les mots (lignes) puis les positions Likert,
+ *  plafonnées à 8 — et un « … » si la carte n'a rien de lisible ici
+ *  (quêtes aux formats non rendables en v1). */
+function CarteDuoCol({ titre, quete, carte }: { titre: string; quete: string; carte: A2Carte }) {
+  const lignes = [...carte.lignes, ...lignesLikert(quete, carte.valeurs)].slice(0, 8);
+  return (
+    <div className="a2-duo-col">
+      <h5>{titre}</h5>
+      {(lignes.length > 0 ? lignes : ['…']).map((l, i) => (
+        <p key={i} className="a2-carte-ligne">{l}</p>
+      ))}
+    </div>
+  );
 }
 
 /** 78 s → « 1:18 » (durée des notes vocales). */
@@ -410,18 +451,8 @@ function VoyageADeux({ matchId, autrePseudo }: { matchId: string; autrePseudo: s
                     {d.ouvert && d.carteMoi && d.carteAutre ? (
                       <>
                         <div className="a2-duo-cols">
-                          <div className="a2-duo-col">
-                            <h5>{tx('Toi')}</h5>
-                            {d.carteMoi.lignes.map((l, i) => (
-                              <p key={i} className="a2-carte-ligne">{l}</p>
-                            ))}
-                          </div>
-                          <div className="a2-duo-col">
-                            <h5>{pseudoAutre}</h5>
-                            {d.carteAutre.lignes.map((l, i) => (
-                              <p key={i} className="a2-carte-ligne">{l}</p>
-                            ))}
-                          </div>
+                          <CarteDuoCol titre={tx('Toi')} quete={d.quete} carte={d.carteMoi} />
+                          <CarteDuoCol titre={pseudoAutre} quete={d.quete} carte={d.carteAutre} />
                         </div>
                         {d.question && <p className="a2-question">{d.question}</p>}
                       </>
