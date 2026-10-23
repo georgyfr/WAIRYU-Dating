@@ -1,0 +1,147 @@
+{
+  "RIO": "RIO-18 « Le pas de l'horizon » (pas + récapitulatif) — ext-q3",
+  "moteurs": {
+    "q3": "validation-ext-q3/src/wtc_ext_q3_core.py (VALIDÉ 7/7, CONTRESIGNÉ)"
+  },
+  "COR0_compactations": {
+    "pas_de_table": 30,
+    "pas_de_ecarts": 0,
+    "banque_longueurs": {
+      "exercice maison à deux": 3,
+      "engagement du module à deux": 2,
+      "démarche d'orientation": 1
+    },
+    "pas_zero_ecarts": 0,
+    "suivi_totaux": "15 + None",
+    "suivi_ecarts": 0,
+    "rci_bornes": {
+      "0.58_fiable": "FIABLE",
+      "0.58_fiable_inv": "FIABLE",
+      "0.57_suggestion": "SUGGESTION",
+      "0.41_suggestion": "SUGGESTION",
+      "0.41_suggestion_inv": "SUGGESTION",
+      "0.40_bruit": "BRUIT",
+      "0.40_bruit_inv": "BRUIT",
+      "0_bruit": "BRUIT"
+    },
+    "rci_bornes_ecarts": 0,
+    "ensemble_max_27": 27,
+    "ensemble_ecarts": 0,
+    "traversees_frontieres_ecarts": 0,
+    "espions": 3,
+    "espion_ecarts": 0,
+    "recap_ok": true,
+    "templates_interdits": 0,
+    "ok": true
+  },
+  "COR1_fragments": {
+    "etats_rive_a": 216,
+    "etats_rive_b": 216,
+    "joint_pas_statut": 35,
+    "attendu_joint": "7 pas × 5 statuts = 35",
+    "override_configs": 1,
+    "non_entree_configs": 2,
+    "fragments_incomplets": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "regle_pure": "pas_de ≡ (choix dans banque → respecté · PAS_ZERO → ssi zone · None → pas zéro ssi zone+vert, sinon banque[0])",
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 1,
+    "S2": 447,
+    "bornes_consignees": "9/14 PILE inclusive (CÉLÉBRÉ ≥ 9) · RCI 0,58/0,41 PILE 2 sens (0,57 → SUGGESTION · 0,40 → BRUIT) · traversées H 2,50/3,50 · L/C 1,80/2,60/3,20 exactes",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "blocs_distincts": 35,
+    "dsim_manquant": 0,
+    "templates_coeur_interdits": 0,
+    "exception_sourcee": "filet 3919/3114 = literal du VRAI moteur — cité, jamais réécrit",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "pas_zero_ecarts": 0,
+    "reproche_ecarts": 0,
+    "jamais_comparees_ecarts": 0,
+    "doctrine": "pas CHOISI jamais prescrit (ligne 366) · suivi CÉLÉBRÉ jamais sanctionné · compteur partagé privé (ligne 370) · pas zéro légitime ssi zone calme · lectures L7 par rive jamais comparées (C7)",
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_couples": 650,
+    "stats_groupes_match": true,
+    "globaux_match": true,
+    "conformite_match": true,
+    "comparaisons": 650,
+    "ecarts": 0,
+    "couche_paliers": {
+      "EXERCICE MAISON": 239,
+      "MODULE DE COUPLE": 284,
+      "ORIENTATION": 67,
+      "OVERRIDE": 40,
+      "NON ENTRÉE": 20
+    },
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_pas_ecarts": 0,
+    "couche_override_ok": 40,
+    "g05_forte_override": "5/5",
+    "archive": "resultats-ext-q3-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "table_pas_de": 30,
+    "pas_de_ecarts": 0,
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "banque_longueurs": {
+      "exercice maison à deux": 3,
+      "engagement du module à deux": 2,
+      "démarche d'orientation": 1
+    },
+    "junction_rci_ecarts": 0,
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "d87904183db10a5ae79dd26c2c6047e1d89db5753cab77072bac02487c66a52d",
+    "sha2": "d87904183db10a5ae79dd26c2c6047e1d89db5753cab77072bac02487c66a52d",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "pas_servis": {
+      "À deux : engager le module « L'Écart des horloges » (ligne 112) — première séance": 437,
+      "pas zéro — zone calme": 5,
+      "À deux : préparer la conversation de l'horizon — chacun relit sa propre carte (RIO-16) et choisit une chose à dire": 5,
+      "À deux : ouvrir le plan des jours durs (Les Deux Rives, ligne 133) à la lumière des horloges": 5,
+      "À deux : un tour des marées normatives (Les Marées de la durée, esquisse, ligne 111) — où en sommes-nous, chacun son tour": 5,
+      "À deux : reprendre la conversation de l'horizon appuyée sur la configuration tracée (RIO-17)": 5,
+      "Le pas est la démarche d'orientation : prendre le premier rendez-vous — le chemin le plus court, pas un échec": 5
+    },
+    "statuts": {
+      "CÉLÉBRÉ": 446,
+      "None": 7,
+      "EN CHEMIN": 14
+    }
+  },
+  "re_score": {
+    "F1": 20,
+    "F1_note": "INCHANGÉ — PLAFOND STRUCTUREL du barème pour les quêtes « pas » (RIO-05/10/15/18/23 notées F1 20 ; prétendre 100 % serait une fabrication)",
+    "F2": 25,
+    "F2_note": "inchangé — palier hérité affiché + doctrine du pas + QUAND DEMANDER, déjà validés C5-C7",
+    "F3": 25,
+    "F3_note": "PRÉSERVÉ tel quel (leçon RIO-15) — les pas affichés sont les VRAIS de la banque, servis par le VRAI pas_de, jamais réécrits",
+    "F4": [
+      22,
+      25
+    ],
+    "F4_note": "fragment de bilan L8 niveau COUPLE à 7 blocs, COMPLET sur TOUS les chemins (entrée : pas zéro/pas servi/statut None/RCI 216×2 états ; override ; non-entrée — 0 feuille vide) avec le VRAI A6 récapitulatif de dimension et les junctions réelles (pas_de, statut, RCI par rive + ensemble max)",
+    "avant": 92,
+    "apres": 95
+  }
+}

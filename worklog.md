@@ -3366,3 +3366,19 @@ Work Log:
 
 Stage Summary:
 - RIO-17 90 % → 100 % (9/9 COR PASS, re-score bit-exact 0 écart). Générationnelle : (100+100+92)/3 = 97,3 % intermédiaire · global 93,8 %. Dernier fil du signal : RIO-18 (Task 187 — F1 20 plafond structurel des quêtes pas, max 95 %). Push toujours BLOQUÉ 403 — commits accumulés en local, progressive push dès réparation du token.
+
+---
+
+Task ID: 187
+Agent: WTC-Pont (superviseur — session « lance RIO-16→18 », quête 3/3 — dimension CLOSE)
+Task: Fondateur — signal « lance RIO-16→18 » (dimension GÉNÉRATIONNELLE) : correction philosophique de RIO-18 « Le pas de l'horizon » (pas + récapitulatif, ext-q3), re-score 92 % → 95 % (plafond structurel F1=20) — dimension CLOSE.
+
+Work Log:
+- Couche RIO-18 (R1-R9) : importe le VRAI cœur ext-q3 TEL QUEL — F3 25 PRÉSERVÉ (leçon RIO-15 : les pas affichés sont les VRAIS de la banque, servis par le VRAI pas_de, jamais réécrits) · F1 20 plafond structurel inchangé · F4 22→25 : fragment L8 niveau COUPLE à 7 blocs complet sur TOUS les chemins (entrée pas zéro/pas servi/statut None/RCI · override · non-entrée) avec le VRAI A6 récapitulatif de dimension (3 quêtes) et les junctions réelles (pas_de + choix respecté, statut_engagement, RCI par rive + ensemble max + traversées nommées).
+- Preuve : énumération EXHAUSTIVE 216 états RCI par rive ((statut³ 27) × (traversée³ 8), paires au grain 1/6 réel mesurées) balayés rive A PUIS rive B (le joint est le produit — la couche ne compare jamais les rives, C7) + joint pas (7) × statut (5) + override + non-entrées = 469 fragments complets. Compactations : table pas_de EXHAUSTIVE 30/30 ≡ règle pure · check-in 15 totaux + None (9/14 PILE inclusive) · RCI bornes PILE 0,58/0,41/0,40 testées 2 sens · agrégation max prouvée sur 27 triplets · traversées H/L/C frontières exactes · espions 4/4 · A6 = VRAI RECAP (3 quêtes) · 0 interdit dans les templates du cœur. 0 mot interdit sur les textes. Re-score BIT-EXACT 650 couples / 14 groupes (globaux 🟢239 🟠284 🔴67 OVERRIDE 40 NON ENTRÉE 20 · pas servis verbatim · RCI 204/77/119 · G05 Forte 5/5). SHA ×2 `d87904183db10a5a…`.
+- La JUNCTION a fait son travail : elle a attrapé au vol 4 incohérences de la couche pendant le développement (choix non transmis au pas_de, bases/re_tests manquants sur 3 chemins d'appel) — corrigées avant validation. COR5 a attrapé 2 consignations citant « pas zéro » hors contexte (faux marqueurs) — rewording exact. Une vraie bug de logique attrapée par COR0 (dictionnaire rang_ensemble indexé par rang au lieu du statut) — corrigée. NOTE OUTIL : le canal d'affichage des outils a corrompu à plusieurs reprises la sous-chaîne « ensemble[max( » en « ensembleax( » (artefact d'affichage, jamais le fichier) — diagnostiqué par codepoints et disassembly ; le contenu réel du dépôt est exact (vérifié par SHA ×2 et re-score bit-exact).
+- Re-score RIO-18 : F1 20 INCHANGÉ (plafond structurel) · F2 25 inchangé · F3 25 PRÉSERVÉ · F4 22→25 = **95 %** — le maximum atteignable au barème.
+- Documents : ADDENDUM-18 à l'audit (générationnelle (100+100+95)/3 = 98,3 % — DIMENSION CLOSE · global 2 161/23 = 94,0 %) + rapport + JSON + README.
+
+Stage Summary:
+- **DIMENSION GÉNÉRATIONNELLE CLOSE** : RIO-16 100 · RIO-17 100 · RIO-18 95 (plafond) — 295/3 = 98,3 %. Signal « lance RIO-16→18 » exécuté intégralement en 3 quêtes (Tasks 185-187), 9/9 COR PASS chacune, re-scores bit-exact 0 écart. Global 23 quêtes : 2 161/23 = 94,0 % (attachement 467/5 · émotionnelle 495/5 · SM 495/5 · générationnelle 295/3 · personnalité 409/5). Restent au signal fondateur : RIO-05 (plafond 95 %) · actions n°2 (récapitulatif de DIMENSION) et n°3 (libellés réels) ouvertes. Push toujours BLOQUÉ 403 (PAT sans Contents:write) — 6 commits accumulés en local, progressive push dès réparation du token fondateur.
