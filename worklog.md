@@ -3184,3 +3184,132 @@ Stage Summary:
 - P2 de l'audit : TOUT le lot Worker/hygiène est livré (WS neutre déjà en 177 ; signalements N1, parenthésage, chatVoiceUser, 0019, réconciliation 0014, annonce 50, STATUS.md).
 - L'item P2 « bit-exact 1.5→5.7 » est FERMÉ avec preuve d'exécution : 31 quêtes conformes, 0 écart.
 - Prod : en attente feu vert pour poser ce lot + la migration 0019 (staging-first respecté).
+
+---
+Task ID: 173
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179) : le travail était poussé (commit 688016b, 22/10 19:48) mais l'entrée worklog n'avait pas été écrite avant le reset de session. Contenu reconstitué depuis le commit poussé et les fichiers du dépôt — aucun fait inventé.
+Task: Fondateur (ordre 1a15ed7ad00bc0fd) — fichier de correction philosophique RIO-09 « Nos deux langues » (croisement émotionnel, moteur émo-q4-r3), même gabarit R1-R9.
+
+Work Log:
+- Package validation-emotionnelle/validation-emo-q4-r3/correction-philosophique/ créé (couche R1-R9 + pipeline COR0-COR8 + JSON + rapport + README + .gitignore).
+- F2 palier de COUPLE dérivé mécaniquement des VRAIES sorties (S1 = paire explosive du VRAI co_regulation — inclut FEU CROISÉ ; S2 = boucle asymétrique du VRAI boucle_bids ou configuration à convertir) + QUAND DEMANDER DE L'AIDE version couple + doctrine crise active (apaisement avant tout dialogue — template FEU CROISÉ mot pour mot).
+- F3 contenu des 3 paliers par configuration réelle (9 noms D-NOMENCLATURE) + pas pour CHACUN des deux partenaires + suivi 14 j sans sanction + re-test 8 semaines. F4 fragment de bilan L8 à 7 blocs niveau couple.
+- Preuve : énumération exhaustive 746 496 configurations ; compactations prouvées (donne 125→18 états/partenaire — 6 inatteignables prouvés ; bids 625→25 écarts ; er1 2 classes, 3,00 PILE inclusif consigné) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 450 couples R3 (2 790 comparaisons, 0 écart ; CROISÉE 24/50 = 48 % chevauchement géométrique S-EMO-Q4-R3-1 CONSERVÉ consigné, option d'arbitrage ouverte) ; SHA ×2 22a082602589022d….
+- Re-score RIO-09 : 61 % → 100 % (F1 25 inchangé · F2 15→25 · F3 6→25 · F4 15→25). Émotionnelle 467/5 = 93,4 % · global 1 933/23 = 84,0 %.
+- ADDENDUM-8 à l'audit + ligne hub. Commit poussé 688016b.
+
+Stage Summary:
+- RIO-09 COMPLET ET PROUVÉ (100 %). Restait RIO-10 pour clore la dimension émotionnelle.
+
+---
+Task ID: 174
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179), mêmes conditions que la 173 (commit 9c60c52, 22/10 19:59, déjà poussé).
+Task: Fondateur (ordre 1a15ed7ad00bc0fd) — fichier de correction philosophique RIO-10 « Mon premier geste du cœur » (pas émotionnel, moteur émo-q5), même gabarit R1-R9.
+
+Work Log:
+- Package validation-emotionnelle/validation-emo-q5/correction-philosophique/ créé (couche + pipeline COR0-COR8 + JSON + rapport + README + .gitignore).
+- F2 palier 🟢🟠🔴 PLANCHER HÉRITÉ (VRAI rang des faces E-R1/E-R2 que l'arbre reçoit — VRAIS seuils 3,5/2,5 ; PLANCHER PARTIEL consigné : E-R3 absente — borne basse, monotonie du max) + QUAND DEMANDER DE L'AIDE (S1 = plancher 🔴 · S2 = plancher 🟠 — re-test 8 semaines) + doctrine du pas affichée (lecture du palier, choisi jamais prescrit, célébré jamais sanctionné, compteur privé).
+- F3 contenu existant PRÉSERVÉ (pas + suivi 14 j + rappels doux + re-test — déjà validés P1) complété par l'aide articulée au plancher. F4 fragment de bilan L8 à 7 blocs avec héritages mesurés.
+- Preuve : énumération exhaustive 486 720 configurations (15 jours × 32 448 héritages) ; frontière propre de l'arbre consignée (er ≥ 3,0 ⇔ somme ≥ 9 — 3,00 PILE — distincte des rangs 4/7/10) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 520 profils (D-REPRO — 3 649 comparaisons, 0 écart ; C1 520/520 éliminatoire ; bruit D-PARAM consigné G5/G6/PERFECT/ZERO) ; SHA ×2 c3b286c31e1ac253….
+- Re-score RIO-10 : 67 % → 95 % AU BARÈME (F1 20 INCHANGÉ — PLAFOND STRUCTUREL des quêtes pas : RIO-05/10/15/18/23 notées F1 20, prétendre 100 % serait une fabrication · F2 12→25 · F3 20→25 · F4 15→25 — le maximum atteignable, score le plus élevé des quêtes pas). Émotionnelle 495/5 = 99 % · global 1 961/23 = 85,3 %.
+- ADDENDUM-9 à l'audit + ligne hub. ACTION N°1 CLOSE POUR LA DIMENSION ÉMOTIONNELLE (RIO-06 100 · RIO-07 100 · RIO-08 100 · RIO-09 100 · RIO-10 95). Commit poussé 9c60c52.
+
+Stage Summary:
+- Dimension ÉMOTIONNELLE CLOSE (4×100 % + 95 % plafond). Suite : retour attachement (RIO-04) puis santé mentale RIO-11→15.
+
+---
+Task ID: 175
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179) : événement de gouvernance, reconstitué depuis l'entrée Task 176 existante (« Push GitHub opérationnel (PAT fondateur, Task 175) ») et l'historique git.
+Task: Déblocage de la file de push GitHub — le fondateur fournit le PAT.
+
+Work Log:
+- Le fondateur a fourni la clé d'accès GitHub (PAT) — la file de commits en attente est débloquée.
+- Pushs exécutés dans la foulée (historique vérifié) : bfb4bc5 (RIO-06, 22/10 10:13) · a103029 + 4b2817c (RIO-07 + ADDENDUM-6 + worklog 171, 22/10 19:00-19:01) · bfa2456 (RIO-08, 22/10 19:24) · 688016b (RIO-09, 22/10 19:48) · 9c60c52 (RIO-10, 22/10 19:59) · e3c7c06 (RIO-04, 23/10 07:00) · adc94f6 / 9153443 / ae11cbf / be77b7f (correctifs P1 app + worklog Task 169, 23/10 07:33).
+- Hors dépôt par conception : secrets Cloudflare, keystore TWA, trames privées FM-018.
+
+Stage Summary:
+- origin/main = be77b7f, working tree propre — tout le travail WTC jusqu'au RIO-04 inclus et les correctifs P1 de l'app sont sur GitHub. Restent après push : déploiement staging des correctifs P1 (2 secrets Cloudflare requis), feu vert prod, décision TOTAL_STEPS 51/50.
+
+---
+Task ID: 179
+Agent: WTC-Pont (superviseur — session fondateur « santé mentale (RIO-11→15) »)
+Task: Fondateur — signal « santé mentale (RIO-11→15) » : fichier de correction philosophique RIO-11 « Ma détresse et la leur » (carte, moteur sm-q1-r3), même gabarit R1-R9, fichiers SUPPLÉMENTAIRES, zéro modification de l'existant. NB : les entrées worklog 173/174/175 manquantes ont été RÉTRO-ÉCRITES en tête de cette session (append-only, faits vérifiés depuis les commits poussés).
+
+Work Log:
+- Specs RIO-11 : moteur sm-q1-r3 (9 faces, D-CRISE SM-C1 ≥ 4,0 ∨ H5 → filet 3919/3114, D-GÉOMÉTRIE bande [3,10 ; 4,90] σ_eff 0,30, VALIDÉ 6/6 contresigné) ; audit Task 163 : F1 25 · F2 22 · F3 12 · F4 10 = 69 %.
+- Package validation-sm/validation-sm-q1-r3/correction-philosophique/ créé (couche R1-R9 + pipeline COR0-COR8 + JSON + rapport + README + .gitignore).
+- F2 palier image exacte du VRAI classifier_dominance (CRISE→🔴 · STABLE→🟢 · CHARGE/MASQUE/MIXTE→🟠 — 0 seuil ajouté) + QUAND DEMANDER (S1 = court-circuit MOT POUR MOT, aucune ombre détaillée en crise — le vrai classifieur court-circuite avant de lire D ; S2 = re-test 8 semaines) + bande D-GÉOMÉTRIE affichée honnêtement. F3 contenu des 3 paliers + pas via le VRAI palier_de/pas_de (niv_det MESURÉ, niv_chg balayé). F4 fragment L8 à 7 blocs (junctions Q3/Q4/Q5).
+- Preuve : énumération exhaustive 4 250 configurations (5³ × 17 × 2) ; compactations prouvées (256 quadruplets → 17 sommes ; espions A/C jamais lus 25/25 ; frontières entières D 125/125 ; 2,50/3,50 PILE inatteignables grain entier — Section F archivée) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 500 profils (1 448 comparaisons, 0 écart — stats 8/8 + C3 bit-exact vs archive du 17/10) ; couche : 🟢 140 · 🟠 270 · 🔴 90 ; SHA ×2 ecd0e23ccaeada34….
+- Re-score RIO-11 : 69 % → 100 % (F1 25 inchangé · F2 22→25 · F3 12→25 · F4 10→25).
+- Documents : ADDENDUM-11 en append à l'audit · ligne hub · rapport + JSON.
+
+Stage Summary:
+- RIO-11 COMPLET ET PROUVÉ (9/9 PASS). Dimension santé mentale engagée au signal fondateur.
+
+---
+Task ID: 180
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — fichier de correction philosophique RIO-12 « Ce que je porte pour toi » (ombre, moteur sm-q2), même gabarit.
+
+Work Log:
+- Specs RIO-12 : moteur sm-q2 verrouillé (6 faces × 4 items, n_high faces A ≥ 3,50, D-CRISE intégrale 3 voies A2/SM-C1/H5, D-GÉOMÉTRIE deux voies score) ; audit : F1 25 · F2 22 · F3 12 · F4 10 = 69 %.
+- Package validation-sm/validation-sm-q2/correction-philosophique/ créé.
+- Découverte consignée : le VRAI code classe STABLE ⇔ AUCUNE face A ≥ 3,5 (n_high = 0) — une face entre 2,5 et 3,5 reste STABLE, la zone « En veille » est descriptive ; la couche lit le code (D-TABLE), pas le texte de SPEC.
+- Faces B affichées comme descriptives NON classifiantes (portage fidèle du verrouillage) — jamais 🟠/🔴-drivantes, prouvé (espions + 27×3 sous-vérification, 0 changement de label). Définitions réelles de la SPEC §2 citées mot pour mot (Zarit/EE).
+- Preuve : énumération exhaustive 167 042 configurations (17⁴ × 2) ; COR0-COR8 tous PASS ; exceptions sourcées (filet · « trouble » = nom de case du canon ligne 133 — neutralisés avant décompte) ; re-score BIT-EXACT 520 profils (1 434 comparaisons, 0 écart — stats + C3 voies A2 23/70 · SM-C1 9/20 · H5 20/20 + test_frontière 3,99/4,00 via le VRAI crise_de_scores) ; couche : 🟢 189 · 🟠 207 · 🔴 124 ; SHA ×2 63fa002c38d01fec….
+- Re-score RIO-12 : 69 % → 100 % (F1 25 inchangé · F2 22→25 · F3 12→25 · F4 10→25).
+- Documents : ADDENDUM-12 · ligne hub · rapport + JSON.
+
+Stage Summary:
+- RIO-12 COMPLET ET PROUVÉ (9/9 PASS). La bascule G3 (14/70 en bande) reste consignée telle quelle.
+
+---
+Task ID: 181
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — fichier de correction philosophique RIO-13 « Ce que notre lien sait porter » (lumière, moteur sm-q3), même gabarit.
+
+Work Log:
+- Specs RIO-13 : moteur sm-q3 verrouillé (A1 seuil 3,50 · A2 faces seules · A3 override affichage en crise · A4 SILENCIEUSE mot pour mot · D-TABLE table=code · D-DENSITÉ ±0) ; audit : F1 25 · F2 22 · F3 14 · F4 10 = 71 %.
+- Package validation-sm/validation-sm-q3/correction-philosophique/ créé.
+- Palier mécanique : 🔴 ssi CRISE_HÉRITÉE (override A3 réel) · 🟠 ssi SILENCIEUSE avec face MOYEN [2,50 ; 3,50[ (« à portée, à deux ») · 🟢 sinon — JUNCTION PROUVÉE : le VRAI seuil d'activation (≥ 3,50) et la borne ÉLEVÉ sont LA MÊME frontière PILE (102/102, 0 distance).
+- Densité honnête : les exclues (> 2 forces) sont ACTIVES au sens du moteur, TRACÉES (vraies clés), affichées comme telles, jamais perdues — 2 560 cas tracés dans l'énumération.
+- Preuve : énumération exhaustive 5 832 configurations (3⁶ × 8 voies) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 520 profils (1 560 comparaisons, 0 écart — stats 9/9 · conformité 520/520 · voies G6) ; couche : 🟢 439 · 🟠 31 · 🔴 50 ; SHA ×2 23c0ad330b71276e….
+- Re-score RIO-13 : 71 % → 100 % (F1 25 inchangé · F2 22→25 · F3 14→25 · F4 10→25).
+- Documents : ADDENDUM-13 · ligne hub · rapport + JSON.
+
+Stage Summary:
+- RIO-13 COMPLET ET PROUVÉ (9/9 PASS). La lumière ne se fabrique pas : forces affichées ≡ VRAI forces_affichees 5 832/5 832.
+
+---
+Task ID: 182
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — fichier de correction philosophique RIO-14 « Nos deux rives » (croisement de couple, moteur sm-q4), même gabarit.
+
+Work Log:
+- Specs RIO-14 : moteur sm-q4 verrouillé (A1 bornes 2,50/3,50 · A2 zéro item nouveau · A3 percentiles + boucle ≥ 30 + styles ≥ 1,00 · A4 override crise · A5 9 noms mot pour mot · asymétrie det←Q1/chg←Q2) ; audit : F1 25 · F2 22 · F3 12 · F4 18 = 77 %.
+- Package validation-sm/validation-sm-q4/correction-philosophique/ créé.
+- Palier de COUPLE porté par les VRAIES CONSTANTES de Q5 — la junction au VRAI palier_de est un ASSERT à CHAQUE appel : la couche ne crée aucune table propre. L'assert a attrapé au vol une incohérence emoji vs nom de constante pendant le développement (la junction fait son travail).
+- Doctrine couple respectée : boucle nommée ENSEMBLE, direction jamais affichée (0 occurrence sur 2 304 textes), 0 % compatibilité (0/2 304), avertissements (boucle/styles) jamais des verdicts.
+- Preuve : énumération exhaustive 2 304 configurations (9 cellules × 8×8 voies × 2×2 diagnostics) ; PILE prouvés par grain (détresse 1/3 inatteignable 0/125 · charge 1/12 atteignable 2 valeurs sur 17³) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 600 couples (1 800 comparaisons, 0 écart — stats 13/13 avec la règle G10 : config TRACÉE sous override · boucle globale 49,0 % · styles 4,5 % · conformité 506/550 · frontières 40/40 · par_config 9/9) ; couche : 🟢 49 · 🟠 185 · 🔴 366 ; SHA ×2 58b8d869078cda85….
+- Re-score RIO-14 : 77 % → 100 % (F1 25 inchangé · F2 22→25 · F3 12→25 · F4 18→25).
+- Documents : ADDENDUM-14 · ligne hub · rapport + JSON.
+
+Stage Summary:
+- RIO-14 COMPLET ET PROUVÉ (9/9 PASS). La table du croisement EST celle du pas — prouvé bit-exact à chaque appel.
+
+---
+Task ID: 183
+Agent: WTC-Pont (superviseur)
+Task: Fondateur — fichier de correction philosophique RIO-15 « Mon premier pas vers l'autre rive » (pas, moteur sm-q5), même gabarit — clôture de la dimension santé mentale.
+
+Work Log:
+- Specs RIO-15 : moteur sm-q5 verrouillé (A1 check-in binaire 9/14 · A2 banque 6 pas + champ libre · A3 palier = max + override crise · A4 RCI L7 verbatim SE_diff 0,356 · A5 0 sanction) ; audit : F1 20 · F2 23 · F3 25 · F4 18 = 86 %.
+- Package validation-sm/validation-sm-q5/correction-philosophique/ créé.
+- F3 PRÉSERVÉ tel quel (validé P1) — les pas affichés sont les VRAIS de la banque, jamais réécrits. F2 palier AFFICHÉ (sortie du VRAI palier_de) + QUAND DEMANDER + doctrine du pas (choisi jamais prescrit, célébré jamais sanctionné, compteur privé). F4 fragment L8 à 7 blocs avec le VRAI RCI (« niveau stable » affiché quand le VRAI signification_de retourne vide — la donnée réelle, dite).
+- Observation consignée : le balayage RCI passe aux deltas binaires exacts (0,25) — les frontières PILE 0,58/0,41/0,40 sont prouvées au COR0 avec les valeurs exactes du moteur ; les nominaux 0,41/0,58 subissent le bruit de représentation flottante (0,41 − 2,0 → 0,40999…), distinct du comportement du moteur.
+- Preuve : énumération exhaustive 288 configurations (9 × 2 × 16) + frontières du moteur prouvées (engagement 15/15 · RCI 8/8 · asymétrie 8/8 · agrégation max 9/9 · table palier 9+override · banque injective) ; COR0-COR8 tous PASS ; re-score BIT-EXACT 540 couples (1 080 comparaisons, 0 écart — stats 12/12 · conformité per-couple 540/540 via le VRAI _conforme · engagement CÉLÉBRÉ 415/EN CHEMIN 75/NON_DÉPLOYÉ 50) ; couche : 🟢 46 · 🟠 404 · 🔴 90 ; 0 mot de sanction sur 288 écrans ; 0 pas en crise ; SHA ×2 7b4b690d90f9e205….
+- Re-score RIO-15 : 86 % → 95 % AU BARÈME (F1 20 INCHANGÉ — PLAFOND STRUCTUREL des quêtes pas RIO-05/10/15/18/23 · F2 23→25 · F3 25 inchangé · F4 18→25) — le maximum atteignable.
+- Documents : ADDENDUM-15 · ligne hub · rapport + JSON.
+
+Stage Summary:
+- DIMENSION SANTÉ MENTALE CLOSE (RIO-11 100 · RIO-12 100 · RIO-13 100 · RIO-14 100 · RIO-15 95 plafond) — 495/5 = 99 %. Global 23 quêtes : 2 123/23 = 92,3 % (attachement 467/5 · émotionnelle 495/5 · SM 495/5 · générationnelle 257/3 · personnalité 409/5). ADDENDUM-11→15 poussés à l'audit. Restent au signal fondateur : RIO-05 (plafond 95 %) et générationnelle RIO-16→18. Action n°2 (récapitulatif de DIMENSION) et n°3 (libellés réels) inchangées. Déploiement staging des correctifs P1 app toujours en attente des 2 secrets Cloudflare.
