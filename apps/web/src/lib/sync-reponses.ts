@@ -15,6 +15,11 @@
  * Les états d'avant la Task 69-c (sans `majA`) : l'appareil ACTIF a raison —
  * son état réel est poussé au premier persiste qui suit.
  *
+ * Pont versionné (Task 169, audit) : chaque état poussé porte
+ * `schema_version: 1` — le serveur le tolère (etatValide) et le restitue
+ * tel quel ; toute évolution future de la forme de `EtatQuete` incrémentera
+ * ce marqueur au lieu de casser le pont en silence.
+ *
  * Sans session : rien ne part, rien ne se restaure — silencieux.
  */
 
@@ -106,7 +111,7 @@ async function pousser(id: string): Promise<void> {
       method: 'PUT',
       credentials: 'same-origin', // FE-008 (audit) : cookie de session explicite
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ etat: { ...e, majA } }),
+      body: JSON.stringify({ etat: { ...e, majA, schema_version: 1 } }),
     });
   } catch {
     /* réseau absent / session expirée — le local reste la vérité de session,
@@ -122,7 +127,7 @@ async function pousserAvec(id: string, e: EtatQuete): Promise<void> {
       method: 'PUT',
       credentials: 'same-origin', // FE-008 (audit) : cookie de session explicite
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ etat: { ...e, majA } }),
+      body: JSON.stringify({ etat: { ...e, majA, schema_version: 1 } }),
     });
   } catch {
     /* silencieux — le prochain persiste retentera */

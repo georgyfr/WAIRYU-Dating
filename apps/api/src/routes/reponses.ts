@@ -14,10 +14,15 @@
  * aucun scoring, aucun sélecteur, aucune carte ne se calcule ici — le moteur
  * de quêtes reste côté navigateur. Session OBLIGATOIRE (le compte est le
  * point d'attache — c'est le sens même de « qui te suit partout »).
+ *
+ * Garde-fou (Task 169, audit app) : chaque voie est bornée par un compteur
+ * D1 (RATE_RULES.reponses*User) — large pour ne JAMAIS couper la sauvegarde
+ * d'une passation réelle, assez borné pour l'anti-abus.
  */
 import { Hono } from 'hono';
 import type { Context, Next } from 'hono';
 import type { AppEnv } from '../env';
+import { RATE_RULES, hitRateLimit } from '../lib/ratelimit';
 
 export const reponsesRoutes = new Hono<AppEnv>();
 
@@ -35,7 +40,8 @@ function estQuete(val: string): boolean {
 
 /** Audit de forme de l'état (le même JSON que le local — defensif, jamais
  *  inventé) : reponses (codes → nombre), terminee, carteId, termineeA,
- *  lectures (1|2|3), textes? (≤ 500). Retourne null si la forme est fausse. */
+ *  lectures (1|2|3), textes? (≤ 500), schema_version? (1-99, pont versionné
+ *  front↔serveur — Task 169). Retourne null si la forme est fausse. */
 function etatValide(brut: unknown): string | null {
   if (!brut || typeof brut !== 'object' || Array.isArray(brut)) return null;
   const o = brut as Record<string, unknown>;
@@ -61,6 +67,16 @@ function etatValide(brut: unknown): string | null {
       if (typeof v !== 'string' || v.length > 500) return null;
     }
   }
+  if (o.schema_version !== undefined) {
+    if (
+      typeof o.schema_version !== 'number' ||
+      !Number.isInteger(o.schema_version) ||
+      o.schema_version < 1 ||
+      o.schema_version > 99
+    ) {
+      return null;
+    }
+  }
   // Les autres clés (majA…) sont tolérées mais sérialisées telles quelles.
   if (JSON.stringify(o).length > 32_000) return null;
   return JSON.stringify(o);
@@ -74,6 +90,12 @@ reponsesRoutes.get('/reponses', async (c) => {
     return c.json({ ok: false, error: 'unauthorized' }, 401);
   }
   try {
+    const rl = await hitRateLimit(c.env.DB, RATE_RULES.reponsesGetUser, session.userId);
+    if (!rl.allowed) {
+      return c.json({ ok: false, error: 'rate_limited' }, 429, {
+        'Retry-After': String(rl.retryAfterSeconds),
+      });
+    }
     const { results } = await c.env.DB.prepare(
       `SELECT quete, etat, updated_at FROM reponses WHERE user_id = ?1 ORDER BY updated_at DESC`,
     )
@@ -115,6 +137,12 @@ reponsesRoutes.put('/reponses/:quete', async (c) => {
   if (etatJson === null) return c.json({ ok: false, error: 'invalid_body' }, 400);
   const now = new Date().toISOString();
   try {
+    const rl = await hitRateLimit(c.env.DB, RATE_RULES.reponsesPutUser, session.userId);
+    if (!rl.allowed) {
+      return c.json({ ok: false, error: 'rate_limited' }, 429, {
+        'Retry-After': String(rl.retryAfterSeconds),
+      });
+    }
     await c.env.DB.prepare(
       `INSERT INTO reponses (user_id, quete, etat, updated_at, created_at)
        VALUES (?1, ?2, ?3, ?4, ?4)
@@ -140,6 +168,12 @@ reponsesRoutes.delete('/reponses/:quete', async (c) => {
   const quete = c.req.param('quete');
   if (!estQuete(quete)) return c.json({ ok: false, error: 'invalid_quete' }, 400);
   try {
+    const rl = await hitRateLimit(c.env.DB, RATE_RULES.reponsesDeleteUser, session.userId);
+    if (!rl.allowed) {
+      return c.json({ ok: false, error: 'rate_limited' }, 429, {
+        'Retry-After': String(rl.retryAfterSeconds),
+      });
+    }
     await c.env.DB.prepare(`DELETE FROM reponses WHERE user_id = ?1 AND quete = ?2`)
       .bind(session.userId, quete)
       .run();

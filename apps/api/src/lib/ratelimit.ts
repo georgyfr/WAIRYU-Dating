@@ -145,6 +145,17 @@ export const RATE_RULES = {
   a2MediaGetUser: { scope: 'a2:mget:user', windowSeconds: 3600, max: 120 },
   /** Demandes d'appel de sanction : 3 / jour (G-MA-5). */
   modAppelUser: { scope: 'mod:appel:user', windowSeconds: 86400, max: 3 },
+  // --- Task 169 (audit app) : sync des quêtes (/api/reponses) ---
+  /** Écritures d'état de quête : 1800 / heure. Le debounce front (1,6 s)
+   *  produit ~1 écriture par item répondu — une passation rapide de 50
+   *  items peut burst ~700/h ; large pour ne JAMAIS couper la sauvegarde
+   *  d'une passation réelle (429 = perte silencieuse côté client), assez
+   *  borné pour l'anti-abus (payload ≤ 32 Ko). */
+  reponsesPutUser: { scope: 'rep:put:user', windowSeconds: 3600, max: 1800 },
+  /** Restauration au boot/login : 240 / heure (lecture légère). */
+  reponsesGetUser: { scope: 'rep:get:user', windowSeconds: 3600, max: 240 },
+  /** Effacements (quête vidée localement) : 60 / heure. */
+  reponsesDeleteUser: { scope: 'rep:del:user', windowSeconds: 3600, max: 60 },
   // --- MODÉRATION & APPEL (Task 115) ---
   /** Actions du modérateur (pose/levée/tranchage appel) : 60 / heure. */
   modAdminAction: { scope: 'mod:adm:user', windowSeconds: 3600, max: 60 },
