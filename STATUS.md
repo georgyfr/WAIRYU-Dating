@@ -500,3 +500,26 @@ staging appliquée, prod en attente du prochain feu vert.
 
 **Restes** : TOTAL_STEPS 51/50 (décision fondateur) · pool paginé, moteur
 serveur des quêtes, hooks M8-M11 (P3) · économie Lucioles à l'ouverture PSP.
+
+## Task 179 (2026-10-23) — feu vert fondateur : lot P2 + migration 0019 posés en production
+
+**Déploiement prod exécuté via `deploy.sh production`** (typecheck → build front
+→ migrations D1 → deploy Worker) sur feu vert explicite du fondateur.
+
+- **Migration `0019_hygiene` posée en prod** : `d1_migrations` passe à 18/18 ;
+  vérifié au vrai — `idx_rblk_par` et `idx_rsig_de` ont disparu, seuls leurs
+  jumeaux `idx_rblk_contre` / `idx_rsig_contre` subsistent (+ autoindexes).
+  Aucun DROP TABLE, aucune donnée touchée.
+- **Worker prod** : version `0d1b9259-cae7-49d3-a2ee-2dd40a36eb30` (100 %),
+  succède à `e60bc976` (Task 177). Le bundle servi (`index-D0Skp6kL.js`) porte
+  le correctif « 50 affirmations ».
+- **Smoke passif** (aucune fixture en prod) : `/` 200 · `/api/health` 200 ·
+  `/api/auth/config` 200 · gardes 401 intacts (`/api/reponses`, POST
+  `/api/rencontres/signalements` — l'ouverture N1 ne concerne que les comptes
+  sanctionnés N1, jamais l'anonyme —, `a2/etat`).
+- **R2** : toujours non activé (décision fondateur, version gratuite assumée) —
+  503 `media_indisponible` reste le comportement nominal jusqu'à activation.
+
+**Restes inchangés** : TOTAL_STEPS 51/50 (décision fondateur) · P3 (pool paginé,
+moteur serveur des quêtes, hooks M8-M11, ordre QUETE_IDS 5.x) · R2 à activer
+quand le budget suivra.

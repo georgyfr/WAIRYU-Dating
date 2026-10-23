@@ -3186,8 +3186,9 @@ Stage Summary:
 - Prod : en attente feu vert pour poser ce lot + la migration 0019 (staging-first respecté).
 
 ---
+
 Task ID: 173
-Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179) : le travail était poussé (commit 688016b, 22/10 19:48) mais l'entrée worklog n'avait pas été écrite avant le reset de session. Contenu reconstitué depuis le commit poussé et les fichiers du dépôt — aucun fait inventé.
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 189) : le travail était poussé (commit 688016b, 22/10 19:48) mais l'entrée worklog n'avait pas été écrite avant le reset de session. Contenu reconstitué depuis le commit poussé et les fichiers du dépôt — aucun fait inventé.
 Task: Fondateur (ordre 1a15ed7ad00bc0fd) — fichier de correction philosophique RIO-09 « Nos deux langues » (croisement émotionnel, moteur émo-q4-r3), même gabarit R1-R9.
 
 Work Log:
@@ -3203,7 +3204,7 @@ Stage Summary:
 
 ---
 Task ID: 174
-Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179), mêmes conditions que la 173 (commit 9c60c52, 22/10 19:59, déjà poussé).
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 189), mêmes conditions que la 173 (commit 9c60c52, 22/10 19:59, déjà poussé).
 Task: Fondateur (ordre 1a15ed7ad00bc0fd) — fichier de correction philosophique RIO-10 « Mon premier geste du cœur » (pas émotionnel, moteur émo-q5), même gabarit R1-R9.
 
 Work Log:
@@ -3219,7 +3220,7 @@ Stage Summary:
 
 ---
 Task ID: 175
-Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 179) : événement de gouvernance, reconstitué depuis l'entrée Task 176 existante (« Push GitHub opérationnel (PAT fondateur, Task 175) ») et l'historique git.
+Agent: WTC-Pont (superviseur) — entrée RÉTRO-ÉCRITE le 23/10 (session Task 189) : événement de gouvernance, reconstitué depuis l'entrée Task 176 existante (« Push GitHub opérationnel (PAT fondateur, Task 175) ») et l'historique git.
 Task: Déblocage de la file de push GitHub — le fondateur fournit le PAT.
 
 Work Log:
@@ -3232,6 +3233,41 @@ Stage Summary:
 
 ---
 Task ID: 179
+Agent: Z.ai Code (orchestrateur — session fondateur « feu vert »)
+Task: Déploiement PRODUCTION du lot Task 178 (P2 de l'audit) — migration 0019_hygiene sur D1 prod + code Worker P2, sur feu vert fondateur explicite. Périmètre hors WTC (« Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts ni cités).
+
+Work Log:
+- Feu vert interprété sans ambiguïté : le journal Task 178 s'était clos sur « prod prête à recevoir le lot 178 + migration 0019 au prochain feu vert » — le mot « feu vert » du fondateur lève ce verrou.
+- Pré-vérifs prod (lecture seule) : auth Cloudflare vérifiée (compte Wairyu26) ; `d1_migrations` prod = 17 entrées, dernière 0018_moderation_appels → seule 0019 s'appliquerait ; index dupliqués 0015 présents en prod (idx_rsig_de vu, idx_rblk_par attendu) — la migration avait un effet réel à produire. Discipline secrets re-vérifiée : 0 occurrence de la valeur du token dans le dépôt (rg sur tout l'arbre, .git exclu).
+- Déploiement via le script officiel `deploy.sh production` (typecheck tsc → build front Vite → `wrangler d1 migrations apply wairyu-prod --remote` → `wrangler deploy`). Contournement sandbox documenté appliqué : postcss.config.mjs du scaffold parent déplacé pendant le build, RESTITUÉ à l'identique quoi qu'il arrive (vérifié après coup).
+- L'appel Bash a perdu l'affichage en cours de route — l'état cible a été re-vérifié de bout en bout plutôt que fié à la sortie : migration posée, index purgés, version déployée. Aucune action en aveugle.
+- Vérifications post-deploy (au vrai, D1 prod remote) : `d1_migrations` = 18/18 (0019_hygiene.sql enregistrée après 0018/0017) ; sqlite_master ne liste plus que idx_rblk_contre / idx_rsig_contre + autoindexes — idx_rblk_par et idx_rsig_de ONT DISPARU.
+- Smoke passif prod (protocole Task 177, aucune fixture) : `/` 200 · `/api/health` 200 · `/api/auth/config` 200 · `/api/reponses` 401 · POST `/api/rencontres/signalements` 401 (l'ouverture N1 ne concerne que les comptes sanctionnés N1, jamais l'anonyme) · `/api/rencontres/{uuid}/a2/etat` 401. Bundle servi = index-D0Skp6kL.js (hash identique au dist déployé) et contient « 50 affirmations » — le correctif voyage.ts est servi.
+
+Stage Summary:
+- PROD à jour du lot P2 complet : Worker version 0d1b9259-cae7-49d3-a2ee-2dd40a36eb30 (100 %, succède à e60bc976 de la Task 177) + migration 0019_hygiene posée et vérifiée (index dupliqués purgés, aucune donnée touchée).
+- Audit P1 + P2 : intégralement en production. WS neutre, purge unmatch, cartes Duo, rate limit, whitelist signalements N1, parenthésage UPDATE, annonce « 50 », hygiène D1 — tout est posé et fumé.
+- Restes : TOTAL_STEPS 51/50 (décision fondateur, non touché) · P3 (pool paginé, moteur serveur des quêtes, hooks M8-M11, ordre QUETE_IDS 5.x) · R2 à activer par le fondateur quand le budget suivra (503 media_indisponible = comportement nominal d'ici là) · révocation des tokens fondateur en fin de projet (rappel standing).
+
+---
+Task ID: 180
+Agent: Z.ai Code (orchestrateur — session fondateur « pousse tout ce qui a été fait sur GitHub »)
+Task: Re-provisionnement du PAT GitHub (nouveau jeton fourni par le fondateur) + vérification que TOUT le travail est bien sur GitHub. Périmètre hors WTC.
+
+Work Log:
+- État vérifié d'abord : le lot P2 (Tasks 178/179, commits 9011eba → d3ab69f) était DÉJÀ poussé sur GitHub ; le local n'avait zéro commit d'avance.
+- Nouveau PAT installé dans la config git LOCALE du remote origin (jamais écrit dans un fichier du dépôt — discipline secrets reconfirmée : rg du dépôt = 0 occurrence).
+- Authentification réelle du nouveau PAT prouvée : git ls-remote répond (refs/heads/main). NB : l'empreinte SHA256:QJDq8… fournie par le fondateur ne correspond au hash standard du PAT dans aucune variante testée (base64url, base64, hex) — l'usage réel a fait foi.
+- Découverte : GitHub main était EN AVANCE sur le local — une session parallèle a mergé le travail « interface-therapeutique » (commits 13fbcb1 maquettes P01/P05/P12/P14, af75887 dossier interface/ + README, e22dbbd merge) dans main. `git pull --ff-only` exécuté : local aligné sur e22dbbd. Périmètre respecté : ces fichiers — dont le dossier « Wairyu thérapie couple » — ne sont ni ouverts ni lus, présence constatée par métadonnées git uniquement.
+- Push de contrôle avec le NOUVEAU PAT (ce commit) — cycle complet fetch/pull/commit/push vérifié.
+
+Stage Summary:
+- GitHub = local = e22dbbd : TOUT le travail est sur GitHub — lot P1 (Task 7), lot P2 + bit-exact 1.5→5.7 (Task 178), déploiement prod (Task 179), et le travail des sessions parallèles (interface thérapeutique).
+- Nouveau PAT opérationnel et installé ; l'ancien peut être révoqué par le fondateur quand il le souhaite (rappel standing : TOUS les tokens seront révoqués en fin de projet).
+
+---
+
+Task ID: 189
 Agent: WTC-Pont (superviseur — session fondateur « santé mentale (RIO-11→15) »)
 Task: Fondateur — signal « santé mentale (RIO-11→15) » : fichier de correction philosophique RIO-11 « Ma détresse et la leur » (carte, moteur sm-q1-r3), même gabarit R1-R9, fichiers SUPPLÉMENTAIRES, zéro modification de l'existant. NB : les entrées worklog 173/174/175 manquantes ont été RÉTRO-ÉCRITES en tête de cette session (append-only, faits vérifiés depuis les commits poussés).
 
@@ -3247,7 +3283,7 @@ Stage Summary:
 - RIO-11 COMPLET ET PROUVÉ (9/9 PASS). Dimension santé mentale engagée au signal fondateur.
 
 ---
-Task ID: 180
+Task ID: 190
 Agent: WTC-Pont (superviseur)
 Task: Fondateur — fichier de correction philosophique RIO-12 « Ce que je porte pour toi » (ombre, moteur sm-q2), même gabarit.
 
@@ -3264,7 +3300,7 @@ Stage Summary:
 - RIO-12 COMPLET ET PROUVÉ (9/9 PASS). La bascule G3 (14/70 en bande) reste consignée telle quelle.
 
 ---
-Task ID: 181
+Task ID: 191
 Agent: WTC-Pont (superviseur)
 Task: Fondateur — fichier de correction philosophique RIO-13 « Ce que notre lien sait porter » (lumière, moteur sm-q3), même gabarit.
 
@@ -3281,7 +3317,7 @@ Stage Summary:
 - RIO-13 COMPLET ET PROUVÉ (9/9 PASS). La lumière ne se fabrique pas : forces affichées ≡ VRAI forces_affichees 5 832/5 832.
 
 ---
-Task ID: 182
+Task ID: 192
 Agent: WTC-Pont (superviseur)
 Task: Fondateur — fichier de correction philosophique RIO-14 « Nos deux rives » (croisement de couple, moteur sm-q4), même gabarit.
 
@@ -3298,7 +3334,7 @@ Stage Summary:
 - RIO-14 COMPLET ET PROUVÉ (9/9 PASS). La table du croisement EST celle du pas — prouvé bit-exact à chaque appel.
 
 ---
-Task ID: 183
+Task ID: 193
 Agent: WTC-Pont (superviseur)
 Task: Fondateur — fichier de correction philosophique RIO-15 « Mon premier pas vers l'autre rive » (pas, moteur sm-q5), même gabarit — clôture de la dimension santé mentale.
 
@@ -3327,7 +3363,7 @@ Work Log:
 - TENTATIVE DE PUSH : REFUSÉE — 403 « Permission to georgyfr/WAIRYU-Dating.git denied to georgyfr », sur push origin ET sur push URL-PAT explicite. Diagnostic : le PAT fine-grained du fondateur est VALIDE en lecture (ls-remote OK · API /repos 200 · identité georgyfr · aucun header X-OAuth-Scopes = fine-grained) mais SANS droit Contents:write — sonde API POST /git/refs → « Resource not accessible by personal access token » (aucune ref créée, DELETE 403, zéro trace). NB : l'API /repos renvoie permissions.push=true — ce champ reflète le rôle du PROPRIÉTAIRE du dépôt, pas les permissions fines du token. Le remote a été poussé avec succès à 13:24 UTC : le droit d'écriture a donc été perdu entre 13:24 et ~14:00 UTC (token édité/restreint côté fondateur ?). Les 2 commits de réconciliation (e816a2e, 1efa3ad) restent en local, prêts à partir.
 
 Stage Summary:
-- SANTÉ MENTALE RIO-11→15 PRÉSERVÉE et réconciliée sur la ligne canonique (Tasks 179-183) — rien perdu, append-only respecté, aucune entrée réécrite.
+- SANTÉ MENTALE RIO-11→15 PRÉSERVÉE et réconciliée sur la ligne canonique (Tasks 179-183 — renumérotés 189-193 à la fusion, cf. Task 194) — rien perdu, append-only respecté, aucune entrée réécrite.
 - Gouvernance actée : GitHub seul, zéro Cloudflare, poussées progressives. Déploiement (staging & prod) GELÉ au signal fondateur.
 - BLOCAGE UNIQUE : le PAT fondateur a perdu Contents:write → à réparer CÔTÉ FONDATEUR : GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → éditer le token → Repository access (WAIRYU-Dating) → Permissions → Repository permissions → Contents : « Read and write » (Metadata reste Read-only, aucun workflow dans le dépôt). Dès réparation, `git push origin main` envoie e816a2e + 1efa3ad.
 - Restent au signal fondateur : générationnelle RIO-16→18 · RIO-05 (plafond 95 %).
@@ -3398,3 +3434,21 @@ Work Log:
 
 Stage Summary:
 - **RIO-05 67 % → 95 %** (9/9 COR PASS, re-score bit-exact 0 écart, F1 20 plafond structurel). **DIMENSION ATTACHEMENT CLOSE : 495/5 = 99 %.** **ACTION N°1 CLOSE INTÉGRALEMENT** — toutes les quêtes du périmètre de correction (RIO-01→18) sont au gabarit complet ; personnalité déjà CLOSE génération 3. **Global 23 quêtes : 2 189/23 = 95,2 %** (attachement 495/5 · émotionnelle 495/5 · SM 495/5 · générationnelle 295/3 · personnalité 409/5). Restent ouvertes : action n°2 (récapitulatif de DIMENSION — fédération des fragments L8 des 5 dimensions) · action n°3 (libellés réels des 23 instruments — premier maillon posé : la junction `nommage` q2-r1) · VALID-01 (OSF prêt, actes fondateurs en attente) · R2 médias (désactivé, assumé). Push toujours BLOQUÉ 403 (PAT sans Contents:write) — 7 commits accumulés en local, progressive push dès réparation du token fondateur.
+
+---
+Task ID: 194
+Agent: WTC-Pont (superviseur — session fondateur « nouveau PAT » — FUSION & RÉCONCILIATION)
+Task: Fondateur — nouveau PAT fourni (empreinte annoncée SHA256:QJDq8P3uNrolyInfbB08aGzRPnhoID1HDqpRRHvS9jU) : réparer le push 403, pousser les 7 commits locaux accumulés, fusionner la divergence remote découverte (dont une DEUXIÈME exécution indépendante de RIO-05), réconcilier les identifiants. Zéro Cloudflare, GitHub seul.
+
+Work Log:
+- Nouveau PAT installé dans l'URL du remote origin (jamais écrit dans un fichier du dépôt — discipline secrets reconfirmée). Authentification réelle prouvée : GET /repos/georgyfr/WAIRYU-Dating → 200, permissions {admin, maintain, push, triage, pull}. Le push sort définitivement du 403.
+- Push rejeté « fetch first » : GitHub main a AVANCÉ pendant le blocage local — fetch : 7 commits remote absents du local (13fbcb1 maquettes P01/P05/P12/P14 · af75887 dossier interface/ + READMEs · e22dbbd merge interface-therapeutique · d3ab69f Task 179 remote = déploiement PROD lot P2 · 38d5814 STATUS.md · 7fc7216 Task 180 remote = re-provisionnement PAT · bb0a28b correction RIO-05 « exécution Task 177 » côté remote).
+- DÉCOUVERTE MAJEURE : bb0a28b = une DEUXIÈME exécution indépendante de la correction philosophique RIO-05, menée en parallèle sur un autre clone du même ordre fondateur (trace 1a15ed7ad00bc0fd), avec EXACTEMENT les mêmes 6 chemins (validation-q5/correction-philosophique/) et une logique de palier DIFFÉRENTE de l'exécution Task 188 (locale) : lecture héritée de la carte (règle R1 de RIO-01, max des rangs, 0 seuil ajouté, 194 145 configs, SHA ×2 4e96032062cc27c5, S1 = un axe Forte · S2 = un axe Vive sans Forte) versus plancher hérité (🔴 ssi les DEUX axes ≥ 2,61 cohérent RIO-04, 470 400 configs, SHA ×2 b1be0fffcb0a23ac, S1 ⇔ 🔴 / S2 ⇔ 🟠). Les DEUX déclarent COR0-COR8 9/9 PASS, re-score 67 % → 95 % (plafond F1=20), attachement CLOSE 495/5 = 99 % — le SCORE canonique est identique dans les deux exécutions ; la LOGIQUE de palier diverge.
+- Fusion résolue « remote canonique » (protocole Task 184 réappliqué) : (1) les 6 fichiers q5 = versions remote aux chemins canoniques, byte-tels-quels ; (2) l'exécution Task 188 préservée BYTE-IDENTIQUE à validation-q5/correction-philosophique-exec188/ (même profondeur de répertoires → résolutions __file__ intactes) et reproductibilité RE-VÉRIFIÉE APRÈS déplacement : pipeline ×2 SHA identiques b1be0fffcb0a23ac…, 9/9 PASS, « Tous PASS : True » ; (3) audit : ADDENDUM-11 remote conservé tel quel, addenda locaux renumérotés +1 (SM 11→15 devient 12→16 · générationnelle 16→18 devient 17→19 · RIO-05 local 19 devient 20) avec parenthésés de réconciliation mis à jour (Tasks 179-183 → 189-193) et NOTE DE FUSION documentant la double exécution ; (4) worklog : entrées remote 179/180 conservées telles quelles, bloc santé mentale local renuméroté 179-183 → 189-193 (IDs seuls + 3 self-références « session Task 179 » des entrées rétro + 1 précision Task 184 — contenu append-only inchangé), présente entrée ajoutée.
+- ⚠️ ARBITRAGE FONDATEUR OUVERT (consigné dans la NOTE DE FUSION de l'audit) : les deux lectures de palier RIO-05 ne coïncident pas (ex. sA=3,5 Forte / sB=1,0 Tranquille → 🔴 selon la lecture carte (max des rangs), 🟠 selon le plancher RIO-04 (un seul axe ≥ 2,61)) ; les S1/S2 diffèrent dans la même direction. Aucune des deux couches ne modifie les moteurs validés P1. À trancher avant tout déploiement (gelé) ou avant VALID-01 — ni fusion ni élimination décidée unilatéralement.
+- Constat de gouvernance, consigné factuellement : les déploiements remote (staging Task 177, PROD Task 179 — horodatés 15:03-15:25 UTC) sont postérieurs au commit Task 184 (15:00 UTC) qui consigne la directive de gel ; mais la session remote (clone parallèle) n'a JAMAIS reçu cette directive et agissait sur un « feu vert » fondateur explicite de son propre canal. Aucune nouvelle action Cloudflare dans la présente session ; le gel s'applique désormais à toutes les sessions via cette note.
+
+Stage Summary:
+- PUSH RÉUSSI : origin/main = fusion des deux lignes — les 7 commits locaux (SM renuméroté 189-193 · 184 · 185-187 · 188) rejoignent les 7 commits remote (interface · prod P2 · PAT · RIO-05 « Task 177 »). L'action n°1 reste CLOSE (23/23 quêtes au gabarit complet ; RIO-05 = 95 % dans les DEUX exécutions) · global 2 189/23 = 95,2 %.
+- Séquence des IDs après fusion : …176 · 169 · 177 · 178 · rétro 173-175 (sessions 189) · remote 179-180 · SM 189-193 · 184 · 185-187 · 188 · 194 — prochains libres = 195+. NB : l'entrée « Task 177 » du remote (staging/E3) ne désigne PAS la correction RIO-05 ; l'attribution « exécution Task 177 » portée par le commit bb0a28b est une attribution interne de la session remote, conservée telle quelle (remote canonique, append-only).
+- Restent ouvertes : ARBITRAGE palier RIO-05 (note de fusion de l'audit) · action n°2 (récapitulatif de DIMENSION — fédération des fragments L8 des 5 dimensions) · action n°3 (libellés réels des 23 instruments — premier maillon posé : junction nommage q2-r1 de l'exécution Task 188) · VALID-01 (OSF prêt, actes fondateurs en attente : comité clinique 6 membres + AIPD) · TOTAL_STEPS 51/50 · R2 médias (désactivé, assumé).

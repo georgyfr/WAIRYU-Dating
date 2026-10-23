@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Wairyu · P12 — Le Pont (espace couple)</title><style>
+:root{--night:#1A2332;--turquoise:#6DD5C0;--brume:#E6F7FF;--coral:#FF6B6B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;background:#0a0f18;display:flex;justify-content:center;padding:28px}
+.stage{width:390px;min-height:700px;border-radius:44px;overflow:hidden;background:linear-gradient(180deg,#1A2332,#111927);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(109,213,192,.18);padding:30px 20px;color:#E6F7FF}
+.kicker{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(109,213,192,.9)}
+h1{font-size:20px;margin:6px 0 2px}
+.patience{font-size:12.5px;color:rgba(230,247,255,.55);margin-bottom:18px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border-radius:20px;padding:16px;position:relative}
+.card.you{background:rgba(26,35,50,.9);border:1px solid rgba(230,247,255,.18)}
+.card.them{background:rgba(109,213,192,.1);border:1px solid rgba(109,213,192,.4)}
+.card h3{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.75;margin-bottom:8px}
+.card p{font-size:13px;line-height:1.6}
+.heart{margin:14px auto 4px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 35%,#6DD5C0 0%,#2a7d74 70%);box-shadow:0 0 34px rgba(109,213,192,.4)}
+.dance{margin-top:16px;padding:16px;border-radius:20px;background:rgba(230,247,255,.05);border:1px solid rgba(230,247,255,.12);font-size:13px;line-height:1.65}
+.dance b{color:var(--turquoise)}
+.share{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;background:rgba(230,247,255,.04);border:1px solid rgba(230,247,255,.1);font-size:12.5px}
+.sw{width:40px;height:22px;border-radius:12px;background:rgba(230,247,255,.15);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#E6F7FF;transition:.3s}
+.sw.on{background:var(--turquoise)}.sw.on::after{left:21px}
+.rule{margin-top:16px;font-size:11.5px;color:rgba(255,107,107,.8);text-align:center}
+</style></head><body>
+<div class="stage">
+  <div class="kicker">Rive de rencontre · RIO-04 partagé</div>
+  <h1>Le Pont</h1>
+  <p class="patience">Le pont n'existe que si les deux ont choisi de partager. Ici, Maya et Tom ont partagé « Notre danse ».</p>
+  <div class="duo">
+    <div class="card you"><h3>Toi</h3><p>« Quand la peur de perdre te touche, tu cherches des signes de rappel — et quand ils tardent, ton corps le vit comme un danger. »</p></div>
+    <div class="card them"><h3>Tom</h3><p>« Quand ça fait trop, il se referme pour se protéger — ce retrait n'est pas un refus. »</p></div>
+  </div>
+  <div class="heart"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0d1420"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.5-7 10-7 10z"/></svg></div>
+  <div class="dance"><b>Votre danse :</b> poursuite / retrait. Plus l'un avance pour être rassuré, plus l'autre recule pour souffler — <b>sans coupable ni victime</b>. Le pont nomme le mouvement, jamais une faute.</div>
+  <div class="share">
+    <div class="row"><span>RIO-01 · Comment je me raccroche</span><div class="sw on"></div></div>
+    <div class="row"><span>RIO-04 · Notre danse</span><div class="sw on"></div></div>
+    <div class="row"><span>RIO-05 · Mon premier pas</span><div class="sw"></div></div>
+  </div>
+  <p class="rule">Chaque case se partage individuellement — et se révoque à tout moment. Aucun partage automatique.</p>
+</div>
+</body></html>

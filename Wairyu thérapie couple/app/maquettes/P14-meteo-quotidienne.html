@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Wairyu · P14 — La météo quotidienne</title><style>
+:root{--night:#1A2332;--turquoise:#6DD5C0;--brume:#E6F7FF;--coral:#FF6B6B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;background:#0a0f18;display:flex;justify-content:center;padding:28px}
+.stage{width:390px;height:520px;border-radius:44px;overflow:hidden;background:linear-gradient(180deg,#1A2332,#111927);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(109,213,192,.18);padding:34px 24px;color:var(--brume)}
+.kicker{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(109,213,192,.9)}
+h1{font-size:21px;margin:8px 0 4px}
+.sub{font-size:13px;color:rgba(230,247,255,.65);line-height:1.5}
+.weather{display:flex;justify-content:space-between;margin:30px 4px 8px}
+.w{width:72px;height:88px;border-radius:20px;border:1.5px solid rgba(230,247,255,.14);background:rgba(230,247,255,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1)}
+.w svg{width:30px;height:30px;stroke:rgba(230,247,255,.75);fill:none;stroke-width:1.7;stroke-linecap:round}
+.w span{font-size:11px;color:rgba(230,247,255,.6)}
+.w.sel{border-color:var(--turquoise);background:rgba(109,213,192,.12);transform:translateY(-4px)}
+.w.sel svg,.w.sel span{color:var(--turquoise);stroke:var(--turquoise)}
+.reveal{margin-top:26px;padding:16px;border-radius:18px;background:rgba(230,247,255,.06);border:1px dashed rgba(109,213,192,.35);font-size:13px;line-height:1.6;color:rgba(230,247,255,.75)}
+.reveal b{color:var(--turquoise)}
+.note{margin-top:14px;font-size:11.5px;color:rgba(230,247,255,.45);text-align:center}
+</style></head><body>
+<div class="stage">
+  <div class="kicker">Ce soir · votre météo intérieure</div>
+  <h1>Comment est l'eau en vous, aujourd'hui ?</h1>
+  <p class="sub">Une question, trois secondes. Elle ne sera révélée à votre partenaire que si les deux ont répondu — et rien n'est obligatoire.</p>
+  <div class="weather">
+    <div class="w"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg><span>Serein</span></div>
+    <div class="w sel"><svg viewBox="0 0 24 24"><path d="M6 15a4 4 0 11.5-7.9A5 5 0 1116 12H6z"/></svg><span>Couvert</span></div>
+    <div class="w"><svg viewBox="0 0 24 24"><path d="M6 14a4 4 0 11.5-7.9A5 5 0 1116 11H6zM8 18v2M12 18v3M16 18v2"/></svg><span>Pluie</span></div>
+    <div class="w"><svg viewBox="0 0 24 24"><path d="M6 13a4 4 0 11.5-7.9A5 5 0 1116 10H6zM11 14l-2 4h3l-2 4"/></svg><span>Orage</span></div>
+  </div>
+  <div class="reveal"><b>Le filet veille :</b> si vous répondez « orage » trois jours de suite, Wairyu propose doucement l'accès au Filet (P15) — avant toute autre chose. Pas de streak, pas de jugement.</div>
+  <p class="note">« Le courant attend, il ne presse jamais. »</p>
+</div>
+</body></html>

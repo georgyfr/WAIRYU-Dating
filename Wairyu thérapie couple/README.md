@@ -25,7 +25,9 @@ Wairyu thérapie couple/
 ├── validation-q3/ · validation-q3-r1/
 │   └── correction-philosophique/ (RIO-03 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 1,99 M états + plancher monotone prouvé, COR1-COR8 PASS)
 ├── validation-q4/ · validation-q5/
-│   └── validation-q4/correction-philosophique/ (RIO-04 re-scored 61 % → 100 %, gabarit §5.1-§5.4 complet, 139 392 configs + palier de couple prouvé, COR0-COR8 PASS)
+│   ├── validation-q4/correction-philosophique/ (RIO-04 re-scored 61 % → 100 %, gabarit §5.1-§5.4 complet, 139 392 configs + palier de couple prouvé, COR0-COR8 PASS)
+│   ├── validation-q5/correction-philosophique/ (RIO-05 re-scored 67 % → 95 % — plafond F1=20 des quêtes pas — 194 145 configs + lecture héritée de la carte prouvée, COR0-COR8 PASS — exécution « Task 177 » remote, canonique)
+│   └── validation-q5/correction-philosophique-exec188/ (deuxième exécution indépendante du même ordre — Task 188, 470 400 configs + plancher hérité 2,61 sur les DEUX axes, SHA ×2 re-vérifiée après fusion, COR0-COR8 PASS — divergence de palier à arbitrer, cf. note de fusion de l'audit)
 │
 │  ═══ Dimension ÉMOTIONNELLE (5/5 VALIDÉE) ═══
 ├── validation-emotionnelle/
