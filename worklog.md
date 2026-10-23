@@ -3313,3 +3313,21 @@ Work Log:
 
 Stage Summary:
 - DIMENSION SANTÉ MENTALE CLOSE (RIO-11 100 · RIO-12 100 · RIO-13 100 · RIO-14 100 · RIO-15 95 plafond) — 495/5 = 99 %. Global 23 quêtes : 2 123/23 = 92,3 % (attachement 467/5 · émotionnelle 495/5 · SM 495/5 · générationnelle 257/3 · personnalité 409/5). ADDENDUM-11→15 poussés à l'audit. Restent au signal fondateur : RIO-05 (plafond 95 %) et générationnelle RIO-16→18. Action n°2 (récapitulatif de DIMENSION) et n°3 (libellés réels) inchangées. Déploiement staging des correctifs P1 app toujours en attente des 2 secrets Cloudflare.
+
+---
+Task ID: 184
+Agent: WTC-Pont (superviseur — session « gouvernance GitHub & réconciliation »)
+Task: Fondateur — directive « Non, n'utilise surtout pas les accès Cloudflare. Ce n'est pas le moment de le déployer sur Cloudflare. Continue à le déployer uniquement sur GitHub et aussi à pousser progressivement tout ce que tu fais. » + réconciliation des deux lignes divergentes nées des resets de session (santé mentale locale vs correctifs app poussés).
+
+Work Log:
+- Directive fondateur enregistrée : ZÉRO Cloudflare pour le moment ; tout le travail vit sur GitHub, poussé progressivement à chaque étape. Les secrets CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID ne sont PAS requis et ne seront PAS sollicités. Le « feu vert prod » consigné en Task 177 (ligne remote) est SUSPENDU — staging et prod gelés jusqu'à nouvel ordre fondateur.
+- Détection de divergence git : local = 6fa09da (santé mentale RIO-11→15, 2 commits JAMAIS poussés — dc6ca43 corrections + 6fa09da worklog) vs origin/main = 9011eba (7 commits correctifs app poussés le 23/10 à 13:24 UTC : E2 WS neutre D-E2-7 · staging + vérification E3 réelle 30/30 · modération signalement N1 + parenthésage UPDATE unmatch · hygiène chatVoiceUser + migration 0019 + réconciliation 0014 · annonce quête 1.1 50 affirmations PASSATION 58 · STATUS + worklog Tasks 177-178). Point de divergence : be77b7f.
+- COLLISION d'IDs détectée : 177-181 employés des deux côtés. Le côté remote est CANONIQUE (déjà poussé) : 177 = staging, 178 = P2 audit app. La santé mentale est renumérotée 179-183.
+- Réconciliation append-only : les 2 commits santé mentale rejoués sur 9011eba → e816a2e (correction RIO-11→15, message renuméroté « Tasks 179-183 ») + 1efa3ad (worklog : 129 lignes APPENDUES, IDs renumérotés 177→179 · 178→180 · 179→181 · 180→182 · 181→183, références croisées « session Task 177 » → « session Task 179 ») — AUCUN contenu d'entrée modifié, IDs seuls. Worklog fusionné : 3 315 lignes, séquence …172 · 176 · 169 · 177 · 178 · 173-175 (rétro) · 179-183.
+- TENTATIVE DE PUSH : REFUSÉE — 403 « Permission to georgyfr/WAIRYU-Dating.git denied to georgyfr », sur push origin ET sur push URL-PAT explicite. Diagnostic : le PAT fine-grained du fondateur est VALIDE en lecture (ls-remote OK · API /repos 200 · identité georgyfr · aucun header X-OAuth-Scopes = fine-grained) mais SANS droit Contents:write — sonde API POST /git/refs → « Resource not accessible by personal access token » (aucune ref créée, DELETE 403, zéro trace). NB : l'API /repos renvoie permissions.push=true — ce champ reflète le rôle du PROPRIÉTAIRE du dépôt, pas les permissions fines du token. Le remote a été poussé avec succès à 13:24 UTC : le droit d'écriture a donc été perdu entre 13:24 et ~14:00 UTC (token édité/restreint côté fondateur ?). Les 2 commits de réconciliation (e816a2e, 1efa3ad) restent en local, prêts à partir.
+
+Stage Summary:
+- SANTÉ MENTALE RIO-11→15 PRÉSERVÉE et réconciliée sur la ligne canonique (Tasks 179-183) — rien perdu, append-only respecté, aucune entrée réécrite.
+- Gouvernance actée : GitHub seul, zéro Cloudflare, poussées progressives. Déploiement (staging & prod) GELÉ au signal fondateur.
+- BLOCAGE UNIQUE : le PAT fondateur a perdu Contents:write → à réparer CÔTÉ FONDATEUR : GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → éditer le token → Repository access (WAIRYU-Dating) → Permissions → Repository permissions → Contents : « Read and write » (Metadata reste Read-only, aucun workflow dans le dépôt). Dès réparation, `git push origin main` envoie e816a2e + 1efa3ad.
+- Restent au signal fondateur : générationnelle RIO-16→18 · RIO-05 (plafond 95 %).
