@@ -3162,3 +3162,25 @@ Stage Summary:
 - STAGING VERT 30/30 : purge unmatch (le 🔴 D-E3-7) prouvée en vrai, cartes Duo honnêtes (D-E3-5) prouvées, WS neutre prouvé, gel blocage + 503 média + rate limit conformes. Fixtures wtest-* purgées après tests.
 - PROD déployée : wairyu.wairyu.workers.dev — version e60bc976-0197-405e-8c60-66691c46bf8f (smoke passif post-deploy : / → 200 SPA, /api/reponses → 401, /api/rencontres/{uuid}/a2/etat → 401, /api/auth/config → 200 — aucune fixture en prod). Aucune migration requise (prod déjà à jour, tables E3 présentes mais vides ; MEDIA absent → 503 propre partout où l'app l'attend).
 - Restes P2/P3 inchangés (whitelist signalements N1, parenthésage UPDATE unmatch, index dupliqués, réconciliation 0014, bit-exact 1.5→5.7, trames FM-018, moteur serveur des quêtes, pool paginé, STATUS.md) + TOTAL_STEPS 51/50 à trancher par le fondateur.
+
+---
+Task ID: 178
+Agent: Z.ai Code (orchestrateur — session fondateur « version gratuite assumée, continue avec la suite »)
+Task: Lot P2 de l'audit (le WS neutre était déjà livré en Task 177) + vérification bit-exact étendue 1.5→5.7 + STATUS.md. Décision fondateur du jour : R2 reste désactivé (gratuit), les médias E3 répondent 503 propre jusqu'à activation future. Périmètre hors WTC.
+
+Work Log:
+- Décision fondateur enregistrée : R2 NON activé (payant) — travail en version gratuite ; achat différé. Aucune dépendance au dépôt (le code 503 media_indisponible reste le comportement gravé).
+- Whitelist signalements en N1 (middleware/sanction.ts) — l'audit relevait qu'un compte sanctionné N1 ne pouvait plus signaler ; M-1 fait du signalement la protection de base. `/api/rencontres/signalements` rejoint ECRITURES_N1_OUVERTES. N2 hors périmètre (son chemin = l'appel G-MA-3).
+- Parenthésage `UPDATE rencontre_pas` (routes/messages.ts) : `((A) OR (B)) AND statut='match'` — l'ancienne forme liait `statut='match'` au seul second bras.
+- `chatVoiceUser` retiré de lib/ratelimit.ts (règle jamais branchée ; les uploads passent par a2MediaPutUser ; une règle dédiée reviendra avec R2).
+- Migration `0019_hygiene.sql` : DROP des index dupliqués de 0015 (idx_rblk_par / idx_rsig_de — même colonne que leurs jumeaux, aucun INDEXED BY dans le dépôt). `migrations/README.md` : réconciliation 0014 (numéro jamais utilisé dans la ligne canonique ; prod 17/17 fichiers ; la ligne expérimentation staging est hors canon).
+- Annonce quête 1.1 (lib/voyage.ts) : « 58 affirmations » → « 50 affirmations » — PASSATION = 58 positions (50 items + 8 trames sautées, règle 11-b) ; l'écran n'a jamais montré 58.
+- STATUS.md : journal Task 178 + table d'avancement actualisée.
+- Vérification BIT-EXACT 1.5→5.7 (P2 audit — étend les 1.1-1.4 déjà prouvés) : 4 agents en parallèle (Tasks 9-b/c/d/e du journal local), 31 quêtes, exécution réelle des scorers (bun, graines gelées) : 441 vérifications, 0 écart. Nuances doc-only consignées (commentaire obsolète 2.8-def : valeur '3.1' correcte depuis Task 46 ; ancrage-likert limité 1.1-1.3 par Task 65 ; ordre QUETE_IDS 5.x vs chaîne 5.1→5.2→5.3→5.7→5.4→5.5→5.6 — P3 connu). Repo intact après agents (git status propre).
+- Vérifs : tsc API ✅, build front ✅ (contournement postcss sandbox parent, restitué). Déploiement staging + migration 0019 posée en staging ; prod en attente du prochain feu vert fondateur (gouvernance).
+- Périmètre : « Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts ni cités.
+
+Stage Summary:
+- P2 de l'audit : TOUT le lot Worker/hygiène est livré (WS neutre déjà en 177 ; signalements N1, parenthésage, chatVoiceUser, 0019, réconciliation 0014, annonce 50, STATUS.md).
+- L'item P2 « bit-exact 1.5→5.7 » est FERMÉ avec preuve d'exécution : 31 quêtes conformes, 0 écart.
+- Prod : en attente feu vert pour poser ce lot + la migration 0019 (staging-first respecté).
