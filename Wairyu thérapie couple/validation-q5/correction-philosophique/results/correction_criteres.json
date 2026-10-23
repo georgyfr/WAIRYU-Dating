@@ -1,0 +1,227 @@
+{
+ "package": "validation-q5/correction-philosophique",
+ "cible": "RIO-05 « Mon premier pas »",
+ "moteurs_reels": [
+  "validation-q5/src/wtc_q5_core.py (pas + suivi 14 j + rappels + re-test)",
+  "validation-q5/src/wtc_q5_simulator.py (seed 42, 180 profils, pas_vrai D-VÉRITÉ)",
+  "validation-q1-r1/src/wtc_q1_core.py (VRAIS scores d'axes — grain 1/9)",
+  "validation-q2-r1/src/wtc_q2_core.py (VRAIS labels d'ombre — nommage réel)",
+  "validation-q4/src/wtc_q4_core.py (VRAI croisement de couple)",
+  "validation-q4/correction-philosophique/src/wtc_q4_correction.py (palier de couple RIO-04, importé tel quel)"
+ ],
+ "espace_enumeré": {
+  "dimension": "paires d'axes réelles q1-r1 (28 × 28 = 784) × labels du flux q2-r1 (6 réels + None + inconnu = 8) × jours tenus (15) × chemins couple (mono + 4 classes réelles de l'autre rive = 5)",
+  "configurations": 470400
+ },
+ "cor8_sha256_run1": "b1be0fffcb0a23ac0810d6f73ce6013c72c860ff7571d3aa9f72f29f332bfb86",
+ "cor8_sha256_run2": "b1be0fffcb0a23ac0810d6f73ce6013c72c860ff7571d3aa9f72f29f332bfb86",
+ "criteres": {
+  "COR0_compactations": {
+   "definition": "compactations PROUVÉES exhaustivement : espace RÉEL des axes déterminé par le VRAI code q1-r1 (4⁹ répartitions → 28 sommes sans trou 9-36, chaque somme vérifiée par le VRAI scores_axes) · frontière 2,61 tranchée par le VRAI face_dominante des DEUX côtés (NON PILE atteignable — consigné, dist min mesurée — mais sans ambiguïté : 2,56 < 2,61 ≤ 2,67) · table pas 9/9 ≡ règle pure · compaction pas ≡ (face, empreinte) 2 352 · suivi 15 valeurs (frontières 6/7 et 8/9, 0 sanction, bords non entiers consignés) · espions labels/jours · la face seule NE SUFFIT PAS (consigné) · type ≡ classe sur 784 · labels réels du VRAI nommage q2-r1 6/6 · fallback hors flux consigné · re-test 2026-02-26 jamais forcé",
+   "observe": "sommes 28 sans trou True · valeurs axes 28 → écart scores_axes 0 · bas max 2.56 < 2,61 ≤ haut min 2.67 · PILE 2,61 : 0 (dist min 0.05 — bas 0.05 / haut 0.06) · tranchage écart 0 · table pas 9 → écart 0 · compaction 2352 → écart 0 · suivi 15 → écart 0 · sanctions 0 · bords écart 0 · espion labels 10 → écart 0 · espion jours 3 → écart 0 · face vs palier 1 → écart 0 · type compaction 784 → écart 0 · labels réels écart 0 · boucle frontière False/True (écarts réels [0, 5, 15, 45, 50, 60, 65]) · fallback hors flux 'P1' · re-test True",
+   "pass": true
+  },
+  "COR1_fragment_complet": {
+   "definition": "470400/470400 configurations (784 paires d'axes réelles × 8 labels du flux × 15 jours × 5 chemins couple) → fragment L8 7 blocs, 0 feuille vide sur les DEUX chemins (mono → consignation explicite sans invention ; bi → VRAI croisement RIO-04) + 180/180 profils archivés",
+   "observe": "470400/470400 fragments · incomplets 0 · mono 94080 · bi 376320 · configurations non nommées 0 · archivés 180/180 · incomplets 0",
+   "pass": true
+  },
+  "COR2_derivation_palier": {
+   "definition": "double chemin : entiers purs (sommes ≥ 24 — la frontière 2,61 tombe STRICTEMENT entre les sommes 23 (2,56) et 24 (2,67), prouvé au COR0) ≡ VRAI seuil 2,61 du cœur — palier + S1 + S2 ; junctions S1 ⇔ 🔴, S2 ⇔ 🟠 exactement ; PLANCHER consigné (axes reçus seuls — la vraie gravité peut être plus haute, jamais plus basse) ; note : les sA/sB des profils simulateur sont continus (D-PARAM σ 0,4) — le chemin float est celui appliqué aux profils",
+   "observe": "470400 configs · écart double chemin 0 · écart junction 0",
+   "pass": true
+  },
+  "COR3_seuils_aide": {
+   "definition": "S1 = les DEUX axes ≥ 2,61 (VRAI littéral du cœur, le « en alerte » de RIO-04) ; S2 = exactement UN axe ≥ 2,61 (tout palier non-VERT est AUSSI un moment « demander de l'aide » — leçon RIO-16) ; la couche n'ajoute aucun seuil numérique (littéral épinglé au comportement réel à l'import) ; borne 2,61 NON PILE sur le grain réel (grain 1/9, arrondi 2 décimales — dist min consignée) — tranchage sans ambiguïté",
+   "observe": "S1 101400/470400 · S2 234000/470400 · 🟢 135000/470400 · PILE 2,61 0 (dist min 0.05 : 2.56 / 2.67) · suivi seuils entiers exacts (≥ 9 CELEBRE · 7-8 AJUSTEMENT · ≤ 6 REPRISE) · frontière boucle 30,0 PILE inclusive testée (False/True)",
+   "pass": true
+  },
+  "COR4_vocabulaire_ecran": {
+   "definition": "0 mot interdit (canon Partie 9 + liste anti-blâme RIO-04 + directions cachées) sur tous les textes distincts + blocs couple distincts + textes fixes, leçon D-Q5-1 respectée (« pas une obligation » = anti-culpabilisant, jamais compté), D-SIM 100 %",
+   "observe": "max mots interdits par texte = 0 ; textes distincts = 33 · blocs couple distincts 16 → interdits 0 · standings 0/38 textes fixes · D-SIM manquants 0 · archivés D-SIM 180/180 · max archivés 0",
+   "pass": true
+  },
+  "COR5_anti_fabrication": {
+   "definition": "le pas affiché ≡ VRAI selectionner_pas (trace Q1_face/Q2_empreinte réelle) ; 6 templates réels cités par écran (pas + suivi + 3 rappels + re-test), présence verbatim vérifiée ; fallback P1 INATTEIGNABLE via le flux normal (empreinte() normalise tout label vers les 3 valeurs, face toujours ∈ 3 — les 9 paires sont dans _PAS_TABLE ; atteignable HORS flux uniquement — appel direct de table, consigné) ; JAMAIS de sanction (structurel)",
+   "observe": "templates cités : écart 0 · verbatim écart 0 · trace écart 0 · fallback flux 0 (hors flux : 'P1') · pas hors banque 0 · sanctions non nulles 0 (énum) + 0 (archivés)",
+   "pass": true
+  },
+  "COR6_rescore_bit_exact": {
+   "definition": "180 profils archivés q5 régénérés par le VRAI simulateur seed 42 (3 groupes × 60 — CELEBRE 9-14 · AJUSTEMENT 7-8 · REPRISE 0-6), re-exécuté FRAIS à chaque passage (D-REPRO) : C1 180/180 pas ≡ pas_vrai (D-VÉRITÉ, éliminatoire — pas + face + empreinte) · C2 180/180 catégories ≡ categorie_suivi_vraie ≡ groupe · C3 60/60/60, 0 sanction, anti-perfectionnisme ok · C6 re-test 8 semaines 180/180 — puis couche appliquée aux 180 (chemin float)",
+   "observe": "180 profils · 1805 comparaisons · écarts 0 · C1 180/180 · C2 180/180 ≡ groupe 180/180 · C3 CELEBRE 60/60 · AJUSTEMENT 60/60 · REPRISE 60/60 · sanctions 0 · anti True · C6 180/180 · paliers {'🟢': 60, '🟠': 119, '🔴': 1} · S1 1 · S2 119",
+   "pass": true
+  },
+  "COR7_couplage_pas": {
+   "definition": "les 6 pas réels résolus par le VRAI selectionner_pas sur l'espace complet des héritages (784 paires d'axes réelles q1-r1 × 8 labels du flux q2-r1 — tous les héritages sont mesurés par les quêtes amont RIO-01/RIO-02, jamais devinés) ; suivi 14 j sans sanction 15/15 ; re-test 8 semaines jamais forcé (2 dates) ; rappels doux J1/J7/J14 réels + marqueur D-Q5-1 réel ; table couple 9 configurations nommées",
+   "observe": "pas résolus 6/6 · distribution {\"P1\": 101250, \"P2\": 104625, \"P3\": 180675, \"P4\": 14625, \"P5\": 41925, \"P6\": 27300} · suivi 15/15 · re-test True · jamais forcé True · rappels True · marqueur D-Q5-1 True · table couple True",
+   "pass": true
+  },
+  "COR8_reproductibilite": {
+   "definition": "pipeline ×2 → SHA-256 identiques (simulateur re-exécuté frais à chaque passage — D-REPRO)",
+   "observe": "b1be0fffcb0a23ac… == b1be0fffcb0a23ac… → True",
+   "pass": true
+  }
+ },
+ "stage0": {
+  "axes_sommes": 28,
+  "axes_sans_trou": true,
+  "axes_valeurs": 28,
+  "scores_axes_ecarts": 0,
+  "frontiere_bas_max": 2.56,
+  "frontiere_haut_min": 2.67,
+  "pile_261": 0,
+  "dist_min_261": 0.05,
+  "dist_bas": 0.05,
+  "dist_haut": 0.06,
+  "tranchage_ecarts": 0,
+  "table_pas": 9,
+  "table_pas_ecarts": 0,
+  "compaction_pas": 2352,
+  "compaction_pas_ecarts": 0,
+  "pas_par_cellule": {
+   "EN_QUETE×PEUR_DE_PERDRE": "P4",
+   "EN_QUETE×PEUR_D_ETRE_ETOUFFEE": "P5",
+   "EN_QUETE×ZONE_CALME": "P2",
+   "RASSUREE×PEUR_DE_PERDRE": "P2",
+   "RASSUREE×PEUR_D_ETRE_ETOUFFEE": "P3",
+   "RASSUREE×ZONE_CALME": "P1",
+   "SUR_LA_RA×PEUR_DE_PERDRE": "P5",
+   "SUR_LA_RA×PEUR_D_ETRE_ETOUFFEE": "P6",
+   "SUR_LA_RA×ZONE_CALME": "P3"
+  },
+  "suivi_jours": 15,
+  "suivi_ecarts": 0,
+  "suivi_sanctions": 0,
+  "suivi_bords_ecarts": 0,
+  "espion_labels": 10,
+  "espion_labels_ecarts": 0,
+  "espion_jours": 3,
+  "espion_jours_ecarts": 0,
+  "face_vs_palier": 1,
+  "face_vs_palier_ecarts": 0,
+  "empreinte_map": {
+   "'ZONE CALME'": "ZONE_CALME",
+   "'PEUR DE PERDRE'": "PEUR_DE_PERDRE",
+   "\"PEUR D'ÊTRE ÉTOUFFÉE\"": "PEUR_D_ETRE_ETOUFFEE",
+   "'LES DEUX'": "ZONE_CALME",
+   "'ALARME SANS MAIN'": "ZONE_CALME",
+   "'SIGNAL LÉGER NON NOMMÉ'": "ZONE_CALME",
+   "None": "ZONE_CALME",
+   "'LABEL INCONNU'": "ZONE_CALME"
+  },
+  "type_compaction": 784,
+  "type_compaction_ecarts": 0,
+  "pct_valeurs": [
+   20,
+   25,
+   70,
+   85
+  ],
+  "boucle_ecarts_reels": [
+   0,
+   5,
+   15,
+   45,
+   50,
+   60,
+   65
+  ],
+  "boucle_frontiere_bas": false,
+  "boucle_frontiere_haut": true,
+  "labels_reels_ecarts": 0,
+  "fallback_hors_flux": "P1",
+  "retest_ok": true
+ },
+ "stage1": {
+  "configs": 470400,
+  "fragments": 470400,
+  "fragment_incomplets": 0,
+  "cor2_ecarts": 0,
+  "junction_s1s2_ecarts": 0,
+  "paliers": {
+   "🟢": 135000,
+   "🟠": 234000,
+   "🔴": 101400
+  },
+  "S1": 101400,
+  "S2": 234000,
+  "pas_distribution": {
+   "P1": 101250,
+   "P2": 104625,
+   "P3": 180675,
+   "P4": 14625,
+   "P5": 41925,
+   "P6": 27300
+  },
+  "categories": {
+   "CELEBRE": 188160,
+   "AJUSTEMENT": 62720,
+   "REPRISE": 219520
+  },
+  "sanctions_non_nulles": 0,
+  "fallback_flux": 0,
+  "pas_hors_banque": 0,
+  "trace_ecarts": 0,
+  "textes_distincts": 33,
+  "mots_interdits_max": 0,
+  "dsim_manquants": 0,
+  "templates_cites_ecarts": 0,
+  "templates_verbatim_ecarts": 0,
+  "blocs_couple": 16,
+  "blocs_couple_interdits": 0,
+  "chemins_couple_mono": 94080,
+  "chemins_couple_bi": 376320,
+  "junctions_couple_non_nommees": 0,
+  "configs_attendues": 470400
+ },
+ "stage2": {
+  "profils": 180,
+  "comparaisons": 1805,
+  "c1_match": 180,
+  "c2_match": 180,
+  "c2_groupe_match": 180,
+  "c3_celebre": 60,
+  "c3_ajustement": 60,
+  "c3_reprise": 60,
+  "c3_sanctions": 0,
+  "anti_ok": true,
+  "c6_programmed": 180,
+  "paliers": {
+   "🟢": 60,
+   "🟠": 119,
+   "🔴": 1
+  },
+  "S1": 1,
+  "S2": 119,
+  "fragments_archives": 180,
+  "fragments_incomplets": 0,
+  "dsim_archives": 180,
+  "mots_interdits_max": 0,
+  "templates_cites_ecarts": 0,
+  "resume": {
+   "CELEBRE": 60,
+   "AJUSTEMENT": 60,
+   "REPRISE": 60
+  }
+ },
+ "stage2_ecarts": [],
+ "stage4": {
+  "suivi_15_sans_sanction": 15,
+  "suivi_categories": [
+   "AJUSTEMENT",
+   "CELEBRE",
+   "REPRISE"
+  ],
+  "retest_8_semaines": true,
+  "retest_jamais_force": true,
+  "rappels_doux_3": true,
+  "rappels_doux_marqueur_reel": true,
+  "table_couple_9_configurations": true
+ },
+ "standings": {
+  "textes_fixes": 38,
+  "mots_interdits_max": 0,
+  "orientation_canon_dans_phrase": true,
+  "seuil_epingle": true
+ }
+}
