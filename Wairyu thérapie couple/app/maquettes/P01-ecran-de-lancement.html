@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wairyu — P01 · Écran de lancement (maquette fidèle à 01-pages-interface.md)</title>
+<style>
+  /* ═══════════════════════════════════════════════════════════
+     Identité visuelle — extraite du document app/01-pages-interface.md
+     Nuit-fond #1A2332 · Turquoise #6DD5C0 · Brume #E6F7FF · Corail #FF6B6B
+     ═══════════════════════════════════════════════════════════ */
+  :root {
+    --nuit: #1A2332;
+    --turquoise: #6DD5C0;
+    --brume: #E6F7FF;
+    --corail: #FF6B6B;
+    --bleu: #4A90D9; /* le point bleu du logo */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: #0d1420;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px; gap: 32px; flex-wrap: wrap;
+  }
+
+  /* Cadre téléphone */
+  .phone {
+    width: 390px; height: 800px;
+    background: var(--nuit);
+    border-radius: 44px;
+    overflow: hidden; position: relative;
+    box-shadow: 0 0 0 6px #2a3648, 0 30px 80px rgba(0,0,0,.6);
+    display: flex; flex-direction: column;
+  }
+
+  /* ── Le fleuve animé au bas de l'écran (l'eau ondule) ── */
+  .river {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 230px;
+    pointer-events: none;
+  }
+  .wave {
+    position: absolute; left: -50%; width: 200%; height: 100%;
+    background-repeat: repeat-x; opacity: .5;
+  }
+  .wave svg { width: 100%; height: 100%; }
+  .w1 { animation: drift 14s linear infinite; opacity:.65; }
+  .w2 { animation: drift 20s linear infinite reverse; opacity:.4; top: 26px; }
+  .w3 { animation: drift 26s linear infinite; opacity:.25; top: 52px; }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(25%); } }
+
+  /* ── Contenu centré ── */
+  .content {
+    position: relative; z-index: 2; flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center; padding: 48px 32px 260px;
+  }
+
+  /* Logo : deux visages face à face formant un cœur + trois points */
+  .logo { width: 210px; height: 190px; margin-bottom: 28px; }
+  .face-left  { fill: var(--nuit); stroke: var(--brume); stroke-width: 2.5; }
+  .face-right { fill: var(--turquoise); opacity: .92; }
+  .heart-outline { fill: none; stroke: var(--brume); stroke-width: 2; opacity: .35; }
+
+  /* Animation « les deux visages se rapprochent, le cœur se forme » */
+  .face-left-group  { animation: approachL 2.4s cubic-bezier(.4,0,.2,1) both; }
+  .face-right-group { animation: approachR 2.4s cubic-bezier(.4,0,.2,1) both; }
+  .heart-outline { animation: formHeart 2.4s .8s ease both; }
+  @keyframes approachL { from { transform: translateX(-26px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+  @keyframes approachR { from { transform: translateX(26px); opacity:0; }  to { transform: translateX(0); opacity:1; } }
+  @keyframes formHeart { from { opacity:0; } to { opacity:.35; } }
+
+  .dot { animation: dotIn 1s 1.6s ease both; }
+  .dot-bleu { fill: var(--bleu); }
+  .dot-turquoise { fill: var(--turquoise); }
+  .dot-corail { fill: var(--corail); }
+  @keyframes dotIn { from { opacity:0; } to { opacity:1; } }
+
+  h1.brand {
+    color: var(--brume); font-size: 42px; font-weight: 300;
+    letter-spacing: .32em; text-transform: lowercase; margin-bottom: 18px;
+    text-indent: .32em;
+  }
+  p.tagline {
+    color: var(--turquoise); font-size: 16.5px; font-weight: 300;
+    font-style: italic; line-height: 1.6; max-width: 290px;
+    opacity: 0; animation: fadeUp 1.4s 2s ease forwards;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(12px);} to { opacity:.95; transform: translateY(0);} }
+
+  /* Boutons — turquoise sur fond nuit, calme, sans urgence commerciale */
+  .actions {
+    margin-top: 44px; display: flex; flex-direction: column; gap: 14px;
+    width: 100%; max-width: 280px;
+    opacity: 0; animation: fadeUp 1.4s 2.6s ease forwards;
+  }
+  .btn-primary {
+    background: var(--turquoise); color: var(--nuit);
+    border: none; border-radius: 999px; padding: 17px 24px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 8px 30px rgba(109,213,192,.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(109,213,192,.4); }
+  .btn-secondary {
+    background: transparent; color: var(--brume); opacity: .75;
+    border: 1px solid rgba(230,247,255,.3); border-radius: 999px;
+    padding: 14px 24px; font-size: 14.5px; cursor: pointer;
+    transition: border-color .3s ease, opacity .3s ease;
+  }
+  .btn-secondary:hover { opacity: 1; border-color: var(--turquoise); }
+
+  .tone-note {
+    margin-top: 26px; color: var(--brume); opacity: .35;
+    font-size: 11.5px; letter-spacing: .04em;
+  }
+
+  /* Panneau de légende à droite (hors écran, pour la lecture du document) */
+  .spec {
+    max-width: 330px; color: var(--brume); font-size: 13px; line-height: 1.65;
+    background: rgba(255,255,255,.03); border: 1px solid rgba(230,247,255,.12);
+    border-radius: 16px; padding: 22px;
+  }
+  .spec h2 { font-size: 15px; color: var(--turquoise); margin-bottom: 10px; font-weight: 600; }
+  .spec ul { list-style: none; }
+  .spec li { padding: 5px 0 5px 16px; position: relative; opacity: .85; }
+  .spec li::before { content: "〜"; position: absolute; left: 0; color: var(--turquoise); }
+  .swatches { display:flex; gap:8px; margin:12px 0 4px; }
+  .sw { flex:1; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+        font-size:9.5px; font-weight:700; letter-spacing:.02em; }
+</style>
+</head>
+<body>
+
+  <!-- ══════════ P01 · ÉCRAN DE LANCEMENT ══════════ -->
+  <div class="phone">
+    <div class="content">
+
+      <!-- Logo animé : deux visages face à face formant un cœur, séparés et reliés par trois points -->
+      <svg class="logo" viewBox="0 0 210 190" aria-label="Logo Wairyu : deux visages formant un cœur">
+        <!-- Cœur (contour, se forme à l'animation) -->
+        <path class="heart-outline" d="M105 168 C 40 122, 18 84, 26 56 C 33 30, 66 24, 88 46 L 105 64 L 122 46 C 144 24, 177 30, 184 56 C 192 84, 170 122, 105 168 Z"/>
+        <!-- Tête gauche : profil regardant vers la droite (nuit-fond, l'intériorité) -->
+        <g class="face-left-group">
+          <path class="face-left" d="
+            M88 46
+            C 70 30, 40 34, 32 56
+            C 26 74, 32 92, 44 104
+            C 50 110, 52 114, 50 122
+            L 58 120
+            C 66 132, 80 146, 96 158
+            C 92 140, 90 120, 90 100
+            C 90 80, 90 60, 88 46 Z"/>
+        </g>
+        <!-- Tête droite : profil regardant vers la gauche (turquoise, le mouvement) -->
+        <g class="face-right-group">
+          <path class="face-right" d="
+            M122 46
+            C 140 30, 170 34, 178 56
+            C 184 74, 178 92, 166 104
+            C 160 110, 158 114, 160 122
+            L 152 120
+            C 144 132, 130 146, 114 158
+            C 118 140, 120 120, 120 100
+            C 120 80, 120 60, 122 46 Z"/>
+        </g>
+        <!-- Les trois points du logo : bleu, turquoise (bleu clair), corail — au centre, entre les deux rives -->
+        <circle class="dot dot-bleu"      cx="97"  cy="96" r="5.5"/>
+        <circle class="dot dot-turquoise" cx="105" cy="88" r="5.5"/>
+        <circle class="dot dot-corail"    cx="113" cy="96" r="5.5"/>
+      </svg>
+
+      <h1 class="brand">wairyu</h1>
+
+      <!-- Phrase d'accroche exacte du document -->
+      <p class="tagline">« Deux rives. Un courant.<br/>Un cœur à reconstruire. »</p>
+
+      <!-- Interactions exactes du document -->
+      <div class="actions">
+        <button class="btn-primary">Commencer mon voyage</button>
+        <button class="btn-secondary">J'ai déjà un compte</button>
+      </div>
+
+      <p class="tone-note">Ton calme, sans urgence commerciale — une app de paix, pas de conversion.</p>
+    </div>
+
+    <!-- L'eau qui ondule (transitions lentes et aquatiques) -->
+    <div class="river">
+      <div class="wave w1"><svg viewBox="0 0 1200 230" preserveAspectRatio="none">
+        <path d="M0 90 Q150 60 300 90 T600 90 T900 90 T1200 90 V230 H0 Z" fill="#6DD5C0"/></svg></div>
+      <div class="wave w2"><svg viewBox="0 0 1200 230" preserveAspectRatio="none">
+        <path d="M0 110 Q150 80 300 110 T600 110 T900 110 T1200 110 V230 H0 Z" fill="#4A90D9"/></svg></div>
+      <div class="wave w3"><svg viewBox="0 0 1200 230" preserveAspectRatio="none">
+        <path d="M0 130 Q150 100 300 130 T600 130 T900 130 T1200 130 V230 H0 Z" fill="#E6F7FF"/></svg></div>
+    </div>
+  </div>
+
+  <!-- ══════════ Spécifications rappelées depuis le document ══════════ -->
+  <aside class="spec">
+    <h2>P01 · Écran de lancement</h2>
+    <div class="swatches">
+      <div class="sw" style="background:#1A2332;color:#E6F7FF;border:1px solid #E6F7FF33">#1A2332<br/>Nuit</div>
+      <div class="sw" style="background:#6DD5C0;color:#1A2332">#6DD5C0<br/>Turquoise</div>
+      <div class="sw" style="background:#E6F7FF;color:#1A2332">#E6F7FF<br/>Brume</div>
+      <div class="sw" style="background:#FF6B6B;color:#1A2332">#FF6B6B<br/>Corail</div>
+    </div>
+    <ul>
+      <li><b>Rôle</b> : première rencontre. Le logo s'anime : les deux visages se rapprochent, le cœur se forme, l'eau ondule.</li>
+      <li><b>Contenu</b> : logo animé, nom « Wairyu », accroche <i>« Deux rives. Un courant. Un cœur à reconstruire. »</i></li>
+      <li><b>Interaction</b> : « Commencer mon voyage » (turquoise sur fond nuit) + « J'ai déjà un compte ».</li>
+      <li><b>Ton</b> : calme, sans urgence commerciale.</li>
+      <li><b>Principes</b> : typographie douce, formes organiques, transitions lentes et aquatiques.</li>
+    </ul>
+  </aside>
+
+</body>
+</html>
