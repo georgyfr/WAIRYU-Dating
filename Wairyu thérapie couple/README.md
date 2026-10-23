@@ -71,6 +71,10 @@ Wairyu thérapie couple/
 │   ├── validation-pers-q4/ (RIO-22 — contresigné)
 │   └── validation-pers-q5/ (RIO-23 — contresigné)
 │
+│  ═══ BILANS DE DIMENSION — ACTION N°2 (assemblage L8 en 7 blocs · BIL0-BIL8 Tous PASS · SHA ×2 21ec408540882e25) ═══
+├── bilans-dimension/
+│   └── correction (« lorsque un monde est terminé » — la pièce exacte de la demande fondateur : 5 bilans, moteurs réels importés par junction, zéro fabrication ; audit §4 constat 4, §5 action 2)
+│
 │  ═══ LÉGAL — MISSION WTC-LEGAL-01 (chantier D audité 18/10 · P1-P6 exécutées sur ordre fondateur) ═══
 ├── legal/D-audit-pi.md (audit PI orchestrateur — publié, immuable ; erratum P3 + actualisation R2 P5 en append)
 │   ├── D-audit-pi-audit-pont.md (audit pont — mission soutenue, 5 alertes, recommandations P1-P6)

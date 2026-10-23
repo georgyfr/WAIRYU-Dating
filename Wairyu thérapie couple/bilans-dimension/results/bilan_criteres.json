@@ -1,0 +1,15 @@
+{
+ "run": "2026-10-23",
+ "criteres": {
+  "BIL0_identite_tables": "PASS — NIVEAUX q1 4 · TYPES_ATTACH 4 · PAS_BANQUE 6 · EMPREINTES 3 · FORCES q3 6 · F-E 6 · NIVEAUX sm 3 · RECAP_DIMENSION 3 · seuils 1,80/2,60/3,20 · 9 configs q4 · boucle 30 · hiérarchie 0,8937",
+  "BIL3_junctions_moteurs": "PASS — attachement 4704/4704 (784 paires × 6 labels) : position ≡ niveau_ponctuel · forme ≡ type_attachement · empreinte ≡ empreinte · pas ≡ selectionner_pas — 0 écart · SM : palier/pas via palier_de/pas_de réels sur 9 configs × crise 2 · générationnelle : RECAP_DIMENSION servi verbatim (assert) · personnalité : pas verbatim chaîne P1 (consigné, zéro réimplémentation)",
+  "BIL1_BIL4_completude_vocabulaire": "PASS — 1344 fragments × 7 blocs complets (0 feuille vide, non-entrée consignée) · 25984 textes · 0 mot interdit",
+  "BIL2_double_chemin": "PASS — 61/61 paires : table pure ≡ adapter (forme attachement, VRAI type_attachement) — 0 écart",
+  "BIL5_anti_fabrication": "PASS — 6 pas tous issus de la banque réelle · forces ⊆ F1-F6 réelles · zone calme ⇒ consignation « rien à fabriquer » exacte · templates cités (aucun texte inventé)",
+  "BIL6_rescore_bit_exact": "PASS — 180 profils (VRAI simulateur seed 42 re-exécuté frais) : bloc palier/pas ≡ pas_vrai D-VÉRITÉ — 0 écart",
+  "BIL7_espions": "PASS — le suivi 14 j ne change ni la forme ni l'empreinte · les axes changent la forme · signature selectionner_pas = (sA, sB, label_ombre)",
+  "BIL8_reproductibilite": "pipeline ×2 SHA-256 identiques 21ec408540882e25… == 21ec408540882e25… → True"
+ },
+ "sha256": "21ec408540882e253e5b9a7ee5f1332d58c62705891186423b644407c65314bf",
+ "tous_pass": true
+}
