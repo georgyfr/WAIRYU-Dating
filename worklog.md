@@ -3184,3 +3184,21 @@ Stage Summary:
 - P2 de l'audit : TOUT le lot Worker/hygiène est livré (WS neutre déjà en 177 ; signalements N1, parenthésage, chatVoiceUser, 0019, réconciliation 0014, annonce 50, STATUS.md).
 - L'item P2 « bit-exact 1.5→5.7 » est FERMÉ avec preuve d'exécution : 31 quêtes conformes, 0 écart.
 - Prod : en attente feu vert pour poser ce lot + la migration 0019 (staging-first respecté).
+
+---
+Task ID: 179
+Agent: Z.ai Code (orchestrateur — session fondateur « feu vert »)
+Task: Déploiement PRODUCTION du lot Task 178 (P2 de l'audit) — migration 0019_hygiene sur D1 prod + code Worker P2, sur feu vert fondateur explicite. Périmètre hors WTC (« Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts ni cités).
+
+Work Log:
+- Feu vert interprété sans ambiguïté : le journal Task 178 s'était clos sur « prod prête à recevoir le lot 178 + migration 0019 au prochain feu vert » — le mot « feu vert » du fondateur lève ce verrou.
+- Pré-vérifs prod (lecture seule) : auth Cloudflare vérifiée (compte Wairyu26) ; `d1_migrations` prod = 17 entrées, dernière 0018_moderation_appels → seule 0019 s'appliquerait ; index dupliqués 0015 présents en prod (idx_rsig_de vu, idx_rblk_par attendu) — la migration avait un effet réel à produire. Discipline secrets re-vérifiée : 0 occurrence de la valeur du token dans le dépôt (rg sur tout l'arbre, .git exclu).
+- Déploiement via le script officiel `deploy.sh production` (typecheck tsc → build front Vite → `wrangler d1 migrations apply wairyu-prod --remote` → `wrangler deploy`). Contournement sandbox documenté appliqué : postcss.config.mjs du scaffold parent déplacé pendant le build, RESTITUÉ à l'identique quoi qu'il arrive (vérifié après coup).
+- L'appel Bash a perdu l'affichage en cours de route — l'état cible a été re-vérifié de bout en bout plutôt que fié à la sortie : migration posée, index purgés, version déployée. Aucune action en aveugle.
+- Vérifications post-deploy (au vrai, D1 prod remote) : `d1_migrations` = 18/18 (0019_hygiene.sql enregistrée après 0018/0017) ; sqlite_master ne liste plus que idx_rblk_contre / idx_rsig_contre + autoindexes — idx_rblk_par et idx_rsig_de ONT DISPARU.
+- Smoke passif prod (protocole Task 177, aucune fixture) : `/` 200 · `/api/health` 200 · `/api/auth/config` 200 · `/api/reponses` 401 · POST `/api/rencontres/signalements` 401 (l'ouverture N1 ne concerne que les comptes sanctionnés N1, jamais l'anonyme) · `/api/rencontres/{uuid}/a2/etat` 401. Bundle servi = index-D0Skp6kL.js (hash identique au dist déployé) et contient « 50 affirmations » — le correctif voyage.ts est servi.
+
+Stage Summary:
+- PROD à jour du lot P2 complet : Worker version 0d1b9259-cae7-49d3-a2ee-2dd40a36eb30 (100 %, succède à e60bc976 de la Task 177) + migration 0019_hygiene posée et vérifiée (index dupliqués purgés, aucune donnée touchée).
+- Audit P1 + P2 : intégralement en production. WS neutre, purge unmatch, cartes Duo, rate limit, whitelist signalements N1, parenthésage UPDATE, annonce « 50 », hygiène D1 — tout est posé et fumé.
+- Restes : TOTAL_STEPS 51/50 (décision fondateur, non touché) · P3 (pool paginé, moteur serveur des quêtes, hooks M8-M11, ordre QUETE_IDS 5.x) · R2 à activer par le fondateur quand le budget suivra (503 media_indisponible = comportement nominal d'ici là) · révocation des tokens fondateur en fin de projet (rappel standing).
