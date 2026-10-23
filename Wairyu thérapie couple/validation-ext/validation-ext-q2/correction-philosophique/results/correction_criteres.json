@@ -1,0 +1,209 @@
+{
+  "RIO": "RIO-17 « Notre conversation de l'horizon » (croisement) — ext-q2",
+  "moteurs": {
+    "q2": "validation-ext-q2/src/wtc_ext_q2_core.py (VALIDÉ 7/7, CONTRESIGNÉ)",
+    "q3": "validation-ext-q3/src/wtc_ext_q3_core.py (junction pas)"
+  },
+  "COR0_compactations": {
+    "configs_table": 9,
+    "configs_ecarts": 0,
+    "miroirs": "9/9",
+    "grain_pile": {
+      "2.5_atteignable": true,
+      "3.5_atteignable": true
+    },
+    "bornes_testees": {
+      "2.49": "FAIBLE",
+      "2.50": "MODÉRÉE",
+      "3.49": "MODÉRÉE",
+      "3.50": "FORTE"
+    },
+    "palier_max_pure": 9,
+    "palier_max_ecarts": 0,
+    "espions_population": 10,
+    "espion_ecarts": 0,
+    "zone_calme_ecarts": 0,
+    "banque_longueurs": {
+      "exercice maison à deux": 3,
+      "engagement du module à deux": 2,
+      "démarche d'orientation": 1
+    },
+    "pas_zero_configs": [
+      1
+    ],
+    "percentile_ecarts": 0,
+    "boucle_frontiere": {
+      "30.0_PILE": true,
+      "29.9": false,
+      "verdict": "avertissement L6 — ne change aucun résultat (espion c)"
+    },
+    "ok": true
+  },
+  "COR1_fragments": {
+    "etats_entree": 13824,
+    "attendu": 13824,
+    "override_configs": 18,
+    "non_entree_configs": 2,
+    "fragments_incomplets": 0,
+    "ok": true
+  },
+  "COR2_double_chemin": {
+    "ecarts": 0,
+    "ok": true
+  },
+  "COR3_seuils": {
+    "S1": 18,
+    "S2": 12288,
+    "S2_ecarts": 0,
+    "bornes_consignees": "2,50/3,50 PILE ATTEIGNABLES sur le grain 1/6 (15/6 · 21/6) — tranchage inclusif du VRAI moteur testé : 2,49→FAIBLE · 2,50→MODÉRÉE · 3,49→MODÉRÉE · 3,50→FORTE · boucle ≥ 30,0 PILE inclusive (30,0 → True)",
+    "ok": true
+  },
+  "COR4_vocabulaire": {
+    "mots_interdits": 0,
+    "blocs_distincts": 443,
+    "fragments_distincts": 1739,
+    "dsim_manquant": 0,
+    "exception_sourcee": "filet 3919/3114 + bandeau override = literals du VRAI cœur — cités, jamais réécrits",
+    "ok": true
+  },
+  "COR5_anti_fabrication": {
+    "calme_hors_config1": 0,
+    "config1_sans_calme": 0,
+    "avertissement_ecarts": 0,
+    "doctrine_ecarts": 0,
+    "0_verdict_temporel": "R5 — « devance » = niveau déclaré plus fort (template VRAI), jamais une position dans le temps ; re-tests non consommés (SPEC §7, template VRAI)",
+    "ok": true
+  },
+  "COR6_re_score": {
+    "n_couples": 650,
+    "n_croisements": 650,
+    "stats_groupes_match": true,
+    "globaux_match": true,
+    "conformite_match": true,
+    "comparaisons": 650,
+    "ecarts": 0,
+    "couche_paliers": {
+      "EXERCICE MAISON": 89,
+      "MODULE DE COUPLE": 237,
+      "ORIENTATION": 284,
+      "OVERRIDE": 40,
+      "NON ENTRÉE": 0
+    },
+    "couche_fragments_incomplets": 0,
+    "couche_mots_interdits": 0,
+    "couche_override_ok": 40,
+    "g10_forte_override": "5/5",
+    "archive": "resultats-ext-q2-2026-10-18.json",
+    "ok": true
+  },
+  "COR7_couplage_pas": {
+    "configs_couvertes": 9,
+    "famille_ecarts": 0,
+    "banque_verbatim_ecarts": 0,
+    "pas_zero_ecarts": 0,
+    "contenu_par_config": {
+      "config_1": {
+        "nom": "LA MÊME HEURE",
+        "palier": "EXERCICE MAISON",
+        "famille": "exercice maison à deux",
+        "longueur_banque": 3
+      },
+      "config_2": {
+        "nom": "LE CADRAN QUI S'ÉVEILLE",
+        "palier": "MODULE DE COUPLE",
+        "famille": "engagement du module à deux",
+        "longueur_banque": 2
+      },
+      "config_3": {
+        "nom": "L'HORLOGE SEULE",
+        "palier": "ORIENTATION",
+        "famille": "démarche d'orientation",
+        "longueur_banque": 1
+      },
+      "config_4": {
+        "nom": "L'ÉCHO QUI ATTEND",
+        "palier": "MODULE DE COUPLE",
+        "famille": "engagement du module à deux",
+        "longueur_banque": 2
+      },
+      "config_5": {
+        "nom": "DEUX CADRANS",
+        "palier": "MODULE DE COUPLE",
+        "famille": "engagement du module à deux",
+        "longueur_banque": 2
+      },
+      "config_6": {
+        "nom": "L'HORLOGE QUI DEVANCE",
+        "palier": "ORIENTATION",
+        "famille": "démarche d'orientation",
+        "longueur_banque": 1
+      },
+      "config_7": {
+        "nom": "L'HORLOGE SEULE, DE L'AUTRE CÔTÉ",
+        "palier": "ORIENTATION",
+        "famille": "démarche d'orientation",
+        "longueur_banque": 1
+      },
+      "config_8": {
+        "nom": "L'AUTRE QUI DEVANCE",
+        "palier": "ORIENTATION",
+        "famille": "démarche d'orientation",
+        "longueur_banque": 1
+      },
+      "config_9": {
+        "nom": "LES DEUX HORLOGES VIVES",
+        "palier": "ORIENTATION",
+        "famille": "démarche d'orientation",
+        "longueur_banque": 1
+      }
+    },
+    "suivi_totaux": 15,
+    "suivi_celebre": 6,
+    "suivi_en_chemin": 9,
+    "suivi_ecarts": 0,
+    "re_test_non_consomme": "Les re-tests à 8 semaines ne sont pas consommés ici — une me…",
+    "ok": true
+  },
+  "COR8_reproductibilite": {
+    "sha1": "9ce72cbbbd30235b0201f409d6a41fd5ef0661e0fe92ca29a3abee1bc6194fef",
+    "sha2": "9ce72cbbbd30235b0201f409d6a41fd5ef0661e0fe92ca29a3abee1bc6194fef",
+    "identiques": true,
+    "ok": true
+  },
+  "distributions": {
+    "configs_13824": {
+      "LA MÊME HEURE": 1536,
+      "LE CADRAN QUI S'ÉVEILLE": 1536,
+      "L'HORLOGE SEULE": 1536,
+      "L'ÉCHO QUI ATTEND": 1536,
+      "DEUX CADRANS": 1536,
+      "L'HORLOGE QUI DEVANCE": 1536,
+      "L'HORLOGE SEULE, DE L'AUTRE CÔTÉ": 1536,
+      "L'AUTRE QUI DEVANCE": 1536,
+      "LES DEUX HORLOGES VIVES": 1536
+    },
+    "paliers_13824": {
+      "EXERCICE MAISON": 1536,
+      "MODULE DE COUPLE": 4608,
+      "ORIENTATION": 7680
+    }
+  },
+  "re_score": {
+    "F1": 25,
+    "F1_note": "inchangé — la lecture graduée du croisement validé (D-VÉRITÉ table, anti-inversion, D-STD-2) est préservée telle quelle",
+    "F2": 25,
+    "F2_note": "inchangé — gabarit universel complet déjà validé C5-C7 (9 templates + QUAND DEMANDER + avertissements L6 jamais verdicts)",
+    "F3": [
+      18,
+      25
+    ],
+    "F3_note": "contenu CONCRET des 3 paliers croisés produit PAR CONFIGURATION RÉELLE (1 🟢 zone calme à l'invariant prouvé · 3 🟠 modules à deux sur les VRAIS pas de la banque Q3 + clause contextuelle par config · 5 🔴 orientations = le VRAI pas rouge + filet) — junction verbatim vérifiée à chaque état",
+    "F4": [
+      22,
+      25
+    ],
+    "F4_note": "fragment de bilan L8 niveau COUPLE à 7 blocs, COMPLET sur les 3 chemins (entrée 13 824 · override 18 · non-entrée 2 — 0 feuille vide) avec les junctions réelles Q3 (famille héritée, banque verbatim, pas zéro config 1) et la doctrine couple (boucle ENSEMBLE, direction jamais affichée, 0 % compatibilité consignée)",
+    "avant": 90,
+    "apres": 100
+  }
+}

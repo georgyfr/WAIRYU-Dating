@@ -3349,3 +3349,20 @@ Work Log:
 
 Stage Summary:
 - RIO-16 75 % → 100 % (9/9 COR PASS, re-score bit-exact 0 écart). Générationnelle : (100+90+92)/3 = 94 % intermédiaire · global 93,4 %. Suivent dans le même signal : RIO-17 (Task 186) puis RIO-18 (Task 187 — F1 20 plafond structurel des quêtes pas, max 95 %). Push toujours BLOQUÉ 403 (PAT sans Contents:write) — les commits s'accumulent en local, progressive push à chaque étape dès réparation du token fondateur. Restent ensuite au signal fondateur : RIO-05 (plafond 95 %).
+
+---
+
+Task ID: 186
+Agent: WTC-Pont (superviseur — session « lance RIO-16→18 », quête 2/3)
+Task: Fondateur — signal « lance RIO-16→18 » (dimension GÉNÉRATIONNELLE) : correction philosophique de RIO-17 « Notre conversation de l'horizon » (croisement, ext-q2), re-score 90 % → 100 %.
+
+Work Log:
+- Couche RIO-17 écrite de zéro (R1-R9 pré-enregistrées) : importe le VRAI cœur ext-q2 (9 configurations, miroirs, palier croisé max-niveau, override D-CRISE, entrée RQS ligne 257, percentiles L6, 3 inférences L5) TEL QUEL + le VRAI moteur aval Q3 — asserts de junction (config, palier, zone calme, inférences ≡ VRAI inferences_L5) À CHAQUE appel, recalcul interdit.
+- F3 : contenu CONCRET des 3 paliers croisés PAR CONFIGURATION RÉELLE — 🟢 config 1 (zone calme, invariant 🟢 ⇔ (FAIBLE, FAIBLE) ⇔ config 1 prouvé) · 🟠 configs 2/4/5 (modules à deux sur les VRAIS pas de la banque Q3 + clause contextuelle) · 🔴 configs 3/6/7/8/9 (le pas EST la démarche — VRAI pas rouge + filet). F4 : fragment L8 niveau COUPLE à 7 blocs, complet sur les 3 chemins (entrée · override avec config TRACÉE jamais déployée · non-entrée).
+- Preuve : énumération EXHAUSTIVE 13 824 états ENTRÉE (9×2×2×4×8×3×4) + 18 overrides + 2 non-entrées — 9 critères COR0-COR8 tous PASS. Compactations : table pure 3×3 ≡ VRAI 9/9 + anti-inversion + miroirs 9/9 · **espion population : les percentiles ne changent AUCUN résultat structurel (9 sondes — la boucle est un avertissement, junction prouvée)** · bornes 2,50/3,50 PILE ATTEIGNABLES sur grain 1/6, tranchage inclusif testé (2,49/2,50/3,49/3,50) · frontière boucle 30,0 PILE inclusive. Double chemin 13 844/13 844. 0 mot interdit / 443 blocs distincts. Re-score BIT-EXACT 650 couples / 14 groupes (globaux bit-exact : 🟢 89 · 🟠 237 · 🔴 284 · OVERRIDE 40 · boucles 87 · styles 75 · inférences 403/407/102 · G10 Forte override 5/5). Junctions Q3 : banques verbatim 9/9, pas zéro ssi config 1, suivi 15/15. SHA ×2 `9ce72cbbbd30235b…`.
+- Deux bugs de la VALIDATION (pas de la couche) attrapés avant exécution : les deux rives portaient le MÊME agrégat (boucle jamais déclenchée) → paire d'agrégats A/B mesurée ; moyenne hors grain 1/18 → 3,3333 (60/18). Le grain 1/6 rend les bornes 2,50/3,50 PILE ATTEIGNABLES (contrairement aux seuils L3 de RIO-16) — consigné et testé, tranchage inclusif du VRAI moteur.
+- Re-score RIO-17 : F1 25 inchangé · F2 25 inchangé · F3 18→25 · F4 22→25 = **100 %** AU BARÈME P1 SIMULATION.
+- Documents : ADDENDUM-17 à l'audit (générationnelle 97,3 % intermédiaire · global 2 158/23 = 93,8 %) + rapport + JSON + README.
+
+Stage Summary:
+- RIO-17 90 % → 100 % (9/9 COR PASS, re-score bit-exact 0 écart). Générationnelle : (100+100+92)/3 = 97,3 % intermédiaire · global 93,8 %. Dernier fil du signal : RIO-18 (Task 187 — F1 20 plafond structurel des quêtes pas, max 95 %). Push toujours BLOQUÉ 403 — commits accumulés en local, progressive push dès réparation du token.
