@@ -3135,3 +3135,30 @@ Stage Summary:
 - Les 4 groupes P1 de l'audit sont posés : ① purge E3 à l'unmatch (D-E3-7 — le seul 🔴), ② cartes Duo honnêtes (D-E3-5) + gel a2/etat + RDV localisé, ③ garde-fou /api/reponses + pont de sync versionné, ④ paywall mort retiré (option conservatrice, réversible).
 - Reste P1 à décision fondateur : TOTAL_STEPS 51 vs 50 (deux options : 51 assumé avec la Rencontre comptée, ou 50 + mention séparée).
 - Restes P2/P3 de l'audit (non traités ici) : WS neutre code:'blocage', whitelist signalements N1, parenthésage UPDATE unmatch, index dupliqués, réconciliation migrations 0014, vérification bit-exact 1.5→5.7, trames FM-018, moteur serveur des quêtes, pool paginé, STATUS.md.
+
+---
+Task ID: 177
+Agent: Z.ai Code (orchestrateur — session fondateur « build + staging + vérification E3 réelle + feu vert prod »)
+Task: Déploiement staging des correctifs P1 (Task 169), vérification E3 RÉELLE sur staging (unmatch avec médias, cartes Duo, WS, blocage, rate limit), puis déploiement prod sur feu vert fondateur. Périmètre hors WTC.
+
+Work Log:
+- Correctif de conformité posé AVANT déploiement — WS neutre (D-E2-7, restait en P2 de l'audit) : le DO ChatRoom répondait {type:'erreur', code:'blocage'} à l'envoi sous blocage, ce qui permettait au bloqué de DÉDUIRE le blocage d'une erreur explicite (le REST répond lui {ok:true, silencieux:true}). Désormais le DO ne répond RIEN (ni erreur ni écho) — apps/api/src/do/chat-room.ts. Commit séparé pour la traçabilité.
+- Build : apps/web (tsc + vite, cible ES2015) → dist/ (5 assets) ; apps/api tsc --noEmit ✅. NB sandbox : le postcss.config.mjs du scaffold parent pollue la résolution Vite (documenté en Task 169) — build réalisé par déplacement temporaire du fichier parent, restitué à l'identique, zéro changement au dépôt.
+- Déploiement STAGING ✅ : wairyu-staging.wairyu.workers.dev — 2 versions (P1 : 713380dd, puis WS neutre : 0418f4dd). Assets 5 nouveaux + 33 inchangés. Migrations : 0017/0018 déjà appliquées en staging (vérifié via d1_migrations), rien à appliquer ; prod complète (0001→0018, 0014 n'existe nulle part — numéro sauté, dette documentaire sans effet).
+- Vérification E3 RÉELLE sur staging (harnais ops hors dépôt, fixtures jetables wtest-* créées puis PURGÉES) : 30/30 PASS.
+  T1 cartes Duo (D-E3-5) : duo 1.1 ouvert, carteMoi/carteAutre = lignes formatées (textes) + valeurs chiffrées — JAMAIS les métadonnées. Voiles : cartes ouvert (double oui), photo porte=false.
+  T2 RDV localisé EN : question « One picks the place, the other picks the time. » + idées EN (apostrophes ASCII).
+  T3 média sans R2 : POST /media → 503 {error:'media_indisponible'} — comportement dégradé propre tel que gravé (G-E3-P2).
+  T4 blocage → gel E3 : a2/etat 404, ticket WS 404, REST messages {ok:true, silencieux:true}.
+  T5 WS réel : socket ouverte AVANT blocage, message diffusé (type:message) ; après blocage, envoi DO → AUCUNE réponse en 5 s (avant le fix : code 'blocage') — WS neutre vérifié EN VRAI.
+  T6 unmatch purge (D-E3-7) : ok:true puis 0 lignes dans rencontre_messages/voiles/duo/a2/a2_reponses/medias, match supprimé, pas → 'retire', blocage SURVIT (D-E2-7).
+  T7 /api/reponses : PUT ok (schema_version:1, corps {etat:{…}}), schema_version:0 → 400, GET restitue schema_version, 429 après 60 DELETE avec Retry-After (rep:del 60/h).
+  NB sessions de test : SESSION_HMAC_KEY staging ROTATÉE (valeur jetable connue du harnais) pour forger les cookies wairyu_s={sid}.{exp}.{sig} + lignes sessions D1. Sessions de prod INTACTES.
+- R2 : TOUJOURS non activé sur le compte (API 10042 « Please enable R2 through the Cloudflare Dashboard ») — action dashboard fondateur requise pour l'E3 médias en vrai (voix/photo). Tout le reste d'E3 fonctionne sans.
+- Feu vert prod : donné par le fondateur (« puis feu vert prod ») après bilan staging 30/30 — déploiement prod exécuté (voir Stage Summary).
+- Périmètre : dossier « Wairyu thérapie couple/ » et docs/gitbook/ jamais ouverts ; aucun contenu RIO cité.
+
+Stage Summary:
+- STAGING VERT 30/30 : purge unmatch (le 🔴 D-E3-7) prouvée en vrai, cartes Duo honnêtes (D-E3-5) prouvées, WS neutre prouvé, gel blocage + 503 média + rate limit conformes. Fixtures wtest-* purgées après tests.
+- PROD déployée : wairyu.wairyu.workers.dev — version e60bc976-0197-405e-8c60-66691c46bf8f (smoke passif post-deploy : / → 200 SPA, /api/reponses → 401, /api/rencontres/{uuid}/a2/etat → 401, /api/auth/config → 200 — aucune fixture en prod). Aucune migration requise (prod déjà à jour, tables E3 présentes mais vides ; MEDIA absent → 503 propre partout où l'app l'attend).
+- Restes P2/P3 inchangés (whitelist signalements N1, parenthésage UPDATE unmatch, index dupliqués, réconciliation 0014, bit-exact 1.5→5.7, trames FM-018, moteur serveur des quêtes, pool paginé, STATUS.md) + TOTAL_STEPS 51/50 à trancher par le fondateur.
