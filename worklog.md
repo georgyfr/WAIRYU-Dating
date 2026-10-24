@@ -3518,3 +3518,18 @@ Work Log:
 
 Stage Summary:
 - RIO-01 : v2 des 19 libellés livrée (valence équilibrée 7+/12·/0−) en discussion ; structure moteur intacte ; anti-déjoueuvre expliquée (valence mixte + vigilance + RQS) ; périmètre fondateur appliqué (dossier thérapie uniquement, volet rencontre gelé). En attente : retour item par item du fondateur → scellement + push.
+
+---
+Task ID: 199
+Agent: WTC-Pont (superviseur — session fondateur « recadrage sec »)
+Task: Fondateur — « pourquoi cette obsession de refaire ce qui est dans les questionnaires de rencontre ? tu commences déjà à m'énerver. je suis dans les 26 dimensions, non ? » Recadrage définitif : zéro mention du volet rencontre, travail 100 % dans les 26 dimensions du programme WTC.
+
+Work Log:
+- Verbatim fondateur consigné ci-dessus. La règle est DÉFINITIVE et s'applique à toutes les prochaines sessions : le volet rencontre n'est plus cité, comparé, ni justifié dans le travail de l'action n°3. Les mentions antérieures (explications « deux volets », « volet gelé », références au moteur du voyage) étaient des ré-explications de trop — cause de l'agacement, reconnue.
+- Confirmation donnée au fondateur : OUI — le travail est dans les 26 dimensions du canon (Partie 2) en 6 blocs : Héritage (infantile, parentale, expérientielle, culturelle, sexuelle, religieuse) · Psychologique (personnalité, attachement, émotionnelle, santé mentale) · Relationnel (communication, pouvoir, rôles de genre, attentes) · Social-matériel (économique, professionnelle, belle-famille, sociale) · Cycle de vie (parentalité/procréation, cycle de vie, générationnelle, santé somatique) · Sociétal (morale/éthique, politique/idéologique, numérique, spatiale). L'action n°3 commence à RIO-01 « Comment je me raccroche » (dimension attachement, bloc Psychologique) — état : 5 dimensions CLOSES (23 RIO contresignés), 21 au plan.
+- Consolidation des 19 libellés RIO-01 v2 dans le dépôt (ils ne vivaient qu'en chat — fragile) : Wairyu thérapie couple/app/interface/proposition-action-3/RIO-01/README.md — STATUT EN DISCUSSION. Contenu : structure verrouillée du moteur (18 items + vigilance, échelle 1-4, inversés 5/15 attendus=3, axes A PEUR DE PERDRE / B PEUR DE DÉPENDRE, faces A1 Vigie / A2 Besoin de mots / A3 Rumeur / B1 Inconfort du près / B2 Debout-seul / B3 Porte fermée), les 19 textes item par item (valence équilibrée : 7 positives · 12 neutres · 0 sombre), ancres de sécurité 5 et 15, vigilance 19 équilibrée (honnête = Plutôt vrai), les 3 filets anti-déjoueuvre (valence mélangée · vigilance · RQS — tous déjà dans le moteur validé L1, rien à ajouter au code), et la garantie « résultats toujours pareils » (le moteur lit des entiers 1-4, jamais les mots).
+- Zéro modification des instruments, moteurs, données validées ou addenda. Aucun scellement — l'accord fondateur item par item reste requis.
+
+Stage Summary:
+- Règle fondatrice enregistrée : ACTION N°3 = 26 DIMENSIONS DU PROGRAMME WTC, POINT. Plus aucune mention du volet rencontre (règle définitive, toutes sessions).
+- Les 19 libellés RIO-01 v2 sont désormais un artefact du dépôt (dossier proposition-action-3/RIO-01/, EN DISCUSSION) — prêts pour la relecture item par item du fondateur ; le scellement (injection + re-vérification bit-exact + push) suivra son accord.
