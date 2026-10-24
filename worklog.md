@@ -3502,3 +3502,19 @@ Work Log:
 
 Stage Summary:
 - ACTION N°3 RECADRÉE sur le dossier thérapie couple (directive fondateur) : point de départ = RIO-01 ; les 19 libellés proposés en discussion (Task 197) ; règle anti-fatigue inter-volets en attente d'arbitrage fondateur ; zéro modification des moteurs validés ; le volet rencontre (quête 1.1) reste en attente, non perdu. Restent ouvertes : arbitrage palier RIO-05 · VALID-01 · TOTAL_STEPS.
+
+---
+Task ID: 198
+Agent: WTC-Pont (superviseur — session fondateur « valence équilibrée » — RIO-01 v2)
+Task: Fondateur — retours sur les 19 libellés RIO-01 (Task 197) : (1) « les questions semblent beaucoup négatives », (2) crainte que quelqu'un qui veut déjouer le contexte comprenne qu'il doit répondre négativement, (3) demande de questions à affirmations positives « dont les résultats sont toujours pareils », (4) directive stricte : questions UNIQUEMENT sur les dimensions du dossier Wairyu thérapie couple, plus aucune inspiration du volet rencontre.
+
+Work Log:
+- Diagnostic accepté : v1 = 11/18 items à valence sombre → transparence de l'instrument (impression management : le déjoueur nie tout), fatigue de négativité, zone de force du gabarit §5.1 sans matériau.
+- Contrainte respectée : structure scellée inchangée (18 items, inversés (5,15), faces, échelle 1-4, vigilance attendue=3). Rééquilibrage par la VALENCE DES TEXTES uniquement — le moteur lit des entiers 1-4, jamais les mots : zéro impact sur tout calcul validé (mécanisme Task 74), « les résultats sont toujours pareils » garanti par architecture.
+- Livraison RIO-01 v2 en chat : 7 surfaces positives (3, 4, 5-inv, 12, 14, 15-inv, 19) · 12 neutres · 0 catastrophe. Les 2 inversés deviennent les « ancres de sécurité » (d'accord = peur plus faible) ; vigilance 19 reformulée en énoncé équilibré (honnête = Plutôt vrai, attrape le trop parfait et le tout-négatif).
+- Explication anti-déjoueuvre aux 3 filets (tous déjà dans le moteur validé) : valence mélangée (aucune stratégie mono-directionnelle ne passe) · item de vigilance · détecteur RQS (rythme, contradictions inversés/directs, linéarité → PRUDENCE/INVALIDE).
+- Périmètre verrouillé : textes dérivés exclusivement des axes/faces du moteur RIO-01 du dossier thérapie (peur de perdre / peur de dépendre ; Bowlby, Brennan cités ; instrument original) — zéro inspiration du voyage rencontre ; dossier proposition-action-3/quete-1-1 FIGÉ en l'état jusqu'à décision fondateur.
+- Aucun fichier d'instrument modifié ; les 19 v2 restent EN DISCUSSION. Aucun moteur touché.
+
+Stage Summary:
+- RIO-01 : v2 des 19 libellés livrée (valence équilibrée 7+/12·/0−) en discussion ; structure moteur intacte ; anti-déjoueuvre expliquée (valence mixte + vigilance + RQS) ; périmètre fondateur appliqué (dossier thérapie uniquement, volet rencontre gelé). En attente : retour item par item du fondateur → scellement + push.
