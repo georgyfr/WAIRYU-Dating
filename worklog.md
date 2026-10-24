@@ -3487,3 +3487,18 @@ Work Log:
 
 Stage Summary:
 - ACTION N°3 AMORCÉE en mode « proposition → discussion → scellement » demandé par le fondateur. Quête 1.1 cartographiée intégralement ; mécanisme Task 74 identifié comme voie de changement sûr ; 6 échantillons d'illustration produits et poussés en dossier EN DISCUSSION. Aucun libellé ni moteur modifié — l'app reste au dernier état validé (c3d18ee). En attente : retour fondateur sur le ton des questions et le style d'illustration.
+
+---
+Task ID: 197
+Agent: WTC-Pont (superviseur — session fondateur « les DEUX VOLETS » — recadrage Action n°3 vers le dossier thérapie)
+Task: Fondateur — clarification : « le projet a deux options » (rencontre vs thérapie couple) ; crainte du déjà-vu de questions entre volets ; directive « on doit essentiellement travailler sur ce dossier » (Wairyu thérapie couple). Répondre avec preuve de provenance + proposer le bon point de départ.
+
+Work Log:
+- Vérification de provenance : les questions proposées en Task 196 (quête 1.1 « Ta personnalité ») proviennent d'apps/web/src/lib/quete-1-1.ts, DANS le dépôt WAIRYU-Dating — et ce moteur est documenté/vérifié dans le dossier fondateur (calculs-quêtes/M1-quete-1-1-resultats.md, 40/40). Aucune source extérieure. L'échantillon d'images et le README sont poussés sous Wairyu thérapie couple/app/interface/proposition-action-3/ (commit c9a72af).
+- Clarification des DEUX CADRES sourcée du dépôt (lecture-documents-fondateurs-dimensions.md) : voyage de l'app (11 mondes · 50 quêtes = préparation à la RENCONTRE) ≠ programme WTC (26 dimensions · ~110 quêtes = THÉRAPIE COUPLE, les 23 RIO). « Instruments distincts » pour dimensions homonymes. CONSTAT : la Task 196 avait ouvert l'action n°3 côté voyage (rencontre) — recadrage vers le dossier thérapie accepté.
+- Crainte de fatigue entre volets traitée : (a) structurellement les instruments ne réemploient pas d'items (doctrine ex nihilo vérifiée — RIO-19 vs quête 1.1 : construits, échelles et situations distincts) ; (b) risque d'épuisement thématique réel → RÈGLE D'ANTI-FATIGUE proposée au fondateur : « jamais re-poser un axe déjà couvert · reconnaissance à l'écran · import des bases individuelles mesurées par le voyage comme entrées » — PENDING validation fondateur, non consignée comme règle avant son accord.
+- Point de départ corrigé de l'action n°3 : RIO-01 « Comment je me raccroche » (validation-q1) — structure verrouillée du moteur (N_ITEMS=18, échelle 1-4 FAUX de moi→VRAI de moi, ITEMS_INVERSES=(5,15), vigilance attendue=3, axes A PEUR DE PERDRE/B PEUR DE DÉPENDRE, faces A1 Vigie/A2 Besoin de mots/A3 Rumeur/B1 Inconfort du près/B2 Debout-seul/B3 Porte fermée). FAIT CAPITAL vérifié au code : les TEXTES des 18 items n'existent pas dans le dépôt (le scoring tourne sur réponses numériques) — l'écriture des libellés est précisément l'action n°3.
+- Proposition de 19 textes (18 items + 1 vigilance) livrée au fondateur en chat, par face, avec justification de chacun — STATUT : EN DISCUSSION, rien de scellé, aucun moteur modifié. Échelle illustrée à 4 cartes (thème « deux rives / le pont ») proposée pour le volet WTC, échantillons à générer après accord.
+
+Stage Summary:
+- ACTION N°3 RECADRÉE sur le dossier thérapie couple (directive fondateur) : point de départ = RIO-01 ; les 19 libellés proposés en discussion (Task 197) ; règle anti-fatigue inter-volets en attente d'arbitrage fondateur ; zéro modification des moteurs validés ; le volet rencontre (quête 1.1) reste en attente, non perdu. Restent ouvertes : arbitrage palier RIO-05 · VALID-01 · TOTAL_STEPS.
