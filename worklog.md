@@ -3550,3 +3550,18 @@ Work Log:
 
 Stage Summary:
 - ACTION N°3 : 1/23 INSTRUMENTS SCELLÉS — RIO-01 « Comment je me raccroche » a désormais ses 19 libellés réels dans le dépôt, avec la preuve bit-exact qu'aucun calcul validé n'a bougé. Restent 22 instruments (RIO-02 → RIO-23) au signal fondateur (instrument par instrument ou par dimension). Ouvertes par ailleurs : VALID-01 (actes fondateurs), arbitrage palier RIO-05, TOTAL_STEPS.
+
+---
+Task ID: 201
+Agent: WTC-Pont (superviseur — session fondateur « continue sur RIO-02 »)
+Task: Fondateur — « continue sur RIO-02 ». Action n°3, deuxième instrument : proposer les libellés réels de RIO-02 « Ce qui m'effraie vraiment » (ombre, dimension attachement), même gabarit que RIO-01 (EN DISCUSSION → accord fondateur → scellement).
+
+Work Log:
+- Structure verrouillée extraite du dépôt (zéro invention) : spécification d'origine §6.2 du programme (10 déclencheurs = 6 D distance + 4 P proximité, binaires · I_alarm 0-10 lu en 5 bandes · 8 comportements × fréquence 0-3 : 5 H ÷15, 3 R ÷9, domination écart ≥ 0,20 · H5 téléphone = filet sécurité, D-CRISE applicable · origine O1-O7 : 6 choix guidés + O7 texte libre → NLP local confiance ≥ 0,70 sinon NON-CLASSIFIABLE) + moteur WTC-Q2-01 révision R1 (validation-q2-r1) + couches F2-F4 de la correction philosophique (palier 🟢🟠🔴, QUAND DEMANDER DE L'AIDE S1/S2, zone d'ombre causale sans étiquette).
+- Constat consigné : RIO-02 n'a NI items inversés NI item de vigilance — sa protection anti-déjoueuvre est CROISÉE : la convergence Q1×Q2 (C1-C3, index 1,00 / 0,50 OMBRE_PRUDENCE / 0,00 SUPPRESSION_MASQUEE + fallthrough). Rien à inventer : c'est le vrai garde du cœur, validé P1 (6/6 supprimées · 4/4 prudence · 94,8 % honnêtes 1,00).
+- Proposition rédigée : app/interface/proposition-action-3/RIO-02/README.md — 20 libellés v1 (amorce D/P + 6 D + 4 P + curseur I_alarm + amorce H/R + 5 H + 3 R + amorce origine + 7 choix) ; valence 2 positives (H2 · O1) · 17 neutres · 1 équilibrée (I_alarm) · 0 sombre ; métaphore maison « sonnette intérieure » (déjà celle du moteur — inférence alarme intérieure) ; déclencheurs factuels sans blâme, gestes sans jugement ; H5 factuel et digne (la voie de soin doit rester RÉELLE).
+- Doctrine appliquée : 26 dimensions uniquement (attachement, bloc Psychologique) ; honnêteté sans condamnation ; jamais « pathologie » ; jamais l'évaluation du partenaire ; les noms de catégories du moteur (INVALIDATION…) restent internes, l'écran montre les textes proposés.
+- Zéro modification : moteur WTC-Q2-01 R1 intouché (6 D + 4 P + 5 H + 3 R, 35/35 templates), données/validations intouchées (437 sorties R1 seed 42 · correction 6 720 000 configurations · re-score audit 100 %). Aucun scellement — accord fondateur item par item requis, puis gabarit RIO-01 (module de données pures + preuve bit-exact + push).
+
+Stage Summary:
+- RIO-02 « Ce qui m'effraie vraiment » : les 20 libellés v1 existent désormais comme artefact du dépôt (proposition-action-3/RIO-02/, EN DISCUSSION), prêts pour la relecture item par item du fondateur. Particularité consignée : protection croisée (convergence Q1×Q2) au lieu des ancres internes de RIO-01 — argument anti-déjoueuvre documenté dans le README. Action n°3 : 1/23 scellés, RIO-02 en discussion.
