@@ -3471,3 +3471,19 @@ Work Log:
 Stage Summary:
 - **ACTION N°1 CLOSE — certifiée** (23/23, global 95,2 %). **ACTION N°2 RÉALISÉE** — le bilan de dimension L8 7 blocs existe pour les 5 dimensions, assemblé EXCLUSIVEMENT depuis les moteurs validés P1 (junctions 4 704/4 704 · re-score bit-exact 180/180 · 0 interdit sur 25 984 textes · SHA ×2 21ec408540882e25…).
 - Restent ouvertes : **action n°3** (libellés réels des 23 instruments — ATTEND les textes du fondateur) · VALID-01 (actes fondateurs : comité clinique 6 membres + AIPD) · arbitrage palier RIO-05 (note de fusion de l'audit) · TOTAL_STEPS 51/50. Moyennes inchangées (le bilan fédère, ne re-score pas).
+
+---
+Task ID: 196
+Agent: WTC-Pont (superviseur — session fondateur « Action n°3 : propositions de questions quête 1.1 »)
+Task: Fondateur — « tu me proposes des questions et on les améliore avant que tu les pousses » + demande de choix illustratifs (cocher une illustration renvoyant à la question). Démarrage par la première quête du voyage. Zéro Cloudflare, GitHub seul, push progressif.
+
+Work Log:
+- Environnement : workspace local réinitialisé entre-temps — re-clonage intégral depuis GitHub (origin/main = c3d18ee). Constat : l'Action n°2 a DÉJÀ été exécutée et poussée (Task 195, bilans-dimension, certificat n°1) — rien n'a été perdu, la chaîne est intacte.
+- Exploration quête 1.1 « Ta personnalité » (Monde 1 « Le Miroir ») : moteur apps/web/src/lib/quete-1-1.ts lu intégralement — 50 items Likert 1-5 (déjà en français naturel, verbatim 01-tableau-des-items), 24 inversés, ordre gelé graine 211427, 7 cartes V1-V7, précédent Task 74 = changement de libellé SANS toucher au scoring (Q1.1-49, mécanisme de référence pour l'action n°3).
+- Conception « échelle illustrée » : les 5 boutons Likert deviennent 5 cartes illustrées — cocher l'illustration n ⇔ valeur n ; le moteur ne voit aucune différence (même entier 1-5). Zéro modification du squelette (codes/orientations/dimensions/ordre).
+- Production d'échantillons : 5 illustrations « style A — Le Miroir » (niveaux 1-5 : dos tourné → reflet pleinement soi, palette terracotta/ambre/crème, en écho au Monde 1) + 1 échantillon « style B — Le Fleuve » (gouache, écho P05). Dérive de cohérence personnage constatée honnêtement et documentée (plan de production : fiche personnage verrouillée + dérivation contrôlée).
+- Dossier proposition créé : app/interface/proposition-action-3/quete-1-1/ (README + 6 PNG). STATUT explicite : EN DISCUSSION — rien n'est intégré à l'app.
+- Proposition chat au fondateur : les 10 premières affirmations dans l'ordre de passation réel (deck gelé) avec dimension/orientation/type/pourquoi + candidats au polissage (Q1.1-16 formulation opaque…) + règle d'or (EN i18n synchronisé, checks 9/9 relancés, re-score bit-exact).
+
+Stage Summary:
+- ACTION N°3 AMORCÉE en mode « proposition → discussion → scellement » demandé par le fondateur. Quête 1.1 cartographiée intégralement ; mécanisme Task 74 identifié comme voie de changement sûr ; 6 échantillons d'illustration produits et poussés en dossier EN DISCUSSION. Aucun libellé ni moteur modifié — l'app reste au dernier état validé (c3d18ee). En attente : retour fondateur sur le ton des questions et le style d'illustration.
