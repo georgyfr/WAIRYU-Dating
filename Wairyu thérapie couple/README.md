@@ -19,7 +19,8 @@ Wairyu thérapie couple/
 │
 │  ═══ Dimension ATTACHEMENT (5/5 VALIDÉE) ═══
 ├── validation-q1/ · validation-q1-r1/
-│   └── correction-philosophique/ (RIO-01 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 10⁶ configs, COR1-COR8 PASS)
+│   ├── correction-philosophique/ (RIO-01 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 10⁶ configs, COR1-COR8 PASS)
+│   └── validation-q1-r1/libelles-officiels/ (RIO-01 — ACTION N°3 SCELLÉE 24/10 : les 19 libellés réels de l'instrument, accord fondateur « c'est bon pousse cela dans github » — 6+/12·/1 équilibrée/0−, ancres 5/15, re-score bit-exact vs archives 35 880 comparaisons 0 écart, passe ×2, 0 mot interdit, cœur R1 inchangé — LIB0-LIB7 PASS)
 ├── validation-q2/ · validation-q2-r1/
 │   └── correction-philosophique/ (RIO-02 re-scored 53 % → 100 %, gabarit §5.1-§5.4 complet, 6,72 M états, COR1-COR8 PASS)
 ├── validation-q3/ · validation-q3-r1/

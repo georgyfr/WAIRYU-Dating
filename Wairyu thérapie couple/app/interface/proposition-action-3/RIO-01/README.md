@@ -1,9 +1,13 @@
 # Proposition action n°3 — RIO-01 « Comment je me raccroche » — 19 libellés (v2)
 
-> **STATUT : EN DISCUSSION.** Rien n'est scellé : aucun fichier d'instrument,
-> aucun moteur, aucune donnée validée n'est modifié. Le fondateur retravaille
-> les textes item par item ; le scellement (injection + re-vérification
-> bit-exact + push) n'aura lieu qu'après son accord explicite.
+> **STATUT : SCELLÉ — 24/10/2026.** Accord explicite du fondateur (trace
+> 1a16c6a31081f721 — « c'est bon pousse cela dans github »). Les 19 textes
+> ci-dessous sont désormais les **libellés officiels** de l'instrument :
+> `validation-q1-r1/libelles-officiels/src/wtc_q1_libelles.py`
+> (SHA-256 `5f7f60c4…`). Preuve complète :
+> `validation-q1-r1/libelles-officiels/results/rapport-libelles-RIO-01.md`
+> — re-score bit-exact vs archives **35 880 comparaisons, 0 écart**, passe ×2
+> identique, 0 mot interdit, cœur R1 inchangé (SHA-256 `959abb18…`).
 
 **Périmètre fondateur (trace de session) :** textes dérivés EXCLUSIVEMENT des
 axes et faces du moteur RIO-01 du dossier `Wairyu thérapie couple/`
@@ -31,7 +35,8 @@ seuil, zéro code modifié.
 
 ## 2. Les 19 libellés proposés (v2 — valence équilibrée)
 
-Valence : **7 positives · 12 neutres · 0 sombre.** Aucune catastrophe, aucun
+Valence : **6 positives · 12 neutres · 1 équilibrée (la vigilance 19) · 0
+sombre** — 7 surfaces non sombres au total. Aucune catastrophe, aucun
 vocabulaire d'alarme. Les mots restent simples et dignes (doctrine : honnêteté
 sans condamnation, jamais le mot « pathologie », jamais l'évaluation du
 partenaire, « partenaire » comme seul terme du lien).
@@ -111,14 +116,16 @@ moi — les deux s'écartent de 3.
    anti-contradiction (−20), rythme (trop vite : −25) → statut OK / PRUDENCE /
    INVALIDE. Un profil déjoué est marqué PRUDENCE au mieux.
 
-Ces trois filets sont **déjà dans le moteur validé** (validation-q1, L1) :
+Ces trois filets sont **déjà dans le cœur validé R1** (validation-q1-r1, L1) :
 rien à ajouter au code, les textes suffisent à les faire vivre.
 
-## 4. Ce qui change / ne change pas
+## 4. Scellement (fait, 24/10/2026)
 
 | | État |
 |---|---|
-| Textes v2 | EN DISCUSSION (présent document) |
-| Moteur RIO-01 (validation-q1) | **Intouché** — 0 ligne modifiée |
-| Données / validations P1 | **Intouchées** — re-score bit-exact garanti |
-| Scellement | Après accord fondateur item par item : injection des libellés + re-vérification + push |
+| Textes v2 | **SCELLÉS** — accord fondateur (trace 1a16c6a31081f721) |
+| Libellés officiels | `validation-q1-r1/libelles-officiels/src/wtc_q1_libelles.py` (SHA-256 `5f7f60c4…`) |
+| Moteur RIO-01 (cœur R1) | **Intouché** — SHA-256 `959abb18…` inchangé |
+| Données / validations P1 | **Intouchées** — re-score bit-exact vs archives : 35 880 comparaisons, 0 écart |
+| Reproductibilité | passe ×2 : verdicts + SHA + empreinte identiques |
+| Reste à sceller | les 22 autres instruments (RIO-02 → RIO-23) — au signal fondateur |

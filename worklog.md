@@ -3533,3 +3533,20 @@ Work Log:
 Stage Summary:
 - Règle fondatrice enregistrée : ACTION N°3 = 26 DIMENSIONS DU PROGRAMME WTC, POINT. Plus aucune mention du volet rencontre (règle définitive, toutes sessions).
 - Les 19 libellés RIO-01 v2 sont désormais un artefact du dépôt (dossier proposition-action-3/RIO-01/, EN DISCUSSION) — prêts pour la relecture item par item du fondateur ; le scellement (injection + re-vérification bit-exact + push) suivra son accord.
+
+---
+Task ID: 200
+Agent: WTC-Pont (superviseur — signal fondateur « c'est bon pousse cela dans github »)
+Task: Fondateur — accord explicite sur les 19 libellés RIO-01 v2 : SCELLER (injection des libellés officiels + preuve bit-exact + push). Action n°3 — premier instrument.
+
+Work Log:
+- Package créé : validation-q1-r1/libelles-officiels/ (src + results + README) — fichier SUPPLÉMENTAIRE, zéro modification des moteurs/données/validations existants.
+- wtc_q1_libelles.py : LES 19 libellés officiels (accord fondateur trace 1a16c6a31081f721, 24/10/2026) + métadonnées d'affichage (échelle 1-4, axes, 6 faces + sous-titres) + traçabilité valence + provenance. Module de DONNÉES pures (0 import). SHA-256 5f7f60c45d6240cbded189aff4bb514346132578fbc251553d6bf64c8e2c1118.
+- Décompte de valence PRÉCISÉ (exactitude prime) : 6 affirmations positives · 12 neutres · 1 vigilance équilibrée (réponse honnête attendue « Plutôt vrai ») · 0 sombre — soit 7 surfaces non sombres au total, décompte exact consigné partout (module, dossier proposition, rapport, addendum).
+- verification_libelles_q1.py — preuve LIB0-LIB7 : moteurs réels importés TELS QUELS (cœur R1 SEM 0,195 SHA 959abb18506cf27ca092304cb2acd3099f0dd11fb8ad554012f49aa8387b928f · simulateur R1 seed 42 · liste canonique MOTS_INTERDITS de la couche de correction RIO-01) ; structure 19/19 ; faces 18/18 via le VRAI face_de_item ; ancres ≡ ITEMS_INVERSES (5, 15) ; 0 mot interdit sur 25 textes affichables ; RE-SCORE BIT-EXACT vs archives validées : 520 répondants (500 honnêtes + 20 piégés) régénérés par le VRAI simulateur et recalculés par le VRAI cœur L1→L4 — 35 880 comparaisons, 0 ÉCART ; inertie du module (0 import + cœur bit-identique après chargement) ; reproductibilité passe ×2 (payload 5e642f3bba5efcfe… identique). TOUS PASS : True — VERDICT : SCELLÉ — VÉRIFIÉ.
+- Exactitudes attrapées en cours de preuve : (1) le VRAI cœur de RIO-01 est la révision R1 (validation-q1-r1, SEM 0,195) — le package de libellés est adossé là, pas à la v0 ; (2) le temps de session archive = somme des 19 temps (18 items + vigilance), arrondi par le cœur (réplication exacte de evalue_repondant) ; (3) décompte de valence corrigé 7→6 positives (la vigilance n'est pas une affirmation positive — consigné honnêtement, aucun texte changé).
+- Documents : ADDENDUM-22 à l'audit + dossier proposition-action-3/RIO-01/README.md passé EN DISCUSSION → SCELLÉ (avec empreintes et pointeur vers la preuve) + ligne au hub README (arbre attachement) + package README.
+- Moyennes inchangées : global 2 189/23 = 95,2 % — les libellés ne re-scorent rien (prouvé).
+
+Stage Summary:
+- ACTION N°3 : 1/23 INSTRUMENTS SCELLÉS — RIO-01 « Comment je me raccroche » a désormais ses 19 libellés réels dans le dépôt, avec la preuve bit-exact qu'aucun calcul validé n'a bougé. Restent 22 instruments (RIO-02 → RIO-23) au signal fondateur (instrument par instrument ou par dimension). Ouvertes par ailleurs : VALID-01 (actes fondateurs), arbitrage palier RIO-05, TOTAL_STEPS.

@@ -1,0 +1,69 @@
+{
+  "package": "validation-q1-r1/libelles-officiels",
+  "instrument": "RIO-01 « Comment je me raccroche »",
+  "action": "n°3 — scellement des libellés officiels (accord fondateur 24/10/2026)",
+  "passe_1": {
+    "verdicts": {
+      "LIB0_moteurs_reels": true,
+      "LIB1_structure": true,
+      "LIB2_faces_coherentes": true,
+      "LIB3_ancres_valence": true,
+      "LIB4_mots_interdits": true,
+      "LIB5_rescore_bitexact": true,
+      "LIB6_inertie_libelles": true
+    },
+    "compteurs": {
+      "mots_interdits_liste": 16,
+      "textes_balayes": 27,
+      "occurrences_interdites": [],
+      "comparaisons": 35880,
+      "ecarts": 0,
+      "ecarts_detail": [],
+      "imports_dans_module_libelles": 0,
+      "attributs_coeur_inchanges": true
+    },
+    "payload_hash": "5e642f3bba5efcfe506525dfa463aa69f895c389eee3d46a35518ac778587fc8",
+    "sha256": {
+      "wtc_q1_core.py (R1)": "959abb18506cf27ca092304cb2acd3099f0dd11fb8ad554012f49aa8387b928f",
+      "wtc_q1_simulator.py (R1)": "87c51d3435a67ba2259396f65fab7625052449ed5a1e6ab6b42518199e09ec8f",
+      "wtc_q1_libelles.py": "5f7f60c45d6240cbded189aff4bb514346132578fbc251553d6bf64c8e2c1118",
+      "wtc_q1_correction.py (liste mots interdits)": "7881c2fac5ebf36e67f4beded2c3a763740598171ad43179f7896b89a1546803",
+      "archive reponses_honnetes_calculees.csv": "1f832f91da72a355e2438e9902f804d9ab356b8168c5789a9ba8995490b05761",
+      "archive reponses_pieges_calculees.csv": "38e1de7742090143005cb7b5f9aa3f5232bc53f92df25097a85c60bd81c48ad2"
+    },
+    "tous_pass": true
+  },
+  "passe_2": {
+    "verdicts": {
+      "LIB0_moteurs_reels": true,
+      "LIB1_structure": true,
+      "LIB2_faces_coherentes": true,
+      "LIB3_ancres_valence": true,
+      "LIB4_mots_interdits": true,
+      "LIB5_rescore_bitexact": true,
+      "LIB6_inertie_libelles": true
+    },
+    "compteurs": {
+      "mots_interdits_liste": 16,
+      "textes_balayes": 27,
+      "occurrences_interdites": [],
+      "comparaisons": 35880,
+      "ecarts": 0,
+      "ecarts_detail": [],
+      "imports_dans_module_libelles": 0,
+      "attributs_coeur_inchanges": true
+    },
+    "payload_hash": "5e642f3bba5efcfe506525dfa463aa69f895c389eee3d46a35518ac778587fc8",
+    "sha256": {
+      "wtc_q1_core.py (R1)": "959abb18506cf27ca092304cb2acd3099f0dd11fb8ad554012f49aa8387b928f",
+      "wtc_q1_simulator.py (R1)": "87c51d3435a67ba2259396f65fab7625052449ed5a1e6ab6b42518199e09ec8f",
+      "wtc_q1_libelles.py": "5f7f60c45d6240cbded189aff4bb514346132578fbc251553d6bf64c8e2c1118",
+      "wtc_q1_correction.py (liste mots interdits)": "7881c2fac5ebf36e67f4beded2c3a763740598171ad43179f7896b89a1546803",
+      "archive reponses_honnetes_calculees.csv": "1f832f91da72a355e2438e9902f804d9ab356b8168c5789a9ba8995490b05761",
+      "archive reponses_pieges_calculees.csv": "38e1de7742090143005cb7b5f9aa3f5232bc53f92df25097a85c60bd81c48ad2"
+    },
+    "tous_pass": true
+  },
+  "reproductibilité_passe1_passe2": true,
+  "verdict_final": "SCELLÉ — VÉRIFIÉ"
+}
